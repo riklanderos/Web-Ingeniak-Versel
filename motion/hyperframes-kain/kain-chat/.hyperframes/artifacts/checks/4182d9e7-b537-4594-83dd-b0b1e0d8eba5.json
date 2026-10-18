@@ -1,0 +1,92 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "duration": 14,
+    "samples": [
+      0.778,
+      2.333,
+      3.889,
+      5.444,
+      7,
+      8.556,
+      10.111,
+      11.667,
+      13.222
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 0,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": true,
+    "samples": [
+      0.778,
+      3.889,
+      7,
+      10.111,
+      13.222
+    ],
+    "checked": 68,
+    "passed": 68
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": true,
+    "files": [
+      ".hyperframes/artifacts/snapshots/f4ffd494-b40c-4aeb-af25-52df031ca21f/frame-00-at-0.8s.png",
+      ".hyperframes/artifacts/snapshots/f4ffd494-b40c-4aeb-af25-52df031ca21f/frame-01-at-3.9s.png",
+      ".hyperframes/artifacts/snapshots/f4ffd494-b40c-4aeb-af25-52df031ca21f/frame-02-at-7.0s.png",
+      ".hyperframes/artifacts/snapshots/f4ffd494-b40c-4aeb-af25-52df031ca21f/frame-03-at-10.1s.png",
+      ".hyperframes/artifacts/snapshots/f4ffd494-b40c-4aeb-af25-52df031ca21f/frame-04-at-13.2s.png"
+    ],
+    "times": [
+      0.778,
+      3.889,
+      7,
+      10.111,
+      13.222
+    ],
+    "findingFiles": []
+  }
+}

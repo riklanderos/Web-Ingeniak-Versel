@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+Disallow: /materiales/
+Disallow: /motion/
+Disallow: /direccion-de-arte.html
+
+# Buscadores con IA: se permiten para que Ingeniak aparezca y sea citado
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://ingeniak.mx/sitemap.xml

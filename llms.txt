@@ -1,0 +1,47 @@
+# Ingeniak
+
+> Ingeniak es una consultoría de inteligencia artificial con sede en Guadalajara, Jalisco, México. Diseña e implementa agentes de IA para WhatsApp, CRM con Kommo y GoHighLevel, automatizaciones con n8n, paid media y software a la medida, conectados en un solo sistema que atiende, califica y vende 24/7. Es partner oficial y distribuidor de Kommo en Latinoamérica.
+
+## Ficha
+- Nombre: Ingeniak (operada por Ingeniak Technology, LLC)
+- Sede: Guadalajara, Jalisco, México. Oficina: Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640
+- Contacto: contacto@ingeniak.mx · +52 33 2101 7799 (WhatsApp)
+- Países atendidos (7): México, Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador
+- Sistemas en producción: más de 73
+- Precio: proyectos desde USD 997 al mes; el alcance exacto se define después de la Discovery Session
+- Primer paso: Discovery Session, llamada 1:1 gratuita de 30 minutos por Google Meet: https://ingeniak.mx/discovery/
+- Redes: https://www.instagram.com/ingeniakmx/ · https://www.facebook.com/ingeniakmx · https://www.linkedin.com/company/ingeniakmx
+
+## Servicios
+- Consultoría en inteligencia artificial para empresas (diagnóstico, roadmap y retorno medible en 90 días)
+- Agentes de IA personalizados para WhatsApp, Instagram y web
+- CRM inteligente con IA: implementación de Kommo y GoHighLevel
+- Automatización de procesos con n8n, Make y Zapier
+- Paid media en Meta, Google y TikTok Ads, medido por ventas
+- Páginas web de alta conversión
+- Desarrollo de software a la medida
+- SEO y visibilidad en buscadores con IA
+- Branding y contenido con estrategia
+
+## Metodología VKTOR™
+1. Verify: verificamos tu operación con números.
+2. Koncept: diseñamos el concepto (qué se automatiza, con qué herramientas y en qué orden).
+3. Transform: implementamos agentes, CRM, automatizaciones y campañas conectados.
+4. Operate: operamos junto con tu equipo y ajustamos en producción.
+5. Rise: hacemos crecer los resultados cada mes con dashboards.
+
+## Resultados de clientes (datos internos de Ingeniak, octubre de 2026)
+- Clínica dental en Monterrey: 3.2× más citas en 90 días; tiempo de respuesta de 8 minutos a 12 segundos.
+- E-commerce en la Ciudad de México: −58% en costo por lead en 60 días.
+- Retail multimarca: +340% en conversiones con Kommo + IA.
+- HoReCa (hoteles y restaurantes): ROAS de 4.8× sostenido.
+- Logística: 27 procesos automatizados con n8n.
+- Sector salud: de 12 a 47 citas al mes en promedio; −60% de tiempo operativo en los primeros 90 días.
+
+## kain
+kain es la sub-marca de agentes de IA de Ingeniak y su plataforma está en https://app.kain.mx. Kain atiende, agenda, confirma y da seguimiento; no da consejo médico ni legal.
+
+## Páginas
+- [Inicio](https://ingeniak.mx/)
+- [Discovery Session](https://ingeniak.mx/discovery/)
+- [Aviso de privacidad](https://ingeniak.mx/aviso-privacidad/)

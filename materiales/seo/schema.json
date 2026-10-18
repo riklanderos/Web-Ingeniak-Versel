@@ -1,0 +1,319 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://ingeniak.mx/#organization",
+      "name": "Ingeniak",
+      "alternateName": "INGENIAK",
+      "url": "https://ingeniak.mx/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://ingeniak.mx/logo.png"
+      },
+      "description": "Consultoría mexicana de inteligencia artificial. Agentes de IA para WhatsApp, CRM con Kommo y GoHighLevel, automatización con n8n, paid media, sitios web de alta conversión, software a la medida y SEO. Partner oficial y distribuidor de Kommo en Latinoamérica.",
+      "email": "contacto@ingeniak.mx",
+      "telephone": "[TELÉFONO POR CONFIRMAR]",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Av. Punto Sur 312",
+        "addressLocality": "Tlajomulco de Zúñiga",
+        "addressRegion": "Jalisco",
+        "postalCode": "45640",
+        "addressCountry": "MX"
+      },
+      "areaServed": [
+        {
+          "@type": "Country",
+          "name": "México"
+        },
+        {
+          "@type": "Place",
+          "name": "Latinoamérica"
+        }
+      ],
+      "knowsAbout": [
+        "Inteligencia artificial",
+        "Agentes de IA",
+        "WhatsApp Business",
+        "Kommo",
+        "GoHighLevel",
+        "n8n",
+        "Automatización de procesos",
+        "CRM",
+        "Paid media",
+        "SEO"
+      ],
+      "brand": {
+        "@type": "Brand",
+        "name": "kain",
+        "url": "https://app.kain.mx/",
+        "description": "Sub-marca de Ingeniak dedicada a agentes de IA."
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/[POR-CONFIRMAR]",
+        "https://www.instagram.com/[POR-CONFIRMAR]",
+        "https://www.facebook.com/[POR-CONFIRMAR]",
+        "https://www.youtube.com/@[POR-CONFIRMAR]"
+      ]
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://ingeniak.mx/#localbusiness",
+      "name": "Ingeniak",
+      "url": "https://ingeniak.mx/",
+      "image": "https://ingeniak.mx/og-image.jpg",
+      "logo": "https://ingeniak.mx/logo.png",
+      "description": "Consultoría de inteligencia artificial para empresas en Tlajomulco de Zúñiga, Jalisco: agentes de IA para WhatsApp, implementación de Kommo y GoHighLevel, automatización con n8n y paid media.",
+      "parentOrganization": {
+        "@id": "https://ingeniak.mx/#organization"
+      },
+      "email": "contacto@ingeniak.mx",
+      "telephone": "[TELÉFONO POR CONFIRMAR]",
+      "priceRange": "USD 997–4,997 al mes",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Av. Punto Sur 312",
+        "addressLocality": "Tlajomulco de Zúñiga",
+        "addressRegion": "Jalisco",
+        "postalCode": "45640",
+        "addressCountry": "MX"
+      },
+      "areaServed": [
+        {
+          "@type": "AdministrativeArea",
+          "name": "Jalisco"
+        },
+        {
+          "@type": "Country",
+          "name": "México"
+        },
+        {
+          "@type": "Place",
+          "name": "Latinoamérica"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Paquetes Ingeniak",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Paquete IGNITE",
+            "description": "Paquete de entrada.",
+            "priceCurrency": "USD",
+            "priceSpecification": [
+              {
+                "@type": "UnitPriceSpecification",
+                "name": "Mensualidad",
+                "price": 997,
+                "priceCurrency": "USD",
+                "unitCode": "MON",
+                "unitText": "mes"
+              },
+              {
+                "@type": "PriceSpecification",
+                "name": "Setup (pago único)",
+                "price": 3000,
+                "priceCurrency": "USD"
+              }
+            ],
+            "seller": {
+              "@id": "https://ingeniak.mx/#organization"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Paquete SCALE",
+            "description": "Paquete intermedio.",
+            "priceCurrency": "USD",
+            "priceSpecification": [
+              {
+                "@type": "UnitPriceSpecification",
+                "name": "Mensualidad",
+                "price": 2497,
+                "priceCurrency": "USD",
+                "unitCode": "MON",
+                "unitText": "mes"
+              },
+              {
+                "@type": "PriceSpecification",
+                "name": "Setup (pago único)",
+                "price": 8000,
+                "priceCurrency": "USD"
+              }
+            ],
+            "seller": {
+              "@id": "https://ingeniak.mx/#organization"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Paquete DOMINATE",
+            "description": "Paquete más completo.",
+            "priceCurrency": "USD",
+            "priceSpecification": [
+              {
+                "@type": "UnitPriceSpecification",
+                "name": "Mensualidad",
+                "price": 4997,
+                "priceCurrency": "USD",
+                "unitCode": "MON",
+                "unitText": "mes"
+              },
+              {
+                "@type": "PriceSpecification",
+                "name": "Setup (pago único)",
+                "price": 25000,
+                "priceCurrency": "USD"
+              }
+            ],
+            "seller": {
+              "@id": "https://ingeniak.mx/#organization"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://ingeniak.mx/#website",
+      "url": "https://ingeniak.mx/",
+      "name": "Ingeniak",
+      "inLanguage": "es-MX",
+      "publisher": {
+        "@id": "https://ingeniak.mx/#organization"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://ingeniak.mx/#faq",
+      "inLanguage": "es-MX",
+      "isPartOf": {
+        "@id": "https://ingeniak.mx/#website"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué es Ingeniak?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ingeniak es una consultoría mexicana de inteligencia artificial con sede en Tlajomulco de Zúñiga, Jalisco. Implementamos agentes de IA para WhatsApp, CRM con Kommo y GoHighLevel, automatizaciones con n8n, paid media, sitios web de alta conversión, software a la medida y SEO. Tenemos más de 73 sistemas en producción en 7 países."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué es un agente de IA para WhatsApp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Es un asistente basado en modelos de lenguaje que atiende las conversaciones de tu WhatsApp Business: entiende lo que escribe el cliente, responde con la información de tu negocio, califica al prospecto y puede registrarlo en tu CRM o agendarle una cita. A diferencia de un chatbot de menús, no obliga al cliente a elegir entre opciones fijas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿En qué se diferencia un agente de IA de un chatbot tradicional?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Un chatbot tradicional sigue un árbol de opciones y se atora cuando la pregunta se sale del guion. Un agente de IA interpreta lenguaje natural, consulta información como tu catálogo, tu agenda o tu CRM, y ejecuta acciones como crear un lead o agendar una cita. Por eso puede atender conversaciones reales de venta y servicio."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Ingeniak es partner oficial de Kommo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Ingeniak es partner oficial y distribuidor de Kommo en Latinoamérica. Te ayudamos con las licencias, la implementación del CRM, la conexión de WhatsApp y la automatización del seguimiento con agentes de IA."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Me conviene Kommo o GoHighLevel?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Depende de cómo vendes. Kommo está pensado para vender por mensajería (WhatsApp, Instagram, TikTok) con embudos y automatizaciones dentro del chat. GoHighLevel es una plataforma todo en uno que junta CRM, embudos, páginas, calendarios y campañas. Trabajamos con los dos y te recomendamos uno según tu proceso comercial."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué puedo automatizar con n8n?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "n8n es una herramienta para conectar aplicaciones y crear flujos automáticos, incluidos flujos con agentes de IA. Con n8n conectamos tu CRM, WhatsApp, formularios, hojas de cálculo y sistemas internos para que la información se mueva sola y tu equipo deje de capturar datos a mano. En un caso de logística automatizamos 27 procesos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué es la metodología VKTOR™?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "VKTOR™ es el método de Ingeniak para implementar IA en cinco fases: Verify (verificar), Koncept (conceptualizar), Transform (transformar), Operate (operar) y Rise (crecer). Ordena cada proyecto desde el diagnóstico hasta la operación en producción y el escalamiento, con métricas definidas desde el inicio."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto cuesta trabajar con Ingeniak?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tenemos tres paquetes en dólares: IGNITE, USD 997 al mes más USD 3,000 de setup; SCALE, USD 2,497 al mes más USD 8,000 de setup; y DOMINATE, USD 4,997 al mes más USD 25,000 de setup. El paquete adecuado depende del tamaño de tu operación y de cuántos procesos quieras automatizar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿En cuánto tiempo veo resultados?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nuestros proyectos están planteados para dar resultados medibles en 60 a 90 días. Por ejemplo, una clínica dental en Monterrey logró 3.2 veces más citas en 90 días, y un e-commerce en la Ciudad de México redujo 58% su costo por lead en 60 días."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué resultados han logrado sus clientes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Algunos resultados confirmados: 3.2× más citas en 90 días (clínica dental, Monterrey); tiempo de respuesta de 8 minutos a 12 segundos; −58% en costo por lead en 60 días (e-commerce, CDMX); +340% en conversiones con Kommo + IA (retail); ROAS de 4.8× (HoReCa); 27 procesos automatizados (logística); de 12 a 47 citas al mes (salud), y −60% de tiempo operativo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué modelos de IA usan?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Trabajamos con modelos de OpenAI, Anthropic (Claude) y Google (Gemini), y elegimos el que mejor resuelve cada proceso. Los integramos con herramientas como Kommo, GoHighLevel, n8n, Make, Zapier, Supabase y Stripe."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Solo trabajan con empresas de Guadalajara y Jalisco?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Nuestra oficina está en Tlajomulco de Zúñiga, en la zona metropolitana de Guadalajara, pero trabajamos con empresas de 7 países. Tenemos casos en Monterrey y en la Ciudad de México, entre otros."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué es kain?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "kain es la sub-marca de Ingeniak dedicada a agentes de IA. Su plataforma está en app.kain.mx."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Además de IA, hacen publicidad y sitios web?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Gestionamos paid media en Meta Ads, Google Ads y TikTok Ads, y hacemos sitios web de alta conversión, software a la medida y SEO. La idea es que la publicidad, el sitio, el CRM y los agentes de IA funcionen como un solo sistema. En un cliente de HoReCa logramos un ROAS de 4.8×."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo empiezo a trabajar con Ingeniak?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Escríbenos a contacto@ingeniak.mx. En la primera conversación revisamos tu proceso comercial y operativo, y te decimos qué servicios y qué paquete tienen sentido para tu empresa."
+          }
+        }
+      ]
+    }
+  ]
+}

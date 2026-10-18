@@ -1,0 +1,187 @@
+{
+  "ok": false,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"scene\"> is a timeline element that contains nested <div id=\"grid\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#scene",
+        "dataAttributes": {},
+        "sourceFile": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"scene\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      }
+    ],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 1.625,
+        "selector": "#status-online",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 158,
+          "top": 120.09,
+          "right": 242.75,
+          "bottom": 148.09,
+          "width": 84.75,
+          "height": 28
+        },
+        "containerSelector": "#status-typing",
+        "text": "en línea",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 158,
+          "y": 120.09,
+          "width": 84.75,
+          "height": 28
+        },
+        "firstSeen": 1.625,
+        "lastSeen": 7.625,
+        "occurrences": 4,
+        "heldMs": 0,
+        "times": [
+          1.625,
+          2.75,
+          6.375,
+          7.625
+        ]
+      }
+    ],
+    "duration": 14,
+    "samples": [
+      0.778,
+      2.333,
+      3.889,
+      5.444,
+      7,
+      8.556,
+      10.111,
+      11.667,
+      13.222
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 1,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": false,
+    "errorCount": 1,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "error",
+        "message": "Contrast is 3.51:1; WCAG AA requires 4.5:1.",
+        "text": "10:41",
+        "fg": "rgb(192,209,255)",
+        "bg": "rgb(30,89,255)",
+        "ratio": 3.51,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(228,236,255)",
+        "large": false,
+        "selector": "div > div > div:nth-of-type(5) > div:nth-of-type(3) > div:nth-of-type(2) > div",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 50,
+          "y": 524.1875,
+          "width": 516,
+          "height": 18
+        },
+        "time": 7,
+        "times": [
+          3.889,
+          7,
+          10.111
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.52:1; WCAG AA requires 4.5:1.",
+        "text": "10:42",
+        "fg": "rgb(192,208,255)",
+        "bg": "rgb(29,88,255)",
+        "ratio": 3.52,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(228,235,255)",
+        "large": false,
+        "selector": "div > div > div:nth-of-type(5) > div:nth-of-type(5) > div:nth-of-type(2) > div",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 50,
+          "y": 915.375,
+          "width": 516,
+          "height": 18
+        },
+        "time": 10.111,
+        "times": [
+          10.111
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      0.778,
+      3.889,
+      7,
+      10.111,
+      13.222
+    ],
+    "checked": 68,
+    "passed": 64
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

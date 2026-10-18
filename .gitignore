@@ -1,0 +1,7 @@
+.DS_Store
+node_modules/
+motion/**/node_modules/
+motion/**/out/
+motion/**/bin/
+motion/**/renders/
+materiales/discovery/discovery-session-vsl.mp4

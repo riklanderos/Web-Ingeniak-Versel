@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=720, height=1280" />
+    <title>Kain chat demo</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Lexend";
+        src: url("assets/lexend-var.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("assets/jetbrains-mono-var.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      :root {
+        --ink: #03040b;
+        --navy: #0a1f4c;
+        --indigo: #455dff;
+        --blue: #0055ff;
+        --cyan: #00e5ff;
+        --muted: #9eb0c7;
+        --glass: rgba(255, 255, 255, 0.08);
+        --glass-line: rgba(255, 255, 255, 0.14);
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 720px;
+        height: 1280px;
+        overflow: hidden;
+        background: var(--ink);
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: "Inter", system-ui, sans-serif;
+        background:
+          radial-gradient(120% 70% at 50% 0%, rgba(10, 31, 76, 0.95) 0%, rgba(10, 31, 76, 0.35) 45%, rgba(3, 4, 11, 0) 75%),
+          linear-gradient(180deg, #071433 0%, #03040b 62%, #03040b 100%);
+      }
+      .layer {
+        position: absolute;
+        inset: 0;
+      }
+
+      /* ---------- ambient glows ---------- */
+      .glow {
+        position: absolute;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      #glow-a {
+        width: 560px;
+        height: 560px;
+        left: -220px;
+        top: 360px;
+        background: radial-gradient(circle, rgba(0, 229, 255, 0.16) 0%, rgba(0, 229, 255, 0) 65%);
+      }
+      #glow-b {
+        width: 640px;
+        height: 640px;
+        right: -260px;
+        top: 640px;
+        background: radial-gradient(circle, rgba(69, 93, 255, 0.22) 0%, rgba(69, 93, 255, 0) 65%);
+      }
+      #grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(158, 176, 199, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(158, 176, 199, 0.05) 1px, transparent 1px);
+        background-size: 48px 48px;
+        -webkit-mask-image: radial-gradient(90% 60% at 50% 45%, #000 0%, transparent 80%);
+        mask-image: radial-gradient(90% 60% at 50% 45%, #000 0%, transparent 80%);
+      }
+
+      /* ---------- header ---------- */
+      #header {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 176px;
+        padding: 52px 32px 0;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        background: linear-gradient(180deg, rgba(10, 31, 76, 0.55), rgba(10, 31, 76, 0.2));
+        border-bottom: 1px solid var(--glass-line);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+      #avatar-wrap {
+        position: relative;
+        width: 84px;
+        height: 84px;
+        flex: 0 0 84px;
+        border-radius: 50%;
+        padding: 3px;
+        background: linear-gradient(135deg, rgba(0, 229, 255, 0.9), rgba(69, 93, 255, 0.9));
+        box-shadow: 0 0 24px rgba(0, 229, 255, 0.35);
+      }
+      #avatar {
+        display: block;
+        width: 78px;
+        height: 78px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      #who {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 0;
+        flex: 1;
+      }
+      #name {
+        font-family: "Lexend", sans-serif;
+        font-weight: 600;
+        font-size: 32px;
+        letter-spacing: -0.01em;
+        line-height: 1.1;
+        white-space: nowrap;
+      }
+      #status {
+        position: relative;
+        height: 30px;
+        font-size: 23px;
+        color: var(--muted);
+      }
+      .status-line {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        white-space: nowrap;
+        line-height: 30px;
+      }
+      #status-typing {
+        opacity: 0;
+        color: var(--cyan);
+      }
+      .dot-live {
+        display: block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--cyan);
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.9);
+      }
+      #badge {
+        flex: 0 0 auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--cyan);
+        padding: 8px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 229, 255, 0.4);
+        background: rgba(0, 229, 255, 0.08);
+      }
+
+      /* ---------- thread ---------- */
+      #thread {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 200px;
+        padding: 0 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .day {
+        align-self: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 18px;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        padding: 7px 16px;
+        border-radius: 999px;
+        background: var(--glass);
+        border: 1px solid var(--glass-line);
+        margin-bottom: 4px;
+      }
+      .row {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      .row.out {
+        align-items: flex-end;
+      }
+      .row.in {
+        align-items: flex-start;
+      }
+      .bubble {
+        position: relative;
+        display: block;
+        max-width: 560px;
+        padding: 18px 22px 14px;
+        font-size: 30px;
+        line-height: 1.36;
+        letter-spacing: -0.005em;
+      }
+      .out .bubble {
+        background: var(--glass);
+        border: 1px solid var(--glass-line);
+        border-radius: 28px 8px 28px 28px;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+      .in .bubble {
+        background: linear-gradient(135deg, var(--indigo) 0%, var(--blue) 100%);
+        border-radius: 8px 28px 28px 28px;
+        box-shadow:
+          0 10px 34px rgba(0, 85, 255, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      }
+      .meta {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 6px;
+        margin-top: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 18px;
+        line-height: 1;
+        color: var(--muted);
+      }
+      .in .meta {
+        color: #e4ecff;
+      }
+      .ticks {
+        display: block;
+        width: 26px;
+        height: 16px;
+      }
+      .typing {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 24px 26px;
+        border-radius: 8px 28px 28px 28px;
+        background: linear-gradient(135deg, var(--indigo) 0%, var(--blue) 100%);
+        box-shadow: 0 10px 34px rgba(0, 85, 255, 0.35);
+      }
+      .typing i {
+        display: block;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: #fff;
+      }
+
+      /* chips */
+      .chips {
+        display: flex;
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .chip {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 196px;
+        height: 66px;
+        border-radius: 18px;
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 27px;
+        color: #fff;
+        background: var(--glass);
+        border: 1px solid rgba(0, 229, 255, 0.38);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        white-space: nowrap;
+      }
+      .chip-hl {
+        position: absolute;
+        inset: -1px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(0, 229, 255, 0.32), rgba(0, 229, 255, 0.12));
+        border: 2px solid var(--cyan);
+        box-shadow: 0 0 28px rgba(0, 229, 255, 0.55);
+        opacity: 0;
+      }
+      .chip span {
+        position: relative;
+      }
+      #tap {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 120px;
+        height: 120px;
+        margin: -60px 0 0 -60px;
+        border-radius: 50%;
+        border: 3px solid var(--cyan);
+        background: rgba(0, 229, 255, 0.18);
+        opacity: 0;
+      }
+
+      /* ---------- toast ---------- */
+      #toast {
+        position: absolute;
+        left: 28px;
+        right: 28px;
+        bottom: 150px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 22px 24px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.09);
+        border: 1px solid var(--glass-line);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow:
+          0 18px 50px rgba(0, 0, 0, 0.45),
+          0 0 40px rgba(0, 229, 255, 0.12),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        opacity: 0;
+      }
+      #node {
+        position: relative;
+        flex: 0 0 52px;
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        border: 2px solid var(--cyan);
+        background: rgba(0, 229, 255, 0.14);
+        box-shadow: 0 0 22px rgba(0, 229, 255, 0.55);
+      }
+      #node::after {
+        content: "";
+        position: absolute;
+        left: 14px;
+        top: 14px;
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        background: var(--cyan);
+      }
+      #toast-text {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+      }
+      #toast-title {
+        font-weight: 600;
+        font-size: 27px;
+        line-height: 1.15;
+      }
+      #toast-sub {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 21px;
+        line-height: 1.15;
+        color: var(--cyan);
+      }
+      #toast-check {
+        margin-left: auto;
+        flex: 0 0 auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 17px;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+      }
+
+      /* ---------- composer ---------- */
+      #composer {
+        position: absolute;
+        left: 28px;
+        right: 28px;
+        bottom: 44px;
+        height: 76px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      #composer-field {
+        flex: 1;
+        height: 76px;
+        border-radius: 38px;
+        background: var(--glass);
+        border: 1px solid var(--glass-line);
+        display: flex;
+        align-items: center;
+        padding: 0 28px;
+        font-size: 26px;
+        color: rgba(158, 176, 199, 0.75);
+      }
+      #composer-send {
+        flex: 0 0 76px;
+        width: 76px;
+        height: 76px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--indigo), var(--blue));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 24px rgba(0, 85, 255, 0.45);
+      }
+      #composer-send svg {
+        display: block;
+        width: 32px;
+        height: 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="14"
+      data-width="720"
+      data-height="1280"
+    >
+      <div id="scene" class="layer">
+        <div id="grid"></div>
+        <div id="glow-a" class="glow"></div>
+        <div id="glow-b" class="glow"></div>
+
+        <!-- header -->
+        <div id="header">
+          <div id="avatar-wrap"><img id="avatar" src="assets/kain-avatar.png" alt="Kain" /></div>
+          <div id="who">
+            <div id="name">Kain · Clínica</div>
+            <div id="status" data-layout-allow-overlap>
+              <div id="status-online" class="status-line"><span class="dot-live"></span>en línea</div>
+              <div id="status-typing" class="status-line"><span class="dot-live"></span>escribiendo…</div>
+            </div>
+          </div>
+          <div id="badge">AGENTE IA</div>
+        </div>
+
+        <!-- thread -->
+        <div id="thread">
+          <div id="day" class="day">HOY</div>
+
+          <div id="m1" class="row out">
+            <div class="bubble">
+              Hola, ¿tienen cita para limpieza esta semana?
+              <div class="meta">
+                10:41
+                <svg class="ticks" viewBox="0 0 26 16" fill="none" stroke="#00E5FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8.5l4 4L13 4" /><path d="M10 12.5L18.5 4" /><path d="M8.2 10.7" /></svg>
+              </div>
+            </div>
+          </div>
+
+          <div id="m2" class="row in">
+            <div id="t1" class="typing"><i></i><i></i><i></i></div>
+            <div id="m2-bubble" class="bubble">
+              ¡Hola! Soy Kain 👋 Tengo estos horarios:
+              <div class="meta">10:41</div>
+            </div>
+            <div class="chips">
+              <div id="c1" class="chip"><span>Mié 10:00</span></div>
+              <div id="c2" class="chip">
+                <div class="chip-hl" id="c2-hl"></div>
+                <div id="tap"></div>
+                <span>Jue 16:30</span>
+              </div>
+              <div id="c3" class="chip"><span>Vie 12:00</span></div>
+            </div>
+          </div>
+
+          <div id="m3" class="row out">
+            <div class="bubble">
+              Jue 16:30
+              <div class="meta">
+                10:42
+                <svg class="ticks" viewBox="0 0 26 16" fill="none" stroke="#00E5FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8.5l4 4L13 4" /><path d="M10 12.5L18.5 4" /></svg>
+              </div>
+            </div>
+          </div>
+
+          <div id="m4" class="row in">
+            <div id="t2" class="typing"><i></i><i></i><i></i></div>
+            <div id="m4-bubble" class="bubble">
+              Listo, te agendé el jueves a las 16:30 ✅ Te mando recordatorio un día antes.
+              <div class="meta">10:42</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- toast -->
+        <div id="toast">
+          <div id="node"></div>
+          <div id="toast-text">
+            <div id="toast-title">Lead creado en Kommo</div>
+            <div id="toast-sub">Etapa: Cita agendada</div>
+          </div>
+          <div id="toast-check">CRM</div>
+        </div>
+
+        <!-- composer -->
+        <div id="composer">
+          <div id="composer-field">Escribe un mensaje</div>
+          <div id="composer-send">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15" /><path d="M13 6l6 6-6 6" /></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const D = 14;
+      const tl = gsap.timeline({ paused: true });
+      const IN = "power2.out";
+      const OUT = "power2.in";
+
+      // ambient glows: one full sine cycle across the loop (start == end)
+      tl.fromTo("#glow-a", { x: 0, y: 0 }, { x: 120, y: -90, duration: D / 2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+      tl.fromTo("#glow-b", { x: 0, y: 0 }, { x: -110, y: 70, duration: D / 2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+
+      // helpers
+      const bubbleIn = (sel, at, dir) =>
+        tl.fromTo(
+          sel,
+          { opacity: 0, y: 22, x: dir * 14, scale: 0.97 },
+          { opacity: 1, y: 0, x: 0, scale: 1, duration: 0.5, ease: IN, transformOrigin: dir > 0 ? "100% 0%" : "0% 0%" },
+          at
+        );
+      const typing = (sel, from, to) => {
+        tl.fromTo(sel, { opacity: 0, y: 14, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: IN, transformOrigin: "0% 0%" }, from);
+        const cycle = 0.42;
+        const reps = Math.max(0, Math.floor((to - from - 0.3) / cycle) - 1);
+        tl.fromTo(
+          sel + " i",
+          { opacity: 0.35, y: 0 },
+          { opacity: 1, y: -6, duration: cycle / 2, ease: "sine.inOut", yoyo: true, repeat: reps * 2 + 1, stagger: 0.12 },
+          from + 0.1
+        );
+        tl.to(sel, { opacity: 0, scale: 0.96, duration: 0.2, ease: OUT }, to - 0.2);
+        // header status swaps to "escribiendo…"
+        tl.to("#status-online", { opacity: 0, duration: 0.2 }, from);
+        tl.to("#status-typing", { opacity: 1, duration: 0.2 }, from);
+        tl.to("#status-typing", { opacity: 0, duration: 0.2 }, to - 0.2);
+        tl.to("#status-online", { opacity: 1, duration: 0.2 }, to - 0.2);
+      };
+
+      // initial hidden states
+      tl.set(["#day", "#m1", "#m2-bubble", "#c1", "#c2", "#c3", "#m3", "#m4-bubble", "#t1", "#t2"], { opacity: 0 }, 0);
+
+      // 0.3 day pill
+      tl.fromTo("#day", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.4, ease: IN }, 0.3);
+      // 0.6 customer asks
+      bubbleIn("#m1", 0.6, 1);
+      // 1.5–2.9 Kain typing
+      typing("#t1", 1.5, 2.9);
+      // 2.9 Kain answers + chips
+      bubbleIn("#m2-bubble", 2.9, -1);
+      tl.fromTo(["#c1", "#c2", "#c3"], { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.42, ease: IN, stagger: 0.12 }, 3.35);
+
+      // 5.0 tap on "Jue 16:30"
+      tl.fromTo("#c2", { scale: 1 }, { scale: 0.96, duration: 0.12, ease: "power1.out" }, 5.0);
+      tl.to("#c2", { scale: 1, duration: 0.3, ease: "power2.out" }, 5.12);
+      tl.fromTo("#tap", { opacity: 0, scale: 0.3 }, { opacity: 0.9, scale: 0.55, duration: 0.1, ease: "none" }, 4.95);
+      tl.to("#tap", { opacity: 0, scale: 1.7, duration: 0.65, ease: "power2.out" }, 5.05);
+      tl.fromTo("#c2-hl", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: IN }, 5.05);
+      tl.to(["#c1", "#c3"], { opacity: 0.42, duration: 0.4, ease: IN }, 5.1);
+
+      // 5.7 customer choice echoed
+      bubbleIn("#m3", 5.7, 1);
+      // 6.3–7.7 typing
+      typing("#t2", 6.3, 7.7);
+      // 7.7 confirmation
+      bubbleIn("#m4-bubble", 7.7, -1);
+
+      // 8.9 toast in, 12.3 toast out
+      tl.fromTo("#toast", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 8.9);
+      tl.fromTo("#node", { scale: 0.6, rotation: -45 }, { scale: 1, rotation: 0, duration: 0.6, ease: "power3.out" }, 9.0);
+      tl.fromTo("#node", { boxShadow: "0 0 22px rgba(0,229,255,0.55)" }, { boxShadow: "0 0 36px rgba(0,229,255,0.95)", duration: 0.7, ease: "sine.inOut", yoyo: true, repeat: 1 }, 9.6);
+      tl.to("#toast", { opacity: 0, y: 30, duration: 0.5, ease: OUT }, 12.3);
+
+      // 12.6 conversation scrolls up & fades for the loop
+      tl.fromTo("#thread", { y: 0, opacity: 1 }, { y: -90, opacity: 0, duration: 1.0, ease: "power2.inOut" }, 12.6);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

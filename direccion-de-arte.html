@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="es-MX" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ingeniak · Dirección de arte (muestra)</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preload" href="fonts/lexend-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="img/marca/isotipo.svg" type="image/svg+xml">
+<script>document.documentElement.className=document.documentElement.className.replace('no-js','js');</script>
+<style>
+@font-face{font-family:"Lexend";src:url(fonts/lexend-var.woff2) format("woff2");font-weight:300 700;font-display:swap}
+@font-face{font-family:"Inter";src:url(fonts/inter-var.woff2) format("woff2");font-weight:400 600;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url(fonts/jetbrains-mono-var.woff2) format("woff2");font-weight:400 500;font-display:swap}
+
+:root{
+  /* Color: identidad Ingeniak + Kain */
+  --bg:#03040B;          /* fondo: negro azulado */
+  --surface:#070B18;     /* superficies */
+  --navy:#0A1F4C;        /* profundidad */
+  --brand:#0055FF;       /* azul Ingeniak: acción */
+  --brand-press:#1A66FF; /* hover: se aclara para no perder contraste */
+  --indigo:#455DFF;      /* transición azul → cian */
+  --cyan:#00E5FF;        /* brillo de IA, estados activos */
+  --ink:#FFFFFF;
+  --muted:#9EB0C7;       /* texto secundario */
+  --line:rgba(158,176,199,.16);
+  --amber:#FFB547;       /* solo dolores */
+  --cta:var(--brand);
+  --cta-ink:#FFFFFF;
+  /* Tipografía */
+  --font-display:"Lexend",system-ui,sans-serif;
+  --font-body:"Inter",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+  /* Forma: derivada del isotipo (esquinas suavizadas, no redondas) */
+  --r-xl:28px; --r-lg:20px; --r-md:14px; --r-sm:8px;
+  /* Movimiento: técnico y preciso, con calma de lujo */
+  --ease:cubic-bezier(.25,1,.5,1);
+  --ease-io:cubic-bezier(.76,0,.24,1);
+  --ease-pop:var(--ease);
+  --dur:.95s; --dist:22px; --t-hover:.45s;
+  /* Espacio */
+  --gutter:clamp(16px,4vw,48px);
+  --maxw:1240px;
+  --section-y:clamp(72px,10vw,140px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:clip}
+
+.wrap{width:min(100% - var(--gutter)*2, var(--maxw));margin-inline:auto}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:500 12px/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.solo-cel{display:none}@media (max-width:699px){.solo-cel{display:inline}.solo-desk{display:none}}
+.nodo{width:8px;height:8px;border-radius:2px;background:var(--cyan);box-shadow:0 0 12px var(--cyan),0 0 2px #fff inset;flex:none}
+
+/* ===== Aviso de muestra ===== */
+.aviso{position:fixed;left:50%;bottom:14px;translate:-50% 0;z-index:60;font:500 11px/1 var(--font-mono);letter-spacing:.08em;color:var(--muted);background:rgba(7,11,24,.72);border:1px solid var(--line);padding:9px 14px;border-radius:999px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);white-space:nowrap}
+
+/* ===== INICIO Portada ===== */
+.nav{position:absolute;inset:0 0 auto;z-index:20}
+.nav__inner{display:flex;align-items:center;justify-content:space-between;gap:16px;height:76px}
+.nav__logo img{height:22px;width:auto}
+.nav__links{display:none;gap:28px;font-size:14px;color:var(--muted)}
+.nav__links a{text-decoration:none;transition:color var(--t-hover) var(--ease)}
+.nav__links a:hover{color:var(--ink)}
+.nav__cta{font:500 13px/1 var(--font-body);text-decoration:none;padding:11px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+@media (min-width:900px){.nav__links{display:flex}}
+
+.portada{position:relative;min-height:100svh;isolation:isolate;overflow:hidden;padding:80px 0 40px;display:flex;flex-direction:column;justify-content:center}
+.portada__fondo{position:absolute;inset:0;z-index:-2;background:
+  radial-gradient(60% 45% at 50% 30%, rgba(0,85,255,.28), transparent 70%),
+  radial-gradient(40% 30% at 50% 34%, rgba(0,229,255,.12), transparent 70%)}
+.portada__fondo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;mix-blend-mode:screen}
+.portada__reticula{position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;opacity:.35;
+  -webkit-mask:radial-gradient(55% 45% at 50% 35%,#000 0%,transparent 75%);mask:radial-gradient(55% 45% at 50% 35%,#000 0%,transparent 75%)}
+
+.escena{position:relative;width:min(100%,960px);margin:0 auto;aspect-ratio:16/6.6}
+.escena__iso{position:absolute;left:50%;top:50%;width:min(50%,460px);aspect-ratio:1;translate:-50% -50%}
+.escena__iso img{width:100%;height:100%;object-fit:contain;-webkit-mask:radial-gradient(closest-side,#000 70%,transparent 100%);mask:radial-gradient(closest-side,#000 70%,transparent 100%)}
+.escena__trazo{position:absolute;left:50%;top:50%;width:min(36.6%,336px);translate:-50% -46%;overflow:visible}
+.escena__trazo path{fill:none;stroke:var(--cyan);stroke-width:1.2;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(0,229,255,.9))}
+.escena__lineas{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.escena__lineas .base{fill:none;stroke:url(#gLinea);stroke-width:1.2}
+.escena__lineas .pulso{fill:none;stroke:#BFF8FF;stroke-width:2;stroke-linecap:round;filter:drop-shadow(0 0 4px var(--cyan));opacity:0}
+
+.chip{position:absolute;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 10px;border-radius:var(--r-md);
+  background:linear-gradient(150deg,rgba(255,255,255,.12),rgba(255,255,255,.03) 55%,rgba(69,93,255,.10));
+  border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 18px 40px rgba(0,0,0,.45),0 0 40px rgba(0,85,255,.12);
+  backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);white-space:nowrap}
+.chip__ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:rgba(0,85,255,.22);border:1px solid rgba(0,229,255,.25)}
+.chip__ico svg{width:15px;height:15px;stroke:var(--cyan);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.chip b{display:block;font:500 13px/1.2 var(--font-display)}
+.chip small{display:block;font:400 10.5px/1.3 var(--font-mono);color:var(--muted);letter-spacing:.04em}
+.chip--a{left:2%;top:12%}.chip--b{left:0;bottom:14%}.chip--c{right:2%;top:16%}.chip--d{right:0;bottom:10%}
+
+.portada__texto{text-align:center;position:relative;z-index:2;margin-top:clamp(4px,1.5vw,18px)}
+.portada__titulo{font:500 clamp(46px,6.6vw,96px)/.98 var(--font-display);letter-spacing:-.045em;margin:16px 0 0}
+@media (min-width:900px){.portada__titulo .linea{display:inline-block}}
+.portada__titulo .linea{display:block;overflow:hidden;padding:.12em .1em .14em;margin:-.12em -.1em -.14em}
+.portada__titulo .linea-in{display:block}
+.portada__titulo .acento{background:linear-gradient(100deg,#fff 0%,#BFF8FF 40%,var(--cyan) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.portada__sub{max-width:620px;margin:16px auto 0;color:var(--muted);font-size:clamp(15px,1.4vw,18px)}
+.portada__acciones{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 22px;margin-top:24px}
+.link-sec{font-size:14px;color:var(--muted);text-decoration:none;display:inline-flex;gap:8px;align-items:center;padding:10px 4px;min-height:44px}
+.link-sec:hover{color:var(--ink)}
+
+/* Botón principal */
+.btn{--x:50%;position:relative;display:inline-flex;align-items:center;gap:12px;min-height:54px;padding:0 10px 0 24px;border-radius:999px;
+  background:var(--cta);color:var(--cta-ink);font:500 15px/1 var(--font-display);text-decoration:none;isolation:isolate;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 10px 30px rgba(0,85,255,.45),0 0 60px rgba(0,85,255,.35);
+  transition:background var(--t-hover) var(--ease),box-shadow var(--t-hover) var(--ease),scale .2s var(--ease)}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(120px 60px at var(--x) 0%,rgba(255,255,255,.35),transparent 70%);opacity:.7}
+.btn > span:not([class]){white-space:nowrap}
+.btn__flecha{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);transition:transform var(--t-hover) var(--ease)}
+.btn__flecha svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2}
+.btn:hover{background:var(--brand-press);box-shadow:0 0 0 1px rgba(255,255,255,.28) inset,0 12px 34px rgba(0,85,255,.55),0 0 80px rgba(0,229,255,.35)}
+.btn:hover .btn__flecha{transform:translateX(3px) rotate(-45deg)}
+.btn:active{scale:.97}
+.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.btn__trazo{position:absolute;inset:-1px;z-index:1;pointer-events:none;border-radius:inherit;padding:1.5px;
+  background:conic-gradient(from var(--ang,0deg),transparent 0 70%,var(--cyan) 85%,#fff 90%,transparent 95%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0}
+.btn__nota{display:block;margin-top:10px;font:400 11px/1 var(--font-mono);color:var(--muted);letter-spacing:.06em}
+
+.muestra__controles{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:26px 0 0;text-align:center}
+.muestra__repetir{font:500 12px/1 var(--font-mono);letter-spacing:.08em;color:var(--ink);background:transparent;border:1px dashed rgba(255,255,255,.3);padding:12px 16px;border-radius:999px;cursor:pointer;min-height:44px}
+.muestra__aviso{font-size:13px;color:var(--muted);max-width:520px}
+
+/* Estados ocultos solo con JS */
+.js .portada__titulo .linea-in{transform:translateY(118%);animation:rescateLinea 0s 6s forwards}
+.js [data-hero-in]{visibility:hidden;animation:rescateVis 0s 6s forwards}
+@keyframes rescateLinea{to{transform:none}}
+@keyframes rescateVis{to{visibility:visible}}
+
+/* Celular */
+@media (max-width:699px){
+  .portada{padding-top:76px;justify-content:flex-start}
+  .escena{aspect-ratio:1/0.86;width:100%}
+  .escena__iso{width:78%}
+  .escena__trazo{width:57%}
+  .chip{padding:7px 10px 7px 7px;gap:7px;border-radius:12px}
+  .chip__ico{width:24px;height:24px;border-radius:7px}
+  .chip__ico svg{width:12px;height:12px}
+  .chip b{font-size:11.5px}.chip small{font-size:9.5px}
+  .chip--a{left:0;top:4%}.chip--b{left:0;bottom:2%}.chip--c{right:0;top:9%}.chip--d{right:0;bottom:6%}
+  .portada__sub{font-size:15px}
+  .btn{width:100%;justify-content:space-between;max-width:420px;font-size:14.5px;padding-left:20px}
+  .demo__boton{justify-items:stretch}
+  .portada__acciones{flex-direction:column;gap:4px}
+}
+/* ===== FIN Portada ===== */
+
+/* ===== Hoja de muestra ===== */
+.bloque{padding:var(--section-y) 0 0}
+.bloque:last-of-type{padding-bottom:var(--section-y)}
+.bloque__titulo{font:500 clamp(30px,4.6vw,56px)/1.04 var(--font-display);letter-spacing:-.035em;margin:14px 0 12px;max-width:16ch}
+.bloque__intro{color:var(--muted);max-width:56ch;margin:0 0 36px}
+
+.paleta{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (min-width:800px){.paleta{grid-template-columns:repeat(4,1fr)}}
+.color{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.color__muestra{height:92px}
+.color__info{padding:12px 14px 14px;font-size:13px;color:var(--muted);line-height:1.45}
+.color__info strong{display:block;color:var(--ink);font:500 14px/1.3 var(--font-display)}
+.color__info code{font:400 11px/1 var(--font-mono);color:var(--cyan)}
+
+.letras{display:grid;gap:18px}
+.letra{border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent)}
+.letra__tag{font:400 11px/1 var(--font-mono);color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.letra--t p{font:500 clamp(34px,6vw,72px)/1 var(--font-display);letter-spacing:-.045em;margin:0}
+.letra--h p{font:500 clamp(24px,3vw,36px)/1.1 var(--font-display);letter-spacing:-.03em;margin:0}
+.letra--p p{margin:0;color:var(--muted);max-width:62ch}
+.letra--m p{margin:0;font:400 13px/1.6 var(--font-mono);color:var(--cyan);letter-spacing:.06em}
+
+.elementos{display:grid;gap:14px}
+@media (min-width:800px){.elementos{grid-template-columns:repeat(2,1fr)}}
+.elem{position:relative;border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;background:var(--surface);overflow:hidden;min-height:250px;display:flex;flex-direction:column}
+.elem__lienzo{flex:1;display:grid;place-items:center;min-height:150px;position:relative}
+.elem h3{font:500 17px/1.2 var(--font-display);margin:14px 0 4px}
+.elem p{margin:0;color:var(--muted);font-size:14px}
+.elem__mover{position:absolute;top:14px;right:14px;font:500 11px/1 var(--font-mono);color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:999px;padding:9px 12px;cursor:pointer;min-height:36px}
+.elem__mover:hover{color:var(--ink)}
+.e-iso{width:62%;max-width:240px;overflow:visible}
+.e-iso path{fill:rgba(0,85,255,.18);stroke:var(--cyan);stroke-width:1.2}
+.e-ramas{width:100%;max-width:340px;overflow:visible}
+.e-ramas .base{fill:none;stroke:rgba(0,229,255,.35);stroke-width:1.2}
+.e-ramas .pulso{fill:none;stroke:#BFF8FF;stroke-width:2.2;stroke-linecap:round;filter:drop-shadow(0 0 4px var(--cyan))}
+.e-ramas rect{fill:var(--cyan)}
+.e-nodos{display:flex;gap:18px;align-items:center}
+.e-nodos .nodo{width:14px;height:14px;border-radius:3px}
+.e-nodos .nodo:nth-child(2){opacity:.6}.e-nodos .nodo:nth-child(3){opacity:.3}
+.e-ondas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+
+/* Cristal con fuga de luz de la marca */
+.cristal{--mx:30%;--my:0%;position:relative;border-radius:var(--r-xl);padding:26px;isolation:isolate;overflow:hidden;
+  background:linear-gradient(155deg,rgba(255,255,255,.10),rgba(255,255,255,.025) 50%,rgba(69,93,255,.08));
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 30px 80px rgba(0,0,0,.5);
+  backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%)}
+.cristal::before{content:"";position:absolute;z-index:-1;width:70%;aspect-ratio:1.6;left:var(--mx);top:var(--my);translate:-50% -55%;
+  background:radial-gradient(closest-side,rgba(0,229,255,.55),rgba(0,85,255,.35) 45%,transparent 75%);filter:blur(22px);transition:left .6s var(--ease),top .6s var(--ease)}
+.cristal::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.06),transparent 30%)}
+
+.demo{display:grid;gap:22px;align-items:start}
+@media (min-width:860px){.demo{grid-template-columns:1fr 1fr;align-items:center}}
+.demo__boton{border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;display:grid;gap:14px;justify-items:start;background:var(--surface)}
+.demo__boton p{margin:0;color:var(--muted);font-size:14px}
+.caso__tag{display:inline-flex;gap:8px;align-items:center;font:500 11px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cyan)}
+.caso__cifra{font:500 clamp(40px,6vw,64px)/1 var(--font-display);letter-spacing:-.04em;margin:18px 0 6px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.caso__cifra span{font-size:.45em;color:var(--muted);letter-spacing:-.01em}
+.caso h3{font:500 20px/1.25 var(--font-display);margin:0 0 8px}
+.caso p{margin:0;color:var(--muted);font-size:14.5px}
+.caso__pie{display:flex;justify-content:space-between;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);font:400 11px/1.4 var(--font-mono);color:var(--muted)}
+
+.cierre{display:grid;gap:18px;justify-items:center;text-align:center;padding:48px 0 0}
+.cierre p{margin:0;color:var(--muted);max-width:52ch}
+
+.js [data-reveal]{opacity:0}
+@media (prefers-reduced-motion:reduce){
+  .js .portada__titulo .linea-in{transform:none}
+  .js [data-hero-in],.js [data-reveal]{visibility:visible;opacity:1}
+}
+</style>
+</head>
+<body>
+
+<p class="aviso">Hoja de muestra · no se publica</p>
+
+<!-- ===== INICIO Portada ===== -->
+<header class="nav">
+  <div class="wrap nav__inner" data-hero-in>
+    <a class="nav__logo" href="#" aria-label="Ingeniak, inicio"><img src="img/marca/imagotipo.svg" alt="Ingeniak" width="161" height="22"></a>
+    <nav class="nav__links" aria-label="Principal">
+      <a href="#">Servicios</a><a href="#">Kain</a><a href="#">Metodología</a><a href="#">Casos</a><a href="#">Equipo</a>
+    </nav>
+    <a class="nav__cta" href="#">Agenda tu sesión</a>
+  </div>
+</header>
+
+<section class="portada" data-portada aria-labelledby="titulo-portada">
+  <div class="portada__fondo" aria-hidden="true">
+    <picture>
+      <source media="(min-width:700px)" srcset="img/marca/fondo-ondas-1600.webp">
+      <img src="img/marca/fondo-ondas-800.webp" alt="" width="1600" height="1067">
+    </picture>
+  </div>
+  <div class="portada__reticula" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="escena" data-escena>
+      <svg class="escena__lineas" data-lineas aria-hidden="true">
+        <defs>
+          <linearGradient id="gLinea" x1="0" x2="1">
+            <stop offset="0" stop-color="#00E5FF" stop-opacity=".1"/>
+            <stop offset=".5" stop-color="#00E5FF" stop-opacity=".55"/>
+            <stop offset="1" stop-color="#455DFF" stop-opacity=".25"/>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <div class="escena__iso" data-pieza data-iso>
+        <picture>
+          <source media="(min-width:700px)" srcset="img/marca/isotipo-cristal-1100.webp">
+          <img src="img/marca/isotipo-cristal-640.webp" alt="Isotipo de Ingeniak en cristal: un pilar central con ramas que se conectan" width="1024" height="1024" fetchpriority="high">
+        </picture>
+      </div>
+      <svg class="escena__trazo" data-trazo viewBox="-2 -2 192.5 99.45" aria-hidden="true">
+        <path d="M20.48,15.87c7.18,4.83,14.42,9.68,21.74,14.56,4.73,2.49,3.71,5.4-.07,6.98-11.86,6.86-24.66,15.930-40.09,26.32,31.19-.94,27.83,3.52,54.12-16.09,5.1-3.81,10.77-5.720,17.02-5.72,1.73.34,5.61-.63,6.180,1.65,0,12.29-.16,27.32-.23,39.8.45,2.7-1.27,12.18,1.22,12.07,0,0,27.770,0,27.77,0,2.51.15.75-9.46,1.21-12.07-.06-12.48-.23-27.5-.23-39.8.59-2.31,4.41-1.29,6.18-1.65,6.25,0,11.92,1.91,17.02,5.72,26.35,19.67,22.98,15.12,54.11,16.09-15.36-10.36-28.27-19.49-40.08-26.32-3.88-1.7-4.79-4.36-.07-6.98,7.31-4.88,14.56-9.73,21.74-14.56l19.93-13.44c1.01-.68.54-2.26-.68-2.28-2.41-.12-12.38.02-15.03-.03-5.29.46-11.56-1.35-15.92,2.39-8.63,6.25-16.86,12.42-25.19,19.08-2.92,2.21-5.86,3.78-9.37,4.52-14.74,1.55-13.830,2.19-13.63-12.1,0-2.87-.02-6.86.07-9.7,0-3.06-.93-4.15-3.99-4.15h-19.9c-2.97,0-3.99,1.15-3.99,4.15.18,6.08-.04,12.5.07,18.55.49,6.31-9.9,3.51-13.63,3.26-8.63-1.96-14.77-9.5-21.87-14.23-4.99-3.59-9.8-7.66-15.1-10.91C22.53-.88,12.72.56,5.19.12,3.41.16-1.66-.5.55,2.43c0,0,19.93,13.44,19.93,13.44Z"/>
+      </svg>
+
+      <div class="chip chip--a" data-chip data-ancla="0.10,0.29">
+        <span class="chip__ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg></span>
+        <span><b>Agente IA</b><small>WhatsApp · 24/7</small></span>
+      </div>
+      <div class="chip chip--b" data-chip data-ancla="0.10,0.58">
+        <span class="chip__ico"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h6"/></svg></span>
+        <span><b>CRM</b><small>Kommo · GoHighLevel</small></span>
+      </div>
+      <div class="chip chip--c" data-chip data-ancla="0.82,0.34">
+        <span class="chip__ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 12h3l4-5.5M11.5 12l4 5.5"/></svg></span>
+        <span><b>Automatización</b><small>n8n · Make</small></span>
+      </div>
+      <div class="chip chip--d" data-chip data-ancla="0.81,0.56">
+        <span class="chip__ico"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+        <span><b>Datos</b><small>Dashboard en vivo</small></span>
+      </div>
+    </div>
+
+    <div class="portada__texto">
+      <span class="eyebrow" data-hero-in><span class="nodo" aria-hidden="true"></span>Consultoría en <span class="solo-cel">IA</span><span class="solo-desk">inteligencia artificial</span> · México</span>
+      <h1 class="portada__titulo" id="titulo-portada">
+        <span class="linea"><span class="linea-in">Agentizamos</span></span>
+        <span class="linea"><span class="linea-in"><span class="acento">empresas.</span></span></span>
+      </h1>
+      <p class="portada__sub" data-hero-in>Diseñamos e implementamos agentes de IA, CRM y automatizaciones conectados en un solo sistema que atiende, califica y cierra por ti, 24/7.</p>
+      <div class="portada__acciones" data-hero-in>
+        <div>
+          <a class="btn" href="#" data-magnetic>
+            <span class="btn__trazo" aria-hidden="true"></span>
+            <span>Agenda tu Discovery Session</span>
+            <span class="btn__flecha" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </a>
+          <span class="btn__nota">Gratis · 30 minutos · sin compromiso</span>
+        </div>
+        <a class="link-sec" href="#">Escríbele a Kain por WhatsApp →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<p class="muestra__controles">
+  <button type="button" class="muestra__repetir" data-ver-de-nuevo>↻ Ver de nuevo</button>
+  <span class="muestra__aviso" data-aviso-rm hidden>Tienes activado "Reducir movimiento": aquí ves una versión sin desplazamientos. Apágalo para ver la animación completa.</span>
+</p>
+<!-- ===== FIN Portada ===== -->
+
+<main class="wrap">
+
+  <!-- Paleta -->
+  <section class="bloque">
+    <span class="eyebrow"><span class="nodo" aria-hidden="true"></span>Tus colores</span>
+    <h2 class="bloque__titulo" data-reveal>Oscuro profundo, azul que actúa, cian que piensa.</h2>
+    <p class="bloque__intro" data-reveal>Casi todo el sitio vive en el negro azulado. El azul Ingeniak solo aparece donde hay que hacer algo; el cian es el brillo de la inteligencia artificial.</p>
+    <div class="paleta">
+      <div class="color" data-reveal><div class="color__muestra" style="background:#03040B;border-bottom:1px solid var(--line)"></div><div class="color__info"><strong>Negro azulado</strong><code>#03040B</code><br>El fondo de todo el sitio.</div></div>
+      <div class="color" data-reveal><div class="color__muestra" style="background:#0055FF"></div><div class="color__info"><strong>Azul Ingeniak</strong><code>#0055FF</code><br>Botones y acciones, con letra blanca.</div></div>
+      <div class="color" data-reveal><div class="color__muestra" style="background:#00E5FF"></div><div class="color__info"><strong>Cian Kain</strong><code>#00E5FF</code><br>Brillos, líneas de conexión y datos vivos.</div></div>
+      <div class="color" data-reveal><div class="color__muestra" style="background:#455DFF"></div><div class="color__info"><strong>Índigo</strong><code>#455DFF</code><br>El paso entre azul y cian en luces y cristales.</div></div>
+      <div class="color" data-reveal><div class="color__muestra" style="background:#0A1F4C"></div><div class="color__info"><strong>Navy</strong><code>#0A1F4C</code><br>Profundidad en fondos y ondas.</div></div>
+      <div class="color" data-reveal><div class="color__muestra" style="background:#FFFFFF"></div><div class="color__info"><strong>Blanco</strong><code>#FFFFFF</code><br>Títulos y textos principales.</div></div>
+      <div class="color" data-reveal><div class="color__muestra" style="background:#9EB0C7"></div><div class="color__info"><strong>Gris azulado</strong><code>#9EB0C7</code><br>Párrafos de apoyo.</div></div>
+      <div class="color" data-reveal><div class="color__muestra" style="background:#FFB547"></div><div class="color__info"><strong>Ámbar</strong><code>#FFB547</code><br>Solo para hablar de problemas.</div></div>
+    </div>
+  </section>
+
+  <!-- Letras -->
+  <section class="bloque">
+    <span class="eyebrow"><span class="nodo" aria-hidden="true"></span>Tus letras</span>
+    <h2 class="bloque__titulo" data-reveal>Lexend de tu manual 2025, con Inter para leer.</h2>
+    <div class="letras">
+      <div class="letra letra--t" data-reveal><div class="letra__tag">Titular</div><p>Sistemas que venden 24/7.</p></div>
+      <div class="letra letra--h" data-reveal><div class="letra__tag">Título de sección</div><p>Tu crecimiento tiene un protocolo, nosotros lo activamos.</p></div>
+      <div class="letra letra--p" data-reveal><div class="letra__tag">Párrafo</div><p>No vendemos licencias sueltas. Entregamos sistemas funcionando, integrados con tus herramientas y con métricas claras de impacto en 60 a 90 días.</p></div>
+      <div class="letra letra--m" data-reveal><div class="letra__tag">Etiquetas y datos</div><p>VERIFY · KONCEPT · TRANSFORM · OPERATE · RISE</p></div>
+    </div>
+  </section>
+
+  <!-- Elementos -->
+  <section class="bloque">
+    <span class="eyebrow"><span class="nodo" aria-hidden="true"></span>Lo que solo tiene Ingeniak</span>
+    <h2 class="bloque__titulo" data-reveal>Cuatro piezas que salen de tu isotipo.</h2>
+    <div class="elementos">
+      <article class="elem" data-reveal>
+        <button class="elem__mover" type="button" data-mover="iso">Ver cómo se mueve</button>
+        <div class="elem__lienzo">
+          <svg class="e-iso" data-e-iso viewBox="-2 -2 192.5 99.45" aria-hidden="true"><path d="M20.48,15.87c7.18,4.83,14.42,9.68,21.74,14.56,4.73,2.49,3.71,5.4-.07,6.98-11.86,6.86-24.66,15.93-40.09,26.32,31.19-.94,27.830,3.52,54.12-16.09,5.1-3.81,10.77-5.72,17.02-5.72,1.73.34,5.61-.63,6.18,1.65,0,12.29-.16,27.32-.23,39.8.45,2.7-1.27,12.18,1.22,12.07,0,0,27.77,0,27.77,0,2.51.15.75-9.46,1.21-12.07-.06-12.48-.23-27.5-.23-39.8.59-2.31,4.41-1.29,6.18-1.65,6.25,0,11.92,1.91,17.02,5.72,26.35,19.67,22.98,15.12,54.11,16.09-15.36-10.36-28.27-19.49-40.08-26.32-3.88-1.7-4.79-4.36-.07-6.98,7.31-4.88,14.56-9.73,21.74-14.56l19.93-13.44c1.01-.68.54-2.26-.68-2.28-2.41-.12-12.38.02-15.03-.03-5.29.46-11.56-1.35-15.92,2.39-8.63,6.25-16.86,12.42-25.19,19.08-2.92,2.21-5.86,3.78-9.37,4.52-14.74,1.55-13.83,2.19-13.63-12.1,0-2.87-.02-6.86.07-9.7,0-3.06-.93-4.15-3.99-4.15h-19.9c-2.97,0-3.99,1.15-3.99,4.15.18,6.08-.04,12.5.07,18.55.49,6.31-9.9,3.51-13.63,3.26-8.63-1.96-14.77-9.5-21.87-14.23-4.99-3.59-9.8-7.66-15.1-10.91C22.53-.88,12.72.56,5.19.12,3.41.16-1.66-.5.55,2.43c0,0,19.93,13.44,19.93,13.44Z"/></svg>
+        </div>
+        <h3>1. Tu isotipo como firma</h3>
+        <p>Se dibuja con un trazo de luz y se vuelve cristal. Abre la página, cierra el pie y aparece en el ícono de la pestaña.</p>
+      </article>
+      <article class="elem" data-reveal>
+        <button class="elem__mover" type="button" data-mover="ramas">Ver cómo se mueve</button>
+        <div class="elem__lienzo">
+          <svg class="e-ramas" data-e-ramas viewBox="0 0 340 120" aria-hidden="true">
+            <path class="base" d="M20 60 H110 L150 22 H320"/><path class="base" d="M20 60 H110 L150 98 H320"/>
+            <path class="pulso" d="M20 60 H110 L150 22 H320"/><path class="pulso" d="M20 60 H110 L150 98 H320"/>
+            <rect x="14" y="54" width="12" height="12" rx="2"/><rect x="316" y="18" width="8" height="8" rx="1.5"/><rect x="316" y="94" width="8" height="8" rx="1.5"/>
+          </svg>
+        </div>
+        <h3>2. Las ramas: líneas de conexión</h3>
+        <p>Las ramas de tu símbolo se vuelven líneas con el mismo ángulo, por donde viaja un pulso de luz. Conectan servicios, pasos de VKTOR™ y herramientas.</p>
+      </article>
+      <article class="elem" data-reveal>
+        <div class="elem__lienzo"><div class="e-nodos" aria-hidden="true"><span class="nodo"></span><span class="nodo"></span><span class="nodo"></span></div></div>
+        <h3>3. El nodo: punto de inteligencia</h3>
+        <p>El cuadrado de tu isotipo es la viñeta de las etiquetas, el remate de cada línea y el indicador de "en vivo".</p>
+      </article>
+      <article class="elem" data-reveal>
+        <picture><source media="(min-width:700px)" srcset="img/marca/fondo-ondas-1600.webp"><img class="e-ondas" src="img/marca/fondo-ondas-800.webp" alt="" width="1600" height="1067" loading="lazy"></picture>
+        <div class="elem__lienzo"></div>
+        <h3 style="position:relative">4. Ondas de tu identidad + cristal</h3>
+        <p style="position:relative">Los fondos de ondas de tu manual dan profundidad; encima, tarjetas de cristal con una fuga de luz azul y cian.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Botón y tarjeta -->
+  <section class="bloque">
+    <span class="eyebrow"><span class="nodo" aria-hidden="true"></span>Botón y tarjeta</span>
+    <h2 class="bloque__titulo" data-reveal>Cristal que responde a tu mano.</h2>
+    <div class="demo">
+      <div class="demo__boton" data-reveal>
+        <a class="btn" href="#" data-magnetic><span class="btn__trazo" aria-hidden="true"></span><span>Agenda tu Discovery Session</span><span class="btn__flecha" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a>
+        <p>Al pasar el mouse se aclara, brilla y la flecha apunta hacia arriba. Al tocarlo se hunde un poco. Es el único botón azul del sitio: siempre lleva a agendar.</p>
+      </div>
+      <article class="cristal caso" data-cristal data-reveal>
+        <span class="caso__tag"><span class="nodo" aria-hidden="true"></span>Agente IA · WhatsApp</span>
+        <div class="caso__cifra">8 min <span>→</span> 12 s</div>
+        <h3>Atención 24/7 para clínica dental</h3>
+        <p>Un agente conversacional que califica, agenda citas y da seguimiento sin intervención humana.</p>
+        <div class="caso__pie"><span>Tiempo de respuesta</span><span>Caso real · Monterrey</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <div class="cierre">
+      <span class="eyebrow"><span class="nodo" aria-hidden="true"></span>Siguiente paso</span>
+      <h2 class="bloque__titulo" style="margin-inline:auto">¿Así se siente Ingeniak?</h2>
+      <p>Si apruebas esta dirección, armo la estructura completa de secciones y los textos clave antes de construir.</p>
+    </div>
+  </section>
+</main>
+
+<script src="vendor/gsap.min.js" defer></script>
+<script src="vendor/ScrollTrigger.min.js" defer></script>
+<script src="vendor/SplitText.min.js" defer></script>
+<script src="vendor/lenis.min.js" defer></script>
+<script defer>
+document.addEventListener('DOMContentLoaded', () => {
+  'use strict';
+  const d = document, html = d.documentElement;
+  const $ = (s, c = d) => c.querySelector(s);
+  const $$ = (s, c = d) => [...c.querySelectorAll(s)];
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const hasGSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+  const safe = (fn) => { try { fn(); } catch (e) { console.warn('[ingeniak]', e); } };
+  const NS = 'http://www.w3.org/2000/svg';
+
+  // Movimiento de la marca: técnico y preciso, sin rebotes
+  const M = { ease: 'power3.out', easeIO: 'power3.inOut', pop: 'power3.out', dur: 0.95, stagger: 0.06, dist: 22, lerp: 0.085 };
+
+  if (!hasGSAP) { html.classList.remove('js'); const r = $('[data-ver-de-nuevo]'); if (r) r.hidden = true; }
+  else { gsap.registerPlugin(ScrollTrigger); if (window.SplitText) gsap.registerPlugin(SplitText); ScrollTrigger.config({ ignoreMobileResize: true }); }
+
+  // ---- Líneas de conexión: del isotipo a cada chip (se recalculan con el ancho) ----
+  const escena = $('[data-escena]');
+  const svgL = $('[data-lineas]');
+  const lineas = [];
+  const trazarLineas = () => safe(() => {
+    $$('g[data-l]', svgL).forEach((g) => g.remove());
+    lineas.length = 0;
+    const E = escena.getBoundingClientRect();
+    const iso = $('[data-iso]').getBoundingClientRect();
+    svgL.setAttribute('viewBox', `0 0 ${E.width} ${E.height}`);
+    $$('[data-chip]', escena).forEach((chip) => {
+      const [ax, ay] = chip.dataset.ancla.split(',').map(Number);
+      const sx = iso.left - E.left + iso.width * ax;
+      const sy = iso.top - E.top + iso.height * ay;
+      const C = chip.getBoundingClientRect();
+      const izq = ax < 0.5;
+      const ex = izq ? C.right - E.left : C.left - E.left;
+      const ey = C.top - E.top + C.height / 2;
+      const mx = sx + (ex - sx) * 0.45;
+      // ángulo de las ramas: tramo recto, quiebre diagonal, tramo recto
+      const dpath = `M${sx.toFixed(1)} ${sy.toFixed(1)} L${mx.toFixed(1)} ${sy.toFixed(1)} L${(mx + (ex - mx) * 0.35).toFixed(1)} ${ey.toFixed(1)} L${ex.toFixed(1)} ${ey.toFixed(1)}`;
+      const g = d.createElementNS(NS, 'g'); g.setAttribute('data-l', '');
+      const base = d.createElementNS(NS, 'path'); base.setAttribute('class', 'base'); base.setAttribute('d', dpath);
+      const pulso = d.createElementNS(NS, 'path'); pulso.setAttribute('class', 'pulso'); pulso.setAttribute('d', dpath);
+      const nodo = d.createElementNS(NS, 'rect');
+      Object.entries({ x: ex - 3, y: ey - 3, width: 6, height: 6, rx: 1.2, fill: '#00E5FF' }).forEach(([k, v]) => nodo.setAttribute(k, v));
+      g.append(base, pulso, nodo); svgL.append(g);
+      lineas.push({ base, pulso, nodo, L: base.getTotalLength() });
+    });
+  });
+  trazarLineas();
+
+  // Pulsos de luz que viajan por las líneas (bucle lento)
+  let pulsosTL = null;
+  const arrancarPulsos = () => {
+    if (!hasGSAP || RM) return;
+    if (pulsosTL) pulsosTL.kill();
+    pulsosTL = gsap.timeline({ repeat: -1 });
+    lineas.forEach((l, i) => {
+      gsap.set(l.pulso, { strokeDasharray: `18 ${l.L}`, strokeDashoffset: 18, opacity: 1 });
+      pulsosTL.to(l.pulso, { strokeDashoffset: -l.L, duration: 1.8, ease: 'power1.inOut' }, i * 0.9);
+    });
+    pulsosTL.to({}, { duration: 1.2 });
+  };
+
+  let rT;
+  addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { trazarLineas(); if (lineas.length && hasGSAP) { lineas.forEach((l) => gsap.set(l.base, { strokeDasharray: 'none', strokeDashoffset: 0 })); arrancarPulsos(); } }, 180); });
+
+  // ---- La firma: el isotipo se dibuja, se vuelve cristal y se conecta ----
+  function firmaPortada() {
+    const trazo = $('[data-trazo] path');
+    const L = trazo.getTotalLength();
+    const tl = gsap.timeline({ defaults: { ease: M.ease } });
+    tl.set('[data-hero-in]', { autoAlpha: 0, y: M.dist })
+      .set('.portada__titulo .linea-in', { yPercent: 118, y: 0 })
+      .set(trazo, { strokeDasharray: L, strokeDashoffset: L, opacity: 1 })
+      .set('[data-iso]', { autoAlpha: 0, scale: 0.9, filter: 'brightness(2.2) blur(8px)' })
+      .set('[data-chip]', { autoAlpha: 0, y: 10, scale: 0.96 });
+    lineas.forEach((l) => tl.set([l.base], { strokeDasharray: l.L, strokeDashoffset: l.L }, 0).set(l.nodo, { opacity: 0 }, 0).set(l.pulso, { opacity: 0 }, 0));
+
+    tl.to(trazo, { strokeDashoffset: 0, duration: 1.15, ease: M.easeIO }, 0.1)                                  // 1. se dibuja
+      .to('[data-iso]', { autoAlpha: 1, scale: 1, filter: 'brightness(1) blur(0px)', duration: 1.1 }, 0.95)      // 2. se vuelve cristal
+      .to(trazo, { opacity: 0, duration: 0.6, ease: 'none' }, 1.25)
+      .to('.portada__titulo .linea-in', { yPercent: 0, duration: M.dur * 1.25, stagger: M.stagger * 2 }, 1.05)   // 3. titular
+      .to('[data-hero-in]', { autoAlpha: 1, y: 0, duration: M.dur, stagger: M.stagger * 1.5 }, 1.25);
+    lineas.forEach((l, i) => {                                                                                    // 4. ramas que conectan
+      tl.to(l.base, { strokeDashoffset: 0, duration: 0.8, ease: M.easeIO }, 1.45 + i * 0.12)
+        .to(l.nodo, { opacity: 1, duration: 0.2, ease: 'none' }, 2.1 + i * 0.12);
+    });
+    tl.to('[data-chip]', { autoAlpha: 1, y: 0, scale: 1, duration: M.dur, stagger: M.stagger * 2 }, 1.95)
+      .fromTo('.portada .btn__trazo', { opacity: 1, '--ang': '0deg' }, { '--ang': '360deg', duration: 1.3, ease: M.easeIO }, 2.45) // 5. la luz llega al botón
+      .to('.portada .btn__trazo', { opacity: 0, duration: 0.5 }, 3.5)
+      .add(arrancarPulsos, 3.1);
+    return tl;
+  }
+
+  // ---- Arranque de la muestra ----
+  safe(() => {
+    const repetir = $('[data-ver-de-nuevo]');
+    const aviso = $('[data-aviso-rm]');
+    if (!hasGSAP) return;
+    if (RM) {
+      if (aviso) aviso.hidden = false;
+      $$('[data-trazo] path').forEach((p) => (p.style.opacity = 0));
+      if (repetir) repetir.addEventListener('click', () => {
+        gsap.fromTo('[data-portada] [data-pieza], [data-portada] [data-chip], [data-portada] [data-hero-in], .portada__titulo', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, stagger: 0.12, ease: 'none' });
+      });
+      return;
+    }
+    let tl = null;
+    Promise.race([d.fonts ? d.fonts.ready : Promise.resolve(), new Promise((r) => setTimeout(r, 1200))])
+      .then(() => { trazarLineas(); tl = firmaPortada(); });
+    if (repetir) repetir.addEventListener('click', () => { if (pulsosTL) pulsosTL.kill(); if (tl) { tl.kill(); trazarLineas(); tl = firmaPortada(); } });
+  });
+
+  if (!hasGSAP || RM) { $$('.e-ramas .pulso').forEach((p) => (p.style.opacity = 0)); return; }
+
+  // ---- Lenis ----
+  safe(() => {
+    if (!window.Lenis || !M.lerp) return;
+    const lenis = new Lenis({ lerp: M.lerp, smoothWheel: true });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  });
+
+  // ---- Revelados ----
+  safe(() => {
+    gsap.set('[data-reveal]', { y: M.dist, opacity: 0 });
+    ScrollTrigger.batch('[data-reveal]', { start: 'top 90%', once: true,
+      onEnter: (b) => gsap.to(b, { y: 0, opacity: 1, duration: M.dur, ease: M.ease, stagger: M.stagger, overwrite: true }) });
+  });
+
+  // ---- Elementos que se mueven ----
+  const animIso = () => {
+    const p = $('[data-e-iso] path'); const L = p.getTotalLength();
+    return gsap.timeline().set(p, { strokeDasharray: L, strokeDashoffset: L, fillOpacity: 0 })
+      .to(p, { strokeDashoffset: 0, duration: 1.3, ease: M.easeIO })
+      .to(p, { fillOpacity: 1, duration: 0.6, ease: 'none' }, '-=0.3');
+  };
+  const animRamas = () => {
+    const tl = gsap.timeline();
+    $$('[data-e-ramas] .base').forEach((p, i) => { const L = p.getTotalLength(); tl.fromTo(p, { strokeDasharray: L, strokeDashoffset: L }, { strokeDashoffset: 0, duration: 0.9, ease: M.easeIO }, i * 0.15); });
+    $$('[data-e-ramas] .pulso').forEach((p, i) => { const L = p.getTotalLength(); tl.fromTo(p, { strokeDasharray: `16 ${L}`, strokeDashoffset: 16 }, { strokeDashoffset: -L, duration: 1.4, ease: 'power1.inOut', repeat: 2, repeatDelay: 0.6 }, 0.9 + i * 0.3); });
+    return tl;
+  };
+  safe(() => {
+    ScrollTrigger.create({ trigger: '[data-e-iso]', start: 'top 85%', once: true, onEnter: animIso });
+    ScrollTrigger.create({ trigger: '[data-e-ramas]', start: 'top 85%', once: true, onEnter: animRamas });
+    $$('[data-mover]').forEach((b) => b.addEventListener('click', () => (b.dataset.mover === 'iso' ? animIso() : animRamas())));
+    gsap.to('.e-nodos .nodo', { opacity: 1, scale: 1.25, duration: 0.9, ease: 'sine.inOut', stagger: { each: 0.3, repeat: -1, yoyo: true } });
+  });
+
+  // ---- Solo con mouse: brillo del botón y luz del cristal ----
+  if (FINE) safe(() => {
+    $$('.btn').forEach((b) => b.addEventListener('pointermove', (e) => { const r = b.getBoundingClientRect(); b.style.setProperty('--x', `${e.clientX - r.left}px`); }));
+    $$('[data-cristal]').forEach((c) => {
+      c.addEventListener('pointermove', (e) => { const r = c.getBoundingClientRect(); c.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`); c.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`); });
+      c.addEventListener('pointerleave', () => { c.style.setProperty('--mx', '30%'); c.style.setProperty('--my', '0%'); });
+    });
+  });
+});
+</script>
+</body>
+</html>

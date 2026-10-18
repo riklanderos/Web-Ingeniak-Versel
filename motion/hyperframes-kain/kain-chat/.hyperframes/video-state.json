@@ -1,0 +1,384 @@
+{
+  "version": 1,
+  "historyId": "bc707eb6-3cc9-44ce-8d72-e986385743ef",
+  "currentRevision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+  "pendingChanges": false,
+  "files": {
+    "AGENTS.md": {
+      "hash": "1d4f0c8ca2507b94fd7c9df709fff01416adbd51a0f922b9d6ed2f40129147d5",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/1d/1d4f0c8ca2507b94fd7c9df709fff01416adbd51a0f922b9d6ed2f40129147d5"
+    },
+    "CLAUDE.md": {
+      "hash": "1d4f0c8ca2507b94fd7c9df709fff01416adbd51a0f922b9d6ed2f40129147d5",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/1d/1d4f0c8ca2507b94fd7c9df709fff01416adbd51a0f922b9d6ed2f40129147d5"
+    },
+    "assets/gsap.min.js": {
+      "hash": "c174bfce53a729418d57a8ad8625e7247c793a22fef8e2851e3cfa3de9cd8280",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/c1/c174bfce53a729418d57a8ad8625e7247c793a22fef8e2851e3cfa3de9cd8280"
+    },
+    "assets/inter-var.woff2": {
+      "hash": "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/c9/c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4"
+    },
+    "assets/jetbrains-mono-var.woff2": {
+      "hash": "2c32b9b3ee358c119e210f6f5195f9bd34894d78a785ff2e95d60e718e400af4",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/2c/2c32b9b3ee358c119e210f6f5195f9bd34894d78a785ff2e95d60e718e400af4"
+    },
+    "assets/kain-avatar.png": {
+      "hash": "614a88025de07a57f1f97a22781d0b6742c3fc7478991c78cf390e3e99fefa44",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/61/614a88025de07a57f1f97a22781d0b6742c3fc7478991c78cf390e3e99fefa44"
+    },
+    "assets/lexend-var.woff2": {
+      "hash": "1ec8f6ee2750554b4bc59ff0b507d316a82a7ba37e0e5bebc41d3bd9b9faad46",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/1e/1ec8f6ee2750554b4bc59ff0b507d316a82a7ba37e0e5bebc41d3bd9b9faad46"
+    },
+    "hyperframes.json": {
+      "hash": "53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
+    },
+    "index.html": {
+      "hash": "f80f20b0d757b0d321a4dcad27032e289327824fef981bde652c638e97317c56",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/f8/f80f20b0d757b0d321a4dcad27032e289327824fef981bde652c638e97317c56"
+    },
+    "meta.json": {
+      "hash": "ee0d51f35fefcaa018e1ce221b837e6785265360003af0b5f32de725268917b4",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/ee/ee0d51f35fefcaa018e1ce221b837e6785265360003af0b5f32de725268917b4"
+    },
+    "package.json": {
+      "hash": "fbf7ddcb535fda114ad37beec0cf896adeabb07ba29b6b89b563b326dced7659",
+      "content": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/fb/fbf7ddcb535fda114ad37beec0cf896adeabb07ba29b6b89b563b326dced7659"
+    }
+  },
+  "revisions": {
+    "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792308431589,
+      "endedAt": 1792308431589,
+      "files": {
+        "index.html": {
+          "before": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/76/76d791f59ff8824759172a9f9236d40210e6163ea518b35f5c714553e7d641de",
+          "after": "/Users/riklanderos/.cache/hyperframes/history/bc707eb6-3cc9-44ce-8d72-e986385743ef/blobs/f8/f80f20b0d757b0d321a4dcad27032e289327824fef981bde652c638e97317c56"
+        }
+      }
+    }
+  },
+  "checks": {
+    "latest": {
+      "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+      "id": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5"
+    },
+    "revisions": {
+      "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1": [
+        {
+          "id": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5",
+          "scope": "project",
+          "report": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/checks/4182d9e7-b537-4594-83dd-b0b1e0d8eba5.json",
+          "metadata": {
+            "ok": true,
+            "browserSkipped": false,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 3000,
+              "contrast": true,
+              "strict": false,
+              "snapshots": true,
+              "browserGpuMode": "auto"
+            }
+          },
+          "createdAt": 1792308440258,
+          "contentHash": "652910c4df86af347b9cd4843745129fc0f8a06ee5adca66c61ccc3334a3955f",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        }
+      ]
+    },
+    "unversioned": [
+      {
+        "id": "40453e46-02ca-4bf9-a9e1-82ba6525ff34",
+        "scope": "project",
+        "report": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/checks/40453e46-02ca-4bf9-a9e1-82ba6525ff34.json",
+        "metadata": {
+          "ok": false,
+          "browserSkipped": false,
+          "options": {
+            "samples": 9,
+            "atTransitions": false,
+            "maxIssues": 80,
+            "collapseStatic": true,
+            "tolerance": 2,
+            "timeout": 3000,
+            "contrast": true,
+            "strict": false,
+            "snapshots": false,
+            "browserGpuMode": "auto"
+          }
+        },
+        "createdAt": 1792308424775,
+        "contentHash": "b9042e3b7ccfa5765aca590d081836f5de11816ba4bee3132781a4534cb083c3",
+        "revision": null,
+        "inputFingerprint": "16dcaf6480836c14f25f3650a39415a5d4d0a14f61ba017de8d3930b7626fe03",
+        "inputScope": "local-project-files",
+        "attribution": "unversioned"
+      }
+    ]
+  },
+  "snapshots": {
+    "latest": {
+      "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+      "id": "266de998-2ed2-40f4-adef-e284bc18bc2a-1"
+    },
+    "revisions": {
+      "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1": [
+        {
+          "id": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5-0",
+          "scope": "full",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/f4ffd494-b40c-4aeb-af25-52df031ca21f/frame-00-at-0.8s.png",
+          "time": 0.778,
+          "metadata": {
+            "checkId": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5",
+            "width": 720,
+            "height": 1280
+          },
+          "createdAt": 1792308440258,
+          "contentHash": "e3f77c8e3427de80cd54dfcab0e983c640aed04dbee308f28a5c1e3e43df8178",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "id": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5-1",
+          "scope": "full",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/f4ffd494-b40c-4aeb-af25-52df031ca21f/frame-01-at-3.9s.png",
+          "time": 3.889,
+          "metadata": {
+            "checkId": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5",
+            "width": 720,
+            "height": 1280
+          },
+          "createdAt": 1792308440258,
+          "contentHash": "912784d52cd7caca1fd14769320bbbeef3fc7ce9c9cd6ab91b40a153c73d4d55",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "id": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5-2",
+          "scope": "full",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/f4ffd494-b40c-4aeb-af25-52df031ca21f/frame-02-at-7.0s.png",
+          "time": 7,
+          "metadata": {
+            "checkId": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5",
+            "width": 720,
+            "height": 1280
+          },
+          "createdAt": 1792308440258,
+          "contentHash": "8e5ddaea709208b3c9a2fc6f3909e39bbcd6f9a2bfb81f906fa9a6caaa364d7f",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "id": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5-3",
+          "scope": "full",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/f4ffd494-b40c-4aeb-af25-52df031ca21f/frame-03-at-10.1s.png",
+          "time": 10.111,
+          "metadata": {
+            "checkId": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5",
+            "width": 720,
+            "height": 1280
+          },
+          "createdAt": 1792308440258,
+          "contentHash": "c5d89b3ce948c4b1fef2b6d7bb8b2b8cda0fddfc2f68c1d72d7564f5f1743fea",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "id": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5-4",
+          "scope": "full",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/f4ffd494-b40c-4aeb-af25-52df031ca21f/frame-04-at-13.2s.png",
+          "time": 13.222,
+          "metadata": {
+            "checkId": "4182d9e7-b537-4594-83dd-b0b1e0d8eba5",
+            "width": 720,
+            "height": 1280
+          },
+          "createdAt": 1792308440258,
+          "contentHash": "5809568daee89b9a28d6467160fb36ad59049a581e5e81404c7981bc222c4900",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "7ebece89-25c0-49ee-868d-7444530996d7-0",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/1409adea-be2b-443b-91be-ab37dfdef5cc/frame-00-at-2s.png",
+          "time": 2,
+          "metadata": {
+            "width": 720,
+            "height": 1280,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1792308454617,
+          "contentHash": "ecaa30f8edb750d093ff80b74a35b718bcef3761a4ee726ceebb820ef661375e",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "7ebece89-25c0-49ee-868d-7444530996d7-1",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/1409adea-be2b-443b-91be-ab37dfdef5cc/frame-01-at-5.15s.png",
+          "time": 5.15,
+          "metadata": {
+            "width": 720,
+            "height": 1280,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1792308454617,
+          "contentHash": "5b83feb7126e54746ba934da836cb4fc82889cea81d17ee7b62495de443f9bd6",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "7ebece89-25c0-49ee-868d-7444530996d7-2",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/1409adea-be2b-443b-91be-ab37dfdef5cc/frame-02-at-6.9s.png",
+          "time": 6.9,
+          "metadata": {
+            "width": 720,
+            "height": 1280,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1792308454617,
+          "contentHash": "499d179252a6886182c82f3de3fbcddf94b2d333df38d1a84977baeb591860f2",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "7ebece89-25c0-49ee-868d-7444530996d7-3",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/1409adea-be2b-443b-91be-ab37dfdef5cc/frame-03-at-13s.png",
+          "time": 13,
+          "metadata": {
+            "width": 720,
+            "height": 1280,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1792308454617,
+          "contentHash": "6bbb5108b4e1826ed8c62d8bfb6bff7c806594a084add4478e8c6b54f0a48dc9",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "7ebece89-25c0-49ee-868d-7444530996d7-4",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/1409adea-be2b-443b-91be-ab37dfdef5cc/frame-04-at-13.58s.png",
+          "time": 13.58,
+          "metadata": {
+            "width": 720,
+            "height": 1280,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1792308454617,
+          "contentHash": "6f0369bd22158bb509aaae24614db8b67a760703722890d87e3094ca001719fa",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "266de998-2ed2-40f4-adef-e284bc18bc2a-0",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/fb7c8f5a-ee0b-4d56-b954-e89309cb0a96/frame-00-at-10.5s.png",
+          "time": 10.5,
+          "metadata": {
+            "width": 720,
+            "height": 1280,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1792308547622,
+          "contentHash": "7cc0a70fd48a5fa021debf1a9fa4d2634bd3ca4ddb537e8c07df544bfa3c277f",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        },
+        {
+          "scope": "full",
+          "id": "266de998-2ed2-40f4-adef-e284bc18bc2a-1",
+          "image": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/.hyperframes/artifacts/snapshots/fb7c8f5a-ee0b-4d56-b954-e89309cb0a96/frame-01-at-13.58s.png",
+          "time": 13.58,
+          "metadata": {
+            "width": 720,
+            "height": 1280,
+            "zoomScale": 1,
+            "browserGpuMode": "auto",
+            "warnings": [],
+            "partial": false
+          },
+          "createdAt": 1792308547622,
+          "contentHash": "6f0369bd22158bb509aaae24614db8b67a760703722890d87e3094ca001719fa",
+          "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1",
+          "inputFingerprint": "e8768ab0680f43e74182051bb75121c7ede5545f05365d252abfcd06dc110f8a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        }
+      ]
+    },
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "3294e7e5-6e21-4cc2-877a-21ae0cacf586",
+      "completedAt": 1792308512586,
+      "output": "/Users/riklanderos/Web Ingeniak Versel/motion/hyperframes-kain/kain-chat/renders/kain-chat-master.mp4",
+      "status": "completed",
+      "revision": "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1"
+    },
+    "retainedRevisions": [
+      "1f32f370-98c8-448d-ba0b-2e0b7a9ec1b1"
+    ]
+  },
+  "pendingArtifactCleanup": []
+}
