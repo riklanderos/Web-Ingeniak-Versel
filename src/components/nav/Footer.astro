@@ -1,0 +1,102 @@
+---
+// Footer "Créditos finales" (ESPEC §4.8). Encima siempre va el cierre Dawn (área cine).
+// 1) Mapa del sitio en 5 columnas (todas las páginas indexables de navegacion.json → footer.columns)
+// 2) Ficha de la entidad (mismos datos que el JSON-LD; sin razón social hasta confirmarla, §12.1-14)
+// 3) Redes reales (SITE.social) · 4) Reprise de la firma: el isotipo se dibuja una vez en cian · legal ·
+//    interruptor "Reducir movimiento" (localStorage 'ingeniak-motion' → html[data-motion="reduced"]).
+// Props: ninguna obligatoria. compact?: true omite el mapa (no se usa por defecto).
+import { SITE, pages } from '../../lib/site';
+import { METRICS } from '../../lib/metrics';
+import { FOOTER, shortName } from '../layout/navData';
+import { ISOTIPO_PATH, ISOTIPO_VIEWBOX } from './brand';
+import { ICONS } from './icons';
+
+// Sello de Kommo: si el área ui ya publicó KommoBadge, se usa; si no, el sello oficial en imagen.
+const badgeMods = import.meta.glob('../ui/KommoBadge.astro', { eager: true }) as Record<string, any>;
+const KommoBadge = Object.values(badgeMods)[0]?.default;
+
+const indexable = new Set(pages.filter((p) => p.indexable).map((p) => p.url));
+const cols = FOOTER.columns.map((c) => ({
+  title: c.title,
+  links: c.links
+    .filter((u) => /^https?:/.test(u) || indexable.has(u))
+    .map((u) => ({ href: u, label: shortName(u), ext: /^https?:/.test(u) })),
+}));
+const social = [
+  { href: SITE.social.instagram, label: 'Instagram', logo: '/img/logos/instagram.svg' },
+  { href: SITE.social.facebook, label: 'Facebook', logo: '/img/logos/facebook.svg' },
+  { href: SITE.social.linkedin, label: 'LinkedIn', logo: '/img/logos/linkedin.svg' },
+];
+const year = 2026;
+const { compact = false } = Astro.props as { compact?: boolean };
+---
+<footer class="ftr" data-ftr>
+  <span class="ftr__horizon" aria-hidden="true"></span>
+
+  {!compact && (
+    <div class="ftr__frame ftr__credits">
+      <p class="ftr__eyebrow"><span class="node" aria-hidden="true"></span>Créditos finales</p>
+      <nav class="ftr__map" aria-label="Mapa del sitio">
+        {cols.map((c, ci) => (
+          <div class="ftr__col" style={`--i:${ci}`}>
+            <h2 class="ftr__h">{c.title}</h2>
+            <ul class="ftr__ul" role="list">
+              {c.links.map((l) => (
+                <li>
+                  <a class="ftr__a" href={l.href} {...(l.ext ? { target: '_blank', rel: 'noopener' } : {})}>
+                    {l.label}{l.ext && <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.external} />}{l.ext && <span class="sr-only"> (se abre en otra pestaña)</span>}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+  )}
+
+  <div class="ftr__frame ftr__entity">
+    <dl class="ftr__sheet">
+      <div class="ftr__row"><dt>Entidad</dt><dd>Ingeniak · consultoría de IA</dd></div>
+      <div class="ftr__row"><dt>Sede</dt><dd>{SITE.city}</dd></div>
+      <div class="ftr__row"><dt>Oficina</dt><dd data-allow-number>{SITE.address.street}, {SITE.address.locality}, {SITE.address.region} {SITE.address.postal}</dd></div>
+      <div class="ftr__row"><dt>Correo</dt><dd><a class="ftr__a ftr__a--inline" href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
+      <div class="ftr__row"><dt>WhatsApp</dt><dd><a class="ftr__a ftr__a--inline" href={`${SITE.waBase}?text=${encodeURIComponent('Hola Kain, vengo del pie de página de ingeniak.mx y quiero información.')}`} target="_blank" rel="noopener" data-allow-number>{SITE.phone}</a></dd></div>
+      <div class="ftr__row"><dt>En producción</dt><dd><b data-metric="sistemas">{METRICS.sistemas.value}</b> {METRICS.sistemas.label} · <b data-metric="paises">{METRICS.paises.value}</b> {METRICS.paises.label}</dd></div>
+    </dl>
+    <div class="ftr__seals">
+      {KommoBadge ? (
+        <KommoBadge size="sm" />
+      ) : (
+        <a class="ftr__kommo" href={SITE.kommo} target="_blank" rel="noopener" aria-label="Partner oficial de Kommo en LATAM (kommo.com)">
+          <img src="/img/logos/kommo-partner.webp" alt="Kommo partner" width="400" height="178" loading="lazy" decoding="async" />
+          <span class="ftr__kommo-t">Partner oficial de Kommo en LATAM</span>
+        </a>
+      )}
+      <ul class="ftr__social" role="list">
+        {social.map((s) => (
+          <li><a class="ftr__soc" href={s.href} target="_blank" rel="noopener me" aria-label={`${s.label} de Ingeniak`} style={`--logo:url(${s.logo})`}><span aria-hidden="true"></span></a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="ftr__finale" data-reprise data-ftr-end>
+    <div class="ftr__mark" aria-hidden="true">
+      <span class="ftr__node"></span>
+      <svg class="ftr__iso" viewBox={ISOTIPO_VIEWBOX} focusable="false">
+        <path class="ftr__iso-fill" d={ISOTIPO_PATH} />
+        <path class="ftr__iso-line" d={ISOTIPO_PATH} />
+      </svg>
+    </div>
+    <p class="ftr__firma">{FOOTER.firma}</p>
+  </div>
+
+  <div class="ftr__frame ftr__legal">
+    <p class="ftr__copy">© {year} Ingeniak</p>
+    <a class="ftr__a ftr__a--legal" href="/aviso-privacidad/">Aviso de privacidad</a>
+    <button class="ftr__motion" type="button" role="switch" aria-checked="false" data-motion-toggle>
+      <span class="ftr__switch" aria-hidden="true"><span></span></span>Reducir movimiento
+    </button>
+  </div>
+</footer>

@@ -1,0 +1,50 @@
+---
+// PlatePicture (interno del área cine): <picture> de una placa resuelta (arte dirigido por proporción, §3.6/§8.2)
+// o el aura del isotipo cuando la placa no existe. Se usa dentro de un .stage.
+import { AURA_ISOTIPO, type Resolved } from './plate';
+
+interface Props {
+  r: Resolved;
+  priority?: boolean;
+  only?: 'd' | 'm';     // solo escritorio o solo vertical (escenas que separan las placas por formato)
+  alt?: string;
+  class?: string;
+}
+const { r, priority = false, only, alt, class: cls } = Astro.props;
+const MQ = '(max-width: 767px), (max-aspect-ratio: 5/6)';
+const a = alt ?? r.alt;
+const loading = priority ? 'eager' : 'lazy';
+---
+{r.aura ? (
+  <>
+    <span class="is__aura-glow" aria-hidden="true"></span>
+    <img class:list={['is__aura', cls]} src={AURA_ISOTIPO} alt="" width="640" height="640" decoding="async" loading={loading} />
+  </>
+) : only === 'm' ? (
+  <picture>
+    <source type="image/avif" srcset={r.srcset.avifM} sizes="100vw" />
+    <img class:list={['is__img', cls]} src={`${r.m.src}-640.webp`} srcset={r.srcset.webpM} sizes="100vw" width={r.m.w} height={r.m.h} alt={a} decoding="async" loading={loading} />
+  </picture>
+) : only === 'd' ? (
+  <picture>
+    <source type="image/avif" srcset={r.srcset.avifD} sizes={r.srcset.sizesD} />
+    <img class:list={['is__img', cls]} src={r.srcset.imgSrc} srcset={r.srcset.webpD} sizes={r.srcset.sizesD} width={r.d.w} height={r.d.h} alt={a} decoding="async" loading={loading} />
+  </picture>
+) : (
+  <picture>
+    <source media={MQ} type="image/avif" srcset={r.srcset.avifM} sizes="100vw" />
+    <source media={MQ} type="image/webp" srcset={r.srcset.webpM} sizes="100vw" />
+    <source type="image/avif" srcset={r.srcset.avifD} sizes={r.srcset.sizesD} />
+    <source type="image/webp" srcset={r.srcset.webpD} sizes={r.srcset.sizesD} />
+    <img
+      class:list={['is__img', cls]}
+      src={r.srcset.imgSrc}
+      width={r.d.w}
+      height={r.d.h}
+      alt={a}
+      decoding="async"
+      fetchpriority={priority ? 'high' : 'auto'}
+      loading={loading}
+    />
+  </picture>
+)}

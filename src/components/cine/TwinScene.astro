@@ -1,0 +1,70 @@
+---
+// TwinScene · planos gemelos (§3.12, §5.1 ESC 03, §7.4). Dos placas del MISMO encuadre en el mismo stage:
+// A (ámbar, dolor) y B (cian, solución). B se revela con clip-path detrás de un haz vertical de luz.
+// Escritorio (pin): fijada +100 %, scrub .6 → 0–40 % dolores sobre A · 40–75 % barrido + cada dolor dibuja su salida · 75–100 % remate.
+// Móvil: sin pin; A arriba (recortada al sujeto), la lista, y B abajo; al entrar B el haz barre una vez (0.9 s).
+// Movimiento reducido: placa B con dolores y salidas completos.
+// Ganchos que anima (los emite PainList mode="twin" del área ui, o marcado propio):
+//   [data-pain] (texto del dolor) · [data-fix] (su salida en cian; se dibuja con --mix) · slot "end" (remate)
+import { resolvePlate, type Layout, type Fallback } from './plate';
+import PlatePicture from './PlatePicture.astro';
+
+interface Props {
+  id: string;
+  plateA: string;
+  plateB: string;
+  layout?: Layout;
+  pin?: string;               // '+=100%'
+  fallbackA?: Fallback;
+  fallbackB?: Fallback;
+  mirror?: boolean;
+  clock?: string[];           // HUD: ['23:48', '23:52', 'RESPONDIDO']
+  skipLabel?: string;
+  labelledby?: string;
+  class?: string;
+}
+const { id, plateA, plateB, layout, pin = '+=100%', fallbackA, fallbackB, mirror = false, clock, skipLabel = 'Saltar escena', labelledby, class: cls } = Astro.props;
+const A = resolvePlate(plateA, { mirror, layout, fallbackPlate: fallbackA, alt: '', srcsetMax: 1920, where: `#${id} A` });
+const B = resolvePlate(plateB, { mirror, layout: layout ?? A.layout, fallbackPlate: fallbackB, alt: '', srcsetMax: 1920, where: `#${id} B` });
+const L = layout ?? A.layout;
+---
+<section
+  id={id}
+  class:list={['is', 'is--mid', 'twin', cls]}
+  data-layout={L}
+  data-tone="dolor"
+  data-m="twin"
+  data-align="center"
+  data-shot="twin"
+  data-pin={pin}
+  data-aura={A.aura || undefined}
+  style={A.vars}
+  aria-labelledby={labelledby ?? `${id}-t`}
+>
+  <a class="skip-scene lnk--mono" href={`#${id}-fin`} data-skip>{skipLabel} ↓</a>
+  <div class="is__fx" aria-hidden="true"></div>
+  {clock && (
+    <div class="is__hud" aria-hidden="true">
+      <p class="t-label hud hud--tr twin__clock" data-clock={JSON.stringify(clock)}>{clock[clock.length - 1]}</p>
+    </div>
+  )}
+  <div class="frame is__copy">
+    <div class="is__text twin__text">
+      <slot />
+      <div class="twin__end" data-twin-end><slot name="end" /></div>
+    </div>
+  </div>
+  <div class="is__stagebox" aria-hidden="true">
+    {[{ r: A, k: 'a' }, { r: B, k: 'b' }].map(({ r, k }) => (
+      <div class={`is__layer is__layer--media twin__layer twin__${k}`} data-own data-mirror={r.mirror || undefined} style={r.vars}>
+        <div class="stage">
+          <PlatePicture r={r} alt="" />
+          <span class="is__vignette"></span>
+          <span class={k === 'a' ? 'is__leak twin__leak--amber' : 'is__leak'}></span>
+        </div>
+      </div>
+    ))}
+    <span class="twin__beam"></span>
+  </div>
+  <span id={`${id}-fin`} class="scene-end" tabindex="-1"></span>
+</section>

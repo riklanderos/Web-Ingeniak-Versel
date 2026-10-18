@@ -1,0 +1,74 @@
+---
+// Header (ESPEC §4.1). Props:
+//   variant  'full' (por defecto) | 'reduced' (/discovery/: solo logo + "Agendar mi Discovery Session" directo a la agenda)
+//   current  URL de la página actual (marca la entrada activa con un nodo cian)
+//   waHref   enlace de WhatsApp con el mensaje de la página (secondaryCta.href)
+// Estados (scripts/nav/header.ts → html[data-hdr]): top (transparente) · hidden · glass. Regla de un azul (F15):
+// con html[data-primary-visible] el CTA del encabezado pasa a contorno.
+import Logo from './Logo.astro';
+import MegaMenu from './MegaMenu.astro';
+import { ICONS } from './icons';
+import { NAV_ENTRIES, currentEntry } from '../layout/navData';
+import { SITE } from '../../lib/site';
+
+interface Props { variant?: 'full' | 'reduced'; current?: string; waHref?: string }
+const { variant = 'full', current = '', waHref = SITE.waBase } = Astro.props;
+const full = variant === 'full';
+const cur = currentEntry(current);
+const ctaHref = full ? SITE.discovery : SITE.agenda;
+const ctaLabel = full ? 'Agenda tu Discovery Session' : 'Agendar mi Discovery Session';
+---
+<header class="hdr" data-hdr data-variant={variant}>
+  <span class="hdr__glass" aria-hidden="true"></span>
+  <span class="hdr__pill" aria-hidden="true"></span>
+  <div class="hdr__bar">
+    <Logo class="hdr__logo" />
+    {full && (
+      <nav class="hdr__nav" aria-label="Principal">
+        <ul class="hdr__list" role="list">
+          {NAV_ENTRIES.map((e) =>
+            e.type === 'link' ? (
+              <li class="hdr__item">
+                <a class="hdr__link" href={(e as any).href} data-entry={e.key} data-current={cur === e.key || undefined} aria-current={current === (e as any).href ? 'page' : undefined}>
+                  {e.label}<span class="dot-live" aria-hidden="true"></span>
+                </a>
+              </li>
+            ) : (
+              <li class="hdr__item" data-mm-item={e.key}>
+                <button class="hdr__link hdr__trigger" type="button" aria-expanded="false" aria-controls={`mm-${e.key}`}
+                  data-mm-trigger={e.key} data-entry={e.key} data-current={cur === e.key || undefined}>
+                  {e.label}<svg class="ico hdr__chev" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.chevron} />
+                </button>
+                <MegaMenu panel={e.key as any} current={current} />
+              </li>
+            ),
+          )}
+        </ul>
+      </nav>
+    )}
+    <div class="hdr__actions">
+      {full && (
+        <button class="hdr__search" type="button" data-search-open aria-label="Buscar o preguntarle a Kain" aria-keyshortcuts="Meta+K Control+K">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.search} />
+          <span class="hdr__search-label">Buscar</span>
+          <kbd class="kbd" data-kbd-mod aria-hidden="true">⌘K</kbd>
+        </button>
+      )}
+      {full && (
+        <a class="btn-icon hdr__wa" href={waHref} target="_blank" rel="noopener" aria-label="Escríbele a Kain por WhatsApp" data-wa>
+          <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} />
+        </a>
+      )}
+      <a class="btn btn--sm hdr__cta" href={ctaHref} data-hdr-cta>
+        <span class="hdr__cta-l">{ctaLabel}</span><span class="hdr__cta-s" aria-hidden="true">{full ? 'Agenda tu Discovery' : 'Agendar'}</span>
+        <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span>
+      </a>
+      {full && (
+        <button class="hdr__menu" type="button" data-menu-open aria-expanded="false" aria-controls="msheet" aria-haspopup="dialog">
+          <span>Menú</span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.menu} />
+        </button>
+      )}
+    </div>
+  </div>
+  {full && <span class="mm-bg" aria-hidden="true"></span>}
+</header>

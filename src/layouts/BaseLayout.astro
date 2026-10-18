@@ -1,0 +1,142 @@
+---
+// BaseLayout — documento base de todas las páginas (ESPEC §6 #1, §4, §7.3, §7.6, §8.3).
+// Props:
+//   page          entrada de src/data/sitemap.json (obligatoria; getPage(url))
+//   nav?          'full' | 'reduced' (por defecto 'reduced' en /discovery/, 'full' en el resto)
+//   lcpPlate?     id de la placa de la PRIMERA ImageSection → dos precargas excluyentes (escritorio / vertical), §8.3
+//   lcpSrcsetMax? tope de ancho de escritorio de esa placa (2752 portadas; por defecto el de plates.json)
+//   faq? / faqIds?  preguntas visibles para el FAQPage (ver SEOHead)
+//   title?, description?, ogImage?, noindex?, datePublished?, dateModified?, jsonLd?  → SEOHead
+//   rail?         false | [{ id, label }]   (por defecto: secciones de page.sections; solo ≥ 1280 px)
+//   railMode?     'ticks' | 'labels'  (casos: 'labels')      railGroups?  [3, 6, 4] (actos del inicio)
+//   waHref?       WhatsApp de la página (por defecto page.secondaryCta.href)
+//   coldOpen?     candidata a la firma (por defecto solo en /). El <head> decide html.co (§7.3).
+//   footer?, mobileBar?, kainPill?  (true por defecto)
+//   bodyClass?
+// Slots: default (contenido de <main>), head (etiquetas extra en <head>).
+import '../styles/tokens.css';
+import '../styles/nav.css';
+import '../styles/cine.css';
+import '../styles/ui.css';
+import '../styles/content.css';
+import '../styles/pages.css';
+import type { Page } from '../lib/site';
+import SEOHead from '../components/layout/SEOHead.astro';
+import BrandSymbols from '../components/nav/BrandSymbols.astro';
+import Header from '../components/nav/Header.astro';
+import MobileMenu from '../components/nav/MobileMenu.astro';
+import SearchDialog from '../components/nav/SearchDialog.astro';
+import Footer from '../components/nav/Footer.astro';
+import SceneRail from '../components/nav/SceneRail.astro';
+import MobileCTABar from '../components/nav/MobileCTABar.astro';
+import KainPill from '../components/nav/KainPill.astro';
+import { plateSources } from '../components/layout/lcp';
+import { waOf } from '../components/layout/navData';
+import { tryCopy } from '../components/layout/copyText';
+import type { FaqItem } from '../components/layout/jsonld';
+
+interface Props {
+  page: Page;
+  nav?: 'full' | 'reduced';
+  lcpPlate?: string;
+  lcpSrcsetMax?: number;
+  faq?: FaqItem[];
+  faqIds?: string[];
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  datePublished?: string;
+  dateModified?: string;
+  jsonLd?: Record<string, any>[];
+  rail?: false | { id: string; label: string }[];
+  railMode?: 'ticks' | 'labels';
+  railGroups?: number[];
+  waHref?: string;
+  coldOpen?: boolean;
+  footer?: boolean;
+  mobileBar?: boolean;
+  kainPill?: boolean;
+  bodyClass?: string;
+}
+const p = Astro.props;
+const page = p.page as any;
+const navMode = p.nav ?? (page.url === '/discovery/' ? 'reduced' : 'full');
+const full = navMode === 'full';
+const wa = p.waHref ?? waOf(page);
+const coldOpen = p.coldOpen ?? page.url === '/';
+const lcp = p.lcpPlate ? plateSources(p.lcpPlate, p.lcpSrcsetMax) : null;
+// Riel: secciones del sitemap (sin las condicionales ni las que el copy omite); etiqueta = copy.sections[id].rail ?? name
+const copy = tryCopy(page.id);
+const railItems = p.rail === false ? null : Array.isArray(p.rail) ? p.rail
+  : ((page.sections ?? []) as any[])
+      .filter((s) => s.id && s.status !== 'conditional' && !copy?.sections?.[s.id]?._omitir)
+      .map((s) => ({ id: s.id, label: copy?.sections?.[s.id]?.rail ?? s.name ?? s.id }));
+const showRail = full && p.rail !== false && page.template !== 'T-404';
+---
+<!doctype html>
+<html lang="es-MX" class="no-js" data-co-candidate={coldOpen ? '' : undefined} data-nav-mode={navMode}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline>
+      // no-js → js · movimiento reducido guardado · firma (html.co, §7.3) · llegada por View Transition (html.vt)
+      (function (d, w) {
+        var h = d.documentElement, red = false, mq = false;
+        h.className = h.className.replace('no-js', 'js');
+        try { red = localStorage.getItem('ingeniak-motion') === 'reduced'; } catch (e) {}
+        if (red) h.setAttribute('data-motion', 'reduced');
+        try { mq = w.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+        if (h.hasAttribute('data-co-candidate')) {
+          var c = navigator.connection, sd = !!(c && (c.saveData || /(^|-)(2g|3g)$/.test(c.effectiveType || ''))),
+            rep = /[?&]replay\b/.test(location.search), same = false, seen = false;
+          try { same = !!d.referrer && new URL(d.referrer).origin === location.origin; } catch (e) {}
+          try { seen = !!sessionStorage.getItem('ingeniak-coldopen'); } catch (e) {}
+          if (!mq && !red && !sd && (rep || (!seen && !same))) {
+            h.classList.add('co');
+            try { sessionStorage.setItem('ingeniak-coldopen', '1'); } catch (e) {}
+          }
+        }
+        w.addEventListener('pagereveal', function (e) {
+          if (!e.viewTransition) return;
+          if (red || mq) { e.viewTransition.skipTransition(); return; }
+          h.classList.add('vt', 'vt-hdr'); h.setAttribute('data-vt', '1'); h.classList.remove('co');
+          e.viewTransition.finished.finally(function () { h.classList.remove('vt-hdr'); });
+        });
+      })(document, window);
+    </script>
+    <link rel="preload" href="/fonts/lexend-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+    {lcp && (
+      <link rel="preload" as="image" type="image/avif" fetchpriority="high" media={lcp.desk.media} imagesrcset={lcp.desk.srcset} imagesizes={lcp.desk.sizes} />
+    )}
+    {lcp?.mob && (
+      <link rel="preload" as="image" type="image/avif" fetchpriority="high" media={lcp.mob.media} imagesrcset={lcp.mob.srcset} imagesizes={lcp.mob.sizes} />
+    )}
+    <SEOHead page={page} faq={p.faq} faqIds={p.faqIds} title={p.title} description={p.description} ogImage={p.ogImage}
+      noindex={p.noindex} datePublished={p.datePublished} dateModified={p.dateModified} jsonLd={p.jsonLd} />
+    <meta name="theme-color" content="#03040B" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <slot name="head" />
+  </head>
+  <body class={p.bodyClass} data-page={page.id} data-template={page.template}>
+    <BrandSymbols />
+    <a class="skip" href="#main">Saltar al contenido</a>
+    <Header variant={navMode} current={page.url} waHref={wa} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    {p.footer !== false && <Footer />}
+    {showRail && <SceneRail items={railItems ?? undefined} page={page} mode={p.railMode ?? (page.template === 'T-CASE' ? 'labels' : 'ticks')} groups={p.railGroups} />}
+    {full && p.kainPill !== false && <KainPill waHref={wa} />}
+    {full && p.mobileBar !== false && <MobileCTABar waHref={wa} />}
+    {full && <MobileMenu waHref={wa} current={page.url} />}
+    {full && <SearchDialog waHref={wa} />}
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>

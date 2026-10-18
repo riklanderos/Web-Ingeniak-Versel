@@ -1,0 +1,84 @@
+---
+// SEOHead — title, meta, canonical, Open Graph / Twitter, robots y @graph JSON-LD (ESPEC §8.4–8.5).
+// Props:
+//   page          entrada de src/data/sitemap.json (obligatoria)
+//   faq?          [{ q, a }] preguntas VISIBLES en la página (FAQPage idéntico al texto)
+//   faqIds?       ids del banco (G01, W03…) → src/data/faq.json (sin "validar"); por defecto, las del copy de la página
+//   title?, description?  sobrescriben los de sitemap.json (solo páginas de desarrollo)
+//   ogImage?      ruta pública; por defecto /img/og/<page.id>.jpg → /img/og/ingeniak.jpg
+//   noindex?      fuerza "noindex,follow" (casos breves, R2). El 404 y las no indexables ya lo llevan.
+//   datePublished?, dateModified?  ISO, para Article/BlogPosting
+//   jsonLd?       nodos extra para el @graph (Person, etc.)
+import fs from 'node:fs';
+import path from 'node:path';
+import { SITE, type Page } from '../../lib/site';
+import { buildGraph, type FaqItem } from './jsonld';
+import { copyText, faqBank, tryCopy } from './copyText';
+
+interface Props {
+  page: Page;
+  faq?: FaqItem[];
+  faqIds?: string[];
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  datePublished?: string;
+  dateModified?: string;
+  jsonLd?: Record<string, any>[];
+}
+const p = Astro.props;
+const page = p.page as any;
+
+const title: string = p.title ?? page.title ?? 'Ingeniak';
+const description: string = p.description ?? page.metaDescription ?? '';
+const is404 = page.id === '404' || page.template === 'T-404';
+const robots = is404 || p.noindex || page.indexable === false ? 'noindex,follow' : 'index,follow,max-image-preview:large';
+const canonical: string = page.canonical ?? `${SITE.url}${page.url}`;
+
+// Imagen OG: la de la página si ya existe en public/img/og/, si no la general.
+const pub = (u: string) => fs.existsSync(path.join(process.cwd(), 'public', u));
+const ogImage =
+  p.ogImage ??
+  (pub(`/img/og/${page.id}.jpg`) ? `/img/og/${page.id}.jpg` : pub('/img/og/ingeniak.jpg') ? '/img/og/ingeniak.jpg' : '/img/og-ingeniak.jpg');
+const ogAbs = `${SITE.url}${ogImage}`;
+
+// FAQ (FAQPage idéntico al texto visible): 1) las que la página pasa; 2) faqIds; 3) las faqIds del copy de la página
+// (src/content/paginas/<id>.json → sections.faq.faqIds) si la página tiene sección "faq". Banco: src/data/faq.json
+// (sin las "validar"), con respaldo en sitemap.json → page.faq. Los tokens {{metric:…}} se pasan a texto plano.
+const bank = faqBank();
+const fromIds = (ids: string[]): FaqItem[] =>
+  ids
+    .map((id) => {
+      const b = bank.find((f) => f.id === id);
+      if (b) return { id, q: b.q, a: b.a };
+      const s = (page.faq ?? []).find((f: any) => f.id === id && (f.estado ?? 'aprobada') === 'aprobada');
+      return s ? { id, q: copyText(s.q), a: copyText(s.a) } : null;
+    })
+    .filter(Boolean) as FaqItem[];
+const autoIds: string[] | undefined = (page.sections ?? []).some((s: any) => s.id === 'faq') ? tryCopy(page.id)?.sections?.faq?.faqIds : undefined;
+const faq: FaqItem[] = p.faq ?? (p.faqIds ? fromIds(p.faqIds) : autoIds?.length ? fromIds(autoIds) : []);
+
+const graph = is404 ? [] : buildGraph(page, { faq, title, description, ogImage, datePublished: p.datePublished, dateModified: p.dateModified, extra: p.jsonLd });
+const isArticle = page.template === 'T-ARTICLE' || page.template === 'T-CASE';
+const ld = graph.length ? JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c') : '';
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content={robots} />
+{!is404 && <link rel="canonical" href={canonical} />}
+<meta property="og:type" content={isArticle ? 'article' : 'website'} />
+<meta property="og:locale" content="es_MX" />
+<meta property="og:site_name" content="Ingeniak" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogAbs} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={page.h1 ?? title} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogAbs} />
+{ld && <script type="application/ld+json" set:html={ld} />}

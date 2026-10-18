@@ -1,0 +1,174 @@
+---
+// PlateSequence · secuencia fijada VERTICAL (solo escritorio) con presets (§5.1 ESC 05, §5.7, §6 #16, §7.4):
+//   runtime (SystemRuntime, +280 %): 5 placas de estación en un solo escenario que cambian con un barrido de luz; la
+//     tarjeta de lead viaja (GSAP Flip, fuera del scrub) a la UI registrada de cada estación; riel con scrub; Fig. 02.
+//   phases (VktorSequence, +250 %): UNA placa; la cámara (--cam y su origen) sube de escalon-1 a escalon-5 y la letra
+//     de cada fase pasa de contorno a sólido.
+// Snap a las 5 etiquetas, "Saltar escena", todo el contenido en el DOM y en orden. Móvil (y tablet táctil): sin pin,
+// 5 bloques apilados, cada uno con su placa vertical; píldora "Lead nuevo · etapa n/5" (runtime).
+// Movimiento reducido: 5 bloques apilados con su estado final.
+// Slots: default (eyebrow + H2 con id "<id>-t") · `ui-<step.id>` (UI registrada de cada estación, en el stage de su placa)
+//        · `metric-<step.id>` (cifras de la estación con <Metric>; alternativa a metricIds).
+import Metric from '../ui/Metric.astro';
+import { resolvePlate, type Fallback } from './plate';
+import PlatePicture from './PlatePicture.astro';
+import GhostWord from './GhostWord.astro';
+import type { MetricId } from '../../lib/metrics';
+
+interface Step {
+  id: string; title: string; line: string; plate?: string; href?: string; hrefLabel?: string;
+  metricIds?: MetricId[]; ui?: string; letter?: string; anchor?: string; fallbackPlate?: Fallback; mirror?: boolean;
+}
+interface Props {
+  id: string;
+  preset: 'runtime' | 'phases';
+  steps: Step[];
+  pin?: string;
+  plate?: string;            // phases: la placa única
+  fallbackPlate?: Fallback;
+  figLabel?: string;
+  note?: string;
+  ghost?: string;            // phases: palabra fantasma (VKTOR)
+  skipLabel?: string;
+  class?: string;
+}
+const {
+  id, preset, steps, plate, fallbackPlate, pin = preset === 'runtime' ? '+=280%' : '+=250%',
+  figLabel, note, ghost = preset === 'phases' ? 'VKTOR' : undefined, skipLabel = 'Saltar escena', class: cls,
+} = Astro.props;
+
+const single = preset === 'phases' ? resolvePlate(plate ?? steps[0]?.plate ?? '', { fallbackPlate, alt: '', srcsetMax: 2752, where: `#${id}` }) : null;
+const plates = steps.map((s) => single ?? resolvePlate(s.plate ?? '', { fallbackPlate: s.fallbackPlate, mirror: s.mirror, alt: '', srcsetMax: 1920, where: `#${id} ${s.id}` }));
+const r0 = plates[0];
+const L = r0.layout;
+
+// Punto de la UI registrada / tarjeta de lead de cada estación (o escalón de cada fase).
+type XY = [number, number];
+const pick = (r: typeof r0, names: string[]) => names.map((n) => r.anchors[n]).find((a) => a && a.d);
+function slotXY(r: typeof r0, s: Step, i: number): { d: XY; m: XY | null } {
+  const named = s.anchor ?? s.ui;
+  const a = (named && r.anchors[named]) || pick(r, preset === 'phases' ? [`escalon-${i + 1}`] : ['superficie', 'telefono', 'pantalla', 'tableta']);
+  if (a?.d) return { d: a.d, m: a.m };
+  const p = r.anchors.pecho?.d ?? [0.7, 0.46];
+  const dir = r.layout === 'subject-left' ? 1 : -1;
+  if (preset === 'phases') {
+    const t = i / Math.max(1, steps.length - 1);
+    return { d: [p[0] + dir * (0.2 - t * 0.2), 0.86 - t * 0.5], m: null };
+  }
+  return { d: [p[0] + dir * 0.17, p[1] + 0.06], m: null };
+}
+const slots = steps.map((s, i) => slotXY(plates[i], s, i));
+const slotStyle = (k: number) => {
+  const sl = slots[k];
+  return `--ax:${sl.d[0]};--ay:${sl.d[1]};` + (sl.m ? `--ax-m:${sl.m[0]};--ay-m:${sl.m[1]};` : '');
+};
+const uis = await Promise.all(steps.map((s) => (Astro.slots.has(`ui-${s.id}`) ? Astro.slots.render(`ui-${s.id}`) : Promise.resolve(''))));
+const mets = await Promise.all(steps.map((s) => (Astro.slots.has(`metric-${s.id}`) ? Astro.slots.render(`metric-${s.id}`) : Promise.resolve(''))));
+const camFor = (i: number) => (preset === 'phases' ? 1.14 + i * 0.05 : 1);
+const pad = (n: number) => String(n).padStart(2, '0');
+const stepData = steps.map((s, i) => ({ id: s.id, title: s.title, ox: slots[i].d[0], oy: slots[i].d[1], cam: camFor(i) }));
+---
+<section
+  id={id}
+  class:list={['is', 'is--mid', 'seq', `seq--${preset}`, cls]}
+  data-layout={L}
+  data-m="seq"
+  data-align="center"
+  data-shot="sequence"
+  data-preset={preset}
+  data-pin={pin}
+  data-mirror={r0.mirror || undefined}
+  style={r0.vars}
+  aria-labelledby={`${id}-t`}
+>
+  <a class="skip-scene lnk--mono" href={`#${id}-fin`} data-skip>{skipLabel} ↓</a>
+  <div class="is__fx" aria-hidden="true"></div>
+  <div class="frame seq__headf"><div class="is__text seq__head"><slot /></div></div>
+  {preset === 'phases' && (
+    <div class="is__stagebox seq__stagebox" aria-hidden="true">
+      <div class="is__layer is__layer--media seq__layer" data-own data-mirror={r0.mirror || undefined} style={r0.vars + `--ox:${slots[0].d[0]};--oy:${slots[0].d[1]};--cam:${camFor(0)};`}>
+        <div class="stage"><PlatePicture r={r0} alt="" /><span class="is__vignette"></span><span class="is__leak"></span></div>
+      </div>
+      {ghost && r0.cut && (
+        <div class="is__layer is__layer--ghost seq__ghost" data-own style={r0.vars + `--ox:${slots[0].d[0]};--oy:${slots[0].d[1]};--cam:${camFor(0)};`}><div class="stage"><GhostWord text={ghost} mode="outline-fill" registered /></div></div>
+      )}
+      {ghost && r0.cut && (
+        <div class="is__layer is__layer--cutout" data-own data-mirror={r0.mirror || undefined} style={r0.vars + `--ox:${slots[0].d[0]};--oy:${slots[0].d[1]};--cam:${camFor(0)};`}><div class="stage"><img class="is__cut" src={r0.cut} alt="" width={r0.d.w} height={r0.d.h} loading="lazy" decoding="async" /></div></div>
+      )}
+      <div class="is__layer is__layer--anchors seq__anchors" data-own style={r0.vars + `--ox:${slots[0].d[0]};--oy:${slots[0].d[1]};--cam:${camFor(0)};`}>
+        <div class="stage">
+          {steps.map((s, i) => (
+            <span class="anchor seq__light" data-light={i} style={slotStyle(i)}><i></i><b>{s.letter ?? pad(i + 1)}</b></span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
+  <ol class="seq__steps" role="list">
+    {steps.map((s, i) => (
+      <li class="seq__step" data-step={i} id={`${id}-${s.id}`} style={plates[i].vars}>
+        {preset === 'runtime' && (
+          <div class="is__stagebox" aria-hidden="true">
+            <div class="is__layer is__layer--media seq__layer" data-own data-mirror={plates[i].mirror || undefined} style={plates[i].vars}>
+              <div class="stage"><PlatePicture r={plates[i]} alt="" /><span class="is__vignette"></span><span class="is__leak"></span></div>
+            </div>
+            <div class="is__layer is__layer--anchors seq__anchors" data-own style={plates[i].vars}>
+              <div class="stage">
+                {uis[i] && <Fragment set:html={uis[i]} />}
+                <div class="anchor seq__slot" data-lead-slot={i} style={slotStyle(i)}>
+                  {i === 0 && (
+                    <figure class="lead-card glass-chip" data-lead data-nosnippet>
+                      <span class="chip-sim">SIMULACIÓN</span>
+                      <figcaption>
+                        <span class="lead-card__k t-label">Lead nuevo</span>
+                        <span class="lead-card__t">Etapa <b data-lead-n>1</b>/{steps.length} · <span data-lead-stage>{steps[0].title}</span></span>
+                      </figcaption>
+                      <span class="lead-card__node" aria-hidden="true"></span>
+                    </figure>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        <div class="frame seq__copyf">
+          <div class="seq__body">
+            <p class="t-label t-label--cyan seq__k">
+              {preset === 'phases' && s.letter ? <span class="seq__letter" aria-hidden="true">{s.letter}</span> : <span class="node" aria-hidden="true"></span>}
+              <span>{pad(i + 1)} · {s.title}</span>
+            </p>
+            <h3 class="t-h3 seq__title">{s.title}</h3>
+            <p class="t-lede t-lede--2 seq__line">{s.line}</p>
+            {(s.metricIds?.length || mets[i]) && (
+              <p class="seq__metrics">
+                {s.metricIds?.map((m) => <Metric id={m} variant="inline" label fn="1" />)}
+                {mets[i] && <Fragment set:html={mets[i]} />}
+              </p>
+            )}
+            {s.href && <a class="lnk seq__go" href={s.href}>{s.hrefLabel ?? 'Ver el servicio'} <span aria-hidden="true">→</span></a>}
+          </div>
+        </div>
+      </li>
+    ))}
+  </ol>
+  <div class="frame seq__footf">
+    <div class="seq__foot-col">
+      <div class="seq__rail" aria-hidden="true">
+        <span class="seq__rail-line"><span class="seq__rail-fill"></span></span>
+        {steps.map((s, i) => <span class="seq__rail-node" data-i={i}><i></i><b>{preset === 'phases' && s.letter ? s.letter : s.title}</b></span>)}
+      </div>
+      {(figLabel || note) && (
+        <div class="seq__foot">
+          {figLabel && <p class="t-label t-label--cyan seq__fig">{figLabel}</p>}
+          {note && <p class="t-micro seq__note">{note}</p>}
+        </div>
+      )}
+    </div>
+  </div>
+  <span class="seq__sweep" aria-hidden="true"></span>
+  {preset === 'runtime' && (
+    <p class="seq__pill glass-chip" aria-hidden="true" data-nosnippet><span class="chip-sim">SIMULACIÓN</span> Lead nuevo · etapa <b data-pill-n>1</b>/{steps.length}</p>
+  )}
+  <script type="application/json" data-seq-data set:html={JSON.stringify(stepData)}></script>
+  <span id={`${id}-fin`} class="scene-end" tabindex="-1"></span>
+</section>

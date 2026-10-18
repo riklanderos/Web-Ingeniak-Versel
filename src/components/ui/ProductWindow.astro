@@ -1,0 +1,24 @@
+---
+// ProductWindow · ESPEC §6 #32 + R7. Marco .glass-panel con barra de título y marcas "+" en las esquinas,
+// para capturas o demos (app.kain.mx con VISTA DEMO, Runtime en móvil con SIMULACIÓN).
+// Solo sobre placa o aura (aura=true pinta el aura del isotipo detrás); nunca sobre negro plano.
+// Slot por defecto: la captura (<img>) o la demo en HTML. Slot "aside": controles o leyenda a la derecha de la barra.
+interface Props { title: string; label?: 'SIMULACIÓN' | 'VISTA DEMO'; fig?: string; url?: string; aura?: boolean; ratio?: string; class?: string }
+const { title, label = 'VISTA DEMO', fig, url, aura = false, ratio, class: cls } = Astro.props;
+---
+<figure class:list={['pwin', aura && 'pwin--aura', cls]} data-nosnippet={label === "SIMULACIÓN" ? "" : undefined} data-ui-reveal="lift">
+  {aura && <span class="pwin__aura" aria-hidden="true"><img src="/img/marca/isotipo-cristal-640.webp" alt="" width="640" height="640" loading="lazy" decoding="async" /></span>}
+  <div class="pwin__frame glass-panel">
+    <span class="pwin__mark pwin__mark--tl" aria-hidden="true"></span><span class="pwin__mark pwin__mark--tr" aria-hidden="true"></span>
+    <span class="pwin__mark pwin__mark--bl" aria-hidden="true"></span><span class="pwin__mark pwin__mark--br" aria-hidden="true"></span>
+    <div class="pwin__bar">
+      <span class="pwin__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="pwin__title">{title}</span>
+      {url && <span class="pwin__url" aria-hidden="true">{url}</span>}
+      <span class="chip-sim pwin__label">{label}</span>
+      <slot name="aside" />
+    </div>
+    <div class="pwin__body" style={ratio ? `aspect-ratio:${ratio}` : undefined}><slot /></div>
+  </div>
+  {fig && <figcaption class="pwin__fig t-micro"><span class="node" aria-hidden="true"></span>{fig}</figcaption>}
+</figure>

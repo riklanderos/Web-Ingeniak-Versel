@@ -1,0 +1,36 @@
+---
+// DayTimeline · "La jornada" de industrias (§5.3 #03, §6 #24, §7.4). Vertical, SIN pin: la aguja (el pilar del isotipo)
+// baja con scrub; cada hora se enciende, su dolor (ámbar) pierde contra su par con Kain (cian), que se dibuja.
+// La toma desenfocada de fondo vira a ámbar o cian por tramo (aura registrada, no fondo de sección).
+// Horas ilustrativas: sin cifras inventadas. Slot default: eyebrow + H2 (id "<id>-t").
+import { AURA_ISOTIPO } from './plate';
+
+interface Entry { time: string; pain: string; fix: string }
+interface Props { id?: string; entries: Entry[]; rack?: string; class?: string }
+const { id = 'jornada', entries, rack, class: cls } = Astro.props;
+---
+<section id={id} class:list={['dt', cls]} data-shot="timeline" aria-labelledby={`${id}-t`}>
+  <div class="dt__tint" aria-hidden="true">
+    <img src={rack ?? AURA_ISOTIPO} alt="" loading="lazy" decoding="async" />
+    <span class="dt__amber"></span><span class="dt__cyan"></span>
+  </div>
+  <div class="frame dt__frame">
+    <div class="dt__head"><slot /></div>
+    <div class="dt__track">
+    <span class="dt__rail" aria-hidden="true"><span class="dt__needle"></span></span>
+    <ol class="dt__list" role="list">
+      {entries.map((e, i) => (
+        <li class="dt__row" data-dt-row={i}>
+          <p class="dt__time"><time>{e.time}</time></p>
+          <span class="dt__node" aria-hidden="true"></span>
+          <div class="dt__pair">
+            <p class="dt__pain"><span class="node node--amber" aria-hidden="true"></span>{e.pain}</p>
+            <p class="dt__fix"><span class="node" aria-hidden="true"></span>{e.fix}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    </div>
+    <p class="t-micro dt__note">Horas ilustrativas de una jornada típica del sector.</p>
+  </div>
+</section>

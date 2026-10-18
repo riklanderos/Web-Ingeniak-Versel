@@ -1,0 +1,151 @@
+{
+  "pageId": "discovery",
+  "url": "/discovery/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-18",
+  "pendientes": [
+    "Firma 'Construimos empresarios libres, no héroes cansados.': confirmar con el cliente (ESPEC §11-4).",
+    "VSL: subtítulos .vtt y póster limpio pendientes (R14). La escena no promete subtítulos hasta que existan.",
+    "Teléfono de la respuesta D05 (33 2101 7799): confirmar el número único (D §15)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (discovery-hero, dueño junto a su silla vacía, subject-right) + .chip-spec + .btn directo a la agenda. Encabezado reducido.",
+      "rail": "Portada",
+      "eyebrow": "Llamada 1:1 · 30 minutos · sin costo",
+      "h1": { "text": "30 minutos para ver tu operación", "soft": "como es, no como crees que es" },
+      "lede": "Discovery Session: una llamada 1:1 y gratuita con Ingeniak. Mapeamos tus necesidades, detectamos las áreas de oportunidad de tu negocio y sales con sugerencias concretas.",
+      "remate": "No entregamos nada: diagnosticamos. Cotizar sin diagnóstico es adivinar con dinero ajeno.",
+      "chips": ["Media hora · 1:1", "Cero costo", "Sugerencias concretas"],
+      "ctaPrimary": { "label": "Agendar mi Discovery Session", "href": "https://agenda.ingeniak.tech/discovery/agendar" },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet",
+      "ctaSecondary": {
+        "label": "Escríbenos por WhatsApp",
+        "waMessage": "Hola, vengo de la página de la Discovery Session y tengo una duda antes de agendar."
+      }
+    },
+    "video": {
+      "_componente": "VideoScene = ImageSection mid subject-center (discovery-vsl-poster): H2 abajo a la izquierda, botón de reproducir abajo a la derecha; el VSL se abre en <dialog> a pantalla completa",
+      "rail": "El video",
+      "eyebrow": "Antes de agendar",
+      "h2": { "text": "Mira esto", "soft": "antes de agendar." },
+      "lede": "Tres minutos sobre una pregunta incómoda: si tu silla se queda vacía, ¿qué se detiene en tu negocio?",
+      "play": "Reproducir el video",
+      "close": "Cerrar el video",
+      "after": "Si reconociste tu negocio en este video, esta llamada es tu siguiente paso."
+    },
+    "pasos": {
+      "_componente": "StepRow (ScriptList variant=steps)",
+      "rail": "Cómo funciona",
+      "eyebrow": "Tres pasos, cero letra chica",
+      "h2": { "text": "Cómo funciona." },
+      "items": [
+        { "n": "01", "title": "Llenas un formulario corto", "line": "Siete preguntas sobre tu negocio y tu operación. Dos minutos, sin ensayo." },
+        { "n": "02", "title": "Eliges tu horario", "line": "Calendario en vivo, en hora de la Ciudad de México. Sesiones de media hora, de lunes a viernes." },
+        { "n": "03", "title": "Nos vemos en Google Meet", "line": "Al confirmar tu horario recibes el enlace de la videollamada. Solo te conectas." }
+      ],
+      "remate": "Las siete preguntas existen para que la llamada empiece en tu operación, no en una presentación."
+    },
+    "que-es": {
+      "_componente": "TwoColumnScript variant=dodont ('Lo que sí es' en cian / 'Lo que no es' en ámbar)",
+      "rail": "Qué es",
+      "eyebrow": "Sin discurso de venta",
+      "h2": { "text": "Qué es una Discovery Session.", "soft": "Y qué no." },
+      "lede": "No es una demo. No es un pitch con otro nombre. Es la media hora que evita cotizar a ciegas.",
+      "left": {
+        "title": "Lo que sí es",
+        "tone": "cian",
+        "items": [
+          "Una revisión honesta de cómo opera tu negocio hoy.",
+          "Identificación de tus necesidades y áreas de oportunidad.",
+          "Sugerencias concretas de qué automatizar y en qué orden.",
+          "Claridad sobre si una implementación tiene sentido, y cuánto costaría."
+        ]
+      },
+      "right": {
+        "title": "Lo que no es",
+        "tone": "ambar",
+        "items": [
+          "No entregamos grabación, mapa de procesos ni documentos.",
+          "No hay presentación de ventas disfrazada de diagnóstico.",
+          "No hay compromiso de compra posterior. Tú decides.",
+          "No es consultoría: es descubrimiento. El trabajo profundo va después."
+        ]
+      },
+      "revisamos": {
+        "title": "En la llamada revisamos",
+        "items": [
+          "Cómo te llegan los clientes: anuncios, web, recomendaciones o redes.",
+          "Cuánto tardas en responder y quién lo hace.",
+          "Dónde quedan registrados tus prospectos y tus ventas.",
+          "Qué tareas repite tu equipo todos los días.",
+          "Qué números miras para decidir, si es que los tienes."
+        ],
+        "line": "Es la fase V de VKTOR™, nuestra metodología: verificamos tu operación antes de proponerte nada."
+      }
+    },
+    "para-quien": {
+      "_componente": "ImageSection mid (discovery-para-quien, subject-left, mobile split) + TwoColumnScript variant=fit",
+      "rail": "Para quién",
+      "eyebrow": "Sin filtros disfrazados",
+      "h2": { "text": "Para quién es", "soft": "esta llamada." },
+      "lede": "Preferimos decirlo antes de que agendes: no es para todos, y está bien.",
+      "left": {
+        "title": "Es para ti si…",
+        "tone": "cian",
+        "items": [
+          "Eres dueño o dueña de una PyME de 3 a 40 empleados, de cualquier sector.",
+          "El negocio depende de ti para operar: ventas, cobros, supervisión, todo.",
+          "Sientes que hay procesos que se pueden sistematizar, pero no sabes por dónde empezar.",
+          "Consideras invertir en implementación y quieres una opinión seria antes."
+        ]
+      },
+      "right": {
+        "title": "No es para ti si…",
+        "tone": "ambar",
+        "items": [
+          "Buscas una idea rápida y gratis para hacerla tú mismo, sin apoyo.",
+          "Todavía no tienes claro cómo opera tu negocio día a día.",
+          "Quieres que te coticen sin que nadie vea la operación.",
+          "Tu operación ya está documentada y sistematizada. Felicidades: ve directo a escalar."
+        ]
+      }
+    },
+    "despues": {
+      "_componente": "Intertitle + .btn (directo a la agenda)",
+      "rail": "Después",
+      "eyebrow": "Después de la llamada",
+      "h2": { "text": "Si hay sentido,", "soft": "te cotizamos la implementación." },
+      "body": [
+        "Con lo que veamos en los 30 minutos preparamos una propuesta de implementación: qué se hace, en qué orden, en cuánto tiempo y cuánto cuesta. Sin presión y sin letra chica.",
+        "Si tu caso no encaja con lo que hacemos, te lo decimos en la misma llamada y te orientamos a dónde sí. Nadie te va a perseguir con llamadas después."
+      ],
+      "remate": "La Discovery Session no cuesta nada. Las implementaciones empiezan {{price}}.",
+      "ctaPrimary": { "label": "Agendar mi Discovery Session", "href": "https://agenda.ingeniak.tech/discovery/agendar" }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (D01–D06)",
+      "rail": "Preguntas",
+      "eyebrow": "Sin letra chica",
+      "h2": { "text": "Preguntas directas." },
+      "faqIds": ["D01", "D02", "D03", "D04", "D05", "D06"],
+      "footer": "¿Otra duda? Escríbenos por WhatsApp.",
+      "ctaSecondary": {
+        "label": "Escríbenos por WhatsApp",
+        "waMessage": "Hola, vengo de la página de la Discovery Session y tengo una duda antes de agendar."
+      }
+    },
+    "cta-final": {
+      "_componente": "Dawn (discovery-cta-final: Kain sentado en la silla del dueño)",
+      "rail": "Cierre",
+      "eyebrow": "El primer paso no cuesta nada",
+      "h2": { "text": "30 minutos hoy valen más", "soft": "que una cotización a ciegas mañana." },
+      "quote": "No cotizamos lo que no hemos visto. Revisa la operación con nosotros: es gratis, y aun así va a valer más que la mayoría de las juntas de tu semana.",
+      "ctaPrimary": { "label": "Agendar mi Discovery Session", "href": "https://agenda.ingeniak.tech/discovery/agendar" },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet",
+      "firma": "Construimos empresarios libres, no héroes cansados."
+    }
+  }
+}

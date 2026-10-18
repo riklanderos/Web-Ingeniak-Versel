@@ -1,0 +1,432 @@
+---
+// IndustryTemplate · T-INDUSTRY (ESPEC-v2 §5.3, §12.2 R2/R3/R4/R5/R7/R11) · ejemplo /industrias/salud/
+// Data-driven: recorre page.sections (src/data/sitemap.json) en su orden y pinta cada id con su componente;
+// el texto sale de src/content/paginas/<page.id>.json (área copy). Secciones sin copy o con `_omitir` no se pintan.
+//   hero          SharedTake + ImageSection hero (persona/Kain del sector) + chip de prueba anclado a la tableta + IMAGEN ILUSTRATIVA
+//   definicion    Intertitle (rack: copia desenfocada de la portada) + DefinitionBlock (texto del banco de FAQ)
+//   dolores       DayTimeline "La jornada" (horas ilustrativas, sin cifras)
+//   automatizamos Intertitle + ScriptList (6 tareas)
+//   kain-sector   ImageSection mid (Kain del lado opuesto, push hacia el panel) + ChatSim registrado; móvil `split` (chat en el flujo)
+//   cifras        Montage (con caso) · EditorNote + Montage (sin caso propio: `note` en el copy)
+//   servicios     Still ×3 (texto dentro de la penumbra del fotograma, R7)
+//   datos         Intertitle con reglas cortas (solo salud, nutrición y finanzas)
+//   faq           Intertitle (aura de ondas) + FAQAccordion (sin las "validar"; el FAQPage lo emite SEOHead con las mismas ids)
+//   cta-final     Dawn (placa de sitemap.json)
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageSection from '../cine/ImageSection.astro';
+import SharedTake from '../cine/SharedTake.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import DayTimeline from '../cine/DayTimeline.astro';
+import Montage from '../cine/Montage.astro';
+import Dawn from '../cine/Dawn.astro';
+import { resolvePlate } from '../cine/plate';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Metric from '../ui/Metric.astro';
+import Copy from '../ui/Copy.astro';
+import ScriptList from '../ui/ScriptList.astro';
+import Still from '../ui/Still.astro';
+import ChatSim from '../ui/ChatSim.astro';
+import DefinitionBlock from '../ui/DefinitionBlock.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import EditorNote from '../ui/EditorNote.astro';
+import { annotateFigures, esc, getFaqItems } from '../ui/ui-data';
+import { getPlate, pages, waHref, type Page } from '../../lib/site';
+import { METRICS, type MetricId } from '../../lib/metrics';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C = copy?.sections ?? {};
+const dev = import.meta.env.DEV;
+
+/* ── utilidades ─────────────────────────────────────────────────────────── */
+const sec = (id: string) => (P.sections as any[]).find((s) => s.id === id);
+const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
+/** Titular de dos voces ({text, soft, lit?}) → HTML con tokens resueltos; `lit` envuelve su subcadena en .lit. */
+function headHtml(h: any, lit?: string | null): string {
+  if (!h) return '';
+  let first = annotateFigures(h.text ?? '');
+  const l = lit ?? h.lit;
+  if (l && (h.text ?? '').includes(l)) {
+    const i = (h.text as string).lastIndexOf(l);
+    first = annotateFigures(h.text.slice(0, i)) + `<span class="lit">${esc(l)}</span>` + annotateFigures(h.text.slice(i + l.length));
+  }
+  return h.soft ? `${first} <span class="soft">${annotateFigures(h.soft)}</span>` : first;
+}
+const wa = P.secondaryCta?.href ?? waHref(C.hero?.ctaSecondary?.waMessage ?? 'Hola Kain');
+const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
+
+/** Placa de una sección según sitemap.json (id, layout, espejo, respaldo de lanzamiento). */
+const plateOf = (id: string) => sec(id)?.plate ?? null;
+const resolveSec = (id: string, extra: Record<string, any> = {}) => {
+  const p = plateOf(id);
+  if (!p) return null;
+  return resolvePlate(p.id, { mirror: !!p.mirror, fallbackPlate: p.launchFallback, where: `#${id}`, ...extra });
+};
+
+/** Ancla de caja [x, y, w, h] (pantalla, teléfono, tableta) de la placa realmente usada, espejada si toca. */
+type Box = [number, number, number, number];
+function boxAnchor(r: ReturnType<typeof resolvePlate> | null, names: string[]) {
+  const raw = r?.id ? getPlate(r.id) : null;
+  for (const n of names) {
+    const a = raw?.anchors?.[n];
+    if (a?.d?.length === 4) {
+      const fl = (b: number[]): Box => [r!.mirror ? 1 - b[0] - b[2] : b[0], b[1], b[2], b[3]];
+      return { name: n, d: fl(a.d), m: a.m?.length === 4 ? fl(a.m) : null };
+    }
+  }
+  return null;
+}
+/** Punto con nombre de la placa usada ([x, y], espejado). */
+function pointAnchor(r: ReturnType<typeof resolvePlate> | null, name: string): [number, number] | null {
+  const a = r?.anchors?.[name]?.d;
+  return a ? [a[0], a[1]] : null;
+}
+
+/* ── 01 · portada ───────────────────────────────────────────────────────── */
+const hero = cp('hero');
+const heroPlate = plateOf('hero');
+const rHero = resolveSec('hero', { srcsetMax: 2752, mobileMax: 1536 });
+const lcpPlate = rHero?.id ?? undefined;
+// Una sola .lit por página (§2.3): la del copy; si el copy no la marca, la última palabra de la primera voz del H1.
+const heroLit: string | null = hero?.h1?.lit ?? (hero?.h1?.text ? (hero.h1.text as string).trim().split(/\s+/).pop()!.replace(/[.,:;]$/, '') : null);
+const heroEyebrow: string = hero?.eyebrow ?? `Industria · ${(P.breadcrumbs as any[])?.at(-1)?.name ?? ''}`;
+
+// Chip de prueba anclado (solo si el sector tiene caso: hero.chip en el copy). Va en la zona de piso, unido a la tableta
+// con una línea guía (§3.8); nunca sobre cara ni torso. Posición: anchors.chip de la placa; si la placa aún no lo trae,
+// el registro local de abajo (pedido a imágenes en peticiones.md); si tampoco, el ancla `fig` (esquina superior derecha).
+const CHIP_AT: Record<string, { d: [number, number]; side: 'right' | 'left' }> = {
+  'ind-salud-hero': { d: [0.8, 0.8], side: 'right' },   // piso a la derecha de los pies de Kain, bajo la tableta
+};
+const chipMetric: MetricId | null = hero?.chip?.metricId && (METRICS as any)[hero.chip.metricId] ? hero.chip.metricId : null;
+let chip: null | { x: number; y: number; side: 'right' | 'left'; tx: number; ty: number; target: string } = null;
+if (chipMetric && rHero && !rHero.aura) {
+  const rawChip = rHero.id ? getPlate(rHero.id)?.anchors?.chip?.d : null;
+  const reg = rHero.id ? CHIP_AT[rHero.id] : undefined;
+  const fig = pointAnchor(rHero, 'fig');
+  const at: { d: [number, number]; side: 'right' | 'left' } | null = rawChip
+    ? { d: [rHero.mirror ? 1 - rawChip[0] : rawChip[0], rawChip[1]], side: rawChip[2] === -1 ? 'left' : 'right' }
+    : reg ? { d: [rHero.mirror ? 1 - reg.d[0] : reg.d[0], reg.d[1]], side: rHero.mirror ? (reg.side === 'right' ? 'left' : 'right') : reg.side }
+    : fig ? { d: fig, side: 'left' } : null;
+  const tb = boxAnchor(rHero, ['tableta', 'telefono', 'pantalla']);
+  const tp = tb ? ([tb.d[0] + tb.d[2] * 0.5, tb.d[1] + tb.d[3] * 0.62] as [number, number]) : pointAnchor(rHero, 'mano');
+  if (at && tp) chip = { x: at.d[0], y: at.d[1], side: at.side, tx: tp[0], ty: tp[1], target: tb?.name ?? 'mano' };
+}
+
+/* ── 02 · definición (texto del banco de FAQ; si la pregunta aún está en "validar", el texto de la página igual se muestra
+       como párrafo, pero NO entra al FAQPage) ── */
+const defi = cp('definicion');
+const faqBankMods = import.meta.glob('../../data/faq.json', { eager: true, import: 'default' }) as Record<string, any>;
+const rawBank: any[] = (() => { const r: any = Object.values(faqBankMods)[0]; return Array.isArray(r) ? r : r?.items ?? []; })();
+let defText: { q: string; a: string } | null = null;
+if (defi?.definition?.faqId) {
+  const ok = getFaqItems([defi.definition.faqId])[0];
+  const raw = ok ?? rawBank.find((f) => f.id === defi.definition.faqId);
+  if (raw) defText = { q: defi.definition.heading ?? raw.q, a: raw.a };
+} else if (defi?.definition?.text) defText = { q: defi.definition.heading, a: defi.definition.text };
+
+/* ── 05 · Kain en el sector ─────────────────────────────────────────────── */
+const ks = cp('kain-sector');
+const ksPlate = plateOf('kain-sector');
+const rKs = resolveSec('kain-sector', { srcsetMax: 2752 });
+const panel = boxAnchor(rKs, ['pantalla', 'telefono', 'superficie', 'tableta']);
+// §3.7: en móvil, si la superficie mide menos de 180 px de ancho (a 390 px), la UI baja al flujo del texto.
+const panelInPlateM = !!(panel?.m && panel.m[2] * 390 >= 180);
+const panelStyle = panel
+  ? `--ax:${panel.d[0]};--ay:${panel.d[1]};--aw:${panel.d[2]};--ah:${panel.d[3]};` +
+    (panel.m ? `--ax-m:${panel.m[0]};--ay-m:${panel.m[1]};--aw-m:${panel.m[2]};--ah-m:${panel.m[3]};` : '')
+  : '';
+// Columna del texto: empieza donde termina la zona segura de la placa (sujeto + panel ocupan el otro lado).
+const ksSafeX: number = (() => {
+  const raw = rKs?.id ? getPlate(rKs.id) : null;
+  const s = raw?.safe?.d?.[0];
+  if (!s) return 0.5;
+  return rKs!.mirror ? 1 - s[2] : s[0];
+})();
+// Móvil `split`: el resto del contenido (chat en línea, límite, nota) empieza DEBAJO de los pies del sujeto (caja subject.m),
+// nunca encima: Kain siempre de cuerpo completo y ningún cristal sobre el sujeto (§3.6, §0.1-5).
+const ksSubjBottomM: number = (() => {
+  const raw = rKs?.id ? getPlate(rKs.id) : null;
+  const b = raw?.subject?.m?.[3];
+  return typeof b === 'number' && b > 0.5 && b <= 1 ? b : 1;
+})();
+const ksLayout = rKs?.layout ?? ksPlate?.layout ?? 'subject-left';
+const ksCol = ksLayout === 'subject-left' && ksSafeX > 0.55 ? 'ind-kain--c8' : '';
+const chatScript: string = ks?.chat?.script ?? (Array.isArray(ks?.chat?.scripts) ? ks.chat.scripts[0] : null) ?? 'default';
+
+/* ── 06 · cifras ────────────────────────────────────────────────────────── */
+const cif = cp('cifras');
+const cifIds: MetricId[] = (cif?.rows ?? []).map((r: any) => r.metricId).filter((m: string) => (METRICS as any)[m]);
+const caseHero = (href?: string) => {
+  if (!href) return undefined;
+  const pg = pages.find((x: any) => x.url === href.split('#')[0]) as any;
+  return pg?.sections?.find((s: any) => s.plate)?.plate?.id as string | undefined;
+};
+const stillFor: Partial<Record<MetricId, string>> = {};
+for (const id of cifIds) stillFor[id] = caseHero((METRICS as any)[id].href) ?? heroPlate?.id;
+
+/* ── 07 · servicios (Still ×3) ──────────────────────────────────────────── */
+const svc = cp('servicios');
+const svcItems = (svc?.items ?? []).slice(0, 3).map((it: any) => ({ ...it, plate: caseHero(it.href) }));
+
+/* ── riel / FAQ / cierre ───────────────────────────────────────────────── */
+const datos = cp('datos');
+const faq = cp('faq');
+const cta = cp('cta-final');
+const ctaPlate = plateOf('cta-final');
+const order: string[] = (P.sections as any[]).map((s) => s.id);
+if (dev) {
+  const known = new Set(['hero', 'definicion', 'dolores', 'automatizamos', 'kain-sector', 'cifras', 'servicios', 'datos', 'faq', 'cta-final']);
+  for (const id of order) {
+    if (!known.has(id)) console.warn(`[IndustryTemplate] ${P.id}: sección "${id}" sin componente en la plantilla`);
+    else if (!C[id]) console.warn(`[IndustryTemplate] ${P.id}: falta el copy de la sección "${id}"`);
+  }
+}
+---
+<BaseLayout page={page} lcpPlate={lcpPlate} lcpSrcsetMax={2752} bodyClass="ind">
+  {order.map((id) => {
+    /* ── 01 + 02 · portada y definición en la misma toma (SharedTake) ── */
+    if (id === 'hero' && hero && heroPlate) return (
+      <SharedTake plate={heroPlate.id} fallbackPlate={heroPlate.launchFallback} mirror={!!heroPlate.mirror}>
+        <ImageSection
+          id="hero"
+          plate={heroPlate.id}
+          fallbackPlate={heroPlate.launchFallback}
+          mirror={!!heroPlate.mirror}
+          height="hero"
+          priority
+          take
+          encendido
+          class="ind-hero"
+          hud={[{ pos: 'tr', text: heroEyebrow.toUpperCase() }]}
+        >
+          <Breadcrumbs page={page} />
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>
+          <h1 id="hero-t" class="t-display-2" data-split set:html={headHtml(hero.h1, heroLit)} />
+          {hero.lede && <Copy as="p" class="t-lede t-lede--2" text={hero.lede} />}
+          <div class="ctas">
+            <Btn variant="primary" href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+            <Btn variant="ghost" href={wa} label={waLabel(hero)} />
+          </div>
+          {chipMetric && (
+            <p class="only-m ind-proof-m">
+              <span class="node" aria-hidden="true"></span>
+              <span><Metric id={chipMetric} variant="inline" label link /> <span class="ind-proof-m__ctx">· {hero.chip?.context ?? METRICS[chipMetric].ctx}</span></span>
+            </p>
+          )}
+          {hero.illus && <p slot="over" class="chip-illus ind-illus">{hero.illus}</p>}
+          {chip && (
+            <Fragment slot="anchors">
+              <span class="leader ind-leader" data-anchor={`${chip.target} chip`} data-lock aria-hidden="true"
+                style={`--ax:${chip.tx};--ay:${chip.ty};--bx:${chip.x};--by:${chip.y};`}></span>
+              <span class="anchor leader-node ind-leader-node" data-anchor={chip.target} data-lock aria-hidden="true"
+                style={`--ax:${chip.tx};--ay:${chip.ty};`}></span>
+              <div class:list={['ind-proof', `ind-proof--${chip.side}`]} data-anchor="chip" style={`--ax:${chip.x};--ay:${chip.y};`}>
+                <Metric id={chipMetric!} variant="chip" link class="anchor ind-proof__chip" />
+              </div>
+            </Fragment>
+          )}
+        </ImageSection>
+
+        {defi && order.includes('definicion') && (
+          <Intertitle id="definicion" rack aura="none" class="ind-def" labelledby={defText ? "definicion-d-q" : undefined}>
+            {defText ? (
+              <DefinitionBlock heading={defText.q} text={defText.a} label={defi.eyebrow ?? 'Definición'} headingLevel={2} id="definicion-d" />
+            ) : (
+              <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{defi.eyebrow}</p>
+            )}
+            {(defi.body ?? []).map((b: string) => <Copy as="p" class="t-lede t-lede--2 ind-def__body" text={b} data-reveal />)}
+          </Intertitle>
+        )}
+      </SharedTake>
+    );
+    if (id === 'definicion') return null; // va dentro de la toma compartida de la portada
+
+    /* ── 03 · la jornada ── */
+    if (id === 'dolores') {
+      const d = cp('dolores');
+      if (!d?.entries?.length) return null;
+      return (
+        <DayTimeline id="dolores" entries={d.entries} rack={rHero?.rack ?? undefined} class="ind-day">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{d.eyebrow}</p>
+          <h2 id="dolores-t" class="t-h2" data-split set:html={headHtml(d.h2)} />
+          {d.lede && <Copy as="p" class="t-lede t-lede--2 ind-day__lede" text={d.lede} data-reveal />}
+        </DayTimeline>
+      );
+    }
+
+    /* ── 04 · qué automatizamos ── */
+    if (id === 'automatizamos') {
+      const a = cp('automatizamos');
+      if (!a?.items?.length) return null;
+      return (
+        <Intertitle id="automatizamos" aura="isotipo" auraSide="right" class="ind-auto">
+          <div class="ind-auto__head">
+            <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{a.eyebrow}</p>
+            <h2 id="automatizamos-t" class="t-h2" data-split set:html={headHtml(a.h2)} />
+            {a.lede && <Copy as="p" class="t-lede t-lede--2" text={a.lede} data-reveal />}
+          </div>
+          <ScriptList rows={a.items.map((r: any) => ({ n: r.n, title: r.title, line: r.line, href: r.href }))} label={a.eyebrow} class="ind-auto__list" />
+        </Intertitle>
+      );
+    }
+
+    /* ── 05 · así trabaja Kain en el sector ── */
+    if (id === 'kain-sector') {
+      if (!ks || !ksPlate) return null;
+      return (
+        <ImageSection
+          id="kain-sector"
+          plate={ksPlate.id}
+          fallbackPlate={ksPlate.launchFallback}
+          mirror={!!ksPlate.mirror}
+          height="mid"
+          mobile={ksPlate.mobile === 'below' ? 'below' : 'split'}
+          push={{ anchor: 'mano', to: 1.12 }}
+          class={['ind-kain', ksCol].filter(Boolean).join(' ')}
+        >
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ks.eyebrow}</p>
+          <h2 id="kain-sector-t" class="t-h2" data-split set:html={headHtml(ks.h2)} />
+          {ks.lede && <Copy as="p" class="t-lede t-lede--2" text={ks.lede} />}
+          <div slot="more" class="ind-kain__more" style={`--sb:${ksSubjBottomM}`}>
+            {!panelInPlateM && <div class="only-m ind-kain__chat"><ChatSim mode="inline" script={chatScript} aura={false} note={false} /></div>}
+            {ks.limite && (
+              <p class="ind-limit"><span class="node" aria-hidden="true"></span><Copy text={ks.limite} /></p>
+            )}
+            {ks.note && <Copy as="p" class="t-micro ind-kain__note" text={ks.note} />}
+          </div>
+          {/* §3.7: en móvil (superficie < 180 px) la UI baja al flujo; la placa ya trae su cristal encendido */}
+          {panel && (
+            <div slot="anchors" class:list={['anchor anchor--panel ind-panel', !panelInPlateM && 'ind-panel--desk']} data-anchor={panel.name} data-lock
+              data-m={panelInPlateM ? undefined : 'none'} style={panelStyle}>
+              <ChatSim mode="registered" script={chatScript} note={false} />
+            </div>
+          )}
+        </ImageSection>
+      );
+    }
+
+    /* ── 06 · cifras ── */
+    if (id === 'cifras') {
+      if (!cif || !cifIds.length) return null;
+      return (
+        <Montage id="cifras" ids={cifIds} transversal={cif.transversal} stillFor={stillFor} class="ind-cifras">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cif.eyebrow}</p>
+          <h2 id="cifras-t" class="t-h2" data-split set:html={headHtml(cif.h2)} />
+          {cif.lede && <Copy as="p" class="t-lede t-lede--2 ind-cifras__lede" text={cif.lede} data-reveal />}
+          {cif.note && (
+            <EditorNote label={cif.noteLabel ?? 'Nota del editor'} class="ind-cifras__enote"><Copy as="p" text={cif.note} /></EditorNote>
+          )}
+          <Fragment slot="foot">
+            {(cif.links ?? []).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+          </Fragment>
+        </Montage>
+      );
+    }
+
+    /* ── 07 · servicios recomendados ── */
+    if (id === 'servicios') {
+      if (!svcItems.length) return null;
+      return (
+        <section id="servicios" class="ind-sec ind-svc" aria-labelledby="servicios-t">
+          <div class="frame ind-sec__head">
+            <div class="ind-sec__intro">
+              <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{svc.eyebrow}</p>
+              <h2 id="servicios-t" class="t-h2" data-split set:html={headHtml(svc.h2)} />
+            </div>
+          </div>
+          <div class="frame ind-svc__grid" data-reveal="stagger">
+            {svcItems.map((it: any) => (
+              <Still href={it.href} plate={it.plate} label={it.label} title={it.title} line={it.line} />
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    /* ── 08 · tus datos ── */
+    if (id === 'datos') {
+      if (!datos) return null;
+      return (
+        <Intertitle id="datos" aura="isotipo" auraSide="left" layout="split" class="ind-datos">
+          <Fragment slot="head">
+            <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{datos.eyebrow}</p>
+            <h2 id="datos-t" class="t-h2" data-split set:html={headHtml(datos.h2)} />
+            {datos.lede && <Copy as="p" class="t-lede t-lede--2" text={datos.lede} data-reveal />}
+          </Fragment>
+          {datos.items?.length > 0 && (
+            <ol class="ind-rules" role="list" data-reveal="stagger">
+              {datos.items.map((it: any, i: number) => (
+                <li class="ind-rules__item">
+                  <span class="ind-rules__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 class="ind-rules__t"><Copy text={it.title} /></h3>
+                  <Copy as="p" class="ind-rules__l" text={it.line} />
+                </li>
+              ))}
+            </ol>
+          )}
+          {datos.note && <Copy as="p" class="t-micro ind-datos__note" text={datos.note} data-reveal />}
+        </Intertitle>
+      );
+    }
+
+    /* ── 09 · preguntas frecuentes ── */
+    if (id === 'faq') {
+      if (!faq?.faqIds?.length) return null;
+      return (
+        <Intertitle id="faq" aura="ondas" layout="split" class="ind-faq">
+          <Fragment slot="head">
+            <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{faq.eyebrow}</p>
+            <h2 id="faq-t" class="t-h2" data-split set:html={headHtml(faq.h2)} />
+            {faq.footer && <Copy as="p" class="t-lede t-lede--2 ind-faq__foot" text={faq.footer} data-reveal />}
+            {faq.footer && <div class="ind-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} /></div>}
+          </Fragment>
+          <FAQAccordion ids={faq.faqIds} glass id="faq-list" label={faq.eyebrow} />
+        </Intertitle>
+      );
+    }
+
+    /* ── 10 · cierre ── */
+    if (id === 'cta-final') {
+      if (!cta) return null;
+      return (
+        <Dawn id="cta-final" plate={ctaPlate?.id ?? 'cta-amanecer'} mirror={!!ctaPlate?.mirror} fallbackPlate={ctaPlate?.launchFallback} layout={ctaPlate?.layout}>
+          {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
+          <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
+          {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
+          <div class="ctas">
+            {cta.micro ? (
+              <div class="cta-p">
+                <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+                <Copy as="p" class="t-micro btn-micro" text={cta.micro} data-allow-number />
+              </div>
+            ) : (
+              <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+            )}
+            <Btn variant="ghost" href={wa} label={waLabel(cta)} />
+          </div>
+        </Dawn>
+      );
+    }
+    return null;
+  })}
+</BaseLayout>
+
+<script>
+  // Las alturas de la página cambian después del arranque (el FAQ se pliega con transición al poner html.ui-ready,
+  // preguntas que se abren, guiones de chat): sin volver a medir, los disparadores de abajo (p. ej. el cierre) quedan
+  // corridos y su texto entra tarde. Usa la API pública de cine (window.__cine.refresh), con rebote.
+  const main = document.getElementById('main');
+  if (main && 'ResizeObserver' in window) {
+    let t = 0;
+    let last = main.offsetHeight;
+    new ResizeObserver(() => {
+      const h = main.offsetHeight;
+      if (Math.abs(h - last) < 2) return;
+      last = h;
+      clearTimeout(t);
+      t = window.setTimeout(() => (window as any).__cine?.refresh(), 220);
+    }).observe(main);
+  }
+</script>

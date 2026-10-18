@@ -1,0 +1,199 @@
+---
+// MegaMenu — "Sala de proyección" (ESPEC §4.2). Un panel por entrada; vive dentro de su <li> en el Header
+// para que el orden de tabulación sea disparador → enlaces del panel → siguiente disparador.
+// Todos los enlaces están en el HTML estático; el JS (scripts/nav/mega.ts) solo abre, cierra y cambia la pantalla.
+// Props: panel ('servicios' | 'industrias' | 'casos' | 'empresa' | 'recursos'), current (URL de la página actual).
+import { METRICS, PRICE_FROM, type MetricId } from '../../lib/metrics';
+import { MEGA, STAGES, metricFor, stillOf, shortName, type NavLink } from '../layout/navData';
+import { ICONS, GLYPH_LABEL } from './icons';
+import { SITE } from '../../lib/site';
+
+interface Props { panel: 'servicios' | 'industrias' | 'casos' | 'empresa' | 'recursos'; current?: string }
+const { panel, current = '' } = Astro.props;
+const data: any = (MEGA as any)[panel];
+const label: string = data?.label ?? panel;
+
+type Screen = { href: string; still: string; label: string; title: string; line: string; hud: string };
+const scr = (href: string, label: string, title: string, line = '', still?: string): Screen => ({
+  href, still: still ?? stillOf(href), label, title, line, hud: href.replace(/^https?:\/\//, ''),
+});
+
+// Pantalla por defecto de cada panel (§4.2)
+const defaults: Record<string, Screen> = {
+  servicios: scr(data?.feature?.href ?? '/kain/', 'Kain · Atender', data?.feature?.label ?? 'Conoce a Kain', data?.feature?.description ?? '', data?.feature?.image ? `${data.feature.image}-640` : undefined),
+  industrias: scr('/industrias/salud/', 'Industria · Salud', 'Salud y clínicas', 'Citas agendadas y confirmadas 24/7'),
+  casos: scr('/casos/clinica-dental-monterrey/', 'Caso · Clínica dental · Monterrey', 'Clínica dental en Monterrey', METRICS['dental-citas'].label),
+  empresa: scr('/nosotros/', 'Empresa · Guadalajara, Jalisco', 'El equipo de Ingeniak', 'Av. Punto Sur 312, Tlajomulco de Zúñiga'),
+  recursos: scr('/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/', 'Artículo · Recursos', '¿Cuánto cuesta un agente de IA?', 'Guías sin humo para decidir mejor'),
+};
+const def = defaults[panel];
+const isCur = (href: string) => href === current;
+let i = 0; // índice de escalonado (stagger 20 ms)
+const metricLine = (id?: MetricId) => (id ? METRICS[id] : undefined);
+const caseCtx = (id?: MetricId) => (id ? METRICS[id].ctx : '');
+const VKTOR = [['V', 'Verify'], ['K', 'Koncept'], ['T', 'Transform'], ['O', 'Operate'], ['R', 'Rise']];
+const footLinks = (data?.footerLinks ?? []).filter((l: any) => !l.priceFrom && !(panel === 'servicios' && l.href === '/metodologia/'));
+const hasFoot = footLinks.length > 0 || ['industrias', 'casos', 'empresa', 'recursos'].includes(panel) || (data?.footerLinks ?? []).some((l: any) => l.priceFrom);
+---
+<div class="mm-panel" id={`mm-${panel}`} role="region" aria-label={label} data-mm-panel={panel} data-layout={panel === 'servicios' ? 'stages' : 'list'}>
+  <div class="mm-panel__in">
+    {panel === 'servicios' && (
+      <div class="mm-main mm-stages" data-stages style={`--n:${STAGES.length}`}>
+        <span class="mm-sys" aria-hidden="true"><span class="mm-sys__fill"></span></span>
+        {STAGES.map((col, c) => (
+          <div class="mm-col" data-col={c} data-stage={c + 1}>
+            <span class="mm-col__node" aria-hidden="true"></span>
+            <p class="mm-col__head" style={`--i:${i++}`} data-i>
+              <svg class="ico mm-col__glyph" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[col.glyph] ?? ''} />
+              <span class="mm-col__label"><span class="mm-col__n" aria-hidden="true">{String(c + 1).padStart(2, '0')}</span>{GLYPH_LABEL[col.glyph] ?? col.title}</span>
+            </p>
+            {col.description && <p class="mm-col__desc" style={`--i:${i}`} data-i>{col.description}</p>}
+            <ul class="mm-list" role="list">
+              {col.items.map((it: NavLink) => {
+                const mid = metricFor(it);
+                const m = metricLine(mid);
+                const s = scr(it.href, it.external ? 'Plataforma · app.kain.mx' : `${it.href === '/kain/' ? 'Kain' : 'Servicio'} · ${GLYPH_LABEL[col.glyph] ?? col.title}`, it.label, it.description ?? '');
+                return (
+                  <li style={`--i:${i++}`} data-i>
+                    <a class="mm-link" href={it.href} aria-current={isCur(it.href) ? 'page' : undefined}
+                      {...(it.external ? { target: '_blank', rel: 'noopener' } : {})}
+                      data-still-src={s.still} data-screen-label={s.label} data-screen-title={s.title} data-screen-line={s.line} data-stage={c + 1}>
+                      <span class="mm-link__node" aria-hidden="true"></span>
+                      <span class="mm-link__name">{it.label}{it.external && <svg class="ico mm-ext" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.external} />}{it.external && <span class="sr-only"> (se abre en otra pestaña)</span>}{it.badge && <span class="mm-badge">{it.badge}</span>}</span>
+                      {it.description && <span class="mm-link__line">{it.description}</span>}
+                      {m && mid && <span class="mm-link__metric"><b data-metric={mid}>{m.value}</b> {m.label}</span>}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {panel === 'industrias' && (
+      <div class="mm-main mm-grid2">
+        <ul class="mm-list mm-list--2" role="list">
+          {(data?.items ?? []).map((it: NavLink) => {
+            const mid = metricFor(it); const m = metricLine(mid);
+            return (
+              <li style={`--i:${i++}`} data-i>
+                <a class="mm-link" href={it.href} aria-current={isCur(it.href) ? 'page' : undefined}
+                  data-still-src={stillOf(it.href)} data-screen-label={`Industria · ${it.label}`} data-screen-title={it.label} data-screen-line={it.description ?? ''}>
+                  <span class="mm-link__node" aria-hidden="true"></span>
+                  <span class="mm-link__name">{it.label}</span>
+                  {it.description && <span class="mm-link__line">{it.description}</span>}
+                  {m && mid && <span class="mm-link__metric"><b data-metric={mid}>{m.value}</b> {m.label}</span>}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    )}
+
+    {panel === 'casos' && (
+      <div class="mm-main">
+        <ol class="mm-cases" role="list">
+          {(data?.items ?? []).map((it: NavLink) => {
+            const mid = metricFor(it); const m = metricLine(mid);
+            return (
+              <li style={`--i:${i++}`} data-i>
+                <a class="mm-case" href={it.href} aria-current={isCur(it.href) ? 'page' : undefined}
+                  data-still-src={stillOf(it.href)} data-screen-label={`Caso · ${caseCtx(mid)}`} data-screen-title={it.label} data-screen-line={m ? m.label : ''}>
+                  <span class="mm-case__fig">{m && mid ? <span data-metric={mid}>{m.value}</span> : null}</span>
+                  <span class="mm-case__txt"><span class="mm-case__name">{it.label}</span><span class="mm-case__ctx">{m ? `${m.label} · ${caseCtx(mid)}` : ''}</span></span>
+                  <svg class="ico mm-case__arrow" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} />
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    )}
+
+    {(panel === 'empresa' || panel === 'recursos') && (
+      <div class="mm-main mm-grid2">
+        <ul class="mm-list mm-list--2" role="list">
+          {(data?.items ?? []).map((it: NavLink) => {
+            const isArt = it.href.startsWith('/blog/') && it.href !== '/blog/';
+            const line = it.description ?? (isArt ? 'Artículo' : '');
+            const lab = panel === 'empresa' ? `Empresa · ${it.label}` : isArt ? 'Artículo · Recursos' : `Recursos · ${it.label}`;
+            return (
+              <li style={`--i:${i++}`} data-i>
+                <a class="mm-link" href={it.href} aria-current={isCur(it.href) ? 'page' : undefined}
+                  data-still-src={stillOf(it.href)} data-screen-label={lab} data-screen-title={it.label} data-screen-line={line}>
+                  <span class="mm-link__node" aria-hidden="true"></span>
+                  <span class="mm-link__name">{it.label}</span>
+                  {line && <span class:list={['mm-link__line', isArt && !it.description && 'mm-link__line--tag']}>{line}</span>}
+                </a>
+              </li>
+            );
+          })}
+          {panel === 'recursos' && (
+            <li style={`--i:${i++}`} data-i>
+              <button class="mm-link mm-link--search" type="button" data-search-open>
+                <span class="mm-link__node" aria-hidden="true"></span>
+                <span class="mm-link__name">Busca o pregúntale a Kain <kbd class="kbd" data-kbd-mod>⌘K</kbd></span>
+                <span class="mm-link__line">Páginas, casos y respuestas cortas</span>
+              </button>
+            </li>
+          )}
+        </ul>
+      </div>
+    )}
+
+    <div class="mm-screen-col" style={`--i:${i++}`} data-i>
+      <a class="mm-screen" href={def.href} data-still data-mm-screen tabindex="-1" aria-hidden="true"
+        data-default-src={def.still} data-default-label={def.label} data-default-title={def.title} data-default-line={def.line} data-default-href={def.href}>
+        <span class="mm-screen__media">
+          <img class="mm-screen__img is-on" data-src={def.still} alt="" width="640" height="274" decoding="async" />
+          <img class="mm-screen__img" alt="" width="640" height="274" decoding="async" />
+        </span>
+        <span class="mm-screen__copy">
+          <span class="mm-screen__label" data-screen="label">{def.label}</span>
+          <span class="mm-screen__title" data-screen="title">{def.title}</span>
+          <span class="mm-screen__line" data-screen="line">{def.line}</span>
+        </span>
+      </a>
+      <p class="mm-screen__hud" aria-hidden="true"><span class="mm-screen__rec"></span><span data-screen="hud">{def.hud}</span></p>
+      {panel === 'servicios' && (
+        <div class="mm-vktor">
+          <p class="mm-vktor__h">Cómo lo implementamos</p>
+          <div class="mm-vktor__a">
+            <span class="mm-vktor__word" aria-hidden="true">{VKTOR.map(([l]) => <span class="mm-vktor__l">{l}</span>)}<span class="mm-vktor__tm">™</span></span>
+            <span class="mm-vktor__names"><span class="sr-only">Metodología VKTOR™: </span>{VKTOR.map(([, n]) => n).join(' · ')}</span>
+          </div>
+          <a class="mm-foot__a" href="/metodologia/">Conoce el protocolo completo<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a>
+        </div>
+      )}
+    </div>
+
+    {hasFoot && <div class="mm-foot" style={`--i:${i++}`} data-i>
+      <ul class="mm-foot__links" role="list">
+        {footLinks.map((l: any) => (
+          <li><a class="mm-foot__a" href={l.href}>{l.label}<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>
+        ))}
+        {panel === 'industrias' && (
+          <li class="mm-foot__note">También trabajamos con e-commerce, retail, HoReCa y logística <a class="mm-foot__a" href="/casos/">Ver casos<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>
+        )}
+        {panel === 'casos' && (
+          <li><a class="mm-foot__a" href="/casos/#grid">Registro de resultados<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>
+        )}
+        {panel === 'empresa' && (
+          <>
+            <li><a class="mm-foot__a" href={`mailto:${SITE.email}`}>{SITE.email}<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>
+            <li class="mm-foot__facts"><b class="mm-foot__m" data-metric="sistemas">{METRICS.sistemas.value}</b> {METRICS.sistemas.label} · <b class="mm-foot__m" data-metric="paises">{METRICS.paises.value}</b> {METRICS.paises.label}</li>
+          </>
+        )}
+        {panel === 'recursos' && (
+          <li><a class="mm-foot__a" href="/blog/">Todos los artículos<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>
+        )}
+      </ul>
+      {(data?.footerLinks ?? []).filter((l: any) => l.priceFrom).map((l: any) => (
+        <a class="mm-price" href={l.href} data-allow-number><span class="mm-price__node" aria-hidden="true"></span>Planes {PRICE_FROM}</a>
+      ))}
+    </div>}
+  </div>
+</div>

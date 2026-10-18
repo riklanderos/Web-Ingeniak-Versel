@@ -1,0 +1,380 @@
+---
+// ConversionTemplate · T-CONVERSION (ESPEC-v2 §5.11, §12.2 R3/R7/R10/R14). Hoy sirve /discovery/.
+// Data-driven: recorre page.sections (sitemap.json) en su orden y pinta cada sección con el texto de
+// src/content/paginas/<page.id>.json (área copy). El tipo de escena sale de sitemap.plate.component y de los campos
+// del copy (_ESQUEMA.md §6), así otra página de conversión con la misma forma se pinta sin tocar este archivo.
+//
+//   hero        ImageSection hero (priority, mini firma) · Breadcrumbs · eyebrow · H1 dos voces · lede · CTA directo a la agenda
+//   VideoScene  ImageSection mid subject-center (placa a sangre = póster) · H2 abajo a la izquierda · reproducir abajo a la
+//               derecha · el VSL se abre en <dialog> a pantalla completa (gancho [data-video="modal"] de ui.ts). Sin caja.
+//   StepRow     Intertitle + ScriptList variant="steps"
+//   dodont      Intertitle + TwoColumnScript (sí en cian / no en ámbar) + "En la llamada revisamos"
+//   fit         ImageSection mid con placa (móvil 'split', R3): intro arriba, listas en el slot "more"
+//   intertitle  Intertitle split + .btn (después de la llamada)
+//   faq         Intertitle split + FAQAccordion (FAQPage lo emite SEOHead con las mismas ids)
+//   dawn        Dawn con la placa de cierre de la página
+//
+// Reglas: un solo azul por pantalla (Btn primary = data-primary); en /discovery/ todo primario va directo a la agenda
+// (page.primaryCta.href); encabezado reducido, sin riel, KainPill ni barra móvil (BaseLayout con nav="reduced").
+// R10: los enlaces a agenda.ingeniak.tech conservan utm_* de llegada y agregan src=<folio>-<sección> al hacer clic,
+// y emiten document → "ingeniak:track" {name:"agenda_click"}.
+import fs from 'node:fs';
+import path from 'node:path';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageSection from '../cine/ImageSection.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Dawn from '../cine/Dawn.astro';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import Icon from '../ui/Icon.astro';
+import ScriptList from '../ui/ScriptList.astro';
+import TwoColumnScript from '../ui/TwoColumnScript.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import { annotateFigures, tokensToText } from '../ui/ui-data';
+import { plateReady } from '../cine/plate';
+import { getCopy, getPlate, waHref, SITE, type Page } from '../../lib/site';
+
+interface Props {
+  page: Page;
+  copy?: any;
+  /** VSL de la escena de video (R14: 720p, se descarga solo al hacer clic). */
+  vsl?: { src: string; captions?: string; fallbackPoster?: string };
+}
+const { page: pageProp, copy: copyProp, vsl = { src: '/video/discovery-vsl-720.mp4', fallbackPoster: '/img/discovery-vsl-poster.webp' } } = Astro.props;
+const page = pageProp as any;
+const copy = copyProp ?? getCopy(page.id);
+const S: Record<string, any> = copy.sections ?? {};
+
+// ── utilidades ──────────────────────────────────────────────────────────────
+const ann = (s?: string | null) => (s ? annotateFigures(s) : '');
+const plain = (s?: string | null) => (s ? tokensToText(s) : '');
+const tone = (t?: string): 'cyan' | 'amber' | 'muted' | undefined =>
+  !t ? undefined : /^(cian|cyan)$/i.test(t) ? 'cyan' : /^(ambar|ámbar|amber)$/i.test(t) ? 'amber' : 'muted';
+const agenda: string = page.primaryCta?.href ?? SITE.agenda;
+const primaryHref = (c: any) => c?.ctaPrimary?.href ?? agenda;
+const primaryLabel = (c: any) => c?.ctaPrimary?.label ?? page.primaryCta?.label ?? 'Agendar mi Discovery Session';
+// waMessage = sitemap.secondaryCta.waMessage (atribución por página, R10)
+const waOfSec = (c: any) => waHref(c?.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage ?? 'Hola Kain');
+const waLabel = (c: any) => c?.ctaSecondary?.label ?? page.secondaryCta?.label ?? 'Escríbele a Kain';
+
+/** Placa realmente usada (la de la sección o su respaldo de lanzamiento) — para la precarga LCP de BaseLayout. */
+function usedPlate(pl: any): string | undefined {
+  if (!pl?.id) return undefined;
+  if (plateReady(pl.id)) return pl.id;
+  const fb = typeof pl.launchFallback === 'string' ? pl.launchFallback : pl.launchFallback?.plate;
+  return fb && plateReady(fb) ? fb : undefined;
+}
+const fbOf = (pl: any) => pl?.launchFallback ?? undefined;
+// Los chips de portada repiten el eyebrow ("Llamada 1:1 · 30 minutos · sin costo") y el lede ("sugerencias concretas"):
+// se pintan solo si la portada no trae eyebrow, para no decir lo mismo tres veces en el primer pantallazo.
+const showChips = (c: any) => Array.isArray(c?.chips) && c.chips.length > 0 && !c.eyebrow;
+// La firma del sitio ya cierra el footer: la del cierre se pinta solo si es distinta (sin repetir la misma frase en una pantalla).
+const siteFirma: string | undefined = (() => { try { return getCopy('_comun')?.firma; } catch { return undefined; } })();
+
+/** Duración del VSL leída del átomo mvhd del MP4 en el build ("3:00"); null si no se puede leer. */
+function mp4Duration(publicPath: string): string | null {
+  try {
+    const b = fs.readFileSync(path.join(process.cwd(), 'public', publicPath));
+    const i = b.indexOf('mvhd');
+    if (i < 0) return null;
+    const v = b[i + 4];
+    const ts = v === 0 ? b.readUInt32BE(i + 16) : b.readUInt32BE(i + 24);
+    const du = v === 0 ? b.readUInt32BE(i + 20) : Number(b.readBigUInt64BE(i + 28));
+    const s = Math.round(du / ts);
+    if (!isFinite(s) || s <= 0) return null;
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  } catch { return null; }
+}
+
+/** Primera voz con la palabra de luz (.lit, UNA por página, §2.3): la del copy (`lit`) o la última palabra de la primera voz. */
+function withLit(text: string, lit?: string | false): string {
+  const html = ann(text);
+  if (lit === false) return html;
+  const word = lit ?? (text.trim().split(/\s+/).pop() ?? '').replace(/[.,;:¿?¡!]+$/, '');
+  if (!word || word.includes('{{')) return html;
+  const i = html.lastIndexOf(word);
+  return i < 0 ? html : `${html.slice(0, i)}<span class="lit">${word}</span>${html.slice(i + word.length)}`;
+}
+
+// ── tipo de escena por sección ──────────────────────────────────────────────
+type Kind = 'hero' | 'video' | 'steps' | 'fit' | 'dodont' | 'faq' | 'dawn' | 'intertitle';
+function kindOf(s: any, c: any): Kind {
+  const comp = `${s.plate?.component ?? ''} ${c?._componente ?? ''}`;
+  if (s.id === 'hero' || /ImageSection hero/.test(s.plate?.component ?? '')) return 'hero';
+  if (/Dawn/.test(comp) || s.id === 'cta-final') return 'dawn';
+  if (/VideoScene/.test(comp)) return 'video';
+  if (c?.faqIds?.length || s.id === 'faq') return 'faq';
+  if (/StepRow|variant=steps/.test(comp)) return 'steps';
+  if (c?.left && c?.right) return s.plate?.id ? 'fit' : 'dodont';
+  return 'intertitle';
+}
+const sections = ((page.sections ?? []) as any[])
+  .filter((s) => s.id && s.status !== 'conditional' && S[s.id] && !S[s.id]._omitir)
+  .map((s) => ({ s, c: S[s.id], kind: kindOf(s, S[s.id]) }));
+
+// Auras alternadas para los intertítulos (ninguna zona > 40vh sin luz, §5)
+const auraCycle: { aura: 'isotipo' | 'ondas'; side: 'left' | 'right' | 'center' }[] = [
+  { aura: 'isotipo', side: 'right' }, { aura: 'ondas', side: 'center' }, { aura: 'isotipo', side: 'left' }, { aura: 'ondas', side: 'center' },
+];
+let auraI = 0;
+const nextAura = () => auraCycle[auraI++ % auraCycle.length];
+
+const hero = sections.find((x) => x.kind === 'hero');
+const lcpPlate = usedPlate(hero?.s.plate);
+const lcpMax = hero?.s.plate?.srcsetMax ?? getPlate(lcpPlate ?? '')?.srcsetMax ?? 2752;
+const vslDur = mp4Duration(vsl.src);
+const folio = page.folio ?? page.id;
+---
+<BaseLayout page={page} nav="reduced" lcpPlate={lcpPlate} lcpSrcsetMax={lcpMax} bodyClass="cv" rail={false}>
+  {sections.map(({ s, c, kind }) => {
+    const pl = s.plate ?? {};
+    const tid = `${s.id}-t`;
+    const H2 = () => (
+      <h2 id={tid} class="t-h2" data-split>
+        <Fragment set:html={ann(c.h2?.text)} />{c.h2?.soft && <> <span class="soft" set:html={ann(c.h2.soft)} /></>}
+      </h2>
+    );
+    const Eyebrow = (amber = false) =>
+      c.eyebrow ? (
+        <p class:list={['t-label', 'eyebrow', amber ? 't-label--amber' : 't-label--cyan']}>
+          <span class:list={['node', amber && 'node--amber']} aria-hidden="true"></span>{c.eyebrow}
+        </p>
+      ) : null;
+
+    /* ───────────── 01 · Portada ───────────── */
+    if (kind === 'hero') return (
+      <ImageSection id={s.id} plate={pl.id} fallbackPlate={fbOf(pl)} layout={pl.layout} mirror={pl.mirror} height="hero"
+        mobile="top" priority srcsetMax={pl.srcsetMax} class="cv-hero" data-folio={folio}>
+        <Breadcrumbs page={page} />
+        {/* §5.11: la etiqueta de la portada es un .chip-spec ("LLAMADA 1:1 · 30 MINUTOS · SIN COSTO"), no un eyebrow suelto */}
+        {c.eyebrow && <p class="chip-spec eyebrow cv-hero__chip" data-allow-number><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+        <h1 id={tid} class="cv-h1" data-split>
+          <span class="t-display-2" set:html={withLit(c.h1?.text ?? page.h1, c.h1?.lit)} />{c.h1?.soft && <> <span class="t-deck cv-h1__soft" set:html={ann(c.h1.soft)} /></>}
+        </h1>
+        <Copy text={c.lede} as="p" class="t-lede t-lede--2 cv-hero__lede" />
+        <div class="ctas">
+          <Btn variant="primary" href={primaryHref(c)} external={false} micro label={primaryLabel(c)} data-agenda-section={s.id} />
+          <Btn variant="ghost" href={waOfSec(c)} label={waLabel(c)} class="cv-wa" />
+        </div>
+        {(c.remate || showChips(c)) && (
+          <div class="cv-hero__foot">
+            <Copy text={c.remate} as="p" class="cv-remate" />
+            {showChips(c) && (
+              <ul class="cv-chips" role="list">
+                {c.chips.map((t: string) => <li class="chip-spec"><span class="node" aria-hidden="true"></span><span set:html={ann(t)} /></li>)}
+              </ul>
+            )}
+          </div>
+        )}
+      </ImageSection>
+    );
+
+    /* ───────────── VideoScene (R7, R14) ───────────── */
+    if (kind === 'video') {
+      const ready = plateReady(pl.id);
+      const p = ready ? getPlate(pl.id) : null;
+      const poster = p ? `${p.d.src}-1920.webp` : vsl.fallbackPoster;
+      const title = plain(`${c.h2?.text ?? ''} ${c.h2?.soft ?? ''}`).trim() || 'Video';
+      return (
+        <ImageSection id={s.id} plate={pl.id} fallbackPlate={fbOf(pl)} layout={pl.layout ?? 'subject-center'} mirror={pl.mirror}
+          height="mid" align="end" mobile="top" srcsetMax={pl.srcsetMax} alt="" class="cv-video">
+          {Eyebrow()}
+          {H2()}
+          <Copy text={c.lede} as="p" class="t-lede t-lede--2" />
+          <Fragment slot="aside">
+            <div class="vposter vposter--modal cv-play" data-video="modal" id={`${s.id}-vsl`}>
+              <button type="button" class="vposter__trigger cv-play__btn" data-video-open aria-haspopup="dialog" aria-controls={`${s.id}-vsl-dlg`}>
+                <span class="vposter__ring cv-play__ring" aria-hidden="true"><Icon name="play" size={26} /></span>
+                <span class="vposter__label cv-play__label">
+                  <span class="vposter__l1">{c.play ?? 'Reproducir el video'}</span>
+                  {vslDur && <span class="t-micro cv-play__dur" data-allow-number>VSL · {vslDur}</span>}
+                </span>
+                <span class="sr-only">: {title}</span>
+              </button>
+              <dialog class="vdialog" id={`${s.id}-vsl-dlg`} aria-label={title} data-video-dialog>
+                <div class="vdialog__bar">
+                  <p class="t-label vdialog__t"><span class="node" aria-hidden="true"></span>{title}</p>
+                  <button type="button" class="btn-icon vdialog__close" data-video-close aria-label={c.close ?? 'Cerrar el video'}><Icon name="close" size={18} /></button>
+                </div>
+                <div class="vdialog__stage">
+                  <video class="vposter__video" controls playsinline preload="none" poster={poster} width="1280" height="720" data-src={vsl.src} data-type="video/mp4">
+                    {vsl.captions && <track kind="subtitles" srclang="es" label="Español" src={vsl.captions} default />}
+                  </video>
+                </div>
+              </dialog>
+            </div>
+            {c.after && <Copy text={c.after} as="p" class="cv-play__after" />}
+          </Fragment>
+        </ImageSection>
+      );
+    }
+
+    /* ───────────── Pasos (StepRow) ───────────── */
+    if (kind === 'steps') {
+      const a = nextAura();
+      return (
+        <Intertitle id={s.id} aura={a.aura} auraSide={a.side} class="cv-steps">
+          {Eyebrow()}
+          {H2()}
+          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+          <ScriptList variant="steps" label={plain(c.h2?.text)} rows={(c.items ?? []).map((it: any) => ({ n: it.n, title: plain(it.title), line: plain(it.line) }))} />
+          {c.remate && <Copy text={c.remate} as="p" class="cv-remate cv-remate--lg" data-reveal />}
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── Qué es / qué no (TwoColumnScript sin placa) ───────────── */
+    if (kind === 'dodont') {
+      const a = nextAura();
+      const rv = c.revisamos;
+      return (
+        <Intertitle id={s.id} aura={a.aura} auraSide={a.side} class="cv-dodont">
+          <div class="cv-head">
+            {Eyebrow()}
+            {H2()}
+            {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+          </div>
+          <TwoColumnScript variant="dodont"
+            left={{ title: plain(c.left.title), items: c.left.items.map(plain), tone: tone(c.left.tone) ?? 'cyan' }}
+            right={{ title: plain(c.right.title), items: c.right.items.map(plain), tone: tone(c.right.tone) ?? 'amber' }} />
+          {rv && (
+            <div class="cv-review" data-reveal>
+              <div class="cv-review__head">
+                <h3 class="t-h3 cv-review__t">{rv.title}</h3>
+                {rv.line && (
+                  <p class="cv-review__line">
+                    {/VKTOR/.test(rv.line) && <span class="cv-letter" aria-hidden="true">V</span>}
+                    <span set:html={ann(rv.line)} />
+                  </p>
+                )}
+              </div>
+              <ol class="cv-review__list" role="list">
+                {rv.items.map((t: string, i: number) => (
+                  <li class="cv-review__row"><span class="cv-review__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><span set:html={ann(t)} /></li>
+                ))}
+              </ol>
+            </div>
+          )}
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── Para quién (ImageSection con placa + listas, móvil split) ───────────── */
+    if (kind === 'fit') return (
+      <ImageSection id={s.id} plate={pl.id} fallbackPlate={fbOf(pl)} layout={pl.layout} mirror={pl.mirror} height="mid"
+        align="start" mobile={(pl.mobile as any) ?? 'split'} srcsetMax={pl.srcsetMax} class="cv-fit">
+        {Eyebrow()}
+        {H2()}
+        <Copy text={c.lede} as="p" class="t-lede t-lede--2" />
+        <Fragment slot="more">
+          <div class="cv-fit__lists">
+          <TwoColumnScript variant="fit" headingLevel={3}
+            left={{ title: plain(c.left.title), items: c.left.items.map(plain), tone: tone(c.left.tone) ?? 'cyan' }}
+            right={{ title: plain(c.right.title), items: c.right.items.map(plain), tone: tone(c.right.tone) ?? 'amber' }} />
+          </div>
+        </Fragment>
+      </ImageSection>
+    );
+
+    /* ───────────── Preguntas (FAQAccordion; FAQPage en SEOHead con las mismas ids) ───────────── */
+    if (kind === 'faq') {
+      const a = { aura: 'ondas' as const, side: 'center' as const };
+      return (
+        <Intertitle id={s.id} aura={a.aura} auraSide={a.side} layout="split" class="cv-faq">
+          <Fragment slot="head">
+            {Eyebrow()}
+            {H2()}
+            {c.footer && <Copy text={c.footer} as="p" class="t-lede t-lede--2 cv-faq__more" data-reveal />}
+            {c.ctaSecondary && <div class="ctas cv-faq__cta" data-reveal><Btn variant="ghost" href={waOfSec(c)} label={waLabel(c)} /></div>}
+          </Fragment>
+          <FAQAccordion ids={c.faqIds ?? []} glass headingLevel={3} label={plain(c.h2?.text) || 'Preguntas frecuentes'} id={`${s.id}-list`} />
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── Cierre (Dawn con la placa propia de la página) ───────────── */
+    if (kind === 'dawn') return (
+      <Dawn id={s.id} plate={pl.id ?? 'cta-amanecer'} mirror={pl.mirror} layout={pl.layout} fallbackPlate={fbOf(pl) ?? { plate: 'cta-amanecer', mirror: !!pl.mirror }} class="cv-dawn">
+        {Eyebrow()}
+        {H2()}
+        {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+        {c.quote && <Copy text={c.quote} as="p" class="cv-quote" />}
+        <div class="ctas">
+          {c.ctaPrimary !== null && (
+            <div class="cta-p">
+              <Btn variant="primary" href={primaryHref(c)} external={false} label={primaryLabel(c)} data-agenda-section={s.id} />
+              <p class="t-micro btn-micro cv-micro" data-allow-number set:html={ann(c.micro ?? '30 min · 1:1 · Google Meet · sin costo')} />
+            </div>
+          )}
+          {c.ctaSecondary && <Btn variant="ghost" href={waOfSec(c)} label={waLabel(c)} />}
+        </div>
+        {c.firma && c.firma !== siteFirma && <p class="cv-firma t-label"><span class="node" aria-hidden="true"></span>{c.firma}</p>}
+      </Dawn>
+    );
+
+    /* ───────────── Intertítulo con CTA (después de la llamada) ───────────── */
+    const a = nextAura();
+    return (
+      <Intertitle id={s.id} aura={a.aura} auraSide={a.side} layout="split" class="cv-after">
+        <Fragment slot="head">
+          {Eyebrow()}
+          {H2()}
+        </Fragment>
+        {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+        {(c.body ?? []).map((p: string) => <Copy text={p} as="p" class="cv-body" data-reveal />)}
+        {c.remate && <Copy text={c.remate} as="p" class="cv-remate cv-remate--lg" data-reveal />}
+        {(c.ctaPrimary || c.ctaSecondary) && (
+          <div class="ctas cv-after__ctas" data-reveal>
+            {c.ctaPrimary && <Btn variant="primary" href={primaryHref(c)} external={false} micro label={primaryLabel(c)} data-agenda-section={s.id} />}
+            {c.ctaSecondary && <Btn variant="ghost" href={waOfSec(c)} label={waLabel(c)} />}
+          </div>
+        )}
+      </Intertitle>
+    );
+  })}
+</BaseLayout>
+
+<script>
+  // R10 · Atribución hacia la agenda: conserva utm_* de llegada y agrega src=<folio>-<sección> (sin datos personales).
+  // Si otra página ya guardó el primer clic en sessionStorage['ingeniak-src'], ese manda (la página donde la persona hizo clic primero).
+  const UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+  const read = (k: string): string | null => { try { return sessionStorage.getItem(k); } catch { return null; } };
+  const write = (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch {} };
+  const here = new URLSearchParams(location.search);
+  if (UTM.some((k) => here.has(k)) && !read('ingeniak-utm')) {
+    write('ingeniak-utm', JSON.stringify(Object.fromEntries(UTM.filter((k) => here.has(k)).map((k) => [k, here.get(k)]))));
+  }
+  const folio = document.querySelector<HTMLElement>('[data-folio]')?.dataset.folio ?? 'conv';
+  document.addEventListener('click', (e) => {
+    const a = (e.target as Element | null)?.closest?.('a[href*="agenda.ingeniak.tech"]') as HTMLAnchorElement | null;
+    if (!a) return;
+    const section = a.dataset.agendaSection ?? a.closest('section[id]')?.id ?? (a.closest('.hdr') ? 'header' : 'page');
+    let stored: Record<string, string> = {};
+    try { stored = JSON.parse(read('ingeniak-utm') || '{}'); } catch {}
+    try {
+      const url = new URL(a.href);
+      for (const k of UTM) { const v = here.get(k) ?? stored[k]; if (v && !url.searchParams.has(k)) url.searchParams.set(k, v); }
+      const first = read('ingeniak-src');
+      url.searchParams.set('src', first || `${folio}-${section}`);
+      a.href = url.toString();
+    } catch {}
+    try { document.dispatchEvent(new CustomEvent('ingeniak:track', { detail: { name: 'agenda_click', page: location.pathname, section } })); } catch {}
+  }, true);
+
+  // Red de seguridad de ScrollTrigger: el FAQ se pliega (0.45 s) DESPUÉS de que cine midió las escenas, y todo lo que va
+  // debajo (el cierre Dawn) quedaba con disparadores ~1,700 px tarde en móvil (el texto del cierre no entraba).
+  // Si el alto de <main> cambia, se vuelve a medir (debounce). Pedido el arreglo global a ui/cine en peticiones.md.
+  const main = document.getElementById('main');
+  if (main && 'ResizeObserver' in window) {
+    let h = main.offsetHeight;
+    let t = 0;
+    new ResizeObserver(() => {
+      const nh = main.offsetHeight;
+      if (Math.abs(nh - h) < 2) return;
+      h = nh;
+      clearTimeout(t);
+      t = window.setTimeout(() => (window as any).__cine?.refresh?.(), 180);
+    }).observe(main);
+  }
+</script>

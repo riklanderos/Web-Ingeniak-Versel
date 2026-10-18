@@ -1,0 +1,19 @@
+---
+// SumarioCover · ESPEC F7 / §5.1. Tres cifras confirmadas en la portada, cada una enlazada a su caso, con llamada .fn y nota de fuente.
+//   variant="cover" (por defecto): bloque absoluto arriba a la izquierda de la portada (top: hdr + 32px, alineado a .frame).
+//       Se oculta con max-height:879px, en móvil y en tablet vertical → su versión en fila vive en la sección 02.
+//   variant="row": la misma información en fila horizontal (sección 02, o donde no cabe en la portada).
+//   place="flow": desactiva el posicionamiento absoluto del cover (para demos o contenedores propios).
+import Metric from './Metric.astro';
+import { SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+
+interface Props { ids: [MetricId, MetricId, MetricId] | MetricId[]; variant?: 'cover' | 'row'; place?: 'cover' | 'flow'; label?: string; class?: string }
+const { ids, variant = 'cover', place = 'cover', label = 'Sumario', class: cls } = Astro.props;
+---
+<aside class:list={['sumario', `sumario--${variant}`, place === 'flow' && 'sumario--flow', cls]} aria-label={`${label}: resultados de casos reales`} data-ui-reveal>
+  {variant === 'row' && <p class="t-label sumario__h"><span class="node" aria-hidden="true"></span>Resultados de casos reales</p>}
+  <div class="sumario__lines">
+    {ids.map((id) => <Metric id={id} variant="cover" link fn="1" class="sumario__line" />)}
+  </div>
+  <p class="t-micro sumario__note"><sup class="fn">1</sup>{' '}{SOURCE_NOTE}. Nombres de clientes anonimizados.</p>
+</aside>

@@ -1,0 +1,67 @@
+{
+  "pageId": "_comun",
+  "url": null,
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-18",
+  "pendientes": [
+    "Firma del footer y del cierre de /discovery/ ('Construimos empresarios libres, no héroes cansados.'): pendiente de confirmar con el cliente (ESPEC §11-4)."
+  ],
+  "cta": {
+    "discovery": "Agenda tu Discovery Session",
+    "discoveryCorto": "Agenda tu Discovery",
+    "agenda": "Agendar mi Discovery Session",
+    "kain": "Escríbele a Kain",
+    "kainAria": "Escríbele a Kain por WhatsApp",
+    "micro": "30 min · 1:1 · Google Meet · sin costo",
+    "microCierre": "Sin costo · Sin compromiso · 30 minutos por Google Meet",
+    "kainPill": "Escríbele a Kain",
+    "kainPillEstado": "responde 24/7"
+  },
+  "sim": {
+    "label": "SIMULACIÓN",
+    "demo": "VISTA DEMO",
+    "typing": "escribiendo…",
+    "pause": "Pausar la conversación",
+    "play": "Reanudar la conversación",
+    "replay": "Ver de nuevo",
+    "horaIlustrativa": "Hora ilustrativa",
+    "ejemplo": "Ejemplo ilustrativo",
+    "illus": "Imagen ilustrativa del sector",
+    "tabsAria": "Elige un sector para ver la conversación",
+    "transcript": "Conversación completa"
+  },
+  "escena": {
+    "skip": "Saltar escena",
+    "skipAria": "Saltar esta escena y seguir leyendo",
+    "pauseAuto": "Pausar el cambio automático",
+    "playAuto": "Reanudar el cambio automático",
+    "railAria": "Secciones de esta página"
+  },
+  "fuente": {
+    "nota": "{{source}}",
+    "anonimos": "Nombres de clientes anonimizados.",
+    "llamada": "Fuente"
+  },
+  "enlaces": {
+    "verCaso": "Ver el caso",
+    "verIndustria": "Ver industria",
+    "verServicio": "Ver servicio",
+    "verTodosServicios": "Ver todos los servicios",
+    "verTodosCasos": "Ver todos los casos",
+    "registro": "Registro de resultados",
+    "metodologia": "Conoce el protocolo completo",
+    "appKain": "Entra a app.kain.mx",
+    "siguienteReportaje": "Siguiente reportaje"
+  },
+  "kain": {
+    "firma": "kain · by Ingeniak",
+    "slogan": "Tu negocio trabajando, sin depender más de ti.",
+    "limite": "Kain no da consejo médico ni legal: atiende, agenda, confirma, da seguimiento y conecta sistemas."
+  },
+  "faq": {
+    "otraDuda": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+  },
+  "firma": "Construimos empresarios libres, no héroes cansados."
+}

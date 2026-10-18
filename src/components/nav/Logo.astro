@@ -1,0 +1,16 @@
+---
+// Logo de Ingeniak en vector (imagotipo blanco = currentColor). Usa el <symbol> que BrandSymbols deja en la página.
+// Props: href ('/' por defecto; null = sin enlace), label (aria-label), class.
+interface Props { href?: string | null; label?: string; class?: string; mark?: 'imagotipo' | 'isotipo' }
+const { href = '/', label = 'Ingeniak, ir al inicio', class: cls, mark = 'imagotipo' } = Astro.props;
+const vb = mark === 'imagotipo' ? '0 0 696.84 95.45' : '0 0 188.5 95.45';
+---
+{href ? (
+  <a class:list={['logo', `logo--${mark}`, cls]} href={href} aria-label={label}>
+    <svg viewBox={vb} aria-hidden="true" focusable="false"><use href={`#ingk-${mark}`} /></svg>
+  </a>
+) : (
+  <span class:list={['logo', `logo--${mark}`, cls]} role="img" aria-label={label}>
+    <svg viewBox={vb} aria-hidden="true" focusable="false"><use href={`#ingk-${mark}`} /></svg>
+  </span>
+)}

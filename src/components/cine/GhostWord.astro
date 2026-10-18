@@ -1,0 +1,22 @@
+---
+// GhostWord · palabra gigante aria-hidden (F19, §3.12). Modos:
+//   outline-fill → contorno; cada letra se rellena al entrar su paso (scrub). data-ghost-step en cada letra.
+//   bleed        → sangra por el borde de la escena con deriva xPercent −6.
+// `registered`: vive dentro del stage de un ImageSection (coordenadas de la placa, detrás del recorte).
+interface Props {
+  text: string;
+  mode?: 'outline-fill' | 'bleed';
+  registered?: boolean;
+  side?: 'left' | 'right';
+  class?: string;
+}
+const { text, mode = 'bleed', registered = false, side = 'right', class: cls } = Astro.props;
+const letters = [...text];
+---
+<p
+  class:list={['ghost', `ghost--${mode}`, registered && 'ghost--reg', `ghost--${side}`, cls]}
+  aria-hidden="true"
+  data-ghost={mode}
+>{mode === 'outline-fill'
+  ? letters.map((l, i) => <span class="ghost__l" data-ghost-step={i}>{l}</span>)
+  : text}</p>

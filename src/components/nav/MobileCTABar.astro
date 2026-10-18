@@ -1,0 +1,18 @@
+---
+// MobileCTABar — barra inferior móvil (< 768 px), desde el segundo viewport (ESPEC §4.6).
+// Se oculta (CSS sobre atributos de <html> que pone scripts/nav/persist.ts):
+//   [data-primary-visible] (F15) · [data-dawn-visible] (cierre Dawn en pantalla) · [data-menu-open] · [data-sala] (pin) · [data-overlay]
+// Props: waHref (secondaryCta.href de la página). No se pinta en /discovery/ (BaseLayout nav="reduced").
+import { ICONS } from './icons';
+import { SITE } from '../../lib/site';
+interface Props { waHref?: string }
+const { waHref = SITE.waBase } = Astro.props;
+---
+<div class="mbar" data-mbar>
+  <a class="btn mbar__cta" href={SITE.discovery}>Agenda tu Discovery
+    <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span>
+  </a>
+  <a class="mbar__wa" href={waHref} target="_blank" rel="noopener" aria-label="Escríbele a Kain por WhatsApp">
+    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} /><span>WhatsApp</span>
+  </a>
+</div>

@@ -1,0 +1,436 @@
+---
+// CaseTemplate · T-CASE (ESPEC §5.4, §5.4.1, §12.2 R2/R8/R11). Caso de estudio como reportaje.
+// Datos: src/data/sitemap.json (URL, H1, placas, breadcrumbs, CTAs, publishGate) + src/content/paginas/<page.id>.json (texto).
+// Sirve a todos los casos: cada sección se pinta en el orden de sitemap.sections y solo si su copy existe y no trae `_omitir`.
+//   01 hero          ImageSection hero (persona a la derecha) + Breadcrumbs + H1 en 3 voces (kicker · cifra mega · texto)
+//   02 ficha         entradilla (.t-standfirst) + EntitySheet variant="case" (Quick Jump: el riel muestra etiquetas en casos)
+//   03 punto-partida Prose + nota al margen en ámbar
+//   04 cifra         CaseFigure (variante de §5.4.1; fijada +100 % en escritorio)
+//   05 implementacion SystemFlow (los nodos con confirmed:false no se publican)
+//   06 resultado     ImageSection mid (Kain del lado opuesto) + agenda registrada sobre el panel de cristal (SIMULACIÓN)
+//   07 vktor         VktorRail (hitos confirmados → "milestones"; si no, fases genéricas)
+//   08 replicar      ScriptList (3 filas) + enlace a la industria
+//   09 testimonio    condicional: SOLO con aprobación escrita (copy.testimonio.aprobacion + frase + nombre). Si no, no existe.
+//   10 relacionados  ScriptList (servicio e industria) + Still variant="next" (Siguiente reportaje)
+//   11 cta-final     Dawn
+// Puerta R2: si sitemap trae publishGate y el copy no lo marca como confirmado (copy.publishGate.ok === true),
+// la página sale como "caso breve": noindex,follow (fuera de sitemap.xml y llms-full.txt; el resto lo resuelve el build).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageSection from '../cine/ImageSection.astro';
+import CaseFigure from '../cine/CaseFigure.astro';
+import Dawn from '../cine/Dawn.astro';
+import { resolvePlate, type Resolved } from '../cine/plate';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import Metric from '../ui/Metric.astro';
+import EntitySheet from '../ui/EntitySheet.astro';
+import SystemFlow from '../ui/SystemFlow.astro';
+import VktorRail from '../ui/VktorRail.astro';
+import ScriptList from '../ui/ScriptList.astro';
+import Still from '../ui/Still.astro';
+import Icon from '../ui/Icon.astro';
+import Prose from '../content/Prose.astro';
+import Quote from '../content/Quote.astro';
+import { getCopy, getPage, getPlate, waHref, SITE, type Page } from '../../lib/site';
+import { SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+
+interface Props { page: Page }
+const page = Astro.props.page as any;
+const copy = getCopy(page.id);
+const C: Record<string, any> = copy.sections ?? {};
+const sitemapSecs: any[] = page.sections ?? [];
+const plateOf = (id: string) => sitemapSecs.find((s) => s.id === id)?.plate ?? null;
+
+// ── Qué secciones existen ─────────────────────────────────────────────────────
+// testimonio (y cualquier sección "conditional"): solo con aprobación escrita registrada en el copy.
+const approved = (c: any) => !!(c?.aprobacion && c?.frase && c?.nombre);
+const shows = (s: any) => {
+  const c = C[s.id];
+  if (!c || c._omitir) return false;
+  if (s.status === 'conditional') return approved(c);
+  return true;
+};
+const order: string[] = sitemapSecs.filter(shows).map((s) => s.id);
+
+// ── Puerta de publicación (R2) ───────────────────────────────────────────────
+const breve = !!page.publishGate && copy.publishGate?.ok !== true;
+
+// ── Utilidades ───────────────────────────────────────────────────────────────
+const wa = (msg?: string) => (msg ? waHref(msg) : page.secondaryCta?.href ?? waHref('Hola Kain, quiero información.'));
+const TOKEN = /\{\{metric:([a-z0-9-]+)(?:\|full)?\}\}/g;
+const metricIdsIn = (s: string): MetricId[] => [...String(s ?? '').matchAll(TOKEN)].map((m) => m[1] as MetricId);
+const H2 = (h: any) => h ?? { text: '' };
+// Duración de la Discovery ("30 minutos") en titulares: no es cifra comercial → data-allow-number (check-cifras, §8.6).
+const esc = (s: string) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+const allowDur = (s: string) => esc(s).replace(/\b(\d+\s?(?:minutos|min))\b/g, '<span data-allow-number>$1</span>');
+
+// Panel de cristal de la placa (ancla con caja [x, y, w, h]) para registrar UI encima (§3.7). Respeta el espejo.
+const BOX_ANCHORS = ['pantalla', 'telefono', 'tableta', 'superficie'];
+function panelOf(r: Resolved | null) {
+  const raw: any = r?.id ? getPlate(r.id) : null;
+  const name = BOX_ANCHORS.find((n) => raw?.anchors?.[n]?.d?.length === 4);
+  if (!raw || !name) return null;
+  const mir = (b: number[]) => (r!.mirror ? [+(1 - b[0] - b[2]).toFixed(4), b[1], b[2], b[3]] : b);
+  const d = mir(raw.anchors[name].d);
+  const m = raw.anchors[name].m?.length === 4 ? mir(raw.anchors[name].m) : null;
+  const style = `--ax:${d[0]};--ay:${d[1]};--aw:${d[2]};--ah:${d[3]};` + (m ? `--ax-m:${m[0]};--ay-m:${m[1]};--aw-m:${m[2]};--ah-m:${m[3]};` : '');
+  return { name, style, mobile: !!m };
+}
+
+// ── 01 Portada ───────────────────────────────────────────────────────────────
+const hero = C.hero ?? {};
+const heroPlate = plateOf('hero');
+const heroR = heroPlate ? resolvePlate(heroPlate.id, { mirror: heroPlate.mirror, fallbackPlate: heroPlate.launchFallback }) : null;
+const h1 = hero.h1 ?? {};
+
+// ── 02 Ficha ─────────────────────────────────────────────────────────────────
+const ficha = C.ficha ?? {};
+// Filas con tokens de cifra → salen como filas "Cifra" con <Metric> (EntitySheet imprime el resto como texto).
+const fichaRows = (ficha.entity ?? []).filter((r: any) => !/\{\{/.test(r.value));
+const fichaMetrics = [...new Set((ficha.entity ?? []).flatMap((r: any) => metricIdsIn(r.value)))] as MetricId[];
+const rack = heroR?.rack ?? null;
+
+// ── 04 Cifra ─────────────────────────────────────────────────────────────────
+const cifra = C.cifra ?? {};
+const VARIANT_BY_METRIC: Record<string, any> = {
+  'dental-respuesta': 'stopwatch', 'dental-citas': 'stopwatch', 'retail-conversiones': 'index-up',
+  'ecom-cpl': 'index-down', 'horeca-roas': 'multiplier', 'logistica-procesos': 'nodes',
+};
+const cifraIds: MetricId[] = cifra.metricIds ?? (h1.metricId ? [h1.metricId] : []);
+const cifraVariant = cifra.figure?.variant ?? VARIANT_BY_METRIC[cifraIds[0]] ?? 'stopwatch';
+
+// ── 05 Implementación ────────────────────────────────────────────────────────
+const impl = C.implementacion ?? {};
+const flowNodes = (impl.nodes ?? []).map((n: any) => ({
+  label: n.label, line: n.line, logo: n.logo ?? n.logos?.[0], kain: /\bkain\b/i.test(n.label), confirmed: n.confirmed !== false,
+}));
+
+// ── 06 Resultado ─────────────────────────────────────────────────────────────
+const res = C.resultado ?? {};
+const resPlate = plateOf('resultado');
+const resR = resPlate ? resolvePlate(resPlate.id, { mirror: resPlate.mirror, layout: resPlate.layout, fallbackPlate: resPlate.launchFallback }) : null;
+const panel = panelOf(resR);
+const ui = res.ui ?? null;
+// Casillas de la agenda: patrón fijo e ilustrativo (SIMULACIÓN; no es un dato). 4 horarios por día.
+const LIT = ['1011', '1101', '0111', '1110', '1011', '1100', '0110'];
+let litIndex = 0;
+const agenda = (ui?.days ?? []).map((d: string, i: number) => ({
+  d, slots: [...(LIT[i % LIT.length])].map((c) => (c === '1' ? { on: true, k: litIndex++ } : { on: false, k: -1 })),
+}));
+
+// ── 07 VKTOR ─────────────────────────────────────────────────────────────────
+const vk = C.vktor ?? {};
+const vkMilestones: (string | null)[] | null = Array.isArray(vk.milestones) && vk.milestones.some(Boolean) ? vk.milestones : null;
+const vkLink = vk.links?.[0];
+
+// ── 08 Replicar ──────────────────────────────────────────────────────────────
+const rep = C.replicar ?? {};
+
+// ── 09 Testimonio (condicional) ──────────────────────────────────────────────
+const testi = C.testimonio ?? {};
+
+// ── 10 Relacionados + Siguiente reportaje ────────────────────────────────────
+const rel = C.relacionados ?? {};
+const next = rel.next ?? null;
+let nextPlate: string | undefined;
+if (next?.href) {
+  try { nextPlate = (getPage(next.href) as any).sections?.find((s: any) => s.id === 'hero')?.plate?.id; } catch { nextPlate = undefined; }
+}
+
+// ── 11 Cierre ────────────────────────────────────────────────────────────────
+const cta = C['cta-final'] ?? {};
+const ctaPlate = plateOf('cta-final');
+
+// ── JSON-LD (Article de SEOHead + about → Service de la ficha; autor = Organization hasta confirmar, R8) ──
+const svcRow = (ficha.entity ?? []).find((r: any) => /^\/servicios\//.test(r.href ?? ''));
+const articleId = `${SITE.url}${page.url}#article`;
+const jsonLd = svcRow
+  ? [{ '@type': 'Article', '@id': articleId, about: { '@type': 'Service', '@id': `${SITE.url}${svcRow.href}#service`, name: svcRow.value, url: `${SITE.url}${svcRow.href}` } }]
+  : undefined;
+const dates = copy.actualizado ? { datePublished: copy.publicado ?? copy.actualizado, dateModified: copy.actualizado } : {};
+
+// ── Riel "Quick Jump" (§4.7, §5.4 #02): Contexto · Reto · Cifra · Solución · Resultado · VKTOR · Replicar ──
+const NOT_IN_RAIL = ['hero', 'relacionados', 'cta-final'];
+const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
+  .map((id) => ({ id, label: C[id]?.rail ?? sitemapSecs.find((s) => s.id === id)?.name ?? id }));
+---
+<BaseLayout
+  page={page}
+  lcpPlate={heroR?.id ?? undefined}
+  lcpSrcsetMax={heroPlate?.srcsetMax}
+  noindex={breve}
+  jsonLd={jsonLd}
+  rail={rail.length > 1 ? rail : false}
+  railMode="labels"
+  {...dates}
+  bodyClass="t-case"
+>
+  {order.map((id) => {
+    /* ───────────── 01 · Portada ───────────── */
+    if (id === 'hero') return (
+      <ImageSection
+        id="hero"
+        plate={heroPlate?.id ?? 'caso-hero'}
+        layout={heroPlate?.layout}
+        mirror={heroPlate?.mirror}
+        mobile={heroPlate?.mobile ?? 'top'}
+        srcsetMax={heroPlate?.srcsetMax}
+        fallbackPlate={heroPlate?.launchFallback}
+        height="hero"
+        priority
+        class="case-hero"
+      >
+        <Breadcrumbs page={page} />
+        <h1 id="hero-t" class="case-h1">
+          {h1.kicker && <span class="t-h4 case-h1__kicker">{h1.kicker}</span>}
+          {' '}
+          {h1.metricId && <Metric id={h1.metricId} variant="mega" label={false} as="span" class="case-h1__fig lit" />}
+          {' '}
+          <span class="t-display-2 case-h1__text">{h1.text}</span>
+        </h1>
+        {hero.chips?.length > 0 && (
+          <ul class="case-specs" role="list" aria-label="Datos del caso">
+            {hero.chips.map((c: string) => <li class="chip-spec">{c}</li>)}
+          </ul>
+        )}
+        {hero.lede && <Copy as="p" class="t-lede t-lede--2 case-hero__lede" text={hero.lede} />}
+        <div class="ctas">
+          <Btn variant="primary" micro href={hero.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={hero.ctaPrimary?.label ?? page.primaryCta?.label} />
+          <Btn variant="ghost" href={wa(hero.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} label={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+        </div>
+        {hero.illus && <p slot="aside" class="chip-illus case-illus">{hero.illus}</p>}
+      </ImageSection>
+    );
+
+    /* ───────────── 02 · Ficha del caso ───────────── */
+    if (id === 'ficha') return (
+      <section id="ficha" class="case-sec case-ficha" aria-labelledby="ficha-t">
+        {rack && <span class="case-ficha__rack" aria-hidden="true"><img src={rack} alt="" width="320" height="179" loading="lazy" decoding="async" /></span>}
+        <div class="frame case-ficha__frame">
+          <div class="case-ficha__lead">
+            <h2 id="ficha-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ficha.eyebrow ?? 'Ficha del caso'}</h2>
+            {ficha.deck && <Copy as="p" class="t-standfirst case-ficha__deck" text={ficha.deck} data-reveal />}
+            {(ficha.byline || ficha.note) && (
+              <div class="case-byline" data-reveal>
+                {ficha.byline && <p class="case-byline__by"><span class="case-byline__mark" aria-hidden="true"></span>{ficha.byline}</p>}
+                {ficha.note && <p class="t-small case-byline__note">{ficha.note}</p>}
+              </div>
+            )}
+          </div>
+          <div class="case-ficha__sheet" data-reveal>
+            <EntitySheet variant="case" title={false} rows={fichaRows} metricIds={fichaMetrics} />
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ───────────── 03 · Punto de partida ───────────── */
+    if (id === 'punto-partida') { const R = C['punto-partida']; return (
+      <section id="punto-partida" class="case-sec case-reto" data-tone="dolor" aria-labelledby="punto-partida-t">
+        <span class="case-glow case-glow--amber" aria-hidden="true"></span>
+        <div class="frame case-reto__frame">
+          <header class="case-head case-reto__head">
+            {R.eyebrow && <p class="t-label t-label--amber eyebrow"><span class="node node--amber" aria-hidden="true"></span>{R.eyebrow}</p>}
+            <h2 id="punto-partida-t" class="t-h2" data-split>{H2(R.h2).text}{R.h2?.soft && <> <span class="soft">{R.h2.soft}</span></>}</h2>
+          </header>
+          {R.margin?.text && (
+            <aside class="case-reto__margin" aria-label="Nota al margen" data-reveal>
+              <span class="node node--amber" aria-hidden="true"></span>
+              <Copy as="p" text={R.margin.text} />
+            </aside>
+          )}
+          <Prose class="case-reto__prose">
+            {(R.body ?? []).map((p: string) => <Copy as="p" text={p} />)}
+          </Prose>
+        </div>
+      </section>
+    ); }
+
+    /* ───────────── 04 · La cifra (CaseFigure) ───────────── */
+    if (id === 'cifra' && cifraIds.length) return (
+      <CaseFigure id="cifra" variant={cifraVariant} metricIds={cifraIds} class="case-cifra">
+        {cifra.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cifra.eyebrow}</p>}
+        <h2 id="cifra-t" class="t-h2" data-split>{H2(cifra.h2).text}{cifra.h2?.soft && <> <span class="soft">{cifra.h2.soft}</span></>}</h2>
+        {cifra.figure?.caption && <p class="t-micro case-cifra__cap" data-reveal>{cifra.figure.caption}</p>}
+      </CaseFigure>
+    );
+
+    /* ───────────── 05 · Qué implementamos (SystemFlow) ───────────── */
+    if (id === 'implementacion') return (
+      <section id="implementacion" class="case-sec case-impl" aria-labelledby="implementacion-t">
+        <span class="case-glow case-glow--cyan" aria-hidden="true"></span>
+        <div class="frame">
+          <header class="case-head">
+            {impl.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{impl.eyebrow}</p>}
+            <h2 id="implementacion-t" class="t-h2" data-split>{H2(impl.h2).text}{impl.h2?.soft && <> <span class="soft">{impl.h2.soft}</span></>}</h2>
+            {impl.lede && <Copy as="p" class="t-lede t-lede--2" text={impl.lede} data-reveal />}
+          </header>
+          {flowNodes.length > 0 && (
+            <div class="case-impl__flow" data-reveal>
+              <SystemFlow nodes={flowNodes} title={H2(impl.h2).text} />
+            </div>
+          )}
+          {impl.body?.length > 0 && (
+            <div class="case-impl__body" data-reveal>
+              {impl.body.map((p: string) => <Copy as="p" class="t-body" text={p} />)}
+            </div>
+          )}
+        </div>
+      </section>
+    );
+
+    /* ───────────── 06 · Resultado (ImageSection mid + agenda registrada) ───────────── */
+    if (id === 'resultado') return (
+      <ImageSection
+        id="resultado"
+        plate={resPlate?.id ?? 'caso-resultado'}
+        layout={resPlate?.layout ?? 'subject-left'}
+        mirror={resPlate?.mirror}
+        mobile={resPlate?.mobile ?? 'top'}
+        srcsetMax={resPlate?.srcsetMax ?? 1920}
+        fallbackPlate={resPlate?.launchFallback}
+        height="mid"
+        push={{ anchor: 'mano', to: 1.08 }}
+        alt=""
+        class="case-res"
+      >
+        {res.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{res.eyebrow}</p>}
+        <h2 id="resultado-t" class="t-h2">{H2(res.h2).text}{res.h2?.soft && <> <span class="soft">{res.h2.soft}</span></>}</h2>
+        {res.quote && <Copy as="p" class="t-deck case-res__quote" text={res.quote} />}
+        {res.sourceNote && <p class="t-micro case-res__src"><span class="node" aria-hidden="true"></span>{SOURCE_NOTE}.</p>}
+        {ui && panel && (
+          <p class="case-res__legend only-m" data-nosnippet>
+            <span class="chip-sim">SIMULACIÓN</span>
+            <span>{ui.title}{ui.slot && <> · <i class="case-agenda__dot" aria-hidden="true"></i>{ui.slot}</>}</span>
+          </p>
+        )}
+        {ui && panel && (
+          <div slot="anchors" class="anchor anchor--panel case-agenda" style={panel.style} data-anchor={panel.name} data-lock
+            data-m={panel.mobile ? undefined : 'none'} data-nosnippet role="img"
+            aria-label={`Simulación: ${ui.title ?? 'agenda'}${ui.slot ? `; cada casilla encendida es una ${ui.slot.toLowerCase()}` : ''}.`}>
+            <div class="ui case-agenda__ui" aria-hidden="true">
+              <p class="case-agenda__top"><span class="chip-sim">SIMULACIÓN</span><span class="case-agenda__t">{ui.title}</span></p>
+              <ol class="case-agenda__days" role="list">
+                {agenda.map((row: any) => (
+                  <li class="case-agenda__day">
+                    <span class="case-agenda__d">{row.d}</span>
+                    <span class="case-agenda__slots">
+                      {row.slots.map((s: any) => <i class:list={[s.on && 'is-on']} style={s.on ? `--k:${s.k}` : undefined}></i>)}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+              {ui.slot && <p class="case-agenda__key"><i class="is-on"></i>{ui.slot}</p>}
+            </div>
+          </div>
+        )}
+      </ImageSection>
+    );
+
+    /* ───────────── 07 · VKTOR ───────────── */
+    if (id === 'vktor') return (
+      <section id="vktor" class="case-sec case-vktor" aria-labelledby="vktor-t">
+        <div class="frame">
+          <header class="case-head">
+            {vk.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{vk.eyebrow}</p>}
+            <h2 id="vktor-t" class="t-h2" data-split>{H2(vk.h2).text}{vk.h2?.soft && <> <span class="soft">{vk.h2.soft}</span></>}</h2>
+            {vk.lede && <Copy as="p" class="t-lede t-lede--2" text={vk.lede} data-reveal />}
+          </header>
+          <div class="case-vktor__rail">
+            <VktorRail
+              variant={vkMilestones ? 'milestones' : 'phases'}
+              milestones={vkMilestones ?? undefined}
+              lines={(vk.phases ?? []).map((p: any) => p.line)}
+              href={vkLink?.href ?? '/metodologia/'}
+              linkLabel={vkLink?.label ?? 'Conoce el protocolo completo'}
+            />
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ───────────── 08 · Qué puedes replicar ───────────── */
+    if (id === 'replicar') return (
+      <section id="replicar" class="case-sec case-rep" aria-labelledby="replicar-t">
+        <div class="frame">
+          <header class="case-head">
+            {rep.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{rep.eyebrow}</p>}
+            <h2 id="replicar-t" class="t-h2" data-split>{H2(rep.h2).text}{rep.h2?.soft && <> <span class="soft">{rep.h2.soft}</span></>}</h2>
+          </header>
+          <div class="case-rep__list">
+            <ScriptList rows={(rep.items ?? []).map((r: any) => ({ n: r.n, title: r.title, line: r.line, href: r.href }))} label={H2(rep.h2).text} />
+            {rep.links?.length > 0 && (
+              <p class="case-links">{rep.links.map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name="arrow" size={18} /></a>)}</p>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ───────────── 09 · Testimonio (solo con aprobación escrita) ───────────── */
+    if (id === 'testimonio') return (
+      <section id="testimonio" class="case-sec case-testi" aria-labelledby="testimonio-t">
+        <div class="frame">
+          <header class="case-head">
+            <h2 id="testimonio-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{testi.eyebrow ?? 'En sus palabras'}</h2>
+          </header>
+          <div class="case-testi__q">
+            <Quote source={testi.nombre} role={[testi.cargo, testi.empresa].filter(Boolean).join(', ')}>{testi.frase}</Quote>
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ───────────── 10 · Sigue explorando + Siguiente reportaje ───────────── */
+    if (id === 'relacionados') return (
+      <section id="relacionados" class="case-sec case-rel" aria-labelledby="relacionados-t">
+        <div class="frame">
+          <header class="case-head">
+            <h2 id="relacionados-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{rel.eyebrow ?? 'Sigue explorando'}</h2>
+          </header>
+          {rel.items?.length > 0 && (
+            <div class="case-rel__list">
+              <ScriptList rows={rel.items.map((r: any) => ({ title: r.title, line: r.line, href: r.href }))} label={rel.eyebrow ?? 'Sigue explorando'} />
+            </div>
+          )}
+        </div>
+        {next?.href && (
+          <div class="case-next">
+            <Still variant="next" href={next.href} plate={nextPlate} title={next.title} metricId={next.metricId} headingLevel={3} />
+          </div>
+        )}
+      </section>
+    );
+
+    /* ───────────── 11 · Cierre (Dawn) ─────────────
+       Contenido por slot (no por `copy`): la microcopia del copy sustituye a la del botón (una sola línea bajo el
+       primario, como en el inicio). Las duraciones de la Discovery ("30 minutos") no son cifras comerciales. */
+    if (id === 'cta-final') return (
+      <Dawn
+        plate={ctaPlate?.id ?? 'cta-amanecer'}
+        mirror={ctaPlate?.mirror}
+        layout={ctaPlate?.layout}
+        fallbackPlate={ctaPlate?.launchFallback}
+      >
+        {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
+        <h2 id="cta-final-t" class="t-h2" data-split>
+          <Fragment set:html={allowDur(H2(cta.h2).text)} />{cta.h2?.soft && <> <span class="soft" set:html={allowDur(cta.h2.soft)} /></>}
+        </h2>
+        {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
+        <div class="ctas">
+          {cta.micro ? (
+            <div class="cta-p">
+              <Btn variant="primary" href={cta.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? page.primaryCta?.label} />
+              <p class="t-micro btn-micro" data-allow-number>{cta.micro}</p>
+            </div>
+          ) : (
+            <Btn variant="primary" micro href={cta.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? page.primaryCta?.label} />
+          )}
+          <Btn variant="ghost" href={wa(cta.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} label={cta.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+        </div>
+      </Dawn>
+    );
+    return null;
+  })}
+</BaseLayout>

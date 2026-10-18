@@ -1,0 +1,9 @@
+---
+// Figure (subcomponente de Prose) · figura editorial con pie mono, sin tarjeta ni borde; la imagen se funde abajo a --ink.
+interface Props { src: string; alt: string; width: number; height: number; caption?: string; n?: number | string; wide?: boolean }
+const { src, alt, width, height, caption, n, wide = false } = Astro.props;
+---
+<figure class:list={['pfig', wide && 'pfig--wide']}>
+  <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
+  {caption && <figcaption class="t-micro"><span class="t-label t-label--cyan">Fig.{n ? ` ${n}` : ''}</span> {caption}</figcaption>}
+</figure>

@@ -1,0 +1,20 @@
+---
+// /servicios/<slug>/ · T-SERVICE (ESPEC §5.2). Sirve cada entrada de sitemap.json con template "T-SERVICE"
+// bajo /servicios/ que ya tenga su texto en src/content/paginas/<page.id>.json (área copy, R1).
+// Al agregar el copy de otro servicio, su página aparece sola con esta misma plantilla.
+// (Las plataformas T-PLATFORM /kommo/ y /gohighlevel/ viven en la raíz y no pasan por esta ruta.)
+import ServiceTemplate from '../../components/templates/ServiceTemplate.astro';
+import { pages, getCopy } from '../../lib/site';
+
+export function getStaticPaths() {
+  const copies = import.meta.glob('../../content/paginas/*.json', { eager: true, import: 'default' }) as Record<string, any>;
+  const ids = new Set(Object.keys(copies).map((k) => k.split('/').pop()!.replace(/\.json$/, '')));
+  return (pages as any[])
+    .filter((p) => p.template === 'T-SERVICE' && /^\/servicios\/[^/]+\/$/.test(p.url) && ids.has(p.id))
+    .map((p) => ({ params: { slug: p.url.split('/')[2] }, props: { page: p } }));
+}
+
+const { page } = Astro.props as { page: any };
+const copy = getCopy(page.id);
+---
+<ServiceTemplate page={page} copy={copy} />

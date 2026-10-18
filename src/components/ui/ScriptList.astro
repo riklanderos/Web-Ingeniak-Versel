@@ -1,0 +1,79 @@
+---
+// ScriptList · ESPEC §2.11 "Fila de guion" (sustituye a las tarjetas con ícono) + StepRow (variant="steps").
+//   rows   → número mono · nombre (--fs-h3) · línea de resultado (muted) · nodo-flecha. Filete superior --hair.
+//            Hover/foco: la fila activa brilla y las demás bajan a .35.
+//   groups → filas agrupadas por etapa con su glifo (atraer · atender · organizar · automatizar · medir).
+//   followStill → en escritorio (pointer:fine) un fotograma 21:9 de 360 px sigue al cursor (gsap.quickTo, ui.ts).
+//   steps  → pasos en fila unidos por la rama del isotipo (Discovery: formulario · horario · Google Meet).
+import Icon from './Icon.astro';
+import Metric from './Metric.astro';
+import { stillOf } from './ui-data';
+import type { MetricId } from '../../lib/metrics';
+
+type Row = { n?: string | number; title: string; line?: string; href?: string; plate?: string; group?: string; metricId?: MetricId; external?: boolean };
+type Group = { label: string; glyph?: 'atraer' | 'atender' | 'organizar' | 'automatizar' | 'medir' | string; rows?: Row[]; href?: string };
+interface Props { rows?: Row[]; groups?: Group[]; followStill?: boolean; variant?: 'rows' | 'steps'; numbered?: boolean; label?: string; headingLevel?: 3 | 4; class?: string }
+const { rows = [], groups, followStill = false, variant = 'rows', numbered = true, label, headingLevel = 3, class: cls } = Astro.props;
+
+// Normaliza: grupos con sus filas (rows[].group o groups[].rows) o una sola lista sin grupo.
+const blocks: { group?: Group; rows: Row[] }[] = groups?.length
+  ? groups.map((g) => ({ group: g, rows: g.rows ?? rows.filter((r) => r.group === g.label) }))
+  : [{ rows }];
+let k = 0;
+const numbered2 = (r: Row) => (r.n !== undefined ? String(r.n) : String(++k).padStart(2, '0'));
+const H = `h${headingLevel}` as any;
+const stills = new Map<string, string>();
+if (followStill) for (const b of blocks) for (const r of b.rows) if (r.plate) { const s = stillOf(r.plate); if (s) stills.set(r.plate, s.src); }
+---
+{variant === 'steps' ? (
+  <ol class:list={['steps', cls]} aria-label={label} data-ui-stagger>
+    {rows.map((r, i) => (
+      <li class="steps__item" style={`--i:${i}`}>
+        <span class="steps__rail" aria-hidden="true"><span class="steps__node"></span></span>
+        <span class="steps__n t-label t-label--cyan">Paso {numbered2(r)}</span>
+        <H class="steps__t t-h3">{r.title}</H>
+        {r.line && <p class="steps__line">{r.line}</p>}
+      </li>
+    ))}
+  </ol>
+) : (
+  <div class:list={['script', groups?.length && 'script--groups', cls]} data-script data-follow-still={followStill && stills.size ? '' : undefined}>
+    {blocks.map((b) => (
+      <div class="script__block">
+        {b.group && (
+          <p class="script__glabel t-label">
+            {b.group.glyph && <Icon name={b.group.glyph} size={20} class="script__glyph" />}
+            {b.group.href ? <a href={b.group.href}>{b.group.label}</a> : b.group.label}
+          </p>
+        )}
+        <ol class="script__list" aria-label={b.group?.label ?? label} data-ui-stagger>
+          {b.rows.map((r, i) => {
+            const inner = (
+              <>
+                {numbered && <span class="script__n" aria-hidden="true">{numbered2(r)}</span>}
+                <H class="script__name">{r.title}</H>
+                {(r.line || r.metricId) && (
+                  <span class="script__line">
+                    {r.line}{r.metricId && <Metric id={r.metricId} variant="inline" label class="script__metric" />}
+                  </span>
+                )}
+                {r.href && <span class="script__go" aria-hidden="true"><Icon name={r.external ? 'external' : 'arrow'} size={20} /></span>}
+              </>
+            );
+            return (
+              <li class="script__row" style={`--i:${i}`} data-still-src={r.plate ? stills.get(r.plate) : undefined}>
+                {r.href
+                  ? <a class="script__link" href={r.href} data-still={r.plate && !r.external ? '' : undefined}
+                      target={r.external ? '_blank' : undefined} rel={r.external ? 'noopener' : undefined}>{inner}</a>
+                  : <div class="script__link script__link--static">{inner}</div>}
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    ))}
+    {followStill && stills.size > 0 && (
+      <div class="script__still" aria-hidden="true"><img alt="" width="640" height="274" decoding="async" /><img alt="" width="640" height="274" decoding="async" /></div>
+    )}
+  </div>
+)}

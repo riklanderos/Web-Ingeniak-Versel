@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hola, ¿tienen lugar el sábado para uñas y pedicure?", "delay": 900, "time": "9:40 p. m." },
+  { "who": "kain", "text": "¡Hola! Sí: el sábado tengo a las 11:00 con Dani o a las 13:30 con Fer. ¿Cuál prefieres?", "delay": 1000 },
+  { "who": "cliente", "text": "A las 11 con Dani. ¿Cuánto cuesta?", "delay": 1500 },
+  { "who": "kain", "text": "Te comparto la lista de precios del salón. El total depende del diseño que elijas; Dani te lo confirma antes de empezar.", "delay": 1100 },
+  { "who": "cliente", "text": "Va. Soy Mariana.", "delay": 1300 },
+  { "who": "kain", "text": "Listo, Mariana: uñas y pedicure el sábado a las 11:00 con Dani. El viernes te mando un recordatorio por aquí.", "delay": 1000, "event": "Cita registrada en tu CRM · recordatorio programado" },
+  { "who": "cliente", "text": "Gracias.", "delay": 1200 },
+  { "who": "kain", "text": "A ti. Si necesitas cambiar la hora, escríbeme y te ofrezco otra.", "delay": 800 }
+]

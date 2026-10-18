@@ -1,0 +1,18 @@
+---
+// PainList · ESPEC §6 #33. Dolor en ámbar con nodo ámbar → su salida en cian, que se dibuja (clip-path) al entrar
+// (mode="draw", ui.ts) o con el barrido de TwinScene (mode="twin": la escena controla --mix por ítem o .is-fixed).
+// Ambos textos siempre en el DOM y en orden de lectura (dolor, luego salida). Sin JS o con movimiento reducido: todo visible.
+interface Props { items: { pain: string; fix: string }[]; mode?: 'twin' | 'draw'; remate?: string; label?: string; class?: string }
+const { items, mode = 'draw', remate, label = 'Señales y su solución', class: cls } = Astro.props;
+---
+<div class:list={['pain', `pain--${mode}`, cls]} data-pain={mode}>
+  <ol class="pain__list" aria-label={label}>
+    {items.map((it, i) => (
+      <li class="pain__item" style={`--i:${i}`} data-pain-item>
+        <p class="pain__pain"><span class="pain__node" aria-hidden="true"></span><span class="sr-only">Dolor: </span>{it.pain}</p>
+        <p class="pain__fix"><span class="pain__branch" aria-hidden="true"><svg viewBox="0 0 28 20" preserveAspectRatio="none"><path d="M1 1v7l8 8h18" pathLength="1" /></svg></span><span class="sr-only">Con el sistema: </span><span class="pain__fix-t">{it.fix}</span></p>
+      </li>
+    ))}
+  </ol>
+  {remate && <p class="pain__remate">{remate}</p>}
+</div>

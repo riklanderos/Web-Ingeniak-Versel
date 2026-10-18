@@ -1,0 +1,23 @@
+---
+// SharedTake · toma compartida (§3.12, §7.4): la portada queda `sticky` detrás de la sección siguiente y su placa
+// cambia a la copia desenfocada horneada (-rack-320.webp) con --rack 0 → 1 (scrub, sin filter en vivo).
+// Uso:
+//   <SharedTake plate="home-sistema-2-atender">
+//     <ImageSection take priority height="hero" plate="home-sistema-2-atender" …>…</ImageSection>
+//     <Intertitle rack aura="none">…definición…</Intertitle>
+//   </SharedTake>
+// El primer .is[data-take] es la portada; todo lo demás es "la sección siguiente". Escritorio con movimiento: sticky.
+// Móvil y movimiento reducido: sin sticky; la copia desenfocada queda fija detrás de la sección siguiente.
+import { resolvePlate, AURA_ISOTIPO, type Fallback } from './plate';
+
+interface Props { plate: string; fallbackPlate?: Fallback; mirror?: boolean; id?: string; class?: string }
+const { plate, fallbackPlate, mirror = false, id, class: cls } = Astro.props;
+const r = resolvePlate(plate, { mirror, fallbackPlate, where: 'SharedTake' });
+const rack = r.rack ?? AURA_ISOTIPO;
+---
+<div class:list={['take', cls]} id={id} data-shot="take" data-mirror={r.mirror || undefined}>
+  <slot />
+  <div class="take__still" aria-hidden="true">
+    <img src={rack} alt="" loading="lazy" decoding="async" />
+  </div>
+</div>

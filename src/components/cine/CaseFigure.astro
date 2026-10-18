@@ -1,0 +1,99 @@
+---
+// CaseFigure · la cifra confirmada convertida en escena (§5.4 #04, §5.4.1, §7.4). Solo el número de metrics.ts; nada de
+// bases absolutas inventadas (los índices son relativos: base 100 = antes).
+//   stopwatch  → dental-respuesta: cronómetro ámbar 0:00 → 8:00 llenando su barra; cian se detiene en 0:12 (1/40)
+//   index-up   → retail-conversiones: barra-índice de 100 a 440
+//   index-down → ecom-cpl: de 100 a 42 (solo inicio y final, sin curva)
+//   multiplier → horeca-roas: "$1 → $4.8", 4.8 columnas de luz (la última al 80 %)
+//   nodes      → logistica-procesos: 27 nodos cuadrados que se conectan con ramas del isotipo
+// Escritorio: fijada +100 % (pin) con scrub; móvil: animación al entrar (sin pin); reducido: estado final.
+// Slot default: eyebrow + H2 (id "<id>-t"). El valor real siempre está en el HTML (data-metric).
+import Metric from '../ui/Metric.astro';
+import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { parseNumber, AURA_ISOTIPO } from './plate';
+
+interface Props {
+  id?: string;
+  variant: 'stopwatch' | 'index-up' | 'index-down' | 'multiplier' | 'nodes';
+  metricIds: MetricId[];
+  pin?: string | false;
+  class?: string;
+}
+const { id = 'cifra', variant, metricIds, pin = '+=100%', class: cls } = Astro.props;
+const mid = metricIds[0];
+const val = METRICS[mid]?.value ?? '';
+
+// Derivaciones del valor confirmado (sin datos nuevos).
+let before = 0, after = 0;
+if (variant === 'stopwatch') {
+  const [a, b] = val.split('→').map((t) => t.trim());
+  const secs = (t: string) => parseNumber(t) * (/min/.test(t) ? 60 : /h/.test(t) ? 3600 : 1);
+  before = secs(a ?? ''); after = secs(b ?? '');
+}
+if (variant === 'index-up' || variant === 'index-down') { before = 100; after = Math.round(100 + parseNumber(val)); }
+if (variant === 'multiplier') { before = 1; after = parseNumber(val); }
+if (variant === 'nodes') { after = Math.round(parseNumber(val)); }
+const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
+const ratio = before && after ? Math.min(1, after / before) : 1;
+const cols = variant === 'multiplier' ? Array.from({ length: Math.ceil(after) }, (_, i) => Math.min(1, after - i)) : [];
+const n = variant === 'nodes' ? Math.min(after, 60) : 0;
+const colsN = 9;
+---
+<section
+  id={id}
+  class:list={['cf', `cf--${variant}`, cls]}
+  data-shot="figure"
+  data-variant={variant}
+  data-pin={pin || undefined}
+  aria-labelledby={`${id}-t`}
+>
+  <div class="cf__aura" aria-hidden="true"><img src={AURA_ISOTIPO} alt="" loading="lazy" width="640" height="640" /></div>
+  <div class="frame cf__frame">
+    <div class="cf__head"><slot /></div>
+    <div class="cf__stage" data-metric={mid}>
+      {variant === 'stopwatch' && (
+        <div class="cf-sw" style={`--ratio:${ratio}`}>
+          <div class="cf-sw__row cf-sw__row--before">
+            <span class="t-label t-label--amber">Antes</span>
+            <span class="cf-sw__clock" data-clock-to={before} aria-hidden="true">{clock(before)}</span>
+            <span class="cf-sw__bar"><i data-fill="1"></i></span>
+          </div>
+          <div class="cf-sw__row cf-sw__row--after">
+            <span class="t-label t-label--cyan">Con Kain</span>
+            <span class="cf-sw__clock" data-clock-to={after} aria-hidden="true">{clock(after)}</span>
+            <span class="cf-sw__bar"><i data-fill={ratio}></i></span>
+          </div>
+        </div>
+      )}
+      {(variant === 'index-up' || variant === 'index-down') && (
+        <div class="cf-ix" style={`--before:${before};--after:${after};--max:${Math.max(before, after)}`}>
+          <div class="cf-ix__col cf-ix__col--before"><span class="cf-ix__bar" data-h={before / Math.max(before, after)}></span><b aria-hidden="true">{before}</b><span class="t-label">Antes</span></div>
+          <div class="cf-ix__col cf-ix__col--after"><span class="cf-ix__bar" data-h={after / Math.max(before, after)}></span><b aria-hidden="true" data-count-to={after}>{after}</b><span class="t-label t-label--cyan">Después</span></div>
+          <p class="t-micro cf-ix__base">Índice: base 100 = antes</p>
+        </div>
+      )}
+      {variant === 'multiplier' && (
+        <div class="cf-mx">
+          <p class="cf-mx__eq" aria-hidden="true"><span>$1</span><span class="cf-mx__arrow">→</span><span class="lit-off">${String(after)}</span></p>
+          <div class="cf-mx__cols">{cols.map((h, i) => <span class="cf-mx__col" style={`--h:${h}`} data-i={i}></span>)}</div>
+        </div>
+      )}
+      {variant === 'nodes' && (
+        <div class="cf-nd" style={`--cols:${colsN}`}>
+          <svg class="cf-nd__wires" viewBox={`0 0 ${colsN * 10} ${Math.ceil(n / colsN) * 10}`} preserveAspectRatio="none" aria-hidden="true">
+            {Array.from({ length: n - 1 }, (_, i) => {
+              const x1 = (i % colsN) * 10 + 5, y1 = Math.floor(i / colsN) * 10 + 5;
+              const x2 = ((i + 1) % colsN) * 10 + 5, y2 = Math.floor((i + 1) / colsN) * 10 + 5;
+              return <path d={y1 === y2 ? `M${x1} ${y1}H${x2}` : `M${x1} ${y1}V${y1 + 5}L${x2} ${y2}`} pathLength="1" vector-effect="non-scaling-stroke" data-i={i} />;
+            })}
+          </svg>
+          <div class="cf-nd__grid" aria-hidden="true">{Array.from({ length: n }, (_, i) => <span class="cf-nd__n" data-i={i}></span>)}</div>
+        </div>
+      )}
+    </div>
+    <p class="cf__caption">
+      {metricIds.map((m) => <Metric id={m} variant="inline" label fn="1" />)}
+      <span class="t-micro cf__src"><sup class="fn">1</sup> {SOURCE_NOTE}.</span>
+    </p>
+  </div>
+</section>

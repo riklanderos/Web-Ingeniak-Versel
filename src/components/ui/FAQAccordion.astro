@@ -1,0 +1,34 @@
+---
+// FAQAccordion · ESPEC §6 #38. Preguntas del banco (D §12 / src/data/faq.json) por id; las "validar" no se publican.
+// El FAQPage del @graph lo emite SEOHead con faqPageLd(ids) de ./ui-data (mismo texto que el visible).
+// Apertura con grid-template-rows 0fr → 1fr (0.45 s) en ui.ts; sin JS, todas las respuestas quedan abiertas.
+//   glass=true → la pregunta abierta usa cristal (solo cuando hay aura o imagen detrás, §2.8).
+import Icon from './Icon.astro';
+import { getFaqItems, annotateFigures } from './ui-data';
+
+interface Props { ids: string[]; glass?: boolean; open?: number | false; headingLevel?: 3 | 4; label?: string; class?: string; id?: string }
+const { ids, glass = false, open = false, headingLevel = 3, label = 'Preguntas frecuentes', class: cls, id } = Astro.props;
+const items = getFaqItems(ids);
+const uid = id ?? `faq-${Math.random().toString(36).slice(2, 7)}`;
+const H = `h${headingLevel}` as any;
+---
+{items.length > 0 && (
+  <div class:list={['faq', glass && 'faq--glass', cls]} id={id} data-faq data-ui-stagger aria-label={label} role="group">
+    {items.map((f, i) => {
+      const isOpen = open === i;
+      return (
+        <div class:list={['faq__item', isOpen && 'is-open']} data-faq-item data-faq-id={f.id} style={`--i:${i}`}>
+          <H class="faq__h">
+            <button type="button" class="faq__q" id={`${uid}-q${i}`} aria-controls={`${uid}-a${i}`} aria-expanded={isOpen ? 'true' : 'false'} data-faq-toggle>
+              <span class="faq__qt">{f.q}</span>
+              <span class="faq__ico" aria-hidden="true"><Icon name="plus" size={18} /></span>
+            </button>
+          </H>
+          <div class="faq__a" id={`${uid}-a${i}`} role="region" aria-labelledby={`${uid}-q${i}`}>
+            <div class="faq__inner"><p set:html={annotateFigures(f.a)} /></div>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+)}

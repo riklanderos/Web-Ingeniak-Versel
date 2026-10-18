@@ -1,0 +1,157 @@
+{
+  "pageId": "ind-salud",
+  "url": "/industrias/salud/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-18",
+  "pendientes": [
+    "Sección 'Tus datos': validar la redacción con el asesor legal del cliente antes de publicar (menciona que los datos de salud son datos personales sensibles en México y describe consentimiento, aviso de privacidad y escalamiento).",
+    "Preguntas nuevas S01–S04 (propias de salud, R2): redacción nueva, validar=true en faq.json; agregar sus ids a sitemap.json → ind-salud.faq si se aprueban.",
+    "Si Ingeniak tiene clientes de salud además de la clínica dental de Monterrey (la cifra 'salud-citas-mes' los menciona en promedio), confirmar si se puede decir de qué tipo son (consultorios médicos, especialidades, fisioterapia) sin nombrarlos."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (ind-salud-hero, persona del sector) + chip anclado a la tableta (dental-citas) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Industria · Salud",
+      "h1": { "text": "Agentes de IA", "soft": "para clínicas y consultorios" },
+      "lede": "Tu agenda llena sin que tu recepción viva pegada al WhatsApp. Kain responde, agenda y confirma citas a cualquier hora, y deja a cada paciente registrado en tu CRM.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo una clínica y quiero ver cómo agendarías citas por WhatsApp."
+      },
+      "chip": { "metricId": "dental-citas", "context": "Clínica dental · Monterrey" },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (S01)",
+      "rail": "Cómo ayuda",
+      "eyebrow": "IA en clínicas",
+      "definition": { "heading": "¿Cómo ayuda un agente de IA a una clínica o consultorio?", "faqId": "S01" },
+      "body": [
+        "Funciona igual en una clínica dental, un consultorio médico, una clínica de especialidades o un centro de fisioterapia: cambia el guion, no el sistema. Kain trabaja con tus servicios, tus horarios y tus reglas de agenda, y tu equipo decide qué preguntas se quedan siempre con una persona."
+      ]
+    },
+    "dolores": {
+      "_componente": "DayTimeline vertical (aguja con scrub, sin pin) sobre la toma desenfocada que vira a ámbar o cian por tramo",
+      "rail": "La jornada",
+      "eyebrow": "La jornada",
+      "h2": { "text": "Un día normal en tu recepción,", "soft": "hora por hora." },
+      "lede": "Horas ilustrativas de un día cualquiera. En ámbar, lo que pasa hoy; en cian, lo que cambia con Kain.",
+      "entries": [
+        {
+          "time": "08:00",
+          "pain": "Abres y hay mensajes de anoche sin responder. Algunos pacientes ya agendaron en otro lado.",
+          "fix": "Kain contestó y agendó durante la noche. Tu equipo empieza el día con la agenda al corriente."
+        },
+        {
+          "time": "11:30",
+          "pain": "Suena el teléfono, llega un paciente y el WhatsApp no para. Alguien se queda esperando.",
+          "fix": "Kain atiende el chat mientras tu recepción atiende a quien tiene enfrente."
+        },
+        {
+          "time": "16:00",
+          "pain": "Las citas de mañana siguen sin confirmar. Si alguien falta, el lugar se pierde.",
+          "fix": "Kain confirma y manda recordatorios. Si alguien cancela, le ofrece otro horario y el lugar queda libre."
+        },
+        {
+          "time": "19:40",
+          "pain": "Cierras el consultorio, pero los pacientes siguen escribiendo.",
+          "fix": "Kain sigue atendiendo, con tus horarios, tus servicios y tus políticas."
+        },
+        {
+          "time": "23:48",
+          "pain": "Alguien pide cita para una limpieza.",
+          "fix": "Respuesta en segundos, y la cita queda registrada en tu CRM."
+        }
+      ]
+    },
+    "automatizamos": {
+      "_componente": "ScriptList (6 filas)",
+      "rail": "Qué automatizamos",
+      "eyebrow": "Qué automatizamos",
+      "h2": { "text": "Seis tareas que hoy", "soft": "le quitan horas a tu recepción." },
+      "items": [
+        { "n": "01", "title": "Respuesta inmediata 24/7", "line": "Servicios, ubicación, horarios y formas de pago, respondidos en segundos con tu información." },
+        { "n": "02", "title": "Agenda en tu calendario", "line": "Kain ofrece horarios disponibles y aparta la cita sin que nadie la capture." },
+        { "n": "03", "title": "Confirmación y recordatorios", "line": "Confirma antes de la fecha y recuerda la cita con la hora y la dirección del consultorio." },
+        { "n": "04", "title": "Reagendado", "line": "Si el paciente no puede, le ofrece otro horario y libera el lugar en tu agenda." },
+        { "n": "05", "title": "Seguimiento a presupuestos", "line": "Retoma a quien recibió un plan de tratamiento y no ha agendado, con el mensaje que tu equipo apruebe." },
+        { "n": "06", "title": "Registro en Kommo o GoHighLevel", "line": "Cada paciente queda en tu CRM con su etapa: nuevo, agendado, atendido o en seguimiento." }
+      ]
+    },
+    "kain-sector": {
+      "_componente": "ImageSection mid (ind-salud-kain-sector, Kain a la izquierda, push; mobile split) + ChatSim registrado (script salud). Fijada +100 % en escritorio",
+      "rail": "Kain en tu clínica",
+      "eyebrow": "Simulación",
+      "h2": { "text": "Así trabaja Kain", "soft": "en tu clínica." },
+      "lede": "Un paciente escribe de noche para pedir una limpieza. Kain le ofrece dos horarios, resuelve lo que le toca, confirma y deja la cita en tu CRM.",
+      "chat": { "mode": "registered", "script": "salud" },
+      "limite": "Kain no da diagnósticos ni consejo médico. Cuando la pregunta es clínica, lo dice con claridad y se la pasa a tu equipo.",
+      "note": "Ejemplo ilustrativo: la conversación y las horas no son datos de un caso."
+    },
+    "cifras": {
+      "_componente": "Montage (3 filas) con enlace al caso",
+      "rail": "Resultados",
+      "eyebrow": "Resultados",
+      "h2": { "text": "Lo que ya pasó", "soft": "en clínicas reales." },
+      "lede": "Tres cifras del sector salud, con su fuente y su plazo.",
+      "rows": [
+        { "metricId": "dental-citas", "context": "Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
+        { "metricId": "dental-respuesta", "context": "Tiempo de respuesta en WhatsApp · misma clínica", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
+        { "metricId": "salud-citas-mes", "context": "Promedio de clientes de Ingeniak del sector salud" }
+      ],
+      "sourceNote": true,
+      "links": [{ "label": "Lee el caso de la clínica dental", "href": "/casos/clinica-dental-monterrey/" }]
+    },
+    "servicios": {
+      "_componente": "Still ×3",
+      "rail": "Servicios",
+      "eyebrow": "Servicios recomendados",
+      "h2": { "text": "Las piezas", "soft": "que usa una clínica." },
+      "items": [
+        { "href": "/servicios/agentes-ia-whatsapp/", "label": "Atender", "title": "Agentes de IA para WhatsApp", "line": "Kain responde, agenda y confirma por ti." },
+        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo para clínicas", "line": "Tus pacientes en un CRM pensado para conversaciones de chat." },
+        { "href": "/gohighlevel/", "label": "Organizar", "title": "GoHighLevel en español", "line": "CRM, calendarios y recordatorios en una sola plataforma." }
+      ]
+    },
+    "datos": {
+      "_componente": "Intertitle (aura) con lista corta",
+      "rail": "Tus datos",
+      "eyebrow": "Tus datos",
+      "h2": { "text": "Datos de pacientes,", "soft": "con reglas claras." },
+      "lede": "En México, los datos de salud son datos personales sensibles. Por eso Kain trabaja con estas reglas desde el primer mensaje.",
+      "items": [
+        { "title": "Consentimiento", "line": "Al iniciar la conversación, el paciente ve tu aviso de privacidad y decide si continúa." },
+        { "title": "Tu aviso de privacidad", "line": "Kain lo cita y lo enlaza. Tu clínica sigue siendo la responsable de los datos de sus pacientes." },
+        { "title": "Solo lo necesario", "line": "Para agendar pide nombre, teléfono y el motivo general de la cita. Nada de expedientes ni estudios." },
+        { "title": "Escalamiento a una persona", "line": "Síntomas, urgencias, dudas clínicas y quejas pasan a tu equipo con el contexto de la conversación." },
+        { "title": "Sin consejo médico ni legal", "line": "Kain agenda, confirma y da seguimiento. No diagnostica, no receta y no interpreta resultados." }
+      ],
+      "note": "No mostramos sellos ni certificaciones que no tenemos. Si tu clínica tiene requisitos propios, los revisamos en la Discovery Session."
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas de clínicas", "soft": "y consultorios." },
+      "faqIds": ["S02", "S03", "S04", "N01", "G02", "W01", "W02", "G07"],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "El primer paso no cuesta nada",
+      "h2": { "text": "¿Cuántas citas se te escapan por no contestar a tiempo?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "En la Discovery Session revisamos cómo llega hoy un paciente, del primer mensaje a la cita, y te decimos qué conviene automatizar primero.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo una clínica y quiero ver cómo agendarías citas por WhatsApp."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

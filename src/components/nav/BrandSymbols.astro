@@ -1,0 +1,13 @@
+---
+// Define una sola vez por página los <symbol> del imagotipo y del isotipo (currentColor).
+// BaseLayout lo pinta al inicio del <body>; Logo.astro y cualquier área pueden usar <use href="#ingk-imagotipo|#ingk-isotipo" />.
+import { IMAGOTIPO_PATHS, IMAGOTIPO_VIEWBOX, ISOTIPO_PATH, ISOTIPO_VIEWBOX } from './brand';
+---
+<svg class="brand-symbols" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="ingk-imagotipo" viewBox={IMAGOTIPO_VIEWBOX}>
+    {IMAGOTIPO_PATHS.map((d) => <path d={d} fill="currentColor" />)}
+  </symbol>
+  <symbol id="ingk-isotipo" viewBox={ISOTIPO_VIEWBOX}>
+    <path d={ISOTIPO_PATH} fill="currentColor" />
+  </symbol>
+</svg>

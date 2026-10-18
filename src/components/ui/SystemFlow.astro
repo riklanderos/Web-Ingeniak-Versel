@@ -1,0 +1,68 @@
+---
+// SystemFlow · ESPEC §6 #36 (+ StackHub = variant="hub").
+// Diagrama con las ramas del isotipo: codos a 45°, nodos cuadrados y un pulso que recorre cada rama (solo en pantalla).
+//   flow → nodos en fila escalonada (WhatsApp → Kain → CRM → agenda → tu equipo); en móvil, columna escalonada.
+//   hub  → isotipo de cristal arriba; el pilar baja y se abre en ramas hacia cada grupo de herramientas (Tecnologías).
+// Las ramas las traza ui.ts después del layout (ResizeObserver) en una capa SVG absoluta (sin CLS);
+// sin JS se ve una línea guía estática. Los nodos con confirmed:false NO se renderizan (casos sin confirmar).
+// Logos: public/img/logos/<slug>.svg pintados con máscara currentColor (blanco al 55 %, 100 % en hover).
+import { logoUrl, logoWide, TOOLS } from './ui-data';
+
+type Node = { label: string; logo?: string; line?: string; role?: string; group?: string; kain?: boolean; confirmed?: boolean };
+interface Props { nodes: Node[]; variant?: 'flow' | 'hub'; plate?: string; title?: string; fig?: string; class?: string }
+const { nodes, variant = 'flow', plate, title = 'Cómo se conecta el sistema', fig, class: cls } = Astro.props;
+
+const shown = nodes.filter((n) => n.confirmed !== false);
+if (import.meta.env.DEV && shown.length < nodes.length) console.warn(`[ui/SystemFlow] ${nodes.length - shown.length} nodo(s) sin confirmar no se publican`);
+const groups: { label: string; items: Node[] }[] = [];
+if (variant === 'hub') for (const n of shown) {
+  const g = n.group ?? 'Herramientas';
+  let G = groups.find((x) => x.label === g); if (!G) groups.push((G = { label: g, items: [] }));
+  G.items.push(n);
+}
+---
+<figure class:list={['sflow', `sflow--${variant}`, cls]} data-flow={variant} aria-label={title}>
+  <svg class="sflow__wires" aria-hidden="true" focusable="false"></svg>
+  {variant === 'flow' ? (
+    <ol class="sflow__nodes">
+      {shown.map((n, i) => (
+        <li class="sflow__node" data-flow-node style={`--i:${i}`}>
+          <span class:list={['sflow__tile', n.kain && 'sflow__tile--kain']} data-flow-tile>
+            {n.kain ? <span class="kain-mark">kain</span>
+              : n.logo ? <span class:list={['logo-mask', logoWide(n.logo) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(n.logo)})`} role="img" aria-label={TOOLS[n.logo]?.name ?? n.label}></span>
+              : <span class="sflow__sq" aria-hidden="true"></span>}
+          </span>
+          <span class="sflow__step t-label" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <span class="sflow__label">{n.label}</span>
+          {n.line && <span class="sflow__line">{n.line}</span>}
+        </li>
+      ))}
+    </ol>
+  ) : (
+    <div class="sflow__hubwrap">
+      <div class="sflow__hub" data-flow-hub>
+        <img src="/img/marca/isotipo-cristal-640.webp" alt="" width="640" height="640" loading="lazy" decoding="async" />
+        <span class="sflow__hubnode" aria-hidden="true"></span>
+      </div>
+      <div class="sflow__groups">
+        {groups.map((g, gi) => (
+          <section class="sflow__group" data-flow-node style={`--i:${gi}`}>
+            <h3 class="sflow__gtitle t-label" data-flow-tile><span class="node" aria-hidden="true"></span>{g.label}</h3>
+            <ul class="sflow__tools">
+              {g.items.map((n) => (
+                <li class="sflow__tool">
+                  {n.kain ? <span class="kain-mark sflow__toolmark">kain</span>
+                    : n.logo ? <span class:list={['logo-mask sflow__toolmark', logoWide(n.logo) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(n.logo)})`} aria-hidden="true"></span>
+                    : <span class="sflow__sq" aria-hidden="true"></span>}
+                  <span class="sflow__toolname">{n.label}</span>
+                  {n.role && <span class="sflow__toolrole">{n.role}</span>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </div>
+  )}
+  {fig && <figcaption class="sflow__fig t-micro"><span class="node" aria-hidden="true"></span>{fig}</figcaption>}
+</figure>

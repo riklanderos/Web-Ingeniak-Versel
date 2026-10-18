@@ -1,0 +1,209 @@
+// src/components/ui/ui-data.ts — datos y utilidades compartidas del área "ui".
+// API pública para otras áreas (p. ej. SEOHead): getFaqItems(), faqPageLd(), annotateFigures(), TEAM, COUNTRIES, VKTOR.
+// Ninguna cifra comercial se escribe aquí: todo sale de src/lib/metrics.ts.
+import fs from 'node:fs';
+import path from 'node:path';
+import sitemap from '../../data/sitemap.json';
+import { METRICS, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+
+export const DISCOVERY_MICRO = '30 min · 1:1 · Google Meet · sin costo';
+
+/* ───────────────────────── Escape + anotación de cifras ───────────────────────── */
+export const esc = (s: string) =>
+  String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+/** Patrones de cifras confirmadas que aparecen redactadas dentro de textos aprobados (FAQ, guiones, definiciones).
+ *  Cada coincidencia se envuelve en <span data-metric="id"> para que check-cifras.mjs la reconozca.
+ *  El texto visible no cambia (FAQPage sigue idéntico). */
+const FIGURE_PATTERNS: [RegExp, string][] = [
+  [/3\.2\s?(?:veces|×|x\b)/g, 'dental-citas'],
+  [/(?:de\s)?8\s?min(?:utos)?\s?(?:a|→)\s?12\s?s(?:egundos)?\b/g, 'dental-respuesta'],
+  [/[−-]?\s?58\s?%/g, 'ecom-cpl'],
+  [/\+?340\s?%/g, 'retail-conversiones'],
+  [/(?:ROAS\s(?:de\s)?)?4\.8\s?(?:×|x\b|veces)/g, 'horeca-roas'],
+  [/27\s(?:procesos|flujos)/g, 'logistica-procesos'],
+  [/(?:de\s)?12\s(?:a|→)\s47(?:\scitas)?/g, 'salud-citas-mes'],
+  [/[−-]?\s?60\s?%/g, 'tiempo-operativo'],
+  [/1 vista · 7 fuentes/g, 'ecom-tablero'],
+  [/(?:más de |\+)73(?:\ssistemas)?/g, 'sistemas'],
+  [/\b7\spaíses/g, 'paises'],
+];
+/** Datos no comerciales con números permitidos (precio oficial, duración de la Discovery, horas, contacto). */
+const ALLOW_PATTERNS: RegExp[] = [
+  /(?:[Dd]esde\s)?USD\s?997(?:\sal\smes)?/g,
+  /\b30\s(?:minutos|min)\b/g,
+  /\b\d{1,2}:\d{2}\b(?:\s?[ap]\.\s?m\.)?/g,
+  /\+52\s?33\s?2101\s?7799/g,
+];
+
+/** Tokens del copy (src/content/paginas/_ESQUEMA.md §5): {{metric:ID}}, {{metric:ID|full}}, {{price}}, {{Price}}, {{source}}. */
+export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(\|full)?|price|Price|source)\}\}/g;
+const metricOf = (id: string) => {
+  const m = (METRICS as any)[id];
+  if (!m) throw new Error(`[ui/copy] cifra desconocida en el texto: {{metric:${id}}}`);
+  return m as { value: string; label: string };
+};
+/** Texto plano con los tokens resueltos (JSON-LD FAQPage, ⌘K, meta, aria-label). */
+export function tokensToText(s: string): string {
+  return String(s ?? '').replace(TOKEN_RX, (_, k, id, full) => {
+    if (k === 'price') return PRICE_FROM; if (k === 'Price') return PRICE_FROM_CAP; if (k === 'source') return SOURCE_NOTE;
+    const m = metricOf(id); return full ? `${m.value} ${m.label}` : m.value;
+  });
+}
+function legacyFigures(text: string): string {
+  let html = esc(text);
+  const marks: string[] = [];
+  const stash = (s: string) => `\u0000${marks.push(s) - 1}\u0000`;
+  for (const [re, id] of FIGURE_PATTERNS) html = html.replace(re, (m) => stash(`<span data-metric="${id}">${m}</span>`));
+  for (const re of ALLOW_PATTERNS) html = html.replace(re, (m) => stash(`<span data-allow-number>${m}</span>`));
+  return html.replace(/\u0000(\d+)\u0000/g, (_, i) => marks[+i]);
+}
+/** HTML seguro de un texto del copy: tokens → nodos data-metric / data-allow-number (igual que <Metric variant="inline">);
+ *  además, cifras redactadas a mano en textos heredados (sitemap) se envuelven en data-metric. El texto visible no cambia. */
+export function annotateFigures(text: string): string {
+  const src = String(text ?? '');
+  let out = '', last = 0; let m: RegExpExecArray | null;
+  const rx = new RegExp(TOKEN_RX.source, 'g');
+  while ((m = rx.exec(src))) {
+    out += legacyFigures(src.slice(last, m.index));
+    const [, k, id, full] = m;
+    if (k === 'price' || k === 'Price') out += `<span data-allow-number>${esc(k === 'price' ? PRICE_FROM : PRICE_FROM_CAP)}</span>`;
+    else if (k === 'source') out += esc(SOURCE_NOTE);
+    else { const x = metricOf(id); out += `<span class="metric metric--inline" data-metric="${id}"><b>${esc(x.value)}</b>${full ? ' ' + esc(x.label) : ''}</span>`; }
+    last = m.index + m[0].length;
+  }
+  return out + legacyFigures(src.slice(last));
+}
+export const renderCopy = annotateFigures;
+
+/* ───────────────────────── Banco de FAQ ───────────────────────── */
+export type FaqItem = { id: string; q: string; a: string; short?: string; estado?: string; validar?: boolean; categoria?: string; pages?: string[] };
+const faqFiles = import.meta.glob('../../data/faq.json', { eager: true, import: 'default' }) as Record<string, any>;
+
+function normalizeFaq(raw: any): FaqItem[] {
+  if (!raw) return [];
+  const list = Array.isArray(raw) ? raw : Array.isArray(raw.items) ? raw.items : Array.isArray(raw.preguntas) ? raw.preguntas
+    : Object.entries(raw).filter(([, v]) => v && typeof v === 'object').map(([id, v]: any) => ({ id, ...v }));
+  return list.map((f: any) => ({ id: f.id, q: f.q ?? f.pregunta ?? f.question, a: f.a ?? f.respuesta ?? f.answer, short: f.short, estado: f.estado, validar: f.validar, categoria: f.categoria ?? f.grupo, pages: f.pages }))
+    .filter((f: FaqItem) => f.id && f.q && f.a);
+}
+let BANK: Map<string, FaqItem> | null = null;
+function bank() {
+  if (BANK) return BANK;
+  BANK = new Map();
+  // 1) Banco de D en sitemap.json (respaldo) · 2) src/data/faq.json del área copy (manda si existe)
+  for (const p of sitemap as any[]) for (const f of p.faq ?? []) if (!BANK.has(f.id)) BANK.set(f.id, f);
+  for (const raw of Object.values(faqFiles)) for (const f of normalizeFaq(raw)) BANK.set(f.id, f);   // el banco del copy manda por id
+  return BANK;
+}
+const publishable = (f?: FaqItem) => !!f && f.validar !== true && (!f.estado || /^aprobad[ao]$/i.test(f.estado));
+
+/** Todas las preguntas publicables del banco (para /preguntas-frecuentes/ y el índice ⌘K). */
+export function getFaqBank(): FaqItem[] { return [...bank().values()].filter((f) => publishable(f)); }
+/** Preguntas publicables en el orden pedido (las "validar" o desconocidas se omiten y se avisan en dev). */
+export function getFaqItems(ids: string[]): FaqItem[] {
+  const out: FaqItem[] = [];
+  for (const id of ids) {
+    const f = bank().get(id);
+    if (publishable(f)) out.push(f!);
+    else if (import.meta.env.DEV) console.warn(`[ui/faq] ${id}: ${f ? 'pendiente de validar, no se publica' : 'no existe en el banco'}`);
+  }
+  return out;
+}
+/** Nodo FAQPage para el @graph de SEOHead: texto idéntico al visible. */
+export function faqPageLd(ids: string[], pageUrl?: string) {
+  const items = getFaqItems(ids);
+  if (!items.length) return null;
+  return {
+    '@type': 'FAQPage',
+    ...(pageUrl ? { '@id': `${pageUrl}#faq` } : {}),
+    mainEntity: items.map((f) => ({ '@type': 'Question', name: tokensToText(f.q), acceptedAnswer: { '@type': 'Answer', text: tokensToText(f.a) } })),
+  };
+}
+
+const comunFiles = import.meta.glob('../../content/paginas/_comun.json', { eager: true, import: 'default' }) as Record<string, any>;
+/** Microcopia compartida del área copy (_comun.json), con respaldo. */
+export const COMUN: any = Object.values(comunFiles)[0] ?? {};
+export const SIM = { label: 'SIMULACIÓN', demo: 'VISTA DEMO', typing: 'escribiendo…', pause: 'Pausar la conversación', play: 'Reanudar la conversación', horaIlustrativa: 'Hora ilustrativa', tabsAria: 'Elige un sector para ver la conversación', ...(COMUN.sim ?? {}) };
+
+/* ───────────────────────── Imágenes publicadas ───────────────────────── */
+const PUBLIC = path.join(process.cwd(), 'public');
+export const publicExists = (url: string) => { try { return fs.existsSync(path.join(PUBLIC, url)); } catch { return false; } };
+/** Still 21:9 de una placa (§8.2): /img/cine/<placa>-still-<w>.(avif|webp). null si todavía no existe. */
+export function stillOf(plate?: string) {
+  if (!plate) return null;
+  const base = `/img/cine/${plate}-still`;
+  if (!publicExists(`${base}-640.webp`) && !publicExists(`${base}-640.avif`)) {
+    if (import.meta.env.DEV) console.warn(`[ui/Still] falta ${base}-640.(avif|webp): se usa el aura de respaldo`);
+    return null;
+  }
+  return {
+    avif: [360, 640].filter((w) => publicExists(`${base}-${w}.avif`)).map((w) => `${base}-${w}.avif ${w}w`).join(', '),
+    webp: [360, 640].filter((w) => publicExists(`${base}-${w}.webp`)).map((w) => `${base}-${w}.webp ${w}w`).join(', '),
+    src: publicExists(`${base}-640.webp`) ? `${base}-640.webp` : `${base}-360.webp`,
+  };
+}
+
+/* ───────────────────────── Entidad ───────────────────────── */
+export const COUNTRIES: { name: string; sede: boolean }[] = METRICS.paises.ctx
+  .replace(/\sy\s/, ', ').split(',').map((s) => s.trim()).filter(Boolean)
+  .map((s) => ({ name: s.replace(/\s*\(sede\)/, ''), sede: /\(sede\)/.test(s) }));
+
+export const VKTOR = [
+  { l: 'V', name: 'Verify', verb: 'Verificamos tu operación' },
+  { l: 'K', name: 'Koncept', verb: 'Diseñamos el concepto' },
+  { l: 'T', name: 'Transform', verb: 'Transformamos' },
+  { l: 'O', name: 'Operate', verb: 'Operamos junto con tu equipo' },
+  { l: 'R', name: 'Rise', verb: 'Hacemos crecer los resultados' },
+] as const;
+
+export type TeamMember = { slug: string; name: string; role: string; photo: string; linkedin?: string };
+/** Equipo de 6 (ESPEC §5.1 ESC 11). Las fotos actuales traen la placa del nombre impresa: Credits/AuthorCard las recortan. */
+export const TEAM: TeamMember[] = [
+  { slug: 'rik-landeros', name: 'Rik Landeros', role: 'Director de Estrategia Comercial', photo: '/img/equipo/rik-landeros.webp' },
+  { slug: 'alonso-vega', name: 'Alonso Vega', role: 'Arquitecto de IA y Automatización', photo: '/img/equipo/alonso-vega.webp' },
+  { slug: 'cesar-ovalle', name: 'César Ovalle', role: 'Director Creativo', photo: '/img/equipo/cesar-ovalle.webp' },
+  { slug: 'richard-vela', name: 'Richard Vela', role: 'Medios de Performance', photo: '/img/equipo/richard-vela.webp' },
+  { slug: 'andy-pizano', name: 'Andy Pizano', role: 'Administración y Finanzas', photo: '/img/equipo/andy-pizano.webp' },
+  { slug: 'marcos-gonzalez', name: 'Marcos González', role: 'Líder Comercial', photo: '/img/equipo/marcos-gonzalez.webp' },
+];
+
+/** Herramientas con logo en public/img/logos (pintadas con máscara currentColor). Nunca "partner" salvo Kommo. */
+export const TOOLS: Record<string, { name: string; logo: string; wide?: boolean }> = {
+  whatsapp: { name: 'WhatsApp Business', logo: 'whatsapp' }, gohighlevel: { name: 'GoHighLevel', logo: 'gohighlevel', wide: true },
+  kommo: { name: 'Kommo', logo: 'kommo', wide: true }, n8n: { name: 'n8n', logo: 'n8n' }, make: { name: 'Make', logo: 'make' },
+  openai: { name: 'OpenAI', logo: 'openai' }, claude: { name: 'Claude', logo: 'claude' }, anthropic: { name: 'Anthropic', logo: 'anthropic' },
+  gemini: { name: 'Gemini', logo: 'googlegemini' }, meta: { name: 'Meta', logo: 'meta' }, googleads: { name: 'Google Ads', logo: 'googleads' },
+  tiktok: { name: 'TikTok', logo: 'tiktok' }, supabase: { name: 'Supabase', logo: 'supabase' }, stripe: { name: 'Stripe', logo: 'stripe' },
+  instagram: { name: 'Instagram', logo: 'instagram' }, facebook: { name: 'Facebook', logo: 'facebook' }, zapier: { name: 'Zapier', logo: 'zapier' },
+  hubspot: { name: 'HubSpot', logo: 'hubspot' }, analytics: { name: 'Google Analytics', logo: 'googleanalytics' },
+  elevenlabs: { name: 'ElevenLabs', logo: 'elevenlabs' }, linkedin: { name: 'LinkedIn', logo: 'linkedin' },
+};
+export const logoWide = (slug?: string) => !!(slug && TOOLS[slug]?.wide);
+export const logoUrl = (slug?: string) => (slug ? `/img/logos/${TOOLS[slug]?.logo ?? slug}.svg` : undefined);
+
+/* ───────────────────────── Registro de resultados ───────────────────────── */
+/** Contexto confirmado por cifra (sitemap.json → ficha de cada caso). Lo no confirmado queda en null y se muestra "—". */
+export const LEDGER: Partial<Record<MetricId, { sector: string; sectorSlug: string; city?: string; window?: string; service?: { name: string; slug: string; href: string } }>> = {
+  'dental-citas': { sector: 'Salud · clínica dental', sectorSlug: 'salud', city: 'Monterrey, N.L.', window: '90 días', service: { name: 'Agente de IA en WhatsApp', slug: 'agentes', href: '/servicios/agentes-ia-whatsapp/' } },
+  'dental-respuesta': { sector: 'Salud · clínica dental', sectorSlug: 'salud', city: 'Monterrey, N.L.', service: { name: 'Agente de IA en WhatsApp', slug: 'agentes', href: '/servicios/agentes-ia-whatsapp/' } },
+  'retail-conversiones': { sector: 'Retail multimarca', sectorSlug: 'retail', service: { name: 'CRM Kommo + IA', slug: 'crm', href: '/kommo/' } },
+  'ecom-cpl': { sector: 'E-commerce', sectorSlug: 'ecommerce', city: 'Ciudad de México', window: '60 días' },
+  'horeca-roas': { sector: 'HoReCa', sectorSlug: 'horeca', window: 'Sostenido', service: { name: 'Paid media en Meta Ads', slug: 'paid-media', href: '/servicios/paid-media/' } },
+  'logistica-procesos': { sector: 'Logística', sectorSlug: 'logistica', service: { name: 'Automatización con n8n', slug: 'automatizacion', href: '/servicios/automatizacion-n8n/' } },
+  'salud-citas-mes': { sector: 'Salud · varios clientes', sectorSlug: 'salud', window: 'Promedio mensual' },
+  'tiempo-operativo': { sector: 'Varios sectores', sectorSlug: 'varios', window: 'Primeros 90 días' },
+  'ecom-tablero': { sector: 'E-commerce', sectorSlug: 'ecommerce', service: { name: 'Tablero unificado', slug: 'datos', href: '/servicios/desarrollo-software/#dashboard' } },
+};
+
+/* ───────────────────────── Tipografía de cifras ───────────────────────── */
+/** Parte el valor de una cifra para su tipografía: número intacto, símbolo (% ×) en voladita, signo (+ −) y palabras (min, s, →, ROAS) a menor cuerpo. */
+export function figureParts(v: string): { t: string; k: 'num' | 'sym' | 'sign' | 'word' }[] {
+  return v.split(/(\d+(?:\.\d+)?)/).filter(Boolean).map((t) => {
+    if (/^\d/.test(t)) return { t, k: 'num' as const };
+    const x = t.trim();
+    if (/^[%×]$/.test(x)) return { t: x, k: 'sym' as const };
+    if (/^[+−-]$/.test(x)) return { t: x, k: 'sign' as const };
+    return { t, k: 'word' as const };
+  });
+}

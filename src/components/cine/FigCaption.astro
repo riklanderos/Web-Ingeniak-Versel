@@ -1,0 +1,41 @@
+---
+// FigCaption · pie de foto "Fig. 01" de cristal (F8, §3.8): va en la zona de piso o niebla, unido al punto que señala
+// (la mano) con una línea guía cian que termina en un nodo cuadrado. Todo registrado a la placa de su sección.
+// Uso (dentro del slot "anchors" de ImageSection):
+//   <FigCaption slot="anchors" n={1} title="Kain" anchor="fig" target="mano" metricId="dental-respuesta">El agente… pasó de</FigCaption>
+// variant="inline": versión en línea para móvil (cuando el ancla es null en la placa vertical) → va en el texto, bajo los CTAs.
+import Metric from '../ui/Metric.astro';
+import { anchorStyle } from './plate';
+import type { MetricId } from '../../lib/metrics';
+
+interface Props {
+  n: number;
+  title: string;
+  anchor?: string;
+  target?: string;
+  metricId?: MetricId;
+  variant?: 'anchor' | 'inline';
+  class?: string;
+}
+const { n, title, anchor = 'fig', target = 'mano', metricId, variant = 'anchor', class: cls } = Astro.props;
+const num = String(n).padStart(2, '0');
+const lv = (k: string, a: string) =>
+  `--${k}x:var(--A-${a}-x);--${k}y:var(--A-${a}-y);--${k}xm:var(--A-${a}-xm,var(--A-${a}-x));--${k}ym:var(--A-${a}-ym,var(--A-${a}-y));`;
+---
+{variant === 'inline' ? (
+  <p class:list={['fig-inline only-m', cls]} data-reveal>
+    <span class="t-label t-label--cyan">Fig. {num} · {title}</span>
+    <span class="fig-inline__t"><slot />{metricId && <>{' '}<Metric id={metricId} variant="inline" />.</>}</span>
+  </p>
+) : (
+  <>
+    <span class="leader" data-anchor={`${anchor} ${target}`} data-lock aria-hidden="true" style={lv('a', anchor) + lv('b', target)}></span>
+    <span class="anchor leader-node" data-anchor={`${target} ${anchor}`} data-lock aria-hidden="true" style={anchorStyle(target)}></span>
+    <figure class:list={['anchor caption glass-chip', cls]} data-anchor={anchor} data-lock data-caption style={anchorStyle(anchor)}>
+      <figcaption>
+        <span class="t-label t-label--cyan caption__n">Fig. {num} · {title}</span>
+        <span class="caption__t"><slot />{metricId && <>{' '}<Metric id={metricId} variant="inline" />.</>}</span>
+      </figcaption>
+    </figure>
+  </>
+)}

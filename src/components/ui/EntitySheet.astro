@@ -1,0 +1,77 @@
+---
+// EntitySheet · ESPEC §2.11 "Ficha" + §6 #39. <dl> con filetes: término en mono, valor en Inter.
+// Mismos datos que el JSON-LD y llms.txt (SITE + METRICS). La razón social NO se imprime hasta confirmarla (§4.8, R14).
+//   home   → "Ficha técnica · Ingeniak en datos" (inicio ESC 12)
+//   footer → ficha compacta de la entidad en los créditos finales
+//   about  → Nosotros (entidad + equipo + sub-marca)
+//   local  → NAP de /agentes-ia-guadalajara/
+//   case   → ficha del caso: rows=[{term, value}] (solo lo confirmado) + metricIds (cifras del caso)
+import Metric from './Metric.astro';
+import KommoBadge from './KommoBadge.astro';
+import { SITE, waHref } from '../../lib/site';
+import { PRICE_FROM_CAP, type MetricId } from '../../lib/metrics';
+import { COUNTRIES, VKTOR, DISCOVERY_MICRO } from './ui-data';
+
+interface Props {
+  variant?: 'home' | 'footer' | 'case' | 'about' | 'local';
+  rows?: { term: string; value: string; href?: string }[]; metricIds?: MetricId[];
+  title?: string | false; class?: string; id?: string;
+}
+const { variant = 'home', rows = [], metricIds = [], title, class: cls, id } = Astro.props;
+const A = SITE.address;
+const addr = `${A.street}, ${A.locality}, ${A.region} ${A.postal}`;
+const tel = `tel:${SITE.phoneE164}`;
+const wa = waHref('Hola Kain, quiero información sobre Ingeniak.');
+const heading = title === false ? null : title ?? ({ home: 'Ficha técnica · Ingeniak en datos', footer: 'Ficha de la entidad', case: 'Ficha del caso', about: 'Ficha · Ingeniak', local: 'Ingeniak en Guadalajara' } as const)[variant];
+const vktor = VKTOR.map((v) => v.name).join(' · ');
+const countries = COUNTRIES.map((c) => (c.sede ? `${c.name} (sede)` : c.name)).join(', ');
+---
+<section class:list={['sheet', `sheet--${variant}`, cls]} id={id} aria-label={heading ?? 'Ficha'} data-ui-reveal>
+  {heading && <p class="t-label t-label--cyan sheet__h"><span class="node" aria-hidden="true"></span>{heading}</p>}
+  <dl class="sheet__dl">
+    {variant === 'case' && (
+      <>
+        {rows.map((r) => <div class="sheet__row"><dt>{r.term}</dt><dd>{r.href ? <a href={r.href}>{r.value}</a> : r.value}</dd></div>)}
+        {metricIds.map((m) => <div class="sheet__row sheet__row--metric"><dt>Cifra</dt><dd><Metric id={m} variant="inline" label /></dd></div>)}
+      </>
+    )}
+
+    {(variant === 'home' || variant === 'about') && (
+      <>
+        {variant === 'about' && <div class="sheet__row"><dt>Nombre</dt><dd>{SITE.name}</dd></div>}
+        <div class="sheet__row"><dt>Sede</dt><dd>{SITE.city}</dd></div>
+        <div class="sheet__row"><dt>Oficina</dt><dd data-allow-number>{addr}</dd></div>
+        <div class="sheet__row sheet__row--badge"><dt>Alianza</dt><dd><span>Partner oficial de Kommo en LATAM</span><KommoBadge size="sm" /></dd></div>
+        <div class="sheet__row"><dt>En producción</dt><dd><Metric id="sistemas" variant="inline" label /></dd></div>
+        <div class="sheet__row"><dt>Países</dt><dd><Metric id="paises" variant="inline" label />: {countries}</dd></div>
+        {variant === 'about' && <div class="sheet__row"><dt>Equipo</dt><dd>Seis personas que diseñan, construyen y operan tu sistema</dd></div>}
+        <div class="sheet__row"><dt>Metodología</dt><dd>VKTOR™ = {vktor}</dd></div>
+        {variant === 'about' && <div class="sheet__row"><dt>Sub-marca</dt><dd><span class="kain-mark">kain</span> · <a href={SITE.kainApp} target="_blank" rel="noopener">app.kain.mx ↗</a></dd></div>}
+        <div class="sheet__row"><dt>Inversión</dt><dd data-allow-number>{PRICE_FROM_CAP}</dd></div>
+        <div class="sheet__row"><dt>Primer paso</dt><dd data-allow-number><a href={SITE.discovery}>Discovery Session</a>: {DISCOVERY_MICRO}</dd></div>
+      </>
+    )}
+
+    {variant === 'footer' && (
+      <>
+        <div class="sheet__row"><dt>Entidad</dt><dd>{SITE.name} · {SITE.city}</dd></div>
+        <div class="sheet__row"><dt>Oficina</dt><dd data-allow-number>{addr}</dd></div>
+        <div class="sheet__row"><dt>Correo</dt><dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
+        <div class="sheet__row"><dt>WhatsApp</dt><dd data-allow-number><a href={wa} data-wa>{SITE.phone}</a></dd></div>
+        <div class="sheet__row"><dt>Alcance</dt><dd><Metric id="sistemas" variant="inline" label /> · <Metric id="paises" variant="inline" label /></dd></div>
+        <div class="sheet__row sheet__row--badge"><dt>Alianza</dt><dd><KommoBadge size="sm" /></dd></div>
+      </>
+    )}
+
+    {variant === 'local' && (
+      <>
+        <div class="sheet__row"><dt>Nombre</dt><dd>{SITE.name}</dd></div>
+        <div class="sheet__row"><dt>Dirección</dt><dd data-allow-number>{addr}, México</dd></div>
+        <div class="sheet__row"><dt>Teléfono y WhatsApp</dt><dd data-allow-number><a href={tel}>{SITE.phone}</a> · <a href={wa} data-wa>Escríbele a Kain</a></dd></div>
+        <div class="sheet__row"><dt>Correo</dt><dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
+        <div class="sheet__row"><dt>Atendemos</dt><dd>Guadalajara y su zona metropolitana; México y Latinoamérica en remoto</dd></div>
+        <div class="sheet__row sheet__row--badge"><dt>Alianza</dt><dd><span>Partner oficial de Kommo en LATAM</span><KommoBadge size="sm" /></dd></div>
+      </>
+    )}
+  </dl>
+</section>

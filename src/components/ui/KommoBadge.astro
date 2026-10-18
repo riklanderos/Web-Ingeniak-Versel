@@ -1,0 +1,14 @@
+---
+// KommoBadge · ESPEC §2.12 / §6 #41. Sello oficial de Kommo Partner (no se recolorea ni se recorta; alto 28–36 px),
+// enlazado a https://www.kommo.com/. Kommo es el ÚNICO partner del sitio. glass=true lo monta en .glass-chip (sobre placa).
+import { SITE } from '../../lib/site';
+interface Props { size?: 'sm' | 'md'; glass?: boolean; text?: boolean; class?: string }
+const { size = 'md', glass = false, text = false, class: cls } = Astro.props;
+const BADGE = '/img/logos/kommo-partner.webp'; // 400 × 178 (pendiente: versión oficial blanca sobre transparente, ver peticiones.md)
+const h = size === 'sm' ? 28 : 36;
+---
+<a class:list={['kommo-badge', `kommo-badge--${size}`, glass && 'glass-chip', cls]} href={SITE.kommo} target="_blank" rel="noopener"
+   aria-label="Partner oficial de Kommo en LATAM (abre kommo.com)">
+  <img src={BADGE} alt="Kommo partner" width={Math.round((h * 400) / 178)} height={h} loading="lazy" decoding="async" />
+  {text && <span class="kommo-badge__t">Partner oficial de Kommo en LATAM</span>}
+</a>

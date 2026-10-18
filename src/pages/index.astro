@@ -1,0 +1,9 @@
+---
+// Inicio · T-HOME (ESPEC §5.1). Datos: sitemap.json (estructura, placas, CTA) + src/content/paginas/home.json (texto).
+import HomeTemplate from '../components/templates/HomeTemplate.astro';
+import { getPage, getCopy } from '../lib/site';
+
+const page = getPage('/');
+const copy = getCopy(page.id);
+---
+<HomeTemplate page={page} copy={copy} />

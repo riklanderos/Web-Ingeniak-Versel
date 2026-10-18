@@ -5,3 +5,13 @@ motion/**/out/
 motion/**/bin/
 motion/**/renders/
 materiales/discovery/discovery-session-vsl.mp4
+# v2: insumos pesados que se quedan en disco (no van al repositorio)
+materiales/magnific/
+materiales/v2/placas/*/
+materiales/v2/actual/
+materiales/v2/benchmark-shots/
+materiales/v1/video/
+materiales/discovery/*.png
+materiales/discovery/*.mp4
+.astro/
+dist/

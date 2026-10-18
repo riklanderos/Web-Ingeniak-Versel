@@ -1,0 +1,58 @@
+---
+// Still · ESPEC §2.11 + R7. Fotograma con el texto DENTRO de la penumbra de la imagen (nunca un bloque debajo).
+//   still → fotograma 21:9 (4:5 en móvil con la placa vertical si existe), etiqueta mono, título, cifra en cian
+//   plana → la imagen llena la pieza sin radio, filete superior, cifra o título en la penumbra (hub de casos, blog móvil)
+//   mini  → fotograma compacto 16:9 (industrias ×4, sectores ×8)
+//   next  → "Siguiente reportaje": asoma 45svh con la cifra mega; clic = corte por coincidencia (View Transition "plate")
+// Imagen: /img/cine/<placa>-still-640.(avif|webp). Si no existe todavía, aura del isotipo con la misma penumbra (aviso en dev).
+// Gancho: <a data-still> → ui.ts le pone view-transition-name:plate a su imagen al hacer clic (§7.6).
+import Metric from './Metric.astro';
+import Icon from './Icon.astro';
+import { getPlate } from '../../lib/site';
+import { stillOf, publicExists } from './ui-data';
+import type { MetricId } from '../../lib/metrics';
+
+interface Props {
+  href: string; plate?: string; label?: string; title: string; line?: string; metricId?: MetricId;
+  variant?: 'still' | 'plana' | 'mini' | 'next'; fx?: number; headingLevel?: 2 | 3 | 4; class?: string;
+}
+const { href, plate, label, title, line, metricId, variant = 'still', fx, headingLevel = 3, class: cls } = Astro.props;
+
+const p = plate ? getPlate(plate) : undefined;
+const still = stillOf(plate);
+const focusX = fx ?? p?.d?.fx ?? 0.7;
+const mobileSrc = plate && publicExists(`/img/cine/${plate}-m-640.webp`) ? `/img/cine/${plate}-m` : null;
+// "next" y "plana" ocupan más ancho: usan la placa de escritorio de 1280 si existe.
+const bigSrc = (variant === 'next' || variant === 'plana') && plate && publicExists(`/img/cine/${plate}-1280.webp`) ? `/img/cine/${plate}-1280` : null;
+const H = `h${headingLevel}` as any;
+const external = /^https?:\/\//.test(href);
+---
+<a class:list={['still', `still--${variant}`, !still && !bigSrc && 'still--aura', cls]} href={href} data-still={!external ? '' : undefined}
+   style={`--fx:${focusX}`} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+  <span class="still__media" aria-hidden="true">
+    {(still || bigSrc) ? (
+      <picture>
+        {mobileSrc && variant !== 'mini' && <source media="(max-width: 767px)" type="image/avif" srcset={`${mobileSrc}-640.avif 640w`} sizes="100vw" />}
+        {mobileSrc && variant !== 'mini' && <source media="(max-width: 767px)" type="image/webp" srcset={`${mobileSrc}-640.webp 640w`} sizes="100vw" />}
+        {bigSrc ? <source type="image/avif" srcset={`${bigSrc}.avif 1280w`} sizes="100vw" /> : still!.avif && <source type="image/avif" srcset={still!.avif} sizes="(max-width: 767px) 100vw, 640px" />}
+        {!bigSrc && still!.webp && <source type="image/webp" srcset={still!.webp} sizes="(max-width: 767px) 100vw, 640px" />}
+        <img src={bigSrc ? `${bigSrc}.webp` : still!.src} alt="" width={bigSrc ? 1280 : 640} height={bigSrc ? 714 : 274} loading="lazy" decoding="async" />
+      </picture>
+    ) : (
+      <span class="still__aura"><img src="/img/marca/isotipo-cristal-640.webp" alt="" width="640" height="640" loading="lazy" decoding="async" /></span>
+    )}
+  </span>
+  <span class="still__shade" aria-hidden="true"></span>
+  <span class="still__copy">
+    {variant === 'next' && <span class="t-label t-label--cyan still__kicker"><span class="node" aria-hidden="true"></span>Siguiente reportaje</span>}
+    {label && <span class="t-label still__label">{label}</span>}
+    {metricId && variant !== 'mini' && (
+      variant === 'next' || variant === 'plana'
+        ? <Metric id={metricId} variant="mega" label={false} as="span" class="still__metric still__metric--mega" />
+        : <Metric id={metricId} variant="inline" class="still__metric" />
+    )}
+    <H class="still__title">{title}</H>
+    {line && <span class="still__line">{line}</span>}
+  </span>
+  <span class="still__go" aria-hidden="true"><Icon name={external ? 'external' : 'arrow'} size={18} /></span>
+</a>

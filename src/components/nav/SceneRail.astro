@@ -1,0 +1,38 @@
+---
+// SceneRail — riel de escenas en el borde derecho, solo ≥ 1280 px (ESPEC §4.7).
+// Props:
+//   items?  [{ id, label }]  (si no se pasa, sale de page.sections: id + name, sin las "conditional")
+//   page?   entrada de sitemap.json
+//   mode?   'ticks' (etiqueta con hover/foco) | 'labels' (etiquetas siempre visibles; Quick Jump de casos)
+//   groups? tamaños de grupos (actos del inicio, p. ej. [3, 6, 4]) → 8 px entre grupos
+// scripts/nav/rail.ts quita los ticks cuyo #id no existe, renumera y marca el activo (línea central del viewport).
+import type { Page } from '../../lib/site';
+type Item = { id: string; label: string };
+interface Props { items?: Item[]; page?: Page; mode?: 'ticks' | 'labels'; groups?: number[] }
+const { items, page, mode = 'ticks', groups } = Astro.props;
+const list: Item[] =
+  items ??
+  (((page as any)?.sections ?? []) as any[])
+    .filter((s) => s.status !== 'conditional' && s.id)
+    .map((s) => ({ id: s.id, label: s.name ?? s.id }));
+const groupOf = (n: number) => {
+  if (!groups?.length) return 0;
+  let acc = 0;
+  for (let g = 0; g < groups.length; g++) { acc += groups[g]; if (n < acc) return g; }
+  return groups.length - 1;
+};
+---
+{list.length > 1 && (
+  <nav class="rail" data-rail data-mode={mode} aria-label="Secciones de esta página">
+    <ol class="rail__list" role="list">
+      {list.map((it, n) => (
+        <li class="rail__item" data-group={groupOf(n)} data-gap={n > 0 && groupOf(n) !== groupOf(n - 1) ? '' : undefined}>
+          <a class="rail__tick" href={`#${it.id}`} data-rail-target={it.id}>
+            <span class="rail__label"><span class="rail__n">{String(n + 1).padStart(2, '0')}</span> — <span class="rail__name">{it.label}</span></span>
+            <span class="rail__bar" aria-hidden="true"></span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

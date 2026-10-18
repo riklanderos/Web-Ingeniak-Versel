@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hola, quiero informes. ¿Atienden los sábados?", "delay": 900, "time": "11:48 p. m." },
+  { "who": "kain", "text": "¡Hola! Sí, los sábados atendemos de 9:00 a 14:00. ¿Qué servicio te interesa? Así te doy la información exacta.", "delay": 1000 },
+  { "who": "cliente", "text": "Una cotización para mi negocio.", "delay": 1400 },
+  { "who": "kain", "text": "Con gusto. ¿Me compartes tu nombre y qué necesitas cotizar? Con eso te agendo una llamada con un asesor.", "delay": 1100 },
+  { "who": "cliente", "text": "Soy Mario, necesito cotizar para dos sucursales.", "delay": 1600 },
+  { "who": "kain", "text": "Gracias, Mario. Puedo agendarte mañana a las 10:00 o a las 16:00. ¿Cuál prefieres?", "delay": 1000 },
+  { "who": "cliente", "text": "A las 10.", "delay": 1100 },
+  { "who": "kain", "text": "Listo: llamada mañana a las 10:00 con un asesor. Te llega la confirmación por aquí.", "delay": 1000, "event": "Lead calificado · cita registrada en tu CRM" }
+]

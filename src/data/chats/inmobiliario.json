@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hola, vi el anuncio del depa en Zapopan. ¿Sigue disponible?", "delay": 900, "time": "10:15 p. m." },
+  { "who": "kain", "text": "¡Hola! Sí, sigue disponible. Para mostrarte lo que mejor te queda: ¿lo buscas para vivir o para invertir?", "delay": 1000 },
+  { "who": "cliente", "text": "Para vivir. Lo pagaría con crédito Infonavit.", "delay": 1500 },
+  { "who": "kain", "text": "Perfecto. ¿Te gustaría conocerlo? Puedo agendarte una visita con un asesor el sábado a las 11:00 o el domingo a las 12:30.", "delay": 1100 },
+  { "who": "cliente", "text": "El sábado. ¿Cuánto me prestarían?", "delay": 1600 },
+  { "who": "kain", "text": "Eso depende de tu crédito y lo revisa el asesor contigo en la visita; yo no puedo darte un monto. Te agendo con él el sábado a las 11:00. ¿A nombre de quién?", "delay": 1200 },
+  { "who": "cliente", "text": "Jorge.", "delay": 1100 },
+  { "who": "kain", "text": "Listo, Jorge: visita el sábado a las 11:00. Te mando la ubicación y un recordatorio.", "delay": 1000, "event": "Lead calificado · visita agendada en tu CRM" }
+]

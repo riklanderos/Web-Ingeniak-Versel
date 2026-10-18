@@ -1,0 +1,205 @@
+{
+  "_nota": "Pegar en vercel.json > redirects (o leer desde astro.config). Cada origen va con y sin barra final. Ningún comodín /servicios/:path* ni /blog/:path*: secuestraría las páginas nuevas.",
+  "redirects": [
+    {
+      "source": "/blog/7-errores-implementacion-ia-empresa-evitar",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/7-errores-implementacion-ia-empresa-evitar/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/como-elegir-consultora-ia-mexico-checklist",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/como-elegir-consultora-ia-mexico-checklist/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/aplicaciones-ia-empresas-2026",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/aplicaciones-ia-empresas-2026/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "permanent": true
+    },
+    {
+      "source": "/servicios/agentes-ia",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "permanent": true
+    },
+    {
+      "source": "/servicios/agentes-ia/",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "permanent": true
+    },
+    {
+      "source": "/agentes-ia-whatsapp",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "permanent": true
+    },
+    {
+      "source": "/agentes-ia-whatsapp/",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "permanent": true
+    },
+    {
+      "source": "/servicios/crm-inteligente",
+      "destination": "/servicios/crm-con-ia/",
+      "permanent": true
+    },
+    {
+      "source": "/servicios/crm-inteligente/",
+      "destination": "/servicios/crm-con-ia/",
+      "permanent": true
+    },
+    {
+      "source": "/licenciaskommo",
+      "destination": "/kommo/",
+      "permanent": true
+    },
+    {
+      "source": "/licenciaskommo/",
+      "destination": "/kommo/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/n8n-empresas-automatizaciones-ahorrar-tiempo",
+      "destination": "/servicios/automatizacion-n8n/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/n8n-empresas-automatizaciones-ahorrar-tiempo/",
+      "destination": "/servicios/automatizacion-n8n/",
+      "permanent": true
+    },
+    {
+      "source": "/servicios/contenido",
+      "destination": "/servicios/branding/",
+      "permanent": true
+    },
+    {
+      "source": "/servicios/contenido/",
+      "destination": "/servicios/branding/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/agentes-ia-conversacional-casos-roi",
+      "destination": "/casos/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/agentes-ia-conversacional-casos-roi/",
+      "destination": "/casos/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/automatizar-ventas-b2b-ia-crm-caso-roi",
+      "destination": "/casos/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/automatizar-ventas-b2b-ia-crm-caso-roi/",
+      "destination": "/casos/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/metodologia-vktor-implementar-ia-roi-90-dias",
+      "destination": "/metodologia/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/metodologia-vktor-implementar-ia-roi-90-dias/",
+      "destination": "/metodologia/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/como-implementar-ia-empresa-guia-practica-2026",
+      "destination": "/metodologia/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/como-implementar-ia-empresa-guia-practica-2026/",
+      "destination": "/metodologia/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/roi-inteligencia-artificial-pyme-metricas-medir",
+      "destination": "/metodologia/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/roi-inteligencia-artificial-pyme-metricas-medir/",
+      "destination": "/metodologia/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/cuanto-cuesta-implementar-ia-empresa-mexico-2026",
+      "destination": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/cuanto-cuesta-implementar-ia-empresa-mexico-2026/",
+      "destination": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/kommo-vs-gohighlevel-vs-hubspot-comparativo-2026",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/kommo-vs-gohighlevel-vs-hubspot-comparativo-2026/",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/kommo-vs-hubspot-cual-elegir",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/kommo-vs-hubspot-cual-elegir/",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/agente-ia-vs-chatbot-tradicional-diferencias",
+      "destination": "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/agente-ia-vs-chatbot-tradicional-diferencias/",
+      "destination": "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/agentes-ia-whatsapp-business-guia-2026",
+      "destination": "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/agentes-ia-whatsapp-business-guia-2026/",
+      "destination": "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "permanent": true
+    },
+    {
+      "source": "/cotiza",
+      "destination": "/discovery/",
+      "permanent": true
+    },
+    {
+      "source": "/cotiza/",
+      "destination": "/discovery/",
+      "permanent": true
+    }
+  ]
+}

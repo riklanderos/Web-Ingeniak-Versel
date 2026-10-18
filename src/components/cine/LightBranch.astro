@@ -1,0 +1,15 @@
+---
+// LightBranch · rama de luz (F20, §3.8): sujeto → pie de foto o UI → botón primario, con la geometría del isotipo
+// (horizontal · diagonal a 45° · horizontal, nodo cuadrado). Tramo 1 = la línea guía registrada de FigCaption.
+// Tramo 2 lo dibuja cine.ts después del layout (ResizeObserver), en una capa absoluta de la sección (sin CLS):
+// prueba rutas (entrada por el costado del botón o por el carril sobre la fila de CTAs) y, si cualquiera cruzaría
+// texto (H1, deck, lede, otros botones, microcopia), no se dibuja. Al llegar, el botón hace un recorrido de luz (.is-traced).
+// Colócalo en cualquier parte dentro del ImageSection (p. ej. al final del slot por defecto).
+interface Props {
+  from?: string;   // ancla del sujeto (informativa; el tramo 1 lo pinta FigCaption)
+  via?: string;    // selector del pie o UI de donde sale el tramo 2 (por defecto [data-caption])
+  to?: string;     // selector del botón (por defecto [data-primary])
+}
+const { from = 'mano', via = '[data-caption]', to = '[data-primary]' } = Astro.props;
+---
+<span class="branch-spec" data-branch data-from={from} data-via={via} data-to={to} hidden></span>

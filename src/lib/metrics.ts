@@ -1,0 +1,26 @@
+// src/lib/metrics.ts — ÚNICA fuente de cifras comerciales del sitio (ESPEC-v2 §2.10).
+// Ningún componente imprime una cifra comercial que no salga de aquí: usa <Metric id="…" />.
+export const METRICS = {
+  'dental-citas':        { value: '3.2×',                label: 'más citas en 90 días',      ctx: 'Clínica dental · Monterrey',     href: '/casos/clinica-dental-monterrey/', countable: false },
+  'dental-respuesta':    { value: '8 min → 12 s',        label: 'tiempo de respuesta',       ctx: 'Clínica dental · Monterrey',     href: '/casos/clinica-dental-monterrey/', countable: false },
+  'ecom-cpl':            { value: '−58%',                label: 'costo por lead en 60 días', ctx: 'E-commerce · CDMX',              href: '/casos/ecommerce-cdmx-costo-por-lead/', countable: false },
+  'retail-conversiones': { value: '+340%',               label: 'conversiones',              ctx: 'Retail multimarca · Kommo + IA', href: '/casos/retail-multimarca-kommo/', countable: false },
+  'horeca-roas':         { value: 'ROAS 4.8×',           label: 'sostenido',                 ctx: 'HoReCa',                         href: '/casos/horeca-roas/', countable: false },
+  'logistica-procesos':  { value: '27',                  label: 'procesos automatizados',    ctx: 'Logística · n8n',                href: '/casos/logistica-n8n/', countable: true, from: 0 },
+  'salud-citas-mes':     { value: '12 → 47',             label: 'citas al mes en promedio',  ctx: 'Clientes del sector salud',      href: undefined, countable: false },
+  'tiempo-operativo':    { value: '−60%',                label: 'tiempo operativo',          ctx: 'Promedio, primeros 90 días',     href: undefined, countable: false },
+  'ecom-tablero':        { value: '1 vista · 7 fuentes', label: 'tablero unificado',         ctx: 'E-commerce',                     href: '/casos/ecommerce-cdmx-costo-por-lead/', countable: false },
+  'sistemas':            { value: '+73',                 label: 'sistemas en producción',    ctx: 'Ingeniak',                       href: undefined, countable: false },
+  'paises':              { value: '7',                   label: 'países',                    ctx: 'México (sede), Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador', href: '/nosotros/', countable: true, from: 0 },
+} as const;
+
+export type MetricId = keyof typeof METRICS;
+export const SOURCE_NOTE = 'Datos internos de Ingeniak, octubre de 2026';
+export const PRICE_FROM = 'desde USD 997 al mes';
+export const PRICE_FROM_CAP = 'Desde USD 997 al mes';
+
+export function metric(id: MetricId) {
+  const m = METRICS[id];
+  if (!m) throw new Error(`[metrics] cifra desconocida: ${id}`);
+  return m;
+}

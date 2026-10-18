@@ -1,0 +1,52 @@
+---
+// SearchDialog — ⌘K "Busca o pregúntale a Kain" (ESPEC §4.3, F17).
+// <dialog> modal; el índice /indice.json y la lógica (scripts/nav/search.ts) se cargan solo al primer uso.
+// Se abre con ⌘K / Ctrl+K o con cualquier [data-search-open] (opcional data-search-q="texto inicial").
+// Props: waHref (WhatsApp base; la acción arma "Hola Kain, " + lo escrito al hacer clic).
+import { ICONS } from './icons';
+import { SITE } from '../../lib/site';
+interface Props { waHref?: string }
+const { waHref = SITE.waBase } = Astro.props;
+const suggestions = ['¿Cuánto cuesta un agente de IA?', 'Kommo vs GoHighLevel', 'Casos de salud'];
+---
+<dialog class="sd" id="sd" aria-labelledby="sd-title" data-sd data-wa-base={SITE.waBase} data-wa-page={waHref}>
+  <div class="sd__panel glass-panel">
+    <h2 class="sr-only" id="sd-title">Busca o pregúntale a Kain</h2>
+    <div class="sd__bar">
+      <svg class="ico sd__lupa" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.search} />
+      <input id="sd-q" class="sd__input" type="text" inputmode="search" enterkeyhint="go" autocomplete="off" autocapitalize="off" spellcheck="false"
+        placeholder="Busca o pregúntale a Kain" aria-label="Busca o pregúntale a Kain"
+        role="combobox" aria-expanded="true" aria-controls="sd-list" aria-autocomplete="list" aria-describedby="sd-help" />
+      <button class="sd__close" type="button" data-sd-close aria-label="Cerrar búsqueda"><kbd class="kbd">Esc</kbd><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.close} /></button>
+    </div>
+    <div class="sd__body" data-lenis-prevent>
+      <div id="sd-list" class="sd__list" role="listbox" aria-label="Resultados">
+        <div class="sd-group" role="group" aria-labelledby="sd-g-sug">
+          <p class="sd-group__h" id="sd-g-sug" role="presentation">Sugerencias</p>
+          {suggestions.map((s, n) => (
+            <a class="sd-opt sd-opt--sug" role="option" id={`sd-s-${n}`} href="#" data-sd-fill={s} aria-selected="false">
+              <svg class="ico sd-opt__ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.search} />
+              <span class="sd-opt__t">{s}</span>
+            </a>
+          ))}
+        </div>
+        <div class="sd-group" role="group" aria-labelledby="sd-g-act">
+          <p class="sd-group__h" id="sd-g-act" role="presentation">Acciones</p>
+          <a class="sd-opt sd-opt--act" role="option" id="sd-a-0" href={SITE.discovery} aria-selected="false">
+            <span class="sd-opt__node" aria-hidden="true"></span><span class="sd-opt__t">Agenda tu Discovery Session</span><span class="sd-opt__u" data-allow-number>30 min · 1:1 · sin costo</span>
+          </a>
+          <a class="sd-opt sd-opt--act" role="option" id="sd-a-1" href={waHref} target="_blank" rel="noopener" aria-selected="false">
+            <svg class="ico sd-opt__ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} /><span class="sd-opt__t">Escríbele a Kain por WhatsApp</span><span class="sd-opt__u">responde 24/7</span>
+          </a>
+        </div>
+      </div>
+      <p class="sd__status sr-only" role="status" aria-live="polite" data-sd-status></p>
+    </div>
+    <div class="sd__foot" id="sd-help">
+      <span><kbd class="kbd">↑</kbd><kbd class="kbd">↓</kbd> moverse</span>
+      <span><kbd class="kbd">↵</kbd> abrir</span>
+      <span class="sd__foot-tab"><kbd class="kbd">Tab</kbd> cambiar de grupo</span>
+      <span><kbd class="kbd">Esc</kbd> cerrar</span>
+    </div>
+  </div>
+</dialog>

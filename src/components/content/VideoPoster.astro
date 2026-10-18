@@ -1,0 +1,54 @@
+---
+// VideoPoster · ESPEC §6 #45 + R7 + R14. Póster, carga al clic (preload="none"), playsinline, subtítulos VTT, nunca autoplay con sonido.
+//   mode="modal"  → (VSL de /discovery/, VideoScene) botón de reproducir; el video se abre en <dialog> a pantalla completa,
+//                   foco atrapado por el diálogo nativo, Esc cierra y pausa. Sin poster: solo el botón (la placa ya es el fondo).
+//   mode="inline" → póster a sangre dentro de su contenedor; al clic se cambia por el <video> con controles.
+// Gancho: [data-video] (ui.ts). Eventos de medición R10: dispara CustomEvent "ingeniak:video" con {type: play|50|complete}.
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  src: string; poster?: string; captions?: string; mode?: 'inline' | 'modal'; title: string;
+  label?: string; duration?: string; width?: number; height?: number; class?: string; id?: string;
+}
+const { src, poster, captions, mode = 'modal', title, label = 'Ver video', duration, width = 1280, height = 720, class: cls, id } = Astro.props;
+const uid = id ?? `vid-${Math.random().toString(36).slice(2, 7)}`;
+const type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
+---
+<div class:list={['vposter', `vposter--${mode}`, poster && 'vposter--has-poster', cls]} data-video={mode} id={uid}>
+  {mode === 'inline' ? (
+    <div class="vposter__stage" style={`aspect-ratio:${width} / ${height}`}>
+      {poster && <img class="vposter__img" src={poster} alt="" width={width} height={height} loading="lazy" decoding="async" />}
+      <span class="vposter__shade" aria-hidden="true"></span>
+      <button type="button" class="vposter__play" data-video-play aria-label={`Reproducir: ${title}`}>
+        <span class="vposter__ring" aria-hidden="true"><Icon name="play" size={22} /></span>
+        <span class="vposter__label">{label}{duration && <span class="vposter__dur" data-allow-number> · {duration}</span>}</span>
+      </button>
+      <template data-video-tpl>
+        <video class="vposter__video" controls playsinline preload="none" poster={poster} width={width} height={height}>
+          <source src={src} type={type} />
+          {captions && <track kind="subtitles" srclang="es" label="Español" src={captions} default />}
+        </video>
+      </template>
+    </div>
+  ) : (
+    <>
+      <button type="button" class:list={['vposter__trigger', poster && 'vposter__trigger--poster']} data-video-open aria-haspopup="dialog" aria-controls={`${uid}-dlg`}>
+        {poster && <img class="vposter__img" src={poster} alt="" width={width} height={height} loading="lazy" decoding="async" />}
+        <span class="vposter__ring" aria-hidden="true"><Icon name="play" size={22} /></span>
+        <span class="vposter__label"><span class="vposter__l1">{label}</span>{duration && <span class="vposter__dur t-micro" data-allow-number>{duration}</span>}</span>
+        <span class="sr-only">: {title}</span>
+      </button>
+      <dialog class="vdialog" id={`${uid}-dlg`} aria-label={title} data-video-dialog>
+        <div class="vdialog__bar">
+          <p class="t-label vdialog__t"><span class="node" aria-hidden="true"></span>{title}</p>
+          <button type="button" class="btn-icon vdialog__close" data-video-close aria-label="Cerrar video"><Icon name="close" size={18} /></button>
+        </div>
+        <div class="vdialog__stage">
+          <video class="vposter__video" controls playsinline preload="none" poster={poster} width={width} height={height} data-src={src} data-type={type}>
+            {captions && <track kind="subtitles" srclang="es" label="Español" src={captions} default />}
+          </video>
+        </div>
+      </dialog>
+    </>
+  )}
+</div>

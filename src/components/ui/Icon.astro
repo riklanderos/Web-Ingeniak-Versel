@@ -1,0 +1,20 @@
+---
+// Icon · ESPEC §2.13. Inserta en línea un <symbol> de src/icons/sprite.svg (sin petición extra, hereda currentColor).
+// <Icon name="search" size={20} />  ·  con `label` deja de ser decorativo (role="img" + aria-label).
+import sprite from '../../icons/sprite.svg?raw';
+
+type IconName = 'menu' | 'close' | 'search' | 'arrow' | 'external' | 'whatsapp' | 'play' | 'pause' | 'chevron' | 'check' | 'plus' | 'minus' | 'calendar' | 'phone' | 'mail' | 'location' | 'atraer' | 'atender' | 'organizar' | 'automatizar' | 'medir';
+
+interface Props { name: IconName | string; size?: 16 | 20 | 24 | number; label?: string; class?: string; stroke?: number }
+const { name, size = 20, label, class: cls, stroke = 1.5 } = Astro.props;
+
+const m = new RegExp(`<symbol id="${name}" viewBox="([^"]+)">([\\s\\S]*?)<\\/symbol>`).exec(sprite);
+const sym = m ? { viewBox: m[1], body: m[2] } : undefined;
+if (!sym && import.meta.env.DEV) console.warn(`[ui/Icon] icono desconocido: ${name}`);
+---
+{sym && (
+  <svg class:list={['icon', `icon--${name}`, cls]} width={size} height={size} viewBox={sym.viewBox}
+    fill="none" stroke="currentColor" stroke-width={stroke} stroke-linecap="round" stroke-linejoin="round"
+    aria-hidden={label ? undefined : 'true'} role={label ? 'img' : undefined} aria-label={label} focusable="false"
+    set:html={sym.body} />
+)}

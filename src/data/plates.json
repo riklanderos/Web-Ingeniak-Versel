@@ -1,0 +1,3858 @@
+{
+  "home-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, presenta con la mano abierta el isotipo de cristal de la marca",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/home-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/home-hero-m",
+      "w": 1536,
+      "h": 2752,
+      "ar": 0.5581,
+      "fx": 0.58,
+      "fy": 1,
+      "subjTop": 0.52
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.4,
+          0.4
+        ],
+        [
+          0.04,
+          0.4,
+          0.58,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.5
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.66,
+        0.08,
+        0.92,
+        0.95
+      ],
+      "m": [
+        0.3,
+        0.52,
+        0.98,
+        0.96
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.779,
+          0.465
+        ],
+        "m": [
+          0.7,
+          0.704
+        ],
+        "scrW": 0.03
+      },
+      "mano": {
+        "d": [
+          0.644,
+          0.542
+        ],
+        "m": [
+          0.52,
+          0.76
+        ]
+      },
+      "fig": {
+        "d": [
+          0.7,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.94
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.86,
+        0.3
+      ]
+    },
+    "grade": 0
+  },
+  "caso-dental-hero": {
+    "alt": "Odontólogo junto al ventanal de su consultorio en Monterrey a la hora azul (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/caso-dental-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.7,
+      "fy": 0.4,
+      "fadeFrom": 0.84
+    },
+    "m": {
+      "src": "/img/cine/caso-dental-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.6,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.54,
+          0.97
+        ],
+        [
+          0.54,
+          0.86,
+          0.96,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.4
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.555,
+        0.11,
+        0.865,
+        0.83
+      ],
+      "m": [
+        0.41,
+        0.43,
+        0.81,
+        0.99
+      ]
+    },
+    "anchors": {
+      "rostro": {
+        "d": [
+          0.655,
+          0.31
+        ],
+        "m": [
+          0.555,
+          0.54
+        ]
+      },
+      "fig": {
+        "d": [
+          0.7,
+          0.88
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.88
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.79,
+        0.25
+      ],
+      "m": [
+        0.7,
+        0.49
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "bx2GA9G5Y2",
+      "mobile": "79dBXUmJAL"
+    }
+  },
+  "caso-ecommerce-hero": {
+    "alt": "Fundador de un e-commerce en su pequeña bodega de noche, junto a su laptop (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/caso-ecommerce-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.735,
+      "fy": 0.3,
+      "fadeFrom": 0.88
+    },
+    "m": {
+      "src": "/img/cine/caso-ecommerce-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.57,
+      "fy": 1,
+      "subjTop": 0.46
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.55,
+          0.93
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.42
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.59,
+        0.08,
+        0.94,
+        0.99
+      ],
+      "m": [
+        0.29,
+        0.45,
+        0.9,
+        0.99
+      ]
+    },
+    "anchors": {
+      "rostro": {
+        "d": [
+          0.725,
+          0.235
+        ],
+        "m": [
+          0.545,
+          0.545
+        ]
+      },
+      "mano": {
+        "d": [
+          0.625,
+          0.765
+        ],
+        "m": [
+          0.415,
+          0.86
+        ]
+      },
+      "fig": {
+        "d": [
+          0.595,
+          0.88
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.93
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.79,
+        0.24
+      ],
+      "m": [
+        0.6,
+        0.56
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "WDbrryUcXe",
+      "mobile": "JNXttkcOq4"
+    }
+  },
+  "caso-horeca-hero": {
+    "alt": "Propietario de un restaurante en su terraza llena a la hora azul (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/caso-horeca-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.74,
+      "fy": 0.4,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/caso-horeca-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.53,
+      "fy": 1,
+      "subjTop": 0.5
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.44,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.46
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.64,
+        0.08,
+        0.89,
+        1
+      ],
+      "m": [
+        0.37,
+        0.5,
+        0.69,
+        1
+      ]
+    },
+    "anchors": {
+      "rostro": {
+        "d": [
+          0.735,
+          0.26
+        ],
+        "m": [
+          0.505,
+          0.585
+        ]
+      },
+      "fig": {
+        "d": [
+          0.62,
+          0.9
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.92
+        ],
+        "m": [
+          0.5,
+          0.96
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.83,
+        0.24
+      ],
+      "m": [
+        0.6,
+        0.57
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "jUcTDTlLD0",
+      "mobile": "3zaCQuDREY"
+    }
+  },
+  "caso-logistica-hero": {
+    "alt": "Coordinadora de logística con tableta en un centro de distribución de noche (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/caso-logistica-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.69,
+      "fy": 0.42,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/caso-logistica-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.53,
+      "fy": 1,
+      "subjTop": 0.46
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.54,
+          0.96
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.55,
+        0.2,
+        0.82,
+        0.99
+      ],
+      "m": [
+        0.3,
+        0.45,
+        0.7,
+        0.99
+      ]
+    },
+    "anchors": {
+      "rostro": {
+        "d": [
+          0.694,
+          0.332
+        ],
+        "m": [
+          0.512,
+          0.548
+        ]
+      },
+      "mano": {
+        "d": [
+          0.658,
+          0.635
+        ],
+        "m": [
+          0.447,
+          0.753
+        ]
+      },
+      "fig": {
+        "d": [
+          0.548,
+          0.84
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.93
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.78,
+        0.3
+      ],
+      "m": [
+        0.63,
+        0.54
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "Doxgw4Gpcl",
+      "mobile": "p8jS7iKehw"
+    }
+  },
+  "caso-retail-hero": {
+    "alt": "Directora comercial de una tienda multimarca en el piso de ventas de noche (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/caso-retail-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.69,
+      "fy": 0.45,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/caso-retail-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.52,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.55,
+          0.36
+        ],
+        [
+          0.04,
+          0.36,
+          0.42,
+          0.78
+        ],
+        [
+          0.04,
+          0.78,
+          0.56,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.59,
+        0.16,
+        0.8,
+        0.99
+      ],
+      "m": [
+        0.4,
+        0.43,
+        0.65,
+        0.99
+      ]
+    },
+    "anchors": {
+      "rostro": {
+        "d": [
+          0.68,
+          0.29
+        ],
+        "m": [
+          0.506,
+          0.508
+        ]
+      },
+      "mano": {
+        "d": [
+          0.622,
+          0.835
+        ],
+        "m": [
+          0.431,
+          0.816
+        ]
+      },
+      "fig": {
+        "d": [
+          0.555,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.92
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.64,
+        0.26
+      ],
+      "m": [
+        0.45,
+        0.5
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "SyDepcdUb8",
+      "mobile": "N2mvhvt6D9"
+    }
+  },
+  "cta-amanecer": {
+    "alt": "",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/cta-amanecer",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.7,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/cta-amanecer-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.49,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.52,
+          0.7
+        ],
+        [
+          0.04,
+          0.87,
+          0.52,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.42
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.54,
+        0.12,
+        0.81,
+        0.95
+      ],
+      "m": [
+        0.32,
+        0.44,
+        0.63,
+        0.9
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.688,
+          0.458
+        ],
+        "m": [
+          0.491,
+          0.615
+        ],
+        "scrW": 0.038
+      },
+      "rostro": {
+        "d": [
+          0.697,
+          0.3
+        ],
+        "m": [
+          0.488,
+          0.538
+        ]
+      },
+      "mano": {
+        "d": [
+          0.577,
+          0.414
+        ],
+        "m": [
+          0.357,
+          0.596
+        ]
+      },
+      "fig": {
+        "d": [
+          0.62,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.88
+        ],
+        "m": [
+          0.5,
+          0.87
+        ]
+      },
+      "horizonte": {
+        "d": [
+          0.5,
+          0.766
+        ],
+        "m": [
+          0.5,
+          0.695
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.71,
+        0.14
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "gOMo0LaSXO",
+      "mobile": "ksz0MwA16B"
+    }
+  },
+  "discovery-cta-final": {
+    "alt": "",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/discovery-cta-final",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.68,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/discovery-cta-final-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.68,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.52,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.4
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.565,
+        0.07,
+        0.82,
+        0.96
+      ],
+      "m": [
+        0.56,
+        0.5,
+        0.82,
+        0.92
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.667,
+          0.562
+        ],
+        "m": [
+          0.668,
+          0.725
+        ],
+        "scrW": 0.033
+      },
+      "rostro": {
+        "d": [
+          0.67,
+          0.445
+        ],
+        "m": [
+          0.671,
+          0.67
+        ]
+      },
+      "mano": {
+        "d": [
+          0.586,
+          0.535
+        ],
+        "m": [
+          0.583,
+          0.712
+        ]
+      },
+      "silla": {
+        "d": [
+          0.7,
+          0.69
+        ],
+        "m": [
+          0.702,
+          0.785
+        ]
+      },
+      "fig": {
+        "d": [
+          0.66,
+          0.88
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.86
+        ],
+        "m": [
+          0.5,
+          0.9
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.64,
+        0.26
+      ],
+      "m": [
+        0.64,
+        0.58
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "s7TXtAVl8e",
+      "mobile": "dtsJ95yXSL"
+    }
+  },
+  "discovery-hero": {
+    "alt": "Dueño de negocio tranquilo junto a la ventana de su oficina, con su silla vacía en primer plano (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/discovery-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.7,
+      "fy": 0.45,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/discovery-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.7,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.52,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.4
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.585,
+        0.08,
+        0.83,
+        0.96
+      ],
+      "m": [
+        0.57,
+        0.49,
+        0.85,
+        0.93
+      ]
+    },
+    "anchors": {
+      "silla": {
+        "d": [
+          0.72,
+          0.69
+        ],
+        "m": [
+          0.72,
+          0.785
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.695,
+          0.165
+        ],
+        "m": [
+          0.7,
+          0.53
+        ]
+      },
+      "fig": {
+        "d": [
+          0.72,
+          0.85
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.86
+        ],
+        "m": [
+          0.5,
+          0.9
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.62,
+        0.26
+      ],
+      "m": [
+        0.62,
+        0.58
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "jUcTtu9LD0",
+      "mobile": "VX1xy2yMMU"
+    }
+  },
+  "discovery-para-quien": {
+    "alt": "Dueña de negocio en una videollamada desde su oficina (imagen ilustrativa)",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/discovery-para-quien",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.26,
+      "fy": 0.42,
+      "fadeFrom": 0.88
+    },
+    "m": {
+      "src": "/img/cine/discovery-para-quien-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.48,
+      "fy": 1,
+      "subjTop": 0.48
+    },
+    "layout": "subject-left",
+    "safe": {
+      "d": [
+        [
+          0.47,
+          0.07,
+          0.95,
+          0.93
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.43
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.05,
+        0.11,
+        0.44,
+        0.98
+      ],
+      "m": [
+        0.23,
+        0.47,
+        0.74,
+        0.97
+      ]
+    },
+    "anchors": {
+      "rostro": {
+        "d": [
+          0.205,
+          0.252
+        ],
+        "m": [
+          0.432,
+          0.555
+        ]
+      },
+      "mano": {
+        "d": [
+          0.249,
+          0.478
+        ],
+        "m": [
+          0.494,
+          0.684
+        ]
+      },
+      "fig": {
+        "d": [
+          0.47,
+          0.88
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.86
+        ],
+        "m": [
+          0.5,
+          0.92
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.3,
+        0.38
+      ],
+      "m": [
+        0.53,
+        0.62
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "gOMXEC0SXO",
+      "mobile": "rgYVmHlxtc"
+    }
+  },
+  "discovery-vsl-poster": {
+    "alt": "",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/discovery-vsl-poster",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.5,
+      "fy": 0.55,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/discovery-vsl-poster-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.5,
+      "fy": 1,
+      "subjTop": 0.5
+    },
+    "layout": "subject-center",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.64,
+          0.37,
+          0.96
+        ],
+        [
+          0.67,
+          0.64,
+          0.96,
+          0.96
+        ],
+        [
+          0.04,
+          0.06,
+          0.2,
+          0.64
+        ],
+        [
+          0.81,
+          0.06,
+          0.96,
+          0.64
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.48
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.375,
+        0.24,
+        0.66,
+        0.93
+      ],
+      "m": [
+        0.38,
+        0.57,
+        0.66,
+        0.89
+      ]
+    },
+    "anchors": {
+      "play": {
+        "d": [
+          0.79,
+          0.84
+        ],
+        "m": null
+      },
+      "silla": {
+        "d": [
+          0.564,
+          0.45
+        ],
+        "m": [
+          0.563,
+          0.67
+        ]
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.92
+        ],
+        "m": [
+          0.5,
+          0.885
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.42,
+        0.32
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "3zaCsFAREY",
+      "mobile": "Cq96MWKEEy"
+    }
+  },
+  "home-kain": {
+    "alt": "Kain, el agente de IA de Ingeniak, saluda junto a un teléfono de cristal flotante",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/home-kain",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.26,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/home-kain-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.45,
+      "fy": 1,
+      "subjTop": 0.45
+    },
+    "layout": "subject-left",
+    "safe": {
+      "d": [
+        [
+          0.45,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.44
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.07,
+        0.12,
+        0.43,
+        0.9
+      ],
+      "m": [
+        0.22,
+        0.45,
+        0.68,
+        0.9
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.199,
+          0.435
+        ],
+        "m": [
+          0.385,
+          0.633
+        ],
+        "scrW": 0.037
+      },
+      "mano": {
+        "d": [
+          0.098,
+          0.384
+        ],
+        "m": [
+          0.258,
+          0.602
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.208,
+          0.28
+        ],
+        "m": [
+          0.395,
+          0.545
+        ]
+      },
+      "telefono": {
+        "d": [
+          0.328,
+          0.261,
+          0.095,
+          0.361
+        ],
+        "m": [
+          0.55,
+          0.534,
+          0.116,
+          0.202
+        ]
+      },
+      "fig": {
+        "d": [
+          0.4,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.86
+        ],
+        "m": [
+          0.5,
+          0.87
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.27,
+        0.36
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "KLGcnuzkqp",
+      "mobile": "jUcDT1TLD0"
+    }
+  },
+  "home-problema-a": {
+    "alt": "",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/home-problema-a",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.3,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/home-problema-a-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.45,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "safe": {
+      "d": [
+        [
+          0.5,
+          0.06,
+          0.96,
+          0.36
+        ],
+        [
+          0.56,
+          0.36,
+          0.96,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.2,
+        0.11,
+        0.44,
+        0.92
+      ],
+      "m": [
+        0.29,
+        0.43,
+        0.63,
+        0.95
+      ]
+    },
+    "anchors": {
+      "rostro": {
+        "d": [
+          0.325,
+          0.23
+        ],
+        "m": [
+          0.48,
+          0.51
+        ]
+      },
+      "telefono": {
+        "d": [
+          0.414,
+          0.359
+        ],
+        "m": [
+          0.584,
+          0.592
+        ]
+      },
+      "mano": {
+        "d": [
+          0.4,
+          0.375
+        ],
+        "m": [
+          0.575,
+          0.6
+        ]
+      },
+      "fig": {
+        "d": [
+          0.58,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.94
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.414,
+        0.359
+      ],
+      "m": [
+        0.584,
+        0.592
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "N2mvAJc6D9",
+      "mobile": "p8jsITpehw"
+    }
+  },
+  "home-problema-b": {
+    "alt": "",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/home-problema-b",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.3,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/home-problema-b-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.43,
+      "fy": 1,
+      "subjTop": 0.41
+    },
+    "layout": "subject-left",
+    "safe": {
+      "d": [
+        [
+          0.5,
+          0.06,
+          0.96,
+          0.36
+        ],
+        [
+          0.56,
+          0.36,
+          0.96,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.4
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.17,
+        0.07,
+        0.47,
+        0.93
+      ],
+      "m": [
+        0.25,
+        0.4,
+        0.67,
+        0.96
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.289,
+          0.445
+        ],
+        "m": [
+          0.413,
+          0.638
+        ],
+        "scrW": 0.038
+      },
+      "mano": {
+        "d": [
+          0.41,
+          0.39
+        ],
+        "m": [
+          0.585,
+          0.61
+        ]
+      },
+      "telefono": {
+        "d": [
+          0.423,
+          0.405
+        ],
+        "m": [
+          0.602,
+          0.623
+        ]
+      },
+      "fig": {
+        "d": [
+          0.58,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.44,
+        0.37
+      ],
+      "m": [
+        0.6,
+        0.6
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "1lnWUS4r4r",
+      "mobile": "mEJyFHHhJQ"
+    }
+  },
+  "home-sistema-1-atraer": {
+    "alt": "Kain, el agente de IA de Ingeniak, ordena paneles de cristal flotantes que representan anuncios",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/home-sistema-1-atraer",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.76,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/home-sistema-1-atraer-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.55,
+      "fy": 1,
+      "subjTop": 0.45
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.53,
+          0.74
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.675,
+        0.09,
+        0.935,
+        0.935
+      ],
+      "m": [
+        0.29,
+        0.45,
+        0.75,
+        0.9
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.811,
+          0.458
+        ],
+        "m": [
+          0.598,
+          0.643
+        ],
+        "scrW": 0.041
+      },
+      "mano": {
+        "d": [
+          0.703,
+          0.4
+        ],
+        "m": [
+          0.475,
+          0.612
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.811,
+          0.288
+        ],
+        "m": [
+          0.598,
+          0.555
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.56,
+          0.27,
+          0.115,
+          0.39
+        ],
+        "m": [
+          0.306,
+          0.544,
+          0.134,
+          0.206
+        ]
+      },
+      "fig": {
+        "d": [
+          0.66,
+          0.86
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.78
+        ],
+        "m": [
+          0.5,
+          0.813
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.85,
+        0.26
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "s7TX0T6l8e",
+      "mobile": "9ZtEhxLNYZ"
+    }
+  },
+  "home-sistema-2-atender": {
+    "alt": "Kain, el agente de IA de Ingeniak, junto a un teléfono de cristal gigante con la pantalla en blanco",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/home-sistema-2-atender",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/home-sistema-2-atender-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.6,
+      "fy": 1,
+      "subjTop": 0.41
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.44,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.39
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.63,
+        0.08,
+        0.92,
+        0.95
+      ],
+      "m": [
+        0.48,
+        0.4,
+        0.82,
+        0.87
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.784,
+          0.452
+        ],
+        "m": [
+          0.666,
+          0.601
+        ],
+        "scrW": 0.042
+      },
+      "mano": {
+        "d": [
+          0.658,
+          0.498
+        ],
+        "m": [
+          0.511,
+          0.627
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.783,
+          0.274
+        ],
+        "m": [
+          0.671,
+          0.509
+        ]
+      },
+      "telefono": {
+        "d": [
+          0.48,
+          0.215,
+          0.174,
+          0.68
+        ],
+        "m": [
+          0.31,
+          0.469,
+          0.22,
+          0.37
+        ]
+      },
+      "fig": {
+        "d": [
+          0.69,
+          0.86
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.779
+        ],
+        "m": [
+          0.5,
+          0.782
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.84,
+        0.3
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "p8jsC15ehw",
+      "mobile": "u563lsWQLD"
+    }
+  },
+  "home-sistema-3-organizar": {
+    "alt": "Kain, el agente de IA de Ingeniak, sostiene una tarjeta de cristal frente a carriles de luz que ordenan los prospectos",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/home-sistema-3-organizar",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.79,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/home-sistema-3-organizar-m",
+      "w": 784,
+      "h": 980,
+      "ar": 0.8,
+      "fx": 0.74,
+      "fy": 1,
+      "subjTop": 0.43
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.44,
+          0.97
+        ],
+        [
+          0.44,
+          0.74,
+          0.67,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.68,
+        0.08,
+        0.9,
+        0.95
+      ],
+      "m": [
+        0.36,
+        0.42,
+        0.94,
+        0.89
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.785,
+          0.45
+        ],
+        "m": [
+          0.746,
+          0.616
+        ],
+        "scrW": 0.037
+      },
+      "mano": {
+        "d": [
+          0.705,
+          0.494
+        ],
+        "m": [
+          0.653,
+          0.644
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.779,
+          0.273
+        ],
+        "m": [
+          0.75,
+          0.52
+        ]
+      },
+      "tarjeta": {
+        "d": [
+          0.7,
+          0.425,
+          0.068,
+          0.089
+        ],
+        "m": null
+      },
+      "carriles": {
+        "d": [
+          0.469,
+          0.202,
+          0.472,
+          0.495
+        ],
+        "m": [
+          0.372,
+          0.485,
+          0.559,
+          0.268
+        ]
+      },
+      "superficie": {
+        "d": [
+          0.469,
+          0.202,
+          0.266,
+          0.495
+        ],
+        "m": null
+      },
+      "fig": {
+        "d": [
+          0.665,
+          0.88
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.779
+        ],
+        "m": [
+          0.5,
+          0.796
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.8,
+        0.3
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "DoxLf6vpcl",
+      "mobile": "DoxLf0kpcl"
+    }
+  },
+  "home-sistema-4-automatizar": {
+    "alt": "Kain, el agente de IA de Ingeniak, toca un nodo de una red de luz que representa procesos automatizados",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/home-sistema-4-automatizar",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/home-sistema-4-automatizar-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.5,
+      "fy": 1,
+      "subjTop": 0.45
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.46,
+          0.97
+        ],
+        [
+          0.46,
+          0.7,
+          0.66,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.43
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.64,
+        0.08,
+        0.92,
+        0.95
+      ],
+      "m": [
+        0.21,
+        0.44,
+        0.76,
+        0.9
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.781,
+          0.456
+        ],
+        "m": [
+          0.513,
+          0.648
+        ],
+        "scrW": 0.041
+      },
+      "mano": {
+        "d": [
+          0.672,
+          0.405
+        ],
+        "m": [
+          0.415,
+          0.625
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.78,
+          0.277
+        ],
+        "m": [
+          0.513,
+          0.553
+        ]
+      },
+      "nodo": {
+        "d": [
+          0.665,
+          0.352
+        ],
+        "m": [
+          0.403,
+          0.595
+        ]
+      },
+      "constelacion": {
+        "d": [
+          0.5,
+          0.13,
+          0.48,
+          0.53
+        ],
+        "m": [
+          0.221,
+          0.47,
+          0.523,
+          0.285
+        ]
+      },
+      "fig": {
+        "d": [
+          0.68,
+          0.86
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.776
+        ],
+        "m": [
+          0.5,
+          0.855
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.84,
+        0.3
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "s7TeTV9l8e",
+      "mobile": "gOMoWTeSXO"
+    }
+  },
+  "home-sistema-5-medir": {
+    "alt": "Kain, el agente de IA de Ingeniak, presenta con la mano abierta una pantalla curva de cristal en blanco donde siete hilos de luz convergen en un solo punto",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/home-sistema-5-medir",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/home-sistema-5-medir-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.54,
+      "fy": 1,
+      "subjTop": 0.45
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.44,
+          0.74
+        ],
+        [
+          0.04,
+          0.82,
+          0.44,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.42
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.62,
+        0.08,
+        0.91,
+        0.93
+      ],
+      "m": [
+        0.39,
+        0.47,
+        0.71,
+        0.9
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.782,
+          0.456
+        ],
+        "m": [
+          0.564,
+          0.654
+        ],
+        "scrW": 0.041
+      },
+      "mano": {
+        "d": [
+          0.656,
+          0.513
+        ],
+        "m": [
+          0.426,
+          0.682
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.779,
+          0.277
+        ],
+        "m": [
+          0.562,
+          0.565
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.47,
+          0.2,
+          0.475,
+          0.484
+        ],
+        "m": [
+          0.222,
+          0.527,
+          0.522,
+          0.24
+        ]
+      },
+      "superficie": {
+        "d": [
+          0.48,
+          0.225,
+          0.225,
+          0.225
+        ],
+        "m": [
+          0.233,
+          0.54,
+          0.248,
+          0.111
+        ]
+      },
+      "punto": {
+        "d": [
+          0.642,
+          0.44
+        ],
+        "m": [
+          0.411,
+          0.646
+        ]
+      },
+      "fig": {
+        "d": [
+          0.68,
+          0.88
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.78
+        ],
+        "m": [
+          0.5,
+          0.817
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.86,
+        0.3
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "Lw0pTxXswO",
+      "mobile": "Lw0pTxXswO"
+    }
+  },
+  "ind-belleza-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, en un spa minimalista; al fondo, una especialista de belleza (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-belleza-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.66,
+      "fy": 0.5,
+      "fadeFrom": 0.91
+    },
+    "m": {
+      "src": "/img/cine/ind-belleza-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.5,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.46,
+          0.97
+        ],
+        [
+          0.46,
+          0.06,
+          0.55,
+          0.42
+        ],
+        [
+          0.46,
+          0.58,
+          0.55,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.42
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.47,
+        0.06,
+        0.95,
+        0.92
+      ],
+      "m": [
+        0.29,
+        0.43,
+        0.94,
+        0.96
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.622,
+          0.433
+        ],
+        "m": [
+          0.497,
+          0.664
+        ],
+        "scrW": 0.043
+      },
+      "mano": {
+        "d": [
+          0.5,
+          0.5
+        ],
+        "m": [
+          0.345,
+          0.704
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.617,
+          0.256
+        ],
+        "m": [
+          0.493,
+          0.555
+        ]
+      },
+      "fig": {
+        "d": [
+          0.64,
+          0.9
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.94
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.58,
+        0.3
+      ],
+      "m": [
+        0.43,
+        0.6
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "gOMpBMLSXO",
+      "mobile": "9ZthCvBNYZ"
+    }
+  },
+  "ind-finanzas-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, en una oficina financiera de noche con una mano abierta y la otra sobre el escritorio; al fondo, un asesor habla por teléfono junto a la ventana (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-finanzas-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.7,
+      "fy": 0.46,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/ind-finanzas-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.5,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.54,
+          0.97
+        ],
+        [
+          0.54,
+          0.72,
+          0.62,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.42
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.55,
+        0.1,
+        0.93,
+        0.92
+      ],
+      "m": [
+        0.32,
+        0.44,
+        0.85,
+        0.92
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.692,
+          0.447
+        ],
+        "m": [
+          0.506,
+          0.647
+        ],
+        "scrW": 0.039
+      },
+      "mano": {
+        "d": [
+          0.574,
+          0.512
+        ],
+        "m": [
+          0.358,
+          0.682
+        ]
+      },
+      "fig": {
+        "d": [
+          0.63,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.88
+        ],
+        "m": [
+          0.5,
+          0.885
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.735,
+        0.37
+      ],
+      "m": [
+        0.56,
+        0.6
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "ksz0pNc16B",
+      "mobile": "Cq9RWH0EEy"
+    }
+  },
+  "ind-horeca-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, con mandil de mesero en el lobby de un hotel boutique; al fondo, la gerente (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-horeca-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.68,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/ind-horeca-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.5,
+      "fy": 1,
+      "subjTop": 0.41
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.5,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.35
+        ],
+        [
+          0.04,
+          0.35,
+          0.64,
+          0.4
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.51,
+        0.08,
+        0.96,
+        0.95
+      ],
+      "m": [
+        0.36,
+        0.4,
+        0.95,
+        0.92
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.662,
+          0.455
+        ],
+        "m": [
+          0.499,
+          0.582
+        ],
+        "scrW": 0.044
+      },
+      "mano": {
+        "d": [
+          0.541,
+          0.525
+        ],
+        "m": [
+          0.402,
+          0.689
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.662,
+          0.275
+        ],
+        "m": [
+          0.499,
+          0.496
+        ]
+      },
+      "fig": {
+        "d": [
+          0.6,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.93
+        ],
+        "m": [
+          0.5,
+          0.82
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.67,
+        0.15
+      ],
+      "m": [
+        0.5,
+        0.42
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "iGvfkDx3uK",
+      "mobile": "eILlNofdqL"
+    }
+  },
+  "ind-industrial-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, con chaleco de seguridad en una nave industrial; al fondo, un gerente de planta (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-industrial-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/ind-industrial-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.6,
+      "fy": 1,
+      "subjTop": 0.38
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.46,
+          0.97
+        ],
+        [
+          0.46,
+          0.06,
+          0.55,
+          0.3
+        ],
+        [
+          0.46,
+          0.74,
+          0.55,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.36
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.58,
+        0.08,
+        0.97,
+        0.96
+      ],
+      "m": [
+        0.4,
+        0.37,
+        0.95,
+        0.95
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.735,
+          0.455
+        ],
+        "m": [
+          0.617,
+          0.608
+        ],
+        "scrW": 0.033
+      },
+      "mano": {
+        "d": [
+          0.6,
+          0.385
+        ],
+        "m": [
+          0.43,
+          0.565
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.733,
+          0.275
+        ],
+        "m": [
+          0.615,
+          0.492
+        ]
+      },
+      "fig": {
+        "d": [
+          0.65,
+          0.9
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.93
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.82,
+        0.3
+      ],
+      "m": [
+        0.72,
+        0.46
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "IfwJ3hktvE",
+      "mobile": "JNXoEVHOq4"
+    }
+  },
+  "ind-inmobiliario-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, en un departamento muestra; al fondo, una asesora inmobiliaria (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-inmobiliario-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.68,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/ind-inmobiliario-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.55,
+      "fy": 1,
+      "subjTop": 0.41
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.52,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.39
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.53,
+        0.1,
+        0.93,
+        0.96
+      ],
+      "m": [
+        0.33,
+        0.4,
+        0.9,
+        0.97
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.684,
+          0.461
+        ],
+        "m": [
+          0.551,
+          0.645
+        ],
+        "scrW": 0.044
+      },
+      "mano": {
+        "d": [
+          0.563,
+          0.528
+        ],
+        "m": [
+          0.381,
+          0.697
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.682,
+          0.282
+        ],
+        "m": [
+          0.546,
+          0.53
+        ]
+      },
+      "fig": {
+        "d": [
+          0.6,
+          0.88
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.91
+        ],
+        "m": [
+          0.5,
+          0.94
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.72,
+        0.24
+      ],
+      "m": [
+        0.58,
+        0.48
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "XmlSP2VBfo",
+      "mobile": "rgYceFWxtc"
+    }
+  },
+  "ind-nutricion-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, con una tableta de cristal en la mano en un consultorio de nutrición; al fondo, desenfocada, una nutrióloga (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-nutricion-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.69,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/ind-nutricion-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.6,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.57,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.42
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.6,
+        0.12,
+        0.975,
+        0.95
+      ],
+      "m": [
+        0.49,
+        0.43,
+        0.98,
+        0.93
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.669,
+          0.455
+        ],
+        "m": [
+          0.575,
+          0.639
+        ],
+        "scrW": 0.033
+      },
+      "mano": {
+        "d": [
+          0.627,
+          0.648
+        ],
+        "m": [
+          0.521,
+          0.753
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.665,
+          0.296
+        ],
+        "m": [
+          0.567,
+          0.545
+        ]
+      },
+      "fig": {
+        "d": [
+          0.605,
+          0.85
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.87
+        ],
+        "m": [
+          0.5,
+          0.875
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.612,
+        0.43
+      ],
+      "m": [
+        0.51,
+        0.6
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "vQy6WKYa47",
+      "mobile": "nVHrkoHYQD"
+    }
+  },
+  "ind-retail-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, sostiene un teléfono en una boutique cerrada; al fondo, el dueño de la tienda dobla ropa (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-retail-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.7,
+      "fy": 0.5,
+      "fadeFrom": 0.91
+    },
+    "m": {
+      "src": "/img/cine/ind-retail-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.5,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.56,
+          0.96
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.42
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.59,
+        0.12,
+        0.96,
+        0.9
+      ],
+      "m": [
+        0.38,
+        0.44,
+        0.91,
+        0.92
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.674,
+          0.443
+        ],
+        "m": [
+          0.492,
+          0.63
+        ],
+        "scrW": 0.038
+      },
+      "mano": {
+        "d": [
+          0.608,
+          0.625
+        ],
+        "m": [
+          0.407,
+          0.747
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.668,
+          0.289
+        ],
+        "m": [
+          0.49,
+          0.538
+        ]
+      },
+      "telefono": {
+        "d": [
+          0.594,
+          0.578,
+          0.04,
+          0.068
+        ],
+        "m": [
+          0.385,
+          0.716,
+          0.052,
+          0.041
+        ]
+      },
+      "fig": {
+        "d": [
+          0.59,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.86
+        ],
+        "m": [
+          0.5,
+          0.88
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.62,
+        0.28
+      ],
+      "m": [
+        0.44,
+        0.52
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "Xml7NtFBfo",
+      "mobile": "1lnTo7Cr4r"
+    }
+  },
+  "ind-salud-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, con bata en un consultorio dental; al fondo, una odontóloga (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-salud-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.69,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/ind-salud-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.52,
+      "fy": 1,
+      "subjTop": 0.46
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.45,
+          0.97
+        ],
+        [
+          0.45,
+          0.06,
+          0.5,
+          0.34
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.44
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.54,
+        0.08,
+        0.94,
+        0.95
+      ],
+      "m": [
+        0.33,
+        0.46,
+        0.9,
+        0.96
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.691,
+          0.458
+        ],
+        "m": [
+          0.522,
+          0.682
+        ],
+        "scrW": 0.039
+      },
+      "rostro": {
+        "d": [
+          0.688,
+          0.279
+        ],
+        "m": [
+          0.522,
+          0.58
+        ]
+      },
+      "mano": {
+        "d": [
+          0.566,
+          0.529
+        ],
+        "m": [
+          0.367,
+          0.715
+        ]
+      },
+      "tableta": {
+        "d": [
+          0.73,
+          0.545,
+          0.089,
+          0.16
+        ],
+        "m": [
+          0.571,
+          0.732,
+          0.112,
+          0.091
+        ]
+      },
+      "fig": {
+        "d": [
+          0.61,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.92
+        ],
+        "m": [
+          0.5,
+          0.93
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.62,
+        0.34
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "N2mvEeW6D9",
+      "mobile": "N2mvuNU6D9"
+    }
+  },
+  "ind-salud-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, en la recepción de una clínica junto a un panel de cristal donde agenda citas",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-salud-kain-sector",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.26,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/ind-salud-kain-sector-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.47,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "safe": {
+      "d": [
+        [
+          0.49,
+          0.06,
+          0.96,
+          0.95
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.08,
+        0.1,
+        0.44,
+        0.93
+      ],
+      "m": [
+        0.21,
+        0.43,
+        0.73,
+        0.91
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.207,
+          0.44
+        ],
+        "m": [
+          0.381,
+          0.631
+        ],
+        "scrW": 0.036
+      },
+      "rostro": {
+        "d": [
+          0.22,
+          0.28
+        ],
+        "m": [
+          0.393,
+          0.54
+        ]
+      },
+      "mano": {
+        "d": [
+          0.313,
+          0.412
+        ],
+        "m": [
+          0.526,
+          0.613
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.319,
+          0.2,
+          0.112,
+          0.441
+        ],
+        "m": [
+          0.53,
+          0.471,
+          0.191,
+          0.278
+        ]
+      },
+      "fig": {
+        "d": [
+          0.33,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.88
+        ],
+        "m": [
+          0.5,
+          0.9
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.17,
+        0.22
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "SyD8dNYUb8",
+      "mobile": "P38fhTx42C"
+    }
+  },
+  "metodologia-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, de pie sobre la última de cinco losas de cristal que suben como escalones",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/metodologia-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.4,
+      "fadeFrom": 0.86
+    },
+    "m": {
+      "src": "/img/cine/metodologia-hero-m",
+      "w": 928,
+      "h": 1152,
+      "ar": 0.8056,
+      "fx": 0.7,
+      "fy": 1,
+      "subjTop": 0.55
+    },
+    "layout": "subject-right",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.56,
+          0.64
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.38
+        ],
+        [
+          0.04,
+          0.38,
+          0.62,
+          0.53
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.66,
+        0.09,
+        0.94,
+        0.74
+      ],
+      "m": [
+        0.66,
+        0.54,
+        0.94,
+        0.85
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.782,
+          0.385
+        ],
+        "m": [
+          0.781,
+          0.679
+        ],
+        "scrW": 0.03
+      },
+      "mano": {
+        "d": [
+          0.696,
+          0.454
+        ],
+        "m": [
+          0.696,
+          0.712
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.778,
+          0.266
+        ],
+        "m": [
+          0.779,
+          0.621
+        ]
+      },
+      "escalon-1": {
+        "d": [
+          0.155,
+          0.792
+        ],
+        "m": [
+          0.156,
+          0.866
+        ]
+      },
+      "escalon-2": {
+        "d": [
+          0.316,
+          0.761
+        ],
+        "m": [
+          0.316,
+          0.853
+        ]
+      },
+      "escalon-3": {
+        "d": [
+          0.477,
+          0.732
+        ],
+        "m": [
+          0.478,
+          0.84
+        ]
+      },
+      "escalon-4": {
+        "d": [
+          0.633,
+          0.704
+        ],
+        "m": [
+          0.633,
+          0.827
+        ]
+      },
+      "escalon-5": {
+        "d": [
+          0.816,
+          0.688
+        ],
+        "m": [
+          0.818,
+          0.819
+        ]
+      },
+      "superficie": {
+        "d": [
+          0.076,
+          0.762,
+          0.158,
+          0.06
+        ],
+        "m": [
+          0.078,
+          0.852,
+          0.156,
+          0.028
+        ]
+      },
+      "fig": {
+        "d": [
+          0.72,
+          0.78
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.86
+        ],
+        "m": [
+          0.5,
+          0.9
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.77,
+        0.1
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "DoxL5PMpcl",
+      "mobile": "kszYZjz16B"
+    }
+  },
+  "riel-servicios": {
+    "alt": "",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/riel-servicios",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.5,
+      "fy": 0.7,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/riel-servicios-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.3,
+      "fy": 1,
+      "subjTop": 0.28
+    },
+    "layout": "subject-center",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.96,
+          0.66
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.27
+        ],
+        [
+          0.19,
+          0.03,
+          0.95,
+          0.92
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0,
+        0.7,
+        1,
+        0.78
+      ],
+      "m": [
+        0.08,
+        0.28,
+        0.16,
+        0.97
+      ]
+    },
+    "anchors": {
+      "nodo-1": {
+        "d": [
+          0.144,
+          0.728
+        ],
+        "m": [
+          0.12,
+          0.379
+        ],
+        "scrW": 0.02,
+        "scrWm": 0.029
+      },
+      "nodo-2": {
+        "d": [
+          0.322,
+          0.728
+        ],
+        "m": [
+          0.12,
+          0.51
+        ],
+        "scrW": 0.02,
+        "scrWm": 0.029
+      },
+      "nodo-3": {
+        "d": [
+          0.5,
+          0.728
+        ],
+        "m": [
+          0.12,
+          0.641
+        ],
+        "scrW": 0.02,
+        "scrWm": 0.029
+      },
+      "nodo-4": {
+        "d": [
+          0.678,
+          0.728
+        ],
+        "m": [
+          0.12,
+          0.772
+        ],
+        "scrW": 0.02,
+        "scrWm": 0.028
+      },
+      "nodo-5": {
+        "d": [
+          0.855,
+          0.728
+        ],
+        "m": [
+          0.12,
+          0.903
+        ],
+        "scrW": 0.02,
+        "scrWm": 0.028
+      },
+      "riel": {
+        "d": [
+          0,
+          0.722,
+          1,
+          0.011
+        ],
+        "m": [
+          0.116,
+          0.29,
+          0.004,
+          0.641
+        ]
+      },
+      "horizonte": {
+        "d": [
+          0.5,
+          0.599
+        ],
+        "m": [
+          0.5,
+          0.693
+        ]
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.727
+        ],
+        "m": [
+          0.5,
+          0.931
+        ]
+      },
+      "fig": {
+        "d": [
+          0.04,
+          0.9
+        ],
+        "m": null
+      }
+    },
+    "leak": {
+      "d": [
+        0.5,
+        0.727
+      ],
+      "m": [
+        0.12,
+        0.64
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "vQy4wzOa47",
+      "mobile": "TdkLxOBVNR"
+    }
+  }
+}

@@ -1,0 +1,127 @@
+---
+// MobileMenu — hoja de cristal a pantalla completa (ESPEC §4.5), para < 1180 px.
+// <dialog> modal (foco atrapado y Esc nativos); scripts/nav/sheet.ts anima la entrada y pausa Lenis (window.__lenis).
+// Orden: buscador → acordeones Servicios (5 etapas) · Industrias · Casos · Empresa · Recursos → Kain → CTAs fijos al pie.
+// Props: waHref (mensaje de WhatsApp de la página).
+import Logo from './Logo.astro';
+import { ICONS, GLYPH_LABEL } from './icons';
+import { METRICS } from '../../lib/metrics';
+import { MEGA, STAGES, metricFor, type NavLink } from '../layout/navData';
+import { SITE } from '../../lib/site';
+
+interface Props { waHref?: string; current?: string }
+const { waHref = SITE.waBase, current = '' } = Astro.props;
+const groups = [
+  { key: 'servicios', label: 'Servicios', count: STAGES.reduce((n, c) => n + c.items.length, 0) },
+  { key: 'industrias', label: 'Industrias', items: (MEGA.industrias?.items ?? []) as NavLink[], foot: MEGA.industrias?.footerLinks ?? [] },
+  { key: 'casos', label: 'Casos', items: (MEGA.casos?.items ?? []) as NavLink[], foot: MEGA.casos?.footerLinks ?? [] },
+  { key: 'empresa', label: 'Empresa', items: (MEGA.empresa?.items ?? []) as NavLink[], foot: [] },
+  { key: 'recursos', label: 'Recursos', items: (MEGA.recursos?.items ?? []) as NavLink[], foot: [] },
+];
+const svcFoot = (MEGA.servicios?.footerLinks ?? []).filter((l: any) => !l.priceFrom);
+const cur = (h: string) => (h === current ? 'page' : undefined);
+---
+<dialog class="msheet" id="msheet" aria-label="Menú principal" data-msheet>
+  <div class="msheet__panel glass-panel">
+    <div class="msheet__top">
+      <Logo class="msheet__logo" />
+      <button class="msheet__close" type="button" data-menu-close autofocus>
+        <span>Cerrar</span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.close} />
+      </button>
+    </div>
+
+    <div class="msheet__scroll" data-lenis-prevent>
+      <button class="msheet__search" type="button" data-search-open style="--i:0">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.search} />
+        <span>Busca o pregúntale a Kain</span>
+      </button>
+
+      <ul class="msheet__groups" role="list">
+        {groups.map((g, gi) => (
+          <li class="acc" data-acc style={`--i:${gi + 1}`}>
+            <h2 class="acc__h">
+              <button class="acc__btn" type="button" aria-expanded="false" aria-controls={`acc-${g.key}`} id={`accb-${g.key}`}>
+                <span class="acc__label">{g.label}</span>
+                <span class="acc__count" aria-hidden="true">{String(g.key === 'servicios' ? g.count : g.items!.length).padStart(2, '0')}</span>
+                <span class="acc__icon" aria-hidden="true"></span>
+              </button>
+            </h2>
+            <div class="acc__panel" id={`acc-${g.key}`} role="region" aria-labelledby={`accb-${g.key}`}>
+              <div class="acc__in">
+                {g.key === 'servicios' ? (
+                  <>
+                    {STAGES.map((col, c) => (
+                      <div class="acc__stage">
+                        <p class="acc__stage-h">
+                          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS[col.glyph] ?? ''} />
+                          <span aria-hidden="true">{String(c + 1).padStart(2, '0')}</span>{GLYPH_LABEL[col.glyph] ?? col.title}
+                        </p>
+                        <ul role="list">
+                          {col.items.map((it) => {
+                            const mid = metricFor(it);
+                            return (
+                              <li>
+                                <a class="acc__link" href={it.href} aria-current={cur(it.href)} {...(it.external ? { target: '_blank', rel: 'noopener' } : {})}>
+                                  <span class="acc__name">{it.label}{it.external && <svg class="ico acc__ext" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.external} />}{it.badge && <span class="mm-badge">{it.badge}</span>}</span>
+                                  {it.description && <span class="acc__line">{it.description}{mid && <> · <b class="acc__metric" data-metric={mid}>{METRICS[mid].value}</b></>}</span>}
+                                </a>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    ))}
+                    <ul class="acc__foot" role="list">
+                      {svcFoot.map((l: any) => <li><a class="acc__more" href={l.href}>{l.label}<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>)}
+                    </ul>
+                  </>
+                ) : (
+                  <>
+                    <ul role="list">
+                      {g.items!.map((it) => {
+                        const mid = metricFor(it);
+                        const line = it.description ?? (mid ? METRICS[mid].label : it.href.startsWith('/blog/') && it.href !== '/blog/' ? 'Artículo' : '');
+                        return (
+                          <li>
+                            <a class="acc__link" href={it.href} aria-current={cur(it.href)}>
+                              <span class="acc__name">{it.label}</span>
+                              {(line || mid) && <span class="acc__line">{mid && <b class="acc__metric" data-metric={mid}>{METRICS[mid].value}</b>}{mid && line ? ' ' : ''}{line}</span>}
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                    {g.foot.length > 0 && (
+                      <ul class="acc__foot" role="list">
+                        {g.foot.map((l: any) => <li><a class="acc__more" href={l.href}>{l.label}<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>)}
+                      </ul>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+          </li>
+        ))}
+        <li class="msheet__kain" style={`--i:${groups.length + 1}`}>
+          <a class="msheet__kain-a" href="/kain/" aria-current={cur('/kain/')}>
+            <span class="msheet__kain-t">Kain<span class="dot-live" aria-hidden="true"></span></span>
+            <span class="msheet__kain-l">El agente de IA de tu empresa</span>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} />
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="msheet__foot">
+      <div class="cta-p">
+        <a class="btn" href={SITE.discovery}>Agenda tu Discovery Session
+          <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span>
+        </a>
+        <p class="t-micro btn-micro" data-allow-number>30 min · 1:1 · Google Meet · sin costo</p>
+      </div>
+      <a class="btn btn--ghost msheet__wa" href={waHref} target="_blank" rel="noopener">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} />Escríbele a Kain
+      </a>
+    </div>
+  </div>
+</dialog>

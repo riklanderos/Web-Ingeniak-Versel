@@ -1,0 +1,31 @@
+---
+// VktorRail · ESPEC §6 #35. Las 5 fases de VKTOR™ (texto oficial) en 5 nodos cuadrados unidos por una línea cian
+// que se dibuja con scrub (ui.ts: --p de 0 a 1); cada nodo se enciende al llegar la línea. Vertical en móvil.
+//   variant="phases"     → verbos oficiales (+ lines[i] opcional: cómo se aplica cada fase en este servicio)
+//   variant="milestones" → milestones[i] = hito confirmado de cada fase; si falta, se muestra el verbo oficial.
+import Icon from './Icon.astro';
+import { VKTOR } from './ui-data';
+
+interface Props { variant?: 'phases' | 'milestones'; milestones?: (string | null | undefined)[]; lines?: string[]; href?: string | false; linkLabel?: string; class?: string }
+const { variant = 'phases', milestones = [], lines = [], href = '/metodologia/', linkLabel = 'Conoce el protocolo completo', class: cls } = Astro.props;
+---
+<div class:list={['vrail', `vrail--${variant}`, cls]} data-vrail>
+  <div class="vrail__wrap">
+  <span class="vrail__track" aria-hidden="true"><span class="vrail__line"></span></span>
+  <ol class="vrail__list" aria-label="Protocolo VKTOR™: Verify, Koncept, Transform, Operate, Rise">
+    {VKTOR.map((f, i) => {
+      const ms = variant === 'milestones' ? milestones[i] : null;
+      return (
+        <li class="vrail__step" style={`--i:${i}`} data-vrail-step>
+          <span class="vrail__node" aria-hidden="true"></span>
+          <span class="vrail__letter" aria-hidden="true">{f.l}</span>
+          <p class="vrail__name"><span class="t-label t-label--cyan">{f.l} · {f.name}</span></p>
+          <p class="vrail__verb">{ms ?? f.verb}</p>
+          {(lines[i]) && <p class="vrail__line-t">{lines[i]}</p>}
+        </li>
+      );
+    })}
+  </ol>
+  </div>
+  {href && <a class="lnk vrail__more" href={href}>{linkLabel}<Icon name="arrow" size={18} /></a>}
+</div>

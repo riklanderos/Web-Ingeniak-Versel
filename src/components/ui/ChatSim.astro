@@ -1,0 +1,115 @@
+---
+// ChatSim · ESPEC §6 #31, §3.7, §7.4. Simulador sin backend: guiones JSON del build, "escribiendo…",
+// botón de pausa (WCAG 2.2.2), barra SIMULACIÓN, data-nosnippet. El guion completo está en el HTML como <ol>
+// (es el estado final sin JS o con movimiento reducido).
+//   mode="registered" → llena su contenedor (la .anchor--panel de la pantalla del teléfono en la placa); sin marco propio.
+//   mode="inline"     → teléfono de cristal propio (sobre aura; aura=true pinta el aura del isotipo detrás).
+// Guiones: src/data/chats/<sector>.json (área copy, _ESQUEMA.md §8) = ChatLine[] { who, text, delay?, time?, event? }.
+//   who: "cliente" | "kain" (también se aceptan from/de/role); delay (ms) = pausa antes de la línea ("escribiendo…" si es de Kain);
+//   time = hora ilustrativa del primer mensaje (sale como sello "Hora ilustrativa"); event = chip del sistema bajo la burbuja.
+// tabs: ['salud','belleza'] o [{id,label}]. Sector sin archivo → se omite (salud y default tienen respaldo en línea).
+import Icon from './Icon.astro';
+import { annotateFigures, SIM } from './ui-data';
+
+type Line = { from: 'cliente' | 'kain' | 'sistema'; text: string; time?: string; delay?: number; event?: string };
+type Tab = string | { id: string; label?: string };
+interface Props {
+  scripts?: Record<string, any[]>; tabs?: Tab[]; script?: string; mode?: 'registered' | 'inline'; autoplay?: boolean;
+  aura?: boolean; title?: string; note?: string | false; class?: string; id?: string;
+}
+const { scripts: given, tabs: tabsProp, script, mode = 'inline', autoplay = true, aura = false, title = 'Agente de IA de tu negocio', note, class: cls, id } = Astro.props;
+
+const LABELS: Record<string, string> = { salud: 'Salud', belleza: 'Belleza', nutricion: 'Nutrición', finanzas: 'Finanzas', inmobiliario: 'Inmobiliario', industrial: 'Industrial', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'HoReCa', default: 'General' };
+const NOTES: Record<string, string> = { salud: 'Kain no da diagnósticos ni consejo médico.', nutricion: 'Kain no da diagnósticos ni consejo médico.', finanzas: 'Kain no da asesoría financiera.' };
+
+// Respaldo en línea (ESPEC §5.3 ESC 05): pide limpieza a las 11 p. m., Kain ofrece dos horarios, confirma, "Registrado en tu CRM".
+const FALLBACK: Record<string, any[]> = {
+  salud: [
+    { who: 'cliente', text: 'Hola, ¿tienen lugar para una limpieza dental esta semana?', time: '11:02 p. m.' },
+    { who: 'kain', text: 'Hola, soy Kain, el asistente de la clínica. Tengo dos horarios para tu limpieza: jueves a las 10:00 o viernes a las 17:30. ¿Cuál te acomoda?' },
+    { who: 'cliente', text: 'El viernes, por favor.' },
+    { who: 'kain', text: 'Listo: tu limpieza quedó el viernes a las 17:30. Un día antes te mando un recordatorio por aquí.', event: 'Cita registrada en tu CRM' },
+  ],
+};
+FALLBACK.default = FALLBACK.salud;
+
+const files = import.meta.glob('../../data/chats/*.json', { eager: true, import: 'default' }) as Record<string, any>;
+const fileFor = (sector: string) => { const k = Object.keys(files).find((x) => x.endsWith(`/${sector}.json`)); return k ? files[k] : null; };
+const norm = (raw: any): Line[] => {
+  const list: any[] = Array.isArray(raw) ? raw : raw?.lines ?? raw?.mensajes ?? raw?.guion ?? raw?.messages ?? [];
+  const who = (f: string): Line['from'] => (/^(kain|bot|agente|assistant)$/i.test(f) ? 'kain' : /^(sistema|system|crm|evento)$/i.test(f) ? 'sistema' : 'cliente');
+  return list.map((l) => ({ from: who(String(l.who ?? l.from ?? l.de ?? l.role ?? 'cliente')), text: String(l.text ?? l.texto ?? ''), time: l.time ?? l.hora, delay: Number(l.delay) || undefined, event: l.event ?? l.evento }))
+    .filter((l) => l.text);
+};
+
+const tabsIn: Tab[] = tabsProp ?? [script ?? 'salud'];
+const sectors = tabsIn
+  .map((t) => {
+    const key = typeof t === 'string' ? t : t.id;
+    const label = (typeof t === 'string' ? undefined : t.label) ?? LABELS[key] ?? key;
+    const raw = given?.[key] ?? fileFor(key) ?? FALLBACK[key];
+    const lines = raw ? norm(raw) : [];
+    if (!lines.length) { if (import.meta.env.DEV) console.warn(`[ui/ChatSim] falta src/data/chats/${key}.json: se omite la pestaña "${key}"`); return null; }
+    return { key, label, lines, note: NOTES[key], stamp: lines.find((l) => l.time)?.time };
+  })
+  .filter(Boolean) as { key: string; label: string; lines: Line[]; note?: string; stamp?: string }[];
+if (!sectors.length) sectors.push({ key: 'salud', label: 'Salud', lines: norm(FALLBACK.salud), note: NOTES.salud, stamp: '11:02 p. m.' });
+
+const uid = id ?? `chat-${Math.random().toString(36).slice(2, 8)}`;
+const whoLabel = (f: Line['from']) => (f === 'kain' ? 'Kain' : f === 'sistema' ? 'Sistema' : 'Cliente');
+const simLabel = String(SIM.label).toUpperCase() === 'SIMULACIÓN' ? 'Simulación' : SIM.label;
+---
+<figure class:list={['chat', `chat--${mode}`, aura && 'chat--aura', cls]} id={uid} data-chat data-autoplay={autoplay ? '' : undefined} data-nosnippet
+  data-label-pause={SIM.pause} data-label-play={SIM.play} aria-label={`Simulación de una conversación con Kain${sectors.length > 1 ? ' por sector' : ''}`}>
+  {aura && mode === 'inline' && <span class="chat__aura" aria-hidden="true"><img src="/img/marca/isotipo-cristal-640.webp" alt="" width="640" height="640" loading="lazy" decoding="async" /></span>}
+  <div class:list={['chat__device', mode === 'inline' && 'glass-panel']}>
+    <div class="chat__bar">
+      <span class="chat__avatar" aria-hidden="true"><span class="chat__avatar-node"></span></span>
+      <span class="chat__who"><span class="kain-mark">kain</span><span class="chat__role">{title}</span></span>
+      <span class="chip-sim">{simLabel}</span>
+      {autoplay && (
+        <button type="button" class="chat__pause" data-chat-pause aria-pressed="false" aria-label={SIM.pause}>
+          <Icon name="pause" size={16} class="chat__i-pause" /><Icon name="play" size={16} class="chat__i-play" />
+        </button>
+      )}
+    </div>
+    {sectors.length > 1 && (
+      <div class="chat__tabs" role="tablist" aria-label={SIM.tabsAria}>
+        {sectors.map((s, i) => (
+          <button type="button" role="tab" class="chat__tab" id={`${uid}-tab-${s.key}`} aria-controls={`${uid}-p-${s.key}`}
+            aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-chat-tab={s.key}>{s.label}</button>
+        ))}
+      </div>
+    )}
+    <div class="chat__screen" tabindex="0" aria-label="Conversación completa">
+      {sectors.map((s, i) => (
+        <ol class="chat__log" id={`${uid}-p-${s.key}`} data-chat-panel={s.key}
+          role={sectors.length > 1 ? 'tabpanel' : undefined} aria-labelledby={sectors.length > 1 ? `${uid}-tab-${s.key}` : undefined}
+          aria-label={sectors.length > 1 ? undefined : `Conversación simulada: ${s.label}`} hidden={i > 0 ? true : undefined}>
+          {s.stamp && <li class="chat__stamp" data-allow-number>{SIM.horaIlustrativa} · {s.stamp}</li>}
+          {s.lines.map((l) => (
+            <>
+              <li class:list={['chat__msg', `chat__msg--${l.from}`]} data-from={l.from} data-delay={l.delay}>
+                <span class="sr-only">{whoLabel(l.from)}: </span>
+                {l.from === 'sistema' && <Icon name="check" size={14} class="chat__sys-i" />}
+                <span class="chat__text" set:html={annotateFigures(l.text)} />
+              </li>
+              {l.event && (
+                <li class="chat__msg chat__msg--sistema" data-from="sistema" data-delay="450">
+                  <span class="sr-only">Sistema: </span><Icon name="check" size={14} class="chat__sys-i" />
+                  <span class="chat__text" set:html={annotateFigures(l.event)} />
+                </li>
+              )}
+            </>
+          ))}
+          <li class="chat__typing" aria-hidden="true"><span></span><span></span><span></span></li>
+        </ol>
+      ))}
+    </div>
+  </div>
+  {note !== false && (
+    <figcaption class="chat__note t-micro">
+      {sectors.map((s, i) => <span data-chat-note={s.key} hidden={i > 0 ? true : undefined}>{note ?? 'Simulación con un guion de ejemplo; las horas son ilustrativas.'}{s.note && <>{' '}{s.note}</>}</span>)}
+    </figcaption>
+  )}
+</figure>

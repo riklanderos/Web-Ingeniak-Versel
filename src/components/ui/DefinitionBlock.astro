@@ -1,0 +1,27 @@
+---
+// DefinitionBlock · ESPEC §6 #37 (+ AnswerBox = variant="answer").
+// "¿Qué es…?" de 40–60 palabras, con la definición en la primera oración. Texto idéntico al banco de FAQ (faqId);
+// si se pasa `text`, manda ese texto (p. ej. el párrafo citable de una industria en src/content/paginas).
+//   definition → pregunta como encabezado + respuesta en Lexend 300 con la primera oración en blanco
+//   answer     → AnswerBox de artículos: "Respuesta corta" con filete cian lateral, primero en el artículo
+import { getFaqItems, annotateFigures } from './ui-data';
+
+interface Props { faqId?: string; heading?: string; text?: string; variant?: 'definition' | 'answer'; headingLevel?: 2 | 3; label?: string; class?: string; id?: string }
+const { faqId, heading, text, variant = 'definition', headingLevel = 2, label, class: cls, id } = Astro.props;
+const f = faqId ? getFaqItems([faqId])[0] : undefined;
+const q = heading ?? f?.q ?? '';
+const a = text ?? f?.a ?? '';
+if (!a && import.meta.env.DEV) console.warn(`[ui/DefinitionBlock] sin texto (faqId=${faqId})`);
+// Primera oración (la definición) resaltada; el resto en el segundo peso.
+const cut = a.search(/[.!?](\s|$)/);
+const first = cut > 0 ? a.slice(0, cut + 1) : a;
+const rest = cut > 0 ? a.slice(cut + 1).trim() : '';
+const H = `h${headingLevel}` as any;
+---
+{a && (
+  <section class:list={['defn', `defn--${variant}`, cls]} id={id} aria-labelledby={id ? `${id}-q` : undefined} data-ui-reveal>
+    <p class="t-label t-label--cyan defn__label"><span class="node" aria-hidden="true"></span>{label ?? (variant === 'answer' ? 'Respuesta corta' : 'Definición')}</p>
+    {q && <H class="defn__q" id={id ? `${id}-q` : undefined}>{q}</H>}
+    <p class="defn__a"><b set:html={annotateFigures(first)} />{rest && <>{' '}<span set:html={annotateFigures(rest)} /></>}</p>
+  </section>
+)}

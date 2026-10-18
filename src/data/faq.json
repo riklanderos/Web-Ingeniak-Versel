@@ -1,0 +1,773 @@
+[
+  {
+    "id": "G01",
+    "q": "¿Qué es Ingeniak?",
+    "a": "Ingeniak es una consultoría de inteligencia artificial con sede en Guadalajara, Jalisco. Implementamos agentes de IA para WhatsApp, CRM con Kommo y GoHighLevel, automatizaciones con n8n, paid media, sitios web de alta conversión, software a la medida y SEO, conectados en un solo sistema. Somos partner oficial de Kommo en Latinoamérica y tenemos {{metric:sistemas|full}} en {{metric:paises}} países.",
+    "short": "Consultoría de IA de Guadalajara: agentes de IA, CRM, automatización, paid media, web, software y SEO en un solo sistema.",
+    "pages": [
+      "/",
+      "/nosotros/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Ingeniak",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G02",
+    "q": "¿Qué es un agente de IA para WhatsApp?",
+    "a": "Un agente de IA para WhatsApp es un asistente basado en modelos de lenguaje que atiende las conversaciones de tu WhatsApp Business: entiende lo que escribe el cliente, responde con la información de tu negocio, lo califica, lo registra en tu CRM y puede agendarle cita. A diferencia de un chatbot de menús, no obliga a elegir entre opciones fijas.",
+    "short": "Un asistente con IA que atiende tu WhatsApp Business: entiende, responde, califica, registra en tu CRM y agenda.",
+    "pages": [
+      "/",
+      "/servicios/agentes-ia-whatsapp/",
+      "/industrias/salud/",
+      "/industrias/belleza-estetica/",
+      "/industrias/nutricion/",
+      "/industrias/inmobiliario/",
+      "/industrias/horeca/",
+      "/preguntas-frecuentes/",
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+      "/blog/agente-ia-whatsapp-vs-chatbot/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G03",
+    "q": "¿En qué se diferencia un agente de IA de un chatbot tradicional?",
+    "a": "Un chatbot tradicional sigue un árbol de opciones y se atora cuando la pregunta se sale del guion. Un agente de IA interpreta lenguaje natural, consulta información como tu catálogo, tu agenda o tu CRM y ejecuta acciones como crear un lead o agendar una cita. Por eso puede atender conversaciones reales de venta y servicio, no solo preguntas previstas.",
+    "short": "El chatbot sigue un menú fijo; el agente de IA entiende lenguaje natural, consulta tus sistemas y ejecuta acciones.",
+    "pages": [
+      "/servicios/agentes-ia-whatsapp/",
+      "/preguntas-frecuentes/",
+      "/blog/agente-ia-whatsapp-vs-chatbot/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G04",
+    "q": "¿Ingeniak es partner oficial de Kommo?",
+    "a": "Sí. Ingeniak es partner oficial y distribuidor de Kommo en Latinoamérica. Te ayudamos con las licencias, la implementación del CRM, la conexión de WhatsApp y la automatización del seguimiento con agentes de IA. Por eso podemos encargarnos de todo el proceso: desde elegir las licencias que necesitas hasta dejar el CRM operando con tu equipo.",
+    "short": "Sí. Somos partner oficial y distribuidor de Kommo en Latinoamérica: licencias, implementación y agentes de IA.",
+    "pages": [
+      "/",
+      "/servicios/crm-con-ia/",
+      "/kommo/",
+      "/nosotros/",
+      "/agentes-ia-guadalajara/",
+      "/preguntas-frecuentes/",
+      "/blog/kommo-vs-gohighlevel/",
+      "/blog/como-verificar-partner-oficial-kommo/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G05",
+    "q": "¿Me conviene Kommo o GoHighLevel?",
+    "a": "Depende de cómo vendes. Kommo está pensado para vender por mensajería (WhatsApp, Instagram, TikTok) con embudos y automatizaciones dentro del chat. GoHighLevel junta CRM, embudos, páginas, calendarios y campañas en una sola plataforma. Trabajamos con los dos y te recomendamos uno según tu proceso comercial, no según lo que nos convenga vender.",
+    "short": "Kommo si vendes por chat; GoHighLevel si quieres CRM, embudos, páginas y calendarios en una sola plataforma.",
+    "pages": [
+      "/servicios/",
+      "/servicios/crm-con-ia/",
+      "/kommo/",
+      "/gohighlevel/",
+      "/industrias/inmobiliario/",
+      "/industrias/retail-ecommerce/",
+      "/preguntas-frecuentes/",
+      "/blog/kommo-vs-gohighlevel/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G06",
+    "q": "¿Qué puedo automatizar con n8n?",
+    "a": "Con n8n conectamos tu CRM, WhatsApp, formularios, hojas de cálculo y sistemas internos para que la información se mueva sola y tu equipo deje de capturar datos a mano: altas de clientes, avisos, seguimientos, reportes y flujos con agentes de IA. En un caso de logística, el resultado fue de {{metric:logistica-procesos|full}} con n8n.",
+    "short": "Conexiones entre CRM, WhatsApp, formularios, hojas de cálculo y sistemas internos para que nadie capture datos a mano.",
+    "pages": [
+      "/servicios/automatizacion-n8n/",
+      "/industrias/industrial-logistica/",
+      "/preguntas-frecuentes/",
+      "/blog/n8n-vs-zapier-vs-make/"
+    ],
+    "categoria": "Automatización",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G07",
+    "q": "¿Cuánto cuesta trabajar con Ingeniak?",
+    "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
+    "short": "Nuestros proyectos empiezan {{price}}; el alcance exacto se define en una Discovery Session gratuita.",
+    "pages": [
+      "/",
+      "/servicios/",
+      "/servicios/consultoria-ia-empresas/",
+      "/servicios/crm-con-ia/",
+      "/gohighlevel/",
+      "/servicios/automatizacion-n8n/",
+      "/servicios/paid-media/",
+      "/servicios/paginas-web/",
+      "/servicios/desarrollo-software/",
+      "/servicios/seo/",
+      "/servicios/branding/",
+      "/industrias/salud/",
+      "/industrias/belleza-estetica/",
+      "/industrias/nutricion/",
+      "/industrias/finanzas/",
+      "/industrias/inmobiliario/",
+      "/industrias/industrial-logistica/",
+      "/industrias/retail-ecommerce/",
+      "/industrias/horeca/",
+      "/agentes-ia-guadalajara/",
+      "/preguntas-frecuentes/",
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/"
+    ],
+    "categoria": "Precios",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G08",
+    "q": "¿En cuánto tiempo veo resultados?",
+    "a": "Nuestros proyectos están planteados para dar resultados medibles en 60 a 90 días. Por ejemplo, una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días, y un e-commerce en la Ciudad de México logró {{metric:ecom-cpl}} en su costo por lead en 60 días. {{source}}.",
+    "short": "Los proyectos están planteados para dar resultados medibles en 60 a 90 días.",
+    "pages": [
+      "/",
+      "/servicios/",
+      "/servicios/consultoria-ia-empresas/",
+      "/servicios/automatizacion-n8n/",
+      "/servicios/paid-media/",
+      "/servicios/paginas-web/",
+      "/servicios/desarrollo-software/",
+      "/servicios/seo/",
+      "/industrias/",
+      "/industrias/industrial-logistica/",
+      "/industrias/retail-ecommerce/",
+      "/metodologia/",
+      "/preguntas-frecuentes/",
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/"
+    ],
+    "categoria": "Ingeniak",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G09",
+    "q": "¿Qué modelos de IA usan?",
+    "a": "Trabajamos con modelos de OpenAI, Anthropic (Claude) y Google (Gemini), y elegimos el que mejor resuelve cada proceso según la calidad de sus respuestas, su velocidad y su costo de uso. Los integramos con herramientas como Kommo, GoHighLevel, n8n, Make, Zapier, Supabase y Stripe. Si más adelante conviene otro modelo, lo evaluamos con tus propias conversaciones.",
+    "short": "OpenAI, Anthropic (Claude) y Google (Gemini); elegimos el que mejor resuelve cada proceso.",
+    "pages": [
+      "/servicios/",
+      "/servicios/consultoria-ia-empresas/",
+      "/servicios/agentes-ia-whatsapp/",
+      "/servicios/desarrollo-software/",
+      "/tecnologias/",
+      "/blog/n8n-vs-zapier-vs-make/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G10",
+    "q": "¿Solo trabajan con empresas de Guadalajara?",
+    "a": "No. Nuestra sede está en Guadalajara, Jalisco, con oficina en Tlajomulco de Zúñiga, pero trabajamos con empresas de {{metric:paises}} países: México, Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador. Tenemos casos en Monterrey y en la Ciudad de México, entre otros, y el primer paso, la Discovery Session, es por Google Meet.",
+    "short": "No. Trabajamos con empresas de {{metric:paises}} países: México, Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador.",
+    "pages": [
+      "/industrias/",
+      "/nosotros/",
+      "/agentes-ia-guadalajara/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Ingeniak",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G11",
+    "q": "¿Cómo empiezo a trabajar con Ingeniak?",
+    "a": "Agenda una Discovery Session: una llamada 1:1 de 30 minutos por Google Meet, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden. Antes llenas un formulario de siete preguntas que toma dos minutos. Si hay sentido, después te enviamos una propuesta con alcance, tiempos y costo.",
+    "short": "Con una Discovery Session: llamada 1:1 de 30 minutos por Google Meet, gratuita y sin compromiso.",
+    "pages": [
+      "/",
+      "/industrias/",
+      "/metodologia/",
+      "/agentes-ia-guadalajara/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G12",
+    "q": "¿Qué es la metodología VKTOR™?",
+    "a": "VKTOR™ es el método de Ingeniak para implementar IA en cinco fases: Verify (verificamos tu operación), Koncept (diseñamos el concepto), Transform (transformamos), Operate (operamos junto con tu equipo) y Rise (hacemos crecer los resultados). Ordena cada proyecto desde el diagnóstico hasta la operación en producción, con métricas definidas desde el inicio.",
+    "short": "El método de Ingeniak en cinco fases: Verify, Koncept, Transform, Operate y Rise.",
+    "pages": [
+      "/metodologia/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Ingeniak",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "G13",
+    "q": "¿Qué es kain?",
+    "a": "kain es la sub-marca de agentes de IA de Ingeniak y también su plataforma, en app.kain.mx, donde las empresas tienen a sus agentes trabajando. Kain, el personaje, es la cara de esos agentes: atiende, agenda, confirma, da seguimiento y conecta sistemas en WhatsApp, Instagram y la web. No da consejo médico ni legal.",
+    "short": "La sub-marca de agentes de IA de Ingeniak y su plataforma, app.kain.mx.",
+    "pages": [
+      "/kain/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Kain",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G14",
+    "q": "¿Además de IA, hacen publicidad y sitios web?",
+    "a": "Sí. Gestionamos paid media en Meta Ads, Google Ads y TikTok Ads, y hacemos sitios web de alta conversión, software a la medida y SEO. La idea es que la publicidad, el sitio, el CRM y los agentes de IA funcionen como un solo sistema, medido hasta la venta. En un cliente de HoReCa logramos {{metric:horeca-roas}} sostenido.",
+    "short": "Sí: paid media en Meta, Google y TikTok, sitios web, software a la medida y SEO, conectados al mismo sistema.",
+    "pages": [
+      "/servicios/paid-media/",
+      "/servicios/paginas-web/",
+      "/servicios/seo/",
+      "/servicios/branding/",
+      "/industrias/horeca/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Servicios",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G15",
+    "q": "¿Qué resultados han logrado sus clientes?",
+    "a": "Algunos resultados confirmados: {{metric:dental-citas|full}} (clínica dental, Monterrey); tiempo de respuesta de {{metric:dental-respuesta}} (misma clínica); {{metric:ecom-cpl|full}} (e-commerce, CDMX); {{metric:retail-conversiones}} en conversiones con Kommo e IA (retail multimarca); {{metric:horeca-roas}} sostenido (HoReCa); {{metric:logistica-procesos|full}} (logística); {{metric:salud-citas-mes|full}} (salud), y {{metric:tiempo-operativo}} de tiempo operativo en los primeros 90 días. {{source}}.",
+    "short": "Más citas, respuestas en segundos, menor costo por lead y más conversiones, cada cifra con su sector y su plazo.",
+    "pages": [
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Ingeniak",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "W01",
+    "q": "¿Qué resultados ha dado un agente de IA en WhatsApp?",
+    "a": "En una clínica dental de Monterrey, el agente de IA bajó el tiempo de respuesta en WhatsApp de {{metric:dental-respuesta}} y la clínica logró {{metric:dental-citas}} más citas en 90 días. El agente califica a cada paciente, agenda su cita y le da seguimiento sin intervención humana, a cualquier hora del día. {{source}}.",
+    "short": "En una clínica dental de Monterrey: respuesta de {{metric:dental-respuesta}} y {{metric:dental-citas}} más citas en 90 días.",
+    "pages": [
+      "/servicios/agentes-ia-whatsapp/",
+      "/industrias/salud/",
+      "/preguntas-frecuentes/",
+      "/blog/agente-ia-whatsapp-vs-chatbot/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "W02",
+    "q": "¿El agente se conecta a mi CRM?",
+    "a": "Sí. Registra cada conversación y cada lead en Kommo o GoHighLevel, con su etapa, para que tu equipo vea todo en un solo lugar. También puede mover al prospecto de etapa, crear tareas y avisar a la persona indicada cuando hace falta intervenir. Ninguna conversación se queda en el chat sin registro.",
+    "short": "Sí. Registra cada conversación y cada lead en Kommo o GoHighLevel, con su etapa.",
+    "pages": [
+      "/servicios/agentes-ia-whatsapp/",
+      "/industrias/salud/",
+      "/industrias/finanzas/",
+      "/kain/",
+      "/tecnologias/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "W03",
+    "q": "¿Cuánto cuesta un agente de IA para WhatsApp?",
+    "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos. Lo que más mueve el precio son los canales que atiende el agente, sus integraciones y el volumen de conversaciones.",
+    "short": "{{Price}}; canales, integraciones y volumen definen el alcance.",
+    "pages": [
+      "/servicios/agentes-ia-whatsapp/",
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/"
+    ],
+    "categoria": "Precios",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "K01",
+    "q": "¿Me venden las licencias de Kommo o solo la implementación?",
+    "a": "Las dos cosas. Como partner oficial de Kommo en Latinoamérica te ayudamos a contratar las licencias que necesitas y también implementamos el CRM: embudos, conexión de WhatsApp, automatizaciones y agentes de IA. Así un solo equipo responde por la herramienta y por que funcione con tu proceso de venta desde el primer día.",
+    "short": "Las dos: licencias como partner oficial y la implementación completa del CRM con agentes de IA.",
+    "pages": [
+      "/kommo/",
+      "/preguntas-frecuentes/",
+      "/blog/kommo-vs-gohighlevel/",
+      "/blog/como-verificar-partner-oficial-kommo/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "K02",
+    "q": "¿Se puede conectar WhatsApp a Kommo?",
+    "a": "Sí. Conectamos tu WhatsApp Business a Kommo para que cada conversación llegue al CRM, se registre como lead y avance por tu embudo. Encima ponemos un agente de IA que responde, califica y agenda 24/7. Tu equipo ve cada conversación con su historial y su etapa en un solo lugar, sin copiar datos de una pantalla a otra.",
+    "short": "Sí. Cada conversación de WhatsApp entra a Kommo como lead y un agente de IA responde, califica y agenda 24/7.",
+    "pages": [
+      "/kommo/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "K03",
+    "q": "¿Qué resultados han logrado con Kommo?",
+    "a": "En un retail multimarca, Kommo automatizado con calificación de leads por IA logró {{metric:retail-conversiones}} en conversiones. El sistema combina el embudo de Kommo con calificación de leads por IA y un embudo de conversión que se ve en tiempo real: el equipo sabe a quién atender primero y ningún prospecto se queda sin seguimiento. {{source}}.",
+    "short": "{{metric:retail-conversiones}} en conversiones en un retail multimarca con Kommo y calificación de leads por IA.",
+    "pages": [
+      "/kommo/",
+      "/industrias/retail-ecommerce/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "K04",
+    "q": "¿Cuánto cuesta implementar Kommo con Ingeniak?",
+    "a": "Nuestros proyectos empiezan {{price}}. El alcance exacto y las licencias de Kommo que necesitas los definimos después de una Discovery Session gratuita de 30 minutos. El costo de las licencias depende del plan de Kommo y de cuántas personas de tu equipo lo usarán; te lo explicamos por separado, sin sorpresas.",
+    "short": "Nuestros proyectos empiezan {{price}}; las licencias de Kommo se cotizan según plan y usuarios.",
+    "pages": [
+      "/kommo/",
+      "/blog/como-verificar-partner-oficial-kommo/"
+    ],
+    "categoria": "Precios",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "H01",
+    "q": "¿Qué es GoHighLevel?",
+    "a": "GoHighLevel, también llamado HighLevel o GHL, es una plataforma que junta CRM, embudos, páginas, calendarios y campañas. Sirve para captar prospectos, darles seguimiento y agendarlos sin usar varias herramientas sueltas. Conviene sobre todo a negocios que venden con citas y campañas, y que quieren todo eso en una sola cuenta.",
+    "short": "Una plataforma que junta CRM, embudos, páginas, calendarios y campañas en una sola cuenta.",
+    "pages": [
+      "/gohighlevel/",
+      "/preguntas-frecuentes/",
+      "/blog/gohighlevel-en-espanol/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "H02",
+    "q": "¿Implementan GoHighLevel en español?",
+    "a": "Sí. Hacemos toda la implementación en español: la configuración de tu cuenta, los textos de tus embudos, mensajes y automatizaciones, y la capacitación de tu equipo. Además conectamos un agente de IA que atiende WhatsApp, Instagram o tu web y agenda en tus calendarios de GoHighLevel, para que la plataforma trabaje desde el primer día.",
+    "short": "Sí: configuración, embudos, mensajes, automatizaciones y capacitación, todo en español.",
+    "pages": [
+      "/gohighlevel/",
+      "/preguntas-frecuentes/",
+      "/blog/gohighlevel-en-espanol/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "H03",
+    "q": "¿Se puede conectar un agente de IA a GoHighLevel?",
+    "a": "Sí. Conectamos un agente de IA que atiende WhatsApp, Instagram o tu web, califica al prospecto, lo registra en GoHighLevel con su etapa y le agenda cita en tu calendario. Tu equipo recibe la conversación completa y entra solo cuando hace falta una persona: cerrar una venta, resolver un caso especial o atender una queja.",
+    "short": "Sí. El agente atiende, califica, registra en GoHighLevel y agenda en tu calendario.",
+    "pages": [
+      "/servicios/crm-con-ia/",
+      "/gohighlevel/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "H04",
+    "q": "¿Ingeniak es partner de GoHighLevel?",
+    "a": "No usamos esa etiqueta. GoHighLevel es una herramienta que implementamos en español para nuestros clientes: configuración, embudos, calendarios, automatizaciones y agentes de IA. Nuestra única alianza oficial es con Kommo, como partner en Latinoamérica. Por eso en este sitio el sello de partner solo aparece junto a Kommo.",
+    "short": "No. GoHighLevel es una herramienta que implementamos; nuestra única alianza oficial es con Kommo.",
+    "pages": [
+      "/gohighlevel/",
+      "/tecnologias/",
+      "/preguntas-frecuentes/",
+      "/blog/kommo-vs-gohighlevel/",
+      "/blog/gohighlevel-en-espanol/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "L01",
+    "q": "¿Dónde está la oficina de Ingeniak?",
+    "a": "Nuestra oficina está en Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, en la zona metropolitana de Guadalajara. Desde ahí trabajamos con empresas de {{metric:paises}} países. Para empezar no necesitas venir: la Discovery Session es una llamada de 30 minutos por Google Meet, gratuita y sin compromiso.",
+    "short": "En Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, zona metropolitana de Guadalajara.",
+    "pages": [
+      "/nosotros/",
+      "/agentes-ia-guadalajara/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Ingeniak",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "L02",
+    "q": "¿Qué servicios de IA ofrecen en Guadalajara?",
+    "a": "Agentes de IA para WhatsApp, CRM con Kommo y GoHighLevel, automatización de procesos con n8n, paid media en Meta, Google y TikTok Ads, páginas web de alta conversión, software a la medida y SEO, conectados en un solo sistema. Atendemos a empresas de toda la zona metropolitana de Guadalajara y del resto de México.",
+    "short": "Agentes de IA, CRM, automatización con n8n, paid media, páginas web, software y SEO, conectados en un sistema.",
+    "pages": [
+      "/agentes-ia-guadalajara/"
+    ],
+    "categoria": "Servicios",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "N01",
+    "q": "¿Kain da consejo médico o legal?",
+    "a": "No. Kain atiende mensajes, agenda, confirma, da seguimiento y conecta sistemas, pero no da consejo médico ni legal. Cuando un paciente o un cliente pregunta algo que requiere a un profesional, como un síntoma, un diagnóstico o una duda legal, Kain lo dice con claridad y pasa la conversación a tu equipo con el contexto completo.",
+    "short": "No. Kain atiende, agenda, confirma y da seguimiento; lo médico y lo legal se lo pasa a tu equipo.",
+    "pages": [
+      "/industrias/salud/",
+      "/industrias/nutricion/",
+      "/kain/",
+      "/preguntas-frecuentes/",
+      "/blog/agente-ia-whatsapp-vs-chatbot/"
+    ],
+    "categoria": "Kain",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "N02",
+    "q": "¿La inversión en pauta está incluida?",
+    "a": "No. La inversión publicitaria se paga aparte, directo a Meta, Google o TikTok, y la controlas tú. Nuestro trabajo es la estrategia, los creativos, la medición y la conexión de tus campañas con tu CRM, para que sepas qué anuncio termina en una venta y no solo en un clic.",
+    "short": "No. La pauta se paga aparte, directo a Meta, Google o TikTok.",
+    "pages": [
+      "/servicios/paid-media/",
+      "/industrias/horeca/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Precios",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "N03",
+    "q": "¿Qué es un CRM con IA?",
+    "a": "Es un CRM que, además de guardar contactos y oportunidades, usa inteligencia artificial para atender, calificar y dar seguimiento: un agente responde en el chat, registra al prospecto en su etapa y dispara recordatorios y tareas sin que nadie capture datos a mano. Kommo y GoHighLevel son las dos plataformas con las que lo implementamos.",
+    "short": "Un CRM donde un agente de IA atiende, califica y da seguimiento sin capturas a mano.",
+    "pages": [
+      "/servicios/crm-con-ia/"
+    ],
+    "categoria": "Servicios",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "N04",
+    "q": "¿Qué es la visibilidad en IA o GEO?",
+    "a": "Es lograr que los motores de respuesta, como ChatGPT, Gemini, Perplexity, Claude y los AI Overviews de Google, encuentren, entiendan y citen a tu empresa. Se trabaja con contenido en HTML que se pueda citar, datos estructurados que coincidan con el texto visible, perfiles externos consistentes y permisos para sus rastreadores.",
+    "short": "Que ChatGPT, Gemini, Perplexity, Claude y Google encuentren, entiendan y citen a tu empresa.",
+    "pages": [
+      "/servicios/seo/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Servicios",
+    "validar": true,
+    "editada": false
+  },
+  {
+    "id": "N05",
+    "q": "¿Qué es n8n?",
+    "a": "n8n es una herramienta para conectar aplicaciones y crear flujos automáticos, incluidos flujos con agentes de IA. La usamos para que tu CRM, WhatsApp, formularios y sistemas internos intercambien información sin capturas a mano. La elegimos porque maneja flujos complejos y se puede instalar en la infraestructura de tu empresa si lo necesitas.",
+    "short": "Una herramienta para conectar aplicaciones y crear flujos automáticos, también con agentes de IA.",
+    "pages": [
+      "/servicios/automatizacion-n8n/",
+      "/industrias/industrial-logistica/",
+      "/preguntas-frecuentes/",
+      "/blog/n8n-vs-zapier-vs-make/"
+    ],
+    "categoria": "Automatización",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "N06",
+    "q": "¿Qué hace una consultoría de inteligencia artificial?",
+    "a": "Detecta en qué procesos de tu empresa la IA ahorra tiempo o trae ventas, diseña cómo implementarla y la pone en producción con métricas. En Ingeniak incluye diagnóstico, roadmap, casos de uso y retorno medible, con la metodología VKTOR™ y resultados planteados para medirse en 60 a 90 días.",
+    "short": "Detecta dónde la IA ahorra tiempo o trae ventas, diseña la implementación y la pone en producción con métricas.",
+    "pages": [
+      "/servicios/consultoria-ia-empresas/"
+    ],
+    "categoria": "Servicios",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "N07",
+    "q": "¿Trabajan con pymes?",
+    "a": "Sí. La Discovery Session está pensada para dueños de PyMES de 3 a 40 empleados, de cualquier sector: el tamaño en el que el negocio todavía depende de su dueño para operar y un sistema le devuelve más tiempo. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
+    "short": "Sí. La Discovery Session está pensada para PyMES de 3 a 40 empleados, de cualquier sector.",
+    "pages": [
+      "/servicios/",
+      "/servicios/consultoria-ia-empresas/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "N08",
+    "q": "¿Cuándo conviene el software a la medida?",
+    "a": "Cuando ninguna herramienta del mercado encaja con tu operación o necesitas unir varias fuentes de datos en un solo lugar. Para un e-commerce, por ejemplo, unificamos sus datos en un tablero de {{metric:ecom-tablero}}: tráfico, conversión y retorno de campañas en la misma pantalla, sin exportar reportes a mano.",
+    "short": "Cuando ninguna herramienta encaja o necesitas unir varias fuentes de datos en un solo lugar.",
+    "pages": [
+      "/servicios/desarrollo-software/"
+    ],
+    "categoria": "Servicios",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "N09",
+    "q": "¿La página web se conecta a mi CRM y a WhatsApp?",
+    "a": "Sí. La conectamos a tu CRM y a WhatsApp desde el primer día, para que cada formulario o mensaje entre como lead en su etapa y se pueda medir hasta la venta. Así sabes qué página, qué anuncio y qué formulario te traen clientes, y no solo visitas.",
+    "short": "Sí. Cada formulario o mensaje entra como lead a tu CRM y se mide hasta la venta.",
+    "pages": [
+      "/servicios/paginas-web/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Servicios",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "N10",
+    "q": "¿Hacen branding y contenido además de la parte técnica?",
+    "a": "Sí. Creamos identidad y contenido con estrategia para que tu marca se vea como la opción premium y alimente tus campañas, tu web y tus agentes de IA. Lo hace el mismo equipo que construye la parte técnica, así el anuncio, la página y la conversación con Kain dicen lo mismo.",
+    "short": "Sí. Identidad y contenido con estrategia, alineados con tus campañas, tu web y tus agentes de IA.",
+    "pages": [
+      "/servicios/branding/"
+    ],
+    "categoria": "Servicios",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "N11",
+    "q": "¿Pueden ayudarme aunque no tengan un caso publicado de mi sector?",
+    "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. El sistema es el mismo: cambian el guion del agente, las etapas del CRM y lo que conviene automatizar primero. En la Discovery Session revisamos tu operación y te decimos por dónde empezar, con ejemplos de casos cercanos a tu sector.",
+    "short": "Sí. El sistema es el mismo; cambian el guion del agente, las etapas del CRM y qué se automatiza primero.",
+    "pages": [
+      "/industrias/",
+      "/industrias/belleza-estetica/",
+      "/industrias/nutricion/",
+      "/industrias/finanzas/",
+      "/industrias/inmobiliario/"
+    ],
+    "categoria": "Industrias",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "N12",
+    "q": "¿Dónde trabaja Kain?",
+    "a": "Kain trabaja en WhatsApp, Instagram y tu sitio web. Registra cada conversación en Kommo o GoHighLevel y agenda las citas en tu calendario. Atiende 24/7 y, cuando una conversación necesita a una persona, se la pasa a tu equipo con el historial completo, para que nadie tenga que volver a preguntar lo mismo.",
+    "short": "En WhatsApp, Instagram y tu web, conectado a Kommo o GoHighLevel y a tu calendario.",
+    "pages": [
+      "/industrias/belleza-estetica/",
+      "/kain/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Kain",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "N13",
+    "q": "¿Qué es app.kain.mx?",
+    "a": "app.kain.mx es la plataforma de kain, la sub-marca de agentes de IA de Ingeniak, donde las empresas tienen a sus agentes trabajando. Si quieres un agente para tu empresa, el primer paso es una Discovery Session gratuita de 30 minutos, en la que revisamos qué debería atender y con qué sistemas se conecta.",
+    "short": "La plataforma de kain, la sub-marca de agentes de IA de Ingeniak.",
+    "pages": [
+      "/kain/"
+    ],
+    "categoria": "Kain",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "N14",
+    "q": "¿El agente da asesoría financiera?",
+    "a": "No. El agente responde con la información que tu empresa aprueba, califica al prospecto y agenda la llamada con tu asesor. Las recomendaciones, las tasas, los montos y las decisiones de crédito o inversión las da tu equipo. Si alguien pide una recomendación, el agente lo explica con claridad y pasa la conversación a una persona.",
+    "short": "No. Califica y agenda con tu asesor; las recomendaciones las da tu equipo.",
+    "pages": [
+      "/industrias/finanzas/"
+    ],
+    "categoria": "Industrias",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "N15",
+    "q": "¿Qué es GoHighLevel en español?",
+    "a": "Es la misma plataforma GoHighLevel, configurada para operar en español: cuenta, embudos, mensajes, automatizaciones y capacitación del equipo. En Ingeniak hacemos esa implementación completa en español y le conectamos agentes de IA, para que tus clientes reciban mensajes naturales y tu equipo aprenda a usarla con ejemplos de su propio negocio.",
+    "short": "La misma plataforma GoHighLevel, configurada y operada en español.",
+    "pages": [
+      "/blog/gohighlevel-en-espanol/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": true,
+    "editada": true
+  },
+  {
+    "id": "D01",
+    "q": "¿De verdad es gratuita?",
+    "a": "Sí. Los 30 minutos no cuestan nada y no pedimos tarjeta. La llamada existe porque diagnosticar antes de cotizar es la única forma seria de trabajar: no tiene sentido proponerte un sistema sin haber visto cómo vendes, atiendes y operas hoy. Si después decides implementar, eso sí se cotiza aparte.",
+    "short": "Sí. Los 30 minutos no cuestan nada y no pedimos tarjeta.",
+    "pages": [
+      "/preguntas-frecuentes/",
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "D02",
+    "q": "¿Me van a vender durante la llamada?",
+    "a": "La llamada es de descubrimiento: mapeamos tu operación y te decimos qué vemos. Al final, si hay sentido, te compartimos una propuesta de implementación. Si no lo hay, también te lo decimos. No hay presentación de ventas disfrazada de diagnóstico ni compromiso de compra: tú decides si avanzas.",
+    "short": "No. Es de descubrimiento: mapeamos tu operación y te decimos qué vemos.",
+    "pages": [
+      "/preguntas-frecuentes/",
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "D03",
+    "q": "¿Qué preparo para la llamada?",
+    "a": "Nada especial. Con que sepas cómo opera tu negocio día a día es suficiente. Si tienes números a la mano, mejor: el diagnóstico se vuelve más preciso. Por ejemplo, cuántos mensajes o prospectos recibes por semana, cuánto tardas en responder y qué herramientas usa tu equipo para vender y dar seguimiento.",
+    "short": "Nada especial; si tienes números de tu operación a la mano, el diagnóstico es más preciso.",
+    "pages": [
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "D04",
+    "q": "¿Qué pasa después de la llamada?",
+    "a": "Si tu proyecto tiene sentido para ambas partes, preparamos una propuesta de cotización de implementación con alcance, tiempos y costo. Tú decides si avanzas. Si tu caso no encaja con lo que hacemos, te lo decimos en la misma llamada y te orientamos a dónde sí. Nadie te va a perseguir con llamadas después.",
+    "short": "Si hay sentido, te enviamos una propuesta con alcance, tiempos y costo; tú decides.",
+    "pages": [
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "D05",
+    "q": "¿Puedo reagendar?",
+    "a": "Sí, con al menos 24 horas de anticipación. Escríbenos por WhatsApp al 33 2101 7799 o a contacto@ingeniak.mx y lo movemos. Si te surge algo de último momento, avísanos de todos modos: preferimos mover la llamada a que la tomes con prisa.",
+    "short": "Sí, con al menos 24 horas de anticipación, por WhatsApp o correo.",
+    "pages": [
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "D06",
+    "q": "¿Y si mi negocio es muy pequeño o muy grande?",
+    "a": "Trabajamos con PyMES de 3 a 40 empleados de cualquier sector. Si estás fuera de ese rango, la llamada lo aclara en los primeros minutos y te orientamos a la opción correcta. Lo que más pesa no es el tamaño, sino que el negocio dependa de ti para operar y quieras sistematizarlo.",
+    "short": "Trabajamos con PyMES de 3 a 40 empleados; si estás fuera del rango, te orientamos.",
+    "pages": [
+      "/preguntas-frecuentes/",
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "S01",
+    "q": "¿Cómo ayuda un agente de IA a una clínica o consultorio?",
+    "a": "Un agente de IA para clínicas atiende el WhatsApp del consultorio a cualquier hora: responde a los pacientes en segundos, ofrece horarios disponibles, agenda, confirma y manda recordatorios, y deja cada cita registrada en tu CRM. No da diagnósticos ni consejo médico: cuando la pregunta es clínica, la pasa a tu equipo con el contexto.",
+    "short": "Responde a pacientes en segundos, agenda, confirma y recuerda citas, y registra todo en tu CRM, sin consejo médico.",
+    "pages": [
+      "/industrias/salud/"
+    ],
+    "categoria": "Industrias",
+    "validar": true,
+    "editada": false,
+    "nueva": true
+  },
+  {
+    "id": "S02",
+    "q": "¿El agente confirma citas y manda recordatorios?",
+    "a": "Sí. Kain confirma cada cita por WhatsApp antes de la fecha y manda un recordatorio con la hora y la dirección del consultorio. Si el paciente no puede asistir, le ofrece otro horario y libera el lugar en tu agenda. Cuándo sale cada mensaje y qué dice lo define tu clínica.",
+    "short": "Sí. Confirma, recuerda y, si el paciente no puede, le ofrece otro horario y libera el lugar.",
+    "pages": [
+      "/industrias/salud/"
+    ],
+    "categoria": "Industrias",
+    "validar": true,
+    "editada": false,
+    "nueva": true
+  },
+  {
+    "id": "S03",
+    "q": "¿Sirve si tengo varios doctores, especialidades o sucursales?",
+    "a": "Sí. El agente ofrece horarios según el doctor, la especialidad o la sucursal que pide el paciente, siempre que esas agendas estén en tu sistema. También hace las preguntas necesarias para mandar a cada paciente con la persona correcta. Cómo se reparten las citas lo definimos contigo en la fase Koncept de VKTOR™.",
+    "short": "Sí, siempre que esas agendas estén en tu sistema; el reparto de citas se define contigo.",
+    "pages": [
+      "/industrias/salud/"
+    ],
+    "categoria": "Industrias",
+    "validar": true,
+    "editada": false,
+    "nueva": true
+  },
+  {
+    "id": "S04",
+    "q": "¿Cómo cuida el agente los datos de mis pacientes?",
+    "a": "Pide solo los datos necesarios para agendar, como nombre, teléfono y motivo general de la cita, y muestra tu aviso de privacidad al iniciar la conversación. No guarda expedientes ni interpreta estudios: lo clínico se queda con tu equipo. Tu clínica sigue siendo la responsable de los datos; nosotros configuramos el sistema con esas reglas.",
+    "short": "Pide solo lo necesario para agendar, muestra tu aviso de privacidad y deja lo clínico a tu equipo.",
+    "pages": [
+      "/industrias/salud/"
+    ],
+    "categoria": "Industrias",
+    "validar": true,
+    "editada": false,
+    "nueva": true
+  }
+]

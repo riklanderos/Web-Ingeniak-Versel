@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hola, buenas noches. ¿Tienen lugar esta semana para una limpieza dental?", "delay": 900, "time": "11:02 p. m." },
+  { "who": "kain", "text": "¡Hola! Soy Kain, el asistente de la clínica. Sí hay lugar: el jueves a las 10:00 o el viernes a las 17:30. ¿Cuál te acomoda?", "delay": 1100 },
+  { "who": "cliente", "text": "El viernes. Oye, me sangran un poco las encías al cepillarme, ¿es normal?", "delay": 1700 },
+  { "who": "kain", "text": "Eso lo tiene que valorar la doctora en tu cita; yo no puedo darte un diagnóstico. Si quieres, le dejo una nota para que lo revise contigo.", "delay": 1200 },
+  { "who": "cliente", "text": "Sí, por favor. Soy Laura.", "delay": 1400 },
+  { "who": "kain", "text": "Listo, Laura: limpieza dental el viernes a las 17:30, con nota para la doctora. Te mando un recordatorio un día antes.", "delay": 1000, "event": "Cita registrada en tu CRM" },
+  { "who": "cliente", "text": "Perfecto, gracias.", "delay": 1300 },
+  { "who": "kain", "text": "Con gusto. Que descanses.", "delay": 800 }
+]

@@ -1,0 +1,16 @@
+---
+// /casos/<slug>/ · T-CASE (ESPEC §5.4). Una página por caso de sitemap.json cuyo texto ya existe en src/content/paginas/.
+// Hoy: /casos/clinica-dental-monterrey/. Los demás casos aparecen solos en cuanto el área copy publique su <page.id>.json.
+import CaseTemplate from '../../components/templates/CaseTemplate.astro';
+import { pages } from '../../lib/site';
+
+export function getStaticPaths() {
+  const copies = import.meta.glob('../../content/paginas/*.json');
+  const hasCopy = (id: string) => Object.keys(copies).some((k) => k.endsWith(`/${id}.json`));
+  return pages
+    .filter((p: any) => p.template === 'T-CASE' && hasCopy(p.id))
+    .map((p: any) => ({ params: { slug: p.url.split('/').filter(Boolean).pop() }, props: { page: p } }));
+}
+const { page } = Astro.props;
+---
+<CaseTemplate page={page} />

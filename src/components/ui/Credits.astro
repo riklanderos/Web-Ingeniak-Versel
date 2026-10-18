@@ -1,0 +1,65 @@
+---
+// Credits · ESPEC §6 #40. Tipografía de créditos (rol en mono, nombre en Lexend), sin tarjetas.
+//   team      → TeamCredits: fotos reales en duotono con máscara radial. Las fotos actuales traen la placa del nombre
+//               impresa: el encuadre (--crop) la deja fuera y la máscara disuelve hombros y fondo.
+//   logos     → LogoCredits: logos SVG con máscara currentColor al 55 % (100 % en hover). Kommo usa su sello oficial.
+//   countries → CountryList: 7 países tipográficos (de metrics.ts), México marcado como sede. Sin mapa con pines.
+//   stack     → logo + nombre + rol (grupos de StackHub)
+import KommoBadge from './KommoBadge.astro';
+import Metric from './Metric.astro';
+import { TEAM, TOOLS, COUNTRIES, logoUrl, logoWide, type TeamMember } from './ui-data';
+
+type Logo = { name?: string; logo: string; role?: string; href?: string } | string;
+interface Props {
+  variant?: 'team' | 'logos' | 'countries' | 'stack'; items?: any[]; label?: string; size?: 'sm' | 'lg';
+  kommo?: boolean; columns?: number; class?: string;
+}
+const DEFAULT_LOGOS = ['whatsapp', 'gohighlevel', 'n8n', 'make', 'openai', 'claude', 'gemini', 'meta', 'googleads', 'tiktok', 'supabase', 'stripe'];
+const { variant = 'logos', items, label, size = 'sm', kommo = variant === 'logos', columns, class: cls } = Astro.props;
+
+const team: TeamMember[] = variant === 'team' ? (items as TeamMember[]) ?? TEAM : [];
+const logos = (variant === 'logos' || variant === 'stack' ? ((items as Logo[]) ?? DEFAULT_LOGOS) : []).map((x) =>
+  typeof x === 'string' ? { slug: x, name: TOOLS[x]?.name ?? x, role: undefined, href: undefined } : { slug: x.logo, name: x.name ?? TOOLS[x.logo]?.name ?? x.logo, role: x.role, href: x.href });
+---
+<div class:list={['credits', `credits--${variant}`, `credits--${size}`, cls]} style={columns ? `--cols:${columns}` : undefined}>
+  {label && <p class="t-label t-label--cyan credits__h"><span class="node" aria-hidden="true"></span>{label}</p>}
+
+  {variant === 'team' && (
+    <ul class="credits__team" data-ui-stagger>
+      {team.map((p, i) => (
+        <li class="credit" style={`--i:${i}`}>
+          <span class="duo" aria-hidden="true"><img src={p.photo} alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+          <span class="credit__role">{p.role}</span>
+          <span class="credit__name">{p.name}</span>
+          {p.linkedin && <a class="credit__in lnk--mono" href={p.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>}
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {(variant === 'logos' || variant === 'stack') && (
+    <ul class="credits__logos" data-ui-stagger>
+      {kommo && variant === 'logos' && <li class="credits__kommo"><KommoBadge size="sm" /></li>}
+      {logos.map((l, i) => (
+        <li class="logo-credit" style={`--i:${i}`}>
+          <span class:list={['logo-mask', logoWide(l.slug) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(l.slug)})`} aria-hidden="true"></span>
+          <span class="logo-credit__name">{l.name}</span>
+          {l.role && <span class="logo-credit__role">{l.role}</span>}
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {variant === 'countries' && (
+    <>
+      <p class="credits__count"><Metric id="paises" variant="inline" label /></p>
+      <ul class="credits__countries">
+        {COUNTRIES.map((c, i) => (
+          <li class:list={['country', c.sede && 'country--sede']} style={`--i:${i}`}>
+            <span class="country__name">{c.name}</span>{c.sede && <span class="country__sede t-label t-label--cyan">Sede</span>}
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+</div>

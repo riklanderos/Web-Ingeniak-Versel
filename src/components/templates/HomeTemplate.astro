@@ -1,0 +1,511 @@
+---
+// HomeTemplate · T-HOME (ESPEC §5.1, §5.1.1, §12). El inicio "Plano secuencia — el turno de noche de Kain".
+// Data-driven: la estructura sale de src/data/sitemap.json (secciones, placas, CTA, mensajes de WhatsApp) y el texto
+// publicable de src/content/paginas/<page.id>.json (área copy). Ninguna cifra se escribe aquí: tokens → <Metric>/data-metric.
+// Ritmo de intensidad (§5): 00 firma 3 · 01 portada 3 · 02 créditos 1 · 03 gemelos 3 · 04 manifiesto 1 · 05 runtime 3 ·
+// 06 Kain 2 · 07 servicios 1 · 08 montaje 2 · 09 VKTOR 2 · 10 locaciones 2 · 11 equipo 2 · 12 ficha+FAQ 1 · 13 amanecer 3.
+// Una sola .lit (H1). Un solo primario azul por pantalla (portada y cierre). Toda sección con id (SceneRail, actos 3·6·4).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageSection from '../cine/ImageSection.astro';
+import ColdOpen from '../cine/ColdOpen.astro';
+import FigCaption from '../cine/FigCaption.astro';
+import LightBranch from '../cine/LightBranch.astro';
+import TwinScene from '../cine/TwinScene.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import PlateSequence from '../cine/PlateSequence.astro';
+import Montage from '../cine/Montage.astro';
+import LocationSwitcher from '../cine/LocationSwitcher.astro';
+import Dawn from '../cine/Dawn.astro';
+import { resolvePlate, anchorStyle } from '../cine/plate';
+import Btn from '../ui/Btn.astro';
+import Metric from '../ui/Metric.astro';
+import Copy from '../ui/Copy.astro';
+import SumarioCover from '../ui/SumarioCover.astro';
+import PainList from '../ui/PainList.astro';
+import DefinitionBlock from '../ui/DefinitionBlock.astro';
+import ScriptList from '../ui/ScriptList.astro';
+import ChatSim from '../ui/ChatSim.astro';
+import Credits from '../ui/Credits.astro';
+import EntitySheet from '../ui/EntitySheet.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import { annotateFigures, esc, TEAM } from '../ui/ui-data';
+import { heroPlateOf } from '../layout/navData';
+import { section, getPlate, waHref, SITE, type Page } from '../../lib/site';
+import type { MetricId } from '../../lib/metrics';
+
+interface Props {
+  page: Page;
+  copy: any;
+}
+const { page, copy } = Astro.props;
+const P = page as any;
+const S = (id: string) => copy?.sections?.[id] ?? {};
+const has = (id: string) => !!section(page, id) && !S(id)._omitir;
+const plateOf = (id: string) => section(page, id)?.plate ?? {};
+const plateIds = (id: string): string[] => {
+  const p = plateOf(id).id;
+  return Array.isArray(p) ? p : p ? [p] : [];
+};
+const wa = (msg?: string) => (msg ? waHref(msg) : P.secondaryCta?.href ?? SITE.waBase);
+const primary = P.primaryCta ?? { label: 'Agenda tu Discovery Session', href: SITE.discovery };
+
+/** Titular de dos voces: text (Lexend 600) + soft (Lexend 300). La .lit solo se aplica donde se permite (H1). */
+const voice = (t?: string, lit?: string) => {
+  if (!t) return '';
+  if (lit && t.includes(lit)) {
+    const i = t.indexOf(lit);
+    return annotateFigures(t.slice(0, i)) + `<span class="lit">${annotateFigures(lit)}</span>` + annotateFigures(t.slice(i + lit.length));
+  }
+  return annotateFigures(t);
+};
+const headline = (h: any) => (h ? voice(h.text) + (h.soft ? ` <span class="soft">${annotateFigures(h.soft)}</span>` : '') : '');
+/** Eslogan en dos tiempos: "Tu negocio trabajando, <b>sin depender más de ti.</b>" */
+const sloganHTML = (s?: string) => {
+  if (!s) return '';
+  const i = s.indexOf(', ');
+  return i > 0 ? `${annotateFigures(s.slice(0, i + 1))} <b>${annotateFigures(s.slice(i + 2))}</b>` : annotateFigures(s);
+};
+/** Remate en dos tiempos: "No te falta esfuerzo. <b>Te falta un sistema.</b>" */
+const remateHTML = (s?: string) => {
+  if (!s) return '';
+  const m = s.match(/^(.+?[.!?])\s+(.+)$/);
+  return m ? `${annotateFigures(m[1])} <b>${annotateFigures(m[2])}</b>` : annotateFigures(s);
+};
+
+/* ── 01 · Portada ─────────────────────────────────────────────────────────── */
+const hero = S('hero');
+const heroPlateKey = plateIds('hero')[0] ?? 'home-hero';
+const heroPlate = plateOf('hero');
+const heroR = resolvePlate(heroPlateKey, { srcsetMax: heroPlate.srcsetMax ?? 2752 });
+const lcpPlate = heroR.id ?? undefined; // la placa realmente pintada (null = aura, sin precarga)
+const sumarioIds = (hero.sumario?.metricIds ?? []) as MetricId[];
+
+/* ── 02 · Con qué construimos: sello Kommo + logos en dos filas parejas ─────── */
+const stackLogos = (S('stack').logos ?? []).map((l: any) => ({ logo: l.slug, name: l.label }));
+const logoCols = Math.max(1, Math.ceil((stackLogos.length + 1) / 2)); // +1: el sello de Kommo
+
+/* ── 03 · Problema (planos gemelos) ───────────────────────────────────────── */
+const prob = S('problema');
+const [twinA, twinB] = plateIds('problema');
+
+/* ── 05 · Sistema (SystemRuntime) ─────────────────────────────────────────── */
+const sis = S('sistema');
+const sisPlates = plateIds('sistema');
+const stations = (sis.steps ?? []).map((s: any, i: number) => ({
+  id: s.id,
+  title: s.stage ?? s.title,
+  line: s.stage && s.title ? `${s.title}. ${s.line}` : s.line,
+  plate: sisPlates[i],
+  href: s.link?.href,
+  hrefLabel: s.link?.label,
+  metricIds: s.metricIds,
+}));
+
+/* ── 06 · Kain (push hacia el teléfono, ChatSim registrado) ───────────────── */
+const kain = S('kain');
+const kainKey = plateIds('kain')[0] ?? 'home-kain';
+const kainPlate = plateOf('kain');
+const kainR = resolvePlate(kainKey, { layout: kainPlate.layout });
+// El teléfono de cristal: [x, y, ancho, alto] (fracciones de la placa). Si la placa no lo trae, la UI va en el texto.
+const tel = kainR.id ? (getPlate(kainR.id)?.anchors?.telefono ?? null) : null;
+const telD: number[] | null = tel?.d && tel.d.length >= 4 ? (kainR.mirror ? [1 - tel.d[0] - tel.d[2], tel.d[1], tel.d[2], tel.d[3]] : tel.d) : null;
+const phoneStyle = telD ? `--ax:${telD[0]};--ay:${telD[1]};--aw:${telD[2]};--ah:${telD[3]};` : '';
+const chatTabs = (kain.chat?.tabs ?? (kain.chat?.scripts ?? ['salud']).map((id: string) => ({ id }))) as { id: string; label?: string }[];
+const chatId = 'kain-chat';
+
+/* ── 07 · Servicios ───────────────────────────────────────────────────────── */
+const serv = S('servicios');
+const servGroups = (serv.groups ?? []).map((g: any) => ({
+  label: g.label,
+  glyph: g.glyph,
+  rows: (g.items ?? []).map((it: any) => ({ title: it.title, line: it.line, href: it.href, plate: it.href ? heroPlateOf(it.href) : undefined })),
+}));
+
+/* ── 08 · Casos (Montaje) ─────────────────────────────────────────────────── */
+const casos = S('casos');
+const casoPlates = plateIds('casos');
+const casoIds = (casos.rows ?? []).map((r: any) => r.metricId) as MetricId[];
+const stillFor = Object.fromEntries(casoIds.map((id, i) => [id, casoPlates[i]]).filter(([, p]) => !!p));
+
+/* ── 09 · VKTOR ───────────────────────────────────────────────────────────── */
+const vk = S('vktor');
+const vkKey = plateIds('vktor')[0] ?? 'metodologia-hero';
+const vkPlate = plateOf('vktor');
+
+/* ── 10 · Industrias ──────────────────────────────────────────────────────── */
+const ind = S('industrias');
+const indPlates = plateIds('industrias');
+const sectors = (ind.sectors ?? []).map((s: any, i: number) => ({
+  slug: s.slug,
+  name: s.name,
+  line: s.line,
+  metricId: s.metricId,
+  href: s.href,
+  plate: indPlates.find((p) => p === `ind-${s.slug}-hero`) ?? indPlates[i] ?? `ind-${s.slug}-hero`,
+}));
+const indLabel = (ind.hud?.[0]?.text ?? '').replace(/\s*\d+\s*\/\s*\d+\s*$/, '') || 'Locación';
+
+/* ── 11 · Equipo (R6: sin placa equipo-real → TeamCredits con las fotos reales sobre un aura, sin collage) ── */
+const eq = S('equipo');
+const team = (eq.credits ?? []).map((c: any) => {
+  const t = TEAM.find((x) => x.name === c.name);
+  return t ? { ...t, role: c.role } : null;
+}).filter(Boolean);
+
+/* ── 12 · Ficha + FAQ ─────────────────────────────────────────────────────── */
+const faq = S('faq');
+const faqFooter = (() => {
+  const t = faq.footer as string | undefined;
+  if (!t) return '';
+  let h = esc(t);
+  h = h.replace(/Escríbele a Kain por WhatsApp/, (m) => `<a class="lnk hm-faq__wa" href="${esc(wa(S('hero').ctaSecondary?.waMessage))}" data-wa>${m}</a>`);
+  h = h.replace(SITE.email, (m) => `<a class="lnk" href="mailto:${m}">${m}</a>`);
+  return h;
+})();
+
+/* ── 13 · Cierre ──────────────────────────────────────────────────────────── */
+const fin = S('cta-final');
+const finPlate = plateOf('cta-final');
+
+// Riel en 3 actos (I · La noche 01–03 · II · El sistema 04–09 · III · El amanecer 10–13).
+const railGroups = [3, 6, 4];
+---
+<BaseLayout page={page} coldOpen lcpPlate={lcpPlate} lcpSrcsetMax={heroPlate.srcsetMax ?? 2752} railGroups={railGroups} bodyClass="hm">
+
+  {/* ── 00 + 01 · Firma "Del nodo al pecho" + portada ──────────────────── */}
+  <ImageSection
+    id="hero"
+    plate={heroPlateKey}
+    layout={heroPlate.layout}
+    mirror={heroPlate.mirror}
+    height="hero"
+    priority
+    wide
+    breathe
+    srcsetMax={heroPlate.srcsetMax ?? 2752}
+    hud={hero.hud}
+    class="hm-hero"
+  >
+    <ColdOpen slot="over" plate={heroPlateKey} />
+    {sumarioIds.length === 3 && <SumarioCover slot="over" ids={sumarioIds} />}
+    {hero.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(hero.eyebrow)} /></p>}
+    <h1 id="hero-t" data-split><span class="t-display" set:html={voice(hero.h1?.text, hero.h1?.lit)} />{hero.h1?.soft && <> <span class="t-deck" set:html={annotateFigures(hero.h1.soft)} /></>}</h1>
+    <div class="ctas">
+      <Btn variant="primary" href={hero.ctaPrimary?.href ?? primary.href} micro label={hero.ctaPrimary?.label ?? primary.label} />
+      <Btn variant="ghost" href={wa(hero.ctaSecondary?.waMessage)} label={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+    </div>
+    {hero.trust && <Copy as="p" class="t-label trust" text={hero.trust} />}
+    {hero.fig && <FigCaption variant="inline" n={1} title={(hero.fig.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '')}><Copy text={hero.fig.text} /></FigCaption>}
+    <LightBranch from="mano" />
+    {hero.fig && <FigCaption slot="anchors" n={1} title={(hero.fig.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '')} anchor="fig" target="mano"><Copy text={hero.fig.text} /></FigCaption>}
+  </ImageSection>
+
+  {/* ── 02 · Con qué construimos (créditos; sumario en fila en escritorios bajos y móvil) ── */}
+  {has('stack') && (
+    <section id="stack" class="hm-stack" aria-labelledby="stack-t" style={`--logo-cols:${logoCols}`}>
+      <div class="frame hm-stack__frame">
+        {sumarioIds.length === 3 && <SumarioCover ids={sumarioIds} variant="row" class="hm-stack__sumario" />}
+        <div class="hm-stack__head">
+          <h2 id="stack-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{S('stack').eyebrow ?? 'Con qué construimos'}</h2>
+          {S('stack').lede && <Copy as="p" class="hm-stack__lede" text={S('stack').lede} />}
+        </div>
+        <Credits
+          variant="logos"
+          class="hm-stack__logos"
+          items={stackLogos}
+        />
+      </div>
+    </section>
+  )}
+
+  {/* ── 03 · El problema (TwinScene, fijada +100 % en escritorio) ─────────── */}
+  {has('problema') && twinA && twinB && (
+    <TwinScene id="problema" plateA={twinA} plateB={twinB} layout={plateOf('problema').layout} mirror={plateOf('problema').mirror} clock={prob.hudClock}>
+      {prob.eyebrow && <p class="t-label eyebrow"><span class="node node--amber" aria-hidden="true"></span><Fragment set:html={annotateFigures(prob.eyebrow)} /></p>}
+      <h2 id="problema-t" class="t-h2" data-split set:html={headline(prob.h2)} />
+      {/* Escena fijada: todo debe caber en una pantalla (1280 × 720). El lede del copy no entra en el plano; los dolores sí. */}
+      <PainList mode="twin" items={(prob.items ?? []).map((it: any) => ({ pain: it.pain, fix: it.fix }))} label="Dolores y su salida con el sistema" />
+      {prob.remate && <p slot="end" class="t-deck hm-remate" set:html={remateHTML(prob.remate)} />}
+    </TwinScene>
+  )}
+
+  {/* ── 04 · Qué es Ingeniak (intertítulo: manifiesto + definición citable + "en datos") ── */}
+  {has('que-es') && (
+    <Intertitle id="que-es" aura="isotipo" auraSide="right" ghost={S('que-es').ghost ? { text: S('que-es').ghost, mode: 'bleed', side: 'right' } : undefined} class="hm-quees">
+      {S('que-es').eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(S('que-es').eyebrow)} /></p>}
+      <h2 id="que-es-t" class="t-h2 hm-manifesto" data-words set:html={headline(S('que-es').h2)} />
+      {S('que-es').lede && <Copy as="p" class="t-lede t-lede--2 hm-quees__lede" text={S('que-es').lede} data-reveal />}
+      <div class="hm-quees__grid">
+        {S('que-es').definition && (
+          <DefinitionBlock faqId={S('que-es').definition.faqId} heading={S('que-es').definition.heading} headingLevel={3} class="hm-quees__def" />
+        )}
+        {(S('que-es').body ?? []).length > 0 && (
+          <div class="hm-quees__body" data-reveal>
+            {(S('que-es').body as string[]).map((b) => <Copy as="p" class="t-body" text={b} />)}
+          </div>
+        )}
+      </div>
+      {S('que-es').metricRow && (
+        <Metric variant="row" ids={S('que-es').metricRow.metricIds} heading={S('que-es').metricRow.title} note={S('que-es').metricRow.sourceNote !== false} link class="hm-quees__row" />
+      )}
+    </Intertitle>
+  )}
+
+  {/* ── 05 · El sistema (SystemRuntime, fijada +280 % en escritorio) ──────── */}
+  {has('sistema') && stations.length > 0 && (
+    <PlateSequence
+      id="sistema"
+      preset="runtime"
+      steps={stations}
+      figLabel={sis.fig ? `${sis.fig.label} — ${String(sis.fig.text ?? '').replace(/\.$/, '')}` : undefined}
+      note={sis.note}
+      class="hm-sistema"
+    >
+      {sis.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(sis.eyebrow)} /></p>}
+      <h2 id="sistema-t" class="t-h2" data-split set:html={headline(sis.h2)} />
+    </PlateSequence>
+  )}
+
+  {/* ── 06 · Conoce a Kain (push hacia el teléfono; ChatSim registrado; móvil "split") ── */}
+  {has('kain') && (
+    <ImageSection
+      id="kain"
+      plate={kainKey}
+      layout={kainPlate.layout}
+      mirror={kainPlate.mirror}
+      height="mid"
+      mobile="split"
+      srcsetMax={kainPlate.srcsetMax ?? 2752}
+      push={{ anchor: telD ? 'telefono' : 'pecho', to: 1.12 }}
+      hud={kain.hud}
+      class="hm-kain"
+    >
+      {kain.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(kain.eyebrow)} /></p>}
+      <h2 id="kain-t" class="t-h2" data-split set:html={headline(kain.h2)} />
+      {kain.lede && <Copy as="p" class="t-lede t-lede--2" text={kain.lede} />}
+
+      <Fragment slot="more">
+        {(kain.items ?? []).length > 0 && (
+          <ul class="hm-kain__list" role="list" data-reveal="stagger">
+            {(kain.items as string[]).map((it) => <li><span class="hm-kain__bar" aria-hidden="true"></span><Copy text={it} /></li>)}
+          </ul>
+        )}
+        {telD && chatTabs.length > 1 && (
+          <div class="hm-kain__tabs only-d" role="group" aria-label="Elige un sector para ver la conversación de Kain" data-kain-proxy={chatId} data-reveal>
+            <span class="chip-sim">SIMULACIÓN</span>
+            {chatTabs.map((t, i) => (
+              <button type="button" class="hm-kain__tab" aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={chatId} data-proxy-tab={t.id}>{t.label ?? t.id}</button>
+            ))}
+          </div>
+        )}
+        <div class:list={['hm-kain__inline', telD && 'only-m']}>
+          <ChatSim mode="inline" tabs={chatTabs} id={`${chatId}-m`} />
+        </div>
+        {kain.slogan && <p class="t-deck hm-kain__slogan" set:html={sloganHTML(kain.slogan)} />}
+        <div class="ctas hm-kain__ctas">
+          <Btn variant="ghost" href={wa(kain.ctaSecondary?.waMessage)} label={kain.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+          {(kain.links ?? []).map((l: any) => l.external
+            ? <a class="lnk" href={l.href} target="_blank" rel="noopener">{l.label} <span aria-hidden="true">↗</span></a>
+            : <a class="lnk" href={l.href} set:html={`${esc(l.label).replace(/\bKain\b/, '<span class="kain-mark">kain</span>')} <span aria-hidden="true">→</span>`} />)}
+        </div>
+        {kain.limite && <Copy as="p" class="t-small hm-kain__limit" text={kain.limite} />}
+      </Fragment>
+
+      {telD && (
+        <div slot="anchors" class="anchor anchor--panel hm-phone" data-anchor="telefono" data-m="none" data-lock style={phoneStyle}>
+          <ChatSim mode="registered" tabs={chatTabs} id={chatId} note={false} />
+        </div>
+      )}
+    </ImageSection>
+  )}
+
+  {/* ── 07 · Servicios (filas de guion por 5 etapas, fotograma que sigue al cursor) ── */}
+  {has('servicios') && (
+    <Intertitle id="servicios" aura="ondas" layout="split" class="hm-serv">
+      <Fragment slot="head">
+        <div class="hm-serv__head">
+          {serv.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(serv.eyebrow)} /></p>}
+          <h2 id="servicios-t" class="t-h2" data-split set:html={headline(serv.h2)} />
+          {serv.closing && <Copy as="p" class="t-lede t-lede--2 hm-serv__closing" text={serv.closing} data-reveal />}
+          {(serv.links ?? []).length > 0 && (
+            <p class="hm-links" data-reveal>{(serv.links as any[]).map((l) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+          )}
+        </div>
+      </Fragment>
+      <ScriptList groups={servGroups} followStill label="Servicios de Ingeniak" />
+    </Intertitle>
+  )}
+
+  {/* ── 08 · Casos (Montaje: cifras con la portada del caso dentro de las letras) ── */}
+  {has('casos') && casoIds.length > 0 && (
+    <Montage id="casos" ids={casoIds} transversal={casos.transversal} stillFor={stillFor} anonNote={casos.note} class="hm-casos">
+      {casos.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(casos.eyebrow)} /></p>}
+      <h2 id="casos-t" class="t-h2" data-split set:html={headline(casos.h2)} />
+      {casos.lede && <Copy as="p" class="t-lede t-lede--2 hm-casos__lede" text={casos.lede} data-reveal />}
+      <Fragment slot="foot">{(casos.links ?? []).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</Fragment>
+    </Montage>
+  )}
+
+  {/* ── 09 · Metodología VKTOR™ (recorte + palabra gigante + escalones anclados) ── */}
+  {has('vktor') && (
+    <ImageSection
+      id="vktor"
+      plate={vkKey}
+      layout={vkPlate.layout}
+      mirror={vkPlate.mirror}
+      height="mid"
+      align="start"
+      cutout
+      ghost={vk.ghost ? { text: vk.ghost, mode: 'outline-fill' } : undefined}
+      srcsetMax={vkPlate.srcsetMax ?? 1920}
+      alt=""
+      hud={vk.hud}
+      class="hm-vktor"
+    >
+      {vk.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(vk.eyebrow)} /></p>}
+      <h2 id="vktor-t" class="t-h2" data-split set:html={headline(vk.h2)} />
+      {vk.lede && <Copy as="p" class="t-lede t-lede--2" text={vk.lede} />}
+      {/* Móvil: las cinco fases en el texto (en la placa vertical solo caben las letras sobre los escalones). */}
+      {(vk.phases ?? []).length > 0 && (
+        <ol class="hm-vktor__phases only-m" role="list" aria-label="Las cinco fases de VKTOR™">
+          {(vk.phases as any[]).map((ph) => (
+            <li><b class="hm-vktor__l" aria-hidden="true">{ph.letter}</b><span class="hm-vktor__v"><span class="sr-only">{ph.name}: </span>{ph.verb}</span></li>
+          ))}
+        </ol>
+      )}
+      {(vk.links ?? []).length > 0 && (
+        <p class="hm-links hm-vktor__go">{(vk.links as any[]).map((l) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+      )}
+      <Fragment slot="anchors">
+        {(vk.phases ?? []).length > 0 && (
+          <ol class="hm-steps" role="list" aria-label="Las cinco fases de VKTOR™">
+            {(vk.phases as any[]).map((ph, i) => (
+              <li class:list={['anchor hm-step', i === 4 && 'hm-step--r']} data-anchor={`escalon-${i + 1}`} data-lock style={anchorStyle(`escalon-${i + 1}`, `--i:${i}`)}>
+                <span class="hm-step__k"><b aria-hidden="true">{ph.letter}</b><span class="hm-step__t"><span class="sr-only">{ph.name}: </span>{ph.verb}</span></span>
+                <span class="hm-step__stem" aria-hidden="true"></span>
+              </li>
+            ))}
+          </ol>
+        )}
+      </Fragment>
+    </ImageSection>
+  )}
+
+  {/* ── 10 · Industrias (locaciones: la portada del sector activo a sangre) ── */}
+  {has('industrias') && sectors.length > 0 && (
+    <LocationSwitcher id="industrias" sectors={sectors} label={indLabel.toUpperCase()} class="hm-ind">
+      {ind.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(ind.eyebrow)} /></p>}
+      <h2 id="industrias-t" class="t-h2" data-split set:html={headline(ind.h2)} />
+      {ind.lede && <Copy as="p" class="t-lede t-lede--2 hm-ind__lede" text={ind.lede} />}
+      <Fragment slot="foot">
+        {ind.footer && <Copy as="p" class="t-micro hm-ind__foot" text={ind.footer} />}
+        {(ind.links ?? []).map((l: any) => <a class="lnk hm-ind__all" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+      </Fragment>
+    </LocationSwitcher>
+  )}
+
+  {/* ── 11 · El equipo (fotos reales en duotono sobre aura; R6: sin collage generado) ── */}
+  {has('equipo') && (
+    <Intertitle id="equipo" aura="isotipo" auraSide="left" layout="split" class="hm-team">
+      <Fragment slot="head">
+        <div class="hm-team__head">
+          {eq.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(eq.eyebrow)} /></p>}
+          <h2 id="equipo-t" class="t-h2" data-split set:html={headline(eq.h2)} />
+          {eq.lede && <Copy as="p" class="t-lede t-lede--2" text={eq.lede} data-reveal />}
+          {(eq.links ?? []).length > 0 && (
+            <p class="hm-links" data-reveal>{(eq.links as any[]).map((l) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+          )}
+        </div>
+      </Fragment>
+      <Credits variant="team" size="lg" items={team} class="hm-team__credits" />
+    </Intertitle>
+  )}
+
+  {/* ── 12 · Ficha técnica + preguntas (G01, G02, G04, G07, G08, G11) ──────── */}
+  {has('faq') && (
+    <Intertitle id="faq" aura="ondas" layout="split" class="hm-faq">
+      <Fragment slot="head">
+        <EntitySheet variant="home" title={faq.eyebrow} class="hm-faq__sheet" />
+      </Fragment>
+      <h2 id="faq-t" class="t-h2 hm-faq__h" data-split set:html={headline(faq.h2)} />
+      <FAQAccordion ids={faq.faqIds ?? []} glass open={0} id="faq-list" />
+      {faqFooter && <p class="t-small hm-faq__foot" set:html={faqFooter} data-reveal />}
+    </Intertitle>
+  )}
+
+  {/* ── 13 · 06:00 · Rise (Dawn) ─────────────────────────────────────────── */}
+  {has('cta-final') && (
+    <Dawn id="cta-final" plate={plateIds('cta-final')[0] ?? 'cta-amanecer'} mirror={finPlate.mirror} layout={finPlate.layout}>
+      {fin.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(fin.eyebrow)} /></p>}
+      <h2 id="cta-final-t" class="t-h2" data-split set:html={headline(fin.h2)} />
+      {fin.lede && <Copy as="p" class="t-lede t-lede--2" text={fin.lede} />}
+      <div class="ctas">
+        {fin.micro ? (
+          <div class="cta-p">
+            <Btn variant="primary" href={fin.ctaPrimary?.href ?? primary.href} label={fin.ctaPrimary?.label ?? primary.label} />
+            <Copy as="p" class="t-micro btn-micro" text={fin.micro} data-allow-number />
+          </div>
+        ) : (
+          <Btn variant="primary" href={fin.ctaPrimary?.href ?? primary.href} micro label={fin.ctaPrimary?.label ?? primary.label} />
+        )}
+        <Btn variant="ghost" href={wa(fin.ctaSecondary?.waMessage)} label={fin.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+      </div>
+    </Dawn>
+  )}
+</BaseLayout>
+
+<script>
+  import gsap from 'gsap';
+
+  // Respaldo local del sumario de la portada (peticiones.md · HomeTemplate #1, cine/scene.ts): con la firma, la salida
+  // con scrub del sumario registra autoAlpha 0 como valor inicial y el primer refresh lo deja invisible. Al terminar la
+  // entrada (la firma acaba + 1.4 s de la entrada del sumario) se repone su estado y se invalida esa salida, que vuelve a
+  // tomar el valor real. Si cine corrige scene.ts, esto no cambia nada (el inicio ya será 1).
+  const sumario = document.querySelector<HTMLElement>('#hero .sumario');
+  if (sumario) {
+    document.addEventListener('cine:coldopen-end', () => {
+      window.setTimeout(() => {
+        const exits = gsap.getTweensOf(sumario).filter((t) => !!t.scrollTrigger);
+        if (!exits.length) return;
+        gsap.set(sumario, { autoAlpha: 1, y: 0 });
+        exits.forEach((t) => {
+          t.invalidate();
+          t.scrollTrigger?.refresh();
+          t.progress(t.scrollTrigger?.progress ?? 0); // ya con el inicio real (1), en el punto del scroll actual
+        });
+      }, 1700);
+    }, { once: true });
+  }
+
+  // Pestañas de sector "bajo el copy" (§5.1 ESC 06) → mueven el ChatSim registrado en el teléfono de la placa.
+  // Son un control proxy: el ChatSim conserva su propio tablist (oculto en escritorio) y su analítica (chat_sim_tab).
+  const groups = document.querySelectorAll<HTMLElement>('[data-kain-proxy]');
+  groups.forEach((g) => {
+    const chat = document.getElementById(g.dataset.kainProxy || '');
+    if (!chat) return;
+    const btns = [...g.querySelectorAll<HTMLButtonElement>('[data-proxy-tab]')];
+    const sync = () => {
+      const sel = chat.querySelector<HTMLElement>('[data-chat-tab][aria-selected="true"]')?.dataset.chatTab;
+      btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.proxyTab === sel)));
+    };
+    g.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-proxy-tab]');
+      if (!b) return;
+      chat.querySelector<HTMLElement>(`[data-chat-tab="${b.dataset.proxyTab}"]`)?.click();
+      sync();
+    });
+    new MutationObserver(sync).observe(chat, { subtree: true, attributes: true, attributeFilter: ['aria-selected'] });
+  });
+
+  // El acordeón de preguntas cambia el alto de la página (al cerrarse por primera vez y en cada apertura): el cierre (Dawn)
+  // está debajo y sus disparadores de ScrollTrigger quedarían corridos. Se recalculan al terminar cada transición.
+  const faq = document.querySelector<HTMLElement>('#faq [data-faq]');
+  if (faq) {
+    let t = 0;
+    faq.addEventListener('transitionend', (e) => {
+      if ((e as TransitionEvent).propertyName !== 'grid-template-rows') return;
+      clearTimeout(t);
+      t = window.setTimeout(() => (window as any).__cine?.refresh?.(), 80);
+    });
+  }
+</script>

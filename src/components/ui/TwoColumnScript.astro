@@ -1,0 +1,49 @@
+---
+// TwoColumnScript · ESPEC §6 #34. Guion a dos columnas sin tabla con bordes, unidas por el pilar del isotipo.
+//   fit          → "Es para ti si…" / "No es para ti si…" (el "no" en ámbar)
+//   dodont       → "Lo que sí hace" / "Lo que no hace"
+//   compare      → filas pareadas (agente de IA vs chatbot de menús): items[i] de cada lado en la misma fila
+//   before-after → antes (ámbar) / después (cian), filas pareadas
+// tone por columna: 'cyan' | 'amber' | 'muted'. Si no se indica: izquierda cian, derecha ámbar (before-after: al revés).
+type Col = { title: string; items: string[]; tone?: 'cyan' | 'amber' | 'muted' };
+interface Props { left: Col; right: Col; variant?: 'fit' | 'dodont' | 'compare' | 'before-after'; slogan?: string; headingLevel?: 3 | 4; class?: string }
+const { left, right, variant = 'fit', slogan, headingLevel = 3, class: cls } = Astro.props;
+const paired = variant === 'compare' || variant === 'before-after';
+const lt = left.tone ?? (variant === 'before-after' ? 'amber' : variant === 'compare' ? 'cyan' : 'cyan');
+const rt = right.tone ?? (variant === 'before-after' ? 'cyan' : variant === 'compare' ? 'muted' : 'amber');
+const H = `h${headingLevel}` as any;
+const n = Math.max(left.items.length, right.items.length);
+const mark = (t: string) => (t === 'cyan' ? 'yes' : t === 'amber' ? 'no' : 'neutral');
+---
+<div class:list={['tcs', `tcs--${variant}`, cls]} data-ui-reveal>
+  {paired ? (
+    <>
+      <div class="tcs__head" aria-hidden="true">
+        <p class:list={['tcs__h t-label', `tone-${lt}`]}><span class:list={['tcs__node', `tcs__node--${mark(lt)}`]}></span>{left.title}</p>
+        <span class="tcs__vs">{variant === 'compare' ? 'vs' : '→'}</span>
+        <p class:list={['tcs__h t-label', `tone-${rt}`]}><span class:list={['tcs__node', `tcs__node--${mark(rt)}`]}></span>{right.title}</p>
+      </div>
+      <ol class="tcs__pairs">
+        {Array.from({ length: n }, (_, i) => (
+          <li class="tcs__pair" style={`--i:${i}`}>
+            <p class:list={['tcs__cell', `tone-${lt}`]}><span class="tcs__k">{left.title}: </span>{left.items[i] ?? '—'}</p>
+            <span class="tcs__pin" aria-hidden="true"></span>
+            <p class:list={['tcs__cell', `tone-${rt}`]}><span class="tcs__k">{right.title}: </span>{right.items[i] ?? '—'}</p>
+          </li>
+        ))}
+      </ol>
+    </>
+  ) : (
+    <div class="tcs__cols">
+      {[{ c: left, t: lt }, { c: right, t: rt }].map(({ c, t }) => (
+        <section class:list={['tcs__col', `tone-${t}`]}>
+          <H class="tcs__title"><span class:list={['tcs__node', `tcs__node--${mark(t)}`]} aria-hidden="true"></span>{c.title}</H>
+          <ul class="tcs__list">
+            {c.items.map((it, i) => <li style={`--i:${i}`}>{it}</li>)}
+          </ul>
+        </section>
+      ))}
+    </div>
+  )}
+  {slogan && <p class="tcs__slogan">{slogan}</p>}
+</div>

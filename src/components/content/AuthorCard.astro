@@ -1,0 +1,22 @@
+---
+// AuthorCard · ESPEC §6 #44 + R8. Autor real del equipo (foto en duotono, cargo, enlace a /nosotros/).
+// Nunca un autor inventado: si no hay persona confirmada, firma "Equipo de Ingeniak" (la Organization).
+import { TEAM, type TeamMember } from '../ui/ui-data';
+interface Props { person?: TeamMember | string | null; bio?: string; class?: string }
+const { person, bio, class: cls } = Astro.props;
+const p: TeamMember | undefined = typeof person === 'string' ? TEAM.find((t) => t.slug === person) : person ?? undefined;
+---
+<aside class:list={['author', !p && 'author--org', cls]} aria-label="Autor">
+  {p ? (
+    <span class="duo duo--sm author__photo" aria-hidden="true"><img src={p.photo} alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
+  ) : (
+    <span class="author__iso" aria-hidden="true"><img src="/img/marca/isotipo.svg" alt="" width="40" height="20" /></span>
+  )}
+  <div class="author__body">
+    <p class="t-label author__k">Escrito por</p>
+    <p class="author__name">{p ? p.name : 'Equipo de Ingeniak'}</p>
+    <p class="author__role">{p ? `${p.role} · Ingeniak` : 'Estrategas, ingenieros y creativos de Ingeniak'}</p>
+    {bio && <p class="author__bio">{bio}</p>}
+    <a class="lnk author__more" href="/nosotros/">Conoce al equipo</a>
+  </div>
+</aside>

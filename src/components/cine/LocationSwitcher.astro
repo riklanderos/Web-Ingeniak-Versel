@@ -1,0 +1,78 @@
+---
+// LocationSwitcher · "Mismo sistema, tu industria" (§5.1 ESC 10, §5.1.1, R7, R9, R11, §7.4).
+// Escritorio: lista de 8 filas (columnas 1–5) y la portada del sector activo a sangre (doble capa A/B, fundido .6 s +
+// scale 1.04 → 1). Hover/foco/↑↓ cambian la placa; autoavance cada 4 s solo en escritorio y en pantalla, se detiene con
+// hover/foco y tras una vuelta completa; botón de pausa. Espejo automático si el sujeto de la placa está a la izquierda.
+// Móvil: la misma lista arriba (botones aria-pressed + enlace "Ver industria →") y UNA placa 4:5 a sangre abajo. Sin
+// carrusel de tarjetas y sin autoavance. Solo se descargan la placa activa y la siguiente (el resto con intención).
+import Metric from '../ui/Metric.astro';
+import { resolvePlate, type Fallback } from './plate';
+import PlatePicture from './PlatePicture.astro';
+import type { MetricId } from '../../lib/metrics';
+
+interface Sector { slug: string; name: string; line: string; metricId?: MetricId; plate: string; href?: string; fallbackPlate?: Fallback }
+interface Props { id?: string; sectors: Sector[]; autoplay?: number; label?: string; class?: string }
+const { id = 'industrias', sectors, autoplay = 4000, label = 'LOCACIÓN', class: cls } = Astro.props;
+
+const resolved = sectors.map((s) => {
+  let r = resolvePlate(s.plate, { fallbackPlate: s.fallbackPlate, alt: '', srcsetMax: 1920, where: `LocationSwitcher ${s.slug}` });
+  if (r.layout === 'subject-left') r = resolvePlate(s.plate, { fallbackPlate: s.fallbackPlate, mirror: !r.mirror, alt: '', srcsetMax: 1920, layout: 'subject-right' });
+  return r;
+});
+const data = resolved.map((r, i) => ({
+  vars: r.vars, aura: r.aura, mirror: r.mirror,
+  avifD: r.srcset.avifD, webpD: r.srcset.webpD, avifM: r.srcset.avifM, webpM: r.srcset.webpM, img: r.srcset.imgSrc, sizesD: r.srcset.sizesD,
+  w: r.d.w, h: r.d.h, name: sectors[i].name,
+}));
+const r0 = resolved[0];
+const r1 = resolved[1] ?? resolved[0];
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<section
+  id={id}
+  class:list={['is', 'is--mid', 'loc', cls]}
+  data-layout="subject-right"
+  data-m="top"
+  data-align="center"
+  data-shot="switcher"
+  data-autoplay={autoplay}
+  style={r0.vars}
+  aria-labelledby={`${id}-t`}
+>
+  <div class="is__fx" aria-hidden="true"></div>
+  <div class="is__hud" aria-hidden="true"><p class="t-label hud hud--tr loc__hud">{label} <span data-loc-n>1</span>/{sectors.length}</p></div>
+  <div class="frame is__copy">
+    <div class="is__text loc__text">
+      <slot />
+      <ol class="loc__list" role="list">
+        {sectors.map((s, i) => (
+          <li class="loc__row" data-i={i} aria-current={i === 0 ? 'true' : undefined}>
+            <button class="loc__btn" type="button" aria-pressed={i === 0 ? 'true' : 'false'} data-i={i} aria-label={`Ver la escena de ${s.name}`}>
+              <span class="loc__n t-label" aria-hidden="true">{pad(i + 1)}</span>
+              <span class="loc__name">{s.name}</span>
+              <span class="loc__line">{s.line}{s.metricId && <> · <Metric id={s.metricId} variant="inline" /></>}</span>
+              <span class="loc__bar" aria-hidden="true"></span>
+            </button>
+            {s.href && <a class="loc__go lnk--mono" href={s.href}>Ver industria <span aria-hidden="true">→</span></a>}
+          </li>
+        ))}
+      </ol>
+      <div class="loc__ctrl">
+        <button class="btn-icon loc__pause" type="button" aria-label="Pausar el cambio automático de escena" aria-pressed="false" data-pause>
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-pause"><path d="M9 6v12M15 6v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none" /></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-play"><path d="M8 6l10 6-10 6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none" /></svg>
+        </button>
+        <slot name="foot" />
+      </div>
+    </div>
+  </div>
+  <div class="is__stagebox" aria-hidden="true">
+    <div class="is__layer is__layer--media loc__layer is-on" data-own data-slot="0" data-sector="0" data-mirror={r0.mirror || undefined} style={r0.vars}>
+      <div class="stage"><PlatePicture r={r0} alt="" /><span class="is__vignette"></span><span class="is__leak"></span></div>
+    </div>
+    <div class="is__layer is__layer--media loc__layer" data-own data-slot="1" data-sector={resolved[1] ? 1 : 0} data-mirror={r1.mirror || undefined} style={r1.vars}>
+      <div class="stage"><PlatePicture r={r1} alt="" /><span class="is__vignette"></span><span class="is__leak"></span></div>
+    </div>
+  </div>
+  <script type="application/json" data-loc-data set:html={JSON.stringify(data)}></script>
+</section>

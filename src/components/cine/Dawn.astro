@@ -1,0 +1,59 @@
+---
+// Dawn · cierre de todas las páginas (F14, §5.1 ESC 13, §7.4): ImageSection height="cta" + arco de horizonte CSS
+// con filo cian (costura con el footer) + haz vertical + velo que se levanta + recorrido de luz del botón (una vez).
+// Contenido: slot por defecto (la página pasa eyebrow, H2 con id "<id>-t", CTAs con Btn) o la prop `copy`.
+import ImageSection from './ImageSection.astro';
+import Btn from '../ui/Btn.astro';
+import type { Fallback, Layout } from './plate';
+
+interface CtaCopy {
+  eyebrow?: string;
+  title: string;
+  soft?: string;
+  lede?: string;
+  primary?: { label?: string; href?: string };
+  secondary?: { label?: string; href: string };
+  note?: string;
+}
+interface Props {
+  id?: string;
+  plate?: 'cta-amanecer' | 'cta-duena-tranquila' | 'cta-equipo' | 'discovery-cta-final' | string;
+  mirror?: boolean;
+  layout?: Layout;
+  fallbackPlate?: Fallback;
+  copy?: CtaCopy;
+  class?: string;
+}
+const { id = 'cta-final', plate = 'cta-amanecer', mirror = false, layout, fallbackPlate, copy, class: cls } = Astro.props;
+const hasSlot = Astro.slots.has('default');
+---
+<ImageSection
+  id={id}
+  plate={plate}
+  mirror={mirror}
+  layout={layout}
+  fallbackPlate={fallbackPlate}
+  height="cta"
+  align="center"
+  alt=""
+  shot="dawn"
+  class={['dawn', cls].filter(Boolean).join(' ')}
+>
+  <Fragment slot="over">
+    <span class="dawn__veil" aria-hidden="true"></span>
+    <span class="dawn__beam" aria-hidden="true"></span>
+    <span class="dawn__horizon" aria-hidden="true"><span class="dawn__edge"></span></span>
+  </Fragment>
+  {hasSlot ? <slot /> : copy && (
+    <>
+      {copy.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{copy.eyebrow}</p>}
+      <h2 id={`${id}-t`} class="t-h2" data-split>{copy.title}{copy.soft && <> <span class="soft">{copy.soft}</span></>}</h2>
+      {copy.lede && <p class="t-lede t-lede--2">{copy.lede}</p>}
+      <div class="ctas">
+        <Btn variant="primary" href={copy.primary?.href ?? '/discovery/'} micro label={copy.primary?.label ?? 'Agenda tu Discovery Session'} />
+        {copy.secondary && <Btn variant="ghost" href={copy.secondary.href} label={copy.secondary.label ?? 'Escríbele a Kain'} />}
+      </div>
+      {copy.note && <p class="t-micro dawn__note">{copy.note}</p>}
+    </>
+  )}
+</ImageSection>

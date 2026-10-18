@@ -1,0 +1,436 @@
+{
+  "megaMenu": [
+    {
+      "label": "Servicios",
+      "href": "/servicios/",
+      "type": "mega",
+      "columns": [
+        {
+          "title": "Atraer",
+          "glyph": "atraer",
+          "description": "Tráfico y marca que traen clientes medibles",
+          "items": [
+            {
+              "label": "Paid media",
+              "href": "/servicios/paid-media/",
+              "description": "Meta, Google y TikTok medidos por ventas",
+              "metricId": "horeca-roas"
+            },
+            {
+              "label": "Páginas web de alta conversión",
+              "href": "/servicios/paginas-web/",
+              "description": "Conectadas a tu CRM y WhatsApp"
+            },
+            {
+              "label": "SEO y visibilidad en IA",
+              "href": "/servicios/seo/",
+              "description": "Que te encuentre Google y te cite ChatGPT"
+            },
+            {
+              "label": "Branding y contenido",
+              "href": "/servicios/branding/",
+              "description": "Identidad que te posiciona como premium"
+            }
+          ]
+        },
+        {
+          "title": "Atender",
+          "glyph": "atender",
+          "description": "Cada conversación atendida en segundos",
+          "items": [
+            {
+              "label": "Agentes de IA para WhatsApp",
+              "href": "/servicios/agentes-ia-whatsapp/",
+              "description": "Responden, califican y agendan 24/7",
+              "metricId": "dental-respuesta"
+            },
+            {
+              "label": "Conoce a Kain",
+              "href": "/kain/",
+              "description": "El agente de IA de tu empresa"
+            },
+            {
+              "label": "app.kain.mx",
+              "href": "https://app.kain.mx/",
+              "description": "La plataforma de tus agentes",
+              "external": true
+            }
+          ]
+        },
+        {
+          "title": "Organizar",
+          "glyph": "organizar",
+          "description": "Cada lead en su etapa",
+          "items": [
+            {
+              "label": "CRM con IA",
+              "href": "/servicios/crm-con-ia/",
+              "description": "Kommo o GoHighLevel, implementado para vender"
+            },
+            {
+              "label": "Partner oficial de Kommo",
+              "href": "/kommo/",
+              "description": "Licencias, implementación y agentes",
+              "badge": "Partner",
+              "metricId": "retail-conversiones"
+            },
+            {
+              "label": "GoHighLevel en español",
+              "href": "/gohighlevel/",
+              "description": "CRM, embudos y calendarios en una plataforma"
+            }
+          ]
+        },
+        {
+          "title": "Automatizar",
+          "glyph": "automatizar",
+          "description": "Procesos que se mueven solos",
+          "items": [
+            {
+              "label": "Automatización con n8n",
+              "href": "/servicios/automatizacion-n8n/",
+              "description": "Tus sistemas conectados, sin capturas a mano",
+              "metricId": "logistica-procesos"
+            },
+            {
+              "label": "Software a la medida",
+              "href": "/servicios/desarrollo-software/",
+              "description": "Cuando ninguna herramienta encaja"
+            }
+          ]
+        },
+        {
+          "title": "Medir",
+          "glyph": "medir",
+          "description": "Decisiones con datos",
+          "items": [
+            {
+              "label": "Consultoría en IA",
+              "href": "/servicios/consultoria-ia-empresas/",
+              "description": "Diagnóstico, roadmap y retorno medible"
+            },
+            {
+              "label": "Tablero unificado",
+              "href": "/servicios/desarrollo-software/#dashboard",
+              "description": "Todas tus fuentes en una vista",
+              "metricId": "ecom-tablero"
+            }
+          ]
+        }
+      ],
+      "feature": {
+        "type": "cinematic-card",
+        "label": "Conoce a Kain",
+        "href": "/kain/",
+        "description": "El agente de IA de tu empresa",
+        "image": "/img/cine/home-sistema-2-atender-still",
+        "note": "r1: la pantalla de previsualización usa el still de la portada destino (ESPEC §4.2); por defecto, la estación Atender. Se elimina menu-kain (no tenía placa en el plan)."
+      },
+      "footerLinks": [
+        {
+          "label": "Todos los servicios",
+          "href": "/servicios/"
+        },
+        {
+          "label": "Metodología VKTOR™",
+          "href": "/metodologia/"
+        },
+        {
+          "label": "Tecnologías",
+          "href": "/tecnologias/"
+        },
+        {
+          "label": "Planes desde USD 997 al mes",
+          "href": "/discovery/",
+          "priceFrom": true
+        }
+      ]
+    },
+    {
+      "label": "Industrias",
+      "href": "/industrias/",
+      "type": "mega",
+      "items": [
+        {
+          "label": "Salud y clínicas",
+          "href": "/industrias/salud/",
+          "description": "Citas agendadas y confirmadas 24/7",
+          "metric": "3.2× más citas"
+        },
+        {
+          "label": "Belleza y estética",
+          "href": "/industrias/belleza-estetica/",
+          "description": "Agenda llena sin vivir en el WhatsApp"
+        },
+        {
+          "label": "Nutrición",
+          "href": "/industrias/nutricion/",
+          "description": "Pacientes que agendan y regresan"
+        },
+        {
+          "label": "Finanzas",
+          "href": "/industrias/finanzas/",
+          "description": "Prospectos calificados antes de llamar"
+        },
+        {
+          "label": "Inmobiliario",
+          "href": "/industrias/inmobiliario/",
+          "description": "Cada lead atendido en segundos"
+        },
+        {
+          "label": "Industrial y logística",
+          "href": "/industrias/industrial-logistica/",
+          "description": "Operación que se mueve sola",
+          "metric": "27 procesos"
+        },
+        {
+          "label": "Retail y e-commerce",
+          "href": "/industrias/retail-ecommerce/",
+          "description": "Ventas por chat, medidas",
+          "metric": "+340%"
+        },
+        {
+          "label": "HoReCa",
+          "href": "/industrias/horeca/",
+          "description": "Reservas medidas por campaña",
+          "metric": "ROAS 4.8×"
+        }
+      ],
+      "footerLinks": [
+        {
+          "label": "Todas las industrias",
+          "href": "/industrias/"
+        }
+      ]
+    },
+    {
+      "label": "Casos",
+      "href": "/casos/",
+      "type": "dropdown",
+      "items": [
+        {
+          "label": "Clínica dental en Monterrey",
+          "href": "/casos/clinica-dental-monterrey/",
+          "metric": "3.2× citas en 90 días"
+        },
+        {
+          "label": "Retail multimarca",
+          "href": "/casos/retail-multimarca-kommo/",
+          "metric": "+340% conversiones"
+        },
+        {
+          "label": "E-commerce en CDMX",
+          "href": "/casos/ecommerce-cdmx-costo-por-lead/",
+          "metric": "−58% costo por lead"
+        },
+        {
+          "label": "HoReCa",
+          "href": "/casos/horeca-roas/",
+          "metric": "ROAS 4.8× sostenido"
+        },
+        {
+          "label": "Logística",
+          "href": "/casos/logistica-n8n/",
+          "metric": "27 procesos automatizados"
+        }
+      ],
+      "footerLinks": [
+        {
+          "label": "Todos los casos",
+          "href": "/casos/"
+        }
+      ]
+    },
+    {
+      "label": "Kain",
+      "href": "/kain/",
+      "type": "link",
+      "accent": "punto cian 'IA'"
+    },
+    {
+      "label": "Empresa",
+      "href": "/nosotros/",
+      "type": "dropdown",
+      "items": [
+        {
+          "label": "Nosotros",
+          "href": "/nosotros/",
+          "description": "El equipo, la ficha y los valores"
+        },
+        {
+          "label": "Metodología VKTOR™",
+          "href": "/metodologia/",
+          "description": "Las 5 fases de cada proyecto"
+        },
+        {
+          "label": "Tecnologías",
+          "href": "/tecnologias/",
+          "description": "El stack con el que construimos"
+        },
+        {
+          "label": "Agentes de IA en Guadalajara",
+          "href": "/agentes-ia-guadalajara/",
+          "description": "Oficina en Tlajomulco de Zúñiga"
+        },
+        {
+          "label": "Contacto",
+          "href": "/contacto/",
+          "description": "WhatsApp, correo y oficina"
+        }
+      ]
+    },
+    {
+      "label": "Recursos",
+      "href": "/blog/",
+      "type": "dropdown",
+      "items": [
+        {
+          "label": "Blog",
+          "href": "/blog/",
+          "description": "Guías sin humo para decidir mejor"
+        },
+        {
+          "label": "¿Cuánto cuesta un agente de IA?",
+          "href": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/"
+        },
+        {
+          "label": "Kommo vs GoHighLevel",
+          "href": "/blog/kommo-vs-gohighlevel/"
+        },
+        {
+          "label": "Agente de IA vs chatbot",
+          "href": "/blog/agente-ia-whatsapp-vs-chatbot/"
+        },
+        {
+          "label": "Preguntas frecuentes",
+          "href": "/preguntas-frecuentes/",
+          "description": "Respuestas directas"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "label": "Agenda tu Discovery Session",
+      "href": "/discovery/",
+      "style": "primary"
+    },
+    {
+      "label": "WhatsApp",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20vengo%20del%20men%C3%BA%20de%20ingeniak.mx%20y%20quiero%20informaci%C3%B3n.",
+      "style": "icon"
+    }
+  ],
+  "mobileStickyBar": [
+    {
+      "label": "Agenda tu Discovery",
+      "href": "/discovery/"
+    },
+    {
+      "label": "Escríbele a Kain",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20vengo%20de%20ingeniak.mx%20desde%20el%20celular%20y%20quiero%20informaci%C3%B3n."
+    }
+  ],
+  "footer": {
+    "columns": [
+      {
+        "title": "Servicios",
+        "links": [
+          "/servicios/",
+          "/servicios/consultoria-ia-empresas/",
+          "/servicios/agentes-ia-whatsapp/",
+          "/servicios/crm-con-ia/",
+          "/kommo/",
+          "/gohighlevel/",
+          "/servicios/automatizacion-n8n/",
+          "/servicios/paid-media/",
+          "/servicios/paginas-web/",
+          "/servicios/desarrollo-software/",
+          "/servicios/seo/",
+          "/servicios/branding/"
+        ]
+      },
+      {
+        "title": "Industrias",
+        "links": [
+          "/industrias/salud/",
+          "/industrias/belleza-estetica/",
+          "/industrias/nutricion/",
+          "/industrias/finanzas/",
+          "/industrias/inmobiliario/",
+          "/industrias/industrial-logistica/",
+          "/industrias/retail-ecommerce/",
+          "/industrias/horeca/",
+          "/industrias/"
+        ]
+      },
+      {
+        "title": "Casos",
+        "links": [
+          "/casos/clinica-dental-monterrey/",
+          "/casos/retail-multimarca-kommo/",
+          "/casos/ecommerce-cdmx-costo-por-lead/",
+          "/casos/horeca-roas/",
+          "/casos/logistica-n8n/",
+          "/casos/"
+        ]
+      },
+      {
+        "title": "Empresa",
+        "links": [
+          "/nosotros/",
+          "/metodologia/",
+          "/tecnologias/",
+          "/kain/",
+          "https://app.kain.mx/",
+          "/agentes-ia-guadalajara/",
+          "/contacto/"
+        ]
+      },
+      {
+        "title": "Recursos",
+        "links": [
+          "/blog/",
+          "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+          "/blog/kommo-vs-gohighlevel/",
+          "/blog/agente-ia-whatsapp-vs-chatbot/",
+          "/blog/como-verificar-partner-oficial-kommo/",
+          "/blog/gohighlevel-en-espanol/",
+          "/blog/n8n-vs-zapier-vs-make/",
+          "/preguntas-frecuentes/",
+          "/discovery/"
+        ]
+      }
+    ],
+    "entity": {
+      "nombre": "Ingeniak",
+      "razonSocial": "Ingeniak Technology, LLC",
+      "sede": "Guadalajara, Jalisco, México",
+      "direccion": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640",
+      "email": "contacto@ingeniak.mx",
+      "whatsapp": "+52 33 2101 7799",
+      "partner": "Partner oficial de Kommo en LATAM (sello enlazado a https://www.kommo.com/)",
+      "cifras": "+73 sistemas en producción · 7 países: México, Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador"
+    },
+    "social": [
+      "https://www.instagram.com/ingeniakmx/",
+      "https://www.facebook.com/ingeniakmx",
+      "https://www.linkedin.com/company/ingeniakmx"
+    ],
+    "legal": [
+      "© 2026 Ingeniak. Todos los derechos reservados.",
+      "/aviso-privacidad/"
+    ],
+    "firma": "Construimos empresarios libres, no héroes cansados."
+  },
+  "breadcrumbs": {
+    "separator": "› (nodo cuadrado cian de 4 px)",
+    "root": "Inicio",
+    "hiddenOn": [
+      "/",
+      "/404"
+    ],
+    "rule": "Inicio › Hub › Página. El último elemento no lleva enlace. Kommo y GoHighLevel cuelgan de CRM con IA aunque su URL sea de primer nivel. El mismo arreglo alimenta el BreadcrumbList."
+  },
+  "_revision": "r1 (18-oct-2026): Servicios por las 5 etapas de ESPEC §4.2; métricas por id de metrics.ts. Ver ESPEC §12."
+}

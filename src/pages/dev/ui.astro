@@ -1,0 +1,494 @@
+---
+// /dev/ui/ — vitrina del área "ui" (noindex), sobre BaseLayout (encabezado, footer y main.ts → initUI()).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Btn from '../../components/ui/Btn.astro';
+import Metric from '../../components/ui/Metric.astro';
+import SumarioCover from '../../components/ui/SumarioCover.astro';
+import ScriptList from '../../components/ui/ScriptList.astro';
+import Still from '../../components/ui/Still.astro';
+import ResultsLedger from '../../components/ui/ResultsLedger.astro';
+import ChatSim from '../../components/ui/ChatSim.astro';
+import ProductWindow from '../../components/ui/ProductWindow.astro';
+import PainList from '../../components/ui/PainList.astro';
+import TwoColumnScript from '../../components/ui/TwoColumnScript.astro';
+import VktorRail from '../../components/ui/VktorRail.astro';
+import SystemFlow from '../../components/ui/SystemFlow.astro';
+import DefinitionBlock from '../../components/ui/DefinitionBlock.astro';
+import FAQAccordion from '../../components/ui/FAQAccordion.astro';
+import EntitySheet from '../../components/ui/EntitySheet.astro';
+import Credits from '../../components/ui/Credits.astro';
+import KommoBadge from '../../components/ui/KommoBadge.astro';
+import EditorNote from '../../components/ui/EditorNote.astro';
+import Icon from '../../components/ui/Icon.astro';
+import Prose from '../../components/content/Prose.astro';
+import Figure from '../../components/content/Figure.astro';
+import Quote from '../../components/content/Quote.astro';
+import AuthorCard from '../../components/content/AuthorCard.astro';
+import VideoPoster from '../../components/content/VideoPoster.astro';
+import { nav, pages, waHref, SITE, getPage } from '../../lib/site';
+import { PRICE_FROM_CAP } from '../../lib/metrics';
+
+const heroPlate = (url: string) => (pages as any[]).find((p) => p.url === url.split('#')[0])?.sections?.[0]?.plate?.id;
+// Servicios por las 5 etapas, desde navegacion.json (mismo dato que el mega menú)
+const servicios = nav.megaMenu[0].columns.map((c: any) => ({
+  label: c.title, glyph: c.glyph,
+  rows: c.items.map((it: any) => ({ title: it.label, line: it.description, href: it.href, metricId: it.metricId, external: it.external,
+    plate: it.href === '/kain/' || it.href === '/servicios/agentes-ia-whatsapp/' ? 'home-hero' : heroPlate(it.href) })),
+}));
+const ICONS = ['menu', 'close', 'search', 'arrow', 'external', 'whatsapp', 'play', 'pause', 'chevron', 'check', 'plus', 'minus', 'calendar', 'phone', 'mail', 'location'];
+const GLYPHS = ['atraer', 'atender', 'organizar', 'automatizar', 'medir'];
+const wa = waHref('Hola Kain, vi la vitrina de componentes y quiero platicar.');
+const INDEX = ['Btn', 'Metric', 'SumarioCover', 'ScriptList', 'Still', 'ResultsLedger', 'ChatSim', 'ProductWindow', 'PainList', 'TwoColumnScript', 'VktorRail', 'SystemFlow', 'DefinitionBlock', 'FAQAccordion', 'EntitySheet', 'Credits', 'KommoBadge', 'EditorNote', 'Icon', 'Prose', 'AuthorCard', 'VideoPoster'];
+const sec = (n: string) => n.toLowerCase();
+const page = { ...getPage('/'), id: 'dev-ui', url: '/dev/ui/', canonical: 'https://ingeniak.mx/dev/ui/', indexable: false } as any;
+---
+<BaseLayout page={page} noindex title="Dev · ui · Ingeniak" rail={false} coldOpen={false}>
+<div class="dv-main">
+
+  <section class="dv-hero">
+    <div class="frame">
+      <div class="dv-hero__text">
+        <p class="t-label t-label--cyan dv-eyebrow"><span class="node" aria-hidden="true"></span>Ingeniak v2 · Área ui · /dev/ui/</p>
+        <h1 class="t-display-2">Piezas que dicen la verdad <span class="soft">dentro de la escena.</span></h1>
+        <p class="t-lede">Botones, cifras, guiones, fotogramas, simuladores y fichas. Cada cifra sale de <code>metrics.ts</code>, cada demo dice SIMULACIÓN y nada vive en una caja.</p>
+        <div class="ctas dv-ctas">
+          <Btn variant="primary" href="/discovery/" label="Agenda tu Discovery Session" micro />
+          <Btn variant="ghost" href={wa} label="Escríbele a Kain" wa />
+        </div>
+      </div>
+      <nav class="dv-index" aria-label="Componentes">
+        <ol>{INDEX.map((n, i) => <li><a href={`#${sec(n)}`}><span>{String(i + 1).padStart(2, '0')}</span>{n}</a></li>)}</ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 01 Btn -->
+  <section class="dv" id="btn">
+    <div class="frame dv__head"><p class="t-label">01 · Btn</p><h2 class="t-h3">Un solo azul. <span class="dv-soft">Contorno para WhatsApp, pequeño para el encabezado, icono para lo funcional.</span></h2></div>
+    <div class="frame dv__body">
+      <div class="dv-col">
+        <p class="t-label dv-k">primary + micro · ghost + wa</p>
+        <div class="ctas"><Btn variant="primary" href="/discovery/" label="Agenda tu Discovery Session" micro /><Btn variant="ghost" href={wa} label="Escríbele a Kain" wa /></div>
+      </div>
+      <div class="dv-col">
+        <p class="t-label dv-k">sm · sm ghost · icon</p>
+        <div class="dv-row">
+          <Btn variant="sm" href="/discovery/" label="Agenda tu Discovery Session" />
+          <Btn variant="sm" ghost href="/discovery/" label="Agenda tu Discovery Session" />
+          <Btn variant="icon" href={wa} label="Escríbele a Kain por WhatsApp" icon="whatsapp" />
+          <Btn variant="icon" label="Buscar" icon="search" />
+          <Btn variant="icon" label="Menú" icon="menu" />
+        </div>
+        <p class="t-label dv-k dv-k--gap">Enlaces</p>
+        <div class="dv-row"><a class="lnk" href="/casos/clinica-dental-monterrey/">Ver caso <Icon name="arrow" size={18} /></a><a class="lnk lnk--mono" href="#metric">Ver todos</a><Btn variant="ghost" href="https://app.kain.mx/" label="Entrar a app.kain.mx" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Metric -->
+  <section class="dv" id="metric">
+    <div class="frame dv__head"><p class="t-label">02 · Metric</p><h2 class="t-h3">La única forma de imprimir una cifra. <span class="dv-soft">inline · chip · mega · cover · row, siempre con data-metric.</span></h2></div>
+    <div class="frame dv__body">
+      <div class="dv-col">
+        <p class="t-label dv-k">inline</p>
+        <p class="dv-sentence">En una clínica dental de Monterrey, la respuesta por WhatsApp pasó de <Metric id="dental-respuesta" variant="inline" link />, y la agenda creció <Metric id="dental-citas" variant="inline" label />.</p>
+        <p class="t-label dv-k dv-k--gap">cover</p>
+        <div class="dv-stack"><Metric id="ecom-cpl" variant="cover" link ctx /><Metric id="horeca-roas" variant="cover" link ctx /></div>
+      </div>
+      <div class="dv-col dv-scene">
+        <img class="dv-scene__img" src="/img/cine/home-hero-1280.webp" alt="" width="1280" height="714" loading="lazy" />
+        <p class="t-label dv-k dv-k--on">chip (sobre imagen)</p>
+        <div class="dv-chips"><Metric id="dental-citas" variant="chip" fn="1" /><Metric id="retail-conversiones" variant="chip" link /></div>
+      </div>
+    </div>
+    <div class="frame dv__body dv__body--3">
+      <Metric id="dental-citas" variant="mega" ctx />
+      <Metric id="logistica-procesos" variant="mega" count ctx />
+      <Metric id="ecom-cpl" variant="mega" ctx />
+    </div>
+    <div class="frame dv__body dv__body--1">
+      <Metric variant="row" ids={['sistemas', 'paises', 'salud-citas-mes', 'ecom-cpl']} heading="Ingeniak en datos" />
+    </div>
+  </section>
+
+  <!-- 03 SumarioCover -->
+  <section class="dv" id="sumariocover">
+    <div class="frame dv__head"><p class="t-label">03 · SumarioCover</p><h2 class="t-h3">Tres cifras en la portada. <span class="dv-soft">Con max-height 879 px o en móvil pasa a la fila de la sección 02.</span></h2></div>
+    <div class="dv-cover">
+      <img class="dv-cover__img" src="/img/cine/home-hero-1920.webp" alt="" width="1920" height="1072" loading="lazy" />
+      <span class="dv-cover__veil" aria-hidden="true"></span>
+      <div class="frame"><div class="dv-cover__in"><SumarioCover ids={['dental-citas', 'ecom-cpl', 'retail-conversiones']} place="flow" /></div></div>
+    </div>
+    <div class="frame dv__body dv__body--1"><SumarioCover ids={['dental-citas', 'ecom-cpl', 'retail-conversiones']} variant="row" /></div>
+  </section>
+
+  <!-- 04 ScriptList -->
+  <section class="dv" id="scriptlist">
+    <div class="frame dv__head"><p class="t-label">04 · ScriptList</p><h2 class="t-h3">Filas de guion, no tarjetas. <span class="dv-soft">Por etapa, con glifo; en escritorio un fotograma 21:9 sigue al cursor.</span></h2></div>
+    <div class="frame dv__body dv__body--1">
+      <ScriptList groups={servicios} followStill />
+      <p class="dv-after" data-allow-number>Planes {PRICE_FROM_CAP.toLowerCase()}. El alcance lo definimos en tu Discovery Session.</p>
+    </div>
+    <div class="frame dv__body dv__body--1">
+      <p class="t-label dv-k">variant="steps" (StepRow)</p>
+      <ScriptList variant="steps" label="Cómo funciona la Discovery Session" rows={[
+        { title: 'Respondes un formulario corto', line: 'Nos cuentas cómo atiendes, vendes y das seguimiento hoy.' },
+        { title: 'Eliges tu horario', line: 'De lunes a viernes, en hora del centro de México.' },
+        { title: 'Nos vemos por Google Meet', line: 'Revisamos tu operación contigo y te decimos qué conviene automatizar primero.' },
+      ]} />
+    </div>
+  </section>
+
+  <!-- 05 Still -->
+  <section class="dv" id="still">
+    <div class="frame dv__head"><p class="t-label">05 · Still</p><h2 class="t-h3">El texto vive en la penumbra del fotograma. <span class="dv-soft">Sin still todavía: aura del isotipo con la misma penumbra.</span></h2></div>
+    <div class="frame dv__body dv__body--3">
+      <Still href="/kain/" plate="home-hero" label="Kain · agente de IA" title="Conoce a Kain, el agente de IA de tu empresa" metricId="dental-respuesta" />
+      <Still href="/servicios/agentes-ia-whatsapp/" plate="home-sistema-2-atender" label="Servicio · Atender" title="Agentes de IA para WhatsApp" />
+      <Still href="/casos/clinica-dental-monterrey/" plate="caso-dental-hero" label="Caso · Salud · MTY" title="Clínica dental en Monterrey" metricId="dental-citas" />
+    </div>
+    <div class="frame dv__body">
+      <div class="dv-col"><p class="t-label dv-k">plana</p><Still variant="plana" href="/kain/" plate="home-hero" label="Destacado" title="Un agente que responde, agenda y registra en tu CRM" metricId="dental-respuesta" /></div>
+      <div class="dv-col"><p class="t-label dv-k">mini ×4</p>
+        <div class="dv-minis">
+          <Still variant="mini" href="/industrias/salud/" plate="ind-salud-hero" label="Salud" title="Tu clínica trabajando" />
+          <Still variant="mini" href="/industrias/belleza-estetica/" plate="ind-belleza-hero" label="Belleza" title="Tu salón trabajando" />
+          <Still variant="mini" href="/industrias/inmobiliario/" plate="ind-inmobiliario-hero" label="Inmobiliario" title="Tu agencia trabajando" />
+          <Still variant="mini" href="/kain/" plate="home-hero" label="Kain" title="Tu negocio trabajando" />
+        </div>
+      </div>
+    </div>
+    <div class="dv__bleed"><Still variant="next" href="/casos/retail-multimarca-kommo/" plate="caso-retail-hero" label="Caso · Retail · Kommo + IA" title="Retail multimarca con Kommo e IA" metricId="retail-conversiones" headingLevel={2} /></div>
+  </section>
+
+  <!-- 06 ResultsLedger -->
+  <section class="dv" id="resultsledger">
+    <div class="frame dv__head"><p class="t-label">06 · ResultsLedger</p><h2 class="t-h3">Registro de resultados. <span class="dv-soft">Tabla semántica, filtros sobre el HTML ya renderizado, bloques en móvil.</span></h2></div>
+    <div class="frame dv__body dv__body--1"><ResultsLedger filters id="registro" /></div>
+  </section>
+
+  <!-- 07 ChatSim -->
+  <section class="dv" id="chatsim">
+    <div class="frame dv__head"><p class="t-label">07 · ChatSim</p><h2 class="t-h3">Simulación honesta. <span class="dv-soft">Escribiendo…, pestañas por sector, pausa y el guion completo en el HTML.</span></h2></div>
+    <div class="frame dv__body">
+      <div class="dv-col dv-center">
+        <ChatSim mode="inline" aura tabs={['salud', 'belleza', 'inmobiliario', 'retail']} />
+      </div>
+      <div class="dv-col">
+        <p class="t-label dv-k">mode="registered" (llena la pantalla del teléfono de la placa)</p>
+        <div class="dv-registered">
+          <img src="/img/cine/home-hero-1280.webp" alt="" width="1280" height="714" loading="lazy" />
+          <div class="dv-registered__screen"><ChatSim mode="registered" script="default" note={false} /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 ProductWindow -->
+  <section class="dv" id="productwindow">
+    <div class="frame dv__head"><p class="t-label">08 · ProductWindow</p><h2 class="t-h3">Ventana de producto. <span class="dv-soft">Cristal con marcas de corte, solo sobre aura o placa.</span></h2></div>
+    <div class="frame dv__body dv__body--1">
+      <ProductWindow title="Pipeline de ventas" url="crm · vista de embudo" label="SIMULACIÓN" aura fig="Fig. 03 — Cada conversación entra sola a su etapa del CRM.">
+        <div class="dv-kanban">
+          {[['Nuevo', ['Lead de WhatsApp', 'Lead de Instagram', 'Lead del sitio web']], ['Calificado', ['Pidió precios', 'Pidió una cita']], ['Cita agendada', ['Limpieza dental', 'Valoración']], ['Ganado', ['Paciente nuevo']]].map(([col, cards]: any, ci) => (
+            <div class="dv-kanban__col"><p class="t-label">{col}</p>{cards.map((c: string, i: number) => <div class:list={['dv-kanban__card', ci === 2 && i === 0 && 'is-hot']}><span class="node" aria-hidden="true"></span>{c}<small>Atendido por Kain</small></div>)}</div>
+          ))}
+        </div>
+      </ProductWindow>
+    </div>
+  </section>
+
+  <!-- 09 PainList -->
+  <section class="dv" id="painlist">
+    <div class="frame dv__head"><p class="t-label">09 · PainList</p><h2 class="t-h3">El dolor en ámbar, la salida en cian. <span class="dv-soft">La salida se dibuja al entrar; los dos textos siempre en el DOM.</span></h2></div>
+    <div class="frame dv__body">
+      <div class="dv-col">
+        <p class="t-label t-label--amber dv-k">23:48 · El problema</p>
+        <PainList mode="draw" remate="No te falta esfuerzo. Te falta un sistema." items={[
+          { pain: 'Mensajes sin responder', fix: 'Kain responde en segundos, a cualquier hora.' },
+          { pain: 'Un CRM que nadie usa', fix: 'Cada conversación entra sola a tu CRM.' },
+          { pain: 'Anuncios que no se traducen en ventas', fix: 'Cada campaña se mide hasta la venta.' },
+          { pain: 'Todo pasa por ti', fix: 'El sistema opera. Tú diriges.' },
+        ]} />
+      </div>
+      <div class="dv-col">
+        <p class="t-label dv-k">mode="twin" (TwinScene controla --mix por ítem)</p>
+        <PainList mode="twin" items={[
+          { pain: 'Mensajes sin responder', fix: 'Kain responde en segundos, a cualquier hora.' },
+          { pain: 'Un CRM que nadie usa', fix: 'Cada conversación entra sola a tu CRM.' },
+        ]} class="dv-twin" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 TwoColumnScript -->
+  <section class="dv" id="twocolumnscript">
+    <div class="frame dv__head"><p class="t-label">10 · TwoColumnScript</p><h2 class="t-h3">Dos columnas unidas por el pilar. <span class="dv-soft">fit · dodont · compare · before-after, sin tabla con bordes.</span></h2></div>
+    <div class="frame dv__body dv__body--1">
+      <TwoColumnScript variant="fit"
+        left={{ title: 'Es para ti si…', items: ['Recibes mensajes que se quedan sin respuesta fuera de horario.', 'Tu equipo captura datos a mano en hojas o en el CRM.', 'Quieres saber qué campaña trae ventas, no solo clics.'] }}
+        right={{ title: 'No es para ti si…', items: ['Buscas un chatbot de menús para salir del paso.', 'No tienes tiempo para revisar tu operación con nosotros.', 'Esperas resultados sin medir nada.'] }} />
+    </div>
+    <div class="frame dv__body dv__body--1">
+      <p class="t-label dv-k">compare</p>
+      <TwoColumnScript variant="compare"
+        left={{ title: 'Agente de IA', items: ['Entiende lenguaje natural', 'Ejecuta acciones: crea el lead y agenda', 'Registra todo en tu CRM', 'Consulta tu agenda real', 'Atiende a cualquier hora', 'Si la pregunta se sale del guion, la resuelve o escala'] }}
+        right={{ title: 'Chatbot de menús', items: ['Obliga a elegir opciones fijas', 'Solo responde', 'No se conecta a tu CRM', 'No ve tu agenda', 'Atiende a cualquier hora', 'Si la pregunta se sale del guion, se atora'] }} />
+    </div>
+    <div class="frame dv__body dv__body--1">
+      <p class="t-label dv-k">before-after</p>
+      <TwoColumnScript variant="before-after" slogan="Tu negocio trabajando, sin depender más de ti."
+        left={{ title: 'Antes', items: ['Contestabas cuando podías', 'Cada lead vivía en un chat distinto', 'Las citas se confirmaban a mano'] }}
+        right={{ title: 'Después', items: ['Kain contesta en segundos', 'Cada lead entra a su etapa del CRM', 'Kain confirma y recuerda cada cita'] }} />
+    </div>
+  </section>
+
+  <!-- 11 VktorRail -->
+  <section class="dv" id="vktorrail">
+    <div class="frame dv__head"><p class="t-label">11 · VktorRail</p><h2 class="t-h3">VKTOR™ en cinco nodos. <span class="dv-soft">La línea se dibuja con el scroll y enciende cada fase.</span></h2></div>
+    <div class="frame dv__body dv__body--1">
+      <VktorRail lines={['Revisamos cómo atiendes hoy cada mensaje.', 'Diseñamos el guion y las reglas de tu agente.', 'Conectamos WhatsApp, CRM y agenda.', 'Lo operamos y lo ajustamos con tu equipo.', 'Medimos y escalamos lo que funciona.']} />
+    </div>
+  </section>
+
+  <!-- 12 SystemFlow -->
+  <section class="dv" id="systemflow">
+    <div class="frame dv__head"><p class="t-label">12 · SystemFlow</p><h2 class="t-h3">Ramas del isotipo. <span class="dv-soft">Codos a 45°, nodos cuadrados, un pulso que recorre cada rama. Los nodos sin confirmar no salen.</span></h2></div>
+    <div class="frame dv__body dv__body--1">
+      <SystemFlow fig="Fig. 04 — De WhatsApp a tu equipo, sin capturas a mano." nodes={[
+        { label: 'WhatsApp', logo: 'whatsapp', line: 'El cliente escribe a cualquier hora' },
+        { label: 'Kain', kain: true, line: 'Responde, califica y propone horario' },
+        { label: 'CRM', logo: 'kommo', line: 'Kommo o GoHighLevel, con su etapa' },
+        { label: 'Agenda', line: 'La cita queda en tu calendario' },
+        { label: 'Tu equipo', line: 'Recibe el lead listo para cerrar' },
+        { label: 'Facturación', line: 'Nodo sin confirmar: no se publica', confirmed: false },
+      ]} />
+    </div>
+    <div class="frame dv__body dv__body--1">
+      <p class="t-label dv-k">variant="hub" (StackHub de Tecnologías)</p>
+      <SystemFlow variant="hub" title="El stack con el que construimos" nodes={[
+        { group: 'Modelos', label: 'OpenAI', logo: 'openai', role: 'Lenguaje y razonamiento' },
+        { group: 'Modelos', label: 'Claude', logo: 'claude', role: 'Conversación y análisis' },
+        { group: 'Modelos', label: 'Gemini', logo: 'gemini', role: 'Multimodal' },
+        { group: 'CRM', label: 'Kommo', logo: 'kommo', role: 'Partner oficial en LATAM' },
+        { group: 'CRM', label: 'GoHighLevel', logo: 'gohighlevel', role: 'CRM, embudos y calendarios' },
+        { group: 'Automatización', label: 'n8n', logo: 'n8n', role: 'Flujos entre sistemas' },
+        { group: 'Automatización', label: 'Make', logo: 'make', role: 'Integraciones rápidas' },
+        { group: 'Canales y ads', label: 'WhatsApp Business', logo: 'whatsapp', role: 'Canal principal' },
+        { group: 'Canales y ads', label: 'Meta', logo: 'meta', role: 'Campañas medidas por venta' },
+        { group: 'Canales y ads', label: 'Google Ads', logo: 'googleads', role: 'Búsqueda y Performance Max' },
+        { group: 'Datos y software', label: 'Supabase', logo: 'supabase', role: 'Datos y autenticación' },
+        { group: 'Datos y software', label: 'Stripe', logo: 'stripe', role: 'Pagos' },
+      ]} />
+    </div>
+  </section>
+
+  <!-- 13 DefinitionBlock -->
+  <section class="dv" id="definitionblock">
+    <div class="frame dv__head"><p class="t-label">13 · DefinitionBlock</p><h2 class="t-h3">La definición primero. <span class="dv-soft">Texto idéntico al banco de FAQ; variant="answer" es el AnswerBox de artículos.</span></h2></div>
+    <div class="frame dv__body">
+      <div class="dv-col"><DefinitionBlock faqId="G02" /></div>
+      <div class="dv-col"><DefinitionBlock faqId="G07" variant="answer" /></div>
+    </div>
+  </section>
+
+  <!-- 14 FAQAccordion -->
+  <section class="dv" id="faqaccordion">
+    <div class="frame dv__head"><p class="t-label">14 · FAQAccordion</p><h2 class="t-h3">Preguntas del banco. <span class="dv-soft">Las marcadas "validar" no se publican; SEOHead emite el FAQPage con faqPageLd().</span></h2></div>
+    <div class="frame dv__body">
+      <div class="dv-col"><FAQAccordion ids={['G01', 'G02', 'G04', 'G07', 'G08', 'G11', 'N03']} open={0} /></div>
+      <div class="dv-col dv-scene dv-scene--waves">
+        <img class="dv-scene__img" src="/img/marca/fondo-ondas-1600.webp" alt="" width="1600" height="1066" loading="lazy" />
+        <p class="t-label dv-k dv-k--on">glass (sobre aura)</p>
+        <FAQAccordion ids={['W01', 'W02']} glass open={0} />
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 EntitySheet -->
+  <section class="dv" id="entitysheet">
+    <div class="frame dv__head"><p class="t-label">15 · EntitySheet</p><h2 class="t-h3">La ficha. <span class="dv-soft">Los mismos datos que el JSON-LD y llms.txt; la razón social no se imprime sin confirmar.</span></h2></div>
+    <div class="frame dv__body">
+      <div class="dv-col"><EntitySheet variant="home" /></div>
+      <div class="dv-col">
+        <EntitySheet variant="case" rows={[{ term: 'Sector', value: 'Salud · clínica dental' }, { term: 'Ciudad', value: 'Monterrey, N.L.' }, { term: 'Servicio', value: 'Agente de IA en WhatsApp', href: '/servicios/agentes-ia-whatsapp/' }]} metricIds={['dental-citas', 'dental-respuesta']} />
+        <div class="dv-gap"><EntitySheet variant="footer" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 Credits -->
+  <section class="dv" id="credits">
+    <div class="frame dv__head"><p class="t-label">16 · Credits</p><h2 class="t-h3">Créditos, no tarjetas. <span class="dv-soft">Equipo en duotono (la placa del nombre de las fotos queda fuera), logos, países y stack.</span></h2></div>
+    <div class="frame dv__body">
+      <div class="dv-col"><Credits variant="team" label="El equipo" /></div>
+      <div class="dv-col"><Credits variant="countries" label="Dónde operamos" /><div class="dv-gap"><Credits variant="logos" label="Con qué construimos" /></div></div>
+    </div>
+    <div class="frame dv__body dv__body--1"><Credits variant="team" size="lg" label="TeamCredits · /nosotros/" /></div>
+    <div class="frame dv__body dv__body--1"><Credits variant="stack" label="Stack · Automatización y datos" items={[{ logo: 'n8n', role: 'Flujos entre tus sistemas' }, { logo: 'make', role: 'Integraciones rápidas' }, { logo: 'supabase', role: 'Datos y autenticación' }, { logo: 'stripe', role: 'Cobros conectados al CRM' }]} /></div>
+  </section>
+
+  <!-- 17 KommoBadge · 18 EditorNote -->
+  <section class="dv" id="kommobadge">
+    <div class="frame dv__head"><p class="t-label">17 · KommoBadge</p><h2 class="t-h3">El único partner. <span class="dv-soft">Sello oficial enlazado a kommo.com, sin recolorear.</span></h2></div>
+    <div class="frame dv__body">
+      <div class="dv-col"><div class="dv-row"><KommoBadge size="sm" /><KommoBadge /><KommoBadge text /></div></div>
+      <div class="dv-col dv-scene dv-scene--short">
+        <img class="dv-scene__img" src="/img/cine/home-hero-1280.webp" alt="" width="1280" height="714" loading="lazy" />
+        <KommoBadge glass text class="dv-onimg" />
+      </div>
+    </div>
+  </section>
+  <section class="dv" id="editornote">
+    <div class="frame dv__head"><p class="t-label">18 · EditorNote</p><h2 class="t-h3">Recuadro de nota e InlineCTA. <span class="dv-soft">Filete en cuatro lados con la etiqueta incrustada.</span></h2></div>
+    <div class="frame dv__body">
+      <div class="dv-col"><EditorNote label="Nota del editor"><p>Todavía no publicamos un caso propio de este sector. Las cifras de esta página vienen de casos de otros sectores y cada una dice de cuál: <Metric id="dental-citas" variant="inline" link /> en una clínica dental de Monterrey.</p></EditorNote></div>
+      <div class="dv-col"><EditorNote label="Siguiente paso" variant="cta"><p>¿Quieres ver qué parte de tu operación conviene automatizar primero?</p></EditorNote></div>
+    </div>
+  </section>
+
+  <!-- 19 Icon -->
+  <section class="dv" id="icon">
+    <div class="frame dv__head"><p class="t-label">19 · Icon</p><h2 class="t-h3">16 iconos funcionales y 5 glifos de etapa. <span class="dv-soft">Retícula 24, trazo 1.5, 45° y 90°, currentColor.</span></h2></div>
+    <div class="frame dv__body dv__body--1">
+      <ul class="dv-icons">{ICONS.map((n) => <li><Icon name={n} size={24} /><span>{n}</span></li>)}</ul>
+      <ul class="dv-icons dv-icons--glyph">{GLYPHS.map((n) => <li><Icon name={n} size={24} /><span>{n}</span></li>)}</ul>
+    </div>
+  </section>
+
+  <!-- 20 Prose · 21 AuthorCard -->
+  <section class="dv" id="prose">
+    <div class="frame dv__head"><p class="t-label">20 · Prose</p><h2 class="t-h3">Cuerpo editorial. <span class="dv-soft">64ch a 19 px, índice sticky, figuras con pie y citas con fuente.</span></h2></div>
+    <div class="frame">
+      <Prose toc={[{ id: 'p-que-es', text: 'Qué es un agente de IA' }, { id: 'p-como', text: 'Cómo se conecta a tu CRM' }, { id: 'p-cuando', text: 'Cuándo conviene', level: 3 }]}>
+        <DefinitionBlock faqId="G03" variant="answer" />
+        <h2 id="p-que-es">Qué es un agente de IA para WhatsApp</h2>
+        <p>Un agente de IA entiende lo que escribe tu cliente, responde con la información de tu negocio y <strong>ejecuta acciones</strong>: crea el lead, lo califica y le propone un horario. No obliga a nadie a elegir entre opciones fijas.</p>
+        <ul><li>Responde en lenguaje natural.</li><li>Consulta tu agenda y tu catálogo.</li><li>Registra cada conversación en tu CRM.</li></ul>
+        <h2 id="p-como">Cómo se conecta a tu CRM</h2>
+        <p>Cada conversación entra a <a href="/servicios/crm-con-ia/">tu CRM con IA</a> con su etapa: nuevo, calificado, cita agendada o ganado.<sup class="fn"><a href="#fn-1" id="ref-1">1</a></sup></p>
+        <Figure src="/img/cine/home-hero-1280.webp" alt="Kain, el agente de IA de Ingeniak, presenta el isotipo de cristal" width={1280} height={714} n="05" caption="Kain, el agente de IA de Ingeniak (render)." />
+        <h3 id="p-cuando">Cuándo conviene</h3>
+        <ol><li>Cuando los mensajes llegan fuera de horario.</li><li>Cuando tu equipo captura datos a mano.</li></ol>
+        <Quote source="Equipo de Ingeniak" role="Metodología VKTOR™">No cotizamos lo que no hemos visto: primero revisamos tu operación.</Quote>
+        <ol class="footnotes"><li id="fn-1">Kommo o GoHighLevel, según tu operación. <a href="#ref-1" aria-label="Volver al texto">↩</a></li></ol>
+      </Prose>
+    </div>
+    <div class="frame dv__body" id="authorcard">
+      <div class="dv-col"><p class="t-label dv-k">21 · AuthorCard (persona confirmada)</p><AuthorCard person="rik-landeros" /></div>
+      <div class="dv-col"><p class="t-label dv-k">sin persona confirmada → Equipo de Ingeniak</p><AuthorCard /></div>
+    </div>
+  </section>
+
+  <!-- 22 VideoPoster -->
+  <section class="dv" id="videoposter">
+    <div class="frame dv__head"><p class="t-label">22 · VideoPoster</p><h2 class="t-h3">Video al clic. <span class="dv-soft">El VSL se abre en un diálogo a pantalla completa; nunca un reproductor en una caja.</span></h2></div>
+    <div class="dv-cover dv-cover--video">
+      <img class="dv-cover__img" src="/img/cine/home-hero-1920.webp" alt="" width="1920" height="1072" loading="lazy" />
+      <span class="dv-cover__veil dv-cover__veil--b" aria-hidden="true"></span>
+      <div class="frame dv-video">
+        <h3 class="t-h2">La silla vacía. <span class="soft">¿Qué se detiene si mañana no llegas?</span></h3>
+        <VideoPoster mode="modal" src="/video/discovery-vsl-720.mp4" title="La silla vacía · Discovery Session" label="Ver el video" />
+      </div>
+    </div>
+    <div class="frame dv__body">
+      <div class="dv-col"><p class="t-label dv-k">mode="inline"</p><VideoPoster mode="inline" src="/video/sistema-1920.mp4" poster="/img/motion-sistema-poster.webp" title="El sistema en movimiento" label="Ver el sistema" width={1920} height={1080} /></div>
+      <div class="dv-col"><p class="t-micro">Sin <code>preload</code>, sin autoplay con sonido, subtítulos VTT cuando existan. Eventos de medición: <code>ingeniak:track</code> → video_play · video_50 · video_complete.</p></div>
+    </div>
+  </section>
+
+  <footer class="dv-foot frame"><p class="t-micro">Ingeniak v2 · área ui · {SITE.email}</p></footer>
+</div>
+
+<style>
+  .dv-main{padding-bottom:var(--s-10)}
+  .dv-hero{padding:calc(var(--s-9) + 24px) 0 var(--s-9);position:relative;isolation:isolate}
+  .dv-hero::before{content:"";position:absolute;inset:0 0 auto;height:620px;pointer-events:none;z-index:-1;
+    background:radial-gradient(40% 60% at 78% 30%,rgb(0 229 255 / .10),transparent 70%),radial-gradient(50% 70% at 20% 0%,rgb(10 31 76 / .9),transparent 70%)}
+  .dv-hero__text{grid-column:1 / span 7;display:flex;flex-direction:column;align-items:flex-start}
+  .dv-hero__text .t-display-2{margin-top:var(--s-5)}
+  .dv-hero__text .t-lede{margin-top:var(--s-5)}
+  .dv-hero__text code,.dv-main code{font:400 .9em var(--f-mono);color:var(--cyan-soft)}
+  .dv-eyebrow{display:flex;align-items:center;gap:10px}
+  .dv-ctas{margin-top:var(--s-7)}
+  .dv-index{grid-column:9 / span 4;align-self:end}
+  .dv-index ol{columns:2;column-gap:var(--gap);border-top:1px solid var(--hair)}
+  .dv-index a{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--hair);font:400 13px/1.2 var(--f-body);color:var(--text-2);text-decoration:none;break-inside:avoid}
+  .dv-index a span{font:500 10px/1.3 var(--f-mono);color:var(--muted)}
+  .dv-index a:hover{color:var(--cyan)}
+  .dv{padding-top:var(--s-10);scroll-margin-top:24px}
+  .dv__head{align-items:baseline;padding-bottom:var(--s-6);border-bottom:1px solid var(--hair);margin-bottom:var(--s-7)}
+  .dv__head .t-label{grid-column:1 / span 2;color:var(--cyan)}
+  .dv__head h2{grid-column:3 / span 9;margin:0}
+  .dv-soft{font-weight:300;color:var(--soft)}
+  .dv__body{row-gap:var(--s-7);align-items:start}
+  .dv__body + .dv__body{margin-top:var(--s-9)}
+  .dv__body > .dv-col{grid-column:span 6}
+  .dv__body--1 > :global(*){grid-column:1 / -1}
+  .dv__body--3 > :global(*){grid-column:span 4}
+  .dv-k{margin-bottom:var(--s-4)}
+  .dv-k--gap{margin-top:var(--s-7)}
+  .dv-row{display:flex;flex-wrap:wrap;gap:var(--s-4);align-items:center}
+  .dv-stack{display:grid;gap:14px;justify-items:start}
+  .dv-sentence{font:300 clamp(1.25rem,1rem + .8vw,1.75rem)/1.45 var(--f-display);letter-spacing:-.012em;color:var(--soft);max-width:30em}
+  .dv-after{margin-top:var(--s-6);font:400 15px/1.5 var(--f-body);color:var(--muted)}
+  .dv-gap{margin-top:var(--s-8)}
+  .dv-center{display:grid;justify-items:center}
+  /* escenas de prueba: imagen a sangre con penumbra (el cristal siempre tiene algo detrás) */
+  .dv-scene{position:relative;isolation:isolate;min-height:360px;padding:72px var(--s-6) var(--s-6);display:flex;flex-direction:column;justify-content:flex-end}
+  .dv-scene__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% 50%;z-index:-1;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent);mask-composite:intersect}
+  .dv-scene--waves .dv-scene__img{object-position:50% 50%;opacity:.85}
+  .dv-scene--short{min-height:240px;justify-content:center;align-items:flex-start}
+  .dv-k--on{position:absolute;top:var(--s-5);left:var(--s-6)}
+  .dv-chips{display:flex;flex-wrap:wrap;gap:var(--s-4);align-items:flex-start}
+  .dv-cover{position:relative;isolation:isolate;min-height:min(78svh,720px);display:grid;align-content:center;margin-top:var(--s-5)}
+  .dv-cover__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%;z-index:-2;
+    -webkit-mask-image:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent);mask-image:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent)}
+  .dv-cover__veil{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgb(3 4 11 / .92),rgb(3 4 11 / .7) 26%,rgb(3 4 11 / .2) 46%,transparent 60%)}
+  .dv-cover__veil--b{background:linear-gradient(0deg,rgb(3 4 11 / .92),rgb(3 4 11 / .55) 30%,transparent 60%)}
+  .dv-cover__in{grid-column:1 / span 5}
+  .dv-cover--video{align-content:end;padding-bottom:var(--s-8)}
+  .dv-video{align-items:end}
+  .dv-video h3{grid-column:1 / span 7;margin:0}
+  .dv-video :global(.vposter){grid-column:9 / span 4;justify-self:end}
+  .dv__bleed{margin-top:var(--s-9)}
+  .dv-minis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+  .dv-registered{position:relative;isolation:isolate;aspect-ratio:16 / 10;max-width:100%}
+  .dv-registered img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:80% 50%;z-index:-1;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent);mask-composite:intersect}
+  .dv-registered__screen{position:absolute;left:14%;top:8%;width:36%;height:84%;container-type:inline-size;border-radius:22px;
+    background:linear-gradient(160deg,rgb(255 255 255 / .1),rgb(255 255 255 / .03));-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .16),var(--e-2)}
+  .dv-kanban{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:18px}
+  .dv-kanban__col{display:grid;align-content:start;gap:10px}
+  .dv-kanban__col .t-label{padding-bottom:10px;border-bottom:1px solid var(--hair)}
+  .dv-kanban__card{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center;padding:12px;border-radius:12px;font:500 13px/1.3 var(--f-body);
+    background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px var(--hair)}
+  .dv-kanban__card small{grid-column:2;font:400 11px/1.3 var(--f-mono);color:var(--muted);margin-top:4px}
+  .dv-kanban__card.is-hot{box-shadow:inset 0 0 0 1px rgb(0 229 255 / .55),0 0 30px rgb(0 229 255 / .18);background:rgb(0 229 255 / .08)}
+  :global(.dv-twin .pain__item:nth-child(1)){--mix:.25}
+  :global(.dv-twin .pain__item:nth-child(2)){--mix:.7}
+  :global(.dv-onimg){margin-left:var(--s-2)}
+  .dv-icons{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));border-top:1px solid var(--hair);border-left:1px solid var(--hair)}
+  .dv-icons li{display:grid;justify-items:center;gap:12px;padding:22px 8px;color:var(--text);border-right:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .dv-icons span{font:400 11px/1 var(--f-mono);color:var(--muted)}
+  .dv-icons--glyph{margin-top:var(--s-5)}
+  .dv-icons--glyph li{color:var(--cyan)}
+  .dv-foot{margin-top:var(--s-10);padding-top:var(--s-6);border-top:1px solid var(--hair)}
+  @media (max-width:1023px){
+    .dv-hero__text,.dv-index{grid-column:1 / -1}
+    .dv-index{margin-top:var(--s-8)}
+    .dv__head .t-label,.dv__head h2{grid-column:1 / -1}
+    .dv__head h2{margin-top:12px}
+    .dv__body > .dv-col,.dv__body--3 > :global(*){grid-column:1 / -1}
+    .dv-cover__in,.dv-video h3,.dv-video :global(.vposter){grid-column:1 / -1}
+    .dv-video :global(.vposter){justify-self:start;margin-top:var(--s-6)}
+  }
+  @media (max-width:767px){
+    .dv-kanban{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .dv-registered{aspect-ratio:4 / 5}
+    .dv-registered__screen{left:8%;width:60%}
+    .dv-minis{grid-template-columns:1fr}
+  }
+</style>
+</BaseLayout>

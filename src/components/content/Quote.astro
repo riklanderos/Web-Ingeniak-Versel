@@ -1,0 +1,9 @@
+---
+// Quote (subcomponente de Prose) · solo citas con fuente verificable (nunca testimonios sin aprobación escrita).
+interface Props { source: string; href?: string; role?: string }
+const { source, href, role } = Astro.props;
+---
+<figure class="pquote">
+  <blockquote cite={href}><slot /></blockquote>
+  <figcaption class="t-micro"><span class="node" aria-hidden="true"></span>{href ? <a href={href} target="_blank" rel="noopener">{source}</a> : source}{role && <>, {role}</>}</figcaption>
+</figure>

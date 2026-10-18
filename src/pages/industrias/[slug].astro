@@ -1,0 +1,19 @@
+---
+// /industrias/<slug>/ · T-INDUSTRY (ESPEC-v2 §5.3). Una ruta por cada entrada T-INDUSTRY de sitemap.json
+// cuyo texto ya existe en src/content/paginas/<page.id>.json (hoy: salud). La plantilla es data-driven.
+import IndustryTemplate from '../../components/templates/IndustryTemplate.astro';
+import { pages, getCopy } from '../../lib/site';
+
+export function getStaticPaths() {
+  const copies = import.meta.glob('../../content/paginas/*.json', { eager: true, import: 'default' }) as Record<string, any>;
+  const hasCopy = (id: string) => Object.keys(copies).some((k) => k.endsWith(`/${id}.json`));
+  return pages
+    .filter((p: any) => p.template === 'T-INDUSTRY' && hasCopy(p.id))
+    .map((p: any) => ({ params: { slug: p.url.split('/').filter(Boolean).pop() }, props: { pageId: p.id } }));
+}
+
+const { pageId } = Astro.props as { pageId: string };
+const page = pages.find((p: any) => p.id === pageId)!;
+const copy = getCopy(pageId);
+---
+<IndustryTemplate page={page} copy={copy} />

@@ -1,0 +1,152 @@
+---
+// ImageSection · ESPEC §3 (el componente central del sitio) + §12.2 R3 (móvil 'split', slot 'more', .is__stagebox).
+// La imagen es el set: placa a sangre en un escenario registrado, sujeto de un lado, texto SIN caja del otro.
+// Slots: default (copy) · anchors (UI registrada: FigCaption, chips, UI sobre cristal) · aside (subject-center: CTAs abajo a la derecha)
+//        more (R3: resto del contenido; en móvil 'split' va después de la placa) · ghost (palabra gigante propia) · over (ColdOpen)
+// Si la placa no existe: usa `fallbackPlate` (respaldo de lanzamiento) y si no, un aura del isotipo con la misma penumbra.
+import { resolvePlate, AURA_ISOTIPO, type Layout, type Fallback } from './plate';
+import GhostWord from './GhostWord.astro';
+import PlatePicture from './PlatePicture.astro';
+
+interface Props {
+  id: string;
+  plate: string;
+  layout?: Layout;
+  height?: 'hero' | 'mid' | 'cta' | 'auto';
+  align?: 'start' | 'center' | 'end';
+  tone?: 'sol' | 'dolor';
+  mobile?: 'top' | 'below' | 'split';
+  priority?: boolean;
+  take?: boolean;
+  cutout?: boolean;
+  ghost?: { text: string; mode?: 'outline-fill' | 'bleed' };
+  push?: { anchor: string; to?: number; camFrom?: number; camTo?: number };
+  mirror?: boolean;
+  hud?: { pos: 'tr' | 'bl' | 'br' | 'tl'; text: string }[];
+  fallbackPlate?: Fallback;
+  srcsetMax?: number;
+  alt?: string;
+  wide?: boolean;          // .is__text--wide (display de portada hasta la columna 7)
+  breathe?: boolean;       // respiración en reposo (--cam 1 → 1.015, solo portada del inicio)
+  encendido?: boolean;     // mini firma de portada (por defecto: priority y sin ColdOpen)
+  shot?: string;           // módulo de movimiento (por defecto "scene")
+  labelledby?: string;
+  class?: string;
+  [k: `data-${string}`]: any;
+}
+const {
+  id, plate: key, layout, height = 'mid', align, tone = 'sol', mobile = 'top', priority = false, take = false,
+  cutout = false, ghost, push, mirror = false, hud, fallbackPlate, srcsetMax, alt, wide = false, breathe = false,
+  encendido, shot = 'scene', labelledby, class: cls, ...rest
+} = Astro.props;
+
+const r = resolvePlate(key, {
+  mirror, layout, fallbackPlate, alt,
+  srcsetMax: srcsetMax ?? (priority ? undefined : push ? 2752 : 1920), // portada: igual que la precarga de BaseLayout (lcp.ts)
+  mobileMax: priority ? 1536 : 1080,
+  where: `#${id}`,
+});
+const L = r.layout;
+const hasOver = Astro.slots.has('over');
+const hasMore = Astro.slots.has('more');
+const hasAside = Astro.slots.has('aside');
+const hasGhostSlot = Astro.slots.has('ghost');
+const enc = (encendido ?? (priority && !hasOver)) && height === 'hero';
+
+// push (§3.2 / R5): el origen de la cámara viaja al ancla; con camFrom la escena entra ya empujada.
+let pushVars = '';
+let pushData: string | undefined;
+if (push) {
+  const a = r.anchors[push.anchor] ?? r.anchors.pecho;
+  const from = push.camFrom ?? 1;
+  const to = Math.min(push.camTo ?? push.to ?? 1.12, 1.6);
+  if (a?.d) pushVars += `--ox-d:${a.d[0]};--oy-d:${a.d[1]};`;
+  if (a?.m) pushVars += `--ox-m:${a.m[0]};--oy-m:${a.m[1]};`;
+  pushVars += `--cam:${from};`;
+  pushData = JSON.stringify({ from, to });
+}
+const style = r.vars + pushVars;
+const titleId = labelledby ?? `${id}-t`;
+const decorative = r.alt === '';
+---
+<section
+  id={id}
+  class:list={['is', `is--${height}`, cls]}
+  data-layout={L}
+  data-tone={tone}
+  data-m={mobile}
+  data-align={align ?? (height === 'hero' ? 'end' : 'center')}
+  data-priority={priority || undefined}
+  data-take={take || undefined}
+  data-push={pushData}
+  data-breathe={breathe || undefined}
+  data-encendido={enc || undefined}
+  data-aura={r.aura || undefined}
+  data-plate={r.id ?? 'aura'}
+  data-plate-missing={r.id !== key ? key : undefined}
+  data-mirror={r.mirror || undefined}
+  data-mnull={r.mnull || undefined}
+  data-shot={shot}
+  style={style}
+  aria-labelledby={titleId}
+  {...rest}
+>
+  {enc && (
+    <script is:inline>
+      (function(){try{var d=document.documentElement,m=window.matchMedia('(prefers-reduced-motion: reduce)').matches,c=navigator.connection;
+      if(!m&&d.dataset.motion!=='reduced'&&!(c&&c.saveData)&&!d.classList.contains('co')){d.classList.add('enc');
+      addEventListener('pagereveal',function(e){if(e.viewTransition){d.classList.remove('enc');d.dataset.vt='1';}},{once:true});}}catch(e){}})();
+    </script>
+  )}
+  {enc && (
+    <div class="is__layer co-layer co-layer--enc" aria-hidden="true">
+      <div class="stage">
+        <div class="co-optic co-iris"></div>
+        <div class="co-optic co-node"></div>
+      </div>
+    </div>
+  )}
+  <slot name="over" />
+  <div class="is__fx" aria-hidden="true"></div>
+  {hud && (
+    <div class="is__hud" aria-hidden="true">
+      {hud.map((h) => <p class={`t-label hud hud--${h.pos}`} data-hud>{h.text}</p>)}
+    </div>
+  )}
+  <div class="frame is__copy">
+    <div class:list={['is__text', wide && 'is__text--wide']}><slot /></div>
+    {hasAside && <div class="is__aside"><slot name="aside" /></div>}
+  </div>
+  <div class="is__stagebox">
+    <div class="is__layer is__layer--media" aria-hidden={decorative ? 'true' : undefined}>
+      <div class="stage">
+        <PlatePicture r={r} priority={priority} />
+        {take && <img class="is__rack" src={r.rack ?? AURA_ISOTIPO} alt="" aria-hidden="true" decoding="async" loading="lazy" />}
+        <span class="is__vignette" aria-hidden="true"></span>
+        <span class="is__leak" aria-hidden="true"></span>
+        {take && <span class="is__rackveil" aria-hidden="true"></span>}
+      </div>
+    </div>
+    {(ghost || hasGhostSlot) && (!cutout || r.cut) && (
+      <div class="is__layer is__layer--ghost" aria-hidden="true">
+        <div class="stage">
+          {ghost && <GhostWord text={ghost.text} mode={ghost.mode ?? 'outline-fill'} registered />}
+          <slot name="ghost" />
+        </div>
+      </div>
+    )}
+    {cutout && r.cut && (
+      <div class="is__layer is__layer--cutout" aria-hidden="true">
+        <div class="stage"><img class="is__cut" src={r.cut} alt="" width={r.d.w} height={r.d.h} decoding="async" loading="lazy" /></div>
+      </div>
+    )}
+    <div class="is__layer is__layer--anchors">
+      <div class="stage"><slot name="anchors" /></div>
+    </div>
+  </div>
+  {hasMore && (
+    <div class="frame is__more">
+      <div class="is__text"><slot name="more" /></div>
+    </div>
+  )}
+</section>

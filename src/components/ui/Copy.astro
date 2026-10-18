@@ -1,0 +1,12 @@
+---
+// Copy · pinta un texto del área copy con sus tokens resueltos (src/content/paginas/_ESQUEMA.md §5):
+//   {{metric:ID}} → valor en un nodo data-metric (igual que <Metric variant="inline">) · {{metric:ID|full}} → valor + rótulo
+//   {{price}} / {{Price}} → PRICE_FROM / PRICE_FROM_CAP en data-allow-number · {{source}} → SOURCE_NOTE
+// El texto se escapa; nunca imprime llaves. Para texto plano (JSON-LD, aria-label, meta) usa tokensToText() de ./ui-data.
+// <Copy text={copy.sections.hero.lede} as="p" class="t-lede" />
+import { annotateFigures } from './ui-data';
+interface Props { text?: string | null; as?: 'span' | 'p' | 'div' | 'li' | 'h2' | 'h3' | 'strong'; class?: string; [k: string]: any }
+const { text, as = 'span', class: cls, ...rest } = Astro.props;
+const Tag = as as any;
+---
+{text ? <Tag class={cls} {...rest} set:html={annotateFigures(text)} /> : null}

@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hola, ¿tienen los tenis blancos del anuncio en talla 26?", "delay": 900, "time": "10:58 p. m." },
+  { "who": "kain", "text": "¡Hola! Sí, hay en talla 26, en blanco y en negro. ¿Te los envío a domicilio o prefieres recoger en tienda?", "delay": 1000 },
+  { "who": "cliente", "text": "A domicilio, a Guadalajara. ¿Cuánto tarda?", "delay": 1500 },
+  { "who": "kain", "text": "A Guadalajara llega en dos a tres días hábiles. ¿Te mando el enlace de pago de los blancos?", "delay": 1100 },
+  { "who": "cliente", "text": "Sí, mándalo.", "delay": 1200 },
+  { "who": "kain", "text": "Aquí está tu enlace de pago. En cuanto se confirme, te comparto la guía de envío por este chat.", "delay": 1000, "event": "Pedido registrado en tu CRM · origen: anuncio" },
+  { "who": "cliente", "text": "¿Y si no me quedan?", "delay": 1400 },
+  { "who": "kain", "text": "Te los cambiamos por otra talla según la política de cambios de la tienda. Te la dejo aquí para que la tengas a la mano.", "delay": 1100 }
+]

@@ -1,0 +1,135 @@
+---
+// /dev/nav/ — banco de pruebas del área nav (noindex). Parámetros solo de desarrollo:
+//   ?open=servicios|industrias|casos|empresa|recursos  abre ese panel del mega menú (≥ 1180 px)
+//   ?menu=1        abre la hoja móvil        ?acc=servicios  además abre ese acordeón
+//   ?search=texto  abre ⌘K con ese texto (?search= vacío lo abre sin texto)
+//   ?y=1600        hace scroll a esa posición (estados del encabezado, barra móvil, píldora)
+//   ?reduced=1     simula el interruptor "Reducir movimiento"
+//   ?shot=1        sin transiciones (capturas con Chrome sin ventana)
+//   #specimen-reducido  muestra del encabezado reducido de /discovery/ (al final de la página)
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/nav/Breadcrumbs.astro';
+import Header from '../../components/nav/Header.astro';
+import { getPage } from '../../lib/site';
+
+const base = getPage('/servicios/agentes-ia-whatsapp/');
+const page = { ...base, id: 'dev-nav', url: '/dev/nav/', canonical: 'https://ingeniak.mx/dev/nav/', indexable: false } as any;
+const rail = [
+  { id: 'hero', label: 'Portada' },
+  { id: 'definicion', label: '¿Qué es un agente de IA?' },
+  { id: 'senales', label: 'Señales de que lo necesitas' },
+  { id: 'como-funciona', label: 'Cómo funciona' },
+  { id: 'faq', label: 'Preguntas frecuentes' },
+  { id: 'cta-final', label: 'Cierre' },
+];
+---
+<BaseLayout page={page} lcpPlate="home-hero" noindex title="Dev · nav · Ingeniak" rail={rail}
+  faq={(base.faq as any[]).slice(0, 2).map((f) => ({ q: f.q, a: f.a }))}>
+  <section id="hero" class="dev-hero" data-hero aria-labelledby="hero-t">
+    <picture class="dev-hero__plate">
+      <source media="(max-width: 767px), (max-aspect-ratio: 5/6)" type="image/avif" srcset="/img/cine/home-hero-m-640.avif 640w, /img/cine/home-hero-m-828.avif 828w, /img/cine/home-hero-m-1080.avif 1080w, /img/cine/home-hero-m-1536.avif 1536w" sizes="100vw" />
+      <source type="image/avif" srcset="/img/cine/home-hero-1280.avif 1280w, /img/cine/home-hero-1920.avif 1920w, /img/cine/home-hero-2560.avif 2560w, /img/cine/home-hero-2752.avif 2752w" sizes="(max-aspect-ratio: 1.7917) 180svh, 100vw" />
+      <img src="/img/cine/home-hero-1920.webp" width="2752" height="1536" alt="Kain, el agente de IA de Ingeniak, presenta con la mano abierta el isotipo de cristal de la marca" fetchpriority="high" />
+    </picture>
+    <div class="dev-hero__fx" aria-hidden="true"></div>
+    <div class="frame dev-hero__copy">
+      <div class="dev-hero__text">
+        <Breadcrumbs page={base} />
+        <p class="t-label t-label--cyan dev-eyebrow">Servicio · Atender</p>
+        <h1 id="hero-t" class="t-display-2">Agentes de IA para WhatsApp <span class="soft">que responden en segundos.</span></h1>
+        <p class="t-lede">Página de pruebas del área de navegación: encabezado, mega menú, hoja móvil, buscador ⌘K, riel, barra móvil, píldora de Kain y créditos finales.</p>
+        <div class="ctas">
+          <div class="cta-p">
+            <a class="btn" href="/discovery/" data-primary>Agenda tu Discovery Session
+              <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span></a>
+            <p class="t-micro btn-micro" data-allow-number>30 min · 1:1 · Google Meet · sin costo</p>
+          </div>
+          <a class="btn btn--ghost" href={base.secondaryCta.href} target="_blank" rel="noopener">Escríbele a Kain</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {rail.slice(1, -1).map((s, n) => (
+    <section id={s.id} class="dev-block" aria-labelledby={`${s.id}-t`}>
+      <div class="frame">
+        <div class="col-text">
+          <p class="t-label t-label--cyan">{String(n + 2).padStart(2, '0')} · Escena de prueba</p>
+          <h2 id={`${s.id}-t`} class="t-h2">{s.label} <span class="soft">sin caja detrás.</span></h2>
+          <p class="t-lede">Bloque de relleno para probar el riel de escenas (≥ 1280 px), el estado del encabezado al bajar y subir, la barra inferior móvil y la píldora de Kain.</p>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section id="specimen-reducido" class="dev-specimen" aria-label="Muestra: encabezado reducido de /discovery/">
+    <p class="t-label t-label--cyan dev-specimen__l">Muestra · encabezado reducido (/discovery/)</p>
+    <div class="dev-specimen__box"><Header variant="reduced" current="/discovery/" /></div>
+  </section>
+
+  <section id="cta-final" class="dev-block dev-dawn" data-dawn aria-labelledby="cta-t">
+    <div class="frame">
+      <div class="col-text">
+        <p class="t-label t-label--cyan">06:00 · Rise</p>
+        <h2 id="cta-t" class="t-h2">30 minutos para ver tu operación <span class="soft">como es.</span></h2>
+        <div class="ctas" style="margin-top:32px">
+          <div class="cta-p">
+            <a class="btn" href="/discovery/" data-primary>Agenda tu Discovery Session
+              <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span></a>
+            <p class="t-micro btn-micro" data-allow-number>30 min · 1:1 · Google Meet · sin costo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .dev-hero{position:relative;isolation:isolate;min-height:max(100svh,680px);display:grid;align-content:end;padding:calc(var(--hdr) + 48px) 0 48px;overflow:clip}
+  .dev-hero__plate{position:absolute;inset:0;z-index:-2}
+  .dev-hero__plate img{width:100%;height:100%;object-fit:cover;object-position:72% 50%;
+    -webkit-mask-image:linear-gradient(180deg,#000 0,#000 86%,transparent);mask-image:linear-gradient(180deg,#000 0,#000 86%,transparent)}
+  .dev-hero__fx{position:absolute;inset:0;z-index:-1;background:
+    linear-gradient(90deg,rgb(3 4 11 / .92) 0%,rgb(3 4 11 / .72) 26%,rgb(3 4 11 / .22) 46%,rgb(3 4 11 / 0) 60%),
+    linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent 80%,var(--ink) 100%)}
+  .dev-hero__text{grid-column:1 / span 6;display:flex;flex-direction:column;align-items:flex-start}
+  .dev-hero__text .crumbs{margin-bottom:24px}
+  .dev-eyebrow{margin-bottom:16px}
+  .dev-hero__text .t-lede{margin-top:24px}
+  .dev-hero__text .ctas{margin-top:40px}
+  .dev-block{min-height:80vh;display:grid;align-content:center;padding:96px 0;border-top:1px solid var(--hair)}
+  .dev-block .t-lede{margin-top:24px}
+  .dev-specimen{padding:48px var(--safe-x);border-top:1px solid var(--hair);display:grid;gap:20px}
+  .dev-specimen__box{position:relative;height:88px;transform:translateZ(0);border:1px dashed var(--hair-2);border-radius:12px;overflow:hidden}
+  .dev-specimen__box :global(.hdr){translate:none!important}
+  @media (max-width:767px),(max-aspect-ratio:5/6){
+    .dev-hero{align-content:start;padding:calc(var(--hdr) + 24px) 0 calc(100vw * 1.79 * .48)}
+    .dev-hero__plate img{object-fit:contain;object-position:50% 100%}
+    .dev-hero__fx{background:linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 12%)}
+    .dev-hero__text{grid-column:1 / -1}
+  }
+</style>
+
+<script>
+  const q = new URLSearchParams(location.search);
+  // ?shot=1 (solo capturas sin ventana): sin transiciones, para fotografiar el estado final
+  if (q.has('shot')) { const st = document.createElement('style'); st.textContent = '*,*::before,*::after{transition:none!important;animation-duration:0s!important;animation-delay:0s!important}'; document.head.append(st); }
+  const go = () => {
+    const nav = (window as any).__nav;
+    if (q.get('reduced') === '1') document.documentElement.dataset.motion = 'reduced';
+    const y = Number(q.get('y') ?? 0);
+    if (y) { window.scrollTo(0, y); requestAnimationFrame(() => window.scrollTo(0, y + 2)); if (q.get('up')) setTimeout(() => window.scrollTo(0, y - 80), 150); }
+    const open = q.get('open');
+    if (open) setTimeout(() => nav?.openMega(open), 60);
+    if (q.get('menu')) {
+      setTimeout(() => {
+        nav?.openMenu();
+        const acc = q.get('acc');
+        if (acc) setTimeout(() => (document.querySelector(`#accb-${acc}`) as HTMLButtonElement | null)?.click(), 80);
+      }, 60);
+    }
+    if (q.has('search')) setTimeout(() => nav?.openSearch(q.get('search') ?? ''), 60);
+  };
+  if ((window as any).__nav) go();
+  else window.addEventListener('ingeniak:nav-ready', go, { once: true });
+</script>

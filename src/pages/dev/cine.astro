@@ -1,0 +1,205 @@
+---
+// /dev/cine/ — página de demostración del área "cine" (noindex), sobre BaseLayout (encabezado, riel y footer reales).
+// Placas: solo existe "home-hero" (aprobada); el resto se pide por su id real con respaldo home-hero (como launchFallback)
+// para ver el comportamiento con placa faltante. Una escena usa una placa inexistente SIN respaldo → aura del isotipo.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PainList from '../../components/ui/PainList.astro';
+import ImageSection from '../../components/cine/ImageSection.astro';
+import ColdOpen from '../../components/cine/ColdOpen.astro';
+import FigCaption from '../../components/cine/FigCaption.astro';
+import LightBranch from '../../components/cine/LightBranch.astro';
+import Intertitle from '../../components/cine/Intertitle.astro';
+import TwinScene from '../../components/cine/TwinScene.astro';
+import Montage from '../../components/cine/Montage.astro';
+import PlateSequence from '../../components/cine/PlateSequence.astro';
+import LocationSwitcher from '../../components/cine/LocationSwitcher.astro';
+import CaseFigure from '../../components/cine/CaseFigure.astro';
+import DayTimeline from '../../components/cine/DayTimeline.astro';
+import Dawn from '../../components/cine/Dawn.astro';
+import SharedTake from '../../components/cine/SharedTake.astro';
+import { waHref, getPage } from '../../lib/site';
+const page = getPage('/');
+// Interruptores de la demo: preset de la secuencia y variante de CaseFigure.
+const phases = false; // true → preset "phases" (VktorSequence)
+const figVariant = ('stopwatch') as 'stopwatch' | 'index-up' | 'index-down' | 'multiplier' | 'nodes';
+const figMetric = ({ stopwatch: 'dental-respuesta', 'index-up': 'retail-conversiones', 'index-down': 'ecom-cpl', multiplier: 'horeca-roas', nodes: 'logistica-procesos' } as const)[figVariant];
+const vktor = [
+  { id: 'v', letter: 'V', title: 'Verify', line: 'Verificamos tu operación: dónde se pierden clientes y tiempo.' },
+  { id: 'k', letter: 'K', title: 'Koncept', line: 'Diseñamos el concepto del sistema con tus datos reales.' },
+  { id: 't', letter: 'T', title: 'Transform', line: 'Transformamos: implementamos agentes, CRM y automatizaciones.' },
+  { id: 'o', letter: 'O', title: 'Operate', line: 'Operamos junto con tu equipo y ajustamos cada semana.' },
+  { id: 'r', letter: 'R', title: 'Rise', line: 'Hacemos crecer los resultados con lo que el sistema mide.' },
+];
+const rail = [
+  { id: 'hero', label: '01 — Portada' }, { id: 'que-es', label: '02 — Intertítulo' }, { id: 'problema', label: '03 — Planos gemelos' },
+  { id: 'sistema', label: '04 — Runtime' }, { id: 'kain', label: '05 — Kain (split)' }, { id: 'casos', label: '06 — Montaje' },
+  { id: 'industrias', label: '07 — Locaciones' }, { id: 'cifra', label: '08 — Cifra' }, { id: 'jornada', label: '09 — Jornada' },
+  { id: 'sin-placa', label: '10 — Respaldo' }, { id: 'toma', label: '11 — Toma compartida' }, { id: 'cta-final', label: '12 — Amanecer' },
+];
+
+const wa = waHref('Hola Kain, vi el sitio de Ingeniak y quiero saber cómo funcionaría un agente de IA en mi empresa.');
+const node = '<span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1"/><path class="r" d="M8 8h6M11 5l3 3-3 3"/></svg></span>';
+const HH = { plate: 'home-hero', mirror: false };
+const HHm = { plate: 'home-hero', mirror: true };
+const sectors = [
+  { slug: 'salud', name: 'Salud y clínicas', line: 'Citas agendadas y confirmadas 24/7', metricId: 'dental-citas' as const, plate: 'ind-salud-hero', href: '/industrias/salud/', fallbackPlate: HH },
+  { slug: 'belleza', name: 'Belleza y estética', line: 'Agenda llena sin vivir en el WhatsApp', plate: 'ind-belleza-hero', href: '/industrias/belleza/', fallbackPlate: HHm },
+  { slug: 'nutricion', name: 'Nutrición', line: 'Pacientes que agendan y regresan', plate: 'ind-nutricion-hero', href: '/industrias/nutricion/', fallbackPlate: HH },
+  { slug: 'finanzas', name: 'Finanzas', line: 'Prospectos calificados antes de llamar', plate: 'ind-finanzas-hero', href: '/industrias/finanzas/', fallbackPlate: HHm },
+  { slug: 'inmobiliario', name: 'Inmobiliario', line: 'Cada lead atendido en segundos', plate: 'ind-inmobiliario-hero', href: '/industrias/inmobiliario/', fallbackPlate: HH },
+  { slug: 'industrial', name: 'Industrial y logística', line: 'Operación que se mueve sola', metricId: 'logistica-procesos' as const, plate: 'ind-industrial-hero', href: '/industrias/industrial-logistica/', fallbackPlate: HHm },
+  { slug: 'retail', name: 'Retail y e-commerce', line: 'Ventas por chat, medidas', metricId: 'retail-conversiones' as const, plate: 'ind-retail-hero', href: '/industrias/retail-ecommerce/', fallbackPlate: HH },
+  { slug: 'horeca', name: 'HoReCa', line: 'Reservas medidas por campaña', metricId: 'horeca-roas' as const, plate: 'ind-horeca-hero', href: '/industrias/horeca/', fallbackPlate: HHm },
+];
+const stations = [
+  { id: 'atraer', title: 'Atraer', line: 'Anuncios, web y SEO que traen demanda medible, no solo clics.', metricIds: ['ecom-cpl' as const], href: '/servicios/paid-media/', plate: 'home-sistema-1-atraer', fallbackPlate: HH },
+  { id: 'atender', title: 'Atender', line: 'Kain responde en segundos, 24/7, en WhatsApp, Instagram y tu web.', metricIds: ['dental-respuesta' as const], href: '/servicios/agentes-ia-whatsapp/', plate: 'home-sistema-2-atender', fallbackPlate: HHm },
+  { id: 'organizar', title: 'Organizar', line: 'Cada lead en su etapa, en Kommo o GoHighLevel, sin capturas a mano.', metricIds: ['retail-conversiones' as const], href: '/servicios/crm-con-ia/', plate: 'home-sistema-3-organizar', fallbackPlate: HH },
+  { id: 'automatizar', title: 'Automatizar', line: 'n8n y Make mueven lo repetitivo entre tus sistemas.', metricIds: ['logistica-procesos' as const, 'tiempo-operativo' as const], href: '/servicios/automatizacion-n8n/', plate: 'home-sistema-4-automatizar', fallbackPlate: HHm },
+  { id: 'medir', title: 'Medir', line: 'Todo en una vista: de la campaña a la venta.', metricIds: ['ecom-tablero' as const], href: '/servicios/desarrollo-software/#dashboard', plate: 'home-sistema-5-medir', fallbackPlate: HH },
+];
+---
+<BaseLayout page={page} title="Dev · cine · Ingeniak v2" noindex coldOpen lcpPlate="home-hero" lcpSrcsetMax={2752} rail={rail}>
+  <style is:inline slot="head">
+    .devfoot{padding:120px 0 160px;color:var(--muted);font:400 13px/1.5 var(--f-mono)}
+    .demo-list{display:grid;gap:10px;margin-top:var(--s-5);color:var(--text-2);max-width:42ch}
+    .demo-list li{display:flex;gap:12px;align-items:baseline}
+  </style>
+    <ImageSection
+      id="hero"
+      plate="home-hero"
+      height="hero"
+      priority
+      wide
+      breathe
+      hud={[{ pos: 'tr', text: '01 / 13 — EL AGENTE' }, { pos: 'bl', text: '23:47 · GDL · MX' }, { pos: 'br', text: 'SCROLL ↓' }]}
+    >
+      <ColdOpen slot="over" plate="home-hero" />
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>AGENCIA DE IA · GUADALAJARA, MX</p>
+      <h1 id="hero-t" data-split><span class="t-display">Agentizamos <span class="lit">empresas.</span></span> <span class="t-deck">Agentes de IA, CRM y automatización en un solo sistema.</span></h1>
+      <div class="ctas">
+        <div class="cta-p">
+          <a class="btn" href="/discovery/" data-primary>Agenda tu Discovery Session<Fragment set:html={node} /></a>
+          <p class="t-micro btn-micro">30 min · 1:1 · Google Meet · sin costo</p>
+        </div>
+        <a class="btn btn--ghost" href={wa}>Escríbele a Kain ↗</a>
+      </div>
+      <p class="t-label trust">Partner oficial de Kommo en LATAM · +73 sistemas en producción · 7 países</p>
+      <FigCaption variant="inline" n={1} title="Kain" metricId="dental-respuesta">El agente de IA de Ingeniak (render). En una clínica dental de Monterrey, la respuesta por WhatsApp pasó de</FigCaption>
+      <LightBranch from="mano" />
+      <FigCaption slot="anchors" n={1} title="Kain" anchor="fig" target="mano" metricId="dental-respuesta">El agente de IA de Ingeniak (render). En una clínica dental de Monterrey, la respuesta por WhatsApp pasó de</FigCaption>
+    </ImageSection>
+
+    <Intertitle id="que-es" aura="isotipo" ghost={{ text: 'SISTEMA', mode: 'bleed', side: 'right' }}>
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>00:00 · QUÉ ES INGENIAK</p>
+      <h2 id="que-es-t" class="t-h2" data-words>No hacemos marketing. <span class="soft">Construimos sistemas que generan y convierten clientes automáticamente.</span></h2>
+      <p class="t-lede t-lede--2" data-reveal>Diseñamos e implementamos agentes de IA, CRM y automatizaciones conectados en un solo sistema que atiende, califica y cierra por ti, 24/7.</p>
+    </Intertitle>
+
+    <TwinScene id="problema" plateA="home-problema-a" plateB="home-problema-b" fallbackA={HHm} fallbackB={HHm} clock={['23:48', '23:52', 'RESPONDIDO']}>
+      <p class="t-label eyebrow"><span class="node node--amber" aria-hidden="true"></span>23:48 · EL PROBLEMA</p>
+      <h2 id="problema-t" class="t-h2" data-split>Tu negocio no necesita más esfuerzo. <span class="soft">Necesita dejar de depender de ti.</span></h2>
+      <PainList mode="twin" items={[
+        { pain: 'Mensajes sin responder', fix: 'Kain responde en segundos, a cualquier hora.' },
+        { pain: 'Un CRM que nadie usa', fix: 'Cada conversación entra sola a tu CRM.' },
+        { pain: 'Anuncios que no se traducen en ventas', fix: 'Cada campaña se mide hasta la venta.' },
+        { pain: 'Todo pasa por ti', fix: 'El sistema opera. Tú diriges.' },
+      ]} />
+      <p slot="end" class="t-deck">No te falta esfuerzo. <b>Te falta un sistema.</b></p>
+    </TwinScene>
+
+    <PlateSequence
+      id="sistema"
+      preset={phases ? 'phases' : 'runtime'}
+      plate="metodologia-hero"
+      fallbackPlate={HH}
+      steps={phases ? vktor : stations}
+      figLabel="Fig. 02 — Un lead recorriendo el sistema"
+      note="Simulación de un lead. Las cifras vienen de casos reales distintos; cada una indica su fuente (datos internos de Ingeniak, octubre de 2026)."
+    >
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>01:10 · EL SISTEMA</p>
+      <h2 id="sistema-t" class="t-h2" data-split>Creamos el tráfico, <span class="soft">lo convertimos y lo operamos automáticamente.</span></h2>
+    </PlateSequence>
+
+    <ImageSection id="kain" plate="home-kain" fallbackPlate={HHm} height="mid" mobile="split" push={{ anchor: 'pecho', to: 1.12 }}
+      hud={[{ pos: 'tr', text: '02:14 · KAIN ATIENDE' }]}>
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>KAIN · EL AGENTE</p>
+      <h2 id="kain-t" class="t-h2">Soy <span class="kain-mark">kain</span>, el agente de IA de tu empresa.</h2>
+      <p class="t-lede t-lede--2">Respondo, agendo y confirmo por ti en WhatsApp, Instagram y tu web, y registro cada conversación en tu CRM.</p>
+      <div class="ctas"><a class="btn btn--ghost" href={wa}>Escríbele a Kain ↗</a></div>
+      <Fragment slot="more">
+        <ul class="demo-list" role="list">
+          <li><span class="node" aria-hidden="true"></span>Atiendo 24/7 en tu número de WhatsApp Business.</li>
+          <li><span class="node" aria-hidden="true"></span>Califico con tus preguntas y agendo en tu calendario.</li>
+          <li><span class="node" aria-hidden="true"></span>Paso la conversación a tu equipo cuando hace falta.</li>
+          <li><span class="node" aria-hidden="true"></span>Dejo todo registrado en Kommo o GoHighLevel.</li>
+        </ul>
+        <p class="t-deck" style="margin-top:var(--s-6)">Tu negocio trabajando, <b>sin depender más de ti.</b></p>
+      </Fragment>
+    </ImageSection>
+
+    <Montage
+      id="casos"
+      ids={['dental-citas', 'retail-conversiones', 'ecom-cpl', 'horeca-roas', 'logistica-procesos']}
+      transversal={['salud-citas-mes', 'tiempo-operativo', 'dental-respuesta']}
+      stillFor={{ 'dental-citas': 'home-hero', 'retail-conversiones': 'home-hero', 'ecom-cpl': 'home-hero', 'horeca-roas': 'home-hero', 'logistica-procesos': 'home-hero' }}
+    >
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>03:20 · PRUEBAS</p>
+      <h2 id="casos-t" class="t-h2" data-split>Sistemas reales, <span class="soft">operando hoy mismo.</span></h2>
+      <Fragment slot="foot"><a class="lnk" href="/casos/">Ver todos los casos →</a><a class="lnk" href="/casos/#registro">Registro de resultados →</a></Fragment>
+    </Montage>
+
+    <LocationSwitcher id="industrias" sectors={sectors}>
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>05:00 · LOCACIONES</p>
+      <h2 id="industrias-t" class="t-h2" data-split>Mismo sistema, <span class="soft">tu industria.</span></h2>
+      <p slot="foot" class="t-micro">También trabajamos con e-commerce, retail, HoReCa y logística → <a class="lnk" href="/casos/">Ver casos</a></p>
+    </LocationSwitcher>
+
+    <CaseFigure id="cifra" variant={figVariant} metricIds={[figMetric]} pin={false}>
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>CASO · SALUD · MTY</p>
+      <h2 id="cifra-t" class="t-h2" data-split>Ocho minutos contra doce segundos. <span class="soft">La misma clínica.</span></h2>
+    </CaseFigure>
+
+    <DayTimeline id="jornada" entries={[
+      { time: '08:00', pain: 'Abres con mensajes de anoche sin contestar.', fix: 'Kain ya contestó y agendó a quien escribió.' },
+      { time: '11:30', pain: 'Llamadas y WhatsApp al mismo tiempo.', fix: 'Kain atiende el chat mientras tú atiendes en persona.' },
+      { time: '16:00', pain: 'Citas de mañana sin confirmar.', fix: 'Kain confirma y recuerda; los huecos se vuelven a ofrecer.' },
+      { time: '23:48', pain: 'Alguien pide cita de limpieza.', fix: 'Respuesta en segundos y la cita queda en tu CRM.' },
+    ]}>
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>LA JORNADA · SALUD</p>
+      <h2 id="jornada-t" class="t-h2" data-split>Un día en tu clínica, <span class="soft">con y sin Kain.</span></h2>
+    </DayTimeline>
+
+    <ImageSection id="sin-placa" plate="placa-que-no-existe" height="mid" layout="subject-right">
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>RESPALDO · PLACA FALTANTE</p>
+      <h2 id="sin-placa-t" class="t-h2">Si una placa aún no existe, <span class="soft">la escena se sostiene con el aura del isotipo.</span></h2>
+      <p class="t-lede t-lede--2">Misma penumbra, misma retícula y el mismo lado del sujeto. En desarrollo, la consola avisa qué placa falta.</p>
+    </ImageSection>
+
+    <SharedTake plate="home-sistema-2-atender" fallbackPlate={HH}>
+      <ImageSection id="toma" plate="home-sistema-2-atender" fallbackPlate={HH} height="hero" take hud={[{ pos: 'tr', text: 'SERVICIO · ATENDER' }]}>
+        <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>TOMA COMPARTIDA · SERVICIO</p>
+        <h2 id="toma-t" class="t-display-2">Agentes de IA para WhatsApp <span class="soft">que responden, califican y agendan.</span></h2>
+        <p class="t-lede t-lede--2">La portada se queda en su sitio y la sección siguiente pasa sobre su copia desenfocada.</p>
+      </ImageSection>
+      <Intertitle id="definicion" rack aura="none">
+        <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>DEFINICIÓN</p>
+        <h2 id="definicion-t" class="t-h2" data-split>¿Qué es un agente de IA <span class="soft">para WhatsApp?</span></h2>
+        <p class="t-lede t-lede--2" data-reveal>Un agente de IA para WhatsApp es un sistema que conversa con tus clientes en lenguaje natural, responde sus preguntas, los califica y agenda citas en tu calendario, y deja cada conversación registrada en tu CRM, a cualquier hora.</p>
+      </Intertitle>
+    </SharedTake>
+
+    <Dawn plate="cta-amanecer" fallbackPlate={HHm}>
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>06:00 · RISE</p>
+      <h2 id="cta-final-t" class="t-h2" data-split>30 minutos para ver tu operación <span class="soft">como es, no como crees que es.</span></h2>
+      <div class="ctas">
+        <div class="cta-p">
+          <a class="btn" href="/discovery/" data-primary>Agenda tu Discovery Session<Fragment set:html={node} /></a>
+          <p class="t-micro btn-micro">30 min · 1:1 · Google Meet · sin costo</p>
+        </div>
+        <a class="btn btn--ghost" href={wa}>Escríbele a Kain ↗</a>
+      </div>
+      <p class="t-micro dawn__note">Sin costo · Sin compromiso · 30 minutos por Google Meet</p>
+    </Dawn>
+    <div class="frame devfoot"><p style="grid-column:1/-1">Fin de la demostración · <a href="?replay">?replay</a> repite la firma. "Reducir movimiento" se prueba con el interruptor del footer o con prefers-reduced-motion.</p></div>
+</BaseLayout>

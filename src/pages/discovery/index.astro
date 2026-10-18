@@ -1,0 +1,7 @@
+---
+// /discovery/ · T-CONVERSION (ESPEC-v2 §5.11). Encabezado reducido; todo CTA primario va directo a la agenda.
+import ConversionTemplate from '../../components/templates/ConversionTemplate.astro';
+import { getPage } from '../../lib/site';
+const page = getPage('/discovery/');
+---
+<ConversionTemplate page={page} />

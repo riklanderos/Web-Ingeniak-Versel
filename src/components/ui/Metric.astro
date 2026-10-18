@@ -1,0 +1,95 @@
+---
+// Metric · ESPEC §2.10. ÚNICA salida de cifras comerciales. No acepta números libres: solo ids de src/lib/metrics.ts.
+//   inline → valor en la frase ("8 min → 12 s")           chip  → .glass-chip.chip-proof (valor + rótulo + contexto)
+//   mega   → valor en --fs-mega (Lexend 200)               cover → línea de portada (valor + rótulo), la usa SumarioCover
+//   row    → fila "en datos" con varios ids + SOURCE_NOTE (MetricRow)
+// count: conteo visual solo en cifras contables (sin signo); el valor final SIEMPRE está en el HTML.
+import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { figureParts } from './ui-data';
+
+interface Props {
+  id?: MetricId; ids?: MetricId[];
+  variant?: 'inline' | 'chip' | 'mega' | 'row' | 'cover';
+  link?: boolean; count?: boolean;
+  label?: boolean;         // inline: agrega el rótulo después del valor (mismo nodo data-metric)
+  full?: boolean;          // alias de label (token {{metric:ID|full}} del copy)
+  ctx?: boolean;           // chip/mega/cover: muestra el contexto (por defecto sí en chip y row)
+  glass?: boolean;         // chip: false = sin cristal (sobre negro plano)
+  fn?: string | number;    // llamada a nota (.fn) después del valor
+  note?: boolean;          // row: imprime SOURCE_NOTE (por defecto sí)
+  heading?: string;        // row: rótulo mono encima ("INGENIAK EN DATOS")
+  as?: 'span' | 'div' | 'p';
+  class?: string;
+}
+const { id, ids, variant = 'inline', link = false, count = false, label: labelProp, full, ctx, glass = true, fn, note = true, heading, as = 'span', class: cls } = Astro.props;
+
+const label = labelProp ?? full;
+const get = (k: MetricId) => {
+  const m = (METRICS as any)[k];
+  if (!m) throw new Error(`[ui/Metric] cifra desconocida: "${k}" (solo ids de src/lib/metrics.ts)`);
+  return m as { value: string; label: string; ctx: string; href?: string; countable?: boolean; from?: number };
+};
+/** Divide el valor en partes para tipografía: signos y unidades a menor tamaño, número intacto. */
+const parts = figureParts;
+const canCount = (k: MetricId) => count && get(k).countable && /^\d+$/.test(get(k).value);
+
+if (variant !== 'row' && !id) throw new Error('[ui/Metric] falta id');
+const m = id ? get(id) : null;
+const Tag = as;
+const href = link && m?.href ? m.href : undefined;
+const showCtx = ctx ?? (variant === 'chip');
+---
+{variant === 'inline' && m && (
+  href
+    ? <a class:list={['metric metric--inline', cls]} href={href} data-metric={id}><b>{m.value}</b>{label && <>{' '}{m.label}</>}{fn && <sup class="fn">{fn}</sup>}</a>
+    : <Tag class:list={['metric metric--inline', cls]} data-metric={id}><b>{m.value}</b>{label && <>{' '}{m.label}</>}{fn && <sup class="fn">{fn}</sup>}</Tag>
+)}
+
+{variant === 'chip' && m && (
+  <Tag class:list={['metric metric--chip chip-proof', glass && 'glass-chip', cls]} data-metric={id}>
+    <span class="metric__v">{parts(m.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <small class={`metric__${p.k}`}>{p.t}</small>)}</span>
+    <span class="metric__l">{m.label}{fn && <sup class="fn">{fn}</sup>}</span>
+    {showCtx && <span class="metric__c">{m.ctx}</span>}
+    {href && <a class="metric__a" href={href} aria-label={`Ver caso: ${m.ctx}`}></a>}
+  </Tag>
+)}
+
+{variant === 'mega' && m && (
+  <Tag class:list={['metric metric--mega', cls]} data-metric={id}>
+    <span class="metric__v t-mega">{canCount(id!)
+      ? <span data-count data-from={m.from ?? 0}>{m.value}</span>
+      : parts(m.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <span class={`metric__${p.k}`}>{p.t}</span>)}</span>
+    {(label ?? true) && <span class="metric__l">{m.label}{fn && <sup class="fn">{fn}</sup>}</span>}
+    {showCtx && <span class="metric__c t-label">{m.ctx}</span>}
+    {href && <a class="metric__a" href={href} aria-label={`Ver caso: ${m.ctx}`}></a>}
+  </Tag>
+)}
+
+{variant === 'cover' && m && (
+  href
+    ? <a class:list={['metric metric--cover', cls]} href={href} data-metric={id}><b>{m.value}</b><span>{m.label}{showCtx && <>{' · '}{m.ctx}</>}{fn && <sup class="fn">{fn}</sup>}</span></a>
+    : <Tag class:list={['metric metric--cover', cls]} data-metric={id}><b>{m.value}</b><span>{m.label}{showCtx && <>{' · '}{m.ctx}</>}{fn && <sup class="fn">{fn}</sup>}</span></Tag>
+)}
+
+{variant === 'row' && (
+  <div class:list={['metric-row', cls]}>
+    {heading && <p class="t-label t-label--cyan metric-row__h"><span class="node" aria-hidden="true"></span>{heading}</p>}
+    <dl class="metric-row__list" data-ui-stagger>
+      {(ids ?? (id ? [id] : [])).map((k, i) => {
+        const x = get(k);
+        const h = link && x.href ? x.href : undefined;
+        return (
+          <div class="metric-row__item" data-metric={k} style={`--i:${i}`}>
+            <dt class="metric-row__v">
+              {canCount(k) ? <span data-count data-from={x.from ?? 0}>{x.value}</span>
+                : parts(x.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <span class={`metric__${p.k}`}>{p.t}</span>)}
+            </dt>
+            <dd class="metric-row__l">{h ? <a href={h}>{x.label}</a> : x.label}<sup class="fn">1</sup></dd>
+            <dd class="metric-row__c">{x.ctx}</dd>
+          </div>
+        );
+      })}
+    </dl>
+    {note && <p class="t-micro metric-row__note"><sup class="fn">1</sup>{' '}{SOURCE_NOTE}.</p>}
+  </div>
+)}

@@ -1,0 +1,254 @@
+{
+  "pageId": "agentes-whatsapp",
+  "url": "/servicios/agentes-ia-whatsapp/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-18",
+  "pendientes": [
+    "Calendarios que se conectan además del de GoHighLevel y del CRM: confirmar con el equipo técnico antes de nombrar alguno (la página dice 'el calendario de tu CRM o el que ya usa tu equipo, si se puede conectar').",
+    "Preguntas G09 y W02: se ampliaron las respuestas aprobadas de D; el cliente debe revisar la redacción nueva (faq.json → editada)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (home-sistema-2-atender, Kain trabajando) + UI registrada en el teléfono + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Servicio · Atender",
+      "h1": { "text": "Agentes de IA", "soft": "para WhatsApp Business" },
+      "lede": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM. En una clínica dental de Monterrey, el tiempo de respuesta pasó de {{metric:dental-respuesta}}.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de agentes de IA para WhatsApp y quiero ver cómo atenderías a mis clientes."
+      },
+      "ui": {
+        "_nota": "Burbujas HTML registradas sobre la superficie de cristal del teléfono; entran con 'escribiendo…' (600 ms). Llevan SIMULACIÓN y data-nosnippet.",
+        "bubbles": [
+          { "who": "cliente", "text": "Hola, ¿tienen lugar mañana?", "time": "11:48 p. m." },
+          { "who": "kain", "text": "¡Hola! Sí: mañana a las 10:30 o a las 17:00. ¿Cuál te aparto?" }
+        ],
+        "status": "Respondido en segundos",
+        "timeLabel": "Hora ilustrativa"
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (G02) + MetricRow",
+      "rail": "Qué es",
+      "eyebrow": "Definición",
+      "definition": { "heading": "¿Qué es un agente de IA para WhatsApp?", "faqId": "G02" },
+      "body": [
+        "Las respuestas automáticas de WhatsApp Business mandan un texto fijo, el mismo para todos. Un agente de IA conversa: entiende la pregunta como la escribió el cliente, consulta tu información y ejecuta el siguiente paso, ya sea apartar la cita, crear el lead o avisarle a tu equipo."
+      ],
+      "metricRow": {
+        "title": "Agentes en producción",
+        "metricIds": ["dental-respuesta", "dental-citas", "salud-citas-mes", "sistemas"],
+        "sourceNote": true
+      }
+    },
+    "senales": {
+      "_componente": "ImageSection mid (persona, tone=dolor, subject-left, mobile split) + PainList mode=draw",
+      "rail": "Señales",
+      "eyebrow": "Señales de que lo necesitas",
+      "h2": { "text": "Tu WhatsApp", "soft": "ya no da abasto." },
+      "lede": "Si reconoces dos o más, un agente de IA te devuelve horas de trabajo y conversaciones que hoy se enfrían.",
+      "items": [
+        {
+          "pain": "Contestas horas después, o al día siguiente.",
+          "painLine": "Para entonces, el cliente ya le escribió a alguien más.",
+          "fix": "Kain responde en segundos, con la información de tu negocio."
+        },
+        {
+          "pain": "Las mismas preguntas, todo el día.",
+          "painLine": "Precio, horario, ubicación, si hay lugar. Tu equipo copia y pega.",
+          "fix": "Kain las contesta con tus datos, no con un menú de opciones."
+        },
+        {
+          "pain": "Citas que nadie confirma.",
+          "painLine": "Y al día siguiente, huecos en la agenda.",
+          "fix": "Kain confirma y manda recordatorios sin que nadie se lo pida."
+        },
+        {
+          "pain": "Fuera de horario, nadie atiende.",
+          "painLine": "Las noches y los fines de semana se pierden.",
+          "fix": "Kain atiende 24/7 y pasa a una persona cuando hace falta."
+        }
+      ]
+    },
+    "capacidades": {
+      "_componente": "ScriptList (6 filas) + ChatSim mode=inline (script default) en teléfono de cristal sobre aura",
+      "rail": "Qué hace",
+      "eyebrow": "Qué hace tu agente",
+      "h2": { "text": "Atiende, califica y agenda por ti,", "soft": "a cualquier hora." },
+      "items": [
+        { "n": "01", "title": "Responde en segundos", "line": "De día, de noche y en fin de semana, con la información de tu negocio." },
+        { "n": "02", "title": "Califica a cada prospecto", "line": "Entiende lo que escribe el cliente en lenguaje natural y hace las preguntas que haría tu equipo." },
+        { "n": "03", "title": "Agenda en tu calendario", "line": "Le ofrece horarios al cliente y aparta la cita sin que nadie la capture." },
+        { "n": "04", "title": "Registra todo en tu CRM", "line": "Cada conversación y cada lead quedan en Kommo o GoHighLevel, en su etapa." },
+        { "n": "05", "title": "Da seguimiento", "line": "Manda recordatorios para que nadie falte y retoma las conversaciones pendientes." },
+        { "n": "06", "title": "Con el modelo correcto", "line": "Trabajamos con OpenAI, Anthropic (Claude) y Google (Gemini), y elegimos el que mejor resuelve tu proceso." }
+      ],
+      "body": [
+        "Antes de encenderlo, cargamos lo que tu equipo contesta todos los días: servicios, horarios, políticas, zonas de entrega o requisitos. Y definimos contigo en qué momento el agente le pasa la conversación a una persona, y con qué información."
+      ],
+      "chat": { "mode": "inline", "script": "default" }
+    },
+    "como-funciona": {
+      "_componente": "SystemFlow sobre la placa riel-servicios (sin sujeto, sin pin)",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": { "text": "Del mensaje a la cita,", "soft": "sin que nadie capture nada." },
+      "nodes": [
+        { "label": "WhatsApp, Instagram y tu web", "line": "El cliente escribe por donde ya te busca.", "logos": ["whatsapp", "instagram"], "confirmed": true },
+        { "label": "Kain, tu agente de IA", "line": "Entiende, responde con tu información y califica.", "confirmed": true },
+        { "label": "Tu CRM: Kommo o GoHighLevel", "line": "Crea o actualiza el lead en su etapa.", "logos": ["kommo", "gohighlevel"], "confirmed": true },
+        { "label": "Tu calendario", "line": "Aparta la cita en el horario que eligió el cliente.", "confirmed": true },
+        { "label": "Tu equipo", "line": "Recibe el aviso con la conversación completa.", "confirmed": true }
+      ],
+      "note": "Las herramientas exactas se definen en la fase Koncept de VKTOR™, con lo que tu equipo ya usa."
+    },
+    "vs-chatbot": {
+      "_componente": "TwoColumnScript variant=compare (6 filas por pares)",
+      "rail": "Agente vs. chatbot",
+      "eyebrow": "Sin promesas raras",
+      "h2": { "text": "Agente de IA,", "soft": "no chatbot de menús." },
+      "left": { "title": "Chatbot de menús", "tone": "ambar" },
+      "right": { "title": "Agente de IA", "tone": "cian" },
+      "rows": [
+        { "criterio": "Cómo entiende", "chatbot": "Obliga a elegir entre botones y opciones fijas.", "agente": "Entiende lo que el cliente escribe, como lo escribe." },
+        { "criterio": "Qué hace", "chatbot": "Da información y ahí termina.", "agente": "Agenda, crea el lead y avisa a tu equipo." },
+        { "criterio": "Tu CRM", "chatbot": "Vive aparte; alguien copia los datos a mano.", "agente": "Registra cada conversación en Kommo o GoHighLevel." },
+        { "criterio": "Tu agenda", "chatbot": "Manda un enlace y espera que el cliente lo use.", "agente": "Ofrece horarios y aparta la cita en tu calendario." },
+        { "criterio": "Horario", "chatbot": "Contesta a cualquier hora, pero solo lo que trae programado.", "agente": "Atiende 24/7 con la información de tu negocio." },
+        { "criterio": "Fuera del guion", "chatbot": "Se atora o repite el menú.", "agente": "Responde, o pasa la conversación a una persona con el contexto." }
+      ],
+      "links": [{ "label": "Lee la comparación completa", "href": "/blog/agente-ia-whatsapp-vs-chatbot/" }]
+    },
+    "si-no": {
+      "_componente": "TwoColumnScript variant=dodont (sin placa, r1)",
+      "rail": "Sí y no",
+      "eyebrow": "Lo que sí hace y lo que no",
+      "h2": { "text": "Así trabaja Kain", "soft": "en tu WhatsApp." },
+      "left": {
+        "title": "Lo que sí hace",
+        "tone": "cian",
+        "items": [
+          "Responde en segundos, de día, de noche y en fin de semana.",
+          "Califica a cada prospecto y le agenda cita en tu calendario.",
+          "Da seguimiento y manda recordatorios para que nadie falte.",
+          "Deja cada conversación en Kommo o GoHighLevel, lista para tu equipo."
+        ]
+      },
+      "right": {
+        "title": "Lo que no hace",
+        "tone": "ambar",
+        "items": [
+          "No es un chatbot de menús que se atora cuando la pregunta se sale del guion.",
+          "No obliga a tu cliente a elegir entre opciones fijas.",
+          "No improvisa precios, políticas ni promociones: responde con la información que tú apruebas.",
+          "No da consejo médico ni legal."
+        ]
+      },
+      "slogan": "Tu negocio trabajando, sin depender más de ti."
+    },
+    "integraciones": {
+      "_componente": "LogoCredits (canales, CRM, automatización y modelos) + enlaces",
+      "rail": "Integraciones",
+      "eyebrow": "Dónde trabaja y con qué se conecta",
+      "h2": { "text": "Vive en tus canales,", "soft": "escribe en tu CRM." },
+      "groups": [
+        { "label": "Canales", "logos": [{ "slug": "whatsapp", "label": "WhatsApp Business" }, { "slug": "instagram", "label": "Instagram" }], "line": "Y el chat de tu sitio web." },
+        { "label": "CRM", "logos": [{ "slug": "kommo", "label": "Kommo", "href": "/kommo/" }, { "slug": "gohighlevel", "label": "GoHighLevel", "href": "/gohighlevel/" }], "line": "Cada conversación, registrada en su etapa." },
+        { "label": "Calendario", "logos": [], "line": "El calendario de tu CRM o el que ya usa tu equipo, si se puede conectar." },
+        { "label": "Automatización", "logos": [{ "slug": "n8n", "label": "n8n", "href": "/servicios/automatizacion-n8n/" }, { "slug": "make", "label": "Make" }], "line": "Para lo que pasa después de la conversación." },
+        { "label": "Modelos de IA", "logos": [{ "slug": "openai", "label": "OpenAI" }, { "slug": "claude", "label": "Claude" }, { "slug": "googlegemini", "label": "Gemini" }], "line": "El que mejor resuelve tu proceso." }
+      ],
+      "note": "Kommo es nuestra alianza oficial. GoHighLevel, n8n y los modelos de IA son herramientas que implementamos e integramos."
+    },
+    "casos": {
+      "_componente": "Montage (2 filas) + ResultsLedger filtrado por servicio",
+      "rail": "Casos",
+      "eyebrow": "Agentes reales, operando hoy",
+      "h2": { "text": "Lo que ya pasó", "soft": "en negocios reales." },
+      "lede": "Cifras de sistemas en producción, con su sector, su ciudad y el plazo en que se midieron.",
+      "rows": [
+        { "metricId": "dental-respuesta", "context": "Agente de IA en WhatsApp · Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
+        { "metricId": "dental-citas", "context": "Misma clínica, en 90 días", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
+        { "metricId": "retail-conversiones", "context": "Kommo con calificación de leads por IA · Retail multimarca", "href": "/casos/retail-multimarca-kommo/", "linkLabel": "Ver el caso" }
+      ],
+      "ledger": { "metricIds": ["dental-respuesta", "dental-citas", "retail-conversiones"], "caption": "Resultados de agentes de IA y CRM" },
+      "sourceNote": true,
+      "note": "Nombres de clientes anonimizados."
+    },
+    "industrias": {
+      "_componente": "Still mini ×4",
+      "rail": "Industrias",
+      "eyebrow": "Dónde más rinde",
+      "h2": { "text": "Donde cada mensaje", "soft": "puede ser una cita o una venta." },
+      "items": [
+        { "href": "/industrias/salud/", "label": "Salud", "title": "Clínicas y consultorios", "line": "Agenda, confirma y recuerda citas, sin dar consejo médico." },
+        { "href": "/industrias/belleza-estetica/", "label": "Belleza", "title": "Salones y clínicas estéticas", "line": "Llena la agenda sin vivir pegado al WhatsApp." },
+        { "href": "/industrias/inmobiliario/", "label": "Inmobiliario", "title": "Inmobiliarias y desarrolladoras", "line": "Atiende cada lead en segundos y agenda la visita." },
+        { "href": "/industrias/retail-ecommerce/", "label": "Retail", "title": "Retail y e-commerce", "line": "Resuelve dudas de producto, existencias y envíos." }
+      ]
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": { "text": "Así ponemos tu agente en producción,", "soft": "en cinco fases." },
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Revisamos tus conversaciones reales: qué preguntan, cuánto tardas en contestar y dónde se pierden los clientes." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Definimos qué responde el agente, qué datos pide, cuándo agenda y cuándo pasa la conversación a una persona." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Conectamos WhatsApp, el agente, tu CRM y tu calendario, y lo ponemos a prueba antes de encenderlo." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Capacitamos a tu equipo, revisamos conversaciones y ajustamos respuestas en producción." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Medimos tiempo de respuesta, citas y ventas, y optimizamos cada mes." }
+      ],
+      "links": [{ "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }]
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": { "text": "{{Price}}." },
+      "lede": "El precio depende de tres cosas, no de un paquete:",
+      "items": [
+        { "title": "Canales", "line": "WhatsApp, Instagram, tu web o los tres." },
+        { "title": "Integraciones", "line": "Tu CRM, tu calendario y los sistemas que el agente deba consultar." },
+        { "title": "Volumen", "line": "Cuántas conversaciones atiende y cuántos procesos se automatizan alrededor." }
+      ],
+      "remate": "El alcance exacto lo definimos en tu Discovery Session."
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas sobre agentes de IA", "soft": "para WhatsApp." },
+      "faqIds": ["G02", "G03", "W01", "W02", "G09", "W03"],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": { "text": "Otras piezas", "soft": "del mismo sistema." },
+      "items": [
+        { "href": "/kain/", "label": "Kain", "title": "Conoce a Kain", "line": "El agente de IA de tu empresa, en primera persona." },
+        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con agentes de IA", "line": "Licencias, implementación y agentes dentro de Kommo." },
+        { "href": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/", "label": "Guía", "title": "¿Cuánto cuesta un agente de IA para WhatsApp?", "line": "Qué mueve el precio y qué preguntar antes de contratar." }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "El primer paso no cuesta nada",
+      "h2": { "text": "¿Qué respondería un agente de IA", "soft": "en tu WhatsApp?" },
+      "lede": "En la Discovery Session revisamos cómo atiendes y vendes hoy, y te decimos qué puede resolver un agente de IA y qué conviene automatizar primero. Gratis, 1:1 y sin compromiso.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de agentes de IA para WhatsApp y quiero ver cómo atenderías a mis clientes."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

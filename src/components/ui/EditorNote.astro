@@ -1,0 +1,17 @@
+---
+// EditorNote · ESPEC §2.11 "Recuadro de nota" + InlineCTA (variant="cta").
+// Filete de 1 px --hair-2 en los 4 lados, sin fondo, con la etiqueta mono incrustada en el filete superior.
+//   note → "NOTA DEL EDITOR", "NOTA DE MÉTODO"… (slot = texto)
+//   cta  → InlineCTA de artículos: una línea (slot) + botón primario (cta: {label, href}) con su microcopia
+import Btn from './Btn.astro';
+import { SITE } from '../../lib/site';
+interface Props { label: string; variant?: 'note' | 'cta'; cta?: { label?: string; href?: string }; class?: string }
+const { label, variant = 'note', cta, class: cls } = Astro.props;
+---
+<aside class:list={['enote', `enote--${variant}`, cls]} aria-label={label} data-ui-reveal>
+  <p class="enote__label t-label"><span class="node" aria-hidden="true"></span>{label}</p>
+  <div class="enote__body"><slot /></div>
+  {variant === 'cta' && (
+    <div class="enote__cta"><Btn variant="primary" href={cta?.href ?? SITE.discovery} label={cta?.label ?? 'Agenda tu Discovery Session'} micro /></div>
+  )}
+</aside>

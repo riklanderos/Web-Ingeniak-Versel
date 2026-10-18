@@ -1,0 +1,63 @@
+---
+// ResultsLedger · ESPEC §2.11 "Fila de registro" (/casos/#registro y resultados de cada servicio).
+// <table> semántica: Resultado (Lexend 200) · Qué cambió · Sector y ciudad · Ventana · Servicio · →.
+// Barrido cian por fila en hover/foco; en móvil cada fila es un bloque de 2 líneas.
+// filters=true → chips de sector y servicio que filtran las filas ya renderizadas (ui.ts, sin fetch).
+// filter={service|sector} → recorta el registro en el build (p. ej. solo "agentes" en su servicio).
+import Icon from './Icon.astro';
+import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { LEDGER, figureParts } from './ui-data';
+
+interface Props {
+  ids?: MetricId[]; filter?: { service?: string; sector?: string }; filters?: boolean;
+  caption?: string; id?: string; class?: string;
+}
+const DEFAULT: MetricId[] = ['dental-citas', 'dental-respuesta', 'retail-conversiones', 'ecom-cpl', 'horeca-roas', 'logistica-procesos', 'salud-citas-mes', 'tiempo-operativo', 'ecom-tablero'];
+const { ids = DEFAULT, filter, filters = false, caption = 'Registro de resultados', id, class: cls } = Astro.props;
+
+const rows = ids
+  .map((k) => ({ id: k, m: METRICS[k], x: LEDGER[k] }))
+  .filter((r) => !filter?.service || r.x?.service?.slug === filter.service)
+  .filter((r) => !filter?.sector || r.x?.sectorSlug === filter.sector);
+
+const SECTORS: Record<string, string> = { salud: 'Salud', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'HoReCa', logistica: 'Logística', varios: 'Varios' };
+const SERVICES: Record<string, string> = { agentes: 'Agentes de IA', crm: 'CRM', automatizacion: 'Automatización', 'paid-media': 'Paid media', datos: 'Datos' };
+const usedSectors = [...new Set(rows.map((r) => r.x?.sectorSlug).filter(Boolean))] as string[];
+const usedServices = [...new Set(rows.map((r) => r.x?.service?.slug).filter(Boolean))] as string[];
+const tid = id ?? 'registro';
+---
+<div class:list={['ledger', cls]} id={id} data-ledger>
+  {filters && (
+    <div class="ledger__filters" role="group" aria-label="Filtrar resultados">
+      <button type="button" class="ledger__chip" aria-pressed="true" data-ledger-filter="all">Todos</button>
+      {usedServices.map((s) => <button type="button" class="ledger__chip" aria-pressed="false" data-ledger-filter={`service:${s}`}>{SERVICES[s] ?? s}</button>)}
+      <span class="ledger__sep" aria-hidden="true"></span>
+      {usedSectors.map((s) => <button type="button" class="ledger__chip" aria-pressed="false" data-ledger-filter={`sector:${s}`}>{SECTORS[s] ?? s}</button>)}
+      <p class="sr-only" aria-live="polite" data-ledger-status></p>
+    </div>
+  )}
+  <table class="ledger__table" aria-describedby={`${tid}-note`}>
+    <caption class="sr-only">{caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col">Resultado</th><th scope="col">Qué cambió</th><th scope="col">Sector y ciudad</th>
+        <th scope="col">Ventana</th><th scope="col">Servicio</th><th scope="col"><span class="sr-only">Ver caso</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map(({ id: k, m, x }, i) => (
+        <tr class="ledger__row" data-metric={k} data-ledger-row data-sector={x?.sectorSlug} data-service={x?.service?.slug} style={`--i:${i}`}>
+          <th scope="row" class="ledger__v">{figureParts(m.value).map((p) => p.k === 'num' ? p.t : <span class={`metric__${p.k}`}>{p.t}</span>)}</th>
+          <td class="ledger__what">{m.label}</td>
+          <td class="ledger__where">{x?.sector ?? m.ctx}{x?.city && <span class="ledger__city"> · {x.city}</span>}</td>
+          <td class="ledger__when">{x?.window ?? <span aria-label="Sin ventana publicada">—</span>}</td>
+          <td class="ledger__svc">{x?.service ? <a href={x.service.href}>{x.service.name}</a> : <span aria-label="Servicio no publicado">—</span>}</td>
+          <td class="ledger__go">
+            {m.href ? <a class="ledger__link" href={m.href} aria-label={`Ver caso: ${m.value} ${m.label}, ${x?.sector ?? m.ctx}`}><Icon name="arrow" size={20} /></a> : null}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="t-micro ledger__note" id={`${tid}-note`}>{SOURCE_NOTE}. Nombres de clientes anonimizados; "—" = dato aún no publicado.</p>
+</div>
