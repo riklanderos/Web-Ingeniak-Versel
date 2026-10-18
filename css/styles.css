@@ -576,3 +576,39 @@ html.lenis,html.lenis body{height:auto}
 .d-imagen{position:relative;border-radius:var(--r-xl);overflow:hidden;margin-top:clamp(32px,4vw,48px)}
 .d-imagen img{width:100%;height:auto}
 .d-cita{font:400 clamp(20px,2.4vw,30px)/1.4 var(--font-display);color:#E6EEF8;max-width:40ch;margin:24px auto 0;letter-spacing:-.015em}
+
+/* =========================================================
+   INICIO Páginas de servicio (/kommo, /gohighlevel, /agentes-ia-whatsapp, /agentes-ia-guadalajara)
+   Reutilizan portada, ficha, d-pasos, casos, d-dos, fases, faq, servicios y cierre
+   ========================================================= */
+.s-portada{min-height:auto;justify-content:flex-start;padding:calc(var(--nav-h) + clamp(28px,5vw,64px)) 0 clamp(64px,8vw,112px)}
+.s-portada__grid{display:grid;gap:clamp(36px,5vw,64px);align-items:center}
+@media (min-width:960px){.s-portada__grid{grid-template-columns:1.05fr .95fr}}
+.s-portada .portada__texto{text-align:left;margin-top:0}
+.s-portada .portada__titulo{font-size:clamp(40px,5.2vw,74px);line-height:1;margin-top:18px}
+.s-portada .portada__sub{margin:20px 0 0;max-width:560px}
+.s-portada .portada__acciones,.s-portada .confianza{justify-content:flex-start}
+.confianza a{display:inline-flex}
+.migas ol{display:flex;flex-wrap:wrap;gap:8px;font:400 12px/1.4 var(--font-mono);letter-spacing:.04em;color:var(--muted);margin-bottom:18px}
+.migas li+li::before{content:"/";margin-right:8px;opacity:.5}
+.migas a{color:var(--muted);text-decoration:none;transition:color .3s}
+.migas a:hover{color:var(--cyan)}
+.s-visual{padding:10px;margin:0}
+.s-visual img{width:100%;height:auto;border-radius:calc(var(--r-xl) - 8px)}
+.s-nota{display:block;padding:12px 10px 4px;font:400 11px/1.5 var(--font-mono);letter-spacing:.04em;color:var(--muted)}
+.s-escenario{min-height:540px}
+.d-paso a,.d-lista a{color:var(--cyan);text-decoration:none}
+.d-paso a:hover,.d-lista a:hover{text-decoration:underline}
+.servicios__mas{display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;margin-top:22px;font:400 12px/1.4 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.servicios__mas a{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:#DCE6F2;text-decoration:none;font:500 15px/1.3 var(--font-body);letter-spacing:0;text-transform:none;transition:color .3s}
+.servicios__mas a:hover{color:var(--cyan)}
+@media (max-width:699px){
+  .s-portada{padding-top:calc(var(--nav-h) + 8px)}
+  .s-portada .portada__titulo{font-size:clamp(34px,9.6vw,44px)}
+  .s-portada .portada__acciones{align-items:stretch}
+  .s-portada .portada__acciones > div{width:100%}
+  .s-portada .btn{max-width:none}
+  .s-portada .link-sec{justify-content:center}
+  .s-escenario{min-height:500px}
+}
+/* FIN Páginas de servicio */

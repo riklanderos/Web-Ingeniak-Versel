@@ -8,7 +8,7 @@
     { "source": "/metodologia", "destination": "/#metodologia", "permanent": true },
     { "source": "/contacto", "destination": "/discovery/", "permanent": true },
     { "source": "/cotiza", "destination": "/discovery/", "permanent": true },
-    { "source": "/licenciaskommo", "destination": "/#servicios", "permanent": false },
+    { "source": "/licenciaskommo", "destination": "/kommo/", "permanent": true },
     { "source": "/blog", "destination": "/", "permanent": false },
     { "source": "/blog/:path*", "destination": "/", "permanent": false }
   ],

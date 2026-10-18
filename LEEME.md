@@ -8,6 +8,8 @@ Sitio estático (HTML, CSS y JS sin compilar) listo para Vercel. Fecha de esta v
 index.html                Página principal (14 secciones)
 discovery/index.html      Discovery Session (contenido de agenda.ingeniak.tech/discovery con el nuevo diseño)
 aviso-privacidad/         Aviso de privacidad (misma URL que el sitio anterior)
+kommo/, gohighlevel/, agentes-ia-whatsapp/, agentes-ia-guadalajara/
+                          Páginas de servicio (segunda fase de SEO), misma plantilla que /discovery
 css/styles.css            Tokens de diseño y todos los estilos (cada sección marcada con INICIO / FIN)
 js/main.js                Movimiento: Lenis, firma de la portada, revelados, contadores, líneas, videos
 vendor/                   GSAP 3.13.0 (+ ScrollTrigger y SplitText) y Lenis 1.3.11, fijados
@@ -60,7 +62,7 @@ HyperFrames se instaló como skill de Claude Code en `.claude/skills/` (20 skill
 - Preguntas frecuentes: si cambias una pregunta visible, cámbiala también en el bloque `FAQPage` del `<head>` (deben decir lo mismo).
 - WhatsApp: cada botón tiene su mensaje en el enlace `wa.me/523321017799?text=…` (portada, Kain, cada servicio, preguntas, pie).
 - Agenda: todos los botones de /discovery llevan a `https://agenda.ingeniak.tech/discovery/agendar`.
-- Cada vez que cambies CSS o JS, sube el número `?v=20261018e` en los tres HTML.
+- Cada vez que cambies CSS o JS, sube el número `?v=20261018f` en los tres HTML.
 
 ## De dónde salió cada dato
 
@@ -81,7 +83,7 @@ HyperFrames se instaló como skill de Claude Code en `.claude/skills/` (20 skill
 7. Fusioné "Branding" y "Contenido" en un solo servicio y agregué "Automatización de procesos" a los 9 pilares.
 8. La cifra −58% CPL se muestra en "Ingeniak en datos"; el caso de e-commerce de la cuadrícula es el de métricas unificadas (1 vista, 7 fuentes), porque no sé si son el mismo cliente.
 9. Precio: solo "desde USD 997 al mes" en preguntas frecuentes y datos estructurados; no hay tabla de paquetes.
-10. Redirecciones del sitio anterior (en `vercel.json`): /servicios/* y /licenciaskommo → #servicios, /nosotros → #equipo, /metodologia → #metodologia, /contacto y /cotiza → /discovery/, /blog → inicio (temporal).
+10. Redirecciones del sitio anterior (en `vercel.json`): /servicios/* → #servicios, /licenciaskommo → /kommo/ (301), /nosotros → #equipo, /metodologia → #metodologia, /contacto y /cotiza → /discovery/, /blog → inicio (temporal).
 11. Fotos del equipo: son las del sitio actual (traen el nombre impreso); Victor Ocampo se quitó.
 
 ## Pendientes antes de publicar
@@ -91,7 +93,7 @@ HyperFrames se instaló como skill de Claude Code en `.claude/skills/` (20 skill
 - [ ] Imágenes de casos y renders isométricos: son las del sitio actual y traen texto ilegible generado por IA; se pueden regenerar con Magnific.
 - [ ] Revisar en un iPhone real (Safari) el chat de Kain y la Discovery.
 - [ ] Google Search Console: enviar `sitemap.xml` cuando el dominio apunte a Vercel.
-- [ ] Segunda fase de SEO: páginas propias para Kommo, GoHighLevel, Agentes de IA para WhatsApp y Agencia de IA en Guadalajara (títulos y metas ya están en la investigación).
+- [x] Segunda fase de SEO: /kommo/, /gohighlevel/, /agentes-ia-whatsapp/ y /agentes-ia-guadalajara/ (18 oct 2026). Cada una tiene Service + BreadcrumbList + FAQPage igual al texto visible; si cambias una pregunta, cámbiala también en su `<head>`. Están en sitemap.xml, llms.txt, el pie y Servicios del inicio. Solo usan cifras que ya están en el inicio. GoHighLevel aparece como herramienta que implementamos, nunca como partner.
 - [ ] Sello Kommo Partner: usé el que enviaste; confirma que sea la versión vigente del Partner Portal.
 
 ## Publicar

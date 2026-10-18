@@ -14,8 +14,8 @@
 
 ## Servicios
 - Consultoría en inteligencia artificial para empresas (diagnóstico, roadmap y retorno medible en 90 días)
-- Agentes de IA personalizados para WhatsApp, Instagram y web
-- CRM inteligente con IA: implementación de Kommo y GoHighLevel
+- Agentes de IA personalizados para WhatsApp, Instagram y web: https://ingeniak.mx/agentes-ia-whatsapp/
+- CRM inteligente con IA: implementación de Kommo como partner oficial (https://ingeniak.mx/kommo/) y de GoHighLevel en español (https://ingeniak.mx/gohighlevel/)
 - Automatización de procesos con n8n, Make y Zapier
 - Paid media en Meta, Google y TikTok Ads, medido por ventas
 - Páginas web de alta conversión
@@ -44,4 +44,8 @@ kain es la sub-marca de agentes de IA de Ingeniak y su plataforma está en https
 ## Páginas
 - [Inicio](https://ingeniak.mx/)
 - [Discovery Session](https://ingeniak.mx/discovery/)
+- [Partner oficial de Kommo en México y LATAM](https://ingeniak.mx/kommo/): licencias, implementación y automatización de Kommo con agentes de IA en WhatsApp.
+- [Implementación de GoHighLevel en español](https://ingeniak.mx/gohighlevel/): CRM, embudos, calendarios y automatizaciones con IA.
+- [Agentes de IA para WhatsApp Business](https://ingeniak.mx/agentes-ia-whatsapp/): responden, califican y agendan 24/7, conectados a Kommo o GoHighLevel.
+- [Agentes de IA en Guadalajara](https://ingeniak.mx/agentes-ia-guadalajara/): oficina en Tlajomulco de Zúñiga, para empresas de Guadalajara, Zapopan y Tlajomulco.
 - [Aviso de privacidad](https://ingeniak.mx/aviso-privacidad/)
