@@ -329,6 +329,8 @@ const railGroups = [3, 6, 4];
       <span class="hm-seq-glow" aria-hidden="true"></span>
       {sis.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(sis.eyebrow)} /></p>}
       <h2 id="sistema-t" class="t-h2" data-split set:html={headline(sis.h2)} />
+      {/* Respuesta #6 del cliente: la lede aclara que la IA opera con el equipo (no "automáticamente") */}
+      {sis.lede && <Copy as="p" class="t-lede t-lede--2 hm-sistema__lede" text={sis.lede} />}
       {SU.atraer && <HomeStation slot="ui-atraer" u={SU.atraer} />}
       {SU.atender && <HomeStation slot="ui-atender" u={SU.atender} />}
       {SU.organizar && <HomeStation slot="ui-organizar" u={SU.organizar} />}

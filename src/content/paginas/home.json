@@ -11,25 +11,28 @@
     "FAQ DISTINTA DE D · G02: misma respuesta con sujeto explícito ('Un agente de IA para WhatsApp es…') para que se pueda citar sola.",
     "FAQ DISTINTA DE D · G04: agrega 'Por eso podemos encargarnos de todo el proceso: desde elegir las licencias que necesitas hasta dejar el CRM operando con tu equipo.'",
     "FAQ DISTINTA DE D · G07: agrega 'No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.'",
-    "FAQ DISTINTA DE D · G08 (QA ronda 1): sin plazo general. D decía 'Nuestros proyectos están planteados para dar resultados medibles en 60 a 90 días' (v1); esa cifra no está en metrics.ts ni confirmada por escrito. Ahora: 'Depende de qué se implemente y de cómo opera hoy tu negocio. Por eso el plazo se define contigo, junto con el alcance y el costo, en la propuesta que sigue a la Discovery Session.' + los plazos de los dos casos como referencia (cifras como token + nota de fuente). Si confirmas por escrito el plazo de 60 a 90 días, vuelve.",
+    "FAQ DISTINTA DE D · G08: D decía 'Nuestros proyectos están planteados para dar resultados medibles en 60 a 90 días' (v1, sin confirmar: no vuelve). Ahora abre con el plazo de implementación que confirmaste el 2026-10-19 ('Implementar un sistema toma de 7 a 30 días, según el alcance.'), dice que cuándo se notan los resultados depende de qué se implemente y de tu operación, y cierra con los plazos de los dos casos como referencia (cifras como token + nota de fuente).",
     "FAQ DISTINTA DE D · G11: agrega 'por Google Meet', el formulario de siete preguntas que toma dos minutos y 'Si tiene sentido para los dos, después te enviamos una propuesta con alcance, tiempos y costo.'",
-    "CAMBIO DE AFIRMACIÓN · casos.lede: ya no dice que cada cifra 'sigue en producción' ni promete ciudad y plazo en todas; ahora: 'Cada cifra viene de un sistema real que implementamos, con su sector y, cuando lo tenemos confirmado, su ciudad y el plazo en que se midió.'",
+    "CAMBIO DE AFIRMACIÓN · casos.lede (2026-10-19): sin la reserva de plazo ('cuando lo tenemos confirmado, su ciudad y el plazo en que se midió') ni la promesa de ciudad y plazo en todas las cifras (retail no los tiene). Ahora: 'Cinco negocios de sectores distintos. Cada cifra trae su sector y su fuente, y sale de la operación real del cliente, no de una demo.'",
     "CAMBIO DE AFIRMACIÓN · industrias.footer: se quitó 'El sistema funciona en cualquier negocio que vende por conversación' (promesa sin respaldo); ahora: '¿No ves tu sector? Si vendes por conversación, lo revisamos en tu Discovery Session.'",
     "CAMBIO DE TEXTO · hero.fig: la cifra dental-respuesta va en prosa con el token |prose ('bajó el tiempo de respuesta por WhatsApp de 8 minutos a 12 segundos'), sin flecha dentro de la frase.",
     "CAMBIO DE TEXTO · casos.transversal: sale dental-respuesta (es el mismo sistema de la fila 1). cta-final sin lede (la ESC 13 no lo tiene). kain.items[0] y servicios.h2.soft, pulidos.",
-    "PREGUNTA AL CLIENTE · periodo de medición de retail-conversiones, horeca-roas y salud-citas-mes: ¿contra qué periodo se compara y en qué ventana se midió cada una? No se escribe ningún plazo hasta tenerlo por escrito.",
-    "PREGUNTA AL CLIENTE · ¿los cinco sistemas de la sección Casos siguen operando hoy? El H2 de la ESPEC dice 'Sistemas reales, operando hoy mismo.'; mientras no lo confirmes por escrito, el H2 dice 'Sistemas reales, con resultados medidos.' (ronda 2: nada sin confirmar se afirma como hecho). Con tu confirmación vuelve el de la ESPEC.",
-    "PREGUNTA AL CLIENTE · lede del manifiesto (#que-es, texto de la ESPEC): '…un solo sistema que atiende, califica y cierra por ti, 24/7.' El agente le pasa la conversación a una persona para cerrar (H03, N12); 'cierra por ti' promete más. Propuesta: '…que atiende, califica y agenda por ti, 24/7.' No se cambió sin tu visto bueno.",
-    "PREGUNTA AL CLIENTE · 'No hacemos marketing.' (manifiesto, ESPEC §11-4): Ingeniak sí vende paid media, web y branding; ¿se queda la frase tal cual?",
-    "PREGUNTA AL CLIENTE · H2 de #sistema (texto de la ESPEC): 'Creamos el tráfico, lo convertimos y lo operamos automáticamente.' ¿'automáticamente' es exacto, si en la fase Operate tu equipo y el nuestro también intervienen?",
-    "PREGUNTA AL CLIENTE · lede de #equipo (texto de la ESPEC): 'Seis personas que diseñan, construyen y operan tu sistema contigo…'. ¿Son seis y las seis trabajan en los sistemas de los clientes (incluida Administración y Finanzas)?",
-    "PREGUNTA AL CLIENTE · H2 del cierre (texto de la ESPEC): '30 minutos para ver tu operación como es, no como crees que es.' es idéntico al H1 de /discovery/. ¿Se quiere la repetición?",
-    "PREGUNTA AL CLIENTE · fila 'Ingeniak en datos' de #que-es (ids de la ESPEC: sistemas, paises, salud-citas-mes, ecom-cpl): mezcla datos de la empresa con cifras de casos, y salud-citas-mes todavía no tiene plazo. ¿Se queda así?",
     "PREGUNTA AL CLIENTE · FAQ del inicio (ids de la ESPEC, ESC 12): G01 sale dos veces en la página (definición de #que-es y acordeón de #faq). ¿Se mantiene?",
-    "PREGUNTA AL CLIENTE · selector de industrias (ESPEC: 'cifra solo donde existe'): cuatro de los ocho sectores no muestran cifra. ¿Está bien así?",
-    "PREGUNTA AL CLIENTE · líneas del equipo: tomadas del sitio actual y de v1; cada persona confirma su cargo y su línea.",
-    "PREGUNTA AL CLIENTE · narrativa del turno de noche (horas del HUD de 23:47 a 06:00): validar (ESPEC §11-2).",
-    "DATO PENDIENTE · contexto de los casos e-commerce, HoReCa y logística: solo se escribe lo que dicen metrics.ts y el sitio actual (sin herramientas ni detalles nuevos)."
+    "PREGUNTA AL CLIENTE · líneas del equipo: tomadas del sitio actual y de v1; cada persona confirma su cargo y su línea (el 2026-10-19 solo se resolvió no decir cuántas personas son).",
+    "DATO PENDIENTE · contexto de los casos e-commerce, HoReCa y logística: solo se escribe lo que dicen metrics.ts y el sitio actual (sin herramientas ni detalles nuevos).",
+    "RESUELTO 2026-10-19 · cliente en chat · (1) periodo de medición de retail-conversiones, horeca-roas y salud-citas-mes: 'Solo ponlo'. Las cifras salen tal como están en metrics.ts, sin reserva de plazo y sin inventar ventanas (casos.lede reescrito).",
+    "RESUELTO 2026-10-19 · cliente en chat · (2) salud-citas-mes promedia clientes de odontología, medicina estética, quiropráctica y gastroenterología (sin nombrarlos): se explica en /industrias/salud/ (#definicion y #cifras).",
+    "RESUELTO 2026-10-19 · cliente en chat · (3) los cinco sistemas siguen activos: casos.h2 vuelve a 'Sistemas reales, operando hoy mismo.'",
+    "RESUELTO 2026-10-19 · cliente en chat · (4) manifiesto: 'agenda o vende depende de lo que estén buscando'. que-es.lede: '…un solo sistema que atiende, califica y, según tu negocio, agenda o vende por ti, 24/7.' (antes '…y cierra por ti, 24/7').",
+    "RESUELTO 2026-10-19 · cliente en chat · (5) 'No hacemos marketing.' se mejora: que-es.h2 'Nuestro marketing no termina en el clic.' / 'Termina en un sistema.' (el lede y la palabra fantasma SISTEMA dicen cuál) (antes 'No hacemos marketing.' / 'Construimos sistemas que generan y convierten clientes automáticamente.'). No niega la pauta, la web ni el branding: los pone dentro del sistema.",
+    "RESUELTO 2026-10-19 · cliente en chat · (6) en la operación intervienen personas (todo el equipo): sistema.h2 'Creamos el tráfico,' / 'lo convertimos y lo operamos con IA y nuestro equipo.' (sin 'automáticamente'); sistema.lede suma 'La IA se encarga de lo repetitivo; nuestro equipo la supervisa y la ajusta…'. También sale 'automáticamente' del manifiesto, y lo que decía que la operación va sola: sistema.steps[automatizar].title 'Lo repetitivo, en piloto automático' (antes 'Procesos que operan solos') e industrias › industrial.line 'Procesos conectados, sin capturas a mano.' (antes 'Operación que se mueve sola.').",
+    "RESUELTO 2026-10-19 · cliente en chat · (7) no mencionar el número de personas: equipo.lede 'Un equipo que diseña, construye y opera tu sistema contigo, con datos y sin humo.' (antes 'Seis personas que…').",
+    "RESUELTO 2026-10-19 · cliente en chat · (8) el cierre del inicio debe ser distinto del H1 de /discovery/: cta-final.h2 'Tú dormiste.' / 'Tu negocio amaneció al día.' (cierra el turno de noche a las 06:00). El CTA sigue siendo la Discovery Session de 30 minutos; la Power Session (90 min) no se menciona en la página.",
+    "RESUELTO 2026-10-19 · cliente en chat · (9) fila 'Ingeniak en datos' (sistemas, paises, salud-citas-mes, ecom-cpl): se queda.",
+    "RESUELTO 2026-10-19 · cliente en chat · (10) selector de industrias sin cifra donde no la hay: aprobado. metrics.ts no tiene cifras reales de belleza, nutrición, finanzas ni inmobiliario, así que esos cuatro sectores siguen sin cifra (no se inventa ninguna).",
+    "RESUELTO 2026-10-19 · cliente en chat · (11) turno de noche (HUD de 23:47 a 06:00): validado; se queda igual.",
+    "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (sistema.steps[atender].line, kain.lede, servicios › Agentes de IA para WhatsApp).",
+    "RESUELTO 2026-10-19 · cliente en chat · (20) firma 'Construimos empresarios libres, no héroes cansados.': aprobada (vive en _comun y en /discovery/)."
   ],
   "sections": {
     "hero": {
@@ -126,10 +129,10 @@
       "rail": "Qué es Ingeniak",
       "eyebrow": "Manifiesto",
       "h2": {
-        "text": "No hacemos marketing.",
-        "soft": "Construimos sistemas que generan y convierten clientes automáticamente."
+        "text": "Nuestro marketing no termina en el clic.",
+        "soft": "Termina en un sistema."
       },
-      "lede": "Diseñamos e implementamos agentes de IA, CRM y automatizaciones conectados en un solo sistema que atiende, califica y cierra por ti, 24/7.",
+      "lede": "Diseñamos e implementamos agentes de IA, CRM y automatizaciones conectados en un solo sistema que atiende, califica y, según tu negocio, agenda o vende por ti, 24/7.",
       "definition": { "heading": "¿Qué es Ingeniak?", "faqId": "G01" },
       "body": [
         "Un sistema, no un paquete de servicios sueltos: el anuncio que trae al cliente, el agente que le contesta, el CRM que lo registra, la automatización que le da seguimiento y el tablero que te dice cuánto vendiste están conectados entre sí. Cuando una pieza se mueve, las demás se enteran."
@@ -149,9 +152,9 @@
       "eyebrow": "El sistema Ingeniak",
       "h2": {
         "text": "Creamos el tráfico,",
-        "soft": "lo convertimos y lo operamos automáticamente."
+        "soft": "lo convertimos y lo operamos con IA y con nuestro equipo."
       },
-      "lede": "Cinco piezas conectadas para que cada lead llegue, sea atendido, se registre, reciba seguimiento y se mida, sin que tengas que estar encima.",
+      "lede": "Cinco piezas conectadas para que cada lead llegue, sea atendido, se registre, reciba seguimiento y se mida. La IA se encarga de lo repetitivo; nuestro equipo la supervisa y la ajusta, sin que tengas que estar encima.",
       "steps": [
         {
           "id": "atraer",
@@ -166,7 +169,7 @@
           "id": "atender",
           "stage": "Atender",
           "title": "Respuesta en segundos",
-          "line": "Kain contesta en WhatsApp, Instagram y tu web, a cualquier hora. Entiende, califica y agenda; si hace falta una persona, le pasa la conversación con el contexto.",
+          "line": "Kain contesta en WhatsApp, Instagram, Facebook Messenger, el chat de tu web o el correo, a cualquier hora. Entiende, califica y agenda; si hace falta una persona, le pasa la conversación con el contexto.",
           "link": { "label": "Agentes de IA para WhatsApp", "href": "/servicios/agentes-ia-whatsapp/" },
           "metricIds": ["dental-respuesta"],
           "leadCard": "Atendido por Kain · calificado"
@@ -183,8 +186,8 @@
         {
           "id": "automatizar",
           "stage": "Automatizar",
-          "title": "Procesos que operan solos",
-          "line": "n8n y Make mueven lo repetitivo: seguimientos, recordatorios, cobros y reportes, conectados entre sí.",
+          "title": "Lo repetitivo, en piloto automático",
+          "line": "n8n y Make se encargan de seguimientos, recordatorios, cobros y reportes, conectados entre sí.",
           "link": { "label": "Automatización con n8n", "href": "/servicios/automatizacion-n8n/" },
           "metricIds": ["logistica-procesos", "tiempo-operativo"],
           "leadCard": "Recordatorio enviado · seguimiento activo"
@@ -209,7 +212,7 @@
       "rail": "Kain",
       "eyebrow": "Conoce a Kain",
       "h2": { "text": "Soy Kain, el agente de IA de tu empresa." },
-      "lede": "Respondo, agendo y confirmo por ti en WhatsApp, Instagram y tu web, y registro cada conversación en tu CRM.",
+      "lede": "Respondo, agendo y confirmo por ti en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo, y registro cada conversación en tu CRM.",
       "items": [
         "En segundos, de día, de noche y en fin de semana.",
         "Califico a cada prospecto y le agendo cita en tu calendario.",
@@ -261,7 +264,7 @@
           "label": "Atender",
           "glyph": "atender",
           "items": [
-            { "title": "Agentes de IA para WhatsApp", "line": "Responden, califican y agendan 24/7 en WhatsApp, Instagram y tu web.", "href": "/servicios/agentes-ia-whatsapp/" }
+            { "title": "Agentes de IA para WhatsApp", "line": "Responden, califican y agendan 24/7 en WhatsApp, Instagram, Facebook Messenger, tu web y el correo.", "href": "/servicios/agentes-ia-whatsapp/" }
           ]
         },
         {
@@ -298,9 +301,9 @@
       "eyebrow": "Casos",
       "h2": {
         "text": "Sistemas reales,",
-        "soft": "con resultados medidos."
+        "soft": "operando hoy mismo."
       },
-      "lede": "Cada cifra viene de un sistema real que implementamos, con su sector y, cuando lo tenemos confirmado, su ciudad y el plazo en que se midió.",
+      "lede": "Cinco negocios de sectores distintos. Cada cifra trae su sector y su fuente, y sale de la operación real del cliente, no de una demo.",
       "rows": [
         { "metricId": "dental-citas", "context": "Agente de IA en WhatsApp · Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
         { "metricId": "retail-conversiones", "context": "Kommo con calificación de leads por IA · Retail multimarca", "href": "/casos/retail-multimarca-kommo/", "linkLabel": "Ver el caso" },
@@ -383,7 +386,7 @@
           ]
         },
         {
-          "slug": "industrial", "name": "Industrial y logística", "line": "Operación que se mueve sola.", "href": "/industrias/industrial-logistica/", "metricId": "logistica-procesos",
+          "slug": "industrial", "name": "Industrial y logística", "line": "Procesos conectados, sin capturas a mano.", "href": "/industrias/industrial-logistica/", "metricId": "logistica-procesos",
           "bubbles": [
             { "who": "cliente", "text": "¿Ya salió mi pedido?" },
             { "who": "kain", "text": "Sí, salió hoy a las 14:20. Te comparto la guía de rastreo." }
@@ -417,7 +420,7 @@
         "text": "Estrategas que construyen,",
         "soft": "operan y miden."
       },
-      "lede": "Seis personas que diseñan, construyen y operan tu sistema contigo, con datos y sin humo.",
+      "lede": "Un equipo que diseña, construye y opera tu sistema contigo, con datos y sin humo.",
       "credits": [
         { "role": "Director de Estrategia Comercial", "name": "Rik Landeros", "line": "Construye el sistema comercial completo: oferta, embudo, CRM y métricas de crecimiento." },
         { "role": "Arquitecto de IA y Automatización", "name": "Alonso Vega", "line": "Diseña e implementa los agentes de IA y las automatizaciones que atienden, califican y dan seguimiento a tus leads." },
@@ -452,8 +455,8 @@
       "rail": "Rise",
       "eyebrow": "06:00 · Rise",
       "h2": {
-        "text": "30 minutos para ver tu operación",
-        "soft": "como es, no como crees que es."
+        "text": "Tú dormiste.",
+        "soft": "Tu negocio amaneció al día."
       },
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": {

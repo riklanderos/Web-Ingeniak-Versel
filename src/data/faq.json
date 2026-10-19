@@ -136,8 +136,8 @@
   {
     "id": "G08",
     "q": "¿En cuánto tiempo veo resultados?",
-    "a": "Depende de qué se implemente y de cómo opera hoy tu negocio. Por eso el plazo se define contigo, junto con el alcance y el costo, en la propuesta que sigue a la Discovery Session. Como referencia, una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días, y un e-commerce en la Ciudad de México bajó su costo por lead ({{metric:ecom-cpl}}) en 60 días. {{source}}.",
-    "short": "Depende de qué se implemente: el plazo se define contigo en la propuesta, junto con el alcance y el costo.",
+    "a": "Implementar un sistema toma de 7 a 30 días, según el alcance. Cuándo se notan los resultados depende de qué se implemente y de tu operación; lo vemos contigo en la propuesta que sigue a la Discovery Session. Como referencia, una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días, y un e-commerce en la Ciudad de México redujo su costo por lead en 60 días: {{metric:ecom-cpl}}. {{source}}.",
+    "short": "La implementación toma de 7 a 30 días, según el alcance; los resultados dependen de qué se implemente y de tu operación.",
     "pages": [
       "/",
       "/servicios/",
@@ -222,7 +222,7 @@
   {
     "id": "G13",
     "q": "¿Qué es kain?",
-    "a": "kain es la sub-marca de agentes de IA de Ingeniak y también su plataforma, en app.kain.mx, donde las empresas tienen a sus agentes trabajando. Kain, el personaje, es la cara de esos agentes: atiende, agenda, confirma, da seguimiento y conecta sistemas en WhatsApp, Instagram y la web. No da consejo médico ni legal.",
+    "a": "kain es la sub-marca de agentes de IA de Ingeniak y también su plataforma, en app.kain.mx, donde las empresas tienen a sus agentes trabajando. Kain, el personaje, es la cara de esos agentes: atiende, agenda, confirma, da seguimiento y conecta sistemas en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo. No da consejo médico ni legal.",
     "short": "La sub-marca de agentes de IA de Ingeniak y su plataforma, app.kain.mx.",
     "pages": [
       "/kain/",
@@ -253,7 +253,7 @@
     "id": "G15",
     "q": "¿Qué resultados han logrado sus clientes?",
     "a": "Algunos resultados confirmados: {{metric:dental-citas|full}} (clínica dental, Monterrey); tiempo de respuesta en WhatsApp {{metric:dental-respuesta|prose}} (misma clínica); {{metric:ecom-cpl|full}} (e-commerce, CDMX); {{metric:retail-conversiones}} en conversiones con Kommo e IA (retail multimarca); {{metric:horeca-roas}} sostenido (HoReCa); {{metric:logistica-procesos|full}} (logística); {{metric:salud-citas-mes|full}} (salud), y {{metric:tiempo-operativo}} de tiempo operativo en los primeros 90 días. {{source}}.",
-    "short": "Más citas, respuestas en segundos, menor costo por lead y más conversiones, cada cifra con su sector y su plazo.",
+    "short": "Más citas, respuestas en segundos, menor costo por lead y más conversiones, cada cifra con su sector y su fuente.",
     "pages": [
       "/preguntas-frecuentes/"
     ],
@@ -264,7 +264,7 @@
   {
     "id": "W01",
     "q": "¿Qué resultados ha dado un agente de IA en WhatsApp?",
-    "a": "En una clínica dental de Monterrey, el agente de IA bajó el tiempo de respuesta en WhatsApp {{metric:dental-respuesta|prose}} y la clínica logró {{metric:dental-citas}} más citas en 90 días. {{source}}.",
+    "a": "En una clínica dental de Monterrey, el agente de IA bajó el tiempo de respuesta en WhatsApp {{metric:dental-respuesta|prose}} y la clínica logró {{metric:dental-citas}} más citas en 90 días. El agente contesta, califica a cada paciente, le agenda su cita directo en el calendario, la confirma y le da seguimiento, a cualquier hora. {{source}}.",
     "short": "En una clínica dental de Monterrey, el agente bajó el tiempo de respuesta {{metric:dental-respuesta|prose}} y la clínica logró {{metric:dental-citas}} más citas en 90 días.",
     "pages": [
       "/servicios/agentes-ia-whatsapp/",
@@ -377,7 +377,7 @@
   {
     "id": "H02",
     "q": "¿Implementan GoHighLevel en español?",
-    "a": "Sí. Hacemos toda la implementación en español: la configuración de tu cuenta, los textos de tus embudos, mensajes y automatizaciones, y la capacitación de tu equipo. Además conectamos un agente de IA que atiende WhatsApp, Instagram o tu web y agenda en tus calendarios de GoHighLevel, para que la plataforma trabaje desde el primer día.",
+    "a": "Sí. Hacemos toda la implementación en español: la configuración de tu cuenta, los textos de tus embudos, mensajes y automatizaciones, y la capacitación de tu equipo. Además conectamos un agente de IA que atiende WhatsApp, Instagram, Facebook Messenger, el chat de tu web o el correo y agenda en tus calendarios de GoHighLevel, para que la plataforma trabaje desde el primer día.",
     "short": "Sí: configuración, embudos, mensajes, automatizaciones y capacitación, todo en español.",
     "pages": [
       "/gohighlevel/",
@@ -391,7 +391,7 @@
   {
     "id": "H03",
     "q": "¿Se puede conectar un agente de IA a GoHighLevel?",
-    "a": "Sí. Conectamos un agente de IA que atiende WhatsApp, Instagram o tu web, califica al prospecto, lo registra en GoHighLevel con su etapa y le agenda cita en tu calendario. Tu equipo recibe la conversación completa y entra solo cuando hace falta una persona: cerrar una venta, resolver un caso especial o atender una queja.",
+    "a": "Sí. Conectamos un agente de IA que atiende WhatsApp, Instagram, Facebook Messenger, el chat de tu web o el correo, califica al prospecto, lo registra en GoHighLevel con su etapa y le agenda cita en tu calendario. Tu equipo recibe la conversación completa y entra solo cuando hace falta una persona: cerrar una venta, resolver un caso especial o atender una queja.",
     "short": "Sí. El agente atiende, califica, registra en GoHighLevel y agenda en tu calendario.",
     "pages": [
       "/servicios/crm-con-ia/",
@@ -595,8 +595,8 @@
   {
     "id": "N12",
     "q": "¿Dónde trabaja Kain?",
-    "a": "Kain trabaja en WhatsApp, Instagram y tu sitio web. Registra cada conversación en Kommo o GoHighLevel y agenda las citas en tu calendario. Atiende 24/7 y, cuando una conversación necesita a una persona, se la pasa a tu equipo con el historial completo, para que nadie tenga que volver a preguntar lo mismo.",
-    "short": "En WhatsApp, Instagram y tu web, conectado a Kommo o GoHighLevel y a tu calendario.",
+    "a": "Kain trabaja en WhatsApp, Instagram, Facebook Messenger, el chat de tu sitio web y el correo. Registra cada conversación en Kommo o GoHighLevel y agenda las citas en tu calendario. Atiende 24/7 y, cuando una conversación necesita a una persona, se la pasa a tu equipo con el historial completo, para que nadie tenga que volver a preguntar lo mismo.",
+    "short": "En WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo, conectado a Kommo o GoHighLevel y a tu calendario.",
     "pages": [
       "/industrias/belleza-estetica/",
       "/kain/",
@@ -776,8 +776,8 @@
   {
     "id": "S05",
     "q": "¿Qué pasa si un paciente escribe por una urgencia?",
-    "a": "Kain no atiende urgencias médicas ni da indicaciones clínicas. Si un paciente describe un síntoma o una urgencia, se lo dice con claridad y pasa la conversación a tu equipo con el contexto. Qué le indica mientras tanto, como a qué número llamar o a dónde acudir, lo define tu clínica y lo dejamos escrito en el guion del agente.",
-    "short": "No atiende urgencias: se lo dice al paciente y pasa la conversación a tu equipo; las indicaciones las define tu clínica.",
+    "a": "Kain no atiende urgencias médicas ni da indicaciones clínicas. Si un paciente describe un síntoma o una urgencia, se lo dice con claridad, avisa en tiempo real al doctor o a la persona que definas y le pasa la conversación con el contexto. Qué le indica al paciente mientras tanto, como a qué número llamar o a dónde acudir, lo define tu clínica y lo dejamos escrito en el guion del agente.",
+    "short": "No atiende urgencias: avisa en tiempo real al doctor y pasa la conversación a tu equipo; las indicaciones las define tu clínica.",
     "pages": [
       "/industrias/salud/"
     ],
@@ -785,6 +785,6 @@
     "validar": true,
     "editada": false,
     "nueva": true,
-    "_aprobacion": "Pregunta propia de salud (R2: al menos 4 por industria), nueva en la QA ronda 2. No se publica en el FAQ ni en el FAQPage hasta que una persona del cliente la apruebe; después el orquestador suma su id a sitemap.json → ind-salud.faq y aquí pasa a validar: false."
+    "_aprobacion": "Pregunta propia de salud (R2: al menos 4 por industria), nueva en la QA ronda 2. El 2026-10-19 (cliente en chat, respuesta 14) se confirmó que en la clínica de Monterrey el agente avisa al doctor en tiempo real cuando hay una urgencia; se sumó a la respuesta, pero la pregunta completa sigue sin aprobar. No se publica en el FAQ ni en el FAQPage hasta que una persona del cliente la apruebe; después el orquestador suma su id a sitemap.json → ind-salud.faq y aquí pasa a validar: false."
   }
 ]

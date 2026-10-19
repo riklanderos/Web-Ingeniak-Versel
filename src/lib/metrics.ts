@@ -1,7 +1,8 @@
 // src/lib/metrics.ts — ÚNICA fuente de cifras comerciales del sitio (ESPEC-v2 §2.10).
 // Ningún componente imprime una cifra comercial que no salga de aquí: usa <Metric id="…" />.
-// prose (opcional): la cifra redactada para una oración ({{metric:ID|prose}}). No se agrega periodo/ventana a una cifra
-// (retail-conversiones, horeca-roas, salud-citas-mes) hasta que el cliente lo confirme por escrito.
+// prose (opcional): la cifra redactada para una oración ({{metric:ID|prose}}). retail-conversiones, horeca-roas y
+// salud-citas-mes se publican tal cual, SIN periodo ni ventana: el cliente pidió publicarlas así (RESPUESTAS-CLIENTE
+// 2026-10-19 #1). No se inventa un plazo; las que ya lo traen (dental-citas, ecom-cpl) lo conservan.
 export const METRICS = {
   'dental-citas':        { value: '3.2×',                label: 'más citas en 90 días',      ctx: 'Clínica dental · Monterrey',     href: '/casos/clinica-dental-monterrey/', countable: false },
   'dental-respuesta':    { value: '8 min → 12 s',        label: 'tiempo de respuesta',       ctx: 'Clínica dental · Monterrey',     href: '/casos/clinica-dental-monterrey/', countable: false, prose: 'de 8 minutos a 12 segundos' },
@@ -9,7 +10,7 @@ export const METRICS = {
   'retail-conversiones': { value: '+340%',               label: 'conversiones',              ctx: 'Retail multimarca · Kommo + IA', href: '/casos/retail-multimarca-kommo/', countable: false },
   'horeca-roas':         { value: 'ROAS 4.8×',           label: 'sostenido',                 ctx: 'HoReCa',                         href: '/casos/horeca-roas/', countable: false },
   'logistica-procesos':  { value: '27',                  label: 'procesos automatizados',    ctx: 'Logística · n8n',                href: '/casos/logistica-n8n/', countable: true, from: 0 },
-  'salud-citas-mes':     { value: '12 → 47',             label: 'citas al mes en promedio',  ctx: 'Clientes del sector salud',      href: undefined, countable: false },
+  'salud-citas-mes':     { value: '12 → 47',             label: 'citas al mes en promedio',  ctx: 'Clientes de salud: odontología, medicina estética, quiropráctica y gastroenterología', href: undefined, countable: false },
   'tiempo-operativo':    { value: '−60%',                label: 'tiempo operativo',          ctx: 'Promedio, primeros 90 días',     href: undefined, countable: false },
   'ecom-tablero':        { value: '1 vista · 7 fuentes', label: 'tablero unificado',         ctx: 'E-commerce',                     href: '/casos/ecommerce-cdmx-costo-por-lead/', countable: false },
   'sistemas':            { value: '+73',                 label: 'sistemas en producción',    ctx: 'Agentes, CRM y automatizaciones',                       href: undefined, countable: false },

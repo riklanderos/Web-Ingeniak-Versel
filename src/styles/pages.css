@@ -852,6 +852,26 @@ body.hm #que-es .hm-quees__row{align-self:stretch;margin-top:var(--s-9)}
    Tamaño medido para que "Creamos el tráfico," no la toque de 1280 × 720 a 2560 × 1080; max-width es el seguro (parte línea). */
 body.hm #sistema.seq--pinned .seq__head .t-h2{font-size:min(42px,2.9vw,5.2svh);max-width:calc(34vw - (100vw - var(--frame)) / 2 - 24px)}
 @media (min-width:2000px){body.hm #sistema.seq--pinned .seq__head .t-h2{max-width:370px}}   /* ultra ancho: la placa se limita y se centra */
+/* Lede (respuesta #6: IA + equipo). Fijada comparte los 100svh con la estación activa → cuerpo compacto y más discreto
+   que la línea de la estación; ancho de 5 columnas (la tarjeta de lead aterriza más a la derecha). */
+body.hm #sistema .hm-sistema__lede{margin-top:var(--s-4)}
+body.hm #sistema.seq--pinned .hm-sistema__lede{margin-top:var(--s-3);font-size:min(16px,1.15vw,2.2svh);line-height:1.5;max-width:52ch;color:var(--muted)}
+/* Escritorios bajos (1280 × 720 … 1440 × 900): la estación más larga (Atender) pierde colchón vertical para que la lede
+   no la empuje contra el titular ni contra el riel. Medido sin traslape en 1280 × 720, 1366 × 768, 1280 × 800,
+   1536 × 864 y 1440 × 900. */
+@media (max-height:920px){
+  body.hm #sistema.seq--pinned .seq__head .t-h2{font-size:min(42px,2.9vw,4.8svh)}
+  body.hm #sistema.seq--pinned .hm-sistema__lede{margin-top:var(--s-2);font-size:min(15px,1.15vw,2.1svh);line-height:1.45}
+  body.hm #sistema.seq--pinned .seq__step{padding-block:var(--s-2)}
+  body.hm #sistema.seq--pinned .seq__body{gap:var(--s-3)}
+  body.hm #sistema.seq--pinned .seq__line{font-size:min(18px,2.3svh);line-height:1.45;max-width:44ch}
+}
+@media (max-height:800px){
+  body.hm #sistema.seq--pinned .seq__head .t-h2{font-size:min(42px,2.9vw,4.6svh)}
+  body.hm #sistema.seq--pinned .seq__body{gap:var(--s-2)}
+  body.hm #sistema.seq--pinned .seq__rail{margin-top:var(--s-4)}
+  body.hm #sistema.seq--pinned .seq__foot{margin-top:var(--s-3)}
+}
 .hm-seq-glow{display:none;position:absolute;z-index:-2;left:calc((100% - 100vw) / 2);right:calc((100% - 100vw) / 2);top:-140px;height:min(1040px,125svh);pointer-events:none;
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 8%,#000 72%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 8%,#000 72%,transparent 100%);
   background:radial-gradient(60% 46% at 26% 50%,rgb(60 170 255 / .24),rgb(60 170 255 / .17) 50%,transparent 82%)}

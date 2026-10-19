@@ -26,7 +26,7 @@
         "order": 1,
         "id": "hero",
         "name": "Portada",
-        "spec": "H1 + subtítulo 'Diseñamos e implementamos agentes de IA, CRM y automatizaciones conectados en un solo sistema que atiende, califica y cierra por ti, 24/7.' + Discovery + 'Escríbele a Kain' + línea de confianza 'Partner oficial de Kommo en LATAM · +73 sistemas en producción · 7 países'. Chips de cristal (Agente IA, CRM, Automatización, Datos) conectados por las ramas del isotipo.",
+        "spec": "H1 + subtítulo 'Diseñamos e implementamos agentes de IA, CRM y automatizaciones conectados en un solo sistema que atiende, califica y, según tu negocio, agenda o vende por ti, 24/7.' (como en home.json; nunca 'cierra por ti': RESPUESTAS-CLIENTE 2026-10-19 #4) + Discovery + 'Escríbele a Kain' + línea de confianza 'Partner oficial de Kommo en LATAM · +73 sistemas en producción · 7 países'. Chips de cristal (Agente IA, CRM, Automatización, Datos) conectados por las ramas del isotipo.",
         "cinematic": true,
         "image": {
           "file": "/img/cine/home-hero",
@@ -88,14 +88,14 @@
         "order": 4,
         "id": "que-es",
         "name": "¿Qué es Ingeniak?",
-        "spec": "Bloque definicional de 50 palabras citable tal cual (G01) + 'Ingeniak en datos': +73 sistemas, 7 países, 12 → 47 citas/mes (salud), −58% CPL en 60 días (e-commerce CDMX) + lista de los 7 países. Nota 'datos internos, octubre de 2026'.",
+        "spec": "Bloque definicional de 50 palabras citable tal cual (G01) + manifiesto: la frase 'No hacemos marketing.' no va tal cual (Ingeniak sí vende pauta, web y branding; RESPUESTAS-CLIENTE 2026-10-19 #5: mejorarla; copy: 'Nuestro marketing no termina en el clic. Termina en un sistema que atiende, da seguimiento y mide hasta la venta.') + 'Ingeniak en datos' (se queda, RESPUESTAS-CLIENTE 2026-10-19 #9): +73 sistemas, 7 países, 12 → 47 citas/mes (promedio de clientes de salud: odontología, medicina estética, quiropráctica y gastroenterología; sin periodo, #1–2), −58% CPL en 60 días (e-commerce CDMX) + lista de los 7 países. Nota 'datos internos, octubre de 2026'.",
         "cinematic": false
       },
       {
         "order": 5,
         "id": "sistema",
         "name": "El sistema Ingeniak",
-        "spec": "'Creamos el tráfico, lo convertimos y lo operamos automáticamente.' 5 etapas fijadas al scroll (Atraer, Atender, Organizar, Automatizar, Medir) con el motion graphic de Remotion (video/sistema-1920) sincronizado; cada etapa enlaza a su servicio.",
+        "spec": "H2 'Creamos el tráfico, lo convertimos y lo operamos con IA y con nuestro equipo.' (sin 'automáticamente': en la operación interviene todo el equipo, RESPUESTAS-CLIENTE 2026-10-19 #6). 5 etapas fijadas al scroll (Atraer, Atender, Organizar, Automatizar, Medir) con el motion graphic de Remotion (video/sistema-1920) sincronizado; cada etapa enlaza a su servicio.",
         "cinematic": true,
         "plate": {
           "id": [
@@ -160,7 +160,7 @@
         "order": 8,
         "id": "casos",
         "name": "Casos de éxito",
-        "spec": "'Sistemas reales, operando hoy mismo.' 5 tarjetas con la cifra como titular (3.2×, +340%, −58%, ROAS 4.8×, 27 procesos) → /casos/*; botón 'Ver todos los casos'.",
+        "spec": "'Sistemas reales, operando hoy mismo.' (confirmado: los cinco siguen activos, RESPUESTAS-CLIENTE 2026-10-19 #3) 5 tarjetas con la cifra como titular (3.2×, +340%, −58%, ROAS 4.8×, 27 procesos) → /casos/*; botón 'Ver todos los casos'.",
         "cinematic": true,
         "plate": {
           "id": [
@@ -218,7 +218,7 @@
         "order": 10,
         "id": "industrias",
         "name": "Industrias",
-        "spec": "8 tarjetas con imagen (Salud, Belleza, Nutrición, Finanzas, Inmobiliario, Industrial y logística, Retail y e-commerce, HoReCa) → /industrias/*.",
+        "spec": "8 tarjetas con imagen (Salud, Belleza, Nutrición, Finanzas, Inmobiliario, Industrial y logística, Retail y e-commerce, HoReCa) → /industrias/*. Cifra solo si metrics.ts tiene una real para ese sector; sin cifra donde no la hay (nunca inventada, RESPUESTAS-CLIENTE 2026-10-19 #10).",
         "cinematic": true,
         "plate": {
           "id": [
@@ -253,7 +253,7 @@
         "order": 11,
         "id": "equipo",
         "name": "El equipo",
-        "spec": "'Estrategas que construyen, operan y miden.' + 'No somos una agencia tradicional…' + 6 nombres y cargos en línea + enlace /nosotros/.",
+        "spec": "'Estrategas que construyen, operan y miden.' + 'No somos una agencia tradicional…' + nombres y cargos del equipo en línea + enlace /nosotros/. El texto no dice cuántas personas son (pueden ser más, RESPUESTAS-CLIENTE 2026-10-19 #7).",
         "cinematic": true,
         "image": {
           "file": "/img/cine/equipo-real",
@@ -286,7 +286,7 @@
         "order": 13,
         "id": "cta-final",
         "name": "Cierre",
-        "spec": "Cierre cinematográfico: \"30 minutos para ver tu operación como es, no como crees que es.\" + botón Discovery + WhatsApp + microcopy \"Sin costo · Sin compromiso · 30 minutos por Google Meet\". Imagen de la variante compartida A: KAIN de cuerpo completo saludando en el tercio derecho, texto a la izquierda.",
+        "spec": "Cierre cinematográfico con H2 propio, distinto del H1 de /discovery/ (esa frase se queda solo allá; RESPUESTAS-CLIENTE 2026-10-19 #8): la propuesta es el siguiente paso, la Discovery Session de 30 minutos sin costo (copy: 'Que tu negocio amanezca al día, aunque tú sí hayas dormido.'). La Power Session (90 min) es otra oferta con su propia propuesta: decisión abierta en materiales/v2/build/lanzamiento.md, no se menciona en el sitio. + botón Discovery + WhatsApp + microcopy \"Sin costo · Sin compromiso · 30 minutos por Google Meet\". Imagen de la variante compartida A: KAIN de cuerpo completo saludando en el tercio derecho, texto a la izquierda.",
         "cinematic": true,
         "image": {
           "file": "/img/cine/cta-amanecer",
@@ -6301,14 +6301,14 @@
         "order": 2,
         "id": "ficha",
         "name": "Ficha del caso",
-        "spec": "Tabla: sector, ciudad, servicio, herramientas, plazo, cifra. Confirmado: sector salud (clínica dental), Monterrey, N.L.; agente de IA en WhatsApp; 3.2× citas en 90 días; respuesta de 8 min a 12 s. Lo demás: [POR CONFIRMAR CON CLIENTE] o se omite.",
+        "spec": "Tabla: sector, ciudad, servicio, herramientas, cifra. Confirmado (RESPUESTAS-CLIENTE 2026-10-19 #13–16, #19): sector salud (clínica dental), Monterrey, N.L.; agente de IA en WhatsApp; CRM de la clínica: GoHighLevel (herramienta del cliente, no partner); 3.2× citas en 90 días; respuesta de 8 min a 12 s (cifras de WhatsApp). Plazo: no se afirma el de este caso; si se menciona, solo el rango general de Ingeniak (de 7 a 30 días según lo robusto del proyecto), rotulado como general.",
         "cinematic": false
       },
       {
         "order": 3,
         "id": "punto-partida",
         "name": "Punto de partida",
-        "spec": "Situación inicial con números del cliente [POR CONFIRMAR]. Borrador permitido: 'Antes tardaban ocho minutos en contestar un WhatsApp' (dato confirmado: 8 min de respuesta).",
+        "spec": "Solo con el dato confirmado: antes tardaban ocho minutos en contestar un WhatsApp (dental-respuesta). El cliente no tiene más números de la situación inicial (RESPUESTAS-CLIENTE 2026-10-19 #17): no se piden ni se inventan.",
         "cinematic": false
       },
       {
@@ -6323,7 +6323,7 @@
         "order": 5,
         "id": "implementacion",
         "name": "Qué implementamos",
-        "spec": "Agente conversacional que califica, agenda citas y da seguimiento, conectado al CRM (Kommo o GoHighLevel por confirmar).",
+        "spec": "Agente de IA en WhatsApp que contesta, califica, agenda directo en el calendario, confirma citas, da seguimiento, atiende 24/7 y notifica al doctor en tiempo real cuando hay una urgencia; conectado a GoHighLevel, el CRM de la clínica (RESPUESTAS-CLIENTE 2026-10-19 #14–15). Kain también funciona en Instagram, Facebook Messenger, chat web y correo (#19), pero las cifras del caso son de WhatsApp.",
         "cinematic": false
       },
       {
@@ -6361,7 +6361,7 @@
         "order": 7,
         "id": "vktor",
         "name": "Cómo lo hicimos con VKTOR™",
-        "spec": "Las 5 fases con lo que pasó en cada una; solo hitos confirmados por el equipo, si no hay, mostrar las fases genéricas con enlace /metodologia/.",
+        "spec": "Las 5 fases genéricas con enlace /metodologia/: no hay hitos por fase de este caso (RESPUESTAS-CLIENTE 2026-10-19 #18).",
         "cinematic": false
       },
       {
@@ -6460,7 +6460,8 @@
         "punto-partida",
         "implementacion"
       ],
-      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando."
+      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando.",
+      "confirmado": "2026-10-19 · materiales/v2/RESPUESTAS-CLIENTE-2026-10-19.md #13–19: ficha e implementación confirmadas por escrito; punto de partida solo con el dato confirmado (8 min de respuesta). El caso es completo e indexable cuando copy marca \"publishGate\": { \"ok\": true } en src/content/paginas/caso-dental.json (único interruptor que leen CaseTemplate, indexacion.mjs, astro.config, llms y check-*)."
     }
   },
   {
@@ -8083,7 +8084,7 @@
         "order": 3,
         "id": "manifiesto",
         "name": "Manifiesto",
-        "spec": "'Eso ya no es marketing. Es un sistema de dominación comercial. Creamos el tráfico, lo convertimos y lo operamos automáticamente.' + 'Construimos empresarios libres, no héroes cansados.'",
+        "spec": "Manifiesto alineado con el inicio: el marketing es una pieza del sistema, no el producto (RESPUESTAS-CLIENTE 2026-10-19 #5); creamos el tráfico, lo convertimos y lo operamos con IA y con nuestro equipo (sin 'automáticamente', #6). + 'Construimos empresarios libres, no héroes cansados.'",
         "cinematic": true,
         "image": {
           "file": "/img/cine/nosotros-manifiesto",
@@ -8118,14 +8119,14 @@
         "order": 5,
         "id": "valores",
         "name": "Por qué Ingeniak",
-        "spec": "4 valores: Todo conectado (no trabajamos en silos: tu CRM habla con tus anuncios y tus agentes cierran ventas) · Velocidad + estrategia (ejecutamos rápido porque pensamos antes) · Data first (todo se conecta a tableros en tiempo real) · Soporte real (estratega asignado y acceso directo al equipo después del lanzamiento).",
+        "spec": "4 valores: Todo conectado (no trabajamos en silos: tu CRM habla con tus anuncios y tus agentes agendan o venden según tu negocio) · Velocidad + estrategia (ejecutamos rápido porque pensamos antes) · Data first (todo se conecta a tableros en tiempo real) · Soporte real (estratega asignado y acceso directo al equipo después del lanzamiento).",
         "cinematic": false
       },
       {
         "order": 6,
         "id": "equipo",
         "name": "El equipo",
-        "spec": "6 tarjetas con foto real, nombre, cargo y una línea: Rik Landeros (Director de Estrategia Comercial), Alonso Vega (Arquitecto de IA y Automatización), César Ovalle (Director Creativo), Richard Vela (Medios de Performance), Andy Pizano (Administración y Finanzas), Marcos González (Líder Comercial). LinkedIn de cada uno [POR CONFIRMAR].",
+        "spec": "Una tarjeta por persona con foto real, nombre, cargo y una línea (el texto no dice cuántas son, RESPUESTAS-CLIENTE 2026-10-19 #7; cada persona confirma su cargo y su línea). Hoy: Rik Landeros (Director de Estrategia Comercial), Alonso Vega (Arquitecto de IA y Automatización), César Ovalle (Director Creativo), Richard Vela (Medios de Performance), Andy Pizano (Administración y Finanzas), Marcos González (Líder Comercial). LinkedIn de cada uno [POR CONFIRMAR].",
         "cinematic": false
       },
       {

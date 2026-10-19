@@ -8,11 +8,12 @@
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE PREGUNTAS · S02, S03, S04 y S05 (propias de salud; R2 pide al menos cuatro por industria): redacción nueva, con validar: true en faq.json, así que hoy no salen en el acordeón ni en el FAQPage. S05 (urgencias) es nueva en la ronda 2. Al aprobarse, el orquestador suma sus ids a sitemap.json → ind-salud.faq y pasan a validar: false. S01 también sigue en validar y ya no alimenta la definición.",
-    "FAQ DISTINTA DE D · W01 (vuelve al texto de D con las cifras como token; se quitó 'El agente califica a cada paciente y agenda su cita…', que el caso no tiene confirmado), W02 (agrega mover de etapa, crear tareas, avisar y 'Cada conversación queda registrada en tu CRM.'), N01 (agrega el paso a tu equipo con el contexto completo) y G07 (agrega 'No publicamos paquetes cerrados…'). G02 ya no está en esta página.",
-    "CAMBIO DE AFIRMACIÓN · cifras.lede: ya no promete plazo en las tres cifras; ahora: 'con su fuente y, cuando está confirmado, el plazo en que se midieron' (salud-citas-mes no tiene plazo confirmado).",
+    "FAQ DISTINTA DE D · W01 (texto de D con las cifras como token; desde el 2026-10-19 vuelve lo que hace el agente en la clínica, ya confirmado: contesta, califica, agenda directo en el calendario, confirma y da seguimiento, a cualquier hora), W02 (agrega mover de etapa, crear tareas, avisar y 'Cada conversación queda registrada en tu CRM.'), N01 (agrega el paso a tu equipo con el contexto completo) y G07 (agrega 'No publicamos paquetes cerrados…'). G02 ya no está en esta página.",
+    "CAMBIO DE AFIRMACIÓN · cifras.lede (2026-10-19): sin reserva de plazo y sin prometer plazo en las tres cifras (salud-citas-mes no lo tiene en metrics.ts). Ahora: 'Tres cifras del sector salud, cada una con su fuente: dos de una clínica dental en Monterrey y un promedio de nuestros clientes de salud.' La fila del promedio dice qué especialidades entran.",
     "CAMBIO DE TEXTO · kain-sector.eyebrow 'Kain en tu clínica' (antes 'Simulación', que repetía el chip SIMULACIÓN del chat); automatizamos.h2 reordenado ('Seis tareas' / 'que hoy le quitan horas a tu recepción.'); hero.h1.lit = 'IA' (la misma palabra que la plantilla ya iluminaba).",
-    "PREGUNTA AL CLIENTE · periodo de medición de salud-citas-mes ('citas al mes en promedio'): ¿qué clientes entran en el promedio, contra qué periodo y en qué ventana? No se escribe hasta tenerlo.",
-    "PREGUNTA AL CLIENTE · si Ingeniak tiene clientes de salud además de la clínica dental de Monterrey (salud-citas-mes los promedia), ¿se puede decir de qué tipo son (consultorios médicos, especialidades, fisioterapia) sin nombrarlos?",
+    "RESUELTO 2026-10-19 · cliente en chat · (1) periodo de medición de salud-citas-mes: 'Solo ponlo'. La cifra sale tal como está en metrics.ts, sin reserva de plazo y sin inventar ventana.",
+    "RESUELTO 2026-10-19 · cliente en chat · (2) el promedio de salud-citas-mes incluye clientes de odontología, medicina estética, quiropráctica y gastroenterología (sin nombrarlos). Se dice en cifras.rows[2].context ('Clientes de salud: odontología, medicina estética, quiropráctica y gastroenterología', igual al ctx de metrics.ts que pinta el Montage), en cifras.lede y en definicion.body, que ya no inventa tipos (antes: 'consultorio médico, clínica de especialidades o centro de fisioterapia').",
+    "RESUELTO 2026-10-19 · cliente en chat · (14) en la clínica de Monterrey el agente avisa al doctor en tiempo real cuando hay una urgencia. kain-sector.limite y datos (Escalamiento a una persona) lo dicen como regla que se define con cada clínica; S05 (urgencias, sigue en validar) lo incorpora.",
     "VALIDACIÓN LEGAL · sección 'Tus datos': revisar la redacción con el asesor legal del cliente antes de publicar. Desde la ronda 2 ya no describe cómo trabaja Kain hoy con datos de salud (consentimiento al iniciar, aviso citado y enlazado, responsabilidad de la clínica): lo presenta como reglas que se definen con cada clínica antes de encender el agente. La única afirmación de comportamiento es la de N01 (aprobada en D): no da consejo médico ni legal.",
     "CAMBIO DE AFIRMACIÓN (QA ronda 1) · definicion: el texto ya no sale de S01 (validar: true, se publicaba igual). Ahora es texto de la página armado solo con lo que dicen G02 y N01, aprobadas en D: entiende, responde con tu información, agenda, confirma, da seguimiento, registra en tu CRM y no da consejo médico.",
     "CAMBIO DE TEXTO (QA ronda 1) · faq: orden S02–S05 primero (en validar), luego N01, W01, W02 y G07; sale G02. Mientras S02–S05 no se aprueben, el acordeón muestra 4 preguntas compartidas. Cuando se aprueben, recomendamos dejar solo N01 y G07 de las compartidas."
@@ -42,7 +43,7 @@
         "_nota": "Texto de la página armado solo con lo que ya dicen G02 y N01 (aprobadas en D). Ya no sale de S01, que sigue en validar: true (QA ronda 1)."
       },
       "body": [
-        "Funciona igual en una clínica dental, un consultorio médico, una clínica de especialidades o un centro de fisioterapia: cambia el guion, no el sistema. Kain trabaja con tus servicios, tus horarios y tus reglas de agenda, y tu equipo decide qué preguntas se quedan siempre con una persona."
+        "Ya funciona en clínicas de odontología, medicina estética, quiropráctica y gastroenterología: cambia el guion, no el sistema. Kain trabaja con tus servicios, tus horarios y tus reglas de agenda, y tu equipo decide qué preguntas se quedan siempre con una persona."
       ]
     },
     "dolores": {
@@ -100,7 +101,7 @@
       "h2": { "text": "Así trabaja Kain", "soft": "en tu clínica." },
       "lede": "Un paciente escribe de noche para pedir una limpieza. Kain le ofrece dos horarios, resuelve lo que le toca, confirma y deja la cita en tu CRM.",
       "chat": { "mode": "registered", "script": "salud" },
-      "limite": "Kain no da diagnósticos ni consejo médico. Cuando la pregunta es clínica, lo dice con claridad y se la pasa a tu equipo.",
+      "limite": "Kain no da diagnósticos ni consejo médico. Cuando la pregunta es clínica, lo dice con claridad y se la pasa a tu equipo; si es una urgencia, avisa en tiempo real a quien defina tu clínica, por ejemplo, al doctor.",
       "note": "Ejemplo ilustrativo: la conversación y las horas no son datos de un caso."
     },
     "cifras": {
@@ -108,11 +109,11 @@
       "rail": "Resultados",
       "eyebrow": "Resultados",
       "h2": { "text": "Lo que ya pasó", "soft": "en clínicas reales." },
-      "lede": "Tres cifras del sector salud, con su fuente y, cuando está confirmado, el plazo en que se midieron.",
+      "lede": "Tres cifras del sector salud, cada una con su fuente: dos de una clínica dental en Monterrey y un promedio de nuestros clientes de salud.",
       "rows": [
         { "metricId": "dental-citas", "context": "Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
         { "metricId": "dental-respuesta", "context": "Tiempo de respuesta en WhatsApp · misma clínica", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
-        { "metricId": "salud-citas-mes", "context": "Promedio de clientes de Ingeniak del sector salud" }
+        { "metricId": "salud-citas-mes", "context": "Clientes de salud: odontología, medicina estética, quiropráctica y gastroenterología" }
       ],
       "sourceNote": true,
       "links": [{ "label": "Lee el caso de la clínica dental", "href": "/casos/clinica-dental-monterrey/" }]
@@ -137,7 +138,7 @@
       "items": [
         { "title": "Consentimiento", "line": "En qué momento de la conversación ve el paciente tu aviso de privacidad y qué pasa si decide no continuar." },
         { "title": "Solo lo necesario", "line": "Qué datos pide Kain para agendar. Nuestra propuesta de partida: nombre, teléfono y motivo general de la cita; nada de expedientes ni estudios." },
-        { "title": "Escalamiento a una persona", "line": "Qué temas pasan siempre a tu equipo, como síntomas, urgencias, dudas clínicas o quejas, y con qué contexto." },
+        { "title": "Escalamiento a una persona", "line": "Qué temas pasan siempre a tu equipo (síntomas, urgencias, dudas clínicas o quejas), con qué contexto, y a quién avisa Kain en tiempo real si hay una urgencia." },
         { "title": "Sin consejo médico ni legal", "line": "Kain atiende, agenda, confirma y da seguimiento. No da consejo médico ni legal." },
         { "title": "Tu aviso, tus reglas", "line": "Qué dice tu aviso de privacidad y quién responde por los datos lo define tu clínica con su asesor legal; nosotros configuramos a Kain con esas reglas." }
       ],

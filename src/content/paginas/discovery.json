@@ -17,7 +17,8 @@
     "CAMBIO DE TEXTO (QA ronda 1) · que-es: 'La llamada no incluye grabación ni mapa de procesos.' (v1: '…ni documentos', chocaba con la propuesta que se envía después) y 'No es el proyecto de consultoría: es el descubrimiento previo.' (v1: 'No es consultoría', chocaba con el servicio de Consultoría en IA).",
     "CAMBIO DE TEXTO (QA ronda 1) · secundario 'Escríbele a Kain' en portada y FAQ (regla de marca; antes 'Escríbenos por WhatsApp'); el waMessage de la página no cambia. 'letra chica' queda una sola vez (eyebrow de pasos): #despues dice 'Sin presión: tú decides si avanzas.' y el eyebrow del FAQ es 'Lo que más nos preguntan'. El cierre ya no trae micro propia: toda la página usa la de §2.9. 'pymes' en minúscula en #para-quien.",
     "CAMBIO DE TEXTO · hero.chips y hero.micro quedan como _chips / _micro con _omitir (no se pintaban: repetían el eyebrow, el lede y la microcopia fija del primario).",
-    "PREGUNTA AL CLIENTE · firma 'Construimos empresarios libres, no héroes cansados.' (ESPEC §11-4).",
+    "RESUELTO 2026-10-19 · cliente en chat · (20) firma 'Construimos empresarios libres, no héroes cansados.' (cierre y pie de página): aprobada; se queda.",
+    "RESUELTO 2026-10-19 · cliente en chat · (8) el H1 de esta página ('30 minutos para ver tu operación como es, no como crees que es') ya no se repite en el cierre del inicio, que ahora tiene su propio H2. La Discovery Session (30 min) y la Power Session (90 min) son propuestas distintas; la Power Session no se menciona en esta página.",
     "DATO PENDIENTE · VSL: subtítulos .vtt y póster limpio (R14). La escena no promete subtítulos hasta que existan."
   ],
   "sections": {

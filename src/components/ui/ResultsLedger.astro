@@ -30,7 +30,10 @@ const usedServices = [...new Set(rows.map((r) => r.x?.service?.slug).filter(Bool
 const tid = id ?? 'registro';
 const here = Astro.url.pathname.replace(/\/?$/, '/');
 const isHere = (href?: string) => !!href && href.split('#')[0].replace(/\/?$/, '/') === here;
-const dashes = rows.some((r) => !r.x?.window || !r.x?.service);
+const noWin = rows.some((r) => !r.x?.window);
+const noSvc = rows.some((r) => !r.x?.service);
+// Leyenda del guion: describe lo que falta, sin prometer que se publicará (respuesta #1 del cliente: "Solo ponlo").
+const dashes = noWin && noSvc ? 'sin ventana ni servicio publicados' : noWin ? 'sin ventana publicada' : noSvc ? 'sin servicio publicado' : '';
 ---
 <div class:list={['ledger', cls]} id={id} data-ledger>
   {filters && (
@@ -65,5 +68,5 @@ const dashes = rows.some((r) => !r.x?.window || !r.x?.service);
       ))}
     </tbody>
   </table>
-  <p class="t-micro ledger__note" id={`${tid}-note`}>{SOURCE_NOTE}. Nombres de clientes anonimizados.{dashes && <span class="ledger__dash-note"> "—" = dato aún no publicado.</span>}</p>
+  <p class="t-micro ledger__note" id={`${tid}-note`}>{SOURCE_NOTE}. Nombres de clientes anonimizados.{dashes && <span class="ledger__dash-note"> "—" = {dashes}.</span>}</p>
 </div>

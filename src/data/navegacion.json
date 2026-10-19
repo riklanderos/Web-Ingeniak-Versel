@@ -84,7 +84,7 @@
         {
           "title": "Automatizar",
           "glyph": "automatizar",
-          "description": "Procesos que se mueven solos",
+          "description": "Lo repetitivo, automatizado",
           "items": [
             {
               "label": "Automatización con n8n",
@@ -180,7 +180,7 @@
         {
           "label": "Industrial y logística",
           "href": "/industrias/industrial-logistica/",
-          "description": "Operación que se mueve sola",
+          "description": "Procesos conectados, sin capturas a mano",
           "metricId": "logistica-procesos"
         },
         {

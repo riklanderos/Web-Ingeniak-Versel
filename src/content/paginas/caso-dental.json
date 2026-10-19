@@ -5,22 +5,27 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
   "actualizado": "2026-10-19",
+  "publishGate": {
+    "ok": true,
+    "fuente": "cliente en chat, 2026-10-19",
+    "_nota": "Puerta R2 confirmada por escrito (materiales/v2/RESPUESTAS-CLIENTE-2026-10-19.md, respuestas 13–16 y 19): ficha (sector, ciudad, servicio, canal, CRM GoHighLevel, funciones del agente, 24/7, aviso de urgencias), punto de partida (solo el dato confirmado: ocho minutos de respuesta, dental-respuesta) e implementación. El plazo de este caso no se afirma: solo el rango general de Ingeniak (de 7 a 30 días, según el alcance) en #vktor. CaseTemplate e indexacion.mjs leen publishGate.ok."
+  },
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
-    "PREGUNTA AL CLIENTE · publishGate (R2): ficha, punto de partida e implementación tienen que confirmarse por escrito. Mientras no lo estén, la página sale como 'caso breve' (noindex,follow) y el copy no lleva publishGate.ok. ¿Nos confirmas esos tres bloques o aceptas el caso breve?",
-    "CAMBIO DE AFIRMACIÓN (QA ronda 1, bloqueante) · mientras la clínica no lo confirme por escrito, la página solo afirma lo que respaldan las dos cifras (dental-citas y dental-respuesta) y su fuente. Se quitaron: 'Horario de atención 24/7' (ficha), 'de día y de noche' (lede de portada), 'atendiendo, calificando y agendando a cualquier hora' (entradilla), 'califica', 'le agenda su cita', 'le da seguimiento' y 'a cualquier hora del día' (implementación), 'propone horarios y aparta la cita' (cuerpo), la frase de esperas 'de horas' de noche o en fin de semana (reto) y 'Cita agendada por Kain' (agenda simulada, ahora 'Cita nueva'). Si la clínica confirma que el agente atiende 24/7, califica, agenda directo en su calendario y da seguimiento, vuelven tal cual.",
-    "CAMBIO DE AFIRMACIÓN · implementacion: los nodos 'Agenda' y 'Seguimiento' pasan a confirmed=false (no se pintan) junto con 'CRM'. El diagrama publica solo lo respaldado por las cifras: WhatsApp de la clínica → agente de IA → medición (tiempo de respuesta y citas).",
-    "CAMBIO DE AFIRMACIÓN · ficha.note: antes 'Este reportaje publica solo datos confirmados.' (no era cierto con la puerta abierta); ahora 'El nombre de la clínica está anonimizado. Las cifras son datos internos de Ingeniak.'",
+    "CAMBIO DE AFIRMACIÓN (QA ronda 1) · lo que se quitó mientras la puerta R2 estaba abierta vuelve con la confirmación del 2026-10-19: 'Horario de atención 24/7' (ficha), 'de día y de noche' (lede de portada), 'a cualquier hora' (entradilla e implementación), 'califica', 'agenda', 'confirma' y 'da seguimiento' (entradilla, implementación y nodos), 'propone horarios y aparta la cita' (nodo Agenda y cuerpo) y 'Cita agendada por Kain' (agenda simulada; antes 'Cita nueva'). Lo que NO vuelve: la frase de esperas 'de horas' de noche o en fin de semana (reto), porque es situación inicial sin dato (respuesta 17).",
+    "CAMBIO DE AFIRMACIÓN · implementacion: nodos confirmados (2026-10-19) WhatsApp de la clínica → Agente de IA (Kain) → Agenda → CRM: GoHighLevel → Seguimiento → Urgencia: aviso al doctor. Sale el nodo 'Medición' (con seis nodos el diagrama se lee en 1024 px; la medición queda en el cuerpo).",
+    "CAMBIO DE AFIRMACIÓN · ficha.note: antes 'Este reportaje publica solo datos confirmados.'; ahora 'El nombre de la clínica está anonimizado. Las cifras son datos internos de Ingeniak.'",
     "CAMBIO DE TEXTO (QA ronda 1, repetición) · ficha.deck sin cifras (las dos ya están en la ficha); cifra.line eliminada (el pie de CaseFigure ya imprime las dos cifras con su nota); margen del reto sin la cifra; resultado.quote en una sola oración con el token de prosa ('…y bajó su tiempo de respuesta de 8 minutos a 12 segundos'), como el texto de D.",
-    "CAMBIO DE TEXTO · replicar: las tres ideas ahora salen de lo confirmado (responder en segundos, medir antes y después, empezar por el canal donde ya te escriben). Antes: 'Confirma y recuerda automáticamente' y 'Registra a cada paciente en tu CRM', que sugerían que la clínica lo hizo. VKTOR: las fases hablan de 'tu clínica' (ejemplo para quien lee), no de la clínica del caso.",
+    "CAMBIO DE TEXTO (2026-10-19) · replicar vuelve a las tres ideas de la ESPEC (§5.4 #08: responder en segundos · confirmar y dar seguimiento · registrar cada paciente en el CRM), ahora confirmadas para esta clínica. Antes: 'Mide antes y después' y 'Empieza donde ya te escriben' (la idea de medir queda dentro de la fila 03). VKTOR: las fases siguen hablando de 'tu clínica' (no hay hitos de este proyecto, respuesta 18).",
     "CAMBIO DE TEXTO · CTA primario de portada y cierre: 'Agenda tu Discovery Session' (§2.9 y regla de marca; antes 'Quiero un sistema así: agenda tu Discovery'). La idea queda en el eyebrow del cierre: 'Un sistema así para tu negocio'.",
-    "PREGUNTA AL CLIENTE · ¿qué hace el agente en esta clínica además de contestar? (¿califica, agenda directo en el calendario, confirma, da seguimiento, horario 24/7?) Con la confirmación por escrito vuelven los nodos 'Agenda' y 'Seguimiento' y las frases de la portada.",
-    "PREGUNTA AL CLIENTE · CRM que usa la clínica (Kommo o GoHighLevel): sin confirmar. El nodo 'CRM' del diagrama va con confirmed=false y no se pinta.",
-    "PREGUNTA AL CLIENTE · herramientas y plazo de implementación: sin confirmar; la ficha los omite.",
-    "PREGUNTA AL CLIENTE · ¿contra qué periodo se compara 'dental-citas' (más citas en 90 días: antes y después, misma ventana)? Hace falta para explicarlo en el texto.",
-    "PREGUNTA AL CLIENTE · situación inicial con números de la clínica (citas al mes antes, volumen de mensajes, tamaño del equipo, mensajes de noche): sin confirmar; el texto no los menciona.",
-    "PREGUNTA AL CLIENTE · hitos reales del proyecto por fase de VKTOR™: sin confirmar; la sección muestra las fases genéricas como ejemplo para la clínica de quien lee y enlaza a /metodologia/.",
-    "PREGUNTA AL CLIENTE · canales además de WhatsApp (Instagram, web) en este caso: sin confirmar; el texto solo habla de WhatsApp.",
+    "RESUELTO 2026-10-19 · cliente en chat · (13) confirmación del caso: lo quieres completo e indexado (ya está en Google Search Console). publishGate.ok = true con fuente 'cliente en chat, 2026-10-19'; la página deja de ser caso breve (sin noindex) y vuelven punto de partida, implementación, resultado y VKTOR.",
+    "RESUELTO 2026-10-19 · cliente en chat · (14) qué hace el agente: contesta, califica, agenda directo en el calendario, confirma citas, da seguimiento y atiende 24/7; además avisa al doctor en tiempo real cuando hay una urgencia. Va en portada (lede), ficha (filas 'Qué hace el agente', 'Horario de atención' y 'Urgencias'), entradilla, implementación (nodos y cuerpo) y replicar.",
+    "RESUELTO 2026-10-19 · cliente en chat · (15) CRM de la clínica: GoHighLevel (herramienta de la clínica, no partner). Fila 'CRM' de la ficha y nodo 'CRM: GoHighLevel' con su logo.",
+    "RESUELTO 2026-10-19 · cliente en chat · (16) plazo: 'Implementamos de 7 a 30 días según lo robusto del proyecto' (rango general de Ingeniak). Va en vktor.lede, dicho de una implementación en general; la página no dice cuánto tardó este caso.",
+    "RESUELTO 2026-10-19 · cliente en chat · (1) periodo de dental-citas: 'Solo ponlo'. Se publica tal como está en metrics.ts ('más citas en 90 días'); la ficha conserva 'Ventana de medición: 90 días'.",
+    "RESUELTO 2026-10-19 · cliente en chat · (17) situación inicial con números: no aplica (no hay más datos). El punto de partida se cuenta solo con los ocho minutos de respuesta (dental-respuesta) y en tono cualitativo.",
+    "RESUELTO 2026-10-19 · cliente en chat · (18) hitos reales por fase de VKTOR™: no aplica. La sección muestra las fases genéricas aplicadas a la clínica de quien lee y enlaza a /metodologia/.",
+    "RESUELTO 2026-10-19 · cliente en chat · (19) canales: Kain también atiende Instagram, Facebook Messenger, el chat de una web y el correo (capacidad general). En este caso las cifras son de WhatsApp: la ficha dice 'Canal: WhatsApp' y el cuerpo de implementación aclara que los otros canales son capacidad del agente, no parte de la medición.",
     "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
   ],
   "sections": {
@@ -29,7 +34,7 @@
       "rail": "Portada",
       "h1": { "kicker": "Clínica dental en Monterrey:", "metricId": "dental-citas", "text": "más citas en 90 días con un agente de IA" },
       "chips": ["Salud", "Monterrey, N.L.", "Agente de IA en WhatsApp", "90 días"],
-      "lede": "Tiempo de respuesta en WhatsApp: {{metric:dental-respuesta}}.",
+      "lede": "Un agente de IA contesta, califica y agenda a sus pacientes por WhatsApp, de día y de noche. Tiempo de respuesta: {{metric:dental-respuesta}}.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio." },
       "illus": "Imagen ilustrativa del sector"
@@ -39,14 +44,18 @@
       "rail": "Contexto",
       "eyebrow": "Ficha del caso",
       "entity": [
-        { "term": "Sector", "value": "Salud · clínica dental" },
-        { "term": "Ciudad", "value": "Monterrey, Nuevo León" },
-        { "term": "Servicio", "value": "Agente de IA para WhatsApp", "href": "/servicios/agentes-ia-whatsapp/" },
-        { "term": "Canal", "value": "WhatsApp" },
-        { "term": "Ventana de medición", "value": "90 días" },
+        { "term": "Sector", "value": "Salud · clínica dental", "confirmed": true },
+        { "term": "Ciudad", "value": "Monterrey, Nuevo León", "confirmed": true },
+        { "term": "Servicio", "value": "Agente de IA para WhatsApp", "href": "/servicios/agentes-ia-whatsapp/", "confirmed": true },
+        { "term": "Canal", "value": "WhatsApp", "confirmed": true },
+        { "term": "CRM", "value": "GoHighLevel", "href": "/gohighlevel/", "confirmed": true },
+        { "term": "Qué hace el agente", "value": "Contesta, califica, agenda directo en el calendario, confirma citas y da seguimiento", "confirmed": true },
+        { "term": "Horario de atención", "value": "24/7", "confirmed": true },
+        { "term": "Urgencias", "value": "Aviso al doctor en tiempo real", "confirmed": true },
+        { "term": "Ventana de medición", "value": "90 días", "confirmed": true },
         { "term": "Cifras", "value": "{{metric:dental-citas|full}} · tiempo de respuesta: {{metric:dental-respuesta}}" }
       ],
-      "deck": "Una clínica dental de Monterrey puso un agente de IA a contestar su WhatsApp. Este reportaje sigue dos números: cuánto tardaba en responder y cuántas citas sumó en 90 días.",
+      "deck": "Una clínica dental de Monterrey puso un agente de IA a atender su WhatsApp a cualquier hora: contesta, califica, agenda, confirma y da seguimiento, y avisa al doctor si llega una urgencia. Este reportaje sigue dos números: cuánto tardaba en responder y cuántas citas más logró en 90 días.",
       "byline": "Por el equipo de Ingeniak",
       "note": "El nombre de la clínica está anonimizado. Las cifras son datos internos de Ingeniak."
     },
@@ -81,28 +90,21 @@
       "_componente": "SystemFlow (los nodos con confirmed=false no se publican)",
       "rail": "Solución",
       "eyebrow": "Qué implementamos",
-      "h2": { "text": "Un agente de IA en el WhatsApp de la clínica,", "soft": "contestando en segundos." },
-      "lede": "Conectamos un agente conversacional al WhatsApp de la clínica para que cada paciente reciba respuesta en segundos.",
+      "h2": { "text": "Un agente de IA en el WhatsApp de la clínica,", "soft": "conectado a su agenda y a su CRM." },
+      "lede": "Conectamos un agente de IA al WhatsApp de la clínica, a su calendario y a GoHighLevel, su CRM. Este es el recorrido de cada mensaje, de la primera pregunta a la cita confirmada.",
       "nodes": [
-        { "label": "WhatsApp de la clínica", "line": "El paciente escribe como le escribiría a la recepción.", "logos": ["whatsapp"], "confirmed": true },
-        { "label": "Agente de IA (Kain)", "line": "Contesta cada mensaje en segundos.", "confirmed": true },
-        { "label": "Medición", "line": "Tiempo de respuesta y citas: las dos cifras de este reportaje.", "confirmed": true },
-        {
-          "label": "Agenda",
-          "line": "La cita queda apartada.",
-          "confirmed": false,
-          "_nota": "Sin confirmar por escrito (QA ronda 1): no se pinta hasta que la clínica confirme que el agente agenda directo."
-        },
-        { "label": "Seguimiento", "line": "Da seguimiento a cada paciente.", "confirmed": false, "_nota": "Sin confirmar por escrito (QA ronda 1): no se pinta." },
-        {
-          "label": "CRM",
-          "line": "Cada paciente registrado en su etapa.",
-          "confirmed": false,
-          "_nota": "Kommo o GoHighLevel sin confirmar: no se pinta hasta tener el dato."
-        }
+        { "label": "WhatsApp de la clínica", "line": "El paciente escribe como le escribiría a la recepción, a cualquier hora.", "logos": ["whatsapp"], "confirmed": true },
+        { "label": "Agente de IA (Kain)", "line": "Contesta en segundos y califica a cada paciente.", "confirmed": true },
+        { "label": "Agenda", "line": "Propone horarios y aparta la cita directo en el calendario de la clínica.", "confirmed": true },
+        { "label": "CRM: GoHighLevel", "line": "Cada paciente queda registrado con su conversación.", "logos": ["gohighlevel"], "confirmed": true },
+        { "label": "Seguimiento", "line": "Confirma la cita antes de la fecha y da seguimiento a cada paciente.", "confirmed": true },
+        { "label": "Urgencia: aviso al doctor", "line": "Si un paciente escribe por una urgencia, el doctor recibe el aviso en tiempo real.", "confirmed": true }
       ],
       "body": [
-        "A diferencia de un chatbot de menús, un agente de IA no obliga al paciente a elegir entre botones: entiende lo que escribe y le contesta en lenguaje natural, con la información que la clínica le dio."
+        "A diferencia de un chatbot de menús, un agente de IA no obliga al paciente a elegir entre botones: entiende lo que escribe y le contesta en lenguaje natural, con la información que la clínica le dio.",
+        "Cuando alguien pide cita, el agente le propone horarios, aparta la que elige directo en el calendario de la clínica y deja al paciente registrado en GoHighLevel. Antes de la fecha confirma la cita, y después le da seguimiento.",
+        "El agente no da consejo médico. Si un paciente describe una urgencia, el doctor recibe el aviso en tiempo real, sin esperar a que alguien revise el chat.",
+        "Las dos cifras de este reportaje corresponden solo a la atención por WhatsApp. El mismo agente también puede atender Instagram, Facebook Messenger, el chat de un sitio web y el correo."
       ]
     },
     "resultado": {
@@ -113,18 +115,18 @@
       "quote": "Una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días con un agente de IA en WhatsApp y bajó su tiempo de respuesta {{metric:dental-respuesta|prose}}.",
       "sourceNote": true,
       "ui": {
-        "_nota": "Casillas de agenda que se encienden una a una sobre el panel de cristal. Llevan SIMULACIÓN y data-nosnippet.",
+        "_nota": "Casillas de agenda que se encienden una a una sobre el panel de cristal. Llevan SIMULACIÓN y data-nosnippet. 'Cita agendada por Kain' vuelve con la confirmación del 2026-10-19 (el agente agenda directo en el calendario).",
         "title": "Agenda de la semana",
         "days": ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-        "slot": "Cita nueva"
+        "slot": "Cita agendada por Kain"
       }
     },
     "vktor": {
-      "_componente": "VktorRail variant=phases (sin hitos confirmados: fases genéricas aplicadas a una clínica)",
+      "_componente": "VktorRail variant=phases (sin hitos del proyecto, respuesta 18: fases genéricas aplicadas a una clínica)",
       "rail": "VKTOR",
       "eyebrow": "Cómo lo hacemos con VKTOR™",
       "h2": { "text": "El mismo protocolo", "soft": "en cada proyecto." },
-      "lede": "Así se verían las cinco fases en tu clínica:",
+      "lede": "Así se verían las cinco fases en tu clínica. Una implementación de Ingeniak toma de 7 a 30 días, según el alcance del proyecto.",
       "phases": [
         {
           "letter": "V",
@@ -162,13 +164,13 @@
         },
         {
           "n": "02",
-          "title": "Mide antes y después",
-          "line": "Anota hoy cuánto tardas en contestar y cuántas citas entran al mes. Sin ese punto de partida, ninguna mejora se puede comprobar."
+          "title": "Confirma y da seguimiento",
+          "line": "Una cita agendada todavía puede perderse. En esta clínica, el agente la confirma antes de la fecha y da seguimiento sin que la recepción tenga que acordarse."
         },
         {
           "n": "03",
-          "title": "Empieza donde ya te escriben",
-          "line": "En este caso fue WhatsApp, donde ya llegaban los pacientes. Empieza por el canal que más mensajes te trae, no por uno nuevo."
+          "title": "Registra a cada paciente en tu CRM",
+          "line": "Aquí cada conversación queda en GoHighLevel. Tu equipo retoma sin volver a preguntar, y tienes con qué comparar el antes y el después."
         }
       ],
       "links": [{ "label": "Ver soluciones para salud", "href": "/industrias/salud/" }]
@@ -196,7 +198,7 @@
       "lede": "En la Discovery Session revisamos cómo llega hoy un cliente a tu agenda y te decimos qué parte de este sistema aplica a tu negocio.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio." },
-      "micro": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet"
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
     }
   }
 }

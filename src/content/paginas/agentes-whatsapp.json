@@ -9,19 +9,22 @@
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "FAQ DISTINTA DE D · G02: misma respuesta con sujeto explícito ('Un agente de IA para WhatsApp es…'); es también la definición de #definicion.",
     "FAQ DISTINTA DE D · G03: agrega 'Por eso puede atender conversaciones reales de venta y servicio, no solo preguntas previstas.'",
-    "FAQ W01: vuelve al texto de D (ronda 2), con las cifras como token y la de respuesta en prosa ('…bajó el tiempo de respuesta en WhatsApp de 8 minutos a 12 segundos…'). Se quitaron 'El agente califica a cada paciente y agenda su cita…' (el caso no lo tiene confirmado) y la afirmación de que el agente trabaja sin que intervenga ninguna persona.",
+    "FAQ W01: texto de D con las cifras como token y la de respuesta en prosa ('…bajó el tiempo de respuesta en WhatsApp de 8 minutos a 12 segundos…'). Desde el 2026-10-19 vuelve lo que hace el agente en la clínica, ya confirmado: 'contesta, califica a cada paciente, le agenda su cita directo en el calendario, confirma y da seguimiento, a cualquier hora'. Sigue fuera la afirmación de que el agente trabaja sin que intervenga ninguna persona.",
     "FAQ DISTINTA DE D · W02: agrega 'También puede mover al prospecto de etapa, crear tareas y avisar a la persona indicada cuando hace falta intervenir. Cada conversación queda registrada en tu CRM.'",
     "FAQ DISTINTA DE D · G09: agrega el criterio de elección (calidad de las respuestas, velocidad y costo de uso) y 'Si más adelante conviene otro modelo, lo evaluamos con tus propias conversaciones.'",
     "FAQ DISTINTA DE D · W03: agrega 'Lo que más mueve el precio son los canales que atiende el agente, sus integraciones y el volumen de conversaciones.'",
-    "CAMBIO DE AFIRMACIÓN · casos.lede: ya no promete ciudad y plazo en todas las cifras ni que cada sistema siga operando hoy; ahora: 'Cifras de sistemas que implementamos, con su sector y, cuando está confirmado, la ciudad y el plazo de medición.'",
-    "CAMBIO DE TEXTO (QA ronda 1) · casos.eyebrow 'Sistemas reales, cifras medidas' (antes 'Agentes reales que ya operan': la fila de retail es un caso de CRM, no de agente, y 'ya operan' no está confirmado). Repetición de cifras: dental-respuesta sale de la fila de #definicion (queda en la portada, en prosa, y en el registro de #casos); dental-citas queda en #definicion y en el Montage. Cada cifra se ve dos veces fuera del FAQ.",
+    "CAMBIO DE AFIRMACIÓN · casos.lede (2026-10-19): sin la reserva 'cuando está confirmado, la ciudad y el plazo de medición' y con los sistemas activos (confirmado). Ahora: 'Cifras de sistemas que implementamos y que siguen operando, cada una con su sector y su fuente.'",
+    "CAMBIO DE TEXTO (QA ronda 1) · casos.eyebrow 'Sistemas reales, cifras medidas' (antes 'Agentes reales que ya operan': la fila de retail es un caso de CRM, no de agente, y 'ya operan' no está confirmado). Repetición de cifras: dental-respuesta sale de la fila de #definicion (queda en la portada, en prosa, y en el registro de #casos); dental-citas queda en #definicion y en el Montage. Cada cifra se ve dos veces fuera del FAQ. ACTUALIZACIÓN 2026-10-19 · cliente en chat · (3) los cinco sistemas siguen activos: 'ya operan' ya está confirmado. El eyebrow se queda como está porque la fila de retail sigue siendo un caso de CRM, no de agente.",
     "CAMBIO DE AFIRMACIÓN · definicion.metricRow.title: 'Resultados medidos en producción' (antes 'Agentes en producción', pero la fila incluye cifras que no son de un agente, como sistemas).",
     "CAMBIO DE AFIRMACIÓN · si-no reescrito para no repetir capacidades. 'Lo que no hace' pasa a tono neutro (son límites, no dolor). Confirmar que el servicio incluye: el paso a una persona 'con todo el historial' y el ajuste mensual 'con tus conversaciones reales' (fases Operate y Rise).",
     "CAMBIO DE AFIRMACIÓN · integraciones.note: 'Somos partner oficial de Kommo en Latinoamérica.' (antes 'Kommo es nuestra alianza oficial').",
     "CAMBIO DE TEXTO · hero.lede: la cifra dental-respuesta va en prosa con el token |prose ('bajó de 8 minutos a 12 segundos'), sin flecha dentro de la frase. casos: filas dental-citas y retail-conversiones (ESPEC §5.2 07). Cierre: sin 'Gratis, 1:1 y sin compromiso' en el lede y sin micro (repetía la microcopia del primario). Eyebrows nuevos en vs-chatbot, casos y cierre.",
-    "PREGUNTA AL CLIENTE · calendarios que se conectan además del de Kommo o GoHighLevel (¿Google Calendar, Outlook, otros?): confirmar con el equipo técnico antes de nombrar alguno. Hoy la página dice 'El calendario de tu CRM o el que ya usa tu equipo; lo dejamos definido en la fase Koncept.'",
-    "PREGUNTA AL CLIENTE · periodo de medición de retail-conversiones (fila de casos): ¿contra qué periodo se compara y en qué ventana? No se escribe hasta tenerlo.",
-    "PREGUNTA AL CLIENTE · fila de cifras de #definicion (la ESPEC pide dental-respuesta, dental-citas, salud-citas-mes y sistemas): desde la ronda 2 sale dental-respuesta para no repetirla 4 veces. 'sistemas' no es un resultado de agente. ¿Se queda así?"
+    "PREGUNTA AL CLIENTE · fila de cifras de #definicion (la ESPEC pide dental-respuesta, dental-citas, salud-citas-mes y sistemas): desde la ronda 2 sale dental-respuesta para no repetirla 4 veces. 'sistemas' no es un resultado de agente. ¿Se queda así? (No estaba en PREGUNTAS-CLIENTE.md; el 2026-10-19 aprobaste la fila parecida del inicio, 'Ingeniak en datos'.)",
+    "RESUELTO 2026-10-19 · cliente en chat · (12) calendarios: se queda 'El calendario de tu CRM o el que ya usa tu equipo; lo dejamos definido en la fase Koncept.' (no se nombra ningún otro).",
+    "RESUELTO 2026-10-19 · cliente en chat · (1) periodo de medición de retail-conversiones: 'Solo ponlo'. La cifra sale tal como está en metrics.ts, sin reserva de plazo (casos.lede reescrito).",
+    "RESUELTO 2026-10-19 · cliente en chat · (3) los sistemas de los casos siguen activos: casos.lede dice 'que siguen operando'.",
+    "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo. Cambian como-funciona (nodo 1 'Tus canales' con logos de WhatsApp, Instagram y Facebook), integraciones (grupo Canales con Facebook Messenger; línea 'Además, el chat de tu sitio web y el correo.') e inversion (fila Canales).",
+    "RESUELTO 2026-10-19 · cliente en chat · (16) plazo de implementación general de Ingeniak: de 7 a 30 días, según lo robusto del proyecto. inversion.remate: 'El alcance exacto lo definimos en tu Discovery Session, por Google Meet, estés donde estés en México. Según lo que incluya, la implementación toma de 7 a 30 días.' (el rango depende del alcance; no se promete para todo proyecto)."
   ],
   "sections": {
     "hero": {
@@ -112,7 +115,7 @@
       "eyebrow": "Cómo funciona",
       "h2": { "text": "Del mensaje a la cita,", "soft": "sin que nadie capture nada." },
       "nodes": [
-        { "label": "WhatsApp, Instagram y tu web", "line": "El cliente escribe por donde ya te busca.", "logos": ["whatsapp", "instagram"], "confirmed": true },
+        { "label": "Tus canales", "line": "WhatsApp, Instagram, Facebook Messenger, el chat de tu web o el correo: el cliente escribe por donde ya te busca.", "logos": ["whatsapp", "instagram", "facebook"], "confirmed": true },
         { "label": "Kain, tu agente de IA", "line": "Entiende, responde con tu información y califica.", "confirmed": true },
         { "label": "Tu CRM: Kommo o GoHighLevel", "line": "Crea o actualiza el lead en su etapa.", "logos": ["kommo", "gohighlevel"], "confirmed": true },
         { "label": "Tu calendario", "line": "Aparta la cita en el horario que eligió el cliente.", "confirmed": true },
@@ -171,7 +174,7 @@
       "eyebrow": "Dónde trabaja y con qué se conecta",
       "h2": { "text": "Vive en tus canales,", "soft": "escribe en tu CRM." },
       "groups": [
-        { "label": "Canales", "logos": [{ "slug": "whatsapp", "label": "WhatsApp Business" }, { "slug": "instagram", "label": "Instagram" }], "line": "Y el chat de tu sitio web." },
+        { "label": "Canales", "logos": [{ "slug": "whatsapp", "label": "WhatsApp Business" }, { "slug": "instagram", "label": "Instagram" }, { "slug": "facebook", "label": "Facebook Messenger" }], "line": "Además, el chat de tu sitio web y el correo." },
         { "label": "CRM", "logos": [{ "slug": "kommo", "label": "Kommo", "href": "/kommo/" }, { "slug": "gohighlevel", "label": "GoHighLevel", "href": "/gohighlevel/" }], "line": "Cada conversación, registrada en su etapa." },
         { "label": "Calendario", "logos": [], "line": "El calendario de tu CRM o el que ya usa tu equipo; lo dejamos definido en la fase Koncept." },
         { "label": "Automatización", "logos": [{ "slug": "n8n", "label": "n8n", "href": "/servicios/automatizacion-n8n/" }, { "slug": "make", "label": "Make" }], "line": "Para lo que pasa después de la conversación." },
@@ -184,7 +187,7 @@
       "rail": "Casos",
       "eyebrow": "Sistemas reales, cifras medidas",
       "h2": { "text": "Lo que ya pasó", "soft": "en negocios reales." },
-      "lede": "Cifras de sistemas que implementamos, con su sector y, cuando está confirmado, la ciudad y el plazo de medición.",
+      "lede": "Cifras de sistemas que implementamos y que siguen operando, cada una con su sector y su fuente.",
       "rows": [
         { "metricId": "dental-citas", "context": "Agente de IA en WhatsApp · Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
         { "metricId": "retail-conversiones", "context": "Kommo con calificación de leads por IA · Retail multimarca", "href": "/casos/retail-multimarca-kommo/", "linkLabel": "Ver el caso" }
@@ -226,11 +229,11 @@
       "h2": { "text": "{{Price}}." },
       "lede": "El precio depende de tres cosas, no de un paquete:",
       "items": [
-        { "title": "Canales", "line": "WhatsApp, Instagram, tu web o los tres." },
+        { "title": "Canales", "line": "Dónde atiende el agente: WhatsApp, Instagram, Facebook Messenger, el chat de tu web o el correo." },
         { "title": "Integraciones", "line": "Tu CRM, tu calendario y los sistemas que el agente deba consultar." },
         { "title": "Volumen", "line": "Cuántas conversaciones atiende y cuántos procesos se automatizan alrededor." }
       ],
-      "remate": "El alcance exacto lo definimos en tu Discovery Session, por Google Meet, estés donde estés en México."
+      "remate": "El alcance exacto lo definimos en tu Discovery Session, por Google Meet, estés donde estés en México. Según lo que incluya, la implementación toma de 7 a 30 días."
     },
     "faq": {
       "_componente": "FAQAccordion",
