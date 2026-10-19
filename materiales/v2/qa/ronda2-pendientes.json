@@ -1,0 +1,542 @@
+[
+ {
+  "severity": "major",
+  "page": "/industrias/salud/#kain-sector",
+  "viewport": "1280x720, 1440x900, 1920x1080, 2560x1080 (also 390x844 and 360x740)",
+  "problem": "The 'Así trabaja Kain en tu clínica' scene does not use the image as a full background. In the plate itself, the scene stops at about 50% of the width with a quick vertical fade: the cyan light strip of the reception counter is cut off. The right half of the section, where the H2, lede, limit and note sit, is flat #03040B black with no environment. With the push zoom it reads as an image box on the left plus a text column on black, which is the 'two boxes / visible image edge' the client rejected. On mobile, the vertical plate also keeps the scene inside a vignetted rectangle with dark bands left and right, and the chat card sits directly below it.",
+  "evidence": "Real-scroll CDP captures of the pinned state: /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/advsal2/w1440/05.png, w1280/06.png, w1920/05.png, w2560/05.png. Mobile: w390/07.png, w360/07.png. Pixel row through the counter strip (mean RGB): 1440 → 138@x630, 59@x690, 9@x750, then flat 6–9 to x1440. 1920 → 188@x800, 12@x960, flat 6–8 after. 2560 → 161@x848, 7@x1060, flat after. The plate source public/img/cine/ind-salud-kain-sector-1280.webp (converted at advsal2/ks-plate.png) is already black from x≈0.52. The mobile master (advsal2/ks-plate-m.png) has the scene boxed between x≈0.18 and 0.95. The hero (smooth fade over ~500 px at 2560) and the Dawn close do not have this problem.",
+  "fix": "Regenerate or outpaint ind-salud-kain-sector (desktop and -m) so the clinic reception keeps going across the whole frame behind the text side. It should be darker and low-detail, with the waiting area or chairs softly out of focus, the counter glow fading out gradually instead of being cut, and a navy haze rather than pure #03040B. Then re-run plates.mjs and check-escenas. Until the new plate exists, cine can soften the plate's right edge (a wider mask ramp of ≥25% of the width, plus a blurred mirrored extension of the plate under .is__copy) so no vertical seam shows at the counter line.",
+  "owner": "orquestador"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/#cifras",
+  "viewport": "all (1280x720 to 2560x1080, 390x844, 360x740)",
+  "problem": "Behind each Montage row, the backdrop is the portrait of the Monterrey dental-case dentist, including row 3. Row 3 is salud-citas-mes, an aggregate of 'Clientes del sector salud' with no case link. That pairs an aggregate figure with one specific clinic's person (and the inline label only says 'Imagen ilustrativa'). The same face also repeats three rows in a row, which reads as a ghostly stock photo rather than art direction.",
+  "evidence": "src/styles/pages.css:124 `.mt__row:has([data-metric=\"dental-citas\"],[data-metric=\"dental-respuesta\"],[data-metric=\"salud-citas-mes\"]){--case-img:url(/img/cine/caso-dental-hero-still-640.webp)}`. elementsFromPoint at the '47' of row 3: `LI.mt__row.mt__row--l ::after=url(.../caso-dental-hero-still-640.webp)`. Captures: advsal2/mt1440.png, w1440/07.png, w390/09.png.",
+  "fix": "Remove salud-citas-mes, and any other aggregate metric with no case href, from the case-portrait :has() rule. Let it use the sector still (ind-salud-hero-still) or an aura, and use a different crop for rows 1–2 so the same face never appears twice in a row.",
+  "owner": "templates-b"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/#cifras",
+  "viewport": "all",
+  "problem": "The H2 'Lo que ya pasó en clínicas reales.' states as fact that the results come from several real clinics. Only one clinic is confirmed (the dental clinic in Monterrey). The third figure's source is 'Clientes del sector salud', and the copy file itself lists as an open client question what type those health clients are. That breaks decision 2: nothing unconfirmed may be stated.",
+  "evidence": "Visible H2 (w1440/06.png, w390/09.png). src/content/paginas/ind-salud.json → pendientes: 'PREGUNTA AL CLIENTE · si Ingeniak tiene clientes de salud además de la clínica dental de Monterrey (salud-citas-mes los promedia), ¿se puede decir de qué tipo son…'. metrics.ts salud-citas-mes ctx 'Clientes del sector salud'.",
+  "fix": "Reword to something already supported by the sources, for example 'Lo que ya pasó con clientes del sector salud.' or 'Resultados reales del sector salud.', until the client confirms the types of health clients.",
+  "owner": "copy"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/ (KainPill, site-wide component)",
+  "viewport": "1280x720, 1440x900 (48 px avatar-only variant); 1920/2560 with label",
+  "problem": "The floating 'Escríbele a Kain' pill shows Kain as a head-and-shoulders crop, with the chest screen cut by the circle. That breaks the brand rule 'Kain siempre de cuerpo completo' and contradicts the component's own header comment ('Kain aparece de cuerpo completo (regla de marca)'). The cause is that it now picks /img/kain/kain-avatar-96.webp, which peticiones.md describes as 'cabeza y hombros'.",
+  "evidence": "Zooms: advsal2/z-pill.png (1440, from w1440/02.png) and advsal2/z-pill1280.png (1280, from w1280/08.png). src/components/nav/KainPill.astro lines 9–12 (full-body intent) vs hasAvatar → kain-avatar-96.webp. peticiones.md 'QA · orquestador' #4: '96 × 96, cabeza y hombros'.",
+  "fix": "Use a full-body miniature: either the component's existing compile-time derivation from kain-presenta.webp (trim + resize to 96 px tall), or have orquestador re-export kain-avatar-96.webp as a full-body figure that fits inside the 40 px circle with feet visible.",
+  "owner": "nav"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/#hero and #cta-final",
+  "viewport": "320x640",
+  "problem": "At 320 px the cyan/white node circle of the primary 'Agenda tu Discovery Session' button spills out of the pill's right edge. The button spans x 20–300 and the .btn__node spans 274–310, so 10 px stick out. The main CTA looks broken on small Android and SE-size phones.",
+  "evidence": "advsal2/z320btn.png (zoom of w320/00.png). CDP: btn [20,300], btn__node [274,310], white-space nowrap. The same thing happens on the cta-final button (w320/17.png).",
+  "fix": "In Btn/.btn at narrow widths, reserve the node inside the padding (for example padding-right ≥ node size + gap, with the label allowed to shrink or font-size clamp), or hide or shrink .btn__node below 340 px.",
+  "owner": "ui"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/#hero (anchored proof chip)",
+  "viewport": "1920x1080",
+  "problem": "The context line of the anchored chip ('Clínica dental · Monterrey') fails WCAG AA. It measures 4.37:1 against its glass background, and 4.5:1 is needed for that small mono size.",
+  "evidence": "node scripts/check-contraste.mjs --only /industrias/salud/ → '✗ /industrias/salud/#hero @1920x1080 · 1 línea(s) bajo AA; peor 4.37:1 (necesita 4.5:1, fondo L 0.058): \"Clínica dental · Monterrey\"' (advsal2/contraste.log). It was the only contrast failure across 360, 390, 1280, 1440, 1920 and 2560.",
+  "fix": "Raise the chip ctx color (for example var(--muted) to a lighter token) or the chip glass opacity in the Metric chip variant so the line reaches ≥ 4.5:1.",
+  "owner": "ui"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/#kain-sector (inline ChatSim)",
+  "viewport": "320x640 (cramped at 360x740 and 390x844)",
+  "problem": "In the inline chat header, the role label 'Agente de IA de tu negocio' gets squeezed into a ~53 px column. At 320 it is truncated with an ellipsis ('AGENTE / DE IA / DE TU…'). At 360 and 390 it breaks into 3 lines next to the SIMULACIÓN chip and the pause button.",
+  "evidence": "advsal2/chathdr320.png (role box x77–130). Also w360/08.png and w390/07.png.",
+  "fix": "In the ChatSim bar under ~400 px, drop the role line or move it under the 'kain' mark at full width, or shorten it to 'Agente de IA', so it never truncates.",
+  "owner": "ui"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/#kain-sector (registered ChatSim)",
+  "viewport": "1440x900 with reduced motion and with JS disabled",
+  "problem": "The desktop registered chat shows only the first two messages. The 'VER TODO ↓' pill is laid over a half-visible third bubble, so a clipped fragment ('El v…') peeks out around the button. The clinical-limit exchange ('yo no puedo darte un diagnóstico') is hidden inside an inner scroll area.",
+  "evidence": "advsal2/wrm1440/05.png and advsal2/nojs1440/05.png, panel x≈460–620, y≈262–282.",
+  "fix": "With reduced motion and no-JS, end the visible log on a whole bubble (fade mask above the 'Ver todo' pill, or pad the log so the pill never overlaps text), or show the full transcript at a smaller bubble size.",
+  "owner": "ui"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/#cifras",
+  "viewport": "all",
+  "problem": "The source note starts with a footnote marker '¹', but no figure in the Montage carries a matching '¹'. The marker is orphaned.",
+  "evidence": "src/components/cine/Montage.astro:71 `<sup class=\"fn\">1</sup> {SOURCE_NOTE}`. The page HTML has a single `<sup class=\"fn\">` (grep count 1). Captures w1440/07.png, w390/10.png.",
+  "fix": "Either add the ¹ marker to each Metric in the Montage (the .metric .fn style already exists in ui.css) or drop the sup from the note.",
+  "owner": "cine"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/#dolores",
+  "viewport": "all",
+  "problem": "The timeline says the same disclaimer twice: the copy lede ('Horas ilustrativas de un día cualquiera…') and a hard-coded footnote under the timeline ('Horas ilustrativas de una jornada típica del sector.'). It adds noise and slows the read.",
+  "evidence": "src/components/cine/DayTimeline.astro:36 (hard-coded dt__note) plus ind-salud.json dolores.lede. Captures w1440/02.png and w1440/03.png.",
+  "fix": "Make the dt__note optional (a prop) and skip it when the section lede already states that the hours are illustrative.",
+  "owner": "cine"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/#faq",
+  "viewport": "all",
+  "problem": "The FAQ footer invites people to write to contacto@ingeniak.mx, but the address is plain text, not a mailto link. On mobile it can't be tapped.",
+  "evidence": "Markup: `<p class=\"… ind-faq__foot\">¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx.</p>`. The only mailto links on the page are in the mega menu and the footer. Captures w1440/10.png, w390/14.png.",
+  "fix": "Linkify the email in the template (or have Copy auto-link emails) as <a class=\"lnk\" href=\"mailto:contacto@ingeniak.mx\">.",
+  "owner": "templates-b"
+ },
+ {
+  "severity": "minor",
+  "page": "build (affects /industrias/salud/ and all pages)",
+  "viewport": "n/a",
+  "problem": "`astro build` prints two warnings: auto-generated `blog` and `paginas` collections are deprecated, and the glob loader matched no files. There is no src/content.config.ts, and the site reads paginas/*.json through src/lib/site. Neither warning is tracked in lanzamiento.md or peticiones.md.",
+  "evidence": "`ls src/content.config.ts src/content/config.ts` → no such file. grep for collection or glob in materiales/v2/build/lanzamiento.md and peticiones.md finds no entry about these warnings. Round-2 build report.",
+  "fix": "Add src/content.config.ts that defines the collections explicitly (or none, if site.ts keeps reading the JSON directly), or move the JSON outside src/content. Until then, log the warnings in lanzamiento.md.",
+  "owner": "orquestador"
+ },
+ {
+  "severity": "minor",
+  "page": "/industrias/salud/",
+  "viewport": "n/a",
+  "problem": "Client gates that are still open (informational). The page copy is still in 'borrador' with aprobadoPor null. The salud-specific FAQs S01–S05 are validar:true, so the accordion and FAQPage show 0 salud-specific questions (R2 asks for ≥4 per industry). The 'Tus datos' section is waiting for legal review. The measurement period and the type of clients behind salud-citas-mes are unconfirmed. The dental-case confirmations are pending.",
+  "evidence": "src/content/paginas/ind-salud.json → estado 'borrador', aprobadoPor null, pendientes list. The visible FAQ has only N01, W01, W02 and G07 (w1440/10.png). The FAQPage JSON-LD has the same 4 shared questions.",
+  "fix": "Client to approve the copy (aprobadoPor), approve S02–S05 (then orquestador adds them to sitemap.json), have its legal adviser validate 'Tus datos', and confirm the salud-citas-mes period and client types. Nothing to change in code meanwhile.",
+  "owner": "cliente"
+ },
+ {
+  "severity": "blocker",
+  "page": "/ (#sistema, SystemRuntime pinned, all 5 stations)",
+  "viewport": "2560x1080 (also 1920x1080, subtler)",
+  "problem": "There is a hard, full-height vertical edge on the subject side of the SystemRuntime plates. This breaks the must-have (no visible image edges or hard seams). The media layer `.seq__layer` is boxed to x=360..2200 at 2560 and x=40..1880 at 1920. It has only the vertical mask on the subject side, because the subject-right recipe sets --mR:0. But the stagebox is centered, so it does not sit flush with the window edge. The plate ends in a straight cut 360 px before the window edge.",
+  "evidence": "Measured with CDP while pinned at 2560x1080: `DIV.is__layer--media.seq__layer x=360..2200`, `IMG home-sistema-1-atraer-1920.avif x=288..2223`. Pixel row y=500 in adv2h/2560x1080/05-sistema.jpg: (11,16,36) at x=2198 → (3,3,13) at x=2204. In 08-sistema.jpg the automation node graph is cut mid-node at x≈2200 (crop z-sis2560b.png). At 1920 the same jump happens at x=1880: (11,19,40) → (0,3,20). The rule is src/styles/cine.css:86-103. `.is[data-layout=\"subject-right\"] > .is__stagebox{right:0}` never reaches `.seq__stagebox`, but `--mR:0px` still applies. Screens: adv2h/2560x1080/05–09-sistema.jpg.",
+  "fix": "For PlateSequence on screens ≥1800 px, anchor `.seq__stagebox` flush to the window edge on the subject's side, the way ImageSection does (right:0; width:min(100%,var(--cap))). Otherwise, compute --mR/--mL from the real inset so that any edge that does not touch the window gets the 10–28 % feathered mask. Re-check all 5 stations at 1920x1080 and 2560x1080, pinned and unpinned.",
+  "owner": "cine"
+ },
+ {
+  "severity": "major",
+  "page": "/ (#industrias, LocationSwitcher)",
+  "viewport": "1280x720, 1440x900, 1920x1080, 2560x1080",
+  "problem": "Kain is never visible full body on desktop. The section is 1.2–1.8 viewports tall, because the H2, the lede, the 8-row list, the chat sim and the footer all stack in it. The sector plate is cover-scaled to the whole section height, so Kain renders about 1,000–1,200 px tall. At any scroll position you see either his head over the list or his legs a screen later. This repeats right after the VKTOR Kain, so two half-Kains read as cropped.",
+  "evidence": "CDP: indH/imgH 1281/1281 px at 720 vh, 1270/1270 at 900 vh, 1420/1420 at 1080 vh, 1244/1244 at 2560x1080 (img 2295x1281, 2275x1270, 2544x1420, 2228x1244). Screens: adv2h/1280x720/21–23-industrias.jpg (head, then torso, then feet on separate screens), 1920x1080/16–17-industrias.jpg, 1440x900/19-industrias.jpg (antennas cut at the top edge).",
+  "fix": "Pin the plate layer as a sticky 100svh stage, with the subject anchored bottom and fully in frame, and let the list column scroll over it. Alternatively, cap the plate height at 100svh, anchored to the section bottom, and fade it to ink above. Or compress the rows and chat so the section is ≤ 100svh on desktop. Kain must fit head to feet in one screen at 1280x720 and 1440x900.",
+  "owner": "cine"
+ },
+ {
+  "severity": "major",
+  "page": "/ (#sistema station figures)",
+  "viewport": "all; note hidden at ≤760 px height (1280x720)",
+  "problem": "Content honesty. The 6 figures in the simulated lead journey carry a ¹ footnote, but nothing in the section defines it: no SOURCE_NOTE. None of them shows its case context from metrics.ts (E-commerce · CDMX, Clínica dental · Monterrey, Retail multimarca, Logística · n8n, Promedio primeros 90 días, E-commerce). The only disclosure, 'Simulación de un lead. Las cifras vienen de casos reales distintos; cada una indica su fuente.', says each figure shows its source, which is not true. At ≤760 px height that note is set to display:none. So at 1280x720 the journey reads as one lead producing −58 %, 8 min → 12 s, +340 %, 27 processes and −60 %.",
+  "evidence": "home.html #sistema: 6× `<sup class=\"fn\">1</sup>`, 0× 'Datos internos'. src/components/cine/PlateSequence.astro:155 renders `<Metric id={m} variant=\"inline\" label fn=\"1\" />` without `ctx`. src/styles/cine.css:366 has `@media (max-height:760px){.seq--pinned .seq__note{display:none}}`. CDP at 1280x720: `.seq__note` display:none. Screens: adv2h/1280x720/07–11-sistema.jpg (no note), 1440x900/06-sistema.jpg ('−58% costo por lead en 60 días¹' with no context).",
+  "fix": "Render the station metrics with `ctx`, so they read e.g. '−58% costo por lead en 60 días · E-commerce · CDMX¹'. Print SOURCE_NOTE ('¹ Datos internos de Ingeniak, octubre de 2026.') in the seq foot. Keep the simulation note visible at every height: shorten it or put it on one line instead of hiding it.",
+  "owner": "cine"
+ },
+ {
+  "severity": "major",
+  "page": "/ (#stack, 'Con qué construimos')",
+  "viewport": "1280x720 (also 1440x900)",
+  "problem": "The logo grid overflows its column. At 1280 the 7th column (Claude) runs past the frame and the viewport. The section has overflow-x:clip, so the 'Claude' label is cut off at the screen edge. The icon and the end of 'OpenAI' also collide with the scene-rail ticks. At 1440 the row ends 24 px past the frame line, against the rail.",
+  "evidence": "CDP 1280x720: `.hm-stack__logos` 365–1200, gridTemplateColumns '228px 165px 117px 76px 98px 81px 79px' plus 6×20 px gaps ≈ 964 px in an 834 px box. Claude:1250–1329, OpenAI:1149–1230, rail ticks at x≈1228–1240. 1440: Claude ends at 1374 vs frame 1350. Rule: src/styles/pages.css:795 `grid-template-columns:repeat(var(--logo-cols,7),max-content);justify-content:space-between`. Screens: adv2h/1280x720/01-stack.jpg, 1440x900/01-stack.jpg.",
+  "fix": "Make the columns shrinkable, e.g. repeat(var(--logo-cols),minmax(0,max-content)) with a smaller gap. Or go to 3 rows (cols = ceil(13/3)) when the column is < 1000 px wide. Or use flex-wrap with balanced rows. Verify that nothing passes the frame's right edge at 1280, 1366 and 1440.",
+  "owner": "templates-a"
+ },
+ {
+  "severity": "major",
+  "page": "/ (#sistema station UI cards: ads, flow, dashboard)",
+  "viewport": "1280x720 (and 1440x900 under reduced motion)",
+  "problem": "The registered station cards clip their own text on a common laptop size, so they look broken in the main set piece: 'CAMPAÑA ACT…', 'FLUJOS AUTOMATI…' and 'TODO EN UNA VIST…' headers, the 'SIMULACIÓ' chip cut at the right, and the Atraer card's '−58% costo por lead en 60 días' cut off by the card's bottom edge.",
+  "evidence": "Screens: adv2h/1280x720/07-sistema.jpg ('CAMPAÑA ACT', 'SIMULACIÓ', figure missing), 10-sistema.jpg ('FLUJOS AUTOMATI'), 11-sistema.jpg ('TODO EN UNA VIST'). rm/1440x900/05-sistema.jpg ('CAMPAÑA ACTIV', caption cut). At 1440x900 with motion they render whole (1440x900/06-sistema.jpg), so the content does not adapt to the smaller container (StationUI, container queries in src/styles/ui.css:454-459).",
+  "fix": "Under ~300 px of container width, drop the header text to the chip only, or let it wrap. Let the card grow in height, or hide the secondary rows (Alcance/Clics) before the figure line gets clipped. Never truncate the SIMULACIÓN chip. Re-check at 1280x720 and 1366x768.",
+  "owner": "ui"
+ },
+ {
+  "severity": "major",
+  "page": "/ (#que-es manifesto lede; also #sistema H2, #equipo lede)",
+  "viewport": "all",
+  "problem": "A claim that is still waiting on the client is stated as fact. 'Diseñamos e implementamos … un solo sistema que atiende, califica y cierra por ti, 24/7.' Copy's own review package flags 'cierra por ti' as promising more than the product does, because the agent hands off to a person to close. The page contradicts it twice: #sistema says 'si hace falta una persona, le pasa la conversación' and the Kain limit says 'se la paso a tu equipo'. Decision 2 requires rewording or hiding unconfirmed claims. Two smaller pending questions are also printed as fact: 'lo operamos automáticamente' (#sistema H2) and 'Seis personas que diseñan, construyen y operan tu sistema' (#equipo).",
+  "evidence": "src/content/paginas/home.json pendientes: 'PREGUNTA AL CLIENTE · lede del manifiesto … \"cierra por ti\" promete más. Propuesta: \"…que atiende, califica y agenda por ti, 24/7.\" No se cambió sin tu visto bueno.', plus the questions on 'automáticamente' and 'Seis personas'. The text is live: adv2h/1440x900/04-que-es.jpg, 1920x1080/04-que-es.jpg.",
+  "fix": "Use the proposed safe wording now: '…que atiende, califica y agenda por ti, 24/7.' Keep the original in pendientes so it can return once confirmed in writing. Soften the #sistema H2, e.g. 'y lo operamos contigo', and drop 'Seis' or keep it neutral until the client confirms.",
+  "owner": "copy"
+ },
+ {
+  "severity": "minor",
+  "page": "/ (ColdOpen 'Del nodo al pecho')",
+  "viewport": "1440x900",
+  "problem": "The signature match cut does not line up. At ~1.9 s the vector rounded-square node is smaller than the photo's chest panel and sits low-left of it, so two squares show at once. The zoomed crop of home-hero is visibly soft, with AI and compression artifacts at about 3× upscale.",
+  "evidence": "adv2h/z-co-1900.png (cyan outline inside the lower-left of the real panel, asterisk off-center relative to the outline), z-co-1600.png / z-co.png (asterisk arms protrude past the outline; soft upscale), z-co-2300.png (settled).",
+  "fix": "Register the node rectangle to the chest anchor of home-hero in the same coordinate space as the zoom (size and center), or cross-fade before the scales diverge. Use the 2752 export, or a dedicated high-res chest crop, for the push-in.",
+  "owner": "cine"
+ },
+ {
+  "severity": "minor",
+  "page": "/ (#sistema mobile lead pill)",
+  "viewport": "360x740, 390x844",
+  "problem": "The fixed 'SIMULACIÓN · Lead nuevo · etapa N/5' pill floats over content as you scroll. It covers the station eyebrow ('01 · ATRAER', '02 · ATENDER') and the mini-demo card text ('Lead nuevo · llegó por un anuncio'). The counter also renders with a stray gap: 'etapa 2 /5'.",
+  "evidence": "adv2h/360x740/10-sistema.jpg (pill over the demo card's last line), 390x844/08-sistema.jpg and 09-sistema.jpg (pill over the station eyebrow).",
+  "fix": "Dock the pill in a reserved slot: under the header with scroll-padding, or just above the mobile CTA bar. Alternatively, hide it while it intersects text, or give it a solid backdrop plus a margin-top on station heads. Remove the extra spacing before '/5'.",
+  "owner": "cine"
+ },
+ {
+  "severity": "minor",
+  "page": "/ (hero LightBranch + Fig. 01)",
+  "viewport": "1280x720",
+  "problem": "At 1280x720 the light branch from Kain's hand bends down and runs behind the Fig. 01 glass caption. It ends on the secondary 'Escríbele a Kain' button, so lines cross the caption's left edge. The caption box ends 4 px above the viewport bottom.",
+  "evidence": "adv2h/z-h1280.png and 1280x720/00-hero.jpg (caption y≈578–716, branch path from (591,557) down behind the box).",
+  "fix": "At ≤760 px height, route the branch to the caption's left edge without crossing it, or hide the branch. Lift or shrink the caption so it keeps ≥ 24 px of bottom clearance.",
+  "owner": "cine"
+ },
+ {
+  "severity": "minor",
+  "page": "/ (#sistema under prefers-reduced-motion, desktop)",
+  "viewport": "1440x900 (reduced motion)",
+  "problem": "Without the pin, the 5 station plates stack with only ~40 px between one Kain's feet and the next Kain's head. The background changes abruptly between plates (navy to cyan grid). It reads as five stacked image boxes with seams rather than one scene.",
+  "evidence": "adv2h/rm/1440x900/05-sistema.jpg, 06-sistema.jpg.",
+  "fix": "In the unpinned or reduced-motion layout, add the step spacing and the top/bottom ink dissolves from the mobile recipe between station plates. Alternatively, show station 1 only as the plate, with the other stations as text rows plus mini-demos.",
+  "owner": "cine"
+ },
+ {
+  "severity": "minor",
+  "page": "/ (#equipo credits)",
+  "viewport": "1920x1080, 2560x1080",
+  "problem": "The role labels sit in 240 px cells with no column gap, so on one line they run together: 'DIRECTOR DE ESTRATEGIA COMERCIAL ARQUITECTO DE IA Y AUTOMATIZACIÓN DIRECTOR CREATIVO' reads as a single string.",
+  "evidence": "CDP 1920: `.cast__role` boxes 240–480, 480–720, 720–960 (0 gap). Screens: adv2h/1920x1080/18-equipo.jpg, 2560x1080/18-equipo.jpg.",
+  "fix": "Add a column-gap of ≥ 24 px, or a max-width of ~20ch on `.cast__role` so long roles wrap under their own portrait.",
+  "owner": "ui"
+ },
+ {
+  "severity": "minor",
+  "page": "/ (ChatSim 'Ver conversación completa' control)",
+  "viewport": "1440x900 (reduced motion / unpinned)",
+  "problem": "The chat's 'Ver conversación completa / VER TODO ↓' control is a standalone 81×19 px target, under the 24×24 px minimum (WCAG 2.5.8 / R11).",
+  "evidence": "Reduced-motion walk at 1440x900: small target 'Ver conversación completa…' 81x19 in #sistema and #kain (rm/1440x900/06-sistema.jpg, 09-kain.jpg).",
+  "fix": "Give `.chat__more` min-height 24 px (44 px on coarse pointers), or add invisible padding for the hit area.",
+  "owner": "ui"
+ },
+ {
+  "severity": "minor",
+  "page": "/ (#sistema 'Saltar escena')",
+  "viewport": "1280x720, 1440x900, 1920x1080, 2560x1080",
+  "problem": "In #sistema the 'SALTAR ESCENA ↓' skip link sits in the left gutter, about 20 px above and left of the 'EL SISTEMA INGENIAK' eyebrow, so the two crowd each other. In #problema the same control sits top-right. The placement is inconsistent and cluttered.",
+  "evidence": "adv2h/1440x900/07–09-sistema.jpg (skip at (50,87), eyebrow at (90,108)), 1440x900/02-problema.jpg (top-right at (1225,88)).",
+  "fix": "Put the skip link in one consistent place for both pinned scenes (e.g. the action-safe top-right, opposite the text column), or align it to the frame with clear vertical spacing.",
+  "owner": "cine"
+ },
+ {
+  "severity": "minor",
+  "page": "/ (home copy and team)",
+  "viewport": "all",
+  "problem": "Client gates, for information. Home copy is still estado 'borrador' with aprobadoPor null, and 12 'PREGUNTA AL CLIENTE' items are open: the HUD night narrative, 'No hacemos marketing', the 'Ingeniak en datos' mix, the duplicate G01, the measurement windows for retail/horeca/salud, the operating status behind 'Sistemas reales', and others. The team section is still the R6 interim: a duotone headshot row on an aura, not an integrated full-background plate, until the photo session or an approved composition exists.",
+  "evidence": "src/content/paginas/home.json: \"estado\": \"borrador\", \"aprobadoPor\": null, 12× 'PREGUNTA AL CLIENTE'. ESPEC §12.2 R6 and §12.5 items 1 and 4; lanzamiento.md (copy 1, ui 3). Screen: adv2h/1440x900/21-equipo.jpg.",
+  "fix": "Client to approve the copy and answer the open questions in home.json → pendientes, and to schedule the team photo session (or approve the R6 fallback). No team action until then.",
+  "owner": "cliente"
+ },
+ {
+  "severity": "major",
+  "page": "/casos/clinica-dental-monterrey/",
+  "viewport": "1280x720, 1440x900 (real wheel scroll through Dawn into footer)",
+  "problem": "In 'labels' mode, the case page's scene rail (01 — Contexto / 02 — La cifra / 03 — Replicar, with its dark halo box) stays on top of the footer. It covers the Recursos column links for about 300 px of scroll, and those links can't be read. Two causes. First, rail.ts guardLabels only tests elements inside <main> (`!main.contains(el)` → continue), so footer links never count as 'covered'. Second, the rail only hides on html[data-end-visible], which turns on about 300 px after the footer arrives. Before that, the same dark box sits on the Dawn plate beside Kain (closing shot at 1440 and 1920).",
+  "evidence": "CDP probe (wheel scroll, read 2.6 s after stopping). At 1280x720, scrollY 4920, rail labels overlap 'Cuánto cuesta un agente de IA' and 'Kommo vs GoHighLevel'. At 1440x900, scrollY 5348–5538, they overlap 'Blog', 'Cuánto cuesta…', 'Cómo verificar un partner de Kommo', 'GoHighLevel en español' and 'n8n vs Zapier vs Make' (railOp=1, no data-end-visible). Screenshots in /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/rv2caso/: z-rail1280-0-4700.png, z-foot-rail.png (zoom of s/1440x900/07-y5600.png); rail box over the Dawn plate: s/1440x900/06-y4800.png, s/1920x1080/06-y5400.png.",
+  "fix": "Hide the rail once the last rail scene ends. Its list stops at Replicar, so the simplest fix is to add `html[data-dawn-visible] .rail` to the hide rule next to data-end-visible, the same as KainPill (§4.6). Alternatively, add a footer IntersectionObserver that sets data-footer-visible. Also, in guardLabels, treat elements in <footer> like <main> content, so a covered label is withdrawn there too.",
+  "owner": "nav"
+ },
+ {
+  "severity": "major",
+  "page": "/casos/clinica-dental-monterrey/ (mega menu, present on every page)",
+  "viewport": "1440x900 (header mega menus open)",
+  "problem": "Brand rule broken (Kain always full body). The preview cards in the mega menu crop Kain. The Industrias card (ind-salud-hero-still-640) cuts off his antenna tips and his legs below the knee. The Servicios 'Conoce a Kain' card and the Recursos card (home-sistema-2-atender-still-640) and the Empresa card (home-hero-still-640) cut him at the thighs. The 640×274 stills already crop him, and the 482×206 card uses object-fit:cover on top of that.",
+  "evidence": "Folder /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/rv2caso/: z-mm-card.png (Industrias), z-mm-all.png (Servicios / Empresa / Recursos), full panels z-mm-0-0.png and z-mm-Servicios-0-0.png. Probe: each card's active img currentSrc is one of the stills named above.",
+  "fix": "Use stills that frame Kain from head to feet. Either regenerate the `-still` crops in scripts/plates.mjs from the plate's subject box (--sx0..--sy1) with headroom (orquestador), or have the card show the 16:9 plate with object-position set to the subject box at a height where the whole body fits. If neither fits the card proportion, pick a still without Kain.",
+  "owner": "nav"
+ },
+ {
+  "severity": "major",
+  "page": "/casos/clinica-dental-monterrey/ (Servicios mega menu and mobile menu sheet)",
+  "viewport": "1440x900 mega menu; 390x844 Menú sheet",
+  "problem": "Unconfirmed claims sit next to this case's figure. The 'Agentes de IA para WhatsApp' row reads 'Responden, califican y agendan 24/7' with the dental case metric '8 min → 12 s tiempo de respuesta' directly underneath. Read together, it says the clinic's agent qualified leads and booked appointments 24/7. Copy removed exactly those claims from this case as unconfirmed (QA round 1 blocker, caso-dental.json → pendientes), and the Salud row got the same fix (peticiones r2 orquestador 8c). The Servicios row didn't.",
+  "evidence": "src/data/navegacion.json L44–45: description 'Responden, califican y agendan 24/7' + metricId 'dental-respuesta'. Screenshot: /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/rv2caso/z-mm-Servicios-0-0.png (column 02 ATENDER). Same text in the mobile sheet (page HTML: 'Agentes de IA para WhatsApp Responden, califican y agendan 24/7 · 8 min → 12 s').",
+  "fix": "In navegacion.json, change the row's description to something the case supports (e.g. 'Contestan cada mensaje en segundos'), or remove metricId dental-respuesta from that row. Bring back '24/7 · califican · agendan' next to the case metric only after the clinic confirms it in writing.",
+  "owner": "orquestador"
+ },
+ {
+  "severity": "minor",
+  "page": "/casos/clinica-dental-monterrey/ (Industrias mega menu)",
+  "viewport": "1440x900 (Industrias mega menu open, default state)",
+  "problem": "The Industrias preview card's default line is hardcoded as 'Citas agendadas y confirmadas 24/7' and shows right beside the Salud row's '3.2× más citas en 90 días'. That is the same juxtaposition the orquestador removed from the row ('Agenda, confirma y recuerda citas por WhatsApp'). The card ignores navegacion.json.",
+  "evidence": "src/components/nav/MegaMenu.astro L24: scr('/industrias/salud/', 'Industria · Salud', 'Salud y clínicas', 'Citas agendadas y confirmadas 24/7'). A probe after opening Industrias shows the visible .mm-screen__line = 'Citas agendadas y confirmadas 24/7'. Screenshot: /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/rv2caso/z-mm-0-0.png.",
+  "fix": "Take the card's default line from the Salud row's description in navegacion.json, or write it without '24/7'.",
+  "owner": "nav"
+ },
+ {
+  "severity": "minor",
+  "page": "/casos/clinica-dental-monterrey/#cifra",
+  "viewport": "1280x720",
+  "problem": "The pinned CaseFigure is taller than the viewport: the section is 813 px, the viewport 720. For the whole pin (+100 %, sala mode), the figure's source note '¹ Datos internos de Ingeniak, octubre de 2026.' (724–741 px) is off-screen, and the caption line sits on the bottom edge. The reader sees the clocks run with superscript ¹ markers but no visible source until the pin releases. At 1440x900 it fits (816 px).",
+  "evidence": "CDP probe while pinned (data-sala): sec [0,813], cap [690,741], src [724,741], vh 720 at scrollY 1456–2016. Screenshot /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/rv2caso/s/1280x720/03-y1800.png.",
+  "fix": "Make the pinned scene fit 100svh on short desktops. For example, under @media (min-width:1024px) and (max-height:800px), reduce .cf top/bottom padding and the cf-sw__clock size, or move .cf__src into the head beside the caption. Have check-escenas fail when a [data-pin] section is taller than innerHeight.",
+  "owner": "cine"
+ },
+ {
+  "severity": "minor",
+  "page": "/casos/clinica-dental-monterrey/ (footer)",
+  "viewport": "1280x720, 1440x900",
+  "problem": "KainPill (bottom right) overlaps the footer's LinkedIn button while scrolling down into the footer, which covers part of that tap target. The pill's off state (data-kpill-off) only applies when the header comes back.",
+  "evidence": "CDP probe at 1280x720, scrollY 5249: LinkedIn button x 1160–1200 vs pill x 1187–1235, both visible. Screenshots in /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/rv2caso/: z-pill-crop.png, s/1440x900/07-y5600.png (bottom right).",
+  "fix": "Hide KainPill while the footer is in view (same observer as the rail fix), or move it up so it clears the footer's social row.",
+  "owner": "nav"
+ },
+ {
+  "severity": "minor",
+  "page": "/casos/clinica-dental-monterrey/#hero (mobile 'more')",
+  "viewport": "390x844, 360x740",
+  "problem": "On mobile, the case data row is a single line with a horizontal scroll, no scrollbar and a fade. 'AGENTE DE IA EN WHATSAPP' is cut mid-word ('…WHATSA' / '…EN WH') and '90 DÍAS' doesn't show at all unless the user swipes, with nothing to say the row scrolls. There are only 4 short chips, so they would fit on two lines.",
+  "evidence": "Probe at 390: chip '90 DÍAS' at x 383–455 inside a container ending at x 365. Screenshots in /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/rv2caso/: s/390x844-js/01-y717.png, s/360x740-js/01-y629.png. Rule: src/styles/pages.css L334 `.case-specs--m{white-space:nowrap;overflow-x:auto;…}`.",
+  "fix": "Let the row wrap (`white-space:normal`, keep the cyan separators) and drop overflow-x/tabindex. Two lines of mono 10.5 px fit within the R3 budget.",
+  "owner": "templates-b"
+ },
+ {
+  "severity": "minor",
+  "page": "/casos/clinica-dental-monterrey/#hero",
+  "viewport": "320x640",
+  "problem": "On the smallest phones the intro pushes the doctor almost out of the first screen. cine's own guard warns that the subject's head falls at 576 px (0.90 of the screen; the limit is 0.8), so the first screen is text with a sliver of image instead of one integrated scene.",
+  "evidence": "Console at 320x640: 'warning: [cine] #hero: la cabeza del sujeto cae a 576 px (0.90 de la pantalla; tope 0.8). Usa mobile=\"split\" o acorta el intro.' (the hero already uses split). Screenshot /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/rv2caso/s/320x640/00-y0.png.",
+  "fix": "At ≤ 360 px wide or ≤ 680 px tall, shorten the intro. Clamp the mega figure smaller, move the lede to 'more' (it is the same figure as the H1's neighbour), or tighten the space between the CTAs, until the head lands at ≤ 0.8 of the screen.",
+  "owner": "templates-b"
+ },
+ {
+  "severity": "minor",
+  "page": "/casos/clinica-dental-monterrey/#hero",
+  "viewport": "320x640",
+  "problem": "At 320 the hero primary 'Agenda tu Discovery Session' breaks onto two lines inside the pill, next to its node, and the microcopy also wraps. The mobile bar avoids this by dropping the node, so the two buttons disagree.",
+  "evidence": "Screenshot /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/rv2caso/z-320-hero.png (hero) vs z-320-mbar.png (mobile bar, one line without node).",
+  "fix": "Under ~340 px, have `.is--hero .btn` hide `.btn__node` (as .mbar__cta does) or reduce padding and letter-spacing, so the label stays on one line.",
+  "owner": "ui"
+ },
+ {
+  "severity": "minor",
+  "page": "/casos/clinica-dental-monterrey/ (mobile menu sheet vs footer)",
+  "viewport": "390x844 vs 1440x900",
+  "problem": "Section counts don't match across the two navigation surfaces on the same page. The mobile sheet says Servicios 14 · Industrias 08 · Casos 05 · Empresa 05 · Recursos 05. The footer says Servicios 12 · Industrias 09 · Casos 06 · Empresa 07 · Recursos 09. A visitor reads them as different inventories.",
+  "evidence": "Screenshots in /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/rv2caso/: z-msheet-0-0.png (sheet), s/1440x900/07-y5600.png (footer headings).",
+  "fix": "Use one counting rule everywhere: §4.8 footer counts with the hub link, or entities only. Either align the sheet's counters to the footer or drop the counters from the sheet.",
+  "owner": "nav"
+ },
+ {
+  "severity": "minor",
+  "page": "/casos/clinica-dental-monterrey/",
+  "viewport": "all",
+  "problem": "Client gates, for information only, not defects: (1) caso-dental.json is still estado 'borrador' with aprobadoPor null. (2) The R2 publishGate is not confirmed, so the page ships as a short case ('caso breve'): noindex,follow, and Punto de partida, Implementación, Resultado (the Kain mid-page scene) and VKTOR are left out of the HTML. Between the hero and the Dawn closing there is no image scene, and the ficha shows only 'Caso: Clínica dental · Monterrey', the source and the two figures, because no ficha.entity row has confirmed:true. The hero chips (Salud · Monterrey · Agente de IA en WhatsApp · 90 días) repeat what the H1 and metrics.ts already state. (3) No testimonial approval, so the section doesn't exist.",
+  "evidence": "src/content/paginas/caso-dental.json (estado, aprobadoPor, pendientes); page HTML: <meta name=\"robots\" content=\"noindex,follow\">; rendered sections: hero, ficha, cifra, replicar, relacionados, cta-final.",
+  "fix": "Client confirms in writing: the ficha rows (sector, city, service, channel, window), the starting point and the implementation (what the agent does beyond replying; CRM; tools; timeline), and approves the copy. Then copy sets publishGate.ok and confirmed:true per row, and the template brings back the full case and its Resultado scene without code changes.",
+  "owner": "cliente"
+ },
+ {
+  "severity": "major",
+  "page": "/discovery/ #hero",
+  "viewport": "1280x800, 2560x1080 (1440x900 within 4px)",
+  "problem": "The hero's Fig. 01 glass caption ('La silla vacía · La pregunta de esta llamada…') gets cut by the hero's overflow:clip while the page scrolls out. The exit drift moves the caption down more slowly than the section, so its bottom passes the section edge. The box loses its bottom border and a line of text is cut in half. At 1280x800 'estás.' disappears; at 2560x1080 the second line is cut through the glyphs. The caption also sits on top of the chair base (the subject itself). §3.8 asks for the caption to sit on the floor between the text column and the subject's feet.",
+  "evidence": "CDP real scroll, wait ≥3 s. At 1280x800, y=690: caption 48–123 px, hero bottom 110. At 2560x1080, y=918: caption 113–168, hero bottom 162; y=1000: caption 35–90, hero bottom 80. A 40 px sweep shows the clipping lasts for every y ≥ 520 at 1280x800 (up to 15 px of the 75 px box) and every y ≥ 840 at 2560x1080 (10 px). The hero section computes overflow:clip. Captures: scratchpad/adv2disc/z-f1280.png, z-fig918.png, z-fig1000.png. At y=0 the caption starts only 47 px above the hero bottom at 2560x1080 (953–1033 vs 1080). The plate anchor fig.d is [0.72, 0.85].",
+  "fix": "Make sure the caption never crosses the section edge. Either clamp its top to (section height − caption height − 24 px), or take .cv-fig out of the downward exit drift (keep it static or let it move up). Also move the fig anchor up and to the left (≈0.62, 0.78) so it sits on the floor between the text and the chair, not over the chair base. Check at 1280x800, 1440x900, 2560x1080 and 3440x1440.",
+  "owner": "cine"
+ },
+ {
+  "severity": "major",
+  "page": "/discovery/ #hero, #despues, #cta-final",
+  "viewport": "320x640 (also 340x640)",
+  "problem": "At 320–340 px the blue primary CTA overflows. The label 'Agendar mi Discovery Session' is nowrap and needs 222 px, plus padding and the node, so the button wants 310 px in a 280 px column. In the hero the node circle sticks 20 px out of the right end of the button. In #despues and #cta-final the button is 310 px wide and runs 10 px past the viewport. overflow-x hides it, so the button's right cap and node are cut off at the screen edge. The microcopy 'sin costo' touches the edge, and the Dawn text column widens to 310 px. The hero chip 'LLAMADA 1:1 · 30 MINUTOS · SIN COSTO' also wraps and leaves 'COSTO' alone on its own line.",
+  "evidence": "CDP at 320x640 (mobile emulation). Hero btn 20–300, node 284–320. #despues btn 20–330, node 284–320. #cta-final btn 20–330. At 340: hero node 285–321 vs btn right 319; #despues/#cta-final right gutter is 9 px vs 21 px on the left. Fine at 360. Captures: scratchpad/adv2disc/m320/m320-top.png, m320-after.png, m320-dawn.png.",
+  "fix": "Below about 360 px, let .btn shrink. Set .btn{max-width:100%} with min-width:0 on .ctas/.cta-p, and let .btn__t wrap (white-space:normal, text-align:left) or reduce the horizontal padding and node size. The node must stay inside the pill. Add letter-spacing or allow a cleaner break in .cv-hero__chip so 'SIN COSTO' stays together. Check at 320, 340 and 360.",
+  "owner": "ui"
+ },
+ {
+  "severity": "major",
+  "page": "/discovery/ #video (VSL dialog)",
+  "viewport": "390x844, 360x740 (desktop 1440x900 too)",
+  "problem": "The VSL opens inside a black box. The rule `.vdialog__stage video{width:100%;height:100%;object-fit:contain}` stretches the <video> element to the full stage. The browser's default black video background then shows as a hard-edged black rectangle. On a phone the box is 363x744 with the 16:9 picture (~205 px tall) floating in the middle: about 70% of the screen is flat black against the navy dialog. On desktop the box adds 23 px black bars above and below the picture. This is the main conversion asset of the page, and R7 bans a boxed player.",
+  "evidence": "CDP 390x844 after tapping play: dialog 390x844, video element [14, 72, 363, 744], close button 44x44 (OK). Capture scratchpad/adv2disc/vslm/vslm-open.png. At 1440x900 the video element is 1339x800 for a 16:9 source (picture ≈753 px tall). Capture vsl/vsl-open.png. Focus trap, Esc, pausing and returning focus to the trigger all work.",
+  "fix": "Size the element to the video's aspect ratio instead of the stage: `.vdialog__stage video{width:100%;height:auto;max-height:100%;aspect-ratio:16/9;background:transparent}` (or background:var(--ink-2)). Keep it centered with the grid. In portrait, optionally place the title and close button above a centered 16:9 frame.",
+  "owner": "ui"
+ },
+ {
+  "severity": "major",
+  "page": "/discovery/ #despues",
+  "viewport": "768x1024 (also 390x844 at one scroll position)",
+  "problem": "In #despues, the mobile-only sticky isotipo aura (<Aura kind='isotipo' x='65%' o={0.9} only='m' sticky/>) slides behind the blue CTA and its microcopy. On tablet portrait the 12 px microcopy '30 min · 1:1 · Google Meet · sin costo' (#9EB0C7) falls to about 1.5:1 contrast. The blue button also blends into the cyan blob, so the one primary CTA on the screen loses its edge.",
+  "evidence": "8-step real-scroll sweep (2 s wait, DPR 2), median background under the micro. At 768x1024 with the micro at viewport y=964/835/706: contrast 1.53/1.55/1.67. At y=577–61: 3.9–4.6, still under 4.5 at most positions. At 390x844, y=475: 3.19. Capture scratchpad/adv2disc/z-msw768.png and t768/05-s4-y5120.png.",
+  "fix": "In ConversionTemplate, move the mobile aura of the 'intertitle' scene away from .cv-after__ctas: anchor it near the H2 or at x≈20%, or lower it to o≤0.35. Another option is a local scrim (radial ink) under .cv-after__ctas. Re-measure the micro at ≥4.5:1 at every scroll position on 768x1024, 390x844 and 360x740.",
+  "owner": "templates-a"
+ },
+ {
+  "severity": "minor",
+  "page": "/discovery/ #video",
+  "viewport": "1024x768, 1440x900, 2560x1080",
+  "problem": "In the VideoScene the text columns press into the subject (the chair). At 1024x768 the 'es' of 'antes' in the H2 sits over the left edge of the seat, and 'Reproducir el video' butts against the right armrest. At 2560x1080 the H2 ends about 12 px from the seat. The fused look reads as cramped, not composed.",
+  "evidence": "Subject box (plate subject.d 0.375–0.66) overlap from the real-scroll scan. 1024x768: H2 24%, lede 16%, 'Si reconociste…' 20%. 1440x900: H2 17%. 1920x1080: 19%. 2560x1080: 22%. Captures: scratchpad/adv2disc/z-v1024.png, z-v2560.png.",
+  "fix": "Limit .cv-video .is__text to the safe zone safe.d x≤0.37 of the stage width, and start the aside at ≥0.67. For example, set max-width:calc(var(--stage-w)*.37 - var(--safe-x)), or on 4:3 drop the H2 one step and the lede to max 28ch. Re-run check:escenas at 1024x768 and 2560x1080.",
+  "owner": "templates-a"
+ },
+ {
+  "severity": "minor",
+  "page": "/discovery/ #video",
+  "viewport": "all",
+  "problem": "The play button's micro label reads 'VSL · 3:00'. VSL is internal marketing jargon ('video sales letter'). A business owner who knows the term reads it as 'sales video', on a page whose promise is 'No es una venta' and 'Sin discurso de venta'.",
+  "evidence": "src/components/templates/ConversionTemplate.astro line 228: `<span class=\"t-micro cv-play__dur\" data-allow-number>VSL · {vslDur}</span>`. Visible in every capture of #video (e.g. d1440/02-s1-y1530.png).",
+  "fix": "Use a neutral label, e.g. 'Video · 3:00' or '3 min'. Keep the duration from mp4Duration().",
+  "owner": "templates-a"
+ },
+ {
+  "severity": "minor",
+  "page": "/discovery/ #cta-final",
+  "viewport": "390x844, 360x740, 768x1024 (vertical plate)",
+  "problem": "The vertical Dawn plate tells a different story from the desktop plate. Desktop discovery-cta-final shows Kain seated in the owner's chair: the payoff of the 'silla vacía' metaphor (§5.11; the IMAGENES plan says the mobile plate is the 'same instruction'). discovery-cta-final-m shows Kain standing next to the empty chair. On phones the page ends without 'the chair is no longer empty'. Kain is full body, so the brand rule is met.",
+  "evidence": "src/assets/cine/discovery-cta-final-m.jpg vs discovery-cta-final.jpg. Captures: scratchpad/adv2disc/dawnm/dawn-mid.png and z-d360.png. Plan: materiales/v2/IMAGENES-v2.json → discovery-cta-final.subject 'Kain sentado en la silla del dueño saludando', mobile.composition 'misma instrucción'.",
+  "fix": "Regenerate the 4:5 master with Kain seated in the chair, full body, feet on the base or floor, waving toward the text side. Keep the top 37% as clean shadow, then run scripts/plates.mjs. The anchors m (pecho, mano, silla) need updating.",
+  "owner": "orquestador"
+ },
+ {
+  "severity": "minor",
+  "page": "/discovery/ #hero",
+  "viewport": "320x640",
+  "problem": "On small phones the first screen of the hero is text only. The subject's head lands at 650 px, just below the fold, so the hero does not read as an image section above the fold. cine's own guard flags it.",
+  "evidence": "Dev console at 320x640: \"[cine] #hero: la cabeza del sujeto cae a 650 px (1.02 de la pantalla; tope 0.8). Usa mobile=\\\"split\\\" o acorta el intro.\" Capture scratchpad/adv2disc/m320/m320-top.png. 360x740 and 390x844 are fine.",
+  "fix": "At ≤340 px, tighten the intro: reduce the H1 and deck one step, use one short lede sentence, and keep the chip on one line. The plate should start at ≤0.8 of the screen. Re-check the guard at 320x640.",
+  "owner": "templates-a"
+ },
+ {
+  "severity": "minor",
+  "page": "/discovery/ #faq",
+  "viewport": "no-JS (any)",
+  "problem": "Without JS the FAQ answers render expanded. Each toggle still says aria-expanded=\"false\", shows a '+' icon and does nothing. Screen readers announce collapsed while the answer is visible.",
+  "evidence": "Server HTML: <button class=\"faq__q\" aria-expanded=\"false\" aria-controls=\"faq-list-a0\" data-faq-toggle> with the answer visible. No-JS capture (Emulation.setScriptExecutionDisabled): scratchpad/adv2disc/nojs/nojs-faq.png. Everything else is visible without JS and under reduced motion.",
+  "fix": "Render a no-JS-safe state: aria-expanded=\"true\" plus a '−' icon under html.no-js. Or hide the toggle semantics (question as a plain heading) until ui.ts upgrades it. Or use <details>/<summary> as the base.",
+  "owner": "ui"
+ },
+ {
+  "severity": "minor",
+  "page": "site build (affects /discovery/)",
+  "viewport": "n/a",
+  "problem": "`astro build` prints 2 warnings, and neither is tracked in lanzamiento.md or peticiones.md. First: there is no content config, so Astro auto-generates the deprecated collections 'blog' and 'paginas'. Second: glob-loader matches no .md/.mdx in src/content/blog (empty) or src/content/paginas (JSON, read through src/lib/site).",
+  "evidence": "The build report of round 2 lists both warnings. `ls src/content.config.ts src/content/config.ts` → both missing. src/content/blog is empty. grep of lanzamiento.md/peticiones.md for content.config/glob-loader finds nothing.",
+  "fix": "Add src/content.config.ts. Define paginas with a file/glob loader for *.json, or declare no collections and move the JSON out of src/content. Define blog once the articles exist. Or at least log both warnings in materiales/v2/build/lanzamiento.md (orquestador).",
+  "owner": "orquestador"
+ },
+ {
+  "severity": "minor",
+  "page": "/discovery/",
+  "viewport": "n/a",
+  "problem": "Client gate (informational): the /discovery/ copy is still 'borrador' with aprobadoPor null. The review package has open items: the D01–D04 and D06 FAQ answers are edited versus D, and the closing line 'Construimos empresarios libres, no héroes cansados.' (ESPEC §11-4) is a question to the client. The page is served index,follow today, and --release makes the gate fatal.",
+  "evidence": "src/content/paginas/discovery.json: \"estado\": \"borrador\", \"aprobadoPor\": null, plus pendientes. <meta name=\"robots\" content=\"index,follow,max-image-preview:large\">. Every factual claim on the page traces to materiales/discovery/contenido.md (7 preguntas, 2 min, CDMX L–V, 24 h para reagendar, 3–40 empleados, sin tarjeta). No unconfirmed fact is stated.",
+  "fix": "The client approves and names a person in aprobadoPor (the team does not change estado/aprobadoPor). Until then, the orquestador decides on noindex for draft pages as recorded in lanzamiento.md.",
+  "owner": "cliente"
+ },
+ {
+  "severity": "major",
+  "page": "/servicios/agentes-ia-whatsapp/ #si-no (and #vktor)",
+  "viewport": "all",
+  "problem": "The page states two service details as fact that the copy file itself marks as unconfirmed. Under 'Lo que sí hace' it says the handoff to a person happens 'con todo el historial' and that the agent 'Se ajusta cada mes con tus conversaciones reales'. VKTOR's Rise phase repeats the monthly claim: 'optimizamos cada mes'. Decision 2 forbids stating unconfirmed facts.",
+  "evidence": "src/content/paginas/agentes-whatsapp.json pendientes: 'Confirmar que el servicio incluye: el paso a una persona \"con todo el historial\" y el ajuste mensual \"con tus conversaciones reales\" (fases Operate y Rise)'. Both lines render at 1440x900 (scratchpad svc2/d1440/s08.jpg, s13.jpg) and on mobile (svc2/m390/s13.jpg).",
+  "fix": "Until the client confirms, reword without the unconfirmed specifics. For example: 'Le pasa la conversación a una persona cuando el cliente lo pide o el caso lo necesita.' Drop 'Se ajusta cada mes…' or hedge it ('Lo ajustamos con tus conversaciones reales; la frecuencia la definimos contigo'). Apply the same change to vktor.phases[R].line.",
+  "owner": "copy"
+ },
+ {
+  "severity": "major",
+  "page": "/servicios/agentes-ia-whatsapp/ (persistent KainPill, every page)",
+  "viewport": "1280x720, 1440x900, 1920x1080, 2560x1080 (from the second viewport down)",
+  "problem": "The floating 'Escríbele a Kain' pill shows Kain cropped to head and shoulders (kain-avatar-96.webp). This breaks the non-negotiable brand rule that Kain always appears full body, and it stays on screen for most of the scroll.",
+  "evidence": "Zoom of the pill at 1440 shows a bust crop (svc2/d1440/z-pill.png). It also appears at 1920 and 2560 next to the 'Escríbele a Kain · responde 24/7' label (svc2/d1920/s02.jpg, svc2/d2560/s02.jpg). KainPill.astro loads /img/kain/kain-avatar-96.webp; peticiones.md records it as 'cabeza y hombros'.",
+  "fix": "Replace the bust with a full-body mini Kain (a tall cutout so feet and antennae show, e.g. a 28×48 crop of kain-presenta.webp), or remove the avatar and use the WhatsApp glyph plus the 'Escríbele a Kain' text. Never crop Kain.",
+  "owner": "nav"
+ },
+ {
+  "severity": "minor",
+  "page": "/servicios/agentes-ia-whatsapp/ #vktor",
+  "viewport": "2560x1080 (slightly off at 1920x1080 for R)",
+  "problem": "The phase columns are out of step with the V·K·T·O·R slabs on the plate. At 2560 every column sits one slab to the left: the 'V' slab is above 'K · Koncept', 'O' is above 'R · Rise', and the 'R' slab has no column under it. The text and image stop reading as one geometry.",
+  "evidence": "Measured at 2560x1080: column centres are about 706/999/1292/1584/1877 px; slab centres are 998/1296/1594/1883/2350 px. At 1440 they line up within ±30 px (columns 218/475/732/988/1245, slabs 209/444/680/908/1277). At 1920 the R slab sits 150 px right of its column. Captures: svc2/vk-2560.png, svc2/d2560/s11.jpg.",
+  "fix": "Place the .svc-vk__rail columns from the slab anchor x positions (left/width from --ax of each svc-slab), or limit the plate width on ≥1800 px so the slabs fall inside .frame. Re-check at 1920 and 2560.",
+  "owner": "templates-b"
+ },
+ {
+  "severity": "minor",
+  "page": "/servicios/agentes-ia-whatsapp/ #industrias",
+  "viewport": "320, 360x740, 390x844",
+  "problem": "On mobile, only the Salud row has the 'VER INDUSTRIA →' link, and it takes its own column. That squeezes the row's title and description into a narrow strip: 75 px at 320, 118 px at 360 and 144 px at 390, against about 260 px in the sibling rows. The description breaks into 4 to 6 lines of one or two words each.",
+  "evidence": "Measured: 'Agenda, confirma y recuerda…' is w=118 px, h=113 px at 360 and w=144 px at 390. Captures: svc2/m390-indrow-c.png, svc2/m320-ind.png (320 shows 'Agenda, / confirma y / recuerda / citas, sin / dar').",
+  "fix": "Under 768 px, put the link on its own line below the description (or make the whole row the link and drop the text label), so all four rows keep the same text width.",
+  "owner": "templates-b"
+ },
+ {
+  "severity": "minor",
+  "page": "/servicios/agentes-ia-whatsapp/ #hero",
+  "viewport": "320 px wide",
+  "problem": "At 320 px the hero's primary button 'Agenda tu Discovery Session' doesn't fit. Its round node icon sticks out about 10 px past the right edge of the blue pill.",
+  "evidence": "In the DOM the .btn has scrollWidth 290 and clientWidth 280. The 2x capture shows the circle outside the pill: svc2/m320-top.png.",
+  "fix": "In Btn/.btn under about 340 px, let the label wrap or shrink: allow letter-spacing/padding to compress, or hide .btn__node (the MobileCTABar already drops it). The pill must contain the icon.",
+  "owner": "ui"
+ },
+ {
+  "severity": "minor",
+  "page": "/servicios/agentes-ia-whatsapp/ #senales",
+  "viewport": "1440x900, 1920x1080, 2560x1080",
+  "problem": "The Fig. 02 caption reads 'LO QUE PASA A LAS 11:48 P. M.' with no 'Ejemplo ilustrativo' label, so the narrative hour reads as a fact. F16 requires that label on the 11:48 p. m. hour. The text is also hardcoded in the template as a fallback instead of coming from the copy JSON.",
+  "evidence": "ServiceTemplate.astro line 196: C[painS.id]?.fig?.label ?? 'Lo que pasa a las 11:48 p. m.' (agentes-whatsapp.json has no senales.fig). Rendered in svc2/d1440b/s05.jpg and svc2/d1920/s02.jpg.",
+  "fix": "Move the label into copy (senales.fig.label) and render it as 'Fig. 02 · Ejemplo ilustrativo: lo que pasa a las 11:48 p. m.'. Alternatively, drop the hour and keep a non-numeric caption. No page text in the template.",
+  "owner": "templates-b"
+ },
+ {
+  "severity": "minor",
+  "page": "/servicios/agentes-ia-whatsapp/ #relacionados",
+  "viewport": "all",
+  "problem": "The related still 'Caso de estudio · Clínica dental en Monterrey' shows a generated dentist's face with no 'Imagen ilustrativa' label. That suggests the person is the real (anonymized) client. The Montage on the same page labels the same kind of image 'IMAGEN ILUSTRATIVA', so the page is inconsistent.",
+  "evidence": "svc2/rel-2x.png (1440 @2x) and svc2/m-rel-2x.png (390 @2x): no illustrative chip on the dentist still. The Montage rows in svc2/d1440/s09.jpg do have it.",
+  "fix": "Apply the Montage rule to Still: when the plate shows people (not Kain), render chip-illus 'Imagen ilustrativa' inside the still's penumbra.",
+  "owner": "ui"
+ },
+ {
+  "severity": "minor",
+  "page": "/servicios/agentes-ia-whatsapp/ #hero",
+  "viewport": "all",
+  "problem": "The hero lede gives a real result ('…el tiempo de respuesta bajó de 8 minutos a 12 segundos') with no source note. §0.1-2 requires the note 'Datos internos de Ingeniak, octubre de 2026' on every figure, and the hero section contains no 'Datos internos' text. The note first appears in #definicion, a screen later.",
+  "evidence": "In the page HTML, the #hero slice has 0 occurrences of 'Datos internos'. The metric span data-metric=\"dental-respuesta\" has no superscript (svc2/d1440/s00.jpg, svc2/m390/s01.jpg).",
+  "fix": "Add the footnote mark ¹ to the hero metric and the source note in the hero microcopy area, as the definicion MetricRow does. Keep it inside the text column, not over Kain.",
+  "owner": "templates-b"
+ },
+ {
+  "severity": "minor",
+  "page": "/servicios/agentes-ia-whatsapp/ (meta description)",
+  "viewport": "n/a (SEO)",
+  "problem": "The meta description shows a bare figure ('Caso real: tiempo de respuesta de 8 minutos a 12 segundos.') with no sector, city or source. This is the most-copied snippet of the page, and §0.1-2 requires context on every figure.",
+  "evidence": "src/data/sitemap.json line 978: metaDescription '… Caso real: tiempo de respuesta {{metric:dental-respuesta|prose}}.' It renders in <meta name=\"description\">, WebPage.description and Service.description.",
+  "fix": "Rewrite as '… En una clínica dental de Monterrey, el tiempo de respuesta bajó {{metric:dental-respuesta|prose}}.' Apply the same pattern to the n8n (logística) and paid media (HoReCa) metaDescriptions.",
+  "owner": "orquestador"
+ },
+ {
+  "severity": "minor",
+  "page": "/servicios/agentes-ia-whatsapp/ #integraciones",
+  "viewport": "all",
+  "problem": "The Calendario line ('El calendario de tu CRM o el que ya usa tu equipo') says the agent works with whatever calendar the team already uses. The copy file says that is unconfirmed ('PREGUNTA AL CLIENTE · calendarios que se conectan además del de Kommo o GoHighLevel').",
+  "evidence": "agentes-whatsapp.json integraciones.groups[2].line plus the matching pendiente. Rendered in svc2/d1440/s10.jpg.",
+  "fix": "Until confirmed: 'El calendario de tu CRM (Kommo o GoHighLevel); si usas otro, lo revisamos en la fase Koncept.'",
+  "owner": "copy"
+ },
+ {
+  "severity": "minor",
+  "page": "/servicios/agentes-ia-whatsapp/",
+  "viewport": "n/a",
+  "problem": "Client gate (informational, owner cliente). The page copy is still estado 'borrador' with aprobadoPor null. Three client questions are open: which calendars connect, the measurement period for retail-conversiones (shown without a plazo), and whether the #definicion figure row stays as dental-citas · salud-citas-mes · sistemas. Claims in si-no and integraciones also wait on confirmation.",
+  "evidence": "src/content/paginas/agentes-whatsapp.json: estado 'borrador', aprobadoPor null, pendientes 'PREGUNTA AL CLIENTE' ×3. npm run check lists it among the 8 client gates.",
+  "fix": "The client approves the copy and answers the three questions. Do not set estado or aprobadoPor on their behalf.",
+  "owner": "cliente"
+ }
+]
