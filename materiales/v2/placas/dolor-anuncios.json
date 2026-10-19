@@ -1,0 +1,27 @@
+{
+  "dolor-anuncios": {
+    "alt": "Emprendedora frustrada de noche mirando su celular junto a cajas de envío sin usar (imagen ilustrativa)",
+    "srcsetMax": 1920,
+    "d": { "src": "/img/cine/dolor-anuncios", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.26, "fy": 0.45, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/dolor-anuncios-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.52, "fy": 1, "subjTop": 0.44 },
+    "layout": "subject-left",
+    "pose": "sentada al borde del sofá, mira el celular con frustración",
+    "safe": { "d": [[0.48, 0.06, 0.96, 0.94]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.045, 0.145, 0.470, 0.950], "m": [0.190, 0.435, 0.870, 0.960] },
+    "anchors": {
+      "pecho": { "d": [0.200, 0.420], "m": [0.445, 0.637] },
+      "mano": { "d": [0.296, 0.517], "m": [0.582, 0.697] },
+      "rostro": { "d": [0.255, 0.290], "m": [0.505, 0.530] },
+      "telefono": { "d": [0.300, 0.459, 0.043, 0.038], "m": [0.594, 0.654, 0.058, 0.028] },
+      "pantalla": { "d": [0.365, 0.458, 0.104, 0.172], "m": [0.686, 0.653, 0.180, 0.125] },
+      "cajas": { "d": [0.050, 0.600, 0.210, 0.350], "m": [0.195, 0.765, 0.305, 0.205] },
+      "fig": { "d": [0.475, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.885], "m": [0.500, 0.950] }
+    },
+    "leak": { "d": [0.32, 0.48], "m": [0.62, 0.67] },
+    "grade": 0,
+    "creationIds": { "desktop": "fH4vRaJCDY", "mobile": "Cq9aGICEEy" },
+    "deskNote": "Persona ilustrativa (placa de dolor, sin Kain): Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; 2K cuesta lo mismo que 1K) y SIN referencias de imagen, como pide el plan. Salió con la persona en x ≈ 0.16–0.46 pero la mesa y la laptop hasta x ≈ 0.625 → reencuadre SIN IA (materiales/magnific/v2/dolor-anuncios/post-dolor-anuncios-desk.mjs): escena al 90 %, desplazada 7.4 % a la izquierda (se recorta el brazo del sofá) y colocada en y 0.06–0.96; penumbra sintetizada arriba/derecha/abajo desde los bordes con el mismo grano y la misma mezcla en relleno y costura (sin escalón en las esquinas); penumbra horizontal hacia #03040B de x 0.44 a 0.60 (fuerza 0.82); pared superior izquierda 30 % más baja; desenfoque local de un empaque del estante con trazos que parecían letras; los cuatro bordes caen a #03040B. Ámbar solo de la pantalla del celular y de la laptop (vista por detrás, sin logotipo; teclado ilegible); cajas planas de cartón liso, sin marcas. Lado del texto (x ≥ 0.48) con luminancia máx. 27/255 (p95 14). `telefono` es el celular en sus manos (destino de la línea del pie: painFigTarget elige `telefono`); `pantalla`, la tapa de la laptop; `cajas`, la pila de cajas planas recargada en el sofá. El pie (`fig`, esquina superior derecha) cae sobre el piso, bajo la mesa, a la izquierda de la caja segura. Original: materiales/magnific/v2/dolor-anuncios/desk-a-fH4vRaJCDY.png; master sin pérdida: desk-a-reencuadre.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la toma de escritorio elegida (fH4vRaJCDY) como única referencia: misma persona, mismo sofá, laptop y cajas. Se probó antes un reencuadre gratis de la toma de escritorio a 4:5, pero la pared iluminada terminaba en un rectángulo dentro del vacío (se leía como recorte) y se descartó. Reencuadre sin IA con scripts/reencuadre-movil.mjs (−0.0352 0 0 −0.03385 0.40: recorta 81 px arriba, en el vacío, y 78 px a la derecha) a 1536 × 1920 + caída lateral (8 % por lado) e inferior (7 %) a #03040B (post-dolor-anuncios-movil.mjs), porque sofá, cajas y mesa tocaban los bordes. Coronilla en y ≈ 0.443; 41 % superior limpio (luminancia máx. 57/255, p95 35). La mesa sigue hasta el borde derecho, ya disuelta. Original: materiales/magnific/v2/dolor-anuncios/movil-a-Cq9aGICEEy.png; master sin pérdida: movil-a-final.png."
+  }
+}

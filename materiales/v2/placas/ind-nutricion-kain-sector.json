@@ -1,0 +1,25 @@
+{
+  "ind-nutricion-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, en la sala de espera de un consultorio de nutrición junto a un panel de cristal donde confirma consultas; al fondo, desenfocado, un paciente espera (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/ind-nutricion-kain-sector", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.29, "fy": 0.5, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/ind-nutricion-kain-sector-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.47, "fy": 1, "subjTop": 0.45 },
+    "layout": "subject-left",
+    "pose": "toca la superficie",
+    "safe": { "d": [[0.49, 0.06, 0.96, 0.95]], "m": [[0.04, 0.03, 0.96, 0.40]] },
+    "subject": { "d": [0.13, 0.18, 0.46, 0.89], "m": [0.24, 0.45, 0.69, 0.91] },
+    "anchors": {
+      "pecho": { "d": [0.231, 0.477], "m": [0.371, 0.634], "scrW": 0.032 },
+      "rostro": { "d": [0.240, 0.340], "m": [0.384, 0.546] },
+      "mano": { "d": [0.332, 0.443], "m": [0.506, 0.618] },
+      "pantalla": { "d": [0.334, 0.210, 0.118, 0.458], "m": [0.517, 0.465, 0.167, 0.290] },
+      "fig": { "d": [0.310, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.850], "m": [0.500, 0.870] }
+    },
+    "leak": { "d": [0.27, 0.42], "m": [0.44, 0.60] },
+    "grade": 0,
+    "creationIds": { "desktop": "aFPhJQwfSh", "mobile": "p8jMjnBehw" },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K: 75 créditos). Referencias: s7TThool8e (Kain), SyD8dNYUb8 (ind-salud-kain-sector aprobada, modelo de puesta en escena), vQy6WKYa47 (portada de nutrición: mismo lugar y luz), 5jAAdVBKxe, jUccthULD0. Kain correcto (antenas lisas sin bolitas, visera en banda, boca en la carcasa, pantalla plana con asterisco fino, rodillas articuladas, sin bata), panel vacío, sin texto. El render salió más cerrado que el plan (panel hasta x ≈ 0.526) → alejamiento sin IA: escala 0.86 anclada al borde izquierdo, original en (0, 131), relleno arriba/abajo/derecha sintetizado desde los bordes (ya en tinta) con la lógica de scripts/reencuadre-movil.mjs (costuras de 170/120/200 px y grano), y caída del borde izquierdo a #03040B en el 5 %. Panel en x 0.334–0.452; Kain centrado en x ≈ 0.23, antenas en y ≈ 0.19, suelas en ≈ 0.845. Luminancia máx. en x ≥ 0.49: 31/255. El paciente está sentado a la mesa de la izquierda (x ≈ 0.01–0.10), atenuado por la caída del borde. Original en materiales/magnific/v2/ind-nutricion-kain-sector/desk-a-aFPhJQwfSh.png; procesada en desk-a-zoomout-086.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con el render de escritorio (aFPhJQwfSh) como primera referencia + s7TThool8e, vQy6WKYa47 (portada móvil de nutrición: composición vertical), 5jAAdVBKxe, jUccthULD0. Salió con Kain grande (antenas en y ≈ 0.40, suelas en 0.93) → reencuadre sin IA con la lógica de scripts/reencuadre-movil.mjs (0.1625 0.0875 0.046 0.148 0.40) a 1536 × 1920, con costuras por lado (abajo 120 px para no tocar los pies; izquierda 260 px para fundir la mesa y el paciente sin escalón). Antenas en 0.453, suelas en ≈ 0.868, Kain en x ≈ 0.37; 38 % superior con luminancia ≤ 48/255 (≤ 59 hasta 0.40). Panel 0.167 de ancho (65 px a 390 px): ChatSim baja al texto en móvil. Original en materiales/magnific/v2/ind-nutricion-kain-sector/movil-a-p8jMjnBehw.png; final movil-a-reframe-1536.png."
+  }
+}

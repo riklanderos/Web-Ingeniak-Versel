@@ -1,0 +1,23 @@
+{
+  "ind-belleza-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, en la recepción de un spa junto a un panel de cristal donde responde mensajes",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/ind-belleza-kain-sector", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.28, "fy": 0.5, "fadeFrom": 0.91 },
+    "m": { "src": "/img/cine/ind-belleza-kain-sector-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.44, "fy": 1, "subjTop": 0.44 },
+    "layout": "subject-left",
+    "pose": "toca la superficie",
+    "safe": { "d": [[0.52, 0.06, 0.96, 0.95]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.10, 0.11, 0.46, 0.92], "m": [0.21, 0.44, 0.67, 0.90] },
+    "anchors": {
+      "pecho": { "d": [0.224, 0.444], "m": [0.370, 0.632], "scrW": 0.038 },
+      "rostro": { "d": [0.229, 0.281], "m": [0.377, 0.540] },
+      "mano": { "d": [0.338, 0.414], "m": [0.515, 0.615] },
+      "pantalla": { "d": [0.339, 0.201, 0.110, 0.440], "m": [0.517, 0.495, 0.139, 0.248] },
+      "fig": { "d": [0.330, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.850], "m": [0.500, 0.861] }
+    },
+    "leak": { "d": [0.17, 0.22], "m": [0.30, 0.50] },
+    "grade": 0,
+    "creationIds": { "desktop": "ovSXUqq829", "desktopBase": "3za6mHPREY", "mobile": "reencuadre de ovSXUqq829 (sin IA)" }
+  }
+}

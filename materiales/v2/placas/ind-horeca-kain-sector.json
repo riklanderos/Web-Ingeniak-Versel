@@ -1,0 +1,25 @@
+{
+  "ind-horeca-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, en la barra de un restaurante junto a un panel de cristal donde confirma reservaciones; al fondo, desenfocado, un bartender seca una copa (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/ind-horeca-kain-sector", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.33, "fy": 0.5, "fadeFrom": 0.94 },
+    "m": { "src": "/img/cine/ind-horeca-kain-sector-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.46, "fy": 1, "subjTop": 0.44 },
+    "layout": "subject-left",
+    "pose": "toca la superficie",
+    "safe": { "d": [[0.56, 0.06, 0.96, 0.94]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.035, 0.085, 0.525, 0.935], "m": [0.100, 0.447, 0.650, 0.874] },
+    "anchors": {
+      "pecho": { "d": [0.301, 0.457], "m": [0.399, 0.634], "scrW": 0.041 },
+      "rostro": { "d": [0.318, 0.275], "m": [0.418, 0.543] },
+      "mano": { "d": [0.422, 0.400], "m": [0.535, 0.605] },
+      "pantalla": { "d": [0.402, 0.152, 0.114, 0.465], "m": [0.512, 0.481, 0.128, 0.233] },
+      "fig": { "d": [0.410, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.920], "m": [0.500, 0.866] }
+    },
+    "leak": { "d": [0.27, 0.14], "m": [0.364, 0.44] },
+    "grade": 0,
+    "creationIds": { "desktop": "u56C4dRQLD", "mobile": null },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; 2K cuesta lo mismo que 1K: 75 créditos, 1 imagen). Referencias: s7TThool8e (Kain), SyD8dNYUb8 (ind-salud-kain-sector aprobada, modelo de puesta en escena: encuadre, pose y panel), JNXoEmlOq4 (portada ind-horeca-hero: mismo mundo, mandil y luz), 5jAAdVBKxe, jUccthULD0. Kain correcto (2 antenas lisas sin bolitas, orejas cromadas, visor en banda con 2 ojos ovalados cian, boca cian bajo el visor, pantalla del pecho plana con asterisco de trazo fino, juntas gris oscuro y rodillas articuladas, pies completos), mandil negro corto y liso; la mano derecha toca el borde izquierdo del panel. Barra de restaurante cerrada a la izquierda (copas, botellas sin etiqueta, lámparas colgantes) con un bartender desenfocado en x 0.04–0.13. Panel vacío con leve perspectiva (borde izq. y 0.126–0.639; der. y 0.149–0.619): el ancla pantalla es el rectángulo inscrito. Salió más grande y más a la derecha que el plan (Kain x 0.18–0.45, antenas 0.09, suelas 0.93; panel x 0.40–0.52) → texto desde x 0.56 (luminancia máx. 66/255, p95 38; bruma azul sin objetos ni luces). Sin reintento: Kain correcto, sin texto y lado del texto limpio. Post sin IA (materiales/magnific/v2/ind-horeca-kain-sector/post-desk-grade.mjs): lámparas de blanco cálido → blanco frío (misma luminancia) y caída de los cuatro bordes a #03040B (izq. 5 %, der. 4 %, arriba y abajo 6 %). Original: materiales/magnific/v2/ind-horeca-kain-sector/desk-a-u56C4dRQLD.png; master sin pérdida: desk-a-graded.png.",
+    "mobileNote": "Sin generación (0 créditos): reencuadre sin IA del render de escritorio (post-movil-pretop.mjs + post-movil-reencuadre.mjs, misma carpeta). Recorte x 0–0.836 del escritorio con las lámparas enfriadas y el haz cian del 8 % superior atenuado (−55 %); lienzo 2452 × 3065 con el original en (150, 1241); relleno = bruma desenfocada de los bordes que decae a #03040B de forma exponencial (sin costuras ni esquinas rectas), costura difuminada 260/200/200 px (arriba/izq./abajo), penumbra superior hasta 0.40 y caída a #03040B a los lados (7 % / 4 %) y abajo (4 %) → 1536 × 1920. Mismo Kain que el escritorio: antenas en 0.45, suelas en 0.87; bartender completo en x 0.10–0.21. 41 % superior limpio (luminancia máx. 87/255, p95 24). El panel mide 0.128 del ancho (< 180 px a 390) → el chat baja al flujo del texto (§3.7). Master sin pérdida: materiales/magnific/v2/ind-horeca-kain-sector/movil-reframe-d.png."
+  }
+}

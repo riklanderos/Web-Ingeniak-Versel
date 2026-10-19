@@ -7470,5 +7470,1132 @@
     },
     "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1 imagen). Reencuadre sin IA: alejamiento del 6 % anclado en (0.955, 0.5) para sacar del lado del texto la placa inferior izquierda (empezaba en x ≈ 0.523 → 0.549), relleno con la misma placa desenfocada y los cuatro bordes caen a #03040B en el último 7 %. Salieron 5 placas de cristal vacías (el plan pedía 6): placa-1…5 van de izquierda a derecha y de arriba abajo, iguales en d y m. La mano registrada es la que descansa sobre el cubo; una línea guía fig → mano cruzaría los pies, así que con FigCaption conviene target=\"placa-2\". Original en materiales/magnific/v2/tecnologias-hero/desk-a-WDbGmQYcXe.png.",
     "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio como primera referencia; Kain quedaba grande (contenido desde y ≈ 0.37, base del cubo en y ≈ 0.95) → reencuadre con scripts/reencuadre-movil.mjs (0.188 0.101 0.08 0.1455 0.40; salida JPEG q92) a 1536 × 1920. Original en materiales/magnific/v2/tecnologias-hero/movil-a-lJVxAuBgv9.png."
+  },
+  "dolor-anuncios": {
+    "alt": "Emprendedora frustrada de noche mirando su celular junto a cajas de envío sin usar (imagen ilustrativa)",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/dolor-anuncios",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.26,
+      "fy": 0.45,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/dolor-anuncios-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.52,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "sentada al borde del sofá, mira el celular con frustración",
+    "safe": {
+      "d": [
+        [
+          0.48,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.045,
+        0.145,
+        0.47,
+        0.95
+      ],
+      "m": [
+        0.19,
+        0.435,
+        0.87,
+        0.96
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.2,
+          0.42
+        ],
+        "m": [
+          0.445,
+          0.637
+        ]
+      },
+      "mano": {
+        "d": [
+          0.296,
+          0.517
+        ],
+        "m": [
+          0.582,
+          0.697
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.255,
+          0.29
+        ],
+        "m": [
+          0.505,
+          0.53
+        ]
+      },
+      "telefono": {
+        "d": [
+          0.3,
+          0.459,
+          0.043,
+          0.038
+        ],
+        "m": [
+          0.594,
+          0.654,
+          0.058,
+          0.028
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.365,
+          0.458,
+          0.104,
+          0.172
+        ],
+        "m": [
+          0.686,
+          0.653,
+          0.18,
+          0.125
+        ]
+      },
+      "cajas": {
+        "d": [
+          0.05,
+          0.6,
+          0.21,
+          0.35
+        ],
+        "m": [
+          0.195,
+          0.765,
+          0.305,
+          0.205
+        ]
+      },
+      "fig": {
+        "d": [
+          0.475,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.885
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.32,
+        0.48
+      ],
+      "m": [
+        0.62,
+        0.67
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "fH4vRaJCDY",
+      "mobile": "Cq9aGICEEy"
+    },
+    "deskNote": "Persona ilustrativa (placa de dolor, sin Kain): Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; 2K cuesta lo mismo que 1K) y SIN referencias de imagen, como pide el plan. Salió con la persona en x ≈ 0.16–0.46 pero la mesa y la laptop hasta x ≈ 0.625 → reencuadre SIN IA (materiales/magnific/v2/dolor-anuncios/post-dolor-anuncios-desk.mjs): escena al 90 %, desplazada 7.4 % a la izquierda (se recorta el brazo del sofá) y colocada en y 0.06–0.96; penumbra sintetizada arriba/derecha/abajo desde los bordes con el mismo grano y la misma mezcla en relleno y costura (sin escalón en las esquinas); penumbra horizontal hacia #03040B de x 0.44 a 0.60 (fuerza 0.82); pared superior izquierda 30 % más baja; desenfoque local de un empaque del estante con trazos que parecían letras; los cuatro bordes caen a #03040B. Ámbar solo de la pantalla del celular y de la laptop (vista por detrás, sin logotipo; teclado ilegible); cajas planas de cartón liso, sin marcas. Lado del texto (x ≥ 0.48) con luminancia máx. 27/255 (p95 14). `telefono` es el celular en sus manos (destino de la línea del pie: painFigTarget elige `telefono`); `pantalla`, la tapa de la laptop; `cajas`, la pila de cajas planas recargada en el sofá. El pie (`fig`, esquina superior derecha) cae sobre el piso, bajo la mesa, a la izquierda de la caja segura. Original: materiales/magnific/v2/dolor-anuncios/desk-a-fH4vRaJCDY.png; master sin pérdida: desk-a-reencuadre.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la toma de escritorio elegida (fH4vRaJCDY) como única referencia: misma persona, mismo sofá, laptop y cajas. Se probó antes un reencuadre gratis de la toma de escritorio a 4:5, pero la pared iluminada terminaba en un rectángulo dentro del vacío (se leía como recorte) y se descartó. Reencuadre sin IA con scripts/reencuadre-movil.mjs (−0.0352 0 0 −0.03385 0.40: recorta 81 px arriba, en el vacío, y 78 px a la derecha) a 1536 × 1920 + caída lateral (8 % por lado) e inferior (7 %) a #03040B (post-dolor-anuncios-movil.mjs), porque sofá, cajas y mesa tocaban los bordes. Coronilla en y ≈ 0.443; 41 % superior limpio (luminancia máx. 57/255, p95 35). La mesa sigue hasta el borde derecho, ya disuelta. Original: materiales/magnific/v2/dolor-anuncios/movil-a-Cq9aGICEEy.png; master sin pérdida: movil-a-final.png."
+  },
+  "ind-belleza-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, en la recepción de un spa junto a un panel de cristal donde responde mensajes",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-belleza-kain-sector",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.28,
+      "fy": 0.5,
+      "fadeFrom": 0.91
+    },
+    "m": {
+      "src": "/img/cine/ind-belleza-kain-sector-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.44,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "toca la superficie",
+    "safe": {
+      "d": [
+        [
+          0.52,
+          0.06,
+          0.96,
+          0.95
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.1,
+        0.11,
+        0.46,
+        0.92
+      ],
+      "m": [
+        0.21,
+        0.44,
+        0.67,
+        0.9
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.224,
+          0.444
+        ],
+        "m": [
+          0.37,
+          0.632
+        ],
+        "scrW": 0.038
+      },
+      "rostro": {
+        "d": [
+          0.229,
+          0.281
+        ],
+        "m": [
+          0.377,
+          0.54
+        ]
+      },
+      "mano": {
+        "d": [
+          0.338,
+          0.414
+        ],
+        "m": [
+          0.515,
+          0.615
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.339,
+          0.201,
+          0.11,
+          0.44
+        ],
+        "m": [
+          0.517,
+          0.495,
+          0.139,
+          0.248
+        ]
+      },
+      "fig": {
+        "d": [
+          0.33,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.85
+        ],
+        "m": [
+          0.5,
+          0.861
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.17,
+        0.22
+      ],
+      "m": [
+        0.3,
+        0.5
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "ovSXUqq829",
+      "desktopBase": "3za6mHPREY",
+      "mobile": "reencuadre de ovSXUqq829 (sin IA)"
+    }
+  },
+  "ind-finanzas-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, toca un panel de cristal en un despacho financiero de noche; al fondo, un cliente revisa unos papeles (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-finanzas-kain-sector",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.28,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/ind-finanzas-kain-sector-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.46,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "toca el panel de cristal",
+    "safe": {
+      "d": [
+        [
+          0.5,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.11,
+        0.1,
+        0.46,
+        0.93
+      ],
+      "m": [
+        0.23,
+        0.44,
+        0.68,
+        0.91
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.232,
+          0.44
+        ],
+        "m": [
+          0.386,
+          0.632
+        ],
+        "scrW": 0.0385
+      },
+      "rostro": {
+        "d": [
+          0.24,
+          0.287
+        ],
+        "m": [
+          0.396,
+          0.545
+        ]
+      },
+      "mano": {
+        "d": [
+          0.334,
+          0.383
+        ],
+        "m": [
+          0.515,
+          0.599
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.3183,
+          0.1585,
+          0.129,
+          0.5394
+        ],
+        "m": [
+          0.4954,
+          0.4719,
+          0.1634,
+          0.3055
+        ]
+      },
+      "fig": {
+        "d": [
+          0.335,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.86
+        ],
+        "m": [
+          0.5,
+          0.87
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.16,
+        0.22
+      ],
+      "m": [
+        0.294,
+        0.507
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "rgYknv8xtc",
+      "desktopA": "JNXwDlJOq4",
+      "guiaReintento": "jUcrWDpLD0",
+      "mobile": null
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado: 2K cuesta lo mismo que 1K, 75 créditos). Toma A (JNXwDlJOq4; referencias: recorte de Kain s7TThool8e, ind-salud-kain-sector SyD8dNYUb8 como modelo de encuadre, ind-finanzas-hero ksz0pNc16B como mundo y luz, escena Kain 5jAAdVBKxe, hero de inicio jUccthULD0) y reintento B (rgYknv8xtc) con una guía de encuadre como primera referencia (guia-desk-b.png = jUcrWDpLD0); B salió casi idéntica a A (A iba como tercera referencia y mandó). Las dos: Kain grande (centro x≈0.31, pies y≈0.94), panel en perspectiva (trapecio: borde de arriba y 200→263, de abajo 1160→1110), ventana hasta x≈0.53 y bordes sin caer. Corrección sin IA sobre B (materiales/magnific/v2/ind-finanzas-kain-sector/fix-desk.cjs): panel rectificado a frontal por columnas (bordes izq./der. ya eran verticales; el izquierdo queda fijo, así que la mano no se deforma), puntas de antena sin brillo cian, cliente desenfocado (blur 4.5 a la izquierda de x≈0.19), reencuadre ×0.86 con Kain a x≈0.22 (antenas y≈0.122, pies y≈0.861) y relleno arriba/abajo/derecha sintetizado desde los bordes (campo continuo, como reencuadre-movil.mjs), bordes a #03040B (izq. 5 %, der. 7 %, arriba 11 %, abajo 8 %). Panel medido sobre el filo: x 876–1231, y 243–1072 px (frontal, ±1 px). La mano queda DETRÁS del filo izquierdo del panel (así venía del render): los dedos entran ≈0.03 en la caja `pantalla`; dejar ese margen a la izquierda del ChatSim. Lado del texto (caja safe): luminancia p50 6.7 / p95 29.5 / máx. 54 (x > 0.55: p95 22 / máx. 37); los cuatro bordes en 3.6 (máx. 4).",
+    "mobileNote": "Sin generación (0 créditos): reencuadre del escritorio corregido SIN las viñetas de arriba/izquierda (desk-b-fix-sinbordes.png) para que la ventana se disuelva hacia arriba sin línea de corte: node scripts/reencuadre-movil.mjs … 0.6751 0.0905 0.1289 -0.5085 0.44 → 1536 × 1920 (escala 0.708; Kain a x≈0.37, antenas y≈0.452, pies y≈0.870; panel x 0.495–0.659, 251 px de ancho en el master → ≈177 px a 1080: el chat baja al texto), luego caída a #03040B en el 5 % de cada lateral (exporta.cjs). 40 % superior: p50 4.6 / p95 13.2 / máx. 25 (caja safe p95 14.2); bordes en 3.6 (máx. 4); quedan dos estelas muy tenues de los marcos de la ventana sobre la escena (y 0.30–0.40, luminancia ≤ 25)."
+  },
+  "ind-horeca-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, en la barra de un restaurante junto a un panel de cristal donde confirma reservaciones; al fondo, desenfocado, un bartender seca una copa (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-horeca-kain-sector",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.33,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/ind-horeca-kain-sector-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.46,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "toca la superficie",
+    "safe": {
+      "d": [
+        [
+          0.56,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.035,
+        0.085,
+        0.525,
+        0.935
+      ],
+      "m": [
+        0.1,
+        0.447,
+        0.65,
+        0.874
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.301,
+          0.457
+        ],
+        "m": [
+          0.399,
+          0.634
+        ],
+        "scrW": 0.041
+      },
+      "rostro": {
+        "d": [
+          0.318,
+          0.275
+        ],
+        "m": [
+          0.418,
+          0.543
+        ]
+      },
+      "mano": {
+        "d": [
+          0.422,
+          0.4
+        ],
+        "m": [
+          0.535,
+          0.605
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.402,
+          0.152,
+          0.114,
+          0.465
+        ],
+        "m": [
+          0.512,
+          0.481,
+          0.128,
+          0.233
+        ]
+      },
+      "fig": {
+        "d": [
+          0.41,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.92
+        ],
+        "m": [
+          0.5,
+          0.866
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.27,
+        0.14
+      ],
+      "m": [
+        0.364,
+        0.44
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "u56C4dRQLD",
+      "mobile": null
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; 2K cuesta lo mismo que 1K: 75 créditos, 1 imagen). Referencias: s7TThool8e (Kain), SyD8dNYUb8 (ind-salud-kain-sector aprobada, modelo de puesta en escena: encuadre, pose y panel), JNXoEmlOq4 (portada ind-horeca-hero: mismo mundo, mandil y luz), 5jAAdVBKxe, jUccthULD0. Kain correcto (2 antenas lisas sin bolitas, orejas cromadas, visor en banda con 2 ojos ovalados cian, boca cian bajo el visor, pantalla del pecho plana con asterisco de trazo fino, juntas gris oscuro y rodillas articuladas, pies completos), mandil negro corto y liso; la mano derecha toca el borde izquierdo del panel. Barra de restaurante cerrada a la izquierda (copas, botellas sin etiqueta, lámparas colgantes) con un bartender desenfocado en x 0.04–0.13. Panel vacío con leve perspectiva (borde izq. y 0.126–0.639; der. y 0.149–0.619): el ancla pantalla es el rectángulo inscrito. Salió más grande y más a la derecha que el plan (Kain x 0.18–0.45, antenas 0.09, suelas 0.93; panel x 0.40–0.52) → texto desde x 0.56 (luminancia máx. 66/255, p95 38; bruma azul sin objetos ni luces). Sin reintento: Kain correcto, sin texto y lado del texto limpio. Post sin IA (materiales/magnific/v2/ind-horeca-kain-sector/post-desk-grade.mjs): lámparas de blanco cálido → blanco frío (misma luminancia) y caída de los cuatro bordes a #03040B (izq. 5 %, der. 4 %, arriba y abajo 6 %). Original: materiales/magnific/v2/ind-horeca-kain-sector/desk-a-u56C4dRQLD.png; master sin pérdida: desk-a-graded.png.",
+    "mobileNote": "Sin generación (0 créditos): reencuadre sin IA del render de escritorio (post-movil-pretop.mjs + post-movil-reencuadre.mjs, misma carpeta). Recorte x 0–0.836 del escritorio con las lámparas enfriadas y el haz cian del 8 % superior atenuado (−55 %); lienzo 2452 × 3065 con el original en (150, 1241); relleno = bruma desenfocada de los bordes que decae a #03040B de forma exponencial (sin costuras ni esquinas rectas), costura difuminada 260/200/200 px (arriba/izq./abajo), penumbra superior hasta 0.40 y caída a #03040B a los lados (7 % / 4 %) y abajo (4 %) → 1536 × 1920. Mismo Kain que el escritorio: antenas en 0.45, suelas en 0.87; bartender completo en x 0.10–0.21. 41 % superior limpio (luminancia máx. 87/255, p95 24). El panel mide 0.128 del ancho (< 180 px a 390) → el chat baja al flujo del texto (§3.7). Master sin pérdida: materiales/magnific/v2/ind-horeca-kain-sector/movil-reframe-d.png."
+  },
+  "ind-industrial-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, con chaleco de seguridad en un andén de carga junto a un panel de cristal donde responde mensajes; al fondo, desenfocado, un trabajador carga una caja (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-industrial-kain-sector",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.28,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/ind-industrial-kain-sector-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.46,
+      "fy": 1,
+      "subjTop": 0.45
+    },
+    "layout": "subject-left",
+    "pose": "toca la superficie",
+    "safe": {
+      "d": [
+        [
+          0.51,
+          0.06,
+          0.96,
+          0.95
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.4
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.11,
+        0.11,
+        0.46,
+        0.92
+      ],
+      "m": [
+        0.24,
+        0.44,
+        0.68,
+        0.91
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.233,
+          0.443
+        ],
+        "m": [
+          0.39,
+          0.631
+        ],
+        "scrW": 0.031
+      },
+      "rostro": {
+        "d": [
+          0.237,
+          0.288
+        ],
+        "m": [
+          0.396,
+          0.543
+        ]
+      },
+      "mano": {
+        "d": [
+          0.351,
+          0.364
+        ],
+        "m": [
+          0.541,
+          0.586
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.331,
+          0.21,
+          0.115,
+          0.44
+        ],
+        "m": [
+          0.516,
+          0.498,
+          0.146,
+          0.251
+        ]
+      },
+      "fig": {
+        "d": [
+          0.33,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.863
+        ],
+        "m": [
+          0.5,
+          0.87
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.13,
+        0.3
+      ],
+      "m": [
+        0.26,
+        0.55
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "xSW1XnLjfW",
+      "desktopBase": "xSW1DNKjfW",
+      "guide": "SyDlm4BUb8",
+      "mobile": "reencuadre de xSW1XnLjfW (sin IA)"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; 75 créditos por render). 1.º render (xSW1DNKjfW; refs s7TThool8e, SyD8dNYUb8, IfwJ3hktvE, 5jAAdVBKxe, jUccthULD0): Kain correcto con chaleco gris reflejante, pero panel enorme e inclinado (x 0.36–0.56, y 0.09–0.89) y cajas/tarimas en el lado del texto hasta x ≈ 0.72. Guía sin IA (guide-desk.mjs → guide-desk.jpg, subida como SyDlm4BUb8): alejamiento 0.88 con Kain al 21 %, cálidos desaturados, todo a la derecha del borde del panel viejo cambiado por penumbra difusa y el panel frontal del plan dibujado en x 0.331–0.447, y 0.21–0.65. Reintento con la guía como primera referencia (xSW1XnLjfW; + s7TThool8e, IfwJ3hktvE, SyD8dNYUb8, 5jAAdVBKxe, jUccthULD0): misma puesta en escena, andén que continúa detrás del cristal y cae a la penumbra. Postproceso sin IA (post-desk.mjs → desk-b-post.png): halo claro detrás de la mano heredado de la guía quitado con ganancia analítica (−30 % solo en el fondo), postes amarillos y cajas desaturados a gris azulado, lado del texto cerrado desde x 0.452 en 7 % del ancho (penumbra desenfocada) y caída de bordes al 4.5–5 %. Medido: antenas y ≈ 0.126, suelas 0.863, asterisco (0.233, 0.443), pantalla del pecho 86 px; panel [912, 323]–[1228, 999] px, frontal y vacío. Luminancia máx. en x ≥ 0.51: 36/255 (p99 en x 0.52: 29). El trabajador está en x ≈ 0.05–0.13 bajo la luz del andén; el fig (0.33, 0.80) cae sobre el piso con líneas cian, nunca sobre el torso.",
+    "mobileNote": "Reencuadre gratis (sin IA) del máster de escritorio sin caída de bordes (NOEDGE=1 post-desk.mjs → desk-b-post-noedge.png) con post-movil.mjs (lógica de ind-horeca-kain-sector/post-movil-reencuadre.mjs: bruma de borde con decaimiento exponencial y costuras anchas, sin rectángulos por lado ni escalones en las esquinas) + viñeta elíptica centrada en (0.42, 0.68) para que la escena no se lea como ventana. Parámetros: recorte 1956 px, izquierda +201, arriba +1021, abajo +140 (lienzo 2157 × 2697 → 1536 × 1920, escala 0.712), tClean 0.40, DEC 260, FT 320, FL 260, FB 100. Kain en x ≈ 0.39 (pecho), antenas en 0.450, suelas en 0.870; panel en x 0.516–0.662 (0.146 de ancho, 57 px a 390 px: ChatSim baja al texto en móvil). 30 % superior con luminancia ≤ 7/255, ≤ 41 hasta 0.40. Original del render en materiales/magnific/v2/ind-industrial-kain-sector/desk-b-xSW1XnLjfW.png; final movil-reframe-1536.png."
+  },
+  "ind-inmobiliario-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, en el lobby de una torre residencial junto a un panel de cristal donde agenda visitas; al fondo, desenfocada, una pareja espera el elevador (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-inmobiliario-kain-sector",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.28,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/ind-inmobiliario-kain-sector-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.48,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "toca la superficie",
+    "safe": {
+      "d": [
+        [
+          0.53,
+          0.06,
+          0.96,
+          0.95
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.06,
+        0.23,
+        0.49,
+        0.92
+      ],
+      "m": [
+        0.12,
+        0.44,
+        0.75,
+        0.91
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.225,
+          0.551
+        ],
+        "m": [
+          0.36,
+          0.66
+        ],
+        "scrW": 0.039
+      },
+      "rostro": {
+        "d": [
+          0.243,
+          0.373
+        ],
+        "m": [
+          0.388,
+          0.54
+        ]
+      },
+      "mano": {
+        "d": [
+          0.318,
+          0.459
+        ],
+        "m": [
+          0.502,
+          0.598
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.315,
+          0.235,
+          0.165,
+          0.534
+        ],
+        "m": [
+          0.497,
+          0.447,
+          0.249,
+          0.36
+        ]
+      },
+      "fig": {
+        "d": [
+          0.316,
+          0.81
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.862
+        ],
+        "m": [
+          0.5,
+          0.87
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.18,
+        0.3
+      ],
+      "m": [
+        0.3,
+        0.5
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "SyDlVdyUb8",
+      "desktopBase": "s7TjW7Kl8e",
+      "mobile": "SyDlVdyUb8",
+      "fixCaraPecho": "ovSXRjE829"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K: 75 créditos). Base s7TjW7Kl8e con referencias s7TThool8e (Kain), 5jAAdVBKxe, jUccthULD0, cp5klMT0eP (portada de inmobiliario: misma torre, misma noche y misma ciudad) y SyD8dNYUb8 (ind-salud-kain-sector, modelo de puesta en escena). Kain (2 antenas lisas, rodillas articuladas, sin ropa) en el lobby de la torre con elevadores, conserjería y ventanal a la ciudad; pareja desenfocada junto a los elevadores. El panel salió en perspectiva (trapecio) → una edición SyDlVdyUb8 (misma imagen como 1.ª referencia) lo dejó frontal y vacío y quitó el foco del techo. El render salió más cerrado y a la derecha que el plan → alejamiento sin IA: recorte de 130 px a la izquierda, escala 0.87, original en (0, 170), relleno arriba/abajo/derecha sintetizado desde los bordes con la lógica de scripts/reencuadre-movil.mjs (costura 200 px y grano) y caída de los cuatro bordes a #03040B (6 % izq./arriba/abajo, 7 % der.). Kain centrado en x ≈ 0.225, antenas en y ≈ 0.240, suelas en ≈ 0.861; panel (borde cian) en x 0.315–0.480, y 0.235–0.769; la mano lo toca por detrás del cristal en su borde izquierdo (x 0.30–0.35). Luminancia máx. en x ≥ 0.53: 32/255 (≤ 26 desde 0.56). Sin texto: las placas sobre los elevadores y el monitor de la conserjería quedan desenfocados e ilegibles. Original en materiales/magnific/v2/ind-inmobiliario-kain-sector/desk-b-edit-2k-SyDlVdyUb8.png; procesada en desk-b-zoomout-087.png. Corrección r2 (QA: cara y pecho no eran los de Kain; el render traía visera en banda, boca suelta en la carcasa y un asterisco fino de 8 brazos): recorte 630 × 840 de cabeza y pecho del render (x 520, y 160) editado con Nano Banana Pro 2K (ovSXRjE829; referencias: el recorte, la cabeza de kain-presenta.png, s7TThool8e y jUccthULD0). Ahora tiene la placa facial negra redondeada con los ojos dentro (≈ 64 % del alto de la cabeza; referencia ≈ 54 %), la boca como línea tenue en el borde inferior de la placa y la pantalla del pecho casi negra con asterisco cian grueso de 6 brazos que brilla. Se pegó sin IA solo en la cara y el pecho, con máscara difuminada (registro 2.857×, error RMS 4/255); se quitaron a mano un reflejo gris en forma de gancho dentro de la placa y una línea cian sobrante en la barbilla. Render corregido en desk-c-fix-2k.png; se aplicó como diferencia sobre la máster con la misma geometría (desk-c-fix-zoomout-087.png). Solo cambian los píxeles en x 0.178–0.273 y y 0.305–0.598, así que las anclas no se movieron (vuelto a medir: ojos en 0.243/0.373, pantalla del pecho centrada en 0.229/0.551). Un primer intento (lJVLmCigv9) se descartó porque la placa medía ≈ 77 % de la cabeza y el pecho no cambió.",
+    "mobileNote": "Sin generación: reencuadre sin IA del render de escritorio SyDlVdyUb8 (desplazado 200 px a la izquierda, sin escalar) para que Kain sea idéntico. Lienzo 2091 × 2614 en #03040B con grano; el render entra en (112, 948) recortado a la derecha en su x 1979; caídas suaves por lado (arriba 990→1180 px, izquierda 160 px, derecha 360 px, abajo desde 2290 en 194 px; producto de rampas → esquinas sin escalón) y escala a 1536 × 1920. Antenas en 0.450, suelas en ≈ 0.869, Kain en x ≈ 0.36; panel en x 0.497–0.746, y 0.447–0.807 (0.249 de ancho = 97 px a 390 px: ChatSim baja al texto en móvil). 39 % superior con luminancia media 4/255 (máx. 18 hasta 0.41). Final en materiales/magnific/v2/ind-inmobiliario-kain-sector/movil-b-reframe-1536.png (movil-reframe-*.png son pruebas descartadas por el escalón de la esquina superior derecha). Corrección r2: se aplicó la misma corrección de cara y pecho (desk-c-fix-2k.png) con la geometría del reencuadre (x − 88, y + 948, escala 0.7346), como diferencia sobre movil-b-reframe-1536.png → movil-c-fix-reframe-1536.png. Solo cambian x 0.289–0.432 y y 0.494–0.693; ojos en 0.388/0.540 y pantalla del pecho en 0.367/0.660, así que las anclas no cambian."
+  },
+  "ind-nutricion-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, en la sala de espera de un consultorio de nutrición junto a un panel de cristal donde confirma consultas; al fondo, desenfocado, un paciente espera (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-nutricion-kain-sector",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.29,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/ind-nutricion-kain-sector-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.47,
+      "fy": 1,
+      "subjTop": 0.45
+    },
+    "layout": "subject-left",
+    "pose": "toca la superficie",
+    "safe": {
+      "d": [
+        [
+          0.49,
+          0.06,
+          0.96,
+          0.95
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.4
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.13,
+        0.18,
+        0.46,
+        0.89
+      ],
+      "m": [
+        0.24,
+        0.45,
+        0.69,
+        0.91
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.231,
+          0.477
+        ],
+        "m": [
+          0.371,
+          0.634
+        ],
+        "scrW": 0.032
+      },
+      "rostro": {
+        "d": [
+          0.24,
+          0.34
+        ],
+        "m": [
+          0.384,
+          0.546
+        ]
+      },
+      "mano": {
+        "d": [
+          0.332,
+          0.443
+        ],
+        "m": [
+          0.506,
+          0.618
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.334,
+          0.21,
+          0.118,
+          0.458
+        ],
+        "m": [
+          0.517,
+          0.465,
+          0.167,
+          0.29
+        ]
+      },
+      "fig": {
+        "d": [
+          0.31,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.85
+        ],
+        "m": [
+          0.5,
+          0.87
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.27,
+        0.42
+      ],
+      "m": [
+        0.44,
+        0.6
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "aFPhJQwfSh",
+      "mobile": "p8jMjnBehw"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K: 75 créditos). Referencias: s7TThool8e (Kain), SyD8dNYUb8 (ind-salud-kain-sector aprobada, modelo de puesta en escena), vQy6WKYa47 (portada de nutrición: mismo lugar y luz), 5jAAdVBKxe, jUccthULD0. Kain correcto (antenas lisas sin bolitas, visera en banda, boca en la carcasa, pantalla plana con asterisco fino, rodillas articuladas, sin bata), panel vacío, sin texto. El render salió más cerrado que el plan (panel hasta x ≈ 0.526) → alejamiento sin IA: escala 0.86 anclada al borde izquierdo, original en (0, 131), relleno arriba/abajo/derecha sintetizado desde los bordes (ya en tinta) con la lógica de scripts/reencuadre-movil.mjs (costuras de 170/120/200 px y grano), y caída del borde izquierdo a #03040B en el 5 %. Panel en x 0.334–0.452; Kain centrado en x ≈ 0.23, antenas en y ≈ 0.19, suelas en ≈ 0.845. Luminancia máx. en x ≥ 0.49: 31/255. El paciente está sentado a la mesa de la izquierda (x ≈ 0.01–0.10), atenuado por la caída del borde. Original en materiales/magnific/v2/ind-nutricion-kain-sector/desk-a-aFPhJQwfSh.png; procesada en desk-a-zoomout-086.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con el render de escritorio (aFPhJQwfSh) como primera referencia + s7TThool8e, vQy6WKYa47 (portada móvil de nutrición: composición vertical), 5jAAdVBKxe, jUccthULD0. Salió con Kain grande (antenas en y ≈ 0.40, suelas en 0.93) → reencuadre sin IA con la lógica de scripts/reencuadre-movil.mjs (0.1625 0.0875 0.046 0.148 0.40) a 1536 × 1920, con costuras por lado (abajo 120 px para no tocar los pies; izquierda 260 px para fundir la mesa y el paciente sin escalón). Antenas en 0.453, suelas en ≈ 0.868, Kain en x ≈ 0.37; 38 % superior con luminancia ≤ 48/255 (≤ 59 hasta 0.40). Panel 0.167 de ancho (65 px a 390 px): ChatSim baja al texto en móvil. Original en materiales/magnific/v2/ind-nutricion-kain-sector/movil-a-p8jMjnBehw.png; final movil-a-reframe-1536.png."
+  },
+  "ind-retail-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, en el aparador de una tienda junto a un panel de cristal donde atiende pedidos",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/ind-retail-kain-sector",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.3,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/ind-retail-kain-sector-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.48,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "toca la superficie",
+    "safe": {
+      "d": [
+        [
+          0.51,
+          0.06,
+          0.96,
+          0.95
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.38
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.04,
+        0.19,
+        0.47,
+        0.89
+      ],
+      "m": [
+        0.08,
+        0.44,
+        0.72,
+        0.92
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.246,
+          0.476
+        ],
+        "m": [
+          0.4,
+          0.639
+        ],
+        "scrW": 0.03
+      },
+      "rostro": {
+        "d": [
+          0.256,
+          0.338
+        ],
+        "m": [
+          0.414,
+          0.546
+        ]
+      },
+      "mano": {
+        "d": [
+          0.34,
+          0.449
+        ],
+        "m": [
+          0.538,
+          0.619
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.337,
+          0.247,
+          0.116,
+          0.43
+        ],
+        "m": [
+          0.533,
+          0.483,
+          0.171,
+          0.291
+        ]
+      },
+      "fig": {
+        "d": [
+          0.33,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.845
+        ],
+        "m": [
+          0.5,
+          0.89
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.2,
+        0.28
+      ],
+      "m": [
+        0.34,
+        0.5
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "vQym70ha47",
+      "desktopMaster": "XmleUktBfo",
+      "mobile": "EbNf3zfuuO"
+    }
   }
 }

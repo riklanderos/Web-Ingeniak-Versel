@@ -1,0 +1,25 @@
+{
+  "ind-finanzas-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, toca un panel de cristal en un despacho financiero de noche; al fondo, un cliente revisa unos papeles (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/ind-finanzas-kain-sector", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.28, "fy": 0.5, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/ind-finanzas-kain-sector-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.46, "fy": 1, "subjTop": 0.44 },
+    "layout": "subject-left",
+    "pose": "toca el panel de cristal",
+    "safe": { "d": [[0.50, 0.06, 0.96, 0.94]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.11, 0.10, 0.46, 0.93], "m": [0.23, 0.44, 0.68, 0.91] },
+    "anchors": {
+      "pecho": { "d": [0.232, 0.440], "m": [0.386, 0.632], "scrW": 0.0385 },
+      "rostro": { "d": [0.240, 0.287], "m": [0.396, 0.545] },
+      "mano": { "d": [0.334, 0.383], "m": [0.515, 0.599] },
+      "pantalla": { "d": [0.3183, 0.1585, 0.1290, 0.5394], "m": [0.4954, 0.4719, 0.1634, 0.3055] },
+      "fig": { "d": [0.335, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.860], "m": [0.500, 0.870] }
+    },
+    "leak": { "d": [0.16, 0.22], "m": [0.294, 0.507] },
+    "grade": 0,
+    "creationIds": { "desktop": "rgYknv8xtc", "desktopA": "JNXwDlJOq4", "guiaReintento": "jUcrWDpLD0", "mobile": null },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado: 2K cuesta lo mismo que 1K, 75 créditos). Toma A (JNXwDlJOq4; referencias: recorte de Kain s7TThool8e, ind-salud-kain-sector SyD8dNYUb8 como modelo de encuadre, ind-finanzas-hero ksz0pNc16B como mundo y luz, escena Kain 5jAAdVBKxe, hero de inicio jUccthULD0) y reintento B (rgYknv8xtc) con una guía de encuadre como primera referencia (guia-desk-b.png = jUcrWDpLD0); B salió casi idéntica a A (A iba como tercera referencia y mandó). Las dos: Kain grande (centro x≈0.31, pies y≈0.94), panel en perspectiva (trapecio: borde de arriba y 200→263, de abajo 1160→1110), ventana hasta x≈0.53 y bordes sin caer. Corrección sin IA sobre B (materiales/magnific/v2/ind-finanzas-kain-sector/fix-desk.cjs): panel rectificado a frontal por columnas (bordes izq./der. ya eran verticales; el izquierdo queda fijo, así que la mano no se deforma), puntas de antena sin brillo cian, cliente desenfocado (blur 4.5 a la izquierda de x≈0.19), reencuadre ×0.86 con Kain a x≈0.22 (antenas y≈0.122, pies y≈0.861) y relleno arriba/abajo/derecha sintetizado desde los bordes (campo continuo, como reencuadre-movil.mjs), bordes a #03040B (izq. 5 %, der. 7 %, arriba 11 %, abajo 8 %). Panel medido sobre el filo: x 876–1231, y 243–1072 px (frontal, ±1 px). La mano queda DETRÁS del filo izquierdo del panel (así venía del render): los dedos entran ≈0.03 en la caja `pantalla`; dejar ese margen a la izquierda del ChatSim. Lado del texto (caja safe): luminancia p50 6.7 / p95 29.5 / máx. 54 (x > 0.55: p95 22 / máx. 37); los cuatro bordes en 3.6 (máx. 4).",
+    "mobileNote": "Sin generación (0 créditos): reencuadre del escritorio corregido SIN las viñetas de arriba/izquierda (desk-b-fix-sinbordes.png) para que la ventana se disuelva hacia arriba sin línea de corte: node scripts/reencuadre-movil.mjs … 0.6751 0.0905 0.1289 -0.5085 0.44 → 1536 × 1920 (escala 0.708; Kain a x≈0.37, antenas y≈0.452, pies y≈0.870; panel x 0.495–0.659, 251 px de ancho en el master → ≈177 px a 1080: el chat baja al texto), luego caída a #03040B en el 5 % de cada lateral (exporta.cjs). 40 % superior: p50 4.6 / p95 13.2 / máx. 25 (caja safe p95 14.2); bordes en 3.6 (máx. 4); quedan dos estelas muy tenues de los marcos de la ventana sobre la escena (y 0.30–0.40, luminancia ≤ 25)."
+  }
+}

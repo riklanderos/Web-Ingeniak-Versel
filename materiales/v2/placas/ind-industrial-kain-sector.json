@@ -1,0 +1,25 @@
+{
+  "ind-industrial-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, con chaleco de seguridad en un andén de carga junto a un panel de cristal donde responde mensajes; al fondo, desenfocado, un trabajador carga una caja (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/ind-industrial-kain-sector", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.28, "fy": 0.5, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/ind-industrial-kain-sector-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.46, "fy": 1, "subjTop": 0.45 },
+    "layout": "subject-left",
+    "pose": "toca la superficie",
+    "safe": { "d": [[0.51, 0.06, 0.96, 0.95]], "m": [[0.04, 0.03, 0.96, 0.40]] },
+    "subject": { "d": [0.11, 0.11, 0.46, 0.92], "m": [0.24, 0.44, 0.68, 0.91] },
+    "anchors": {
+      "pecho": { "d": [0.233, 0.443], "m": [0.390, 0.631], "scrW": 0.031 },
+      "rostro": { "d": [0.237, 0.288], "m": [0.396, 0.543] },
+      "mano": { "d": [0.351, 0.364], "m": [0.541, 0.586] },
+      "pantalla": { "d": [0.331, 0.210, 0.115, 0.440], "m": [0.516, 0.498, 0.146, 0.251] },
+      "fig": { "d": [0.330, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.863], "m": [0.500, 0.870] }
+    },
+    "leak": { "d": [0.13, 0.30], "m": [0.26, 0.55] },
+    "grade": 0,
+    "creationIds": { "desktop": "xSW1XnLjfW", "desktopBase": "xSW1DNKjfW", "guide": "SyDlm4BUb8", "mobile": "reencuadre de xSW1XnLjfW (sin IA)" },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; 75 créditos por render). 1.º render (xSW1DNKjfW; refs s7TThool8e, SyD8dNYUb8, IfwJ3hktvE, 5jAAdVBKxe, jUccthULD0): Kain correcto con chaleco gris reflejante, pero panel enorme e inclinado (x 0.36–0.56, y 0.09–0.89) y cajas/tarimas en el lado del texto hasta x ≈ 0.72. Guía sin IA (guide-desk.mjs → guide-desk.jpg, subida como SyDlm4BUb8): alejamiento 0.88 con Kain al 21 %, cálidos desaturados, todo a la derecha del borde del panel viejo cambiado por penumbra difusa y el panel frontal del plan dibujado en x 0.331–0.447, y 0.21–0.65. Reintento con la guía como primera referencia (xSW1XnLjfW; + s7TThool8e, IfwJ3hktvE, SyD8dNYUb8, 5jAAdVBKxe, jUccthULD0): misma puesta en escena, andén que continúa detrás del cristal y cae a la penumbra. Postproceso sin IA (post-desk.mjs → desk-b-post.png): halo claro detrás de la mano heredado de la guía quitado con ganancia analítica (−30 % solo en el fondo), postes amarillos y cajas desaturados a gris azulado, lado del texto cerrado desde x 0.452 en 7 % del ancho (penumbra desenfocada) y caída de bordes al 4.5–5 %. Medido: antenas y ≈ 0.126, suelas 0.863, asterisco (0.233, 0.443), pantalla del pecho 86 px; panel [912, 323]–[1228, 999] px, frontal y vacío. Luminancia máx. en x ≥ 0.51: 36/255 (p99 en x 0.52: 29). El trabajador está en x ≈ 0.05–0.13 bajo la luz del andén; el fig (0.33, 0.80) cae sobre el piso con líneas cian, nunca sobre el torso.",
+    "mobileNote": "Reencuadre gratis (sin IA) del máster de escritorio sin caída de bordes (NOEDGE=1 post-desk.mjs → desk-b-post-noedge.png) con post-movil.mjs (lógica de ind-horeca-kain-sector/post-movil-reencuadre.mjs: bruma de borde con decaimiento exponencial y costuras anchas, sin rectángulos por lado ni escalones en las esquinas) + viñeta elíptica centrada en (0.42, 0.68) para que la escena no se lea como ventana. Parámetros: recorte 1956 px, izquierda +201, arriba +1021, abajo +140 (lienzo 2157 × 2697 → 1536 × 1920, escala 0.712), tClean 0.40, DEC 260, FT 320, FL 260, FB 100. Kain en x ≈ 0.39 (pecho), antenas en 0.450, suelas en 0.870; panel en x 0.516–0.662 (0.146 de ancho, 57 px a 390 px: ChatSim baja al texto en móvil). 30 % superior con luminancia ≤ 7/255, ≤ 41 hasta 0.40. Original del render en materiales/magnific/v2/ind-industrial-kain-sector/desk-b-xSW1XnLjfW.png; final movil-reframe-1536.png."
+  }
+}
