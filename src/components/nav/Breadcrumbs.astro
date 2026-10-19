@@ -3,27 +3,37 @@
 // Props: items [{ name, url? | href? }] o page (usa page.breadcrumbs de sitemap.json). No se pinta en / ni en 404.
 // El BreadcrumbList del @graph lo emite SEOHead con el MISMO arreglo (page.breadcrumbs); si pasas items propios,
 // pásalos también a BaseLayout como jsonLd extra con breadcrumbList() de layout/jsonld.ts.
-// Separador = nodo cuadrado cian de 4 px ANTES de cada eslabón (si la línea se parte, el nodo abre la línea nueva).
-import type { Page } from '../../lib/site';
+// Rutas sin construir (QA r2 · decisión 3): cada eslabón intermedio pasa por linkTarget() de src/lib/site; si es null se pinta
+// como texto (sin <a>, nunca '#'). Cuando el hub exista, el enlace vuelve solo.
+// Una sola línea siempre (QA r2): si no cabe, el último eslabón se corta con "…" (el texto completo sigue en el DOM).
+// Separador = nodo cuadrado cian de 4 px ANTES de cada eslabón.
+import { linkTarget, type Page } from '../../lib/site';
 type Crumb = { name: string; url?: string; href?: string };
 interface Props { items?: Crumb[]; page?: Page; class?: string }
 const { items, page, class: cls } = Astro.props;
 const list: Crumb[] = items ?? (((page as any)?.breadcrumbs as Crumb[]) ?? []);
 const hidden = !list.length || list.length < 2 || (page && ((page as any).url === '/' || (page as any).id === '404'));
+const hrefOf = (c: Crumb) => { const h = c.url ?? c.href; return h ? linkTarget(h) : null; };
 ---
 {!hidden && (
   <nav class:list={['crumbs', cls]} aria-label="Ruta de navegación">
     <ol class="crumbs__list" role="list">
-      {list.map((c, i) => (
-        <li class="crumbs__item">
-          {i > 0 && <span class="crumbs__sep" aria-hidden="true"></span>}
-          {i < list.length - 1 ? (
-            <a class="crumbs__a" href={c.url ?? c.href}>{c.name}</a>
-          ) : (
-            <span class="crumbs__cur" aria-current="page">{c.name}</span>
-          )}
-        </li>
-      ))}
+      {list.map((c, i) => {
+        const last = i === list.length - 1;
+        const href = last ? null : hrefOf(c);
+        return (
+          <li class:list={['crumbs__item', last && 'crumbs__item--cur']}>
+            {i > 0 && <span class="crumbs__sep" aria-hidden="true"></span>}
+            {last ? (
+              <span class="crumbs__cur" aria-current="page">{c.name}</span>
+            ) : href ? (
+              <a class="crumbs__a" href={href}>{c.name}</a>
+            ) : (
+              <span class="crumbs__t">{c.name}</span>
+            )}
+          </li>
+        );
+      })}
     </ol>
   </nav>
 )}

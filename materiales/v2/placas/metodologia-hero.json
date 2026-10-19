@@ -5,6 +5,7 @@
     "d": { "src": "/img/cine/metodologia-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.72, "fy": 0.4, "fadeFrom": 0.86 },
     "m": { "src": "/img/cine/metodologia-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.7, "fy": 1, "subjTop": 0.55 },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": { "d": [[0.04, 0.06, 0.56, 0.64]], "m": [[0.04, 0.03, 0.96, 0.38], [0.04, 0.38, 0.62, 0.53]] },
     "subject": { "d": [0.66, 0.09, 0.94, 0.74], "m": [0.66, 0.54, 0.94, 0.85] },
     "anchors": {

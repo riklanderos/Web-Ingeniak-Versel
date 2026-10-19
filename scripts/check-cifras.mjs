@@ -2,10 +2,11 @@
 // Falla si en el texto visible aparece una cifra comercial (\d+(\.\d+)?\s?(%|×|x\b), "N citas", "N procesos", "N min",
 // "USD N") fuera de un nodo con data-metric o data-allow-number (también <tr data-metric>). El precio solo puede ser
 // PRICE_FROM. Revisa además <title>, meta description, og:* / twitter:* y los strings del JSON-LD: ahí una cifra solo
-// pasa si es literalmente una de metrics.ts (valor, "valor etiqueta" o prose) o el precio oficial.
+// pasa si es literalmente una de metrics.ts (valor, "valor etiqueta" o prose) o el precio oficial. Y revisa la fuente:
+// title/metaDescription/h1 de sitemap.json con cifras solo como token (src/lib/site.ts → resolveTokens).
 // Uso: node scripts/check-cifras.mjs [--url http://127.0.0.1:4321] [--release]
 import { pathToFileURL } from 'node:url';
-import { parseArgs, reporter, loadPages, loadMetrics, parseHTML, walk, isEl, find, findAll, jsonLd, jsonStrings, norm, sectionIdOf } from './_html.mjs';
+import { parseArgs, reporter, loadPages, loadMetrics, parseHTML, walk, isEl, find, findAll, jsonLd, jsonStrings, norm, sectionIdOf, SITEMAP_RAW, TOKEN_RX, BUILT } from './_html.mjs';
 
 // (?<![\d:]) evita horas ("16:00 Citas de mañana"); "citas/procesos/min" en minúsculas (una oración que empieza con "Citas" no es cifra)
 const FIG_RX = /(?<![\d:.,])\d+(?:[.,]\d+)?\s?(?:%|×|[xX]\b)|(?<![\d:.,])\d+\s+(?:citas|procesos)\b|(?<![\d:.,])\d+\s?min\b|USD\s?\d[\d.,]*/g;
@@ -154,6 +155,21 @@ export async function run(opts) {
       }
       PRICE_RX.lastIndex = 0;
       while ((m = PRICE_RX.exec(v))) if (!/^USD/i.test(m[0])) R.fail(pg.route, `importe fuera de PRICE_FROM en ${k}: ${ctx(v, m.index, m.index + m[0].length)}`);
+    }
+  }
+  // 5) Fuente: title, metaDescription y h1 de sitemap.json llevan las cifras como token ({{metric:ID}}…), nunca escritas a
+  //    mano (QA ronda 1: "respuesta en 12 s" en la meta de /industrias/salud/). Falla en páginas construidas; aviso en las demás.
+  const SRC_RX = new RegExp(`${FIG_RX.source}|(?<![\\d:.,])\\d+(?:[.,]\\d+)?\\s?(?:s|seg)\\b`, 'g');
+  for (const p of SITEMAP_RAW) {
+    for (const k of ['title', 'metaDescription', 'h1']) {
+      const v = String(p[k] ?? '').replace(new RegExp(TOKEN_RX.source, 'g'), '⟦token⟧');
+      SRC_RX.lastIndex = 0;
+      let mm;
+      while ((mm = SRC_RX.exec(v))) {
+        if (/^USD/i.test(mm[0]) && priceOk(v, mm.index, mm.index + mm[0].length, M)) continue;
+        const msg = `sitemap.json → ${p.id}.${k}: cifra escrita a mano (usa {{metric:ID}}, |full, |prose o {{price}}): ${ctx(v, mm.index, mm.index + mm[0].length)}`;
+        BUILT.has(p.url) ? R.fail(p.url, msg) : R.warn(p.url, msg);
+      }
     }
   }
   R.info(`${scanned} página(s) revisada(s)`);

@@ -21,7 +21,6 @@
     "pages": [
       "/",
       "/servicios/agentes-ia-whatsapp/",
-      "/industrias/salud/",
       "/industrias/belleza-estetica/",
       "/industrias/nutricion/",
       "/industrias/inmobiliario/",
@@ -137,8 +136,8 @@
   {
     "id": "G08",
     "q": "¿En cuánto tiempo veo resultados?",
-    "a": "Nuestros proyectos están planteados para dar resultados medibles en 60 a 90 días. Por ejemplo, una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días, y un e-commerce en la Ciudad de México bajó su costo por lead ({{metric:ecom-cpl}}) en 60 días. {{source}}.",
-    "short": "Los proyectos están planteados para dar resultados medibles en 60 a 90 días.",
+    "a": "Depende de qué se implemente y de cómo opera hoy tu negocio. Por eso el plazo se define contigo, junto con el alcance y el costo, en la propuesta que sigue a la Discovery Session. Como referencia, una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días, y un e-commerce en la Ciudad de México bajó su costo por lead ({{metric:ecom-cpl}}) en 60 días. {{source}}.",
+    "short": "Depende de qué se implemente: el plazo se define contigo en la propuesta, junto con el alcance y el costo.",
     "pages": [
       "/",
       "/servicios/",
@@ -253,7 +252,7 @@
   {
     "id": "G15",
     "q": "¿Qué resultados han logrado sus clientes?",
-    "a": "Algunos resultados confirmados: {{metric:dental-citas|full}} (clínica dental, Monterrey); tiempo de respuesta en WhatsApp: {{metric:dental-respuesta}} (misma clínica); {{metric:ecom-cpl|full}} (e-commerce, CDMX); {{metric:retail-conversiones}} en conversiones con Kommo e IA (retail multimarca); {{metric:horeca-roas}} sostenido (HoReCa); {{metric:logistica-procesos|full}} (logística); {{metric:salud-citas-mes|full}} (salud), y {{metric:tiempo-operativo}} de tiempo operativo en los primeros 90 días. {{source}}.",
+    "a": "Algunos resultados confirmados: {{metric:dental-citas|full}} (clínica dental, Monterrey); tiempo de respuesta en WhatsApp {{metric:dental-respuesta|prose}} (misma clínica); {{metric:ecom-cpl|full}} (e-commerce, CDMX); {{metric:retail-conversiones}} en conversiones con Kommo e IA (retail multimarca); {{metric:horeca-roas}} sostenido (HoReCa); {{metric:logistica-procesos|full}} (logística); {{metric:salud-citas-mes|full}} (salud), y {{metric:tiempo-operativo}} de tiempo operativo en los primeros 90 días. {{source}}.",
     "short": "Más citas, respuestas en segundos, menor costo por lead y más conversiones, cada cifra con su sector y su plazo.",
     "pages": [
       "/preguntas-frecuentes/"
@@ -265,8 +264,8 @@
   {
     "id": "W01",
     "q": "¿Qué resultados ha dado un agente de IA en WhatsApp?",
-    "a": "Una clínica dental de Monterrey logró {{metric:dental-citas}} más citas en 90 días con un agente de IA en WhatsApp. Su tiempo de respuesta por WhatsApp: {{metric:dental-respuesta}}. El agente califica a cada paciente y agenda su cita; cuando hace falta, le pasa la conversación a una persona del equipo. {{source}}.",
-    "short": "Una clínica dental de Monterrey logró {{metric:dental-citas}} más citas en 90 días. Tiempo de respuesta: {{metric:dental-respuesta}}.",
+    "a": "En una clínica dental de Monterrey, el agente de IA bajó el tiempo de respuesta en WhatsApp {{metric:dental-respuesta|prose}} y la clínica logró {{metric:dental-citas}} más citas en 90 días. {{source}}.",
+    "short": "En una clínica dental de Monterrey, el agente bajó el tiempo de respuesta {{metric:dental-respuesta|prose}} y la clínica logró {{metric:dental-citas}} más citas en 90 días.",
     "pages": [
       "/servicios/agentes-ia-whatsapp/",
       "/industrias/salud/",
@@ -517,7 +516,7 @@
   {
     "id": "N06",
     "q": "¿Qué hace una consultoría de inteligencia artificial?",
-    "a": "Detecta en qué procesos de tu empresa la IA ahorra tiempo o trae ventas, diseña cómo implementarla y la pone en producción con métricas. En Ingeniak incluye diagnóstico, roadmap, casos de uso y retorno medible, con la metodología VKTOR™ y resultados planteados para medirse en 60 a 90 días.",
+    "a": "Detecta en qué procesos de tu empresa la IA ahorra tiempo o trae ventas, diseña cómo implementarla y la pone en producción con métricas. En Ingeniak incluye diagnóstico, roadmap, casos de uso y retorno medible, con la metodología VKTOR™.",
     "short": "Detecta dónde la IA ahorra tiempo o trae ventas, diseña la implementación y la pone en producción con métricas.",
     "pages": [
       "/servicios/consultoria-ia-empresas/"
@@ -529,8 +528,8 @@
   {
     "id": "N07",
     "q": "¿Trabajan con pymes?",
-    "a": "Sí. La Discovery Session está pensada para dueños de PyMES de 3 a 40 empleados, de cualquier sector: el tamaño en el que el negocio todavía depende de su dueño para operar y un sistema le devuelve más tiempo. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
-    "short": "Sí. La Discovery Session está pensada para PyMES de 3 a 40 empleados, de cualquier sector.",
+    "a": "Sí. La Discovery Session está pensada para dueños de pymes de 3 a 40 empleados, de cualquier sector: el tamaño en el que el negocio todavía depende de su dueño para operar y un sistema le devuelve más tiempo. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
+    "short": "Sí. La Discovery Session está pensada para pymes de 3 a 40 empleados, de cualquier sector.",
     "pages": [
       "/servicios/",
       "/servicios/consultoria-ia-empresas/",
@@ -696,7 +695,7 @@
   {
     "id": "D05",
     "q": "¿Puedo reagendar?",
-    "a": "Sí, con al menos 24 horas de anticipación. Escríbenos por WhatsApp al 33 2101 7799 o a contacto@ingeniak.mx y lo movemos. Si te surge algo de último momento, avísanos de todos modos: preferimos mover la llamada a que la tomes con prisa.",
+    "a": "Sí, con al menos 24 horas de anticipación. Escríbenos por WhatsApp al 33 2101 7799 o a contacto@ingeniak.mx y lo movemos.",
     "short": "Sí, con al menos 24 horas de anticipación, por WhatsApp o correo.",
     "pages": [
       "/discovery/"
@@ -708,8 +707,8 @@
   {
     "id": "D06",
     "q": "¿Y si mi negocio es muy pequeño o muy grande?",
-    "a": "Trabajamos con PyMES de 3 a 40 empleados de cualquier sector. Si estás fuera de ese rango, la llamada lo aclara en los primeros minutos y te orientamos a la opción correcta. Lo que más pesa no es el tamaño, sino que el negocio dependa de ti para operar y quieras sistematizarlo.",
-    "short": "Trabajamos con PyMES de 3 a 40 empleados; si estás fuera del rango, te orientamos.",
+    "a": "Trabajamos con pymes de 3 a 40 empleados de cualquier sector. Si estás fuera de ese rango, la llamada lo aclara en los primeros minutos y te orientamos a la opción correcta. Lo que más pesa no es el tamaño, sino que el negocio dependa de ti para operar y quieras sistematizarlo.",
+    "short": "Trabajamos con pymes de 3 a 40 empleados; si estás fuera del rango, te orientamos.",
     "pages": [
       "/preguntas-frecuentes/",
       "/discovery/"
@@ -773,5 +772,19 @@
     "editada": false,
     "nueva": true,
     "_aprobacion": "Pregunta propia de salud (R2: al menos 4 por industria). Redacción nueva: no se publica en el FAQ ni en el FAQPage hasta que una persona del cliente la apruebe; después el orquestador suma su id a sitemap.json → ind-salud.faq y aquí pasa a validar: false."
+  },
+  {
+    "id": "S05",
+    "q": "¿Qué pasa si un paciente escribe por una urgencia?",
+    "a": "Kain no atiende urgencias médicas ni da indicaciones clínicas. Si un paciente describe un síntoma o una urgencia, se lo dice con claridad y pasa la conversación a tu equipo con el contexto. Qué le indica mientras tanto, como a qué número llamar o a dónde acudir, lo define tu clínica y lo dejamos escrito en el guion del agente.",
+    "short": "No atiende urgencias: se lo dice al paciente y pasa la conversación a tu equipo; las indicaciones las define tu clínica.",
+    "pages": [
+      "/industrias/salud/"
+    ],
+    "categoria": "Industrias",
+    "validar": true,
+    "editada": false,
+    "nueva": true,
+    "_aprobacion": "Pregunta propia de salud (R2: al menos 4 por industria), nueva en la QA ronda 2. No se publica en el FAQ ni en el FAQPage hasta que una persona del cliente la apruebe; después el orquestador suma su id a sitemap.json → ind-salud.faq y aquí pasa a validar: false."
   }
 ]

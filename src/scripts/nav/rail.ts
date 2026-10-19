@@ -33,6 +33,8 @@ export function initRail() {
   }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
   live.forEach(({ target }) => io.observe(target));
 
+  if (rail.dataset.mode === 'labels') guardLabels(rail, live.map(({ a }) => a));
+
   rail.addEventListener('click', (e) => {
     const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('[data-rail-target]');
     if (!a) return;
@@ -48,4 +50,79 @@ export function initRail() {
       setTimeout(() => t.focus({ preventScroll: true }), 1150);
     }
   });
+}
+
+// Modo "labels" (casos, Quick Jump): las etiquetas siempre visibles nunca tapan contenido (QA r2). Si bajo la caja de una
+// etiqueta (+ su halo) pasa texto, un enlace, un botón o una fila de UI del contenido, esa etiqueta se retira
+// (.rail__tick[data-covered] → opacidad 0; el tick sigue y con puntero o foco la etiqueta vuelve). Se mide solo en el
+// rAF del scroll y al cambiar el tamaño: elementsFromPoint en 5 puntos por etiqueta y, para el texto, las cajas de línea
+// reales (Range), no la del bloque. La tipografía decorativa (.ghost, aria-hidden) no cuenta.
+// Contenedores de fila sin enlace (.script__row, .mt__row) no cuentan: su texto ya se mide por líneas.
+const UI_SEL = 'a[href],button,input,select,textarea,.anchor,.chat__screen';
+const DECOR = '.ghost,[data-ghost],[aria-hidden="true"]';
+const HALO_X = 12, HALO_Y = 3;
+
+function guardLabels(rail: HTMLElement, ticks: HTMLAnchorElement[]) {
+  const main = document.querySelector<HTMLElement>('main');
+  if (!main) return;
+  const range = document.createRange();
+  const mq = window.matchMedia('(min-width: 1280px)');
+  let ticking = false;
+
+  const shown = (el: Element) => {
+    let n: Element | null = el;
+    for (let i = 0; n && i < 5; i++, n = n.parentElement) {
+      const cs = getComputedStyle(n);
+      if (cs.visibility === 'hidden' || cs.display === 'none' || parseFloat(cs.opacity) < 0.15) return false;
+    }
+    return true;
+  };
+  const hit = (a: DOMRect | DOMRectReadOnly, b: { l: number; t: number; r: number; b: number }) =>
+    a.width > 0 && a.height > 0 && a.right > b.l && a.left < b.r && a.bottom > b.t && a.top < b.b;
+
+  const covered = (lab: HTMLElement) => {
+    const r = lab.getBoundingClientRect();
+    if (!r.width) return false;
+    const box = { l: r.left - HALO_X, t: r.top - HALO_Y, r: r.right + HALO_X, b: r.bottom + HALO_Y };
+    const y = r.top + r.height / 2;
+    const seen = new Set<Element>();
+    for (let k = 0; k <= 4; k++) {
+      const x = box.l + ((box.r - box.l) * k) / 4;
+      for (const el of document.elementsFromPoint(Math.max(0, x), y)) {
+        if (seen.has(el)) continue;
+        seen.add(el);
+        if (el === main || !main.contains(el) || el.closest(DECOR)) continue;
+        if (el.matches(UI_SEL)) { if (hit(el.getBoundingClientRect(), box) && shown(el)) return true; continue; }
+        for (const node of el.childNodes) {
+          if (node.nodeType !== 3 || !node.textContent?.trim()) continue;
+          range.selectNodeContents(node);
+          for (const lr of range.getClientRects()) if (hit(lr, box) && shown(el)) return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  const run = () => {
+    ticking = false;
+    const html = document.documentElement;
+    const off = !mq.matches || html.hasAttribute('data-overlay') || html.hasAttribute('data-sala') || !html.hasAttribute('data-fold');
+    for (const a of ticks) {
+      const lab = a.querySelector<HTMLElement>('.rail__label');
+      a.toggleAttribute('data-covered', !off && !!lab && covered(lab));
+    }
+  };
+  const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(run); } };
+  // Las entradas de cine/ui (opacidad 0 → 1) terminan DESPUÉS del último scroll: repasos a 0.35, 1 y 2.2 s de la pausa.
+  let settle: number[] = [];
+  const onScroll = () => {
+    queue();
+    settle.forEach(clearTimeout);
+    settle = [350, 1000, 2200].map((ms) => window.setTimeout(queue, ms));
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll, { passive: true });
+  document.addEventListener('cine:sala', onScroll);
+  addEventListener('load', onScroll, { once: true });
+  onScroll();
 }

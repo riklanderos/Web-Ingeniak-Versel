@@ -10,7 +10,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import {
   ROOT, SITE_URL, SITEMAP, SITEMAP_URLS, BUILT, parseArgs, reporter, loadPages, loadText, loadMetrics, parseHTML, find, findAll,
-  closest, isEl, hasClass, textOf, norm, loose, metaContent, jsonLd, graphNodes, normRoute, copyOf, gatePending, indexablePages,
+  closest, isEl, hasClass, textOf, norm, loose, metaContent, jsonLd, graphNodes, normRoute, copyOf, gatePending, indexablePages, sectionIdOf,
 } from './_html.mjs';
 import { isNoindex } from '../src/lib/indexacion.mjs';
 
@@ -124,9 +124,24 @@ export async function run(opts) {
         continue;
       }
       if (!SITEMAP_URLS.has(r)) { R.fail(route, `enlace interno a una ruta que no está en sitemap.json: ${href}`); continue; }
-      if (!BUILT.has(r)) { if (!planned.has(r)) planned.set(r, new Set()); planned.get(r).add(route); continue; }
+      if (!BUILT.has(r)) {
+        // Decisión 3 (QA ronda 2): el cuerpo (<main>) nunca enlaza a una ruta sin construir (linkTarget()/isBuilt());
+        // encabezado, mega menú, hoja móvil y footer conservan la arquitectura completa (aviso, se construye al aprobar).
+        if (closest(a, (x) => x.tag === 'main')) R.fail(route, `enlace en el cuerpo a una página sin construir (404 hoy): ${href} ("${norm(textOf(a)).slice(0, 60) || a.attrs['aria-label'] || ''}"${sectionIdOf(a) ? ` en #${sectionIdOf(a)}` : ''}) · usa linkTarget()`);
+        else { if (!planned.has(r)) planned.set(r, new Set()); planned.get(r).add(route); }
+        continue;
+      }
       const hash = href.includes('#') ? decodeURIComponent(href.slice(href.indexOf('#') + 1)) : '';
       if (hash && idsByRoute.has(r) && !idsByRoute.get(r).has(hash)) R.fail(route, `ancla rota ${href} (no existe id="${hash}" en ${r})`);
+    }
+    // JSON-LD: BreadcrumbList e ItemList solo con páginas construidas (decisión 3; un eslabón a un 404 es error en Search Console)
+    for (const n of graphNodes(jsonLd(root)).filter((x) => x['@type'] === 'BreadcrumbList' || x['@type'] === 'ItemList')) {
+      for (const it of n.itemListElement ?? []) {
+        const u = typeof it.item === 'string' ? it.item : it.item?.['@id'] ?? it.url;
+        if (n['@type'] === 'BreadcrumbList' && !u && it.position < (n.itemListElement?.length ?? 0)) R.fail(route, `BreadcrumbList: el eslabón ${it.position} ("${it.name}") no tiene item`);
+        const r = u ? normRoute(u) : null;
+        if (r && SITEMAP_URLS.has(r) && !BUILT.has(r)) R.fail(route, `${n['@type']}: "${it.name ?? r}" apunta a una página sin construir (404 hoy): ${u}`);
+      }
     }
     // R2/R8: la decisión de la plantilla coincide con la regla única (src/lib/indexacion.mjs)
     if (page) {
@@ -135,9 +150,10 @@ export async function run(opts) {
     }
   }
 
-  for (const [r, from] of [...planned].sort((a, b) => b[1].size - a[1].size)) {
-    const list = [...from];
-    R.warn(r, `planeada sin construir (404 hoy) y enlazada desde ${list.length} página(s): ${list.slice(0, 5).join(' ')}${list.length > 5 ? ' …' : ''}`);
+  // Navegación del sitio (fuera de <main>): un solo aviso con la lista (decisión 3: la arquitectura se queda; --release la vuelve fatal)
+  if (planned.size) {
+    const list = [...planned].sort((a, b) => b[1].size - a[1].size).map(([r]) => r);
+    R.warn(null, `encabezado/mega menú/hoja móvil/footer enlazan ${list.length} ruta(s) planeada(s) sin construir (404 hoy; decisión 3, se construyen al aprobar la ronda): ${list.join(' ')}`);
   }
 
   // WhatsApp: mensaje propio y único por página
@@ -231,7 +247,14 @@ export async function run(opts) {
   }
   const robots = await loadText(opts, '/robots.txt');
   if (!robots) R.fail(null, 'falta /robots.txt');
-  else if (!/^Sitemap:\s*https:\/\/ingeniak\.mx\/sitemap-index\.xml\s*$/m.test(robots)) R.fail('/robots.txt', 'sin "Sitemap: https://ingeniak.mx/sitemap-index.xml"');
+  else {
+    if (!/^Sitemap:\s*https:\/\/ingeniak\.mx\/sitemap-index\.xml\s*$/m.test(robots)) R.fail('/robots.txt', 'sin "Sitemap: https://ingeniak.mx/sitemap-index.xml"');
+    // cada grupo de User-agent repite Disallow: /dev/ (un grupo propio anula al de *; §8.4)
+    for (const g of robots.split(/\n(?=User-agent:)/i).filter((x) => /^User-agent:/im.test(x))) {
+      const ua = g.match(/^User-agent:\s*(.+)$/im)[1].trim();
+      if (!/^Disallow:\s*\/dev\/\s*$/im.test(g)) R.fail('/robots.txt', `el grupo "User-agent: ${ua}" no repite "Disallow: /dev/"`);
+    }
+  }
   // vercel.json: redirecciones 301 a rutas de sitemap.json, sin comodines ni cadenas (§8.4, R8)
   try {
     const v = JSON.parse(readFileSync(join(ROOT, 'vercel.json'), 'utf8'));

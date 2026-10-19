@@ -8,7 +8,8 @@
 //        folio? (si no hay waHref, el mensaje genérico lleva el folio de la página), compact?: true omite el mapa.
 // El mapa lleva id="mapa-del-sitio": sin JS, "Menú" del encabezado es un enlace a él.
 import { SITE, pages } from '../../lib/site';
-import { METRICS } from '../../lib/metrics';
+import { SOURCE_NOTE } from '../../lib/metrics';
+import Metric from '../ui/Metric.astro';
 import { FOOTER, shortName } from '../layout/navData';
 import { ISOTIPO_PATH, ISOTIPO_VIEWBOX } from './brand';
 import { ICONS } from './icons';
@@ -65,7 +66,8 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain,
       <div class="ftr__row"><dt>Oficina</dt><dd data-allow-number>{SITE.address.street}, {SITE.address.locality}, {SITE.address.region} {SITE.address.postal}</dd></div>
       <div class="ftr__row"><dt>Correo</dt><dd><a class="ftr__a ftr__a--inline" href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
       <div class="ftr__row"><dt>WhatsApp</dt><dd><a class="ftr__a ftr__a--inline" href={waFooter} target="_blank" rel="noopener" data-allow-number>{SITE.phone}</a></dd></div>
-      <div class="ftr__row"><dt>En producción</dt><dd><b data-metric="sistemas">{METRICS.sistemas.value}</b> {METRICS.sistemas.label} · <b data-metric="paises">{METRICS.paises.value}</b> {METRICS.paises.label}</dd></div>
+      {/* Cifras solo con <Metric> y con su nota de fuente visible (§0.1.2, QA r2) */}
+      <div class="ftr__row"><dt>En producción</dt><dd><Metric id="sistemas" label /> · <Metric id="paises" label /><small class="ftr__src">{SOURCE_NOTE}.</small></dd></div>
     </dl>
     <div class="ftr__seals">
       {KommoBadge ? (

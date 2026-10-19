@@ -2,10 +2,19 @@
 // Falla si el HTML publicado contiene '[POR CONFIRMAR', '[VALIDAR', '[POR DECIDIR', 'TODO', 'lorem', 'XX' (palabra suelta)
 // o un enlace href="#". Revisa texto visible, atributos legibles (alt, aria-label, title, placeholder, content) y JSON-LD;
 // no revisa el código de <script>/<style>. Con --release también falla si el copy de una página no está "aprobado" (R1)
-// o si un caso sigue con su puerta de publicación pendiente (R2: aviso).
+// o si un caso sigue con su puerta de publicación pendiente (R2). Ambas son puertas del cliente: en el build normal se
+// informan aparte (◇, nunca fallan); solo --release las vuelve fatales.
+// Decisión 2 (QA ronda 2): nada sin confirmar se afirma en la página → falla si una pregunta del FAQ con validar: true
+// (src/data/faq.json) está visible o en el FAQPage.
 // Uso: node scripts/check-pendientes.mjs [--url http://127.0.0.1:4321] [--release]
+import { readFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { parseArgs, reporter, loadPages, parseHTML, walk, isEl, jsonLd, jsonStrings, norm, sectionIdOf, copyOf, gatePending } from './_html.mjs';
+import { parseArgs, reporter, loadPages, parseHTML, walk, isEl, jsonLd, jsonStrings, norm, sectionIdOf, copyOf, gatePending, ROOT, findAll, find, hasClass, textOf, loose, graphNodes } from './_html.mjs';
+
+const FAQ_FILE = join(ROOT, 'src/data/faq.json');
+const FAQ = existsSync(FAQ_FILE) ? JSON.parse(readFileSync(FAQ_FILE, 'utf8')) : [];
+const TO_VALIDATE = new Map((Array.isArray(FAQ) ? FAQ : []).filter((f) => f?.validar).map((f) => [loose(f.q), f.id]));
 
 const RULES = [
   [/\[POR CONFIRMAR/g, '[POR CONFIRMAR'],
@@ -45,11 +54,17 @@ export async function run(opts) {
       }
     }
     for (const ld of jsonLd(root)) if (!ld.__error) for (const [path, v] of jsonStrings(ld)) scan(v, `JSON-LD ${path}`);
+    // Decisión 2: preguntas por validar (validar: true) ni visibles ni en el FAQPage
+    if (TO_VALIDATE.size) {
+      const vis = findAll(root, (x) => 'data-faq-item' in x.attrs).map((it) => textOf(find(it, (x) => hasClass(x, 'faq__q') || hasClass(x, 'faq__qt')) ?? it));
+      const ld = graphNodes(jsonLd(root)).filter((n) => n['@type'] === 'FAQPage').flatMap((n) => (n.mainEntity ?? []).map((q) => q.name ?? ''));
+      for (const q of new Set([...vis, ...ld].map(loose))) if (TO_VALIDATE.has(q)) R.fail(pg.route, `pregunta ${TO_VALIDATE.get(q)} publicada con validar: true (sin confirmar por el cliente): "${q.slice(0, 70)}"`);
+    }
     // R1: copy aprobado · R2: puerta de caso
     if (pg.page) {
       const c = copyOf(pg.page.id);
-      if (c && c.estado !== 'aprobado') R.warn(pg.route, `copy en estado "${c.estado}" (solo "aprobado" se publica, R1; aprobadoPor: ${c.aprobadoPor ?? '—'})`);
-      if (gatePending(pg.page)) R.warn(pg.route, 'caso breve: puerta de publicación pendiente (ficha, punto de partida e implementación sin confirmar por escrito, R2)');
+      if (c && c.estado !== 'aprobado') R.gate(pg.route, `copy en estado "${c.estado}" (solo "aprobado" se publica, R1; aprobadoPor: ${c.aprobadoPor ?? '—'})`);
+      if (gatePending(pg.page)) R.gate(pg.route, 'caso breve: puerta de publicación pendiente (ficha, punto de partida e implementación sin confirmar por escrito, R2)');
     }
   }
   R.info(`${pages.length} página(s) revisada(s)`);

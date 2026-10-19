@@ -59,7 +59,40 @@ export default function switcher(el: HTMLElement, env: Env) {
     if (hudN) hudN.textContent = String(i + 1);
     el.setAttribute('style', data[i].vars);
     setSim(i);
+    fitSim();
   };
+  /** La tarjeta SIMULACIÓN va registrada a la izquierda de la tableta / teléfono solo si cabe entre la lista y el objeto
+   *  (≥ 24 px de aire con la columna de texto). Si no (1024–1366 px, ventanas bajas, placas recortadas por cover), va bajo
+   *  la lista, como en móvil: nunca tapa texto. data-sim="reg" | "inline" (CSS: cine.css · LocationSwitcher). */
+  const textCol = el.querySelector<HTMLElement>('.loc__text');
+  const fitSim = () => {
+    if (!sims.length || !textCol) return;
+    if (matchMedia(MQ).matches) { el.removeAttribute('data-sim'); return; }
+    // Se mide con la tarjeta registrada (la versión bajo la lista alarga la sección y agranda la placa: sin esto la
+    // decisión se alimentaría a sí misma).
+    el.setAttribute('data-sim', 'reg');
+    const stage = el.querySelector<HTMLElement>('.loc__layer.is-on .stage') ?? el.querySelector<HTMLElement>('.loc__layer .stage');
+    if (!stage) return;
+    el.style.removeProperty('--sim-dx');
+    const cs = getComputedStyle(el);
+    const simx = parseFloat(cs.getPropertyValue('--simx')) || 0.6;
+    const sx0 = parseFloat(cs.getPropertyValue('--sx0'));
+    const sr = stage.getBoundingClientRect();
+    const cardW = Math.max(240, Math.min(300, 0.22 * sr.width));
+    // Nunca encima del sujeto: si la tableta está delante de Kain, la tarjeta se corre a la izquierda de su caja.
+    const at = sr.left + simx * sr.width - 18;
+    const right = Math.min(at, Number.isNaN(sx0) ? at : sr.left + sx0 * sr.width - 12);
+    const fits = right - cardW >= textCol.getBoundingClientRect().right + 24;
+    el.setAttribute('data-sim', fits ? 'reg' : 'inline');
+    if (fits && right < at) el.style.setProperty('--sim-dx', `${Math.round(right - at)}px`);
+  };
+  fitSim();
+  if ('ResizeObserver' in window) {
+    let raf = 0;
+    const ro = new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fitSim); });
+    ro.observe(el);
+    off.push(() => { ro.disconnect(); cancelAnimationFrame(raf); });
+  }
   /** Burbujas del sector activo (sin animación de texto: el chip se funde con la placa). */
   const setSim = (i: number) => {
     const bs = data[i].bubbles ?? [];
@@ -169,5 +202,5 @@ export default function switcher(el: HTMLElement, env: Env) {
       if (paused) prog?.kill(); else tick();
     });
   }
-  return () => { off.forEach((f) => f()); prog?.kill(); el.classList.remove('is-auto'); clearTimeout(hoverT); gsap.set(sims, { clearProps: 'opacity' }); };
+  return () => { off.forEach((f) => f()); prog?.kill(); el.classList.remove('is-auto'); el.removeAttribute('data-sim'); clearTimeout(hoverT); gsap.set(sims, { clearProps: 'opacity' }); };
 }

@@ -11,6 +11,8 @@
     "og": "node scripts/og.mjs",
     "check": "node scripts/check.mjs",
     "check:release": "node scripts/check.mjs --release",
+    "check:escenas": "node scripts/check-escenas.mjs",
+    "check:contraste": "node scripts/check-contraste.mjs",
     "postbuild": "npm run check"
   },
   "dependencies": {

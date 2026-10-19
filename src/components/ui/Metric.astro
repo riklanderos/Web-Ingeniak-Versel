@@ -36,6 +36,8 @@ const get = (k: MetricId) => {
 };
 /** Divide el valor en partes para tipografía: signos y unidades a menor tamaño, número intacto. */
 const parts = figureParts;
+/** El "×" de las cifras de multiplicación va en la línea base (se lee "3.2 veces", no como exponente); % y signos, en voladita. */
+const symCls = (p: { t: string; k: string }) => (p.k === 'sym' && p.t === '×' ? 'metric__sym metric__sym--x' : `metric__${p.k}`);
 const canCount = (k: MetricId) => count && get(k).countable && /^\d+$/.test(get(k).value);
 
 if (variant !== 'row' && !id) throw new Error('[ui/Metric] falta id');
@@ -57,7 +59,7 @@ const proseText = prose && m ? (m.prose ?? `${m.value} ${m.label}`) : null;
 
 {variant === 'chip' && m && (
   <Tag class:list={['metric metric--chip chip-proof', glass && 'glass-chip', cls]} data-metric={id}>
-    <span class="metric__v">{parts(m.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <small class={`metric__${p.k}`}>{p.t}</small>)}</span>
+    <span class="metric__v">{parts(m.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <small class={symCls(p)}>{p.t}</small>)}</span>
     <span class="metric__l">{m.label}{fn && <sup class="fn">{fn}</sup>}</span>
     {showCtx && <span class="metric__c">{m.ctx}</span>}
     {href && <a class="metric__a" href={href} aria-label={`Ver caso: ${m.ctx}`}></a>}
@@ -68,7 +70,7 @@ const proseText = prose && m ? (m.prose ?? `${m.value} ${m.label}`) : null;
   <Tag class:list={['metric metric--mega', cls]} data-metric={id}>
     <span class="metric__v t-mega">{canCount(id!)
       ? <span data-count data-from={m.from ?? 0}>{m.value}</span>
-      : parts(m.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <span class={`metric__${p.k}`}>{p.t}</span>)}</span>
+      : parts(m.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <span class={symCls(p)}>{p.t}</span>)}</span>
     {(label ?? true) && <span class="metric__l">{m.label}{fn && <sup class="fn">{fn}</sup>}</span>}
     {showCtx && <span class="metric__c t-label">{m.ctx}</span>}
     {href && <a class="metric__a" href={href} aria-label={`Ver caso: ${m.ctx}`}></a>}
@@ -92,7 +94,7 @@ const proseText = prose && m ? (m.prose ?? `${m.value} ${m.label}`) : null;
           <div class="metric-row__item" data-metric={k} style={`--i:${i}`}>
             <dt class="metric-row__v">
               {canCount(k) ? <span data-count data-from={x.from ?? 0}>{x.value}</span>
-                : parts(x.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <span class={`metric__${p.k}`}>{p.t}</span>)}
+                : parts(x.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <span class={symCls(p)}>{p.t}</span>)}
             </dt>
             <dd class="metric-row__l">{h ? <a href={h}>{x.label}</a> : x.label}<sup class="fn">1</sup></dd>
             <dd class="metric-row__c">{x.ctx}</dd>

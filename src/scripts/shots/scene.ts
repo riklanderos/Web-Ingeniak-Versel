@@ -10,6 +10,70 @@
 import { claim, html, inView, splitLines, hold, release, sala, wireSkip, type Env, type Player } from './_util';
 import { setupBranch, type BranchHandle } from './_branch';
 
+const MOBILE = '(max-width: 767px), (max-aspect-ratio: 5/6)';
+
+/** Tope real de --cam (§0.1-5, manda sobre el 1.6 de §5.3/R5): la caja del sujeto (Kain, personas), escalada desde el
+ *  origen del push, se queda dentro del cuadro visible de la placa: arriba no pasa del 4 % (encabezado y fundido
+ *  superior), abajo no sale más que a cámara 1 (los pies ya viven en la disolución), a los lados deja 1.5 % y, en ultra
+ *  ancho, nunca entra en el fundido lateral. Nunca baja de 1 (no empeora lo que ya se ve a cámara 1). */
+function camLimit(el: HTMLElement): number {
+  const layer = el.querySelector<HTMLElement>(':scope > .is__stagebox > .is__layer--media');
+  const stage = layer?.querySelector<HTMLElement>(':scope > .stage');
+  if (!layer || !stage) return 1.6;
+  const cs = getComputedStyle(el);
+  const n = (p: string) => parseFloat(cs.getPropertyValue(p));
+  const k = matchMedia(MOBILE).matches ? '-m' : '';
+  const [x0, y0, x1, y1] = ['--sx0', '--sy0', '--sx1', '--sy1'].map((p) => n(p + k));
+  if ([x0, y0, x1, y1].some(Number.isNaN)) return 1.6; // aura: sin sujeto que cuidar
+  const lw = layer.clientWidth, lh = layer.clientHeight;
+  const sw = stage.offsetWidth, sh = stage.offsetHeight, sl = stage.offsetLeft, st = stage.offsetTop;
+  if (!lw || !lh || !sw || !sh) return 1.6;
+  const ox = sl + (n('--ox') || 0.5) * sw, oy = st + (n('--oy') || 0.5) * sh;
+  const e = { l: sl + x0 * sw, r: sl + x1 * sw, t: st + y0 * sh, b: st + y1 * sh };
+  // Fundido lateral del ultra ancho (cine.css ≥ 1800 px): mismas cuentas que --mL / --mR (sin fundido del lado del sujeto,
+  // largo del lado del texto; 10 % por lado con el sujeto al centro).
+  const ultra = !k && innerWidth >= 1800;
+  const side = el.dataset.layout;
+  const fL = side === 'subject-right' ? 0.28 : side === 'subject-left' ? 0 : 0.1;
+  const fR = side === 'subject-left' ? 0.28 : side === 'subject-right' ? 0 : 0.1;
+  const mL = ultra ? Math.max(0, Math.min(fL * lw, (n('--sx0') || 0.1) * lw - 16)) : 0;
+  const mR = ultra ? Math.max(0, Math.min(fR * lw, (1 - (n('--sx1') || 0.9)) * lw - 16)) : 0;
+  const pad = 0.015 * lw;
+  const lim = { l: mL + pad, r: lw - mR - pad, t: Math.min(e.t, 0.04 * lh), b: Math.max(e.b, lh) };
+  let c = 1.6;
+  if (e.r > ox) c = Math.min(c, (lim.r - ox) / (e.r - ox));
+  if (e.l < ox) c = Math.min(c, (ox - lim.l) / (ox - e.l));
+  if (e.b > oy) c = Math.min(c, (lim.b - oy) / (e.b - oy));
+  if (e.t < oy) c = Math.min(c, (oy - lim.t) / (oy - e.t));
+  return Math.max(1, Math.round(c * 1000) / 1000);
+}
+/** Recorrido de cámara del push con el tope aplicado (entra justo debajo del tope si camFrom lo pasaba). */
+function camRange(el: HTMLElement, push: { from: number; to: number }, ceiling = 1.6) {
+  const to = Math.min(push.to, ceiling, camLimit(el));
+  const from = Math.min(push.from, Math.max(1, to - 0.08));
+  return { from, to };
+}
+
+/** Tinta del texto: rectángulos de las líneas reales de cada nodo de texto + botones (los bloques ocupan toda la columna
+ *  aunque sus líneas sean más cortas). Las entradas solo desplazan en Y: la X es la final. */
+function inkRects(root: HTMLElement): DOMRect[] {
+  const out: DOMRect[] = [];
+  const take = (r: DOMRect) => { if (r.width > 0 && r.height > 0) out.push(r); };
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.textContent?.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT) });
+  const range = document.createRange();
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+    if ((n.parentElement?.closest('.btn, [hidden], .branch-spec'))) continue;
+    range.selectNodeContents(n);
+    for (const r of range.getClientRects()) take(r);
+  }
+  root.querySelectorAll<HTMLElement>('.btn').forEach((b) => take(b.getBoundingClientRect()));
+  return out;
+}
+function inkBox(root: HTMLElement): { left: number; right: number } | null {
+  const rs = inkRects(root);
+  return rs.length ? { left: Math.min(...rs.map((r) => r.left)), right: Math.max(...rs.map((r) => r.right)) } : null;
+}
+
 export default function scene(el: HTMLElement, env: Env) {
   const { gsap, ScrollTrigger, motion, desk } = env;
   const cleanups: (() => void)[] = [];
@@ -33,6 +97,78 @@ export default function scene(el: HTMLElement, env: Env) {
   const ghost = el.querySelector<HTMLElement>('.is__layer--ghost .ghost');
   const pinned = !!el.dataset.pin && env.pin;
 
+  // ── Texto de un lado, sujeto del otro (§3.10-1): la tinta del texto (líneas reales, no la caja de la columna) queda a
+  // ≥ 32 px de la caja del sujeto a cualquier tamaño (p. ej. el cierre del caso a 1024 × 768 tocaba la mano de Kain).
+  // Si no cabe, la columna se angosta (sujeto a la derecha) o se recorre (sujeto a la izquierda). Con o sin movimiento.
+  // Fig. (pie de foto registrado): si una línea del texto queda a < 24 px de su caja (p. ej. la línea de confianza de la
+  // portada a 1280 × 720 y 1440 × 900), el pie se angosta desde su lado libre (su esquina anclada y la línea guía no se
+  // mueven; el texto del pie gana una línea).
+  const textCol = copy?.querySelector<HTMLElement>(':scope > .is__text') ?? null;
+  const caps = anchors ? [...anchors.querySelectorAll<HTMLElement>('.caption')] : [];
+  if (textCol && desk && stagebox && /^subject-(left|right)$/.test(el.dataset.layout ?? '')) {
+    const right = el.dataset.layout === 'subject-right';
+    const fitCopy = () => {
+      textCol.style.removeProperty('max-width');
+      textCol.style.removeProperty('padding-left');
+      caps.forEach((c) => c.style.removeProperty('--cap-w'));
+      const stage = stagebox.querySelector<HTMLElement>(':scope > .is__layer--media > .stage');
+      const layer = stage?.parentElement;
+      if (!stage || !layer) return;
+      const cs = getComputedStyle(el);
+      const x0 = parseFloat(cs.getPropertyValue('--sx0')), x1 = parseFloat(cs.getPropertyValue('--sx1'));
+      const lr = layer.getBoundingClientRect();
+      const lx = lr.left + stage.offsetLeft, sw = stage.offsetWidth;
+      const ink = inkBox(textCol);
+      if (!ink) return;
+      const tr = textCol.getBoundingClientRect();
+      // Ajuste acotado (≤ 120 px y nunca menos de 280 px de columna): la columna solo cede lo que le falta a la tinta para
+      // el aire de 32 px. Un recorte grande alarga el texto, la sección crece (Dawn) y la placa en "cover" crece con ella
+      // (el sujeto se corre hacia el texto): el tope evita que eso se realimente.
+      if (!Number.isNaN(x0) && !Number.isNaN(x1)) {
+        if (right) {
+          const edge = lx + x0 * sw - 32;
+          if (ink.right > edge) textCol.style.maxWidth = `${Math.floor(Math.max(edge, ink.right - 120, tr.left + 280) - tr.left)}px`;
+        } else {
+          const edge = lx + x1 * sw + 32;
+          if (ink.left < edge) textCol.style.paddingLeft = `${Math.max(0, Math.ceil(Math.min(edge, ink.left + 120, tr.right - 280) - tr.left))}px`;
+        }
+      }
+      if (!caps.length) return;
+      // Coordenadas sin la cámara (--cam escala el escenario desde su origen) ni el desplazamiento de entrada (y).
+      const cam = parseFloat(cs.getPropertyValue('--cam')) || 1;
+      const ox = lx + (parseFloat(cs.getPropertyValue('--ox')) || 0.5) * sw;
+      const oy = lr.top + stage.offsetTop + (parseFloat(cs.getPropertyValue('--oy')) || 0.5) * stage.offsetHeight;
+      // Texto de la columna y del slot "more" (p. ej. la línea de confianza de la portada del inicio)
+      const moreCol = more?.querySelector<HTMLElement>(':scope > .is__text');
+      const lines = [...inkRects(textCol), ...(moreCol ? inkRects(moreCol) : [])];
+      for (const cap of caps) {
+        if (!cap.offsetParent) continue;
+        // GSAP absorbe el translate CSS (−100 % con el sujeto a la derecha) como x en px al animar la entrada: con otro
+        // ancho (--cap-w, o 22vw al cambiar la ventana) la esquina se despegaría del ancla. Se vuelve relativo (xPercent).
+        if (right && cap.style.translate === 'none') gsap.set(cap, { x: 0, xPercent: -100 });
+        const r = cap.getBoundingClientRect();
+        const ty = Number(gsap.getProperty(cap, 'y')) || 0;
+        const L = ox + (r.left - ox) / cam, R = ox + (r.right - ox) / cam;
+        const T = oy + (r.top - ty - oy) / cam, B = oy + (r.bottom - ty - oy) / cam;
+        const near = lines.filter((q) => q.bottom > T - 8 && q.top < B + 8);
+        if (!near.length) continue;
+        if (right) {
+          const maxR = Math.max(...near.map((q) => q.right));
+          if (maxR + 24 > L) cap.style.setProperty('--cap-w', `${Math.max(200, Math.floor(R - maxR - 24))}px`);
+        } else {
+          const minL = Math.min(...near.map((q) => q.left));
+          if (minL - 24 < R) cap.style.setProperty('--cap-w', `${Math.max(200, Math.floor(minL - 24 - L))}px`);
+        }
+      }
+    };
+    fitCopy();
+    let raf = 0;
+    const ro = new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fitCopy); });
+    ro.observe(el);
+    document.fonts?.ready.then(fitCopy);
+    cleanups.push(() => { ro.disconnect(); cancelAnimationFrame(raf); textCol.style.removeProperty('max-width'); textCol.style.removeProperty('padding-left'); caps.forEach((c) => c.style.removeProperty('--cap-w')); });
+  }
+
   // ── Rama de luz (tramo 2): con o sin movimiento ──
   const spec = el.querySelector<HTMLElement>('[data-branch]');
   let branch: BranchHandle | null = null;
@@ -52,6 +188,14 @@ export default function scene(el: HTMLElement, env: Env) {
 
   if (!motion) {
     html.classList.remove('co', 'enc');
+    // Sin movimiento: encuadre fijo de entrada, con el tope del sujeto medido a este tamaño.
+    if (push) {
+      const fit = () => el.style.setProperty('--cam', String(camRange(el, push, el.dataset.pin ? 1.12 : 1.6).from));
+      fit();
+      const ro = new ResizeObserver(fit);
+      ro.observe(el);
+      cleanups.push(() => ro.disconnect());
+    }
     return () => cleanups.forEach((f) => f());
   }
 
@@ -78,9 +222,10 @@ export default function scene(el: HTMLElement, env: Env) {
     intro.fromTo(branch.svg, { '--draw': 1 }, { '--draw': 0, duration: 1.1, ease: 'power3.inOut', ...NIR }, tBranch);
     intro.add(() => {
       if (branch!.svg.style.display === 'none') return;
-      branch!.to.classList.remove('is-traced');
-      void branch!.to.offsetWidth;
-      branch!.to.classList.add('is-traced');
+      const hit = branch!.hit(); // el primario o, si su costado estaba ocupado, el botón de la fila al que llegó la rama
+      hit.classList.remove('is-traced');
+      void hit.offsetWidth;
+      hit.classList.add('is-traced');
     }, tBranch + 1.05);
   }
   // Respiración en reposo (solo portada del inicio): --cam 1 → 1.015, 8 s, yoyo; se pausa fuera de pantalla.
@@ -188,16 +333,18 @@ export default function scene(el: HTMLElement, env: Env) {
       chats.forEach((c) => c.dispatchEvent(new CustomEvent('cine:step', { bubbles: true, detail: { progress: q, controlled: true } })));
     };
     chats.forEach((c) => c.setAttribute('data-cine-controlled', ''));
+    // El recorrido de cámara se recalcula en cada refresh (tamaño de la ventana): Kain nunca sale del cuadro (camLimit).
+    const range = () => camRange(el, push ?? { from: 1, to: 1.6 });
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: {
-        trigger: el, start: 'top top', end: el.dataset.pin, pin: true, scrub: 0.6, anticipatePin: 0,
+        trigger: el, start: 'top top', end: el.dataset.pin, pin: true, scrub: 0.6, anticipatePin: 0, invalidateOnRefresh: true,
         onUpdate: (s) => send(s.progress),
         onRefresh: (s) => send(s.progress),
         onToggle: (s) => { el.classList.toggle('is-pinned', s.isActive); sala(s.isActive); },
       },
     });
-    tl.fromTo(el, { '--cam': push?.from ?? 1 }, { '--cam': push?.to ?? 1.6, duration: 1, ease: 'power1.inOut' }, 0);
+    tl.fromTo(el, { '--cam': () => range().from }, { '--cam': () => range().to, duration: 1, ease: 'power1.inOut' }, 0);
     send(0);
     const unskip = wireSkip(el, env, tl.scrollTrigger ?? null);
     cleanups.push(() => {
@@ -210,9 +357,10 @@ export default function scene(el: HTMLElement, env: Env) {
   } else if (push) {
     // ── Push de cámara hacia un ancla (scrub mientras cruza el viewport) ──
     // Sin pin (táctil, móvil, sin espacio), una escena pensada para fijarse empuja con suavidad (nunca ×1.6 sin pin).
-    gsap.fromTo(el, { '--cam': push.from }, {
-      '--cam': el.dataset.pin ? Math.min(push.to, 1.12) : push.to, ease: 'none',
-      scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true },
+    const range = () => camRange(el, push, el.dataset.pin ? 1.12 : 1.6);
+    gsap.fromTo(el, { '--cam': () => range().from }, {
+      '--cam': () => range().to, ease: 'none',
+      scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true },
     });
   }
 
@@ -235,7 +383,15 @@ export default function scene(el: HTMLElement, env: Env) {
     exit.to(stagebox.querySelectorAll(':scope > .is__layer:not(.co-layer) > .stage'), { yPercent: 6, ease: 'none' }, 0);
     const txt = copy.querySelectorAll(':scope > .is__text > :not(.ctas):not(.branch-spec), :scope > .is__aside > :not(.ctas)');
     const ctas = copy.querySelectorAll(':scope > .is__text > .ctas, :scope > .is__aside > .ctas');
-    if (txt.length) exit.fromTo(txt, { y: 0, opacity: 1 }, { y: -60, opacity: 0.2, ease: 'none', ...NIR }, 0);
+    if (txt.length) {
+      exit.fromTo(txt, { y: 0 }, { y: -60, ease: 'none', ...NIR }, 0);
+      // El texto se apaga solo cuando ya salió de la zona de lectura (su bloque pasa el 15 % superior), no desde que la
+      // sección toca el borde: en escenas alineadas abajo (VSL de /discovery/) el titular seguía a media pantalla en .69.
+      gsap.fromTo(txt, { opacity: 1 }, {
+        opacity: 0.2, ease: 'none', immediateRender: false,
+        scrollTrigger: { trigger: copy.querySelector(':scope > .is__text') ?? copy, start: 'top 15%', end: 'bottom top', scrub: true },
+      });
+    }
     if (ctas.length) exit.fromTo(ctas, { y: 0 }, { y: -60, ease: 'none', ...NIR }, 0);
     if (more) {
       exit.fromTo(more, { y: 0 }, { y: -60, ease: 'none', duration: 1, ...NIR }, 0);

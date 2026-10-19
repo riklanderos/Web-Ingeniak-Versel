@@ -13,6 +13,14 @@ import auraOndas from './assets/aura-ondas.webp';
 
 export const AURA_ISOTIPO = auraIso.src;
 export const AURA_ONDAS = auraOndas.src;
+/** Medidas intrínsecas (check-pesos: toda <img> lleva width/height). Copia desenfocada horneada: 320 × 179 (plates.mjs). */
+export const RACK_SIZE = { w: 320, h: 179 } as const;
+export const AURA_ISOTIPO_SIZE = { w: auraIso.width, h: auraIso.height } as const;
+export const AURA_ONDAS_SIZE = { w: auraOndas.width, h: auraOndas.height } as const;
+/** width/height de una copia desenfocada (-rack-320.webp) o del aura del isotipo que la reemplaza. */
+export function rackSize(src: string | null | undefined): { w: number; h: number } {
+  return src && /-rack-320\.webp$/.test(src) ? RACK_SIZE : src === AURA_ISOTIPO ? AURA_ISOTIPO_SIZE : RACK_SIZE;
+}
 
 export type Layout = 'subject-right' | 'subject-left' | 'subject-center';
 export type Fallback = string | { plate: string; mirror?: boolean; note?: string } | null | undefined;
@@ -152,7 +160,7 @@ export function resolvePlate(key: string, o: ResolveOpts = {}): Resolved {
   }
   // Caja del sujeto (las máscaras laterales del ultra ancho nunca lo tocan, §3.5) y su franja en la placa vertical.
   const sd = fbox(p?.subject?.d, mirror), sm = fbox(p?.subject?.m, mirror);
-  const subjVars = (sd ? `--sx0:${sd[0]};--sx1:${sd[2]};` : '') + (sm ? `--sx0-m:${sm[0]};--sx1-m:${sm[2]};--sy0-m:${sm[1]};--sy1-m:${sm[3]};` : '');
+  const subjVars = (sd ? `--sx0:${sd[0]};--sx1:${sd[2]};--sy0:${sd[1]};--sy1:${sd[3]};` : '') + (sm ? `--sx0-m:${sm[0]};--sx1-m:${sm[2]};--sy0-m:${sm[1]};--sy1-m:${sm[3]};` : '');
   const vars =
     `--ar-d:${d.ar};--fx-d:${d.fx};--fy-d:${d.fy};--ar-m:${m.ar};--fx-m:${m.fx};--fy-m:${m.fy};` +
     `--fade-from:${d.fadeFrom};--subj-top-m:${m.subjTop};--cx-d:${cxd[0]};--cy-d:${cxd[1]};--cx-m:${cxm[0]};--cy-m:${cxm[1]};` +
@@ -182,6 +190,21 @@ export function boxPoint(a: Resolved['anchors'][string] | undefined, u = 0.5, v 
   if (!a) return { d: null, m: null };
   const at = (b: Box4 | null | undefined, p: XY | null): XY | null => (b ? [r4(b[0] + b[2] * u), r4(b[1] + b[3] * v)] : p);
   return { d: at(a.box?.d, a.d), m: at(a.box?.m, a.m) };
+}
+
+/** Tope de --cam (§0.1-5: Kain y las personas nunca se cortan; manda sobre el 1.6 de §5.3 y R5) estimado en el servidor
+ *  para el primer cuadro y sin JS: la caja del sujeto escalada desde el origen `o` (fracciones de la placa) no pasa del
+ *  4 % superior ni del borde inferior, y deja 1.5 % a los lados. scene.ts lo recalcula con las medidas reales. */
+export function camCap(subject: Box | null, o: XY | null, ceiling = 1.6): number {
+  if (!subject || !o) return ceiling;
+  const [x0, y0, x1, y1] = subject;
+  const [ox, oy] = o;
+  let c = ceiling;
+  if (y0 < oy) c = Math.min(c, (oy - 0.04) / (oy - y0));
+  if (y1 > oy) c = Math.min(c, (Math.max(1, y1) - oy) / (y1 - oy));
+  if (x0 < ox) c = Math.min(c, (ox - 0.015) / (ox - x0));
+  if (x1 > ox) c = Math.min(c, (0.985 - ox) / (x1 - ox));
+  return Math.max(1, r4(c));
 }
 
 /** Valores de cifras para escenas que derivan una visual del número confirmado (CaseFigure). */

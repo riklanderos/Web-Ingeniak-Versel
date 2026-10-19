@@ -3,15 +3,17 @@
 // baja con scrub; cada hora se enciende, su dolor (ámbar) pierde contra su par con Kain (cian), que se dibuja.
 // La toma desenfocada de fondo vira a ámbar o cian por tramo (aura registrada, no fondo de sección).
 // Horas ilustrativas: sin cifras inventadas. Slot default: eyebrow + H2 (id "<id>-t").
-import { AURA_ISOTIPO } from './plate';
+import { AURA_ISOTIPO, rackSize } from './plate';
 
 interface Entry { time: string; pain: string; fix: string }
 interface Props { id?: string; entries: Entry[]; rack?: string; class?: string }
 const { id = 'jornada', entries, rack, class: cls } = Astro.props;
+const tint = rack ?? AURA_ISOTIPO;
+const tk = rackSize(tint);
 ---
 <section id={id} class:list={['dt', cls]} data-shot="timeline" aria-labelledby={`${id}-t`}>
-  <div class="dt__tint" aria-hidden="true">
-    <img src={rack ?? AURA_ISOTIPO} alt="" loading="lazy" decoding="async" />
+  <div class="dt__tint glow-clip" aria-hidden="true">
+    <img src={tint} alt="" width={tk.w} height={tk.h} loading="lazy" decoding="async" />
     <span class="dt__amber"></span><span class="dt__cyan"></span>
   </div>
   <div class="frame dt__frame">

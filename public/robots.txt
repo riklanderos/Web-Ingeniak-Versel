@@ -1,36 +1,56 @@
 # robots.txt · ingeniak.mx (ESPEC-v2 §8.4; materiales/seo/investigacion-seo.md, recomendación 8)
 # Buscadores y bots de IA: todos permitidos. Los bots de búsqueda y de consulta del usuario son los que citan el sitio.
-# Las páginas de demostración (/dev/) llevan noindex y no se publican en el sitemap.
+# Las páginas de demostración (/dev/, /dev-movil.html) no salen en el build de producción (astro.config.mjs las quita de dist),
+# llevan noindex y no están en el sitemap. Cada grupo repite el Disallow: un bot con grupo propio ignora el de *.
 
 User-agent: *
 Allow: /
 Disallow: /dev/
+Disallow: /dev-movil.html
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /dev/
+Disallow: /dev-movil.html
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /dev/
+Disallow: /dev-movil.html
 
 User-agent: GPTBot
 Allow: /
+Disallow: /dev/
+Disallow: /dev-movil.html
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /dev/
+Disallow: /dev-movil.html
 
 User-agent: Claude-User
 Allow: /
+Disallow: /dev/
+Disallow: /dev-movil.html
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /dev/
+Disallow: /dev-movil.html
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /dev/
+Disallow: /dev-movil.html
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /dev/
+Disallow: /dev-movil.html
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /dev/
+Disallow: /dev-movil.html
 
 Sitemap: https://ingeniak.mx/sitemap-index.xml

@@ -6,13 +6,14 @@
 //   index-down → ecom-cpl: de 100 a 42 (solo inicio y final, sin curva)
 //   multiplier → horeca-roas: "$1 → $4.8", 4.8 columnas de luz (la última al 80 %)
 //   nodes      → logistica-procesos: 27 nodos cuadrados que se conectan con ramas del isotipo
-// Escritorio: fijada +100 % (pin) con scrub; móvil: animación al entrar (sin pin); reducido: estado final.
+// Escritorio: fijada +100 % (pin) con scrub y "Saltar escena" (F5, §10: visible solo mientras está fijada, salta al final
+// del pin y pasa el foco al titular siguiente); móvil: animación al entrar (sin pin); reducido: estado final.
 // Slot default: eyebrow + H2 (id "<id>-t") · slot "foot": la línea del copy después de la cifra (p. ej. cifra.line).
 // labels: rótulos de los cronómetros / índices ({ before: 'Antes', after: 'Con el agente de IA' }).
 // El valor real siempre está en el HTML (data-metric); sin JS o con movimiento reducido se ve el estado final (8:00 / 0:12).
 import Metric from '../ui/Metric.astro';
 import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
-import { parseNumber, AURA_ISOTIPO } from './plate';
+import { parseNumber, AURA_ISOTIPO, AURA_ISOTIPO_SIZE } from './plate';
 
 interface Props {
   id?: string;
@@ -20,9 +21,10 @@ interface Props {
   metricIds: MetricId[];
   pin?: string | false;
   labels?: { before?: string; after?: string };
+  skipLabel?: string;
   class?: string;
 }
-const { id = 'cifra', variant, metricIds, pin = '+=100%', labels, class: cls } = Astro.props;
+const { id = 'cifra', variant, metricIds, pin = '+=100%', labels, skipLabel = 'Saltar escena', class: cls } = Astro.props;
 const hasFoot = Astro.slots.has('foot');
 const mid = metricIds[0];
 const val = METRICS[mid]?.value ?? '';
@@ -51,7 +53,8 @@ const colsN = 9;
   data-pin={pin || undefined}
   aria-labelledby={`${id}-t`}
 >
-  <div class="cf__aura" aria-hidden="true"><img src={AURA_ISOTIPO} alt="" loading="lazy" width="640" height="640" /></div>
+  {pin && <a class="skip-scene lnk--mono" href={`#${id}-fin`} data-skip>{skipLabel} <span aria-hidden="true">↓</span></a>}
+  <div class="glow-clip" aria-hidden="true"><div class="cf__aura"><img src={AURA_ISOTIPO} alt="" loading="lazy" width={AURA_ISOTIPO_SIZE.w} height={AURA_ISOTIPO_SIZE.h} /></div></div>
   <div class="frame cf__frame">
     <div class="cf__head"><slot /></div>
     <div class="cf__stage" data-metric={mid}>
@@ -101,4 +104,5 @@ const colsN = 9;
       <span class="t-micro cf__src"><sup class="fn">1</sup> {SOURCE_NOTE}.</span>
     </p>
   </div>
+  {pin && <span id={`${id}-fin`} class="scene-end" tabindex="-1"></span>}
 </section>

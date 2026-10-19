@@ -38,7 +38,7 @@ import FigCaption from '../cine/FigCaption.astro';
 import Still from '../ui/Still.astro';
 import KommoBadge from '../ui/KommoBadge.astro';
 import Icon from '../ui/Icon.astro';
-import { annotateFigures, esc, logoUrl, logoWide, TOOLS } from '../ui/ui-data';
+import { annotateFigures, esc, logoUrl, logoWide, TOOLS, VKTOR } from '../ui/ui-data';
 import HeroCtas from './HeroCtas.astro';
 import Aura from './Aura.astro';
 import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs, builtRelated } from './heroKit';
@@ -199,19 +199,59 @@ const painFigTarget = (id?: string) => {
   return ['telefono', 'mano', 'rostro'].find((n) => r?.anchors[n]?.d) ?? 'mano';
 };
 
-/* ── Regreso al set (R5): la escena intermedia vuelve a la placa de la portada, ya empujada (--cam 1.35 → 1.6 hacia el
-   teléfono) y con OTRA UI encima (tarjeta de lead que llega a "Cita agendada"): nunca el mismo encuadre dos veces.
-   Va en la sección que trae placa en sitemap.json; si ninguna intermedia la trae, en la primera comparativa
-   (vs-chatbot/comparativa) — pedido a orquestador registrarlo en sitemap.json (sections[].plate.push). ── */
-const midHasPlate = list.some((s) => !['hero', 'cta-final'].includes(s.id) && !PAIN.includes(s.id) && s.id !== 'como-funciona' && plateOf(s));
-const regresoId: string | null = (() => {
-  const own = list.find((s) => TWO.includes(s.id) && plateOf(s));
-  if (own) return own.id;
-  if (midHasPlate) return null;
-  return list.find((s) => ['vs-chatbot', 'comparativa'].includes(s.id) && C[s.id]?.rows?.length)?.id ?? null;
-})();
-const regresoPlate = (s: any) => plateOf(s) ?? { ...hp, push: { from: 1.35, to: 1.6 } };
+/* ── 06 · Comparativa con placa propia (QA #16/#18/#19): ya no es la portada empujada (recortaba a Kain y en la placa
+   vertical repetía el mismo encuadre). Es la estación Organizar del inicio: Kain, de cuerpo completo, sostiene la tarjeta
+   del lead frente a los carriles del embudo (R13: pose y objeto distintos a la portada). La tarjeta de lead (SIMULACIÓN)
+   se registra en la parte LIBRE de la superficie (nunca sobre Kain) y la tabla nace en la disolución inferior de la misma
+   placa. Placa: la de sitemap.json si la sección la trae (pedido a orquestador); si no, CMP_PLATE si no se usa ya. ── */
+const CMP_PLATE = 'home-sistema-3-organizar';
+const cmpS = list.find((s) => TWO.includes(s.id) && C[s.id]?.rows?.length);
+const cmpPlate: any = cmpS ? (plateOf(cmpS) ?? (plateReady(CMP_PLATE) && !used.has(CMP_PLATE) ? { id: CMP_PLATE } : null)) : null;
+const cmpSceneId: string | null = cmpPlate ? cmpS.id : null;
+if (cmpPlate) used.add(cmpPlate.id);
 const LEAD_STAGES = ['Nuevo', 'Calificado', 'Cita agendada'];
+
+/* ── 09 · VKTOR™ a sangre (QA #23: la segunda mitad de la página no tenía ninguna escena con placa): Kain de pie sobre la
+   última de cinco losas de cristal (pose distinta a la comparativa y al cierre, R13); cada losa lleva registrada la letra
+   de su fase y el riel completo nace en la disolución inferior. Placa: la de sitemap.json o VK_PLATE. ── */
+const VK_PLATE = 'metodologia-hero';
+const vkS = list.find((s) => s.id === 'vktor');
+const vkPlate: any = vkS ? (plateOf(vkS) ?? (plateReady(VK_PLATE) && !used.has(VK_PLATE) ? { id: VK_PLATE } : null)) : null;
+if (vkPlate) used.add(vkPlate.id);
+
+/** Letra de cada fase en la cara de su losa (anclas escalon-1…5, escritorio y vertical). En la losa donde está parado Kain
+ *  se corre a la parte libre, hacia afuera del sujeto (nunca sobre sus pies). */
+function slabSteps(vr: Resolved) {
+  const dir = vr.mirror ? -1 : 1;
+  const clear = (p: [number, number] | null, sub: number[] | null): [number, number] | null => {
+    if (!p || !sub || !(p[0] > sub[0] && p[0] < sub[2])) return p;
+    return [dir > 0 ? Math.min(sub[2] - 0.055, p[0] + 0.07) : Math.max(sub[0] + 0.055, p[0] - 0.07), p[1]];
+  };
+  return VKTOR.map((f, i) => {
+    const a = `escalon-${i + 1}`;
+    const d = clear(vr.anchors[a]?.d ?? null, vr.subject.d), m = clear(vr.anchors[a]?.m ?? null, vr.subject.m);
+    return { ...f, a, style: d ? `--ax:${+d[0].toFixed(4)};--ay:${d[1]};` + (m ? `--ax-m:${+m[0].toFixed(4)};--ay-m:${m[1]};` : '') + `--i:${i};` : '' };
+  }).filter((f) => f.style);
+}
+
+/** Parte libre de una superficie de cristal ([x, y, w, h] de la placa): se recorta al lado del sujeto con 2 % de aire, así
+ *  la UI registrada nunca queda sobre Kain (§0.1-5); `pad` la separa de los bordes superior e inferior de la superficie. */
+function freeBox(r: Resolved, names: string[], pad = 0.08): { name: string; style: string } | null {
+  if (!r.id) return null;
+  const raw: any = getPlate(r.id);
+  const name = names.find((n) => Array.isArray(raw?.anchors?.[n]?.d) && raw.anchors[n].d.length >= 4);
+  if (!name) return null;
+  let [x, y, w, h] = raw.anchors[name].d as number[];
+  const sd = raw.subject?.d as number[] | undefined;
+  if (sd) {
+    if (sd[0] >= x + w * 0.5) w = Math.min(w, sd[0] - 0.02 - x);
+    else if (sd[2] <= x + w * 0.5) { const nx = Math.max(x, sd[2] + 0.02); w = x + w - nx; x = nx; }
+  }
+  y += h * pad; h *= 1 - pad * 2;
+  const X = r.mirror ? 1 - x - w : x;
+  const f = (n: number) => +n.toFixed(4);
+  return { name, style: `--ax:${f(X)};--ay:${f(y)};--aw:${f(w)};--ah:${f(h)};` };
+}
 
 /* ── Cómo funciona: ¿la placa trae los nodos registrables? ── */
 function flowPlate(s: any) {
@@ -321,7 +361,6 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
         {b.next && (
           <Intertitle id={b.next.s.id} rack aura="none" labelledby={`${b.next.s.id}-def-q`} class="svc-def tpl-glow">
             <Aura kind="ondas" x="40%" y="104%" o={1} only="d" />
-            <Aura kind="isotipo" x="75%" o={0.9} only="m" sticky />
             <DefinitionBlock
               id={`${b.next.s.id}-def`}
               faqId={b.next.c.definition?.faqId}
@@ -396,7 +435,6 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
         <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class={tabs ? 'svc-cap svc-cap--chat tpl-glow' : 'svc-cap tpl-glow'}>
           <div class="svc-cap__grid">
             <div class="svc-cap__main">
-              <Aura kind="isotipo" x="70%" o={0.9} only="m" sticky />
               {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
               <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
               {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
@@ -500,41 +538,41 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
       const cmpLinks = built(c.links).length > 0 && (
         <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
       );
-      /* Regreso al set: la placa de la portada, ya empujada hacia el teléfono, con la tarjeta de lead encima; la tabla nace
-         en la disolución inferior de la misma placa (una sola composición, nunca dos cajas) */
-      if (s.id === regresoId) {
-        const rp = regresoPlate(s);
-        const rr = resolvePlate(rp.id, { fallbackPlate: rp.launchFallback, mirror: rp.mirror });
-        const pan = panel(rr);
+      /* Escena con placa propia (QA #16/#18/#19): Kain de cuerpo completo con la tarjeta del lead; la tarjeta de lead
+         (SIMULACIÓN) va registrada en la parte libre de la superficie de cristal y la tabla nace en la disolución inferior de
+         la misma placa (una sola composición, nunca dos cajas). En móvil la superficie queda detrás de Kain → la tarjeta
+         baja al flujo, antes de la tabla (R4: data-m="none" + versión en línea). */
+      if (s.id === cmpSceneId) {
+        const rr = resolvePlate(cmpPlate.id, { fallbackPlate: cmpPlate.launchFallback, mirror: cmpPlate.mirror });
+        const pan = freeBox(rr, ['superficie', 'pantalla', 'telefono', 'tableta']);
+        const leadAria = 'Simulación: un lead de WhatsApp llega a la etapa Cita agendada de tu CRM';
+        const leadCard = () => (
+          <div class="svc-lead__card" aria-hidden="true">
+            <p class="svc-lead__top"><span class="chip-sim">SIMULACIÓN</span></p>
+            <p class="svc-lead__k"><span class="node" aria-hidden="true"></span>Lead nuevo · WhatsApp</p>
+            <ol class="svc-lead__stages">
+              {LEAD_STAGES.map((t, i) => <li class:list={['svc-lead__st', i === LEAD_STAGES.length - 1 && 'is-on']} style={`--i:${i}`}><i></i><span>{t}</span></li>)}
+            </ol>
+            <p class="svc-lead__evt"><span class="svc-lead__ok"></span>Cita registrada en tu CRM</p>
+          </div>
+        );
         return (
           <ImageSection
-            id={s.id} plate={rp.id} fallbackPlate={rp.launchFallback} layout={lay(rp)} mirror={rp.mirror} height="mid" align="start"
-            mobile="split" srcsetMax={2752} alt="" class="svc-back tpl-glow-m"
-            push={{ anchor: pan?.name ?? 'telefono', camFrom: rp.push?.from ?? 1.35, camTo: rp.push?.to ?? 1.6 }}
+            id={s.id} plate={cmpPlate.id} fallbackPlate={cmpPlate.launchFallback} layout={lay(cmpPlate)} mirror={cmpPlate.mirror} height="mid" align="start"
+            mobile="split" srcsetMax={cmpPlate.srcsetMax ?? 1920} alt="" class="svc-back tpl-glow-m"
           >
             <span class="tpl-introglow" aria-hidden="true"></span>
             {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
             <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
             {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
             {pan && (
-              <div slot="anchors" class="anchor anchor--panel svc-panel svc-lead" data-anchor={pan.name} data-m={pan.m ? undefined : 'none'} data-lock data-nosnippet style={pan.style} role="img"
-                aria-label="Simulación: un lead de WhatsApp llega a la etapa Cita agendada de tu CRM">
-                <div class="svc-lead__card" aria-hidden="true">
-                  <p class="svc-lead__top"><span class="chip-sim">SIMULACIÓN</span></p>
-                  <p class="svc-lead__k"><span class="node" aria-hidden="true"></span>Lead nuevo · WhatsApp</p>
-                  <ol class="svc-lead__stages">
-                    {LEAD_STAGES.map((t, i) => <li class:list={['svc-lead__st', i === LEAD_STAGES.length - 1 && 'is-on']} style={`--i:${i}`}><i></i><span>{t}</span></li>)}
-                  </ol>
-                  <p class="svc-lead__evt"><span class="svc-lead__ok"></span>Cita registrada en tu CRM</p>
-                </div>
-                {/* Móvil: el teléfono de la placa vertical mide < 180 px → miniatura encendida (§3.7), nunca un cristal vacío */}
-                <ChatSim mode="mini" class="svc-lead__mini" />
-              </div>
+              <div slot="anchors" class="anchor anchor--panel svc-lead" data-anchor={pan.name} data-m="none" data-lock data-nosnippet style={pan.style}
+                role="img" aria-label={leadAria}>{leadCard()}</div>
             )}
             <Fragment slot="more">
+              {pan && <div class="svc-lead svc-lead--inline tpl-dhide" role="img" aria-label={leadAria} data-nosnippet>{leadCard()}</div>}
               <div class="svc-back__table">
                 <Aura kind="ondas" x="55%" y="70%" o={1} only="d" />
-                <Aura kind="isotipo" x="70%" o={0.9} only="m" sticky />
                 {table}
                 {cmpLinks}
               </div>
@@ -674,6 +712,36 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
     /* ───────────── 09 · VKTOR™ aplicado al servicio ───────────── */
     if (b.kind === 'vktor') {
       const link = c.links?.[0];
+      const rail = (
+        <VktorRail variant="phases" lines={(c.phases ?? []).map((f: any) => f.line)} href={hrefOr(link?.href ?? '/metodologia/') ?? false} linkLabel={link?.label ?? 'Conoce el protocolo completo'} class="svc-vk__rail" />
+      );
+      /* A sangre (QA #23): las cinco losas de la placa son las cinco fases; cada una lleva su letra registrada (escritorio y
+         vertical, R4) y el riel con el texto de cada fase nace en la disolución inferior de la misma placa. */
+      if (vkPlate) {
+        const vr = resolvePlate(vkPlate.id, { fallbackPlate: vkPlate.launchFallback, mirror: vkPlate.mirror });
+        const steps = slabSteps(vr);
+        return (
+          <ImageSection
+            id={s.id} plate={vkPlate.id} fallbackPlate={vkPlate.launchFallback} layout={lay(vkPlate)} mirror={vkPlate.mirror} height="mid" align="start"
+            mobile="split" srcsetMax={vkPlate.srcsetMax ?? 1920} alt="" class="svc-vks tpl-glow-m"
+          >
+            <span class="tpl-introglow" aria-hidden="true"></span>
+            {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+            <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+            {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+            {steps.length === 5 && (
+              <Fragment slot="anchors">
+                {steps.map((f) => (
+                  <span class="anchor svc-slab" data-anchor={f.a} style={f.style} aria-hidden="true">
+                    <b class="svc-slab__l">{f.l}</b><span class="svc-slab__n">{f.name}</span>
+                  </span>
+                ))}
+              </Fragment>
+            )}
+            <Fragment slot="more">{rail}</Fragment>
+          </ImageSection>
+        );
+      }
       return (
         <section id={s.id} class="svc-sec svc-vk tpl-glow" aria-labelledby={`${s.id}-t`}>
           <div class="frame">
@@ -681,7 +749,7 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
               {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
               <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
             </div>
-            <VktorRail variant="phases" lines={(c.phases ?? []).map((f: any) => f.line)} href={hrefOr(link?.href ?? '/metodologia/') ?? false} linkLabel={link?.label ?? 'Conoce el protocolo completo'} class="svc-vk__rail" />
+            {rail}
           </div>
           <Fragment set:html={aura('ondas', 'vk')} />
         </section>
@@ -699,7 +767,6 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
           </div>
           <div class="svc-price__body">
             <Aura kind="ondas" x="50%" y="110%" o={1} only="d" />
-            <Aura kind="isotipo" x="60%" o={0.9} only="m" sticky />
             {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
             {c.items?.length > 0 && (
               <ol class="svc-factors" data-ui-stagger>

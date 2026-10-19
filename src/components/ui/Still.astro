@@ -10,6 +10,7 @@
 // Imagen: /img/cine/<placa>-1280|1920.(avif|webp) (la misma exportación que la escena; en móvil pide la de 1280).
 // Sin placa: aura de respaldo, nunca la misma dos veces seguidas en una página (3 variantes que rotan por petición).
 // Un still de Kommo (href o placa con "kommo") muestra el sello oficial de partner sobre su aura.
+// Bordes: la imagen y su penumbra se disuelven a transparente por los cuatro lados (sin filete ni relleno de caja).
 // Gancho: <a data-still> → ui.ts le pone view-transition-name:plate a su imagen al hacer clic (§7.6).
 import Metric from './Metric.astro';
 import Icon from './Icon.astro';
@@ -22,7 +23,10 @@ interface Props {
   href: string; plate?: string; label?: string; title: string; line?: string; metricId?: MetricId;
   variant?: 'still' | 'plana' | 'mini' | 'next'; fx?: number; kommo?: boolean; headingLevel?: 2 | 3 | 4; class?: string;
 }
-const { href, plate, label, title, line, metricId, variant = 'still', fx, kommo: kommoProp, headingLevel = 3, class: cls } = Astro.props;
+const { href, plate, label: labelProp, title, line, metricId, variant = 'still', fx, kommo: kommoProp, headingLevel = 3, class: cls } = Astro.props;
+// El rótulo nunca repite el título ("DISCOVERY SESSION" sobre "Discovery Session"): si dicen lo mismo, solo queda el título.
+const fold = (x?: string) => (x ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/gi, ' ').trim().toLowerCase();
+const label = labelProp && fold(labelProp) !== fold(title) ? labelProp : undefined;
 
 const p = plate ? getPlate(plate) : undefined;
 const base = (p as any)?.d?.src ?? (plate ? `/img/cine/${plate}` : null);

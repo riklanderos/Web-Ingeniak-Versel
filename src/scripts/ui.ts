@@ -41,10 +41,13 @@ const REVEAL_SEL = '[data-ui-reveal],[data-ui-stagger],[data-pain="draw"]';
 const CINE_OWNED = ':is(.is__text,.is__aside) > *';
 function initReveal() {
   const els = $$(REVEAL_SEL);
-  // El foco (teclado) termina la entrada del bloque y de sus ancestros: nunca se enfoca algo invisible.
+  // El foco (teclado) termina la entrada del bloque y de sus ancestros AL INSTANTE (.is-now: sin transición): nunca se
+  // enfoca algo invisible ni a media opacidad. En captura, antes de que cualquier otro manejador mida el foco.
   document.addEventListener('focusin', (e) => {
-    for (let n = e.target as Element | null; n && n !== document.body; n = n.parentElement) if (n.matches(REVEAL_SEL)) n.classList.add('is-in');
-  });
+    for (let n = e.target as Element | null; n && n !== document.body; n = n.parentElement) {
+      if (n.matches(REVEAL_SEL) && !n.classList.contains('is-in')) n.classList.add('is-now', 'is-in');
+    }
+  }, true);
   if (!els.length) return;
   if (reduced() || !('IntersectionObserver' in window)) { els.forEach((e) => e.classList.add('is-in')); return; }
   // Lo que ya está en pantalla al cargar, y lo que anima cine, no se oculta (sin parpadeo, sin bloques atrapados en 0).
@@ -100,8 +103,9 @@ function initFaq() {
 }
 
 /* ───────────── ChatSim ───────────── */
-// Las burbujas pendientes RESERVAN su lugar (visibility:hidden): el teléfono no cambia de alto mientras corre el guion
-// (sin saltos de maquetación y sin disparadores de cine desfasados). "escribiendo…" se coloca sobre la siguiente burbuja de Kain.
+// En vivo el teléfono tiene alto FIJO (CSS) y la conversación crece desde abajo como un chat real: las burbujas pendientes no
+// ocupan lugar (la página nunca salta) y "escribiendo…" va en el flujo, después de la última burbuja visible.
+// Sin JS, con movimiento reducido o con save-data: la conversación completa, quieta.
 const deskMQ = () => matchMedia('(min-width: 768px) and (min-aspect-ratio: 5/6)').matches;
 const fitted = new WeakSet<Element>();
 function wireTablist(list: HTMLElement, onPick: (key: string, focus: boolean) => void) {
@@ -141,7 +145,8 @@ function initChat() {
     const device = chat.querySelector<HTMLElement>('.chat__device')!;
     const pauseBtn = chat.querySelector<HTMLButtonElement>('[data-chat-pause]');
     const more = chat.querySelector<HTMLAnchorElement>('[data-chat-more]');
-    const live = chat.hasAttribute('data-autoplay') && !reduced();
+    const saveData = !!(navigator as any).connection?.saveData;
+    const live = chat.hasAttribute('data-autoplay') && !reduced() && !saveData;
     const external = chat.dataset.chatControl === 'external';
     const prefill = Math.max(0, Number(chat.dataset.prefill ?? 2) || 0);
     let current = panels.find((p) => !p.hidden) ?? panels[0];
@@ -159,10 +164,23 @@ function initChat() {
       if (d > 0) screen.scrollTo({ top: screen.scrollTop + d, behavior: reduced() ? 'auto' : 'smooth' });
     };
     const setShown = (n: number) => msgs().forEach((m, i) => m.classList.toggle('is-pending', i >= n));
+    /** Burbujas de entrada: `prefill` como mínimo y, en el teléfono en línea, las necesarias para llenar la mitad de la
+     *  pantalla (nunca un cristal vacío); siempre quedan al menos 2 por reproducir. */
+    const startCount = () => {
+      const list = msgs(); const base = Math.min(prefill, list.length);
+      setShown(base);
+      if (!chat.classList.contains('chat--inline') || !screen.clientHeight) return base;
+      // alto ocupado = del primer renglón (sello u hoja) a la última burbuja visible; la conversación está apoyada abajo,
+      // así que el primer renglón sube con cada burbuja: se mide en cada vuelta
+      const first = current.firstElementChild as HTMLElement;
+      const filled = (k: number) => (k > 0 ? list[k - 1].getBoundingClientRect().bottom - first.getBoundingClientRect().top : 0);
+      let n = base; const max = Math.max(base, list.length - 2), target = screen.clientHeight * 0.5;
+      while (n < max && filled(n) < target) setShown(++n);
+      return n;
+    };
     const typingAt = (m: HTMLElement | null) => {
       const t = typingEl(); if (!t) return;
       if (!m) { t.classList.remove('is-on'); return; }
-      t.style.top = `${m.offsetTop}px`;
       t.classList.add('is-on');
       reveal(t);
     };
@@ -172,7 +190,7 @@ function initChat() {
     };
     const halt = () => { clearTimeout(timer); running = false; };
     const finish = () => {               // estado final (movimiento reducido en vivo): conversación completa, quieta
-      halt(); stepMode = false; chat.classList.remove('is-live', 'is-paused');
+      halt(); stepMode = false; chat.classList.remove('is-live', 'is-paused', 'is-reset');
       panels.forEach((p) => $$('.chat__msg', p).forEach((m) => m.classList.remove('is-pending')));
       typingEl()?.classList.remove('is-on');
       if (pauseBtn) pauseBtn.hidden = true;
@@ -186,9 +204,13 @@ function initChat() {
       running = true;
       const list = msgs();
       if (idx >= list.length) {
+        // Al terminar: pausa larga, se desvanece y vuelve con las burbujas de entrada (nunca un teléfono vacío).
         timer = window.setTimeout(() => {
-          setShown(0); typingAt(null);                                    // se desvanece y vuelve a empezar
-          timer = window.setTimeout(() => { screen.scrollTop = 0; idx = 0; step(); }, 600);
+          typingAt(null); chat.classList.add('is-reset');
+          timer = window.setTimeout(() => {
+            idx = startCount(); screen.scrollTop = 0;
+            chat.classList.remove('is-reset'); step();
+          }, 550);
         }, 5200);
         return;
       }
@@ -234,7 +256,7 @@ function initChat() {
       screen.scrollTop = 0;
       if (chat.classList.contains('is-live')) {
         if (stepMode) applyProgress(lastP);
-        else { idx = Math.min(prefill, msgs().length); setShown(idx); resume(); }
+        else { idx = startCount(); resume(); }
       }
       moreState();
       cineRefresh(200);                                                   // el alto del chat en línea cambia con el guion
@@ -255,8 +277,7 @@ function initChat() {
     screen.removeAttribute('tabindex');
     screen.removeAttribute('data-lenis-prevent');
     panels.forEach((p) => { if (p !== current) $$('.chat__msg', p).forEach((m) => m.classList.add('is-pending')); });
-    idx = Math.min(prefill, msgs().length);
-    setShown(idx);                                                        // nunca un cristal vacío: 2 burbujas de entrada
+    idx = startCount();                                                   // nunca un cristal vacío: burbujas de entrada
     if (pauseBtn) {
       pauseBtn.hidden = false;
       pauseBtn.addEventListener('click', () => {
@@ -284,11 +305,11 @@ function initChat() {
         applyProgress(d.progress);
       });
     }
-    // Visible = la mitad del chat en pantalla (o media pantalla ocupada, si el chat es más alto que el viewport).
+    // Visible = un tercio del chat en pantalla (o un tercio de la pantalla ocupado): el guion arranca en cuanto el teléfono entra.
     new IntersectionObserver(([en]) => {
-      visible = en.isIntersecting && en.intersectionRect.height >= Math.min(en.boundingClientRect.height, innerHeight) * 0.5;
+      visible = en.isIntersecting && en.intersectionRect.height >= Math.min(en.boundingClientRect.height, innerHeight) * 0.33;
       visible ? resume() : halt();
-    }, { threshold: [0, 0.25, 0.5, 0.75, 1] }).observe(chat);
+    }, { threshold: [0, 0.1, 0.2, 0.33, 0.4, 0.5, 0.75, 1] }).observe(chat);
     document.addEventListener('visibilitychange', () => (document.hidden ? halt() : resume()));
     (chat as any).__chatFinish = finish;
   }
@@ -365,17 +386,26 @@ function wireVideoTracking(v: HTMLVideoElement, title: string) {
   v.addEventListener('timeupdate', () => { if (!half && v.duration && v.currentTime / v.duration >= 0.5) { half = true; track('video_50', { title }); } });
   v.addEventListener('ended', () => track('video_complete', { title }));
 }
+/** Disparador como <a href="video.mp4"> (sin JS, o si el JS falla, abre el archivo): con JS se comporta como botón. */
+function asButton(el: HTMLElement) {
+  if (!(el instanceof HTMLAnchorElement)) return;
+  el.setAttribute('role', 'button');
+  el.addEventListener('keydown', (e) => { if (e.key === ' ') { e.preventDefault(); el.click(); } });
+}
 function initVideo() {
   for (const box of $$('[data-video]')) {
     if (box.dataset.video === 'modal') {
       const dlg = box.querySelector<HTMLDialogElement>('[data-video-dialog]');
       const v = dlg?.querySelector<HTMLVideoElement>('video');
-      const open = box.querySelector<HTMLButtonElement>('[data-video-open]');
+      const open = box.querySelector<HTMLElement>('[data-video-open]');
       if (!dlg || !v || !open) continue;
       const title = dlg.getAttribute('aria-label') ?? '';
-      open.addEventListener('click', () => {
-        if (!v.querySelector('source') && v.dataset.src) {
-          const s = document.createElement('source'); s.src = v.dataset.src; s.type = v.dataset.type ?? 'video/mp4'; v.prepend(s); v.load();
+      asButton(open);
+      open.addEventListener('click', (e) => {
+        e.preventDefault();
+        const src = v.dataset.src ?? (open instanceof HTMLAnchorElement ? open.href : '');
+        if (!v.querySelector('source') && src) {
+          const s = document.createElement('source'); s.src = src; s.type = v.dataset.type ?? 'video/mp4'; v.prepend(s); v.load();
         }
         wireVideoTracking(v, title);
         (window as any).__lenis?.stop?.();
@@ -386,11 +416,13 @@ function initVideo() {
       dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
       dlg.addEventListener('close', () => { v.pause(); (window as any).__lenis?.start?.(); });
     } else {
-      const btn = box.querySelector<HTMLButtonElement>('[data-video-play]');
+      const btn = box.querySelector<HTMLElement>('[data-video-play]');
       const tpl = box.querySelector<HTMLTemplateElement>('[data-video-tpl]');
       const stage = box.querySelector<HTMLElement>('.vposter__stage');
       if (!btn || !tpl || !stage) continue;
-      btn.addEventListener('click', () => {
+      asButton(btn);
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
         const v = tpl.content.querySelector('video')!.cloneNode(true) as HTMLVideoElement;
         stage.append(v); stage.classList.add('is-playing');
         wireVideoTracking(v, btn.getAttribute('aria-label') ?? '');
@@ -493,10 +525,13 @@ async function initVrail() {
     const steps = $$('[data-vrail-step]', rail);
     const track = rail.querySelector<HTMLElement>('.vrail__track')!;
     let fr: number[] = [];
+    // La pista termina donde EMPIEZA la última columna: el nodo de la fase 5 queda 4–5 px más allá de su final (fracción > 1).
+    // Se acota a 1 para que la última fase (R · Rise) se encienda cuando la línea llega al final (antes nunca se encendía).
     const measure = () => {
       const t = track.getBoundingClientRect(); const vertical = t.height > t.width;
       fr = steps.map((s) => { const n = s.querySelector('.vrail__node')!.getBoundingClientRect();
-        return vertical ? (n.top + n.height / 2 - t.top) / Math.max(1, t.height) : (n.left + n.width / 2 - t.left) / Math.max(1, t.width); });
+        const x = vertical ? (n.top + n.height / 2 - t.top) / Math.max(1, t.height) : (n.left + n.width / 2 - t.left) / Math.max(1, t.width);
+        return Math.min(1, Math.max(0, x)); });
     };
     const apply = (p: number) => {
       if (motionKilled) { rail.classList.remove('is-armed'); rail.style.setProperty('--p', '1'); return; }
@@ -504,7 +539,9 @@ async function initVrail() {
       steps.forEach((s, i) => s.classList.toggle('is-lit', p >= fr[i] - 0.004));
     };
     rail.classList.add('is-armed'); measure(); apply(0);
-    ScrollTrigger.create({ trigger: rail, start: 'top 82%', end: 'bottom 58%', scrub: 0.6, onUpdate: (st) => apply(st.progress), onRefresh: (st) => { measure(); apply(st.progress); } });
+    // Termina con la última fase aún en la parte alta-media de la pantalla; al salir por arriba queda todo encendido.
+    ScrollTrigger.create({ trigger: rail, start: 'top 82%', end: 'bottom 66%', scrub: 0.6,
+      onUpdate: (st) => apply(st.progress), onRefresh: (st) => { measure(); apply(st.progress); }, onLeave: () => apply(1) });
   }
 }
 
@@ -591,7 +628,7 @@ async function initCount() {
     for (const en of entries) {
       if (!en.isIntersecting) continue; io.unobserve(en.target);
       const el = en.target as HTMLElement; const to = Number(el.dataset.final ?? el.textContent); const o = { v: Number(el.dataset.from ?? 0) };
-      gsap.to(o, { v: to, duration: 1.1, ease: 'power2.out', onUpdate: () => (el.textContent = String(Math.round(o.v))), onComplete: () => (el.textContent = String(to)) });
+      gsap.to(o, { v: to, duration: 1.1, ease: 'power2.out', onUpdate: () => { el.textContent = String(Math.round(o.v)); }, onComplete: () => { el.textContent = String(to); } });
     }
   }, { rootMargin: '0px 0px -15% 0px' });
   for (const el of els) {

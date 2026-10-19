@@ -369,12 +369,17 @@ button.sd-opt{width:100%;text-align:left}
 /* ---------------------------------------------------------------------
    Breadcrumbs (§4.4): línea mono dentro de la portada
    --------------------------------------------------------------------- */
-.crumbs__list{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font:500 11px/1.5 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.crumbs__item{display:inline-flex;align-items:center;gap:10px}
+.crumbs{min-width:0;max-width:100%}
+.crumbs__list{display:flex;flex-wrap:nowrap;align-items:center;gap:10px;min-width:0;max-width:100%;font:500 11px/1.5 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+/* Una sola línea (QA r2: a 1024 px se partía en dos y apilaba tres rótulos mono sobre el H1): los eslabones no se encogen;
+   el último sí, con "…" (el texto completo sigue en el DOM) */
+.crumbs__item{display:inline-flex;align-items:center;gap:10px;flex:none;white-space:nowrap}
+.crumbs__item--cur{flex:0 1 auto;min-width:0}
 .crumbs__a{color:inherit;text-decoration:none;padding:4px 0;transition:color .25s}
 .crumbs__a:hover,.crumbs__a:focus-visible{color:#fff}
+.crumbs__t{padding:4px 0}   /* hub sin construir: texto, sin enlace */
 .crumbs__sep{width:4px;height:4px;flex:none;border-radius:1px;background:var(--cyan);box-shadow:0 0 6px rgb(0 229 255 / .8)}
-.crumbs__cur{color:var(--text-2)}
+.crumbs__cur{min-width:0;overflow:hidden;text-overflow:ellipsis;color:var(--text-2)}
 
 /* ---------------------------------------------------------------------
    Riel de escenas (§4.7): solo ≥ 1280 px
@@ -402,8 +407,16 @@ button.sd-opt{width:100%;text-align:left}
   background:rgb(3 4 11 / .72);color:var(--text-2);opacity:0;transition:opacity .25s var(--ease-ui),translate .35s var(--ease-ui)}
 .rail__n{color:var(--cyan)}
 .rail__tick:hover .rail__label,.rail__tick:focus-visible .rail__label{opacity:1;translate:0 -50%}
-.rail[data-mode="labels"] .rail__label{opacity:.6;translate:0 -50%;background:none;padding-inline:0}
+/* Casos (Quick Jump, etiquetas siempre visibles): sin bajar la opacidad (QA r2: a .6 sobre el aura cian del isotipo en
+   #replicar quedaban a ~1:1). Color muted pleno + halo de tinta local detrás de cada etiqueta (fondo .78 bajo el texto y
+   sombra difusa que une las etiquetas en una columna suave): ≥ 4.5:1 sobre cualquier aura o placa; sobre tinta no se ve. */
+.rail[data-mode="labels"] .rail__label{opacity:1;translate:0 -50%;padding:5px 0;background:none;color:var(--muted);
+  text-shadow:0 0 1px rgb(3 4 11),0 0 3px rgb(3 4 11),0 0 10px rgb(3 4 11 / .9)}
+.rail[data-mode="labels"] .rail__label::before{content:"";position:absolute;inset:-5px -16px;z-index:-1;border-radius:14px;
+  background:rgb(3 4 11 / .82);filter:blur(7px)}
 .rail[data-mode="labels"] .rail__tick.is-active .rail__label,.rail[data-mode="labels"] .rail__tick:hover .rail__label,.rail[data-mode="labels"] .rail__tick:focus-visible .rail__label{opacity:1;color:#fff}
+/* Etiqueta que caería sobre texto, enlaces o UI del contenido (rail.ts → data-covered): se retira; el tick queda. */
+.rail[data-mode="labels"] .rail__tick[data-covered]:not(:hover):not(:focus-visible) .rail__label{opacity:0}
 /* Casos: sobre la portada solo ticks (las etiquetas aparecen desde la ficha, §5.4 #02) */
 html:not([data-fold]) .rail[data-mode="labels"] .rail__tick:not(:hover):not(:focus-visible) .rail__label{opacity:0}
 
@@ -411,10 +424,16 @@ html:not([data-fold]) .rail[data-mode="labels"] .rail__tick:not(:hover):not(:foc
    CTA persistente (§4.6): barra móvil + píldora de Kain
    --------------------------------------------------------------------- */
 .qa{display:block}   /* <aside aria-label="Acciones rápidas">: solo agrupa la píldora y la barra (fijas) como un landmark */
+/* Alto 56 px + zona segura (§4.6). La barra se apoya en una veladura de tinta de ~100 px (QA r2: sin ella el texto del cuerpo
+   pasaba entre las dos píldoras y debajo de ellas): degradado transparente → .72 → .94 con desenfoque que entra con máscara,
+   así no hay arista dura y nada legible queda entre o bajo los botones. */
 .mbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:none;grid-template-columns:minmax(0,1fr) 48px;gap:8px;align-items:center;
-  padding:6px 12px calc(6px + env(safe-area-inset-bottom));
-  background:linear-gradient(180deg,rgb(3 4 11 / 0),rgb(3 4 11 / .82) 45%);
+  min-height:calc(56px + env(safe-area-inset-bottom));padding:4px 12px calc(4px + env(safe-area-inset-bottom));
   translate:0 115%;visibility:hidden;transition:translate .4s var(--ease-cut),visibility 0s linear .4s}
+.mbar::before{content:"";position:absolute;left:0;right:0;bottom:0;top:-44px;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgb(3 4 11 / 0),rgb(3 4 11 / .72) 36%,rgb(3 4 11 / .94) 60%);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  -webkit-mask:linear-gradient(180deg,transparent,#000 42%);mask:linear-gradient(180deg,transparent,#000 42%)}
 @media (max-width:767px){.mbar{display:grid}}
 html[data-fold]:not([data-primary-visible]):not([data-dawn-visible]):not([data-end-visible]):not([data-menu-state]):not([data-sala]):not([data-overlay]) .mbar{translate:0 0;visibility:visible;transition:translate .4s var(--ease-cut),visibility 0s}
 .mbar .btn{height:48px;padding:0 6px 0 18px;gap:10px;font-size:14px;justify-content:space-between;min-width:0;white-space:nowrap}
@@ -458,9 +477,19 @@ html[data-kpill-cover] .kpill{transition:translate .3s var(--ease-cut),opacity .
 /* ---------------------------------------------------------------------
    Footer "Créditos finales" (§4.8)
    --------------------------------------------------------------------- */
-.ftr{position:relative;padding:clamp(80px,11vh,132px) 0 calc(28px + env(safe-area-inset-bottom));color:var(--text-2)}
+.ftr{position:relative;isolation:isolate;overflow-x:clip;padding:clamp(80px,11vh,132px) 0 calc(28px + env(safe-area-inset-bottom));color:var(--text-2)}
 @media (max-width:767px){.ftr{padding-bottom:calc(92px + env(safe-area-inset-bottom))}}
 .ftr__frame{width:var(--frame);margin-inline:auto}
+/* Luz del cierre (QA templates #10, §5 "ninguna zona de más de 40vh sin luz"): dos auras tenues de la paleta (navy/azul y un
+   eco cian en la reprise), sin bordes; detrás del texto (z -1 dentro del footer aislado) y sin tocar su contraste (≥ 8:1). */
+.ftr__credits,.ftr__finale{position:relative}
+.ftr__credits::before,.ftr__finale::before{content:"";position:absolute;z-index:-1;pointer-events:none;translate:-50% -50%}
+.ftr__credits::before{left:30%;top:46%;width:min(1200px,150vw);height:min(760px,120%);
+  background:radial-gradient(closest-side,rgb(10 31 76 / .62),rgb(0 85 255 / .07) 58%,transparent)}
+.ftr__finale::before{left:50%;top:42%;width:min(980px,170vw);height:520px;
+  background:radial-gradient(closest-side,rgb(0 85 255 / .2),rgb(0 229 255 / .05) 50%,transparent)}
+@media (max-width:767px){.ftr__credits::before{left:42%;top:50%;width:170vw;height:96%}}   /* el mapa mide ~2 pantallas en móvil */
+.ftr__src{display:block;margin-top:6px;font:400 11px/1.4 var(--f-mono);letter-spacing:.04em;color:var(--muted);text-wrap:balance}
 .ftr__horizon{position:absolute;left:0;right:0;top:0;height:1px;pointer-events:none;opacity:.7;
   background:linear-gradient(90deg,transparent 4%,rgb(0 229 255 / .35) 28%,rgb(168 243 255 / .85) 50%,rgb(0 229 255 / .35) 72%,transparent 96%)}
 .ftr__horizon::after{content:"";position:absolute;left:20%;right:20%;top:0;height:120px;
@@ -470,7 +499,7 @@ main:has(> section:last-of-type:is(.dawn,[data-shot="dawn"],[data-dawn])) ~ .ftr
 .ftr__eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:clamp(36px,5vh,56px);font:500 11px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
 .ftr__map{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:44px var(--gap)}
 .ftr__h{display:flex;align-items:baseline;gap:10px;margin:0 0 18px;font:500 11px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.ftr__n{color:rgb(158 176 199 / .5);letter-spacing:.08em}
+.ftr__n{color:rgb(120 136 158);letter-spacing:.08em}   /* 5.6:1 sobre la tinta (QA r2: a .5 de alfa quedaba en 2.94:1) */
 .ftr__ul{display:grid;gap:2px}
 .ftr__a{display:inline-flex;align-items:center;gap:0;padding:5px 0;font:400 15px/1.35 var(--f-body);color:var(--text-2);text-decoration:none;transition:color .25s}
 .ftr__a .ico{width:13px;height:13px;margin-left:6px;color:var(--muted)}

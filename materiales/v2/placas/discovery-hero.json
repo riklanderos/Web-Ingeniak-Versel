@@ -2,19 +2,20 @@
   "discovery-hero": {
     "alt": "Dueño de negocio tranquilo junto a la ventana de su oficina, con su silla vacía en primer plano (imagen ilustrativa)",
     "srcsetMax": 2752,
-    "d": { "src": "/img/cine/discovery-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.70, "fy": 0.45, "fadeFrom": 0.90 },
-    "m": { "src": "/img/cine/discovery-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.70, "fy": 1, "subjTop": 0.44 },
+    "d": {"src": "/img/cine/discovery-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.7, "fy": 0.45, "fadeFrom": 0.9},
+    "m": {"src": "/img/cine/discovery-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.56, "fy": 1, "subjTop": 0.37},
     "layout": "subject-right",
-    "safe": { "d": [[0.04, 0.06, 0.52, 0.97]], "m": [[0.04, 0.03, 0.96, 0.40]] },
-    "subject": { "d": [0.585, 0.08, 0.83, 0.96], "m": [0.57, 0.49, 0.85, 0.93] },
+    "safe": {"d": [[0.04,0.06,0.52,0.97]], "m": [[0.04,0.03,0.96,0.36]]},
+    "subject": {"d": [0.585,0.08,0.83,0.96], "m": [0.4,0.41,0.72,0.97]},
     "anchors": {
-      "silla": { "d": [0.720, 0.690], "m": [0.720, 0.785] },
-      "rostro": { "d": [0.695, 0.165], "m": [0.700, 0.530] },
-      "fig": { "d": [0.720, 0.850], "m": null },
-      "piso": { "d": [0.500, 0.860], "m": [0.500, 0.900] }
+      "silla": {"d": [0.72, 0.69], "m": [0.6, 0.83]},
+      "rostro": {"d": [0.695, 0.165], "m": [0.555, 0.456]},
+      "fig": {"d": [0.72, 0.85], "m": null},
+      "piso": {"d": [0.5, 0.86], "m": [0.5, 0.93]}
     },
-    "leak": { "d": [0.62, 0.26], "m": [0.62, 0.58] },
+    "leak": {"d": [0.62,0.26], "m": [0.6,0.4]},
     "grade": 0,
-    "creationIds": { "desktop": "jUcTtu9LD0", "mobile": "VX1xy2yMMU", "mobileUpscale": "0eKyCJeTfW" }
+    "creationIds": {"desktop": "jUcTtu9LD0", "mobile": "4RIl4so9Aa", "mobileR1": "VX1xy2yMMU", "mobileR1Upscale": "0eKyCJeTfW"},
+    "mobileNote": "QA ronda 2: placa vertical regenerada (Nano Banana Pro 2k, referencia = placa de escritorio) con el sujeto más grande (≈ 50 % del alto) y reencuadrada a 4:5 con penumbra superior sintetizada (scripts/reencuadre-movil.mjs). La r1 quedó en materiales/v2/placas/discovery-hero/discovery-hero-movil-r1.jpg."
   }
 }

@@ -627,7 +627,7 @@
       {
         "id": "N07",
         "q": "¿Trabajan con pymes?",
-        "a": "Sí. La Discovery Session está pensada para dueños de PyMES de 3 a 40 empleados, de cualquier sector. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
+        "a": "Sí. La Discovery Session está pensada para dueños de pymes de 3 a 40 empleados, de cualquier sector. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
         "estado": "aprobada"
       }
     ],
@@ -664,7 +664,7 @@
     ],
     "title": "Consultoría en IA para empresas en México | Ingeniak",
     "titleLength": 52,
-    "metaDescription": "Detectamos dónde la IA te ahorra tiempo o te trae ventas y la implementamos con la metodología VKTOR™. Resultados medibles en 60 a 90 días.",
+    "metaDescription": "Detectamos dónde la IA te ahorra tiempo o te trae ventas y la implementamos con la metodología VKTOR™. Con resultados que se miden en tu operación.",
     "metaLength": 139,
     "h1": "Consultoría en inteligencia artificial para empresas",
     "breadcrumbs": [
@@ -929,7 +929,7 @@
       {
         "id": "N07",
         "q": "¿Trabajan con pymes?",
-        "a": "Sí. La Discovery Session está pensada para dueños de PyMES de 3 a 40 empleados, de cualquier sector. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
+        "a": "Sí. La Discovery Session está pensada para dueños de pymes de 3 a 40 empleados, de cualquier sector. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
         "estado": "aprobada"
       },
       {
@@ -975,7 +975,7 @@
     ],
     "title": "Agentes de IA para WhatsApp Business | Ingeniak",
     "titleLength": 47,
-    "metaDescription": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM. Caso real: tiempo de respuesta de 8 minutos a 12 segundos.",
+    "metaDescription": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM. Caso real: tiempo de respuesta {{metric:dental-respuesta|prose}}.",
     "metaLength": 143,
     "h1": "Agentes de IA para WhatsApp Business",
     "breadcrumbs": [
@@ -1092,6 +1092,12 @@
         "id": "vs-chatbot",
         "name": "Agente de IA, no chatbot de menús",
         "spec": "Tabla comparativa de 6 filas (lenguaje natural, acciones, CRM, agenda, horario, cuando la pregunta se sale del guion) → enlace al artículo /blog/agente-ia-whatsapp-vs-chatbot/.",
+        "plate": {
+          "id": "home-sistema-3-organizar",
+          "layout": "subject-right",
+          "mobile": "split",
+          "srcsetMax": 1920
+        },
         "cinematic": false
       },
       {
@@ -1136,6 +1142,12 @@
         "id": "vktor",
         "name": "Metodología VKTOR™",
         "spec": "Las 5 fases (Verify, Koncept, Transform, Operate, Rise) con una línea por fase aplicada a poner tu agente en producción; enlace a /metodologia/.",
+        "plate": {
+          "id": "metodologia-hero",
+          "layout": "subject-right",
+          "mobile": "split",
+          "srcsetMax": 1920
+        },
         "cinematic": false
       },
       {
@@ -1848,7 +1860,7 @@
       "href": "/discovery/"
     },
     "secondaryCta": {
-      "label": "Escríbenos por WhatsApp",
+      "label": "Escríbele a Kain",
       "waMessage": "Hola, vengo de la página de Kommo de Ingeniak y quiero información sobre licencias e implementación de Kommo.",
       "href": "https://wa.me/523321017799?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20Kommo%20de%20Ingeniak%20y%20quiero%20informaci%C3%B3n%20sobre%20licencias%20e%20implementaci%C3%B3n%20de%20Kommo."
     },
@@ -2172,7 +2184,7 @@
       "href": "/discovery/"
     },
     "secondaryCta": {
-      "label": "Escríbenos por WhatsApp",
+      "label": "Escríbele a Kain",
       "waMessage": "Hola, vengo de la página de GoHighLevel de Ingeniak y quiero implementar GoHighLevel en mi empresa.",
       "href": "https://wa.me/523321017799?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20GoHighLevel%20de%20Ingeniak%20y%20quiero%20implementar%20GoHighLevel%20en%20mi%20empresa."
     },
@@ -2261,7 +2273,7 @@
     ],
     "title": "Automatización con n8n para empresas | Ingeniak",
     "titleLength": 47,
-    "metaDescription": "Conectamos tu CRM, WhatsApp, hojas de cálculo y sistemas con flujos en n8n. Caso real: 27 procesos automatizados en una empresa de logística.",
+    "metaDescription": "Conectamos tu CRM, WhatsApp, hojas de cálculo y sistemas con flujos en n8n. Caso real: {{metric:logistica-procesos|full}} en una empresa de logística.",
     "metaLength": 141,
     "h1": "Automatización de procesos con n8n para empresas",
     "breadcrumbs": [
@@ -2558,7 +2570,7 @@
     ],
     "title": "Paid media con IA: Meta, Google y TikTok Ads | Ingeniak",
     "titleLength": 55,
-    "metaDescription": "Campañas en Meta, Google y TikTok conectadas a tu CRM para medir ventas, no clics. Caso real: ROAS de 4.8× sostenido en HoReCa.",
+    "metaDescription": "Campañas en Meta, Google y TikTok conectadas a tu CRM para medir ventas, no clics. Caso real: {{metric:horeca-roas|full}} en HoReCa.",
     "metaLength": 127,
     "h1": "Paid media conectado a tu CRM: Meta, Google y TikTok Ads",
     "breadcrumbs": [
@@ -3141,7 +3153,7 @@
     ],
     "title": "Desarrollo de software a la medida con IA | Ingeniak",
     "titleLength": 52,
-    "metaDescription": "Cuando ninguna herramienta encaja, construimos el sistema que tu operación necesita, con IA integrada. Más de 73 sistemas en producción.",
+    "metaDescription": "Cuando ninguna herramienta encaja, construimos el sistema que tu operación necesita, con IA integrada. {{metric:sistemas|full}}.",
     "metaLength": 136,
     "h1": "Desarrollo de software a la medida, con IA integrada",
     "breadcrumbs": [
@@ -4214,7 +4226,7 @@
     ],
     "title": "IA para clínicas: agentes que agendan citas 24/7 | Ingeniak",
     "titleLength": 59,
-    "metaDescription": "Agentes de IA que responden, agendan y confirman citas por WhatsApp. Clínica dental en Monterrey: 3.2× más citas en 90 días y respuesta en 12 s.",
+    "metaDescription": "Agentes de IA que responden, agendan y confirman citas por WhatsApp. Clínica dental en Monterrey: {{metric:dental-citas|full}}.",
     "metaLength": 144,
     "h1": "Agentes de IA para clínicas y consultorios",
     "breadcrumbs": [
@@ -4398,21 +4410,15 @@
     ],
     "faq": [
       {
-        "id": "G02",
-        "q": "¿Qué es un agente de IA para WhatsApp?",
-        "a": "Es un asistente basado en modelos de lenguaje que atiende las conversaciones de tu WhatsApp Business: entiende lo que escribe el cliente, responde con la información de tu negocio, califica al prospecto, lo registra en tu CRM y puede agendarle una cita. A diferencia de un chatbot de menús, no obliga al cliente a elegir entre opciones fijas.",
+        "id": "N01",
+        "q": "¿Kain da consejo médico o legal?",
+        "a": "No. Kain atiende mensajes, agenda, confirma, da seguimiento y conecta sistemas. No da consejo médico ni legal.",
         "estado": "aprobada"
       },
       {
         "id": "W01",
         "q": "¿Qué resultados ha dado un agente de IA en WhatsApp?",
         "a": "En una clínica dental de Monterrey, el agente de IA bajó el tiempo de respuesta de 8 minutos a 12 segundos y la clínica logró 3.2 veces más citas en 90 días (datos internos de Ingeniak, octubre de 2026).",
-        "estado": "aprobada"
-      },
-      {
-        "id": "N01",
-        "q": "¿Kain da consejo médico o legal?",
-        "a": "No. Kain atiende mensajes, agenda, confirma, da seguimiento y conecta sistemas. No da consejo médico ni legal.",
         "estado": "aprobada"
       },
       {
@@ -5389,7 +5395,7 @@
     ],
     "title": "Automatización con IA para industria y logística | Ingeniak",
     "titleLength": 59,
-    "metaDescription": "Integramos CRM, WhatsApp, ERP y modelos de IA con flujos en n8n. Caso real: 27 procesos automatizados en una empresa de logística.",
+    "metaDescription": "Integramos CRM, WhatsApp, ERP y modelos de IA con flujos en n8n. Caso real: {{metric:logistica-procesos|full}} en una empresa de logística.",
     "metaLength": 130,
     "h1": "Automatización con IA para empresas industriales y de logística",
     "breadcrumbs": [
@@ -5618,7 +5624,7 @@
     ],
     "title": "IA para retail y e-commerce: vende más por chat | Ingeniak",
     "titleLength": 58,
-    "metaDescription": "Kommo + agentes de IA, campañas conectadas y un tablero único: +340% en conversiones en retail y −58% en costo por lead en un e-commerce de CDMX.",
+    "metaDescription": "Kommo + agentes de IA, campañas conectadas y un tablero único: {{metric:retail-conversiones}} en conversiones en retail y {{metric:ecom-cpl}} en costo por lead en un e-commerce de CDMX.",
     "metaLength": 145,
     "h1": "IA y CRM para retail y e-commerce",
     "breadcrumbs": [
@@ -5848,7 +5854,7 @@
     ],
     "title": "IA y marketing para restaurantes y hoteles | Ingeniak",
     "titleLength": 53,
-    "metaDescription": "Campañas medidas por reservas, agentes de IA que responden y reservan por WhatsApp y un CRM de clientes. Caso real: ROAS de 4.8× sostenido en HoReCa.",
+    "metaDescription": "Campañas medidas por reservas, agentes de IA que responden y reservan por WhatsApp y un CRM de clientes. Caso real: {{metric:horeca-roas|full}} en HoReCa.",
     "metaLength": 149,
     "h1": "IA, paid media y automatización para restaurantes y hoteles",
     "breadcrumbs": [
@@ -6076,7 +6082,7 @@
     ],
     "title": "Casos de éxito con IA y automatización | Ingeniak",
     "titleLength": 49,
-    "metaDescription": "Resultados reales: 3.2× más citas en 90 días, −58% en costo por lead, +340% en conversiones con Kommo + IA y ROAS de 4.8×. Conoce cada caso.",
+    "metaDescription": "Resultados reales: {{metric:dental-citas|full}}, {{metric:ecom-cpl}} en costo por lead, {{metric:retail-conversiones}} en conversiones con Kommo + IA y {{metric:horeca-roas}}. Conoce cada caso.",
     "metaLength": 140,
     "h1": "Casos de éxito con IA y automatización",
     "breadcrumbs": [
@@ -6245,11 +6251,11 @@
       "caso de éxito clínica dental IA",
       "agendar citas WhatsApp dentista"
     ],
-    "title": "Clínica dental en Monterrey: 3.2× más citas con IA",
+    "title": "Clínica dental en Monterrey: {{metric:dental-citas}} más citas con IA",
     "titleLength": 50,
-    "metaDescription": "Una clínica dental de Monterrey logró 3.2× más citas en 90 días con un agente de IA en WhatsApp: tiempo de respuesta de 8 minutos a 12 segundos.",
+    "metaDescription": "Una clínica dental de Monterrey logró {{metric:dental-citas|full}} con un agente de IA en WhatsApp: tiempo de respuesta {{metric:dental-respuesta|prose}}.",
     "metaLength": 144,
-    "h1": "Clínica dental en Monterrey: 3.2× más citas en 90 días con un agente de IA",
+    "h1": "Clínica dental en Monterrey: {{metric:dental-citas|full}} con un agente de IA",
     "breadcrumbs": [
       {
         "name": "Inicio",
@@ -6472,11 +6478,11 @@
       "calificación de leads con IA",
       "CRM para tiendas multimarca"
     ],
-    "title": "Retail multimarca: +340% en conversiones con Kommo + IA",
+    "title": "Retail multimarca: {{metric:retail-conversiones}} en conversiones con Kommo + IA",
     "titleLength": 55,
-    "metaDescription": "Kommo automatizado con calificación de leads por IA y embudo de conversión en tiempo real: así un retail multimarca logró +340% en conversiones.",
+    "metaDescription": "Kommo automatizado con calificación de leads por IA y embudo de conversión en tiempo real: así un retail multimarca logró {{metric:retail-conversiones}} en conversiones.",
     "metaLength": 144,
-    "h1": "Retail multimarca: +340% en conversiones con Kommo e IA",
+    "h1": "Retail multimarca: {{metric:retail-conversiones}} en conversiones con Kommo e IA",
     "breadcrumbs": [
       {
         "name": "Inicio",
@@ -6698,11 +6704,11 @@
       "caso de éxito e-commerce México",
       "costo por lead Meta Ads"
     ],
-    "title": "E-commerce en CDMX: −58% en costo por lead en 60 días",
+    "title": "E-commerce en CDMX: {{metric:ecom-cpl|full}}",
     "titleLength": 53,
-    "metaDescription": "Cómo un e-commerce de la Ciudad de México redujo 58% su costo por lead en 60 días: el punto de partida, lo que implementamos y el resultado.",
+    "metaDescription": "Cómo un e-commerce de la Ciudad de México logró {{metric:ecom-cpl|full}}: el punto de partida, lo que implementamos y el resultado.",
     "metaLength": 140,
-    "h1": "E-commerce en la Ciudad de México: −58% en costo por lead en 60 días",
+    "h1": "E-commerce en la Ciudad de México: {{metric:ecom-cpl}} en costo por lead en 60 días",
     "breadcrumbs": [
       {
         "name": "Inicio",
@@ -6921,11 +6927,11 @@
       "Meta Ads hoteles",
       "paid media HoReCa"
     ],
-    "title": "HoReCa: ROAS de 4.8× sostenido con paid media | Ingeniak",
+    "title": "HoReCa: {{metric:horeca-roas|full}} con paid media | Ingeniak",
     "titleLength": 56,
-    "metaDescription": "Creativos dinámicos, audiencias predictivas y atribución multicanal: así un cliente de hoteles y restaurantes sostuvo un ROAS de 4.8×.",
+    "metaDescription": "Creativos dinámicos, audiencias predictivas y atribución multicanal: así un cliente de hoteles y restaurantes sostuvo un {{metric:horeca-roas}}.",
     "metaLength": 134,
-    "h1": "HoReCa: ROAS de 4.8× sostenido con paid media",
+    "h1": "HoReCa: {{metric:horeca-roas|full}} con paid media",
     "breadcrumbs": [
       {
         "name": "Inicio",
@@ -7147,11 +7153,11 @@
       "n8n caso real",
       "integración ERP WhatsApp"
     ],
-    "title": "Logística: 27 procesos automatizados con n8n | Ingeniak",
+    "title": "Logística: {{metric:logistica-procesos|full}} con n8n | Ingeniak",
     "titleLength": 55,
-    "metaDescription": "Integraciones entre CRM, WhatsApp, ERP y modelos de IA con disparadores en tiempo real: así automatizamos 27 procesos de una empresa de logística.",
+    "metaDescription": "CRM, WhatsApp, ERP y modelos de IA con disparadores en tiempo real: así llegó una empresa de logística a {{metric:logistica-procesos|full}}.",
     "metaLength": 146,
-    "h1": "Logística: 27 procesos automatizados con n8n y agentes de IA",
+    "h1": "Logística: {{metric:logistica-procesos|full}} con n8n y agentes de IA",
     "breadcrumbs": [
       {
         "name": "Inicio",
@@ -7612,7 +7618,7 @@
     ],
     "title": "Metodología VKTOR™: cómo implementamos IA | Ingeniak",
     "titleLength": 52,
-    "metaDescription": "Verify, Koncept, Transform, Operate y Rise: las 5 fases con las que llevamos la IA de tu operación real a producción, con resultados en 60 a 90 días.",
+    "metaDescription": "Verify, Koncept, Transform, Operate y Rise: las 5 fases con las que llevamos la IA de tu operación real a producción, con resultados medibles.",
     "metaLength": 149,
     "h1": "Metodología VKTOR™: tu crecimiento tiene un protocolo",
     "breadcrumbs": [
@@ -8026,7 +8032,7 @@
     ],
     "title": "Nosotros: el equipo detrás de Ingeniak",
     "titleLength": 38,
-    "metaDescription": "Consultoría de IA con sede en Guadalajara, Jalisco: 6 especialistas, más de 73 sistemas en producción y clientes en 7 países. Conoce al equipo.",
+    "metaDescription": "Consultoría de IA con sede en Guadalajara, Jalisco: 6 especialistas, {{metric:sistemas|full}} y clientes en {{metric:paises|full}}. Conoce al equipo.",
     "metaLength": 143,
     "h1": "Estrategas que construyen, operan y miden",
     "breadcrumbs": [
@@ -8414,7 +8420,7 @@
       "href": "/discovery/"
     },
     "secondaryCta": {
-      "label": "Escríbenos por WhatsApp",
+      "label": "Escríbele a Kain",
       "waMessage": "Hola, vengo de la página de Ingeniak en Guadalajara y quiero información sobre agentes de IA para mi empresa.",
       "href": "https://wa.me/523321017799?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20Ingeniak%20en%20Guadalajara%20y%20quiero%20informaci%C3%B3n%20sobre%20agentes%20de%20IA%20para%20mi%20empresa."
     },
@@ -8666,7 +8672,7 @@
       {
         "id": "N07",
         "q": "¿Trabajan con pymes?",
-        "a": "Sí. La Discovery Session está pensada para dueños de PyMES de 3 a 40 empleados, de cualquier sector. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
+        "a": "Sí. La Discovery Session está pensada para dueños de pymes de 3 a 40 empleados, de cualquier sector. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
         "estado": "aprobada"
       },
       {
@@ -8828,7 +8834,7 @@
       {
         "id": "D06",
         "q": "¿Y si mi negocio es muy pequeño o muy grande?",
-        "a": "Trabajamos con PyMES de 3 a 40 empleados de cualquier sector. Si estás fuera de ese rango, la llamada lo aclara en los primeros minutos y te orientamos a la opción correcta.",
+        "a": "Trabajamos con pymes de 3 a 40 empleados de cualquier sector. Si estás fuera de ese rango, la llamada lo aclara en los primeros minutos y te orientamos a la opción correcta.",
         "estado": "aprobada"
       }
     ],
@@ -9013,7 +9019,7 @@
     ],
     "title": "¿Cuánto cuesta un agente de IA para WhatsApp en México?",
     "titleLength": 55,
-    "metaDescription": "Qué mueve el precio de un agente de IA para WhatsApp, qué costos no se ven y cómo calcular si te conviene. En Ingeniak, desde USD 997 al mes.",
+    "metaDescription": "Qué mueve el precio de un agente de IA para WhatsApp, qué costos no se ven y cómo calcular si te conviene. En Ingeniak, {{price}}.",
     "metaLength": 141,
     "h1": "¿Cuánto cuesta un agente de IA para WhatsApp en México?",
     "breadcrumbs": [
@@ -9824,7 +9830,7 @@
       "href": "/discovery/"
     },
     "secondaryCta": {
-      "label": "Escríbenos por WhatsApp",
+      "label": "Escríbele a Kain",
       "waMessage": "Hola, leí cómo verificar un partner oficial de Kommo y quiero cotizar licencias con Ingeniak.",
       "href": "https://wa.me/523321017799?text=Hola%2C%20le%C3%AD%20c%C3%B3mo%20verificar%20un%20partner%20oficial%20de%20Kommo%20y%20quiero%20cotizar%20licencias%20con%20Ingeniak."
     },
@@ -10335,7 +10341,7 @@
     ],
     "title": "Discovery Session gratuita de 30 minutos | Ingeniak",
     "titleLength": 51,
-    "metaDescription": "Llamada 1:1 gratuita de 30 minutos para dueños de PyMES: mapeamos tu operación, detectamos áreas de oportunidad y sales con sugerencias concretas.",
+    "metaDescription": "Llamada 1:1 gratuita de 30 minutos para dueños de pymes: mapeamos tu operación, detectamos áreas de oportunidad y sales con sugerencias concretas.",
     "metaLength": 146,
     "h1": "30 minutos para ver tu operación como es, no como crees que es",
     "breadcrumbs": [
@@ -10492,7 +10498,7 @@
       "href": "https://agenda.ingeniak.tech/discovery/agendar"
     },
     "secondaryCta": {
-      "label": "Escríbenos por WhatsApp",
+      "label": "Escríbele a Kain",
       "waMessage": "Hola, vengo de la página de la Discovery Session y tengo una duda antes de agendar.",
       "href": "https://wa.me/523321017799?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20la%20Discovery%20Session%20y%20tengo%20una%20duda%20antes%20de%20agendar."
     },
@@ -10542,7 +10548,7 @@
       {
         "id": "D06",
         "q": "¿Y si mi negocio es muy pequeño o muy grande?",
-        "a": "Trabajamos con PyMES de 3 a 40 empleados de cualquier sector. Si estás fuera de ese rango, la llamada lo aclara en los primeros minutos y te orientamos a la opción correcta.",
+        "a": "Trabajamos con pymes de 3 a 40 empleados de cualquier sector. Si estás fuera de ese rango, la llamada lo aclara en los primeros minutos y te orientamos a la opción correcta.",
         "estado": "aprobada"
       }
     ],
@@ -10773,7 +10779,7 @@
       "href": "/discovery/"
     },
     "secondaryCta": {
-      "label": "Escríbenos por WhatsApp",
+      "label": "Escríbele a Kain",
       "waMessage": "Hola, tengo una pregunta sobre el aviso de privacidad de Ingeniak.",
       "href": "https://wa.me/523321017799?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20el%20aviso%20de%20privacidad%20de%20Ingeniak."
     },

@@ -157,7 +157,8 @@
 @media (forced-colors:active){.case-aura{display:none}}
 /* Carril del riel: en casos el Quick Jump muestra sus etiquetas siempre (§4.7); el contenido le deja su carril a la derecha */
 @media (min-width:1280px){
-  .t-case main{--rail-lane:max(0px, var(--frame) / 2 - 50vw + var(--action-x) + 160px)}
+  /* QA #57: carril = margen del riel + etiqueta más ancha ("05 — Resultado", ≈ 150 px con su marca) + 40 px de aire */
+  .t-case main{--rail-lane:max(0px, var(--frame) / 2 - 50vw + var(--action-x) + 196px)}
   .t-case main .frame:not(.is__copy),.t-case main .case-res > .is__copy{padding-right:var(--rail-lane)}
 }
 /* Siguiente reportaje: la flecha va al final de la columna de texto (en la penumbra), nunca sobre el sujeto ni el riel */
@@ -186,6 +187,14 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .case-specs .chip-spec{padding:8px 12px;backdrop-filter:none}
 .case-hero .is__text > .case-hero__lede{margin-top:var(--s-5);max-width:40ch}
 .case-hero .is__text > .ctas{margin-top:var(--s-6)}
+/* QA #63 · nota de fuente de las cifras de la portada (§0.1-2): llamada ¹ en la cifra del H1 y en la del lede */
+.case-fn{font:500 .6em/0 var(--f-mono);vertical-align:super;margin-left:.12em;color:var(--text-2)}
+.case-h1__fig{position:relative}
+.case-h1__fig::after{content:"1" / "";position:absolute;left:100%;top:.9em;margin-left:.35em;font:500 clamp(13px,.5rem + .6vw,20px)/1 var(--f-mono);
+  color:var(--text-2);-webkit-text-fill-color:var(--text-2);background:none}
+.case-hero .is__text > .case-hero__src{margin-top:var(--s-4);color:var(--muted)}
+.case-hero__src .case-fn{margin:0 .2em 0 0}
+.case-hero__src--m{margin:0 0 var(--s-4);color:var(--muted)}
 .case-hero .is__aside{grid-column:9 / -1;grid-row:1;align-self:end;justify-self:end;text-align:right}
 @media (min-width:768px) and (min-aspect-ratio:5/6){.case-hero > .is__more{display:none}}   /* `more` = solo móvil (R3) */
 .case-illus{margin:0;opacity:.85}
@@ -193,8 +202,10 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
    sea una franja de tinta plana */
 .case-hero__floor{display:none}
 @media (min-width:768px) and (min-aspect-ratio:5/6){
-  .case-hero__floor{display:block;position:absolute;z-index:-1;left:calc((100% - 100vw) / 2);right:calc((100% - 100vw) / 2);bottom:-260px;height:520px;pointer-events:none;
-    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 70%,transparent 100%);
+  /* QA #60: la luz del piso termina en cero en el borde inferior de la portada (la sección la recorta con overflow:clip:
+     si siguiera encendida ahí quedaba un filo recto contra la ficha); la ficha toma la luz desde 140 px antes */
+  .case-hero__floor{display:block;position:absolute;z-index:-1;left:calc((100% - 100vw) / 2);right:calc((100% - 100vw) / 2);bottom:0;height:520px;pointer-events:none;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 35%,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 35%,#000 55%,transparent 100%);
     background:radial-gradient(50% 50% at 30% 50%,rgb(60 170 255 / .22),rgb(60 170 255 / .16) 50%,transparent 84%)}
 }
 /* Escritorios bajos (1280 × 720, 1366 × 768, 1024 × 768): la portada cabe en un alto de pantalla con sus dos CTA */
@@ -287,8 +298,11 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 @keyframes case-casilla{from{background:transparent;box-shadow:inset 0 0 0 1px rgb(168 243 255 / .3)}}
 /* Superficie de menos de 180 px (móvil): solo las casillas encendidas; la leyenda baja al texto (§3.7) */
 @container (max-width:179px){
-  .case-agenda__ui{justify-content:center;padding:8cqi}
-  .case-agenda__top,.case-agenda__d,.case-agenda__key{display:none}
+  .case-agenda__ui{justify-content:center;gap:8cqi;padding:8cqi}
+  /* QA #55: el chip SIMULACIÓN se queda siempre sobre la UI (escritorio con panel < 180 px incluido); solo se retiran título,
+     días y leyenda */
+  .case-agenda__t,.case-agenda__d,.case-agenda__key{display:none}
+  .case-agenda__top .chip-sim{font-size:max(8px,6cqi);padding:1.8cqi 3.2cqi}
   .case-agenda__day{grid-template-columns:1fr}
   .case-agenda__days{gap:6cqi}
 }
@@ -325,6 +339,11 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
   .case-h1__text{max-width:none}
   .case-h1__fig .metric__v{font-size:min(32vw,19svh)}
   .case-hero .is__text{min-width:0}
+  /* QA #56: el slot `more` de la portada no se ensancha con la fila de datos (nowrap): la fila se desliza y el rótulo de
+     imagen ilustrativa se parte si no cabe */
+  .case-hero > .is__more .is__text{min-width:0;width:100%;grid-column:1 / -1}
+  .case-specs--m{width:100%;min-width:0}
+  .case-hero .tpl-illus-m{max-width:100%;white-space:normal}
   .t-case main .cta-p .btn{white-space:normal;line-height:1.2;text-align:left;gap:12px}
   .t-case main .cta-p .btn__t{flex:1 1 auto;min-width:0}
   .case-ficha{padding-top:var(--s-8)}
@@ -334,6 +353,12 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
   .case-glow--amber{left:-50vw;width:140vw}
 }
 @media (forced-colors:active){.case-h1__fig.lit .metric__v,.case-h1__fig.lit .metric__v *{color:CanvasText}}
+/* QA #60 (también servicio e industria) · costuras sin franjas: la luz de base de cada escena sin placa (.tpl-glow) se extiende 140 px más allá de sus
+   bordes y se funde en 280 px (antes 5 % del alto, que dejaba 40–60 px de tinta en cada costura). En cada costura las dos
+   luces quedan a la mitad y se suman: la página se lee como un solo campo de luz, no como franjas apiladas. */
+:is(.t-case,body.svc,body.ind) main .tpl-glow:not(.is)::before{inset:-140px 0;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 280px,#000 calc(100% - 280px),transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 280px,#000 calc(100% - 280px),transparent 100%)}
 /* ===== fin CaseTemplate ===== */
 
 /* ===== IndustryTemplate ===== */
@@ -357,7 +382,16 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .ind-proof-m:is(p){display:none}
 .ind-proof-m .metric--inline b{font:300 1.25rem/1 var(--f-display);color:var(--cyan);letter-spacing:-.02em;margin-right:2px}
 .ind-proof-m .node{translate:0 -2px}
-.ind-proof-m__ctx{font:500 10.5px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.ind-proof-m__ctx,.ind-proof-m__sep{font:500 10.5px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+/* QA #46 · escritorios 4:3 a 3:2: el chip anclado se retira (la placa se recorta) → la prueba va en una línea bajo los CTA */
+.ind-proof-43.ind-proof-m{display:none}
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-aspect-ratio:3/2){
+  .ind-proof-43.ind-proof-m{display:flex;margin-top:var(--s-4)}
+  /* el bloque completo (con la prueba) cabe en el primer pantallazo: titular un poco más bajo y menos aire entre piezas */
+  .ind-hero h1.t-display-2{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),8.2svh)}
+  .ind-hero .is__text > .t-lede{margin-top:var(--s-4)}
+  .ind-hero .is__text > .ctas{margin-top:var(--s-5);row-gap:var(--s-3)}
+}
 /* R3: `more` de la portada solo lleva contenido móvil (cola del lede, prueba, rótulo ilustrativo) */
 @media (min-width:768px) and (min-aspect-ratio:5/6){.ind-hero > .is__more{display:none}}
 .ind-hero__rest{margin:0 0 0;max-width:40ch}
@@ -377,16 +411,18 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .ind-day .dt__tint img{opacity:1;left:66%;width:min(104vw,1560px)}
 .ind-day .dt__amber{background:radial-gradient(46% 56% at 68% 50%,rgb(255 181 71 / .3),rgb(255 140 40 / .1) 45%,transparent 72%)}
 .ind-day .dt__cyan{background:radial-gradient(46% 56% at 68% 50%,rgb(0 229 255 / .26),rgb(69 93 255 / .1) 45%,transparent 72%)}
-@media (max-width:767px),(max-aspect-ratio:5/6){.ind-day .dt__tint img{left:60%;width:170vw}}
+/* Móvil: la columna de texto ocupa todo el ancho → la toma va más tenue y hacia el borde derecho (AA bajo las líneas en
+   text-2, medido a 390 y 360; QA #20 aplicado a la jornada) */
+@media (max-width:767px),(max-aspect-ratio:5/6){.ind-day .dt__tint img{left:86%;width:170vw;opacity:.38}}
 
 /* Auras de los intertítulos: `top`/`left` son su centro con o sin movimiento (intertitle.ts deriva alrededor del centro,
    xPercent/yPercent −50; se quitó la compensación con margen de IndustryTemplate #8). */
 
 /* 04 · Qué automatizamos: titular arriba, filas de guion a todo el ancho de la retícula */
 .ind-auto .it__body{grid-column:1 / -1}
-/* El aura llena el vacío a la derecha del titular (no detrás de las líneas en muted de las filas: contraste AA) */
-.ind-auto .it__aura{top:22%;opacity:.85}
-.ind-auto.it{overflow:clip}   /* el aura (arriba) no oscurece el final de la jornada */
+/* El aura llena el vacío a la derecha del titular (no detrás de las líneas en muted de las filas: contraste AA). Vive en una
+   caja de bordes disueltos (Aura.astro → .tpl-aura-box), así que la sección ya no necesita recortarla con un filo recto
+   contra la jornada (QA #39). */
 .ind-auto__head{display:flex;flex-direction:column;align-items:flex-start;max-width:min(100%,52rem)}
 .ind-auto__head > .t-label + *{margin-top:var(--s-4)}
 .ind-auto__head > .t-lede{margin-top:var(--s-5)}
@@ -455,6 +491,9 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 @media (max-width:767px), (max-aspect-ratio:5/6){
   .ind-illus{bottom:12px;right:var(--safe-x)}
   .ind-proof-m:is(p){display:flex}
+  /* QA #51: el contexto va en su propio renglón (sin viñeta suelta al inicio de la línea 2) */
+  .ind-proof-m__sep{display:none}
+  .ind-proof-m__ctx{display:block;margin-top:2px}
   .ind-hero .is__text > .ctas{margin-top:var(--s-6)}
   .ind-hero :is(.ind-proof,.ind-leader,.ind-leader-node){display:none}
   /* split: el chat en línea empieza 12 px debajo de los pies de Kain (subject.m de la placa → --sb), nunca encima */
@@ -464,6 +503,10 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 @media (max-width:767px){
   .ind-rules__item{grid-template-columns:2.25rem minmax(0,1fr)}
 }
+/* 10 · Cierre (QA #36): la microcopia del copy (más larga que la del botón) no ensancha la columna: ocupa el ancho del
+   primario y se parte en renglones equilibrados (con nowrap medía 436 px dentro de una columna de 328 px y se recortaba). */
+body.ind #cta-final .is__text{min-width:0}
+body.ind #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-width:none;white-space:normal;text-wrap:balance}
 /* ===== fin IndustryTemplate ===== */
 
 /* ===== ConversionTemplate ===== */
@@ -500,7 +543,23 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
   .cv-hero .cv-h1 .cv-h1__soft{margin-top:var(--s-2)}
   .cv-hero .is__text > .cv-hero__lede{margin-top:var(--s-4);font-size:1rem;line-height:1.5}
   .cv-hero .cv-remate{font-size:.9375rem;line-height:1.45;padding-left:14px}
+  /* CTAs (QA #87 · decisión 5): primario a todo el ancho, la microcopia sola en UNA línea bajo él y "Escríbele a Kain"
+     con su texto en su propia fila (nunca un círculo sin etiqueta). Gana a la regla compartida del círculo de 48 px. */
+  body.cv .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
+  body.cv .tpl-hero .is__text > .ctas > .cta-p > .btn-micro{white-space:nowrap;letter-spacing:.03em}
+  body.cv .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px;gap:12px;justify-content:center;border-radius:var(--r-pill);margin-top:2px}
+  body.cv .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+  body.cv .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
 }
+@media (max-width:339px){body.cv .tpl-hero .is__text > .ctas > .cta-p > .btn-micro{white-space:normal}}
+/* Tableta vertical: la fila de CTAs no se estira como un teléfono ampliado (≤ 420 px) */
+@media (min-width:600px) and (max-width:767px),(min-width:600px) and (max-aspect-ratio:5/6){
+  body.cv .tpl-hero .is__text > .ctas:has(> .cta-p){width:min(100%,420px)}
+  body.cv .cv-dawn .ctas{width:min(100%,420px)}
+}
+/* Fig. 01 de la portada (§3.11-7): pie de cristal en el piso, junto a la silla; la línea guía sube al asiento vacío */
+.cv-hero .cv-fig{width:min(272px,19vw)}
+@media (min-width:768px) and (max-width:1279px) and (min-aspect-ratio:5/6),(min-width:768px) and (max-height:799px) and (min-aspect-ratio:5/6){.cv-hero :is(.cv-fig,.leader,.leader-node){display:none}}
 
 /* ── VideoScene: placa a sangre, H2 abajo a la izquierda, reproducir abajo a la derecha (R7) ── */
 /* Bloque abajo a la izquierda solo dentro de la zona segura de la placa (x ≤ 0.37): nunca cruza la silla (sujeto) */
@@ -515,7 +574,7 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 }
 .cv-video .is__aside{display:flex;flex-direction:column;align-items:flex-end;gap:var(--s-5);padding-bottom:4px}
 .cv-play{display:flex;flex-direction:column;align-items:flex-end}
-.cv-play__btn{flex-direction:row-reverse;gap:22px;padding:6px 0;border-radius:var(--r-pill);cursor:pointer}
+.cv-play__btn{flex-direction:row-reverse;gap:22px;padding:6px 0;border-radius:var(--r-pill);cursor:pointer;text-decoration:none}
 .cv-play__btn .vposter__label{text-align:right;justify-items:end}
 .cv-play__btn .vposter__l1{font:500 clamp(1.0625rem,.95rem + .35vw,1.25rem)/1.2 var(--f-display);letter-spacing:-.01em}
 .cv-play__ring{width:clamp(76px,6.4vw,104px);height:clamp(76px,6.4vw,104px);background:rgb(0 229 255 / .07);
@@ -532,10 +591,26 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
   .cv-play__after{text-align:left}
 }
 
+/* ── Intertítulos: luz y costuras (QA #2/#74 aplicados aquí) ───────────────── */
+/* La luz de base se funde en un tramo FIJO (≤ 220 px), no en un 5 % que en secciones cortas dibujaba un filo */
+body.cv .tpl-glow::before{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 min(220px,32%),#000 calc(100% - min(220px,32%)),transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 min(220px,32%),#000 calc(100% - min(220px,32%)),transparent 100%)}
+/* El aura de un intertítulo nunca sube sobre la escena anterior (la tapaba: listas de #para-quien en gris bajo el aura de
+   #despues). Borde superior ≥ 24 px dentro de su sección en el peor caso de la deriva (yPercent −60). */
+body.cv .it__aura--isotipo{top:max(50%, calc(min(68vw,1000px) * .6 + 24px))}
+body.cv .it__aura--ondas{top:max(50%, calc(min(110vw,1700px) / 1.5 * .6 + 24px))}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.cv .it__aura--isotipo{top:max(50%, calc(max(130vw,520px) * .6 + 24px))}
+  body.cv .it__aura--ondas{top:max(50%, calc(max(200vw,780px) / 1.5 * .6 + 24px))}
+}
+
 /* ── Pasos (StepRow sobre aura) ──────────────────────────────────────────── */
 .cv-steps .it__body{grid-column:1 / -1}
 .cv-steps .it__body > .steps{margin-top:var(--s-8);width:100%}
 .cv-steps .it__body > .cv-remate{margin-top:var(--s-8)}
+/* §3.10-3 (QA #76): --muted solo sobre L ≤ .054; las líneas de los pasos van en --text-2 (la luz de ondas llega a ≈ .09) */
+.cv-steps .steps__line{color:var(--text-2)}
 
 /* ── Qué es / qué no + "En la llamada revisamos" ─────────────────────────── */
 .cv-dodont .it__body{grid-column:1 / -1}
@@ -560,21 +635,9 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 }
 @media (max-width:767px){.cv-review__row{grid-template-columns:40px minmax(0,1fr);padding:16px 0 18px}}
 
-/* ── Para quién: un plano (dueña a la izquierda, intro a la derecha a la altura de su rostro) y, dentro de la
-   disolución de la misma placa, las dos listas a todo el ancho: "sí" bajo la dueña, "no" bajo el titular.
-   Así no queda media pantalla negra junto a una columna larga (§5 "ninguna zona de más de 40vh sin luz"). ── */
-@media (min-width:768px) and (min-aspect-ratio:5/6){
-  .cv-fit{--fit-h:max(88svh,600px)}
-  /* El escenario no crece con el texto: la placa ocupa un plano y las listas nacen en su disolución inferior */
-  .cv-fit > .is__stagebox{bottom:auto;height:var(--fit-h)}
-  .cv-fit > .is__copy{min-height:calc(var(--fit-h) - var(--hdr) - var(--s-7) - 118px);align-items:center}   /* listas = alto del plano − 70 px: nacen bajo los pies del sujeto, dentro de la disolución */
-  .cv-fit > .is__more{margin-top:var(--s-7)}
-  .is.cv-fit[data-layout] > .is__more .is__text{grid-column:1 / -1}
-  .cv-fit .tcs__cols{column-gap:calc(var(--gap) * 3)}
-  .cv-fit .tcs__cols::before,.cv-fit .tcs__cols::after{display:none}
-}
-@media (min-width:768px) and (max-width:1023px) and (min-aspect-ratio:5/6){.is.cv-fit[data-layout] > .is__copy .is__text{grid-column:5 / span 4}}
-@media (min-width:1024px) and (min-aspect-ratio:5/6){.is.cv-fit[data-layout] > .is__copy .is__text{grid-column:8 / span 5}}
+/* ── Para quién (QA #75 · R3 · §3.10.1): UN plano — la dueña a la izquierda, TODO el texto a la derecha (x ≥ .47 de la
+   placa, fuera de su caja de sujeto). En escritorio `more` es la misma columna de texto: las dos listas van apiladas bajo
+   el lede, en renglones compactos; ningún texto cae sobre su cuerpo, la silla ni las patas del escritorio. Móvil: split. ── */
 .cv-fit__lists{width:100%}
 /* Guion de casting: renglones editoriales (Lexend 300) para distinguirlo del "sí es / no es" de la escena anterior */
 .cv-fit .tcs__title{font-size:clamp(1.25rem,1rem + .6vw,1.5rem);padding-bottom:var(--s-4);margin-bottom:0;border-bottom:1px solid var(--hair-2)}
@@ -585,6 +648,22 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .cv-fit .tcs__col.tone-amber .tcs__list li{color:var(--text-2)}
 .cv-fit .tcs__list li::before{top:calc(18px + .71em - .75px)}                 /* centro de la primera línea */
 .cv-fit .tcs__col.tone-cyan .tcs__list li::before{top:calc(18px + .71em - 3px)}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .cv-fit{--fit-h:max(100svh,680px);padding-top:calc(var(--hdr) + var(--s-5))}
+  /* El escenario no crece con el texto: la placa ocupa un plano; si la columna es más larga, sigue sobre la disolución */
+  .cv-fit > .is__stagebox{bottom:auto;height:var(--fit-h)}
+  .cv-fit > .is__more{margin-top:var(--s-6)}
+  .cv-fit .t-h2{font-size:min(clamp(2.25rem,1rem + 2.4vw,3.5rem),6.6svh)}
+  .cv-fit .tcs__cols{grid-template-columns:minmax(0,1fr);row-gap:var(--s-6)}
+  .cv-fit .tcs__cols::before,.cv-fit .tcs__cols::after{display:none}
+  .cv-fit .tcs__title{font-size:clamp(1.125rem,.95rem + .4vw,1.3125rem);padding-bottom:var(--s-3)}
+  .cv-fit .tcs__list li{padding:10px 0 11px 28px;font-size:clamp(1rem,.94rem + .2vw,1.125rem);line-height:1.4}
+  .cv-fit .tcs__list li::before{top:calc(10px + .7em - .75px)}
+  .cv-fit .tcs__col.tone-cyan .tcs__list li::before{top:calc(10px + .7em - 3px)}
+}
+@media (min-width:768px) and (max-width:1023px) and (min-aspect-ratio:5/6){.is.cv-fit[data-layout] :is(.is__copy,.is__more) .is__text{grid-column:5 / -1}}
+@media (min-width:1024px) and (min-aspect-ratio:5/6){.is.cv-fit[data-layout] :is(.is__copy,.is__more) .is__text{grid-column:7 / -1}}
+@media (min-width:1800px) and (min-aspect-ratio:5/6){.is.cv-fit[data-layout] :is(.is__copy,.is__more) .is__text{grid-column:7 / span 5}}
 
 /* ── Después de la llamada ───────────────────────────────────────────────── */
 .cv-after .it__head{align-self:start}
@@ -619,13 +698,30 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 @media (max-width:767px),(max-aspect-ratio:5/6){
   .cv-hero__foot{margin-top:var(--s-5)}
   .cv-dawn .ctas{width:100%}
+  /* QA #90: el tramo central (qué es / qué no + "En la llamada revisamos" + para quién) se compacta en renglones más
+     cortos: ≈ 500 px menos de listas seguidas en móvil, mismo contenido. */
+  .cv-dodont .it__body > .tcs{margin-top:var(--s-6)}
+  .cv-dodont .tcs__cols,.cv-fit .tcs__cols{row-gap:var(--s-6)}
+  .cv-dodont .tcs__title{margin-bottom:var(--s-3)}
+  .cv-dodont .tcs__list li{padding:10px 0 11px 24px;font-size:.9375rem;line-height:1.45}
+  .cv-dodont .tcs__list li::before{top:calc(10px + .62em)}
+  .cv-dodont .tcs__col.tone-cyan .tcs__list li::before{top:calc(10px + .5em)}
+  .cv-dodont .it__body > .cv-review{margin-top:var(--s-7);row-gap:var(--s-4)}
+  .cv-review__head{gap:var(--s-3)}
+  .cv-review__row{grid-template-columns:34px minmax(0,1fr);padding:11px 0 12px;font-size:1.0625rem;line-height:1.35}
+  .cv-fit .tcs__title{padding-bottom:var(--s-3)}
+  .cv-fit .tcs__list li{padding:11px 0 12px 26px;font-size:1.0625rem;line-height:1.4}
+  .cv-fit .tcs__list li::before{top:calc(11px + .7em - .75px)}
+  .cv-fit .tcs__col.tone-cyan .tcs__list li::before{top:calc(11px + .7em - 3px)}
 }
 
 /* ── 404 · "Esta ruta no está conectada" (§5.13) ─────────────────────────── */
 .e404 .e404__h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),9.6svh);max-width:10em}
 .e404 .is__text > .t-lede{max-width:40ch}
 .e404 .is__text > .script{margin-top:var(--s-6);width:100%;max-width:640px}
-.e404 .script__link{grid-template-columns:44px minmax(0,1fr) minmax(0,24ch) 24px;padding:15px 0 16px}
+/* Las columnas las decide ScriptList por el ancho de su contenedor (≤ 680 px: nombre y línea apilados). Antes se forzaban 4
+   columnas y la línea (que ScriptList manda a la columna 2) dejaba una columna vacía de 24ch a la derecha. */
+.e404 .script__link{padding:15px 0 16px}
 .e404 .script__name{font-size:clamp(1.25rem,1rem + .7vw,1.75rem)}
 .e404 .script__line{font-size:14px;line-height:1.45}
 .e404 .is__text > .ctas{margin-top:var(--s-6)}
@@ -637,11 +733,20 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
     background:radial-gradient(46% 58% at 74% 36%,rgb(3 4 11 / .84),rgb(3 4 11 / .58) 48%,transparent 78%)}
 }
 @media (max-width:767px),(max-aspect-ratio:5/6){
-  .e404 .script__link{grid-template-columns:36px minmax(0,1fr) 20px;padding:14px 0 15px}
-  .e404 .e404__ctas{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"s w";column-gap:14px;width:100%}
-  .e404 .e404__ctas > .btn:not(.btn--wa){grid-area:s;width:100%;justify-content:center}
+  /* El texto de `more` ocupa todo el ancho: con justify-self:start (cine, móvil) se encogía a su contenido y ScriptList
+     (container inline-size, ancho intrínseco 0) medía 0 px → las rutas salían a una palabra por renglón. */
+  .e404 > .is__more .is__text{justify-self:stretch}
+  .e404 .script__link{padding:14px 0 15px}
+  /* Buscar y "Escríbele a Kain" (con su texto, nunca un círculo sin etiqueta) en filas propias, a todo el ancho */
+  .e404.tpl-hero .is__text > .e404__ctas{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"s" "w";row-gap:12px;width:100%}
+  .e404.tpl-hero .is__text > .e404__ctas > .btn{width:100%;height:52px;justify-content:center}
+  .e404.tpl-hero .is__text > .e404__ctas > .btn:not(.btn--wa){grid-area:s}
+  .e404.tpl-hero .is__text > .e404__ctas > .btn--wa{grid-area:w;padding:0 24px;gap:12px;border-radius:var(--r-pill)}
+  .e404.tpl-hero .is__text > .e404__ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+  .e404.tpl-hero .is__text > .e404__ctas > .btn--wa .btn__ico{width:18px;height:18px}
   .e404 .e404__kbd{display:none}
 }
+@media (min-width:600px) and (max-width:767px),(min-width:600px) and (max-aspect-ratio:5/6){.e404.tpl-hero .is__text > .e404__ctas{width:min(100%,420px)}}
 /* ===== fin ConversionTemplate ===== */
 
 /* ===== HomeTemplate ===== */
@@ -652,6 +757,24 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 /* 01 · Portada (la línea de confianza y el Fig. 01 en línea viven en `more`: en escritorio, justo bajo los CTA) */
 .hm-hero .is__text > .fig-inline{margin-top:var(--s-5)}
 @media (min-width:768px) and (min-aspect-ratio:5/6){.hm-hero > .is__more{margin-top:0}}
+/* Móvil y tableta vertical (QA #10): primario a todo el ancho, la microcopia sola en UNA línea y "Escríbele a Kain" con
+   su texto en su propia fila (como el cierre Dawn móvil), nunca un círculo sin etiqueta. Gana a la regla compartida. */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.hm .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
+  body.hm .tpl-hero .is__text > .ctas > .cta-p > .btn-micro{white-space:nowrap;letter-spacing:.03em}
+  body.hm .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px;gap:12px;justify-content:center;border-radius:var(--r-pill);margin-top:2px}
+  body.hm .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+  body.hm .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
+}
+@media (max-width:339px){body.hm .tpl-hero .is__text > .ctas > .cta-p > .btn-micro{white-space:normal}}
+@media (min-width:600px) and (max-width:767px),(min-width:600px) and (max-aspect-ratio:5/6){
+  body.hm .tpl-hero .is__text > .ctas:has(> .cta-p){width:min(100%,420px)}
+}
+/* Costuras (QA #2 · §3.11-6): la luz de base de las escenas sin placa se funde en un tramo FIJO (no en %): en una sección
+   corta el 5 % duraba 14 px y dibujaba un filo. Nace transparente y llega a pleno en ≤ 220 px. */
+body.hm .tpl-glow::before{
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 min(220px,32%),#000 calc(100% - min(220px,32%)),transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 min(220px,32%),#000 calc(100% - min(220px,32%)),transparent 100%)}
 /* Escritorio estrecho: el pie anclado chocaría con la fila de CTAs → baja al texto (y la rama no se dibuja) */
 @media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){
   body.hm #hero :is(.caption,.leader,.leader-node){display:none}
@@ -673,6 +796,12 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 }
 @media (max-height:879px),(max-width:767px),(max-aspect-ratio:5/6){.hm-stack__sumario{display:block;margin-bottom:var(--s-4)}}
 @media (max-width:1279px){.hm-stack__head,.hm-stack__logos{grid-column:1 / -1}}
+/* Escritorio (QA #2): sin franja navy de lado a lado. Una sola luz tenue, local, detrás de los logos, que se apaga antes de
+   cualquier borde (la portada se disuelve a tinta arriba y la escena 03 nace de tinta abajo: costura sin filo). */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  body.hm #stack.tpl-glow::before{-webkit-mask-image:none;mask-image:none;
+    background:radial-gradient(44% 46% at 60% 52%,rgb(60 170 255 / .12),rgb(60 170 255 / .05) 58%,transparent 100%)}
+}
 
 /* 03 · El problema: la escena fijada cabe en una pantalla (de 1280 × 720 a 2560 × 1080) */
 body.hm #problema .t-h2{font-size:min(clamp(2rem,.9rem + 3vw,4.25rem),7.4svh)}
@@ -681,7 +810,8 @@ body.hm #problema .pain__item{padding:14px 0 16px}
 body.hm #problema .pain__fix{margin-top:6px}
 .hm-remate{max-width:18em}
 @media (min-width:1024px) and (min-height:640px) and (hover:hover) and (pointer:fine){
-  body.hm #problema{padding-top:calc(var(--hdr) + var(--s-4));padding-bottom:var(--s-7)}
+  /* §3.11-6 (QA #2): la escena fijada mide una pantalla completa y su último tramo es la disolución a tinta */
+  body.hm #problema{--is-h:max(100svh,680px);padding-top:calc(var(--hdr) + var(--s-4));padding-bottom:var(--s-7)}
 }
 @media (min-width:1024px) and (max-height:799px){
   body.hm #problema .pain{margin-top:var(--s-5)}
@@ -699,8 +829,10 @@ body.hm #que-es .it__body{grid-column:1 / -1}
 body.hm #que-es .it__ghost{bottom:auto;top:6%}
 /* El aura acompaña al manifiesto (a la derecha, a su altura): `top` es su centro (intertitle.ts ya deriva alrededor del
    centro, xPercent/yPercent −50: se quitó la compensación con margin-top de HomeTemplate #10). */
-body.hm #que-es .it__aura{top:clamp(220px,20%,400px)}
-body.hm #que-es.it{overflow:clip}   /* su aura, arriba, no se asoma con su penumbra sobre el final de la escena 03 */
+/* QA #2: sin `overflow:clip` vertical (recortaba el aura con una línea recta al pie de la escena 03). El borde superior del
+   aura (deriva yPercent −60 en el peor caso) queda DENTRO de la sección, así su penumbra nunca se asoma sobre la 03. */
+body.hm #que-es .it__aura{top:calc(min(68vw,1000px) * .6 + 24px)}
+@media (max-width:767px),(max-aspect-ratio:5/6){body.hm #que-es .it__aura{top:calc(max(130vw,520px) * .6 + 24px)}}
 .hm-manifesto{max-width:15em}
 .hm-quees__lede{max-width:46ch}
 body.hm #que-es .hm-quees__grid{align-self:stretch;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:var(--s-7);margin-top:var(--s-9)}
@@ -731,11 +863,21 @@ html[data-motion="reduced"] .hm-seq-glow{display:block}
    del ancla (--ax/--ay/--aw/--ah de plates.json): medidas sobre las placas home-sistema-1…5 a 1280–2560. */
 .hm-sui{z-index:2;pointer-events:none;border-radius:clamp(8px,1.2cqw,18px);overflow:hidden}
 @media (min-width:768px) and (min-aspect-ratio:5/6){
-.hm-sui--atraer{top:calc((var(--ay) + var(--ah) * .48) * 100%);height:calc(var(--ah) * 50%)}
-.hm-sui--atender{top:calc((var(--ay) + var(--ah) * .34) * 100%);height:calc(var(--ah) * 61%);left:calc((var(--ax) + var(--aw) * .05) * 100%);width:calc(var(--aw) * 82%)}
-.hm-sui--organizar{top:calc((var(--ay) + var(--ah) * .36) * 100%);height:calc(var(--ah) * 60%);width:calc(var(--aw) * 75%)}
+/* QA #9: la tarjeta de lead aterriza con su borde superior al 22 % de la caja de su superficie y mide ≈ 90 px → la UI
+   registrada empieza 100 px debajo de ese punto (nunca bajo la tarjeta: cabecera y chip SIMULACIÓN siempre a la vista).
+   Pantalla "encendida": un velo oscuro de cristal bajo la UI apaga los carriles, cubos y haces de la placa que caen
+   detrás (sin doble UI). Es la pantalla de la superficie, no una caja detrás del copy (§3.11-2 habla del texto). */
+.hm-sui--atraer,.hm-sui--atender,.hm-sui--organizar{--lead:calc((var(--ay) + var(--ah) * .22) * 100% + 100px)}
+.hm-sui--atraer{top:var(--lead);height:calc(var(--ah) * 76% - 100px)}
+.hm-sui--atender{top:var(--lead);height:calc(var(--ah) * 73% - 100px);left:calc((var(--ax) + var(--aw) * .05) * 100%);width:calc(var(--aw) * 82%)}
+.hm-sui--organizar{top:var(--lead);height:calc(var(--ah) * 74% - 100px);width:calc(var(--aw) * 75%)}
+.hm-sui:is(.hm-sui--atraer,.hm-sui--organizar,.hm-sui--automatizar,.hm-sui--medir){
+  background:linear-gradient(180deg,rgb(6 10 24 / .86),rgb(6 10 24 / .74));
+  box-shadow:inset 0 0 0 1px rgb(0 229 255 / .26),inset 0 1px 0 rgb(255 255 255 / .1),0 0 40px rgb(0 229 255 / .12);
+  -webkit-backdrop-filter:blur(6px) saturate(1.1);backdrop-filter:blur(6px) saturate(1.1)}
 .hm-sui--automatizar{top:calc((var(--ay) + var(--ah) * .62) * 100%);height:calc(var(--ah) * 38%);width:calc(var(--aw) * 27%)}
-.hm-sui--medir{left:calc((var(--ax) + var(--aw) * .015) * 100%);top:calc((var(--ay) + var(--ah) * .35) * 100%);height:calc(var(--ah) * 60%);width:calc(var(--aw) * 29%)}
+/* medir: la UI vive en la `pantalla` y la tarjeta cae en la `superficie` (y .225 + 22 % de .225 = .2745 = pantalla .2 + 15.4 %) */
+.hm-sui--medir{left:calc((var(--ax) + var(--aw) * .015) * 100%);top:calc((var(--ay) + var(--ah) * .154) * 100% + 100px);height:calc(var(--ah) * 79.6% - 100px);width:calc(var(--aw) * 29%)}
 }
 @media (max-width:767px),(max-aspect-ratio:5/6){.hm-sui--atender{border-radius:14%}}
 /* Móvil: mini demo bajo el copy de cada estación (la superficie de la placa vertical mide < 180 px) */
@@ -803,9 +945,16 @@ body.hm #kain .is__more{margin-top:var(--s-6)}
 .hm-serv__head > .hm-links{margin-top:var(--s-5)}
 body.hm #servicios .script{width:100%;align-self:stretch}
 /* Fotograma 21:9 bajo el H2: a sangre de la columna, sin caja (máscara a --ink por los cuatro lados) */
+/* QA #5: la placa del riel trae una pared navy hasta sus bordes → la máscara radial dejaba ver la caja. Dos rampas largas
+   que se multiplican (lados 26 %, arriba 52 %, abajo 28 %): a opacidad plena solo queda el riel con su reflejo, y los
+   cuatro bordes llegan a 0 con curva suave (sin arista a 375, 1440 ni 2560; también con las portadas de cada fila). */
 .hm-serv__still{position:relative;align-self:stretch;margin:var(--s-6) 0 0;aspect-ratio:21 / 9;pointer-events:none;
-  -webkit-mask-image:radial-gradient(72% 78% at 50% 50%,#000 38%,rgb(0 0 0 / .55) 64%,transparent 100%);
-  mask-image:radial-gradient(72% 78% at 50% 50%,#000 38%,rgb(0 0 0 / .55) 64%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgb(0 0 0 / .45) 12%,#000 26%,#000 74%,rgb(0 0 0 / .45) 88%,transparent 100%),
+    linear-gradient(180deg,transparent 0,rgb(0 0 0 / .18) 28%,#000 52%,#000 72%,rgb(0 0 0 / .4) 86%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent 0,rgb(0 0 0 / .45) 12%,#000 26%,#000 74%,rgb(0 0 0 / .45) 88%,transparent 100%),
+    linear-gradient(180deg,transparent 0,rgb(0 0 0 / .18) 28%,#000 52%,#000 72%,rgb(0 0 0 / .4) 86%,transparent 100%);
+  mask-composite:intersect}
 .hm-serv__still img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .16s var(--ease-ui)}
 .hm-serv__still.is-swap img{opacity:0}
 @media (min-width:1280px){.hm-serv__still{width:calc(100% + var(--s-7));margin-left:calc(var(--s-7) * -.5)}}
@@ -869,6 +1018,15 @@ body.hm #equipo .it__body{grid-column:1 / -1}
 .hm-team__head{max-width:46rem}
 /* Una sola aura, centrada y más fuerte, detrás de los créditos (`top` = su centro, ver #que-es) */
 body.hm #equipo .it__aura{top:50%;opacity:.95}
+/* Aviso QA ronda 2 (#faq a 1280 × 720): el aura de un intertítulo NUNCA sube más allá del borde superior de su sección.
+   La sección va después en el DOM y pinta encima de la anterior: el WebP (oscuro fuera de su brillo) tapaba los créditos de
+   #equipo y dibujaba una costura. Su borde superior (deriva yPercent −60 en el peor caso) queda ≥ 24 px dentro; hacia abajo
+   puede pasar a la escena siguiente, que pinta su texto encima. #faq ya no usa el aura del intertítulo (luz de plantilla
+   recortada a su escena, HomeTemplate). */
+body.hm #equipo .it__aura{top:max(50%, calc(min(68vw,1000px) * .6 + 24px))}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.hm #equipo .it__aura{top:max(50%, calc(max(130vw,520px) * .6 + 24px))}
+}
 
 /* 12 · Ficha técnica + preguntas */
 body.hm #faq .hm-faq__h{margin-bottom:var(--s-3)}
@@ -882,6 +1040,10 @@ body.hm #faq .faq{width:100%;align-self:stretch}
   .hm-stack{padding:var(--s-6) 0 var(--s-8)}
   body.hm #kain .is__more{margin-top:calc(var(--s-7) * -1)}
   .hm-kain__inline .chat--inline{width:100%}
+  /* QA #7: el chat en línea no es una tarjeta de casi una pantalla: alto acotado (≈ 1/2 pantalla), el guion corre dentro */
+  body.hm .hm-kain__inline .chat--inline.is-live .chat__device{height:min(440px,54svh)}
+  /* El teléfono de la placa se enciende con la miniatura de ChatSim (§3.7): pantalla oscura con filete cian, sin marco extra */
+  body.hm #kain .hm-phone{border-radius:16%/8%;background:linear-gradient(180deg,rgb(6 10 24 / .82),rgb(6 10 24 / .68))}
   /* VKTOR: en la placa vertical el haz de luz sube hasta y≈.40 → el texto termina antes; sin palabra gigante */
   body.hm #vktor{padding-bottom:calc(var(--plate-h) * .6 + var(--s-6))}
   body.hm #vktor .is__layer--ghost{display:none}
@@ -959,6 +1121,32 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
 @media (min-width:768px) and (min-aspect-ratio:5/6) and (max-aspect-ratio:3/2){
   .svc-hero .svc-hero__lede{font-size:1.0625rem}       /* 4:3: columna estrecha junto al teléfono → lede en cuerpo 17 px */
 }
+/* QA #30 · escritorios estrechos (< 1200 px): crumbs O etiqueta sobre el H1 (como en móvil), nunca dos renglones mono */
+@media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){
+  .svc-hero .is__text > .crumbs ~ .eyebrow{display:none}
+}
+/* QA #29 · móvil y tableta vertical: "Escríbele a Kain" se lee (botón fantasma a todo el ancho bajo la microcopia, como en el
+   cierre), nunca un círculo sin texto. Va por plantilla (servicio, industria y caso) sobre la regla compartida de portadas. */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
+  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px 0 20px;gap:12px;justify-content:center;
+    border-radius:var(--r-pill);margin-top:2px}
+  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
+}
+/* Teléfonos bajos (360 × 740): con el fantasma rotulado el intro crece ~64 px → menos aire entre piezas para que la cabeza
+   del sujeto siga en el primer pantallazo (≤ .8 del alto, R3) */
+@media (max-width:767px) and (max-height:780px){
+  :is(body.svc,body.ind,body.t-case) .tpl-hero.is[data-m="split"]{--hero-gap:16px}
+  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas:has(> .cta-p){margin-top:var(--s-5);row-gap:8px}
+  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas > .cta-p > .btn{height:48px}
+  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas > .btn--wa{height:44px;margin-top:0}
+  body.t-case .case-hero .case-h1__fig .metric__v{font-size:min(30vw,16.5svh)}
+}
+/* Tableta vertical: los CTA no se estiran a 672 px (QA #68); el bloque se queda en un ancho de teléfono */
+@media (min-width:600px) and (max-aspect-ratio:5/6){
+  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas:has(> .cta-p){max-width:26.25rem}
+}
 
 /* ── Auras propias (WebP ya desenfocado; deriva por scroll en CSS, fija con movimiento reducido) ── */
 .svc-aura{position:absolute;z-index:-1;left:var(--ax,75%);top:var(--ay,50%);width:min(64vw,940px);aspect-ratio:1;margin:0;
@@ -981,6 +1169,7 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
 .svc-aura--vk{--ax:38%;--ay:58%;opacity:1}
 @media (max-width:767px){
   .svc-aura--int{--ax:88%;--ay:4%;opacity:.42}
+  .svc-aura--price{--ay:14%;opacity:.4}   /* QA #20: la luz queda detrás del titular del precio, no bajo las líneas de los factores */
   /* Móvil: auras de 120vw o más detrás de las listas largas */
   .svc-aura{width:max(130vw,520px)}
   .svc-aura--ondas{width:max(190vw,760px)}
@@ -1033,6 +1222,21 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
 /* Escritorios bajos (≤ 820 px de alto): la lista llega al piso de la placa → el pie "Fig. 02" y su guía se retiran
    (nunca cruzan una señal; contraste AA medido sobre el píxel más claro) */
 @media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){.svc-pain :is(.caption,.leader,.leader-node){display:none}}
+/* QA #21 · escritorios estrechos (< 1200 px, 1024 × 768): junto a la persona solo quedan ~280 px → el intro se queda en esa
+   columna y las señales bajan a todo el ancho, en 2 columnas, en la disolución inferior de la misma placa (la placa
+   conserva su alto y el texto nunca pisa a la persona). */
+@media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){
+  .svc-pain{--pain-h:max(88svh,600px)}
+  .is.svc-pain{padding-bottom:calc(var(--seam) + var(--s-5))}
+  .svc-pain > .is__stagebox{bottom:auto;height:var(--pain-h)}
+  .svc-pain > .is__copy{min-height:calc(var(--pain-h) - var(--hdr) - var(--s-4) - var(--s-4))}
+  .is.svc-pain[data-layout] > .is__more .is__text{margin-left:0;max-width:none}
+  .svc-pain > .is__more{margin-top:0}
+  .svc-signals .pain__list{column-gap:var(--s-7)}
+  .svc-signals .pain__pain{font-size:1.0625rem}
+  .svc-signals__line{font-size:.875rem}
+  .svc-signals .pain__fix{font-size:.9375rem}
+}
 
 /* ── 04 · Capacidades: filas de guion + teléfono de cristal sobre el aura ── */
 .svc-cap .it__body{grid-column:1 / -1}
@@ -1132,23 +1336,37 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
   .svc-cmp__c.tone-amber .svc-cmp__mk{color:var(--amber)} .svc-cmp__c.tone-cyan .svc-cmp__mk{color:var(--cyan)}
 }
 
-/* ── 06 (regreso al set, R5) · la placa de la portada, ya empujada hacia el teléfono (--cam 1.35 → 1.6), con la tarjeta
-   de lead que llega a "Cita agendada" registrada en el cristal; la tabla nace en la disolución inferior de la placa ── */
+/* ── 06 · Agente vs. chatbot sobre su propia placa (QA #16/#18/#19): Kain de cuerpo completo con la tarjeta del lead frente
+   a los carriles del embudo; la tarjeta de lead (SIMULACIÓN) va registrada en la parte LIBRE de la superficie (nunca sobre
+   Kain ni sobre el texto) y la tabla nace en la disolución inferior de la misma placa ── */
 @media (min-width:768px) and (min-aspect-ratio:5/6){
-  .svc-back{--back-h:max(92svh,640px)}
-  .svc-back > .is__stagebox{bottom:auto;height:var(--back-h)}
+  /* La placa mide un alto de pantalla; en 4:3 (1024 × 768) se acerca al ancho para que Kain quede completo y la superficie
+     libre no entre a la columna de texto. La columna termina 24 px antes de la zona segura (.44), calculada con la misma
+     caja "cover" del escenario (también a ≥ 1800 px, donde la placa se limita y se centra). */
+  .svc-back{--back-h:min(max(92svh,640px), 100vw / var(--ar-d) * 1.06);--bk-lw:100vw;--bk-sw:max(var(--bk-lw), var(--back-h) * var(--ar-d));
+    --bk-col:calc((100vw - var(--bk-lw)) / 2 + (var(--bk-lw) - var(--bk-sw)) * var(--fx-d) + .44 * var(--bk-sw) - (100vw - var(--frame)) / 2 - 24px)}
+  .svc-back > .is__stagebox{bottom:auto;height:var(--back-h);overflow:hidden}
   .svc-back > .is__copy{min-height:calc(var(--back-h) - var(--hdr) - var(--s-9))}
-  .is.svc-back[data-layout] > .is__copy .is__text{grid-column:1 / span 5}
+  .is.svc-back[data-layout] > .is__copy .is__text{grid-column:1 / -1;max-width:min(var(--bk-col), 40rem)}
   .is.svc-back[data-layout] > .is__more .is__text{grid-column:1 / -1}
-  .svc-back > .is__more{margin-top:0}
+  .svc-back > .is__more{margin-top:0;z-index:3}   /* la tabla siempre por encima de la capa de anclas */
+  .svc-back .is__text > .t-h2{font-size:min(clamp(2rem,1rem + 2.6vw,4rem), var(--bk-col) / 6.4)}
 }
+@media (min-width:1800px){.svc-back{--bk-lw:min(100vw, 2200px, var(--is-h) * var(--ar-d) * 1.08)}}
 .svc-back .is__text > .t-lede{max-width:40ch}
-.svc-back__table{width:100%}
+.svc-back__table{position:relative;width:100%}
 .svc-back__table > .svc-links{margin-top:var(--s-6)}
-.svc-lead{display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:clamp(10px,1.6cqw,26px);pointer-events:none;
-  background:linear-gradient(180deg,rgb(6 10 24 / .86),rgb(6 10 24 / .74) 55%,rgb(6 10 24 / .88));
-  box-shadow:inset 0 0 0 1px rgb(0 229 255 / .4),inset 0 1px 0 rgb(255 255 255 / .22),0 0 60px rgb(0 229 255 / .2)}
-.svc-lead__card{width:84%;display:flex;flex-direction:column;gap:7cqi;font:400 clamp(10px,6cqi,15px)/1.35 var(--f-body);color:var(--text)}
+/* Tarjeta de lead: cristal translúcido (la superficie de la placa se ve detrás, desenfocada); solo las etapas son tarjetas
+   de UI. Escala con el ancho de su ancla (cqi). */
+.svc-lead{display:flex;align-items:center;justify-content:center;pointer-events:none}
+.svc-lead__card{width:100%;display:flex;flex-direction:column;gap:5.5cqi;padding:8cqi 8cqi 9cqi;border-radius:clamp(10px,5cqi,20px);
+  font:400 clamp(10px,6.2cqi,15px)/1.35 var(--f-body);color:var(--text);
+  background:linear-gradient(165deg,rgb(12 20 46 / .76),rgb(6 10 24 / .66));-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);
+  box-shadow:inset 0 0 0 1px rgb(168 243 255 / .22),inset 0 1px 0 rgb(255 255 255 / .14),0 24px 60px rgb(3 4 11 / .45),0 0 48px rgb(0 229 255 / .1)}
+/* Móvil: la superficie queda detrás de Kain en la placa vertical → la misma tarjeta, en el flujo y antes de la tabla (R4) */
+.svc-lead--inline{container-type:inline-size;width:min(100%,21rem);margin:0 0 var(--s-2)}
+.svc-lead--inline .svc-lead__card{gap:10px;padding:16px 18px 18px;font-size:14px}
+.svc-lead--inline .svc-lead__stages{gap:8px}
 .svc-lead__top{margin:0}
 .svc-lead__top .chip-sim{font-size:max(8px,.72em)}
 .svc-lead__k{display:flex;align-items:center;gap:.6em;margin:0;font:500 .82em/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
@@ -1167,13 +1385,7 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
   }
 }
 @keyframes svc-lead-on{from{color:var(--muted);background:transparent;box-shadow:inset 0 0 0 1px var(--hair-2)}}
-.svc-lead__mini{display:none}
-@media (max-width:767px),(max-aspect-ratio:5/6){
-  /* teléfono de la placa vertical < 180 px: miniatura encendida de ChatSim en lugar de la tarjeta (la tabla dice el resto) */
-  .svc-back .svc-lead{border-radius:14%;background:none;box-shadow:none}
-  .svc-back .svc-lead__card{display:none}
-  .svc-back .svc-lead__mini{display:block}
-}
+@media (forced-colors:active){.svc-lead__card{-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid CanvasText}}
 
 /* ── 06b · Lo que sí / lo que no ── */
 .svc-two .it__body{grid-column:1 / -1}
@@ -1206,7 +1418,8 @@ a.svc-int__logo:is(:hover,:focus-visible){color:#fff}
 /* ── 08b · Industrias: filas de guion (sector · nombre · una línea · "Ver industria →" si existe), sin stills (R7) ── */
 .svc-ind__list{grid-column:1 / -1;margin:0;padding:0;list-style:none;border-bottom:1px solid var(--hair)}
 .svc-ind__row{border-top:1px solid var(--hair)}
-.svc-ind__link{display:grid;grid-template-columns:48px minmax(9rem,.7fr) minmax(0,1.2fr) minmax(0,1.6fr) auto;align-items:baseline;column-gap:var(--gap);
+/* La columna del enlace mide lo mismo en todas las filas (vacía si la industria aún no existe): las filas quedan alineadas */
+.svc-ind__link{display:grid;grid-template-columns:48px minmax(9rem,.7fr) minmax(0,1.2fr) minmax(0,1.6fr) 9.5rem;align-items:baseline;column-gap:var(--gap);
   padding:20px 0 22px;color:inherit;text-decoration:none;transition:background var(--d-ui) var(--ease-ui)}
 a.svc-ind__link:is(:hover,:focus-visible){background:linear-gradient(90deg,rgb(0 229 255 / .05),transparent 70%)}
 .svc-ind__n{font:500 11px/1 var(--f-mono);letter-spacing:.14em;color:var(--cyan)}
@@ -1225,6 +1438,34 @@ a.svc-ind__link:is(:hover,:focus-visible){background:linear-gradient(90deg,rgb(0
 
 /* ── 09 · VKTOR™ ── */
 .svc-vk__rail{grid-column:1 / -1}
+/* A sangre (QA #23): Kain sobre la última de cinco losas; la letra de cada fase va registrada en la cara de su losa y el riel
+   completo nace en la disolución inferior de la placa (la placa conserva su alto: nunca se estira con el texto). */
+.svc-vks .svc-vk__rail{width:100%;align-self:stretch}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .svc-vks{--vk-h:min(max(90svh,620px), 100vw / var(--ar-d) * 1.1)}
+  .svc-vks > .is__stagebox{bottom:auto;height:var(--vk-h);overflow:hidden}
+  /* el riel nace bajo las losas, en el último tramo de la disolución (la cámara de la escena acerca la placa hasta ×1.06) */
+  .svc-vks > .is__copy{min-height:calc(var(--vk-h) * .97 - var(--hdr) - var(--s-7))}
+  .is.svc-vks[data-layout] > .is__copy .is__text{grid-column:1 / span 6}
+  .is.svc-vks[data-layout] > .is__more .is__text{grid-column:1 / -1}
+  .svc-vks > .is__more{margin-top:0;z-index:3}
+  /* las losas de la placa ya son la línea y las letras del protocolo: el riel no las repite (solo nombre, verbo y línea) */
+  .svc-vks .vrail__track,.svc-vks .vrail__letter{display:none}
+  .svc-vks .vrail__step{padding-top:26px}
+  .svc-vks .vrail__name{margin-top:0}
+}
+.svc-slab{display:grid;place-items:center;translate:-50% -50%;margin-top:1.6cqh;pointer-events:none}
+/* chip de cristal oscuro con filete cian: la letra se lee igual sobre la losa encendida que sobre la tinta (AA) */
+.svc-slab__l{display:grid;place-items:center;min-width:1.9em;height:1.9em;padding:0 .3em;border-radius:.45em;
+  font:500 clamp(12px,1.25cqw,22px)/1 var(--f-mono);color:#fff;letter-spacing:.02em;
+  background:rgb(3 4 11 / .72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  box-shadow:inset 0 0 0 1px rgb(0 229 255 / .55),0 0 18px rgb(0 229 255 / .35);text-shadow:0 0 10px rgb(0 229 255 / .8)}
+.svc-slab__n{display:none}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .svc-vks.is[data-m="split"] > .is__more{margin-top:var(--s-5)}   /* el riel empieza bajo la última losa, nunca sobre ella */
+  .svc-slab{margin-top:1.2cqh}
+  .svc-slab__l{font-size:10px}
+}
 
 /* ── 10 · Inversión: una línea grande + 3 factores ── */
 .svc-price .it__body{grid-column:1 / -1}

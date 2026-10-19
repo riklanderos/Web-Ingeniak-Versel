@@ -5,7 +5,7 @@
 //        more (R3: resto del contenido; en móvil 'split' va después de la placa) · ghost (palabra gigante propia) · over (ColdOpen)
 //        stage (capa registrada SIN máscaras laterales, sobre la placa y bajo el recorte: p. ej. el filo del horizonte de Dawn)
 // Si la placa no existe: usa `fallbackPlate` (respaldo de lanzamiento) y si no, un aura del isotipo con la misma penumbra.
-import { resolvePlate, boxPoint, AURA_ISOTIPO, type Layout, type Fallback } from './plate';
+import { resolvePlate, boxPoint, rackSize, camCap, AURA_ISOTIPO, type Layout, type Fallback } from './plate';
 import GhostWord from './GhostWord.astro';
 import PlatePicture from './PlatePicture.astro';
 
@@ -59,6 +59,9 @@ const enc = (encendido ?? (priority && !hasOver)) && height === 'hero';
 
 // push (§3.2 / R5): el origen de la cámara viaja al ancla (centro de la caja en anclas de caja); con camFrom la escena
 // entra ya empujada. Con pin, por defecto llega a 1.6 (§5.3).
+// Tope (§0.1-5, manda sobre §5.3/R5): la cámara nunca empuja tanto que el sujeto (Kain, personas) salga del cuadro. Aquí
+// se estima para el primer cuadro y sin JS (camCap); scene.ts lo recalcula con las medidas reales a cada tamaño. Si el
+// tope queda por debajo de camFrom, la escena entra justo debajo del tope (sigue habiendo un empuje suave).
 let pushVars = '';
 let pushData: string | undefined;
 if (push || pin) {
@@ -68,7 +71,8 @@ if (push || pin) {
   const to = Math.min(push?.camTo ?? push?.to ?? (pin ? 1.6 : 1.12), 1.6);
   if (a.d) pushVars += `--ox-d:${a.d[0]};--oy-d:${a.d[1]};`;
   if (a.m) pushVars += `--ox-m:${a.m[0]};--oy-m:${a.m[1]};`;
-  pushVars += `--cam:${from};`;
+  const cap = Math.min(to, camCap(r.subject.d, a.d));
+  pushVars += `--cam:${Math.min(from, Math.max(1, Math.round((cap - 0.08) * 1000) / 1000))};`;
   pushData = JSON.stringify({ from, to });
 }
 const style = r.vars + pushVars;
@@ -76,6 +80,8 @@ const titleId = labelledby ?? `${id}-t`;
 // R9: el recorte con alfa es solo de escritorio; en móvil el <picture> pide un GIF transparente de 1 × 1 (sin descarga).
 const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 const decorative = r.alt === '';
+const rackSrc = r.rack ?? AURA_ISOTIPO;
+const rk = rackSize(rackSrc);
 ---
 <section
   id={id}
@@ -131,7 +137,7 @@ const decorative = r.alt === '';
     <div class="is__layer is__layer--media" aria-hidden={decorative ? 'true' : undefined}>
       <div class="stage">
         <PlatePicture r={r} priority={priority} />
-        {take && <img class="is__rack" src={r.rack ?? AURA_ISOTIPO} alt="" aria-hidden="true" decoding="async" loading="lazy" />}
+        {take && <img class="is__rack" src={rackSrc} alt="" aria-hidden="true" width={rk.w} height={rk.h} decoding="async" loading="lazy" />}
         <span class="is__vignette" aria-hidden="true"></span>
         <span class="is__leak" aria-hidden="true"></span>
         {take && <span class="is__rackveil" aria-hidden="true"></span>}

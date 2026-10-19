@@ -22,6 +22,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ImageSection from '../cine/ImageSection.astro';
+import FigCaption from '../cine/FigCaption.astro';
 import Intertitle from '../cine/Intertitle.astro';
 import Dawn from '../cine/Dawn.astro';
 import Breadcrumbs from '../nav/Breadcrumbs.astro';
@@ -59,7 +60,10 @@ const primaryHref = (c: any) => c?.ctaPrimary?.href ?? agenda;
 const primaryLabel = (c: any) => c?.ctaPrimary?.label ?? page.primaryCta?.label ?? 'Agendar mi Discovery Session';
 // waMessage = sitemap.secondaryCta.waMessage (atribución por página, R10)
 const waOfSec = (c: any) => waHref(c?.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage ?? 'Hola Kain');
-const waLabel = (c: any) => c?.ctaSecondary?.label ?? page.secondaryCta?.label ?? 'Escríbele a Kain';
+// Marca (§0.1 · decisión del cliente, QA ronda 2): el secundario SIEMPRE se llama "Escríbele a Kain", en todo tamaño (con
+// texto visible también en móvil). El copy/sitemap solo aportan el mensaje de WhatsApp de la página (atribución R10).
+const WA_LABEL = 'Escríbele a Kain';
+const waLabel = (_c?: any) => WA_LABEL;
 
 /** Placa realmente usada (la de la sección o su respaldo de lanzamiento) — para la precarga LCP de BaseLayout. */
 function usedPlate(pl: any): string | undefined {
@@ -74,6 +78,21 @@ const fbOf = (pl: any) => pl?.launchFallback ?? undefined;
 const showChips = (c: any) => Array.isArray(c?.chips) && c.chips.length > 0 && !c.eyebrow;
 // La firma del sitio ya cierra el footer: la del cierre se pinta solo si es distinta (sin repetir la misma frase en una pantalla).
 const siteFirma: string | undefined = (() => { try { return getCopy('_comun')?.firma; } catch { return undefined; } })();
+
+/** §3.11-7 · Pie de foto que cose sujeto y copy en la portada (solo escritorio: la placa vertical no trae ancla `fig`, y
+    con respaldo de aura no se pinta). Texto del copy (`hero.fig {label, text}`); si no lo trae, una línea descriptiva de la
+    imagen, sin cifras ni promesas. Se dibuja solo si la placa define `fig` y un objetivo (silla, mano o pecho). */
+function figOf(pl: any, c: any): { title: string; text: string; target: string } | null {
+  const a = plateReady(pl?.id) ? (getPlate(pl.id) as any)?.anchors : null;
+  if (!a?.fig?.d) return null;
+  const target = ['silla', 'mano', 'pecho'].find((k) => a[k]?.d);
+  if (!target) return null;
+  return {
+    title: String(c?.fig?.label ?? 'La silla vacía').replace(/^Fig\.\s*\d+\s*·\s*/, ''),
+    text: c?.fig?.text ?? 'La pregunta de esta llamada: qué pasa en tu negocio cuando tú no estás.',
+    target,
+  };
+}
 
 /** Duración del VSL leída del átomo mvhd del MP4 en el build ("3:00"); null si no se puede leer. */
 function mp4Duration(publicPath: string): string | null {
@@ -148,6 +167,7 @@ const folio = page.folio ?? page.id;
       ) : null;
 
     /* ───────────── 01 · Portada ───────────── */
+    const fig = kind === 'hero' ? figOf(pl, c) : null;
     if (kind === 'hero') return (
       <ImageSection id={s.id} plate={pl.id} fallbackPlate={fbOf(pl)} layout={pl.layout} mirror={pl.mirror} height="hero"
         mobile="split" priority srcsetMax={pl.srcsetMax} class="cv-hero tpl-hero" data-folio={folio}>
@@ -164,6 +184,7 @@ const folio = page.folio ?? page.id;
         )}
         <HeroCtas href={primaryHref(c)} label={primaryLabel(c)} primaryAttrs={{ external: false, 'data-agenda-section': s.id }}
           waHref={waOfSec(c)} waLabel={waLabel(c)} waClass="cv-wa" />
+        {fig && <FigCaption slot="anchors" n={1} title={fig.title} anchor="fig" target={fig.target} class="cv-fig">{fig.text}</FigCaption>}
         {(heroLede.rest || c.remate || showChips(c)) && (
           <Fragment slot="more">
             <span class="tpl-introglow" aria-hidden="true"></span>
@@ -198,14 +219,16 @@ const folio = page.folio ?? page.id;
           <Copy text={c.lede} as="p" class="t-lede t-lede--2" />
           <Fragment slot="aside">
             <div class="vposter vposter--modal cv-play" data-video="modal" id={`${s.id}-vsl`}>
-              <button type="button" class="vposter__trigger cv-play__btn" data-video-open aria-haspopup="dialog" aria-controls={`${s.id}-vsl-dlg`}>
+              {/* QA #92: un enlace real al MP4 (sin JS o si el JS falla, abre el archivo); ui.ts le da role="button", Espacio y
+                  preventDefault, y abre el <dialog>. Se descarga solo al hacer clic (R14). */}
+              <a class="vposter__trigger cv-play__btn" href={vsl.src} type="video/mp4" data-video-open aria-haspopup="dialog" aria-controls={`${s.id}-vsl-dlg`}>
                 <span class="vposter__ring cv-play__ring" aria-hidden="true"><Icon name="play" size={26} /></span>
                 <span class="vposter__label cv-play__label">
                   <span class="vposter__l1">{c.play ?? 'Reproducir el video'}</span>
                   {vslDur && <span class="t-micro cv-play__dur" data-allow-number>VSL · {vslDur}</span>}
                 </span>
                 <span class="sr-only">: {title}</span>
-              </button>
+              </a>
               <dialog class="vdialog" id={`${s.id}-vsl-dlg`} aria-label={title} data-video-dialog>
                 <div class="vdialog__bar">
                   <p class="t-label vdialog__t"><span class="node" aria-hidden="true"></span>{title}</p>
@@ -226,11 +249,15 @@ const folio = page.folio ?? page.id;
 
     /* ───────────── Pasos (StepRow) ───────────── */
     if (kind === 'steps') {
-      const a = nextAura();
+      nextAura(); // reserva su turno del ciclo (las escenas siguientes conservan su luz)
+      // §3.10-3 (QA #76): la luz de "Cómo funciona" nunca va detrás de las líneas de los pasos. Ondas tenues (pico ≈ .09 de
+      // luminancia) a lo ancho; el isotipo brillante solo en escritorio, estacionado arriba a la derecha, junto al titular
+      // (zona vacía). En móvil las ondas acompañan la lista (pegajosas) y las líneas usan --text-2 (pages.css).
       return (
-        <Intertitle id={s.id} aura={a.aura} auraSide={a.side} class="cv-steps tpl-glow">
+        <Intertitle id={s.id} aura="ondas" auraSide="center" class="cv-steps tpl-glow">
+          <Aura kind="isotipo" x="84%" y="12%" w="min(46vw,680px)" o={0.6} only="d" />
           <Aura kind="ondas" x="45%" y="104%" o={1} only="d" />
-          <Aura kind="isotipo" x="70%" o={0.9} only="m" sticky />
+          <Aura kind="ondas" x="60%" o={0.8} only="m" sticky />
           {Eyebrow()}
           {H2()}
           {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
@@ -281,7 +308,7 @@ const folio = page.folio ?? page.id;
     /* ───────────── Para quién (ImageSection con placa + listas, móvil split) ───────────── */
     if (kind === 'fit') return (
       <ImageSection id={s.id} plate={pl.id} fallbackPlate={fbOf(pl)} layout={pl.layout} mirror={pl.mirror} height="mid"
-        align="start" mobile={(pl.mobile as any) ?? 'split'} srcsetMax={pl.srcsetMax} class="cv-fit tpl-glow-m">
+        align="start" mobile={(pl.mobile as any) ?? 'split'} srcsetMax={pl.srcsetMax} alt="" class="cv-fit tpl-glow-m">
         {Eyebrow()}
         {H2()}
         <Copy text={c.lede} as="p" class="t-lede t-lede--2" />

@@ -2,7 +2,7 @@
 // (título corto, H1, keyword, URL, grupo, folio interno, meta) + el banco de FAQ (src/data/faq.json si existe;
 // si no, las preguntas "aprobada" de cada página de sitemap.json). Los folios no se muestran: solo sirven de búsqueda.
 import type { APIRoute } from 'astro';
-import { pages } from '../lib/site';
+import { pages, isBuilt } from '../lib/site';
 import { copyText, faqBank } from '../components/layout/copyText';
 
 export const prerender = true;
@@ -31,7 +31,8 @@ const hasFaqSection = (url: string) => (pages as any[]).find((p) => p.url === ur
 
 export const GET: APIRoute = () => {
   const list = (pages as any[])
-    .filter((p) => p.template !== 'T-404')
+    // Solo páginas que existen hoy (QA r2 · decisión 3): un resultado de ⌘K nunca lleva a un 404. Las demás entran solas al construirse.
+    .filter((p) => p.template !== 'T-404' && isBuilt(p.url))
     .map((p) => ({
       u: p.url,
       t: shortName(p),
@@ -42,9 +43,12 @@ export const GET: APIRoute = () => {
       f: p.folio ?? '',
       d: p.metaDescription ?? '',
     }));
-  const faq = bank().map((f) => {
-    const target = f.pages?.includes('/preguntas-frecuentes/') ? '/preguntas-frecuentes/' : f.pages?.[0] ?? '/preguntas-frecuentes/';
-    return { id: f.id, q: f.q, a: f.a, u: hasFaqSection(target) ? `${target}#faq` : target };
+  // Cada pregunta abre una página construida que la tiene (la de preguntas frecuentes si ya existe); sin ninguna, no se indexa.
+  const faq = bank().flatMap((f) => {
+    const built = (f.pages ?? []).filter((u) => isBuilt(u));
+    if (!built.length) return [];
+    const target = built.includes('/preguntas-frecuentes/') ? '/preguntas-frecuentes/' : built[0];
+    return [{ id: f.id, q: f.q, a: f.a, u: hasFaqSection(target) ? `${target}#faq` : target }];
   });
   return new Response(JSON.stringify({ v: 1, pages: list, faq }), {
     headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'public, max-age=3600' },

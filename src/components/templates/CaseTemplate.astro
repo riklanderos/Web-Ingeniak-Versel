@@ -36,7 +36,7 @@ import Icon from '../ui/Icon.astro';
 import Prose from '../content/Prose.astro';
 import Quote from '../content/Quote.astro';
 import { getCopy, getPage, getPlate, waHref, SITE, linkTarget, type Page } from '../../lib/site';
-import { SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 
 interface Props { page: Page }
 const page = Astro.props.page as any;
@@ -54,10 +54,13 @@ const shows = (s: any) => {
   if (s.status === 'conditional') return approved(c);
   return true;
 };
-const order: string[] = sitemapSecs.filter(shows).map((s) => s.id);
-
 // ── Puerta de publicación (R2) ───────────────────────────────────────────────
+// Caso breve (QA #54): mientras ficha, punto de partida e implementación no estén confirmados por escrito, la página solo
+// pinta portada, ficha (filas confirmadas), CaseFigure, qué puedes replicar, relacionados y cierre — y sale en noindex.
+// Lo no confirmado no llega al HTML público (no basta con noindex).
 const breve = !!page.publishGate && copy.publishGate?.ok !== true;
+const BREVE = ['hero', 'ficha', 'cifra', 'replicar', 'relacionados', 'cta-final'];
+const order: string[] = sitemapSecs.filter(shows).map((s) => s.id).filter((id) => !breve || BREVE.includes(id));
 
 // ── Utilidades ───────────────────────────────────────────────────────────────
 // Etiqueta del primario: la del copy (o la compartida de _comun), nunca la variante de sitemap.json (regla de un azul, §0.1)
@@ -91,11 +94,22 @@ const hero = C.hero ?? {};
 const heroPlate = plateOf('hero');
 const heroR = heroPlate ? resolvePlate(heroPlate.id, { mirror: heroPlate.mirror, fallbackPlate: heroPlate.launchFallback }) : null;
 const h1 = hero.h1 ?? {};
+const ledeFig = /\{\{metric:/.test(hero.lede ?? '');   // el lede lleva cifra → llamada ¹ a la nota de fuente
 
 // ── 02 Ficha ─────────────────────────────────────────────────────────────────
 const ficha = C.ficha ?? {};
 // Filas con tokens de cifra → salen como filas "Cifra" con <Metric> (EntitySheet imprime el resto como texto).
-const fichaRows = (ficha.entity ?? []).filter((r: any) => !/\{\{/.test(r.value)).map((r: any) => ({ ...r, href: hrefOr(r.href) }));
+// Caso breve: solo filas con confirmed:true en el copy (y las cifras, que salen de metrics.ts). Si el copy aún no marca la
+// ciudad/sector, la ficha dice el contexto de la cifra tal como lo registra metrics.ts y su fuente (SOURCE_NOTE): nada se rellena.
+const textRows = (ficha.entity ?? []).filter((r: any) => !/\{\{/.test(r.value) && (!breve || r.confirmed === true));
+const ctxMetric = h1.metricId && (METRICS as any)[h1.metricId] ? (METRICS as any)[h1.metricId] : null;
+const fichaRows = [
+  ...(breve && !textRows.length && ctxMetric?.ctx ? [{ term: 'Caso', value: ctxMetric.ctx }] : []),
+  ...textRows.map((r: any) => ({ ...r, href: hrefOr(r.href) })),
+  ...(breve ? [{ term: 'Fuente de las cifras', value: SOURCE_NOTE }] : []),
+];
+// Entradilla: en el caso breve, la versión breve del copy si existe (deckBreve); el texto lo valida el área copy
+const fichaDeck: string | null = (breve ? ficha.deckBreve ?? ficha.deck : ficha.deck) ?? null;
 const fichaMetrics = [...new Set((ficha.entity ?? []).flatMap((r: any) => metricIdsIn(r.value)))] as MetricId[];
 const rack = heroR?.rack ?? null;
 
@@ -154,7 +168,7 @@ const cta = C['cta-final'] ?? {};
 const ctaPlate = plateOf('cta-final');
 
 // ── JSON-LD (Article de SEOHead + about → Service de la ficha; autor = Organization hasta confirmar, R8) ──
-const svcRow = (ficha.entity ?? []).find((r: any) => /^\/servicios\//.test(r.href ?? ''));
+const svcRow = (ficha.entity ?? []).find((r: any) => /^\/servicios\//.test(r.href ?? '') && (!breve || r.confirmed === true));
 // about → Service del Article de SEOHead (nav · articleAbout): un solo nodo Article en el @graph
 const articleAbout = svcRow
   ? { '@type': 'Service', '@id': `${SITE.url}${svcRow.href}#service`, name: svcRow.value, url: `${SITE.url}${svcRow.href}` }
@@ -163,7 +177,8 @@ const dates = copy.actualizado ? { datePublished: copy.publicado ?? copy.actuali
 
 // ── Riel "Quick Jump" (§4.7, §5.4 #02): Contexto · Reto · Cifra · Solución · Resultado · VKTOR · Replicar ──
 // nav ya oculta las etiquetas del riel sobre la portada (html:not([data-fold])): el riel vuelve a tener todas las escenas.
-const NOT_IN_RAIL: string[] = [];
+// QA #57: sin portada, relacionados ni cierre (la etiqueta más larga pasa a ser "Resultado" y el riel no pisa el contenido)
+const NOT_IN_RAIL: string[] = ['hero', 'relacionados', 'cta-final', 'testimonio'];
 const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
   .map((id) => ({ id, label: C[id]?.rail ?? sitemapSecs.find((s) => s.id === id)?.name ?? id }));
 ---
@@ -209,12 +224,16 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
             {hero.chips.map((c: string) => <li class="chip-spec">{c}</li>)}
           </ul>
         )}
-        {hero.lede && <Copy as="p" class="t-lede t-lede--2 case-hero__lede" text={hero.lede} />}
+        {hero.lede && <p class="t-lede t-lede--2 case-hero__lede"><Copy text={hero.lede} />{ledeFig && <sup class="case-fn" aria-hidden="true">1</sup>}</p>}
         <HeroCtas href={hero.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={primaryLabel(hero)}
           waHref={wa(hero.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} waLabel={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+        {/* QA #63 · §0.1-2: toda cifra lleva su nota de fuente, también en la portada */}
+        {h1.metricId && <p class="t-micro case-hero__src tpl-mhide"><sup class="case-fn" aria-hidden="true">1</sup> {SOURCE_NOTE}.</p>}
         {hero.illus && <p slot="aside" class="chip-illus case-illus tpl-mhide">{hero.illus}</p>}
-        {(hero.chips?.length > 0 || hero.illus) && (
+        {(hero.chips?.length > 0 || hero.illus || h1.metricId) && (
           <Fragment slot="more">
+            {/* R3: en el intro móvil no cabe; la nota de fuente va justo después de la placa, antes de la fila de datos */}
+            {h1.metricId && <p class="t-micro case-hero__src case-hero__src--m tpl-dhide"><sup class="case-fn" aria-hidden="true">1</sup> {SOURCE_NOTE}.</p>}
             {hero.illus && <p class="chip-illus tpl-illus-m tpl-dhide" aria-hidden="true">{hero.illus}</p>}
             {hero.chips?.length > 0 && (
               <ul class="case-specs case-specs--m tpl-dhide" role="list" aria-label="Datos del caso" tabindex="0">
@@ -231,11 +250,10 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
       <section id="ficha" class="tpl-glow case-sec case-ficha" aria-labelledby="ficha-t">
         {rack && <span class="case-ficha__rack" aria-hidden="true"><img src={rack} alt="" width="320" height="179" loading="lazy" decoding="async" /></span>}
         <span class="tpl-aura-box" aria-hidden="true"><span class="case-aura case-aura--ficha"><img src={AURA_ISOTIPO} alt="" width="640" height="640" loading="lazy" decoding="async" /></span></span>
-        <Aura kind="ondas" x="30%" y="8%" o={1} clip />
         <div class="frame case-ficha__frame">
           <div class="case-ficha__lead">
             <h2 id="ficha-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ficha.eyebrow ?? 'Ficha del caso'}</h2>
-            {ficha.deck && <Copy as="p" class="t-standfirst case-ficha__deck" text={ficha.deck} data-reveal />}
+            {fichaDeck && <Copy as="p" class="t-standfirst case-ficha__deck" text={fichaDeck} data-reveal />}
             {(ficha.byline || ficha.note) && (
               <div class="case-byline" data-reveal>
                 {ficha.byline && <p class="case-byline__by"><span class="case-byline__mark" aria-hidden="true"></span>{ficha.byline}</p>}
@@ -288,7 +306,6 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
       <section id="implementacion" class="tpl-glow case-sec case-impl" aria-labelledby="implementacion-t">
         <span class="case-glow case-glow--cyan" aria-hidden="true"></span>
         <Aura kind="ondas" x="55%" y="40%" o={1} />
-        <Aura kind="isotipo" x="70%" o={0.9} only="m" sticky />
         <div class="frame">
           <header class="case-head">
             {impl.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{impl.eyebrow}</p>}
@@ -383,7 +400,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
     /* ───────────── 08 · Qué puedes replicar ───────────── */
     if (id === 'replicar') return (
       <section id="replicar" class="tpl-glow case-sec case-rep" aria-labelledby="replicar-t">
-        <Aura kind="isotipo" x="78%" y="50%" o={0.9} />
+        <Aura kind="ondas" x="72%" y="55%" o={0.9} />
         <div class="frame">
           <header class="case-head">
             {rep.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{rep.eyebrow}</p>}

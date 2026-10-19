@@ -6,7 +6,9 @@
 //                       En paneles estrechos (≤ 220 px) compacta la barra y la pausa pasa a la esquina de la pantalla.
 //                       En móvil, si la superficie mide < 180 px, muestra la miniatura encendida (§3.7) en lugar del chat.
 //   mode="inline"     → teléfono de cristal propio (.glass-panel, §3.7) en el flujo del texto; ≤ 320 px en escritorio;
-//                       en móvil el alto es el de la conversación completa (las burbujas reservan su lugar: sin saltos).
+//                       en vivo el teléfono tiene alto FIJO (escritorio 9:19 ≤ 676 px; móvil min(560 px, 68svh)) y la
+//                       conversación crece desde abajo, como un chat real (sin saltos de página y sin cristal vacío bajo
+//                       la barra). Sin JS, movimiento reducido o save-data: la conversación completa, sin recorte.
 //   mode="mini"       → miniatura encendida para superficies registradas < 180 px: marca kain + 2–3 burbujas (aria-hidden).
 // control="external" → en escritorio con movimiento, el guion lo avanza la escena (document/sección → "cine:step" {progress});
 //                       en móvil (o si no llega ningún paso) corre el temporizador de siempre.
@@ -80,6 +82,7 @@ const tabsOutside = tabsOut || !!tabsFor;
 const innerTabs = multi && !tabsOutside;
 const transcript = SIM.transcript ?? 'Conversación completa';
 const moreLabel = SIM.more ?? 'Ver conversación completa';
+const moreShort = SIM.moreShort ?? 'Ver todo';          // paneles estrechos (≤ 220 px): nunca más ancho que la pantalla
 ---
 {mode === 'mini' ? (
   <span class:list={['chat chat--mini', cls]} id={id} aria-hidden="true" data-nosnippet>
@@ -135,7 +138,7 @@ const moreLabel = SIM.more ?? 'Ver conversación completa';
         </ol>
       ))}
     </div>
-    {mode === 'registered' && <a class="chat__more" href={`#${uid}-end-${sectors[0].key}`} data-chat-more>{moreLabel}<span aria-hidden="true"> ↓</span></a>}
+    {mode === 'registered' && <a class="chat__more" href={`#${uid}-end-${sectors[0].key}`} data-chat-more><span class="chat__more-l">{moreLabel}</span><span class="chat__more-s">{moreShort}</span><span aria-hidden="true"> ↓</span></a>}
   </div>
   {mode === 'registered' && (
     <span class="chat__mini" aria-hidden="true"><span class="chat__mini-mark"><span class="kain-mark">kain</span></span><i class="chat__mini-b chat__mini-b--c"></i><i class="chat__mini-b chat__mini-b--k"></i><i class="chat__mini-b chat__mini-b--s"></i></span>

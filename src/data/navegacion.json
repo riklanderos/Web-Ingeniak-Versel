@@ -154,7 +154,7 @@
         {
           "label": "Salud y clínicas",
           "href": "/industrias/salud/",
-          "description": "Citas agendadas y confirmadas 24/7",
+          "description": "Agenda, confirma y recuerda citas por WhatsApp",
           "metricId": "dental-citas"
         },
         {

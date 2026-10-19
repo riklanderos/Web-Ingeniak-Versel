@@ -5,6 +5,7 @@
     "d": { "src": "/img/cine/ind-salud-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.69, "fy": 0.5, "fadeFrom": 0.93 },
     "m": { "src": "/img/cine/ind-salud-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.52, "fy": 1, "subjTop": 0.46 },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": { "d": [[0.04, 0.06, 0.45, 0.97], [0.45, 0.06, 0.50, 0.34]], "m": [[0.04, 0.03, 0.96, 0.44]] },
     "subject": { "d": [0.54, 0.08, 0.94, 0.95], "m": [0.33, 0.46, 0.90, 0.96] },
     "anchors": {

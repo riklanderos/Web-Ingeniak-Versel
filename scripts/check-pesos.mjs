@@ -143,7 +143,24 @@ function jsBytes(root, dist) {
     total += gzipSync(Buffer.from(code), { level: 9 }).length;
     for (const m of code.matchAll(/import\s*(?:[^'"()]*?from\s*)?["'](\/_astro\/[^"']+)["']/g)) add(m[1]);
   }
-  return total;
+  // diferido: chunks que el código estático pide con import() (gsap/ScrollTrigger, escenas, Lenis…). No cuentan contra
+  // el presupuesto del camino crítico (§7.8: "con import() donde se usan"), pero se informan para no esconder el total.
+  let deferred = 0;
+  const dseen = new Set();
+  for (const f of seen) {
+    const p = join(dist, f);
+    if (!existsSync(p)) continue;
+    const base = f.split('/').slice(0, -1).join('/');
+    for (const m of readFileSync(p, 'utf8').matchAll(/import\(\s*["'](\.{1,2}\/[^"']+)["']\s*\)/g)) {
+      const parts = `${base}/${m[1]}`.split('/'); const out = [];
+      for (const s of parts) { if (s === '..') out.pop(); else if (s !== '.' && s !== '') out.push(s); }
+      const rel = out.join('/');
+      if (seen.has(rel) || dseen.has(rel) || !existsSync(join(dist, rel))) continue;
+      dseen.add(rel);
+      deferred += gzipSync(readFileSync(join(dist, rel)), { level: 9 }).length;
+    }
+  }
+  return { total, deferred };
 }
 
 export async function run(opts) {
@@ -219,10 +236,10 @@ export async function run(opts) {
     }
     // JS
     if (!opts.url) {
-      const js = jsBytes(root, opts.dist);
+      const { total: js, deferred } = jsBytes(root, opts.dist);
       const lim = isHome ? BUDGET.js.home : BUDGET.js.page;
       if (js > lim) R.fail(pg.route, `JS gzip ${fmt(js)} > ${fmt(lim)}`);
-      R.info(`${pg.route} · JS gzip ${fmt(js)} / ${fmt(lim)}`);
+      R.info(`${pg.route} · JS gzip ${fmt(js)} / ${fmt(lim)} en el camino crítico · + ${fmt(deferred)} diferido con import() (primer nivel)`);
     }
   }
   if (opts.url) R.info('JS gzip: solo se mide contra dist/_astro después de "astro build" (el servidor de desarrollo sirve módulos sin empaquetar)');

@@ -5,6 +5,7 @@
     "d": { "src": "/img/cine/home-sistema-5-medir", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.72, "fy": 0.5, "fadeFrom": 0.93 },
     "m": { "src": "/img/cine/home-sistema-5-medir-m", "w": 1856, "h": 2304, "ar": 0.8056, "fx": 0.54, "fy": 1, "subjTop": 0.45 },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": { "d": [[0.04, 0.06, 0.44, 0.74], [0.04, 0.82, 0.44, 0.94]], "m": [[0.04, 0.03, 0.96, 0.42]] },
     "subject": { "d": [0.62, 0.08, 0.91, 0.93], "m": [0.39, 0.47, 0.71, 0.90] },
     "anchors": {

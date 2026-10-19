@@ -5,6 +5,7 @@
 //   mode="inline" → póster a sangre dentro de su contenedor; al clic se cambia por el <video> con controles.
 //   videoPoster → póster SOLO del <video> del diálogo (el disparador no se pinta como caja 16:9; la placa ya es el fondo).
 //   closeLabel  → texto accesible del botón de cerrar (el copy trae "Cerrar el video").
+// Disparadores = <a href={src}>: sin JS (o si el JS falla) abren el archivo; ui.ts los vuelve botones (role, Espacio).
 // Gancho: [data-video] (ui.ts). Medición R10: document → "ingeniak:track" {name: video_play | video_50 | video_complete}.
 import Icon from '../ui/Icon.astro';
 
@@ -22,10 +23,10 @@ const type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
     <div class="vposter__stage" style={`aspect-ratio:${width} / ${height}`}>
       {poster && <img class="vposter__img" src={poster} alt="" width={width} height={height} loading="lazy" decoding="async" />}
       <span class="vposter__shade" aria-hidden="true"></span>
-      <button type="button" class="vposter__play" data-video-play aria-label={`Reproducir: ${title}`}>
+      <a class="vposter__play" href={src} type={type} data-video-play aria-label={`Reproducir: ${title}`}>
         <span class="vposter__ring" aria-hidden="true"><Icon name="play" size={22} /></span>
         <span class="vposter__label">{label}{duration && <span class="vposter__dur" data-allow-number> · {duration}</span>}</span>
-      </button>
+      </a>
       <template data-video-tpl>
         <video class="vposter__video" controls playsinline preload="none" poster={vPoster} width={width} height={height}>
           <source src={src} type={type} />
@@ -35,12 +36,12 @@ const type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
     </div>
   ) : (
     <>
-      <button type="button" class:list={['vposter__trigger', poster && 'vposter__trigger--poster']} data-video-open aria-haspopup="dialog" aria-controls={`${uid}-dlg`}>
+      <a class:list={['vposter__trigger', poster && 'vposter__trigger--poster']} href={src} type={type} data-video-open aria-haspopup="dialog" aria-controls={`${uid}-dlg`}>
         {poster && <img class="vposter__img" src={poster} alt="" width={width} height={height} loading="lazy" decoding="async" />}
         <span class="vposter__ring" aria-hidden="true"><Icon name="play" size={22} /></span>
         <span class="vposter__label"><span class="vposter__l1">{label}</span>{duration && <span class="vposter__dur t-micro" data-allow-number>{duration}</span>}</span>
         <span class="sr-only">: {title}</span>
-      </button>
+      </a>
       <dialog class="vdialog" id={`${uid}-dlg`} aria-label={title} data-video-dialog>
         <div class="vdialog__bar">
           <p class="t-label vdialog__t"><span class="node" aria-hidden="true"></span>{title}</p>

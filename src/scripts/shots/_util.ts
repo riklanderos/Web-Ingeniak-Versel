@@ -65,8 +65,11 @@ export function claim(el: Element) {
 
 export interface Player { play: () => void; finish: () => void; prime: () => void }
 
-/** Titular por líneas (SplitText con máscara, yPercent 110 → 0, .95 s, stagger .08). Devuelve un "player".
- *  `lazy`: el estado oculto (110 %) no se aplica hasta prime() o play() (la firma deja el H1 pintado bajo el iris, §8.3). */
+/** Titular por líneas (SplitText con máscara, yPercent 160 → 0, .95 s, stagger .08). Devuelve un "player".
+ *  La máscara recorta con clip-path ampliado (cine.css: descendentes y acentos nunca se cortan); por eso la línea parte
+ *  de 160 % (fuera de la zona ampliada) y no de 110 %.
+ *  `lazy`: el estado oculto (160 %) no se aplica hasta prime() o play() (la firma deja el H1 pintado bajo el iris, §8.3). */
+const FROM = 160;
 export function splitLines(el: HTMLElement, env: Env, opts: { trigger?: Element | false; start?: string; delay?: number; lazy?: boolean } = {}): Player {
   const { gsap, SplitText } = env;
   claim(el);
@@ -88,7 +91,7 @@ export function splitLines(el: HTMLElement, env: Env, opts: { trigger?: Element 
       type: 'lines', mask: 'lines', autoSplit: true, linesClass: 'split-line',
       onSplit(self) {
         lines[k] = self.lines;
-        const a = gsap.fromTo(self.lines, { yPercent: 110 }, {
+        const a = gsap.fromTo(self.lines, { yPercent: FROM }, {
           yPercent: 0, duration: 0.95, stagger: 0.08, ease: 'expo.out', delay: (opts.delay ?? 0) + base * 0.08,
           paused: !played, immediateRender: primed && !played,
         });
@@ -102,7 +105,7 @@ export function splitLines(el: HTMLElement, env: Env, opts: { trigger?: Element 
   const prime = () => {
     if (played || primed) return;
     primed = true;
-    lines.forEach((ls) => ls.length && gsap.set(ls, { yPercent: 110 }));
+    lines.forEach((ls) => ls.length && gsap.set(ls, { yPercent: FROM }));
   };
   const play = () => {
     if (played) return;

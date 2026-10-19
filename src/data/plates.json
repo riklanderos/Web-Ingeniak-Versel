@@ -21,6 +21,7 @@
       "subjTop": 0.52
     },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": {
       "d": [
         [
@@ -804,11 +805,12 @@
       "w": 1536,
       "h": 1920,
       "ar": 0.8,
-      "fx": 0.68,
+      "fx": 0.6,
       "fy": 1,
-      "subjTop": 0.44
+      "subjTop": 0.38
     },
     "layout": "subject-right",
+    "pose": "saluda",
     "safe": {
       "d": [
         [
@@ -823,7 +825,7 @@
           0.04,
           0.03,
           0.96,
-          0.4
+          0.37
         ]
       ]
     },
@@ -835,10 +837,10 @@
         0.96
       ],
       "m": [
-        0.56,
-        0.5,
-        0.82,
-        0.92
+        0.4,
+        0.41,
+        0.91,
+        0.9
       ]
     },
     "anchors": {
@@ -848,8 +850,8 @@
           0.568
         ],
         "m": [
-          0.668,
-          0.725
+          0.55,
+          0.62
         ],
         "scrW": 0.03
       },
@@ -859,8 +861,8 @@
           0.451
         ],
         "m": [
-          0.671,
-          0.67
+          0.55,
+          0.515
         ]
       },
       "mano": {
@@ -869,8 +871,8 @@
           0.527
         ],
         "m": [
-          0.583,
-          0.712
+          0.71,
+          0.66
         ]
       },
       "silla": {
@@ -879,8 +881,8 @@
           0.69
         ],
         "m": [
-          0.702,
-          0.785
+          0.81,
+          0.78
         ]
       },
       "fig": {
@@ -907,16 +909,18 @@
         0.26
       ],
       "m": [
-        0.64,
-        0.58
+        0.72,
+        0.47
       ]
     },
     "grade": 0,
     "creationIds": {
       "desktop": "nVHLtBJYQD",
-      "mobile": "dtsJ95yXSL",
-      "mobileUpscale": "ksz838316B"
-    }
+      "mobile": "huOphXdvqL",
+      "mobileR1": "dtsJ95yXSL",
+      "mobileR1Upscale": "ksz838316B"
+    },
+    "mobileNote": "QA ronda 2: placa vertical regenerada (Nano Banana Pro 2k, referencia = placa de escritorio) con el sujeto más grande (≈ 50 % del alto) y reencuadrada a 4:5 con penumbra superior sintetizada (scripts/reencuadre-movil.mjs). La r1 quedó en materiales/v2/placas/discovery-cta-final/discovery-cta-final-movil-r1.jpg."
   },
   "discovery-hero": {
     "alt": "Dueño de negocio tranquilo junto a la ventana de su oficina, con su silla vacía en primer plano (imagen ilustrativa)",
@@ -935,9 +939,9 @@
       "w": 1536,
       "h": 1920,
       "ar": 0.8,
-      "fx": 0.7,
+      "fx": 0.56,
       "fy": 1,
-      "subjTop": 0.44
+      "subjTop": 0.37
     },
     "layout": "subject-right",
     "safe": {
@@ -954,7 +958,7 @@
           0.04,
           0.03,
           0.96,
-          0.4
+          0.36
         ]
       ]
     },
@@ -966,10 +970,10 @@
         0.96
       ],
       "m": [
-        0.57,
-        0.49,
-        0.85,
-        0.93
+        0.4,
+        0.41,
+        0.72,
+        0.97
       ]
     },
     "anchors": {
@@ -979,8 +983,8 @@
           0.69
         ],
         "m": [
-          0.72,
-          0.785
+          0.6,
+          0.83
         ]
       },
       "rostro": {
@@ -989,8 +993,8 @@
           0.165
         ],
         "m": [
-          0.7,
-          0.53
+          0.555,
+          0.456
         ]
       },
       "fig": {
@@ -1007,7 +1011,7 @@
         ],
         "m": [
           0.5,
-          0.9
+          0.93
         ]
       }
     },
@@ -1017,16 +1021,18 @@
         0.26
       ],
       "m": [
-        0.62,
-        0.58
+        0.6,
+        0.4
       ]
     },
     "grade": 0,
     "creationIds": {
       "desktop": "jUcTtu9LD0",
-      "mobile": "VX1xy2yMMU",
-      "mobileUpscale": "0eKyCJeTfW"
-    }
+      "mobile": "4RIl4so9Aa",
+      "mobileR1": "VX1xy2yMMU",
+      "mobileR1Upscale": "0eKyCJeTfW"
+    },
+    "mobileNote": "QA ronda 2: placa vertical regenerada (Nano Banana Pro 2k, referencia = placa de escritorio) con el sujeto más grande (≈ 50 % del alto) y reencuadrada a 4:5 con penumbra superior sintetizada (scripts/reencuadre-movil.mjs). La r1 quedó en materiales/v2/placas/discovery-hero/discovery-hero-movil-r1.jpg."
   },
   "discovery-para-quien": {
     "alt": "Dueña de negocio en una videollamada desde su oficina (imagen ilustrativa)",
@@ -1042,12 +1048,12 @@
     },
     "m": {
       "src": "/img/cine/discovery-para-quien-m",
-      "w": 1856,
-      "h": 2304,
-      "ar": 0.8056,
-      "fx": 0.48,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.43,
       "fy": 1,
-      "subjTop": 0.48
+      "subjTop": 0.37
     },
     "layout": "subject-left",
     "safe": {
@@ -1064,7 +1070,7 @@
           0.04,
           0.03,
           0.96,
-          0.43
+          0.36
         ]
       ]
     },
@@ -1076,10 +1082,10 @@
         0.98
       ],
       "m": [
-        0.23,
-        0.47,
-        0.74,
-        0.97
+        0.18,
+        0.4,
+        0.69,
+        0.94
       ]
     },
     "anchors": {
@@ -1089,8 +1095,8 @@
           0.252
         ],
         "m": [
-          0.432,
-          0.555
+          0.375,
+          0.48
         ]
       },
       "mano": {
@@ -1099,8 +1105,8 @@
           0.478
         ],
         "m": [
-          0.494,
-          0.684
+          0.45,
+          0.635
         ]
       },
       "fig": {
@@ -1117,7 +1123,7 @@
         ],
         "m": [
           0.5,
-          0.92
+          0.94
         ]
       }
     },
@@ -1127,15 +1133,17 @@
         0.38
       ],
       "m": [
-        0.53,
-        0.62
+        0.52,
+        0.6
       ]
     },
     "grade": 0,
     "creationIds": {
       "desktop": "gOMXEC0SXO",
-      "mobile": "rgYVmHlxtc"
-    }
+      "mobile": "DoxGDTDpcl",
+      "mobileR1": "rgYVmHlxtc"
+    },
+    "mobileNote": "QA ronda 2: placa vertical regenerada (Nano Banana Pro 2k, referencia = placa de escritorio) con el sujeto más grande (≈ 50 % del alto) y reencuadrada a 4:5 con penumbra superior sintetizada (scripts/reencuadre-movil.mjs). La r1 quedó en materiales/v2/placas/discovery-para-quien/discovery-para-quien-movil-r1.jpg."
   },
   "discovery-vsl-poster": {
     "alt": "",
@@ -1273,6 +1281,7 @@
       "subjTop": 0.45
     },
     "layout": "subject-left",
+    "pose": "saluda",
     "safe": {
       "d": [
         [
@@ -1656,6 +1665,7 @@
       "subjTop": 0.45
     },
     "layout": "subject-right",
+    "pose": "toca la superficie",
     "safe": {
       "d": [
         [
@@ -1789,6 +1799,7 @@
       "subjTop": 0.41
     },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": {
       "d": [
         [
@@ -1920,6 +1931,7 @@
       "subjTop": 0.43
     },
     "layout": "subject-right",
+    "pose": "sostiene la tarjeta",
     "safe": {
       "d": [
         [
@@ -2075,6 +2087,7 @@
       "subjTop": 0.45
     },
     "layout": "subject-right",
+    "pose": "toca la superficie",
     "safe": {
       "d": [
         [
@@ -2231,6 +2244,7 @@
       "subjTop": 0.45
     },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": {
       "d": [
         [
@@ -2391,6 +2405,7 @@
       "subjTop": 0.44
     },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": {
       "d": [
         [
@@ -2524,6 +2539,7 @@
       "subjTop": 0.44
     },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": {
       "d": [
         [
@@ -2641,6 +2657,7 @@
       "subjTop": 0.41
     },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": {
       "d": [
         [
@@ -2775,6 +2792,7 @@
       "subjTop": 0.38
     },
     "layout": "subject-right",
+    "pose": "señala",
     "safe": {
       "d": [
         [
@@ -2916,6 +2934,7 @@
       "subjTop": 0.41
     },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": {
       "d": [
         [
@@ -3037,6 +3056,7 @@
       "subjTop": 0.44
     },
     "layout": "subject-right",
+    "pose": "sostiene la tableta",
     "safe": {
       "d": [
         [
@@ -3157,6 +3177,7 @@
       "subjTop": 0.44
     },
     "layout": "subject-right",
+    "pose": "sostiene el teléfono",
     "safe": {
       "d": [
         [
@@ -3299,6 +3320,7 @@
       "subjTop": 0.46
     },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": {
       "d": [
         [
@@ -3443,6 +3465,7 @@
       "subjTop": 0.44
     },
     "layout": "subject-left",
+    "pose": "toca la superficie",
     "safe": {
       "d": [
         [
@@ -3573,6 +3596,7 @@
       "subjTop": 0.55
     },
     "layout": "subject-right",
+    "pose": "presenta",
     "safe": {
       "d": [
         [

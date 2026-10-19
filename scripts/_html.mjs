@@ -12,7 +12,7 @@ export const DIST = join(ROOT, 'dist');
 
 /* ───────────────────────── Argumentos ───────────────────────── */
 export function parseArgs(argv = process.argv.slice(2)) {
-  const o = { url: null, release: false, dist: DIST, only: null, quiet: false, json: false };
+  const o = { url: null, release: false, dist: DIST, only: null, quiet: false, json: false, dev: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--url') o.url = (argv[++i] || 'http://127.0.0.1:4321').replace(/\/$/, '');
@@ -22,6 +22,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
     else if (a === '--only') o.only = (argv[++i] || '').split(',').filter(Boolean);
     else if (a === '--quiet') o.quiet = true;
     else if (a === '--json') o.json = true;
+    else if (a === '--dev') o.dev = true; // también revisa las páginas de demostración (/dev/*, dev-movil.html), que no salen en el build de producción
   }
   if (process.env.CHECK_URL && !o.url) o.url = process.env.CHECK_URL.replace(/\/$/, '');
   if (process.env.CHECK_RELEASE === '1') o.release = true;
@@ -30,35 +31,59 @@ export function parseArgs(argv = process.argv.slice(2)) {
 
 /* ───────────────────────── Reporte ───────────────────────── */
 export function reporter(name, opts) {
-  const fails = [], warns = [];
+  const fails = [], warns = [], gates = [];
   const brokenSeen = new Set();
   const fmt = (route, msg) => (route ? `${route} · ${msg}` : msg);
   return {
     name,
     fail(route, msg) { fails.push(fmt(route, msg)); },
     warn(route, msg) { if (opts?.release) fails.push(fmt(route, `${msg} (fatal con --release)`)); else warns.push(fmt(route, msg)); },
+    /** Puerta del cliente (copy en borrador, caso sin confirmar, FAQ por validar…): nunca hace fallar el build; solo
+     *  --release (revisión de lanzamiento) la vuelve fatal. Se cuenta aparte para que el resumen la distinga de los avisos. */
+    gate(route, msg) {
+      if (opts?.release) fails.push(fmt(route, `[puerta del cliente] ${msg} (fatal con --release)`));
+      else gates.push(fmt(route, msg));
+    },
     info(msg) { if (!opts?.quiet) console.log(`  · ${msg}`); },
     /** Páginas que respondieron 200 sin HTML (error de plantilla en desarrollo): fallan en cada guarda. */
     broken() { for (const r of opts?.broken ?? []) if (!brokenSeen.has(r)) { brokenSeen.add(r); fails.push(fmt(r, 'la página no se renderizó (el servidor respondió sin HTML: error de la plantilla o del copy)')); } },
     get fails() { return fails; },
     get warns() { return warns; },
+    get gates() { return gates; },
     done() {
       this.broken();
       const tag = fails.length ? 'FAIL' : 'OK';
-      console.log(`\n[${name}] ${tag} · ${fails.length} fallo(s) · ${warns.length} aviso(s)`);
+      console.log(`\n[${name}] ${tag} · ${fails.length} fallo(s) · ${warns.length} aviso(s)${gates.length ? ` · ${gates.length} puerta(s) del cliente` : ''}`);
       const cap = 60;
       for (const f of fails.slice(0, cap)) console.log(`  ✗ ${f}`);
       if (fails.length > cap) console.log(`  … y ${fails.length - cap} fallos más`);
       for (const w of warns.slice(0, cap)) console.log(`  ! ${w}`);
       if (warns.length > cap) console.log(`  … y ${warns.length - cap} avisos más`);
-      return { name, fails: fails.length, warns: warns.length };
+      for (const g of gates.slice(0, cap)) console.log(`  ◇ ${g}`);
+      return { name, fails: fails.length, warns: warns.length, gates: gates.length };
     },
   };
 }
 
 /* ───────────────────────── Datos del sitio ───────────────────────── */
 const readJSON = (p) => JSON.parse(readFileSync(p, 'utf8'));
-export const SITEMAP = readJSON(join(ROOT, 'src/data/sitemap.json'));
+/** sitemap.json tal cual (con tokens {{metric:…}} en title/metaDescription): lo usa check-cifras para vigilar la fuente. */
+export const SITEMAP_RAW = readJSON(join(ROOT, 'src/data/sitemap.json'));
+/** Tokens de cifra en los textos de sitemap.json (misma sintaxis que el copy y src/lib/site.ts → resolveTokens). */
+export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|price|Price|source)\}\}/g;
+let metricsCache = null;
+export function resolveTokens(s) {
+  if (typeof s !== 'string' || !s.includes('{{')) return s;
+  const M = (metricsCache ??= loadMetrics());
+  return s.replace(new RegExp(TOKEN_RX.source, 'g'), (all, k, id, mod) => {
+    if (k === 'price') return M.PRICE_FROM; if (k === 'Price') return M.PRICE_FROM_CAP; if (k === 'source') return M.SOURCE_NOTE;
+    const m = M.metrics[id];
+    if (!m) throw new Error(`[check] sitemap.json: cifra desconocida ${all}`);
+    return mod === 'prose' ? (m.prose ?? `${m.value} ${m.label}`) : mod === 'full' ? `${m.value} ${m.label}` : m.value;
+  });
+}
+/** sitemap.json con los tokens resueltos (lo que publica la página: <title>, meta description, H1). */
+export const SITEMAP = SITEMAP_RAW.map((p) => ({ ...p, title: resolveTokens(p.title), metaDescription: resolveTokens(p.metaDescription), h1: resolveTokens(p.h1) }));
 export const NAV = readJSON(join(ROOT, 'src/data/navegacion.json'));
 export const PLATES = readJSON(join(ROOT, 'src/data/plates.json'));
 export const SITE_URL = 'https://ingeniak.mx';
@@ -167,8 +192,9 @@ export async function loadPages(opts) {
       list.push({ route: p.url, html, page: p, source: opts.url + u });
     }
     if (!list.length) throw new Error(`[check] ninguna ruta de sitemap.json respondió 200 en ${opts.url}`);
-    // páginas de demostración (src/pages/dev/*.astro): solo las revisan las guardas de texto (cifras, pendientes)
-    if (opts.dev !== false) {
+    // páginas de demostración (src/pages/dev/*.astro): no salen en producción (astro.config.mjs las saca de dist); solo con
+    // --dev las revisan las guardas de texto (cifras, pendientes)
+    if (opts.dev === true) {
       const devDir = join(ROOT, 'src/pages/dev');
       const devFiles = existsSync(devDir) ? readdirSync(devDir).filter((f) => /^[a-z0-9-]+\.astro$/.test(f)) : [];
       for (const f of devFiles) {
@@ -185,8 +211,9 @@ export async function loadPages(opts) {
     if (!files.length) throw new Error(`[check] no hay HTML en ${opts.dist}: corre "astro build" o usa --url http://127.0.0.1:4321`);
     for (const f of files) {
       const route = routeOfDist(f, opts.dist);
-      const dev = route.startsWith('/dev/'); // páginas de demostración (noindex, fuera del sitemap): solo cifras y pendientes
-      if (dev && opts.dev === false) continue;
+      // páginas de demostración (noindex, fuera del sitemap y del build de producción): solo con --dev (cifras y pendientes)
+      const dev = route.startsWith('/dev/') || route === '/dev-movil/';
+      if (dev && opts.dev !== true) continue;
       list.push({ route, html: readFileSync(f, 'utf8'), page: SITEMAP.find((p) => p.url === route) ?? null, source: f, dev });
     }
   }

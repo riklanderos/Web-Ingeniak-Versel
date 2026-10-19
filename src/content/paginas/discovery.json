@@ -4,18 +4,20 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-18",
+  "actualizado": "2026-10-19",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "FAQ DISTINTA DE D · D01: agrega 'no tiene sentido proponerte un sistema sin haber visto cómo vendes, atiendes y operas hoy. Si después decides implementar, eso sí se cotiza aparte.'",
     "FAQ DISTINTA DE D · D02: agrega 'No hay presentación de ventas disfrazada de diagnóstico ni compromiso de compra: tú decides si avanzas.'",
     "FAQ DISTINTA DE D · D03: agrega ejemplos de números útiles (mensajes o prospectos por semana, tiempo de respuesta, herramientas de venta).",
-    "FAQ DISTINTA DE D · D04: agrega 'y costo' a la propuesta y 'Si tu caso no encaja… te orientamos a dónde sí. Nadie te va a perseguir con llamadas después.' Esta última es una promesa del equipo comercial: confírmala.",
-    "FAQ DISTINTA DE D · D05: agrega 'Si te surge algo de último momento, avísanos de todos modos: preferimos mover la llamada a que la tomes con prisa.'",
-    "FAQ DISTINTA DE D · D06: agrega 'Lo que más pesa no es el tamaño, sino que el negocio dependa de ti para operar y quieras sistematizarlo.'",
+    "FAQ DISTINTA DE D · D04: agrega 'y costo' a la propuesta y 'Si tu caso no encaja… te orientamos a dónde sí. Nadie te va a perseguir con llamadas después.' Las dos frases son textuales de la sección 'Después de la llamada' de la página actual agenda.ingeniak.tech/discovery (materiales/discovery/contenido.md), no una promesa nueva; si ya no aplica, avísanos y sale de la FAQ y de #despues.",
+    "FAQ D05: vuelve al texto exacto de D (ronda 2). Se quitó 'Si te surge algo de último momento, avísanos de todos modos: preferimos mover la llamada a que la tomes con prisa.', que era una política de reagenda no confirmada.",
+    "FAQ DISTINTA DE D · D06: agrega 'Lo que más pesa no es el tamaño, sino que el negocio dependa de ti para operar y quieras sistematizarlo.' y escribe 'pymes' en minúscula (D: 'PyMES').",
+    "CAMBIO DE TEXTO (QA ronda 1) · hero.remate: 'No es una venta: es un diagnóstico. Cotizar sin diagnóstico es adivinar con dinero ajeno.' (v1: 'No entregamos nada: diagnosticamos…', que en el primer pantallazo contradecía la propuesta de #despues). hero.lede: el texto de v1 sin 'Discovery Session: una llamada 1:1 y gratuita con Ingeniak.' (ya lo dicen la etiqueta, el H1 y la microcopia del botón); queda en una oración de 16 palabras, entera en el primer pantallazo móvil.",
+    "CAMBIO DE TEXTO (QA ronda 1) · que-es: 'La llamada no incluye grabación ni mapa de procesos.' (v1: '…ni documentos', chocaba con la propuesta que se envía después) y 'No es el proyecto de consultoría: es el descubrimiento previo.' (v1: 'No es consultoría', chocaba con el servicio de Consultoría en IA).",
+    "CAMBIO DE TEXTO (QA ronda 1) · secundario 'Escríbele a Kain' en portada y FAQ (regla de marca; antes 'Escríbenos por WhatsApp'); el waMessage de la página no cambia. 'letra chica' queda una sola vez (eyebrow de pasos): #despues dice 'Sin presión: tú decides si avanzas.' y el eyebrow del FAQ es 'Lo que más nos preguntan'. El cierre ya no trae micro propia: toda la página usa la de §2.9. 'pymes' en minúscula en #para-quien.",
     "CAMBIO DE TEXTO · hero.chips y hero.micro quedan como _chips / _micro con _omitir (no se pintaban: repetían el eyebrow, el lede y la microcopia fija del primario).",
     "PREGUNTA AL CLIENTE · firma 'Construimos empresarios libres, no héroes cansados.' (ESPEC §11-4).",
-    "PREGUNTA AL CLIENTE · teléfono único de la respuesta D05 (33 2101 7799 frente a 33 2101 2962 del Sales Brief, D §15).",
     "DATO PENDIENTE · VSL: subtítulos .vtt y póster limpio (R14). La escena no promete subtítulos hasta que existan."
   ],
   "sections": {
@@ -23,14 +25,14 @@
       "_componente": "ImageSection hero (discovery-hero, dueño junto a su silla vacía, subject-right) + .chip-spec + .btn directo a la agenda. Encabezado reducido.",
       "rail": "Portada",
       "eyebrow": "Llamada 1:1 · 30 minutos · sin costo",
-      "h1": { "text": "30 minutos para ver tu operación", "soft": "como es, no como crees que es" },
-      "lede": "Discovery Session: una llamada 1:1 y gratuita con Ingeniak. Mapeamos tus necesidades, detectamos las áreas de oportunidad de tu negocio y sales con sugerencias concretas.",
-      "remate": "No entregamos nada: diagnosticamos. Cotizar sin diagnóstico es adivinar con dinero ajeno.",
+      "h1": { "text": "30 minutos para ver tu operación", "soft": "como es, no como crees que es", "lit": "operación" },
+      "lede": "Mapeamos tus necesidades, detectamos las áreas de oportunidad de tu negocio y sales con sugerencias concretas.",
+      "remate": "No es una venta: es un diagnóstico. Cotizar sin diagnóstico es adivinar con dinero ajeno.",
       "_chips": { "_omitir": true, "_nota": "No se pinta: repetiría el eyebrow (.chip-spec 'Llamada 1:1 · 30 minutos · sin costo') y el lede en el primer pantallazo (páginas · ConversionTemplate #7a y #12).", "items": ["Media hora · 1:1", "Cero costo", "Sugerencias concretas"] },
       "ctaPrimary": { "label": "Agendar mi Discovery Session", "href": "https://agenda.ingeniak.tech/discovery/agendar" },
       "_micro": { "_omitir": true, "_nota": "No se pinta: el primario de la portada lleva la microcopia fija de §2.9 (_comun.cta.micro: '30 min · 1:1 · Google Meet · sin costo'); esta solo vive en el cierre (páginas · ConversionTemplate #12).", "text": "Sin costo · Sin compromiso · 30 minutos por Google Meet" },
       "ctaSecondary": {
-        "label": "Escríbenos por WhatsApp",
+        "label": "Escríbele a Kain",
         "waMessage": "Hola, vengo de la página de la Discovery Session y tengo una duda antes de agendar."
       }
     },
@@ -76,10 +78,10 @@
         "title": "Lo que no es",
         "tone": "ambar",
         "items": [
-          "No entregamos grabación, mapa de procesos ni documentos.",
+          "La llamada no incluye grabación ni mapa de procesos.",
           "No hay presentación de ventas disfrazada de diagnóstico.",
           "No hay compromiso de compra posterior. Tú decides.",
-          "No es consultoría: es descubrimiento. El trabajo profundo va después."
+          "No es el proyecto de consultoría: es el descubrimiento previo. El trabajo profundo va después."
         ]
       },
       "revisamos": {
@@ -104,7 +106,7 @@
         "title": "Es para ti si…",
         "tone": "cian",
         "items": [
-          "Eres dueño o dueña de una PyME de 3 a 40 empleados, de cualquier sector.",
+          "Eres dueño o dueña de una pyme de 3 a 40 empleados, de cualquier sector.",
           "El negocio depende de ti para operar: ventas, cobros, supervisión, todo.",
           "Sientes que hay procesos que se pueden sistematizar, pero no sabes por dónde empezar.",
           "Consideras invertir en implementación y quieres una opinión seria antes."
@@ -127,7 +129,7 @@
       "eyebrow": "Después de la llamada",
       "h2": { "text": "Si hay sentido,", "soft": "te cotizamos la implementación." },
       "body": [
-        "Con lo que veamos en los 30 minutos preparamos una propuesta de implementación: qué se hace, en qué orden, en cuánto tiempo y cuánto cuesta. Sin presión y sin letra chica.",
+        "Con lo que veamos en los 30 minutos preparamos una propuesta de implementación: qué se hace, en qué orden, en cuánto tiempo y cuánto cuesta. Sin presión: tú decides si avanzas.",
         "Si tu caso no encaja con lo que hacemos, te lo decimos en la misma llamada y te orientamos a dónde sí. Nadie te va a perseguir con llamadas después."
       ],
       "remate": "La Discovery Session no cuesta nada. Las implementaciones empiezan {{price}}.",
@@ -136,12 +138,12 @@
     "faq": {
       "_componente": "FAQAccordion (D01–D06)",
       "rail": "Preguntas",
-      "eyebrow": "Sin letra chica",
+      "eyebrow": "Lo que más nos preguntan",
       "h2": { "text": "Preguntas directas." },
       "faqIds": ["D01", "D02", "D03", "D04", "D05", "D06"],
-      "footer": "¿Otra duda? Escríbenos por WhatsApp.",
+      "footer": "¿Otra duda? Escríbele a Kain por WhatsApp.",
       "ctaSecondary": {
-        "label": "Escríbenos por WhatsApp",
+        "label": "Escríbele a Kain",
         "waMessage": "Hola, vengo de la página de la Discovery Session y tengo una duda antes de agendar."
       }
     },
@@ -152,7 +154,7 @@
       "h2": { "text": "30 minutos hoy valen más", "soft": "que una cotización a ciegas mañana." },
       "quote": "No cotizamos lo que no hemos visto. Revisa la operación con nosotros: es gratis, y aun así va a valer más que la mayoría de las juntas de tu semana.",
       "ctaPrimary": { "label": "Agendar mi Discovery Session", "href": "https://agenda.ingeniak.tech/discovery/agendar" },
-      "micro": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet",
+      "_micro": { "_omitir": true, "_nota": "No se pinta (QA ronda 1): la página usa una sola microcopia, la fija de §2.9 que la plantilla pone bajo el primario ('30 min · 1:1 · Google Meet · sin costo').", "text": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet" },
       "firma": "Construimos empresarios libres, no héroes cansados."
     }
   }

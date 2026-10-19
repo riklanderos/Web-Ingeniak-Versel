@@ -5,6 +5,7 @@
     "d": { "src": "/img/cine/home-kain", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.26, "fy": 0.5, "fadeFrom": 0.93 },
     "m": { "src": "/img/cine/home-kain-m", "w": 1856, "h": 2304, "ar": 0.8056, "fx": 0.45, "fy": 1, "subjTop": 0.45 },
     "layout": "subject-left",
+    "pose": "saluda",
     "safe": { "d": [[0.45, 0.06, 0.96, 0.94]], "m": [[0.04, 0.03, 0.96, 0.44]] },
     "subject": { "d": [0.07, 0.12, 0.43, 0.90], "m": [0.22, 0.45, 0.68, 0.90] },
     "anchors": {

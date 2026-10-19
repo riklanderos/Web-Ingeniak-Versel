@@ -142,6 +142,9 @@ const kainR = resolvePlate(kainKey, { layout: kainPlate.layout });
 // El teléfono de cristal: ancla de caja de la placa (resolvePlate ya la trae espejada; anchorStyle da --ax/--ay/--aw/--ah).
 // Si la placa no lo trae, la UI va en el texto.
 const telD = kainR.anchors.telefono?.box?.d ?? null;
+// Móvil (QA #7): la placa vertical también trae la caja del teléfono → el teléfono de cristal se enciende con la miniatura
+// de ChatSim (§3.7: < 180 px) en vez de verse vacío; la conversación completa sigue en línea, bajo la placa (alto acotado).
+const telM = kainR.anchors.telefono?.box?.m ?? null;
 const phoneStyle = telD ? anchorStyle('telefono') : '';
 const chatTabs = (kain.chat?.tabs ?? (kain.chat?.scripts ?? ['salud']).map((id: string) => ({ id }))) as { id: string; label?: string }[];
 const chatId = 'kain-chat';
@@ -387,7 +390,7 @@ const railGroups = [3, 6, 4];
       </Fragment>
 
       {telD && (
-        <div slot="anchors" class="anchor anchor--panel hm-phone" data-anchor="telefono" data-m="none" data-lock style={phoneStyle}>
+        <div slot="anchors" class="anchor anchor--panel hm-phone" data-anchor="telefono" data-m={telM ? undefined : 'none'} data-lock style={phoneStyle}>
           <ChatSim mode="registered" tabs={chatTabs} tabsOutside={chatTabs.length > 1} id={chatId} note={false} />
         </div>
       )}
@@ -505,11 +508,14 @@ const railGroups = [3, 6, 4];
   )}
 
   {/* ── 12 · Ficha técnica + preguntas (G01, G02, G04, G07, G08, G11) ──────── */}
+  {/* Aviso QA ronda 2 (#faq a 1280 × 720): el aura propia del intertítulo subía ≈ 420 px sobre #equipo y tapaba sus
+      créditos (la deriva de GSAP sumaba la traslación del CSS). Luz de ondas de plantilla, recortada a la escena. */}
   {has('faq') && (
-    <Intertitle id="faq" aura="ondas" layout="split" class="hm-faq tpl-glow">
+    <Intertitle id="faq" aura="none" layout="split" class="hm-faq tpl-glow">
       <Fragment slot="head">
         <EntitySheet variant="home" title={faq.eyebrow} class="hm-faq__sheet" />
       </Fragment>
+      <Aura kind="ondas" x="70%" y="52%" o={1} only="d" />
       <Aura kind="isotipo" x="-30%" y="4%" o={0.9} only="d" clip />
       <Aura kind="ondas" x="50%" o={1} only="m" sticky />
       <h2 id="faq-t" class="t-h2 hm-faq__h" data-split set:html={headline(faq.h2)} />

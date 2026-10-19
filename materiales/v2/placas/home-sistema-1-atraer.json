@@ -5,6 +5,7 @@
     "d": { "src": "/img/cine/home-sistema-1-atraer", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.76, "fy": 0.5, "fadeFrom": 0.94 },
     "m": { "src": "/img/cine/home-sistema-1-atraer-m", "w": 1856, "h": 2304, "ar": 0.8056, "fx": 0.55, "fy": 1, "subjTop": 0.45 },
     "layout": "subject-right",
+    "pose": "toca la superficie",
     "safe": { "d": [[0.04, 0.06, 0.53, 0.74]], "m": [[0.04, 0.03, 0.96, 0.41]] },
     "subject": { "d": [0.675, 0.09, 0.935, 0.935], "m": [0.29, 0.45, 0.75, 0.90] },
     "anchors": {

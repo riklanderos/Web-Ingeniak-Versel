@@ -91,6 +91,13 @@
     --mask-x:linear-gradient(90deg,transparent 0,rgb(0 0 0 / .35) calc(var(--mL) * .33),rgb(0 0 0 / .8) calc(var(--mL) * .66),#000 var(--mL),
       #000 calc(100% - var(--mR)),rgb(0 0 0 / .8) calc(100% - var(--mR) * .66),rgb(0 0 0 / .35) calc(100% - var(--mR) * .33),transparent 100%)}
   .is__stagebox{inset:0 max(0px, (100% - var(--cap)) / 2)}
+  /* Sujeto a un lado: el escenario se apoya en el borde de la ventana del lado del SUJETO (ahí no hay filo: es el borde
+     del cuadro) y se funde largo (hasta 28 %) del lado del texto, donde ya manda el velo. Centrado, el filo junto a un
+     sujeto pegado al borde de la placa (Kain de #kain a 2560) dejaba un rectángulo negro con esquina. */
+  .is[data-layout="subject-right"]{--mR:0px;--mL:max(0px, min(28%, var(--sx0,.5) * 100% - 16px))}
+  .is[data-layout="subject-right"] > .is__stagebox{left:auto;right:0;width:min(100%, var(--cap))}
+  .is[data-layout="subject-left"]{--mL:0px;--mR:max(0px, min(28%, (1 - var(--sx1,.5)) * 100% - 16px))}
+  .is[data-layout="subject-left"] > .is__stagebox{left:0;right:auto;width:min(100%, var(--cap))}
   .is__layer--media,.is__layer--cutout{
     -webkit-mask-image:var(--mask-y),var(--mask-x);-webkit-mask-composite:source-in;
     mask-image:var(--mask-y),var(--mask-x);mask-composite:intersect}
@@ -106,6 +113,9 @@
    se corre 40 px hacia dentro. En escritorios bajos el HUD inferior izquierdo chocaría con la fila de CTAs: se retira. */
 @media (min-width:1280px){.hud--tr{right:calc(var(--action-x) + 40px)}}
 @media (max-height:760px){.hud--bl{display:none}}
+/* El HUD vertical vive del lado del SUJETO, nunca en la columna de texto: con el sujeto a la izquierda (texto a la derecha,
+   hasta el borde del marco) pasa al carril izquierdo (a 1440 chocaba con el H2 y el lede de #problema y #kain). */
+[data-layout="subject-left"] > .is__hud > .hud--tr{right:auto;left:var(--action-x)}
 
 /* Portada (§5.1): en escritorios bajos manda la altura; la línea más larga termina antes de la mitad del escenario
    (bajo los brazos del isotipo de cristal de la portada del inicio): tope 6.6vw y, con el marco centrado (≥ 1600), marco / 11.9. */
@@ -127,7 +137,9 @@
   .is__layer--media{--mask-y:linear-gradient(180deg,transparent 0,#000 14%,#000 88%,transparent 100%)}
   .is__layer--media .stage::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
     background:linear-gradient(180deg,rgb(3 4 11 / .7) 0,rgb(3 4 11 / .35) calc(var(--subj-top-m) * 100% - 8%),transparent calc(var(--subj-top-m) * 100%))}
-  .is__fx{background:linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 12%)}
+  /* Mismo peso que el velo de escritorio de subject-center (0,3,0): en móvil el texto va arriba y el velo también (antes
+     ganaba el velo inferior de escritorio y la placa del VSL salía al 45 % de su brillo) */
+  .is__fx,.is[data-layout] .is__fx,.is[data-layout="subject-center"] .is__fx{background:linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 12%)}
   .is__text,.is[data-layout] .is__text,.is[data-layout="subject-center"] .is__aside{grid-column:1 / -1;text-align:left;justify-self:start}
   .is[data-layout="subject-center"] .is__aside{margin-top:var(--s-6)}
   .anchor[data-m="none"],.leader[data-m="none"]{display:none}
@@ -168,9 +180,12 @@
 .is[data-aura] :is(.caption,.leader,.leader-node,[data-anchor]:not([data-anchor~="pecho"]):not([data-anchor~="piso"])){display:none}
 
 /* ── FigCaption + línea guía (§3.8) ───────────────────────────────────────── */
-.caption{width:min(300px,22vw);translate:-100% 0;margin:0;font:400 13px/1.45 var(--f-body);color:var(--text-2);z-index:1}
+.caption{width:var(--cap-w,min(300px,22vw));translate:-100% 0;margin:0;font:400 13px/1.45 var(--f-body);color:var(--text-2);z-index:1}
 .is[data-layout="subject-left"] .caption{translate:0 0}
 .caption figcaption{display:flex;flex-direction:column;gap:7px}
+/* Solo rótulo (sin descripción): caja a la medida del rótulo (una línea si cabe; la hora nunca se parte) */
+.caption--label{width:max-content;max-width:var(--cap-w,min(360px,30vw))}
+.caption.caption--label .caption__n{line-height:1.45}
 .caption .caption__n{line-height:1}
 .caption .metric--inline b,.fig-inline .metric--inline b{font-weight:500;color:var(--text)}
 .leader{position:absolute;left:calc(var(--ax) * 100%);top:calc(var(--ay) * 100%);height:1px;margin-top:-.5px;transform-origin:0 50%;pointer-events:none;
@@ -211,7 +226,7 @@
 .co-word{position:absolute;left:50%;bottom:9%;translate:-50% 0;margin:0;font:500 .6875rem/1 var(--f-mono);letter-spacing:.42em;color:rgb(0 229 255 / .75);opacity:0}
 .co-layer:not(.is-live){visibility:hidden}
 html.co .co-layer:not(.co-layer--enc),html.enc .co-layer--enc{visibility:visible}
-/* Estado inicial antes de que GSAP tome el control: negro con el iris cerrado (nunca opacity 0 en la <img> LCP ni en el H1) */
+/* Estado inicial antes de que GSAP tome el control: negro con el iris cerrado (nunca opacity 0 en la imagen LCP ni en el H1) */
 html.co .is:has(> [data-shot="coldopen"], > .is__stagebox > [data-shot="coldopen"]){--veil:1;--iris:0px}
 html.enc .is[data-encendido]{--veil:1;--iris:0px}
 /* Red de seguridad: si el JS no carga o se cae, la portada queda completa a los 3.2 s (1.4 s el Encendido) */
@@ -262,10 +277,14 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.4s forwards}
 }
 
 /* ── Saltar escena (secuencias fijadas) ───────────────────────────────────── */
-/* Solo existe con la secuencia fijada (sin pin el contenido ya está apilado: fuera del orden de tabulación). Arriba a la
-   izquierda, objetivo ≥ 24 px; al usarlo, el titular siguiente queda bajo el encabezado y recibe el foco (_util.ts). */
+/* Solo existe con la secuencia fijada (sin pin el contenido ya está apilado: fuera del orden de tabulación). Arriba, del
+   lado del TEXTO (nunca sobre el sujeto: con el sujeto a la izquierda pasa a la derecha), objetivo ≥ 24 px; al usarlo, el
+   titular siguiente queda bajo el encabezado y recibe el foco (_util.ts). */
 .skip-scene{display:none;position:absolute;z-index:4;left:var(--action-x);top:calc(var(--hdr) + 4px);min-height:24px;min-width:24px;
   align-items:center;gap:6px;padding:4px 8px;margin-left:-8px;opacity:0;pointer-events:none;text-decoration:none;transition:opacity .3s var(--ease-ui)}
+[data-layout="subject-left"] > .skip-scene{left:auto;right:var(--safe-x);margin:0 -8px 0 0}
+/* CaseFigure: arriba a la izquierda va el rótulo de la escena (sin sujeto): el control pasa al lado libre, a la derecha */
+.cf > .skip-scene{left:auto;right:var(--safe-x);margin:0 -8px 0 0}
 :is(.is-pin-ready,.seq--pinned) > .skip-scene{display:inline-flex}
 .skip-scene:focus-visible,.is-pinned > .skip-scene{opacity:.8;pointer-events:auto}
 .skip-scene:hover{opacity:1}
@@ -398,6 +417,9 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.4s forwards}
   -webkit-mask-image:var(--gap),var(--fade);-webkit-mask-composite:source-in;mask-image:var(--gap),var(--fade);mask-composite:intersect}
 .dawn__edge{position:absolute;left:0;right:0;top:var(--gl);bottom:0;border-radius:50%;opacity:var(--edge);
   box-shadow:0 -1px 0 0 rgb(168 243 255 / .85),0 -6px 18px -2px rgb(0 229 255 / .5),0 -30px 90px -10px rgb(0 85 255 / .42)}
+/* Placa SIN horizonte horneado (el filo se dibuja en el piso, p. ej. discovery-cta-final): el piso pasa por la base del
+   sujeto (la silla, los pies), así que el hueco cubre toda la caja del sujeto + 5 %: el filo vive a los lados, detrás. */
+.dawn:not(.dawn--baked) .dawn__arc{--g0:calc(var(--s0) - .05);--g1:calc(var(--s1) + .05)}
 /* Placa con horizonte horneado: solo el resplandor (el trazo fino ya está en la placa) */
 .dawn--baked .dawn__edge{box-shadow:0 -3px 12px -3px rgb(0 229 255 / .5),0 -24px 70px -12px rgb(0 85 255 / .42)}
 .dawn__note{margin-top:var(--s-4)}
@@ -405,6 +427,14 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.4s forwards}
   .dawn__arc{--s0:var(--sx0-m,.5);--s1:var(--sx1-m,.5);--gl:90px;--fade0:5cqh;--fade1:14cqh;top:calc(var(--hz-ym) * 100% - var(--gl));height:calc(85% + var(--gl))}
   .dawn__beam{left:50%;width:70vw;height:60%}
 }
+
+/* ── Auras de escenas sin placa (Intertitle, CaseFigure, DayTimeline) ─────────
+   Las auras son LUZ con alfa (assets/aura-*.webp, "color a alfa" sobre la tinta #03040B: idénticas sobre la tinta y
+   transparentes donde eran negras). Como la sección siguiente apila encima de la anterior (orden del DOM), un aura opaca
+   más alta que su sección oscurecía el texto de la anterior (/discovery/ #para-quien bajo el aura de #despues; créditos
+   de #equipo bajo el aura de #faq a 1280 × 720) y dejaba costura donde empezaba. Con alfa solo suma luz: sin máscaras
+   ni costuras. .glow-clip es la capa que las contiene (z −2 dentro de la sección). */
+.glow-clip{position:absolute;inset:0;z-index:-2;pointer-events:none}
 
 /* ── Intertitle (§3.12): plano sin sujeto, aura ya desenfocada ─────────────── */
 .it{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0}
@@ -511,8 +541,16 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.4s forwards}
 .loc__sim{display:flex;flex-direction:column;gap:8px;margin:0;padding:12px 14px 14px;font:400 13px/1.4 var(--f-body);color:var(--text-2)}
 .loc__sim[hidden],.loc__bub[hidden]{display:none}
 .loc__sim .chip-sim{align-self:flex-start}
-.loc__sim--d{left:calc(var(--simx,.6) * 100%);top:calc(var(--simy,.5) * 100%);translate:calc(-100% - 18px) -50%;width:min(300px,22cqw);min-width:240px}
+.loc__sim--d{left:calc(var(--simx,.6) * 100%);top:calc(var(--simy,.5) * 100%);translate:calc(-100% - 18px + var(--sim-dx,0px)) -50%;width:min(300px,22cqw);min-width:240px}
 .loc__sim--m{display:none}
+/* Sin sitio entre la lista y la tableta (switcher.ts mide → data-sim="inline"; sin JS: por debajo de 1440 px) la tarjeta
+   va bajo la lista, como en móvil: nunca encima de los nombres de las industrias. */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-width:1439px){
+  .loc:not([data-sim="reg"]) .loc__simbox{display:none}
+  .loc:not([data-sim="reg"]) .loc__sim--m:not([hidden]){display:flex;margin-top:var(--s-5);max-width:360px}
+}
+.loc[data-sim="inline"] .loc__simbox{display:none}
+.loc[data-sim="inline"] .loc__sim--m:not([hidden]){display:flex;margin-top:var(--s-5);max-width:360px}
 .loc__bub{margin:0;padding:8px 11px;border-radius:12px;max-width:92%;color:var(--text)}
 .loc__bub--cliente{align-self:flex-start;background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--hair-2);border-bottom-left-radius:4px}
 .loc__bub--kain{align-self:flex-end;background:rgb(0 85 255 / .22);box-shadow:inset 0 0 0 1px var(--hair-cyan);border-bottom-right-radius:4px}
@@ -536,7 +574,8 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.4s forwards}
 .cf__foot{grid-column:1 / span 8;max-width:60ch}
 .cf__foot > *{margin:0}
 .cf-sw{display:grid;gap:var(--s-6)}
-.cf-sw__row{display:grid;grid-template-columns:8rem minmax(0,auto) 1fr;align-items:center;column-gap:var(--s-6)}
+.cf-sw__row{display:grid;grid-template-columns:11rem minmax(0,auto) 1fr;align-items:center;column-gap:var(--s-6)}
+.cf-sw__row > .t-label{line-height:1.45}
 .cf-sw__clock{font:200 clamp(3.5rem,1.6rem + 6vw,9rem)/.9 var(--f-display);letter-spacing:-.05em;font-variant-numeric:tabular-nums;min-width:4.2ch}
 .cf-sw__row--before .cf-sw__clock{color:var(--amber)}
 .cf-sw__bar{height:2px;background:var(--hair-2);position:relative}
@@ -608,6 +647,11 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.4s forwards}
 }
 @keyframes cine-safe{to{opacity:1}}
 .split-line{padding-bottom:.06em;margin-bottom:-.06em}
+/* Máscara de línea de SplitText (mask:"lines" → .split-mask-line-mask, overflow:clip en línea): con interlineado de
+   display (.88–.95) los descendentes (g, j, p, q, y) y los acentos de mayúscula salen de la caja de línea y el clip los
+   cortaba planos. La máscara recorta con clip-path extendido (aire arriba, abajo y a los lados) SIN cambiar el layout;
+   la línea parte de yPercent 160 (_util.ts) para quedar fuera de esa zona ampliada. */
+.split-mask-line-mask{overflow:visible!important;-webkit-clip-path:inset(-.3em -.6em -.3em -.6em);clip-path:inset(-.3em -.6em -.3em -.6em)}
 .split-line :is(.kain-mark,.lit,.soft):empty{display:none}
 
 /* ── QA de registro (?anchors=1, cine.ts) ──────────────────────────────────── */

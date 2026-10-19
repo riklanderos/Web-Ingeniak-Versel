@@ -116,14 +116,12 @@ if (chipMetric && rHero && !rHero.aura) {
 /* ── 02 · definición (texto del banco de FAQ; si la pregunta aún está en "validar", el texto de la página igual se muestra
        como párrafo, pero NO entra al FAQPage) ── */
 const defi = cp('definicion');
-const faqBankMods = import.meta.glob('../../data/faq.json', { eager: true, import: 'default' }) as Record<string, any>;
-const rawBank: any[] = (() => { const r: any = Object.values(faqBankMods)[0]; return Array.isArray(r) ? r : r?.items ?? []; })();
 let defText: { q: string; a: string } | null = null;
-if (defi?.definition?.faqId) {
-  const ok = getFaqItems([defi.definition.faqId])[0];
-  const raw = ok ?? rawBank.find((f) => f.id === defi.definition.faqId);
-  if (raw) defText = { q: defi.definition.heading ?? raw.q, a: raw.a };
-} else if (defi?.definition?.text) defText = { q: defi.definition.heading, a: defi.definition.text };
+// Solo preguntas aprobadas del banco (getFaqItems excluye las de "validar"); si la pregunta aún no está aprobada, el texto
+// propio del copy (definition.text) o nada: nunca el texto crudo de una pregunta pendiente (aviso de copy, ronda 2).
+const okFaq = defi?.definition?.faqId ? getFaqItems([defi.definition.faqId])[0] : null;
+if (okFaq) defText = { q: defi.definition.heading ?? okFaq.q, a: okFaq.a };
+else if (defi?.definition?.text) defText = { q: defi.definition.heading ?? defi.h2?.text, a: defi.definition.text };
 
 /* ── 05 · Kain en el sector ─────────────────────────────────────────────── */
 const ks = cp('kain-sector');
@@ -216,6 +214,14 @@ if (dev) {
           )}
           <HeroCtas href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
             waHref={wa} waLabel={waLabel(hero)} />
+          {/* QA #46 · escritorios 4:3 a 3:2 (1024 × 768): el chip anclado se recorta y se retira → la prueba va en una línea
+              bajo los CTA (solo en ese rango; en móvil la lleva `more` y en panorámico el chip) */}
+          {chipMetric && (
+            <p class="ind-proof-m ind-proof-43">
+              <span class="node" aria-hidden="true"></span>
+              <span><Metric id={chipMetric} variant="inline" label link /><span class="ind-proof-m__sep" aria-hidden="true"> · </span><span class="ind-proof-m__ctx">{hero.chip?.context ?? METRICS[chipMetric].ctx}</span></span>
+            </p>
+          )}
           {hero.illus && <p slot="over" class="chip-illus ind-illus tpl-mhide">{hero.illus}</p>}
           {/* R3 · móvil: después de la placa (misma sección) van la cola del lede y la prueba con su contexto */}
           {(heroLede.rest || chipMetric || hero.illus) && (
@@ -225,7 +231,7 @@ if (dev) {
               {chipMetric && (
                 <p class="ind-proof-m tpl-dhide">
                   <span class="node" aria-hidden="true"></span>
-                  <span><Metric id={chipMetric} variant="inline" label link /> <span class="ind-proof-m__ctx">· {hero.chip?.context ?? METRICS[chipMetric].ctx}</span></span>
+                  <span><Metric id={chipMetric} variant="inline" label link /><span class="ind-proof-m__sep" aria-hidden="true"> · </span><span class="ind-proof-m__ctx">{hero.chip?.context ?? METRICS[chipMetric].ctx}</span></span>
                 </p>
               )}
             </Fragment>
@@ -246,7 +252,6 @@ if (dev) {
         {defi && order.includes('definicion') && (
           <Intertitle id="definicion" rack aura="none" class="ind-def tpl-glow" labelledby={defText ? "definicion-d-q" : undefined}>
             <Aura kind="ondas" x="45%" y="108%" o={1} only="d" />
-            <Aura kind="isotipo" x="72%" o={0.9} only="m" sticky />
             {defText ? (
               <DefinitionBlock heading={defText.q} text={defText.a} label={defi.eyebrow ?? 'Definición'} headingLevel={2} id="definicion-d" />
             ) : (
@@ -265,7 +270,6 @@ if (dev) {
       if (!d?.entries?.length) return null;
       return (
         <DayTimeline id="dolores" entries={d.entries} rack={rHero?.rack ?? undefined} class="ind-day tpl-glow">
-          <Aura kind="isotipo" x="66%" o={0.9} only="m" sticky />
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{d.eyebrow}</p>
           <h2 id="dolores-t" class="t-h2" data-split set:html={headHtml(d.h2)} />
           {d.lede && <Copy as="p" class="t-lede t-lede--2 ind-day__lede" text={d.lede} data-reveal />}
@@ -278,7 +282,10 @@ if (dev) {
       const a = cp('automatizamos');
       if (!a?.items?.length) return null;
       return (
-        <Intertitle id="automatizamos" aura="isotipo" auraSide="right" class="ind-auto tpl-glow">
+        <Intertitle id="automatizamos" aura="none" class="ind-auto tpl-glow">
+          {/* QA #39: el aura del isotipo vive en una caja de bordes disueltos (tpl-aura-box): la sección ya no la recorta con
+              un filo recto contra la jornada */}
+          <Aura kind="isotipo" x="76%" y="20%" w="min(62vw,920px)" o={0.85} only="d" />
           <div class="ind-auto__head">
             <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{a.eyebrow}</p>
             <h2 id="automatizamos-t" class="t-h2" data-split set:html={headHtml(a.h2)} />
@@ -372,7 +379,10 @@ if (dev) {
     if (id === 'datos') {
       if (!datos) return null;
       return (
-        <Intertitle id="datos" aura="isotipo" auraSide="left" layout="split" class="ind-datos tpl-glow">
+        <Intertitle id="datos" aura="none" layout="split" class="ind-datos tpl-glow">
+          {/* Contraste AA (el titular es fijo y pasaba sobre el núcleo del isotipo) y menos isotipos repetidos (QA #52): ondas
+              tenues bajo el titular, en su caja de bordes disueltos */}
+          <Aura kind="ondas" x="24%" y="80%" w="min(96vw,1400px)" o={0.75} only="d" />
           <Fragment slot="head">
             <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{datos.eyebrow}</p>
             <h2 id="datos-t" class="t-h2" data-split set:html={headHtml(datos.h2)} />
@@ -407,7 +417,6 @@ if (dev) {
             {faq.footer && <div class="ind-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} /></div>}
           </Fragment>
           <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
-          <Aura kind="isotipo" x="65%" o={0.9} only="m" sticky />
           <FAQAccordion ids={faq.faqIds} glass id="faq-list" label={faq.eyebrow} />
         </Intertitle>
       );

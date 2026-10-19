@@ -19,22 +19,27 @@ interface Props {
 }
 const { n, title, anchor = 'fig', target = 'mano', metricId, variant = 'anchor', class: cls } = Astro.props;
 const num = String(n).padStart(2, '0');
+// Horas y medidas que nunca se parten ("11:48 p. m.", "8 min"): espacios de no separación.
+const keep = (t: string) => t.replace(/(\d{1,2}:\d{2})\s+([ap])\.\s?m\./gi, '$1\u00a0$2.\u00a0m.').replace(/(\d)\s+(min|s|h)\b/g, '$1\u00a0$2');
+const label = keep(title);
+// Solo rótulo (sin texto ni cifra): caja a la medida del rótulo, no la de un pie de foto con descripción.
+const hasBody = Astro.slots.has('default') || !!metricId;
 const lv = (k: string, a: string) =>
   `--${k}x:var(--A-${a}-x);--${k}y:var(--A-${a}-y);--${k}xm:var(--A-${a}-xm,var(--A-${a}-x));--${k}ym:var(--A-${a}-ym,var(--A-${a}-y));`;
 ---
 {variant === 'inline' ? (
   <p class:list={['fig-inline only-m', cls]} data-reveal>
-    <span class="t-label t-label--cyan">Fig. {num} · {title}</span>
+    <span class="t-label t-label--cyan">Fig. {num} · {label}</span>
     <span class="fig-inline__t"><slot />{metricId && <>{' '}<Metric id={metricId} variant="inline" />.</>}</span>
   </p>
 ) : (
   <>
     <span class="leader" data-anchor={`${anchor} ${target}`} data-lock aria-hidden="true" style={lv('a', anchor) + lv('b', target)}></span>
     <span class="anchor leader-node" data-anchor={`${target} ${anchor}`} data-lock aria-hidden="true" style={anchorStyle(target)}></span>
-    <figure class:list={['anchor caption glass-chip', cls]} data-anchor={anchor} data-lock data-caption style={anchorStyle(anchor)}>
+    <figure class:list={['anchor caption glass-chip', !hasBody && 'caption--label', cls]} data-anchor={anchor} data-lock data-caption style={anchorStyle(anchor)}>
       <figcaption>
-        <span class="t-label t-label--cyan caption__n">Fig. {num} · {title}</span>
-        <span class="caption__t"><slot />{metricId && <>{' '}<Metric id={metricId} variant="inline" />.</>}</span>
+        <span class="t-label t-label--cyan caption__n">Fig. {num} · {label}</span>
+        {hasBody && <span class="caption__t"><slot />{metricId && <>{' '}<Metric id={metricId} variant="inline" />.</>}</span>}
       </figcaption>
     </figure>
   </>

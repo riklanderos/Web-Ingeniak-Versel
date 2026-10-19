@@ -89,14 +89,17 @@ Ningún texto lleva cifras comerciales escritas a mano (`3.2×`, `−58%`, `27 p
 |---|---|---|
 | `{{metric:ID}}` | `<Metric id="ID" variant="inline" />` → **solo el valor** dentro de `data-metric` ("3.2×", "8 min → 12 s", "+73") | `METRICS[ID].value` |
 | `{{metric:ID\|full}}` | valor **y** etiqueta dentro del mismo nodo `data-metric` ("27 procesos automatizados", "+73 sistemas en producción") | `value + ' ' + label` |
+| `{{metric:ID\|prose}}` | la cifra redactada para una oración (`METRICS[ID].prose`, p. ej. "de 8 minutos a 12 segundos") dentro de `data-metric` | `METRICS[ID].prose` |
 | `{{price}}` | `<span data-allow-number>` + `PRICE_FROM` ("desde USD 997 al mes") | `PRICE_FROM` |
 | `{{Price}}` | igual, con `PRICE_FROM_CAP` ("Desde USD 997 al mes") | `PRICE_FROM_CAP` |
 | `{{source}}` | `SOURCE_NOTE` | `SOURCE_NOTE` |
 
 Las palabras que rodean al token completan la frase: `"logró {{metric:dental-citas}} más citas en 90 días"` → "logró 3.2× más citas en 90 días".
 
-**Cifras con flecha** (`dental-respuesta` = "8 min → 12 s", `salud-citas-mes` = "12 → 47"): nunca dentro de una oración ("pasó de 8 min → 12 s", "respuesta de 8 min → 12 s"). Se escriben como **rótulo**: `"el tiempo de respuesta por WhatsApp: {{metric:dental-respuesta}}"`. Cuando exista el token de prosa (`{{metric:ID|prose}}` → "de 8 minutos a 12 segundos"; peticiones ui #9 y orquestador #8) se cambia a `"bajó {{metric:dental-respuesta|prose}}"`. Mientras no exista, **no se usa**: el `TOKEN_RX` actual no lo reconoce y la página imprimiría las llaves.
-No son cifras comerciales (se escriben normal): horas ilustrativas (`23:48`, `11:48 p. m.`), "30 minutos", "1:1", "24/7", "de 3 a 40 empleados", "60 a 90 días", teléfono y dirección. Donde se pueda, los números sueltos van con letra ("siete preguntas", "dos minutos", "ocho minutos").
+**Cifras con flecha** (`dental-respuesta` = "8 min → 12 s", `salud-citas-mes` = "12 → 47"): nunca dentro de una oración ("pasó de 8 min → 12 s", "respuesta de 8 min → 12 s"). Dentro de una oración se usa el **token de prosa** `{{metric:ID|prose}}`, que pinta `METRICS[ID].prose` dentro del mismo nodo `data-metric` ("bajó {{metric:dental-respuesta|prose}}" → "bajó de 8 minutos a 12 segundos"). Solo `dental-respuesta` trae `prose` en metrics.ts; sin ella el token cae a valor + rótulo (con aviso en dev), así que para las demás cifras con flecha se sigue usando la forma de **rótulo**: `"citas al mes: {{metric:salud-citas-mes}}"`. En las filas de `EntitySheet` (fichas) no se usa `|prose`: van con el valor.
+No son cifras comerciales (se escriben normal): horas ilustrativas (`23:48`, `11:48 p. m.`), "30 minutos", "1:1", "24/7", "de 3 a 40 empleados", teléfono y dirección. Donde se pueda, los números sueltos van con letra ("siete preguntas", "dos minutos").
+
+**Plazos y promesas generales** ("resultados en 60 a 90 días", "sin que intervenga nadie", "24/7" dicho de un caso): no son cifras de metrics.ts y la guarda de cifras no los ve, pero son afirmaciones. Solo se escriben con confirmación escrita del cliente; si no, se acotan ("el plazo se define contigo en la propuesta") o se quitan (QA ronda 1). Una cifra de metrics.ts redactada con letra ("ocho minutos") sigue siendo esa cifra: solo en titulares donde el token no cabe, y cuenta para no repetirla de más (máximo dos veces fuera del FAQ, salvo en su propio caso).
 
 Implementación de referencia (para `src/lib/copy.ts`, del orquestador; pedido en `peticiones.md`):
 

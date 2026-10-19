@@ -1,8 +1,8 @@
-// src/scripts/shots/figure.ts — CaseFigure (§5.4.1, §7.4). Escritorio: fijada +100 % con scrub; móvil/táctil: al entrar.
+// src/scripts/shots/figure.ts — CaseFigure (§5.4.1, §7.4). Escritorio: fijada +100 % con scrub y "Saltar escena"; móvil/táctil: al entrar.
 // Movimiento reducido: estado final (ya está en el HTML: 8:00 / 0:12, barras llenas). Solo se anima lo que deriva de la
 // cifra confirmada. El estado inicial (relojes en 0:00, barras en 0) se pinta ANTES de construir la línea de tiempo: al
 // llegar a la escena fijada nunca se ve el final y luego un salto a cero.
-import { sala, type Env } from './_util';
+import { sala, wireSkip, type Env } from './_util';
 
 const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
 
@@ -65,11 +65,13 @@ export default function figure(el: HTMLElement, env: Env) {
     const master = gsap.timeline({
       scrollTrigger: {
         trigger: el, start: 'top top', end: el.dataset.pin, pin: true, scrub: 0.6, anticipatePin: 0,
-        onToggle: (s) => sala(s.isActive),
+        onToggle: (s) => { el.classList.toggle('is-pinned', s.isActive); sala(s.isActive); },
       },
     });
     master.add(tl, 0).to({}, { duration: 0.25 });
-    return () => { sala(false); done(); };
+    // "Saltar escena" (F5, §10): visible solo mientras está fijada; salta al final del pin y enfoca el titular siguiente.
+    const unskip = wireSkip(el, env, master.scrollTrigger ?? null);
+    return () => { unskip(); el.classList.remove('is-pinned'); sala(false); done(); };
   }
   ScrollTrigger.create({ trigger: el.querySelector('.cf__stage') ?? el, start: 'top 70%', once: true, onEnter: () => gsap.to(tl, { progress: 1, duration: 2.2, ease: 'power1.inOut' }) });
   return done;

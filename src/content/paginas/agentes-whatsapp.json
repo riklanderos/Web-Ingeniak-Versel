@@ -4,23 +4,24 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-18",
+  "actualizado": "2026-10-19",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "FAQ DISTINTA DE D · G02: misma respuesta con sujeto explícito ('Un agente de IA para WhatsApp es…'); es también la definición de #definicion.",
     "FAQ DISTINTA DE D · G03: agrega 'Por eso puede atender conversaciones reales de venta y servicio, no solo preguntas previstas.'",
-    "FAQ DISTINTA DE D · W01: vuelve al texto de D, con las cifras como token y la de respuesta como rótulo ('Su tiempo de respuesta por WhatsApp: …'). Agrega 'El agente califica a cada paciente y agenda su cita; cuando hace falta, le pasa la conversación a una persona del equipo.' Se quitó la afirmación de que el agente trabaja sin que intervenga ninguna persona (no confirmada y contradice el paso a una persona).",
+    "FAQ W01: vuelve al texto de D (ronda 2), con las cifras como token y la de respuesta en prosa ('…bajó el tiempo de respuesta en WhatsApp de 8 minutos a 12 segundos…'). Se quitaron 'El agente califica a cada paciente y agenda su cita…' (el caso no lo tiene confirmado) y la afirmación de que el agente trabaja sin que intervenga ninguna persona.",
     "FAQ DISTINTA DE D · W02: agrega 'También puede mover al prospecto de etapa, crear tareas y avisar a la persona indicada cuando hace falta intervenir. Cada conversación queda registrada en tu CRM.'",
     "FAQ DISTINTA DE D · G09: agrega el criterio de elección (calidad de las respuestas, velocidad y costo de uso) y 'Si más adelante conviene otro modelo, lo evaluamos con tus propias conversaciones.'",
     "FAQ DISTINTA DE D · W03: agrega 'Lo que más mueve el precio son los canales que atiende el agente, sus integraciones y el volumen de conversaciones.'",
-    "CAMBIO DE AFIRMACIÓN · casos.lede: ya no promete ciudad y plazo en todas las cifras; ahora: 'Cifras de sistemas en producción, con su sector y, cuando está confirmado, la ciudad y el plazo de medición.'",
+    "CAMBIO DE AFIRMACIÓN · casos.lede: ya no promete ciudad y plazo en todas las cifras ni que cada sistema siga operando hoy; ahora: 'Cifras de sistemas que implementamos, con su sector y, cuando está confirmado, la ciudad y el plazo de medición.'",
+    "CAMBIO DE TEXTO (QA ronda 1) · casos.eyebrow 'Sistemas reales, cifras medidas' (antes 'Agentes reales que ya operan': la fila de retail es un caso de CRM, no de agente, y 'ya operan' no está confirmado). Repetición de cifras: dental-respuesta sale de la fila de #definicion (queda en la portada, en prosa, y en el registro de #casos); dental-citas queda en #definicion y en el Montage. Cada cifra se ve dos veces fuera del FAQ.",
     "CAMBIO DE AFIRMACIÓN · definicion.metricRow.title: 'Resultados medidos en producción' (antes 'Agentes en producción', pero la fila incluye cifras que no son de un agente, como sistemas).",
     "CAMBIO DE AFIRMACIÓN · si-no reescrito para no repetir capacidades. 'Lo que no hace' pasa a tono neutro (son límites, no dolor). Confirmar que el servicio incluye: el paso a una persona 'con todo el historial' y el ajuste mensual 'con tus conversaciones reales' (fases Operate y Rise).",
     "CAMBIO DE AFIRMACIÓN · integraciones.note: 'Somos partner oficial de Kommo en Latinoamérica.' (antes 'Kommo es nuestra alianza oficial').",
-    "CAMBIO DE TEXTO · hero.lede: la cifra dental-respuesta va como rótulo, sin flecha dentro de la frase. casos: filas dental-citas y retail-conversiones (ESPEC §5.2 07). Cierre: sin 'Gratis, 1:1 y sin compromiso' en el lede y sin micro (repetía la microcopia del primario). Eyebrows nuevos en vs-chatbot, casos y cierre.",
+    "CAMBIO DE TEXTO · hero.lede: la cifra dental-respuesta va en prosa con el token |prose ('bajó de 8 minutos a 12 segundos'), sin flecha dentro de la frase. casos: filas dental-citas y retail-conversiones (ESPEC §5.2 07). Cierre: sin 'Gratis, 1:1 y sin compromiso' en el lede y sin micro (repetía la microcopia del primario). Eyebrows nuevos en vs-chatbot, casos y cierre.",
     "PREGUNTA AL CLIENTE · calendarios que se conectan además del de Kommo o GoHighLevel (¿Google Calendar, Outlook, otros?): confirmar con el equipo técnico antes de nombrar alguno. Hoy la página dice 'El calendario de tu CRM o el que ya usa tu equipo; lo dejamos definido en la fase Koncept.'",
     "PREGUNTA AL CLIENTE · periodo de medición de retail-conversiones (fila de casos): ¿contra qué periodo se compara y en qué ventana? No se escribe hasta tenerlo.",
-    "PREGUNTA AL CLIENTE · fila de cifras de #definicion (ids de la ESPEC: dental-respuesta, dental-citas, salud-citas-mes, sistemas): repite las cifras de #casos y 'sistemas' no es un resultado de agente. ¿Se queda así?"
+    "PREGUNTA AL CLIENTE · fila de cifras de #definicion (la ESPEC pide dental-respuesta, dental-citas, salud-citas-mes y sistemas): desde la ronda 2 sale dental-respuesta para no repetirla 4 veces. 'sistemas' no es un resultado de agente. ¿Se queda así?"
   ],
   "sections": {
     "hero": {
@@ -28,7 +29,7 @@
       "rail": "Portada",
       "eyebrow": "Servicio · Atender",
       "h1": { "text": "Agentes de IA", "soft": "para WhatsApp Business" },
-      "lede": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM. En una clínica dental de Monterrey, el tiempo de respuesta por WhatsApp: {{metric:dental-respuesta}}.",
+      "lede": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM. En una clínica dental de Monterrey, el tiempo de respuesta bajó {{metric:dental-respuesta|prose}}.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -54,7 +55,7 @@
       ],
       "metricRow": {
         "title": "Resultados medidos en producción",
-        "metricIds": ["dental-respuesta", "dental-citas", "salud-citas-mes", "sistemas"],
+        "metricIds": ["dental-citas", "salud-citas-mes", "sistemas"],
         "sourceNote": true
       }
     },
@@ -181,9 +182,9 @@
     "casos": {
       "_componente": "Montage (2 filas) + ResultsLedger filtrado por servicio",
       "rail": "Casos",
-      "eyebrow": "Agentes reales que ya operan",
+      "eyebrow": "Sistemas reales, cifras medidas",
       "h2": { "text": "Lo que ya pasó", "soft": "en negocios reales." },
-      "lede": "Cifras de sistemas en producción, con su sector y, cuando está confirmado, la ciudad y el plazo de medición.",
+      "lede": "Cifras de sistemas que implementamos, con su sector y, cuando está confirmado, la ciudad y el plazo de medición.",
       "rows": [
         { "metricId": "dental-citas", "context": "Agente de IA en WhatsApp · Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
         { "metricId": "retail-conversiones", "context": "Kommo con calificación de leads por IA · Retail multimarca", "href": "/casos/retail-multimarca-kommo/", "linkLabel": "Ver el caso" }

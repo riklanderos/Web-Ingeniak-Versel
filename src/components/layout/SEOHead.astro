@@ -51,10 +51,14 @@ const ogAbs = `${SITE.url}${ogImage}`;
 // og:image:alt describe la TARJETA (no repite el H1 como si fuera la imagen). Tarjeta por página (tarea 5 del orquestador):
 // still de su portada + su titular + logotipo. Tarjeta general: logotipo, isotipo de cristal y el lema.
 const heroPlate = heroPlateOf(page.url);
-const heroAlt = (heroPlate ? (getPlate(heroPlate) as any)?.alt : '') as string;
+// El alt de la placa ya trae su propio paréntesis ("… (imagen ilustrativa)", aviso que se conserva): la escena va tras una
+// coma, no entre paréntesis, para no anidarlos (QA r2 · /discovery/).
+const heroAlt = ((heroPlate ? (getPlate(heroPlate) as any)?.alt : '') as string) || '';
+const sceneOf = heroAlt.replace(/\.$/, '').trim();
+const lc1 = (s: string) => (s && !/^(Kain|Ingeniak)\b/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
 const cardOf = page.url === '/' ? 'de la portada' : `de la página «${page.breadcrumbs?.at?.(-1)?.name ?? title}»`;
 const ogAlt = ownCard && !p.ogImage
-  ? `Tarjeta de Ingeniak ${cardOf}: su titular y el logotipo de Ingeniak sobre la escena de su portada${heroAlt ? ` (${heroAlt.replace(/\.$/, '')})` : ''}`
+  ? `Tarjeta de Ingeniak ${cardOf}: su titular y el logotipo de Ingeniak sobre la escena de su portada${sceneOf ? `, ${lc1(sceneOf)}` : ''}`
   : 'Tarjeta de Ingeniak: logotipo, isotipo de cristal azul y el lema «Agentizamos empresas.» sobre fondo azul noche';
 
 // FAQ (FAQPage idéntico al texto visible): 1) las que la página pasa (faq); 2) faqIds; 3) las faqIds del copy de la página

@@ -7,9 +7,14 @@
 // Movimiento: filas xPercent ±3 en sentidos alternos, deriva ±8 % alrededor del sujeto dentro de las letras (scrub) y
 // entrada con barrido limpio (clip-path; el contenido nunca sale del árbol de accesibilidad).
 // Slots: default (eyebrow + H2 con id "<id>-t") · foot (enlaces "Ver todos los casos →" …).
+// R12 (sin enlaces muertos en el cuerpo): la fila enlaza al caso solo si su página está construida (linkTarget de
+// src/lib/site); si no, es un <div> sin "Ver caso". Al construir el caso, la fila vuelve a enlazar sola.
+// Placa con personas (caso, sector): la cifra real va sobre una imagen generada → chip "Imagen ilustrativa" en la fila
+// (nunca se lee como foto del cliente).
 import Metric from '../ui/Metric.astro';
 import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 import { resolvePlate, AURA_ONDAS } from './plate';
+import { linkTarget } from '../../lib/site';
 
 interface Props {
   id?: string;
@@ -20,11 +25,13 @@ interface Props {
   class?: string;
 }
 const { id = 'casos', ids, transversal, stillFor = {}, anonNote = 'Nombres de clientes anonimizados.', class: cls } = Astro.props;
-const still = (mid: MetricId): { src: string; fx: number; real: boolean } => {
+const still = (mid: MetricId): { src: string; fx: number; real: boolean; illus: boolean } => {
   const key = stillFor[mid];
-  if (!key) return { src: AURA_ONDAS, fx: 0.5, real: false };
+  if (!key) return { src: AURA_ONDAS, fx: 0.5, real: false, illus: false };
   const r = resolvePlate(key, { where: `Montage ${mid}` });
-  return r.still ? { src: r.still, fx: r.d.fx, real: true } : { src: AURA_ONDAS, fx: 0.5, real: false };
+  // Toda placa es generada; se marca cuando muestra personas (alt "(imagen ilustrativa)" o sin Kain).
+  const illus = /ilustrativa/i.test(r.alt) || !/\bKain\b/.test(r.alt);
+  return r.still ? { src: r.still, fx: r.d.fx, real: true, illus } : { src: AURA_ONDAS, fx: 0.5, real: false, illus: false };
 };
 ---
 <section id={id} class:list={['mt', cls]} data-shot="montage" aria-labelledby={`${id}-t`}>
@@ -33,19 +40,21 @@ const still = (mid: MetricId): { src: string; fx: number; real: boolean } => {
     {ids.map((mid, i) => {
       const m = METRICS[mid];
       const st = still(mid);
+      const href = m.href ? linkTarget(m.href) : null;
       const inner = (
         <>
           <span class="mt__fig" data-img={st.real ? 'still' : 'aura'} style={`--img:url('${st.src}');--fx-d:${st.fx}`}><Metric id={mid} variant="mega" label={false} /></span>
           <span class="mt__meta">
             <span class="mt__label">{m.label}</span>
             <span class="t-label mt__ctx">{m.ctx}</span>
-            {m.href && <span class="lnk--mono mt__go">Ver caso <span aria-hidden="true">→</span></span>}
+            {st.illus && <span class="chip-illus mt__illus">Imagen ilustrativa</span>}
+            {href && <span class="lnk--mono mt__go">Ver caso <span aria-hidden="true">→</span></span>}
           </span>
         </>
       );
       return (
         <li class:list={['mt__row', i % 2 ? 'mt__row--r' : 'mt__row--l']} data-mt-row data-dir={i % 2 ? 1 : -1}>
-          {m.href ? <a class="mt__link" href={m.href} data-still>{inner}</a> : <div class="mt__link">{inner}</div>}
+          {href ? <a class="mt__link" href={href} data-still>{inner}</a> : <div class="mt__link">{inner}</div>}
         </li>
       );
     })}

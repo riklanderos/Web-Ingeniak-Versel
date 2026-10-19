@@ -5,6 +5,7 @@
     "d": { "src": "/img/cine/ind-industrial-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.72, "fy": 0.5, "fadeFrom": 0.93 },
     "m": { "src": "/img/cine/ind-industrial-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.6, "fy": 1, "subjTop": 0.38 },
     "layout": "subject-right",
+    "pose": "señala",
     "safe": { "d": [[0.04, 0.06, 0.46, 0.97], [0.46, 0.06, 0.55, 0.30], [0.46, 0.74, 0.55, 0.97]], "m": [[0.04, 0.03, 0.96, 0.36]] },
     "subject": { "d": [0.58, 0.08, 0.97, 0.96], "m": [0.40, 0.37, 0.95, 0.95] },
     "anchors": {

@@ -6,6 +6,7 @@ import navegacion from '../data/navegacion.json';
 import plates from '../data/plates.json';
 import fs from 'node:fs';
 import { isNoindex, gatePending } from './indexacion.mjs';
+import { METRICS, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE } from './metrics';
 import path from 'node:path';
 
 export const SITE = {
@@ -29,7 +30,29 @@ export const SITE = {
 } as const;
 
 export type Page = (typeof sitemap)[number];
-export const pages = sitemap as Page[];
+
+/* Cifras en title / metaDescription / h1 de sitemap.json: van como token ({{metric:ID}}, {{metric:ID|full}},
+ * {{metric:ID|prose}}, {{price}}, {{Price}}, {{source}}), igual que el copy, y se resuelven aquí desde metrics.ts
+ * (QA ronda 1: la meta de /industrias/salud/ llevaba "3.2× … y respuesta en 12 s" escrito a mano). Así <title>,
+ * meta description, og:*, JSON-LD y llms.txt cambian solos con METRICS. check-cifras falla si queda una cifra suelta. */
+const SITE_TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|price|Price|source)\}\}/g;
+export function resolveTokens<T>(s: T): T {
+  if (typeof s !== 'string' || !s.includes('{{')) return s;
+  return s.replace(SITE_TOKEN_RX, (all, k: string, id: string, mod?: string) => {
+    if (k === 'price') return PRICE_FROM;
+    if (k === 'Price') return PRICE_FROM_CAP;
+    if (k === 'source') return SOURCE_NOTE;
+    const m = (METRICS as Record<string, { value: string; label: string; prose?: string }>)[id];
+    if (!m) throw new Error(`[site] sitemap.json: cifra desconocida ${all}`);
+    return mod === 'prose' ? (m.prose ?? `${m.value} ${m.label}`) : mod === 'full' ? `${m.value} ${m.label}` : m.value;
+  }) as T;
+}
+export const pages = (sitemap as Page[]).map((p) => ({
+  ...p,
+  title: resolveTokens(p.title),
+  metaDescription: resolveTokens(p.metaDescription),
+  h1: resolveTokens(p.h1),
+})) as Page[];
 export const nav = navegacion as any;
 
 export function getPage(url: string): Page {

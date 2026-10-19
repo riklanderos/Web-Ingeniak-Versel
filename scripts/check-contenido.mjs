@@ -1,5 +1,5 @@
 // scripts/check-contenido.mjs — puertas de contenido (ESPEC-v2 §12.2 R1–R2).
-// 1) Palabras visibles ≥ sitemap.json → copy.minWords de la página (texto de <main>, sin menú, footer, decorados
+// 1) Palabras visibles ≥ sitemap.json → copy.minWords de la página (en un caso breve con la puerta R2 pendiente es puerta del cliente, ◇) (texto de <main>, sin menú, footer, decorados
 //    aria-hidden ni las preguntas FAQ compartidas con otras páginas).
 // 2) Similitud entre páginas hermanas (servicios/plataformas entre sí, industrias entre sí, casos entre sí, artículos
 //    entre sí): shingles de 5 palabras, Jaccard ≤ 0.35, sin contar FAQ compartidas ni cifras (nodos data-metric).
@@ -7,7 +7,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { ROOT, parseArgs, reporter, loadPages, parseHTML, find, isEl } from './_html.mjs';
+import { ROOT, parseArgs, reporter, loadPages, parseHTML, find, isEl, gatePending } from './_html.mjs';
 
 const JACCARD_MAX = 0.35;
 const FAMILY = { 'T-SERVICE': 'servicios', 'T-PLATFORM': 'servicios', 'T-INDUSTRY': 'industrias', 'T-CASE': 'casos', 'T-ARTICLE': 'artículos' };
@@ -64,7 +64,8 @@ export async function run(opts) {
     const root = parseHTML(pg.html);
     const n = words(mainText(root, shared, { dropFigures: false })).length;
     const min = pg.page.copy?.minWords ?? 0;
-    if (n < min) R.fail(pg.route, `${n} palabras visibles < ${min} (copy.minWords, plantilla ${pg.page.template})`);
+    // Caso breve (R2, noindex hasta que el cliente confirme): lo corto es la puerta del cliente, no un defecto del build
+    if (n < min) (gatePending(pg.page) ? R.gate : R.fail)(pg.route, `${n} palabras visibles < ${min} (copy.minWords, plantilla ${pg.page.template})${gatePending(pg.page) ? ' · caso breve con noindex: el texto completo vuelve con la confirmación escrita (R2)' : ''}`);
     R.info(`${pg.route} · ${n} palabras visibles (mínimo ${min})`);
     const f = FAMILY[pg.page.template];
     if (f) {

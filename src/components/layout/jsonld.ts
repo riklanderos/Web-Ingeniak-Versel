@@ -2,7 +2,7 @@
 // Los tipos salen de sitemap.json → page.jsonLd ("Service (Offer price 0)" → Service con oferta de 0, etc.).
 // Reglas: sin legalName (razón social sin confirmar, §12.1-14); sin geo ni horario ([POR CONFIRMAR]);
 // FAQPage solo con las preguntas visibles que la página pasa (texto idéntico); autor = Organization mientras no se confirme (R8).
-import { pages, SITE, type Page } from '../../lib/site';
+import { pages, SITE, isBuilt, type Page } from '../../lib/site';
 import { PRICE_FROM_CAP } from '../../lib/metrics';
 
 export const ORG_ID = `${SITE.url}/#organization`;
@@ -61,11 +61,26 @@ export function website() {
   return { '@type': 'WebSite', '@id': SITE_ID, url: `${SITE.url}/`, name: SITE.name, inLanguage: 'es-MX', publisher: { '@id': ORG_ID } };
 }
 
+/** BreadcrumbList (QA r2 · decisión 3): los eslabones intermedios pasan por isBuilt(). Un hub sin construir (p. ej.
+ *  /servicios/) se omite del marcado (un ListItem sin `item` es un error en Search Console y con `item` apuntaría a un 404);
+ *  las posiciones se renumeran. En pantalla el mismo eslabón se pinta como texto sin enlace (Breadcrumbs). El último
+ *  eslabón es la propia página. Cuando el hub exista, vuelve solo. */
 export function breadcrumbList(items: Crumb[], pageUrl: string) {
+  const last = items.length - 1;
+  const kept = items.filter((c, i) => {
+    if (i === last) return true;
+    const h = c.url ?? c.href;
+    return !!h && isBuilt(h);
+  });
   return {
     '@type': 'BreadcrumbList',
     '@id': `${abs(pageUrl)}#breadcrumb`,
-    itemListElement: items.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: abs(c.url ?? c.href ?? pageUrl) })),
+    itemListElement: kept.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.name,
+      item: abs(i === kept.length - 1 ? pageUrl : (c.url ?? c.href)!),
+    })),
   };
 }
 
@@ -89,7 +104,7 @@ const VKTOR = [
 function childrenOf(url: string) {
   return pages.filter((p) => {
     const bc = (p.breadcrumbs as any[]) ?? [];
-    return bc.length >= 2 && bc[bc.length - 2].url === url && p.url !== url && p.indexable;
+    return bc.length >= 2 && bc[bc.length - 2].url === url && p.url !== url && p.indexable && isBuilt(p.url);
   });
 }
 
@@ -142,10 +157,13 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
 
   if (has('Service')) {
     const r = raw('Service');
+    // Nombre de la ENTIDAD, no la frase del H1 (QA r2): en la conversión (oferta de 0) el H1 es una oración
+    // ("30 minutos para ver tu operación…"); el servicio se llama como su último breadcrumb ("Discovery Session").
+    const entityName = /price 0/i.test(r) ? ((crumbs[crumbs.length - 1]?.name as string) || 'Discovery Session') : page.h1;
     const svc: Record<string, any> = {
       '@type': 'Service',
       '@id': `${url}#service`,
-      name: page.h1,
+      name: entityName,
       serviceType: page.primaryKeyword ?? page.h1,
       description: o.description,
       provider: { '@id': ORG_ID },

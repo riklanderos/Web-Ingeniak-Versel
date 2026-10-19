@@ -1,7 +1,9 @@
 // scripts/og.mjs — imágenes Open Graph por página, 1200 × 630 (ESPEC-v2 §8.4).
 // Para cada página construida de sitemap.json (copy + ruta) arma una plantilla HTML con la placa de su portada a sangre
 // (master de src/assets/cine/), el H1 real en dos voces de Lexend (o kicker + cifra de metrics.ts + texto en casos),
-// el imagotipo de Ingeniak y la etiqueta "AGENCIA DE IA · GUADALAJARA"; la fotografía con Chrome sin ventana
+// el imagotipo de Ingeniak y la etiqueta "AGENCIA DE IA · GUADALAJARA" (en casos: "CASO · <SECTOR> · <CIUDAD>"); si la placa
+// muestra a una persona generada (su alt dice "imagen ilustrativa"), la marca IMAGEN ILUSTRATIVA; si la tarjeta lleva una
+// cifra, la nota de fuente de metrics.ts (QA ronda 2). La fotografía con Chrome sin ventana
 // (perfil aislado) y la convierte con sharp a JPG q82 ≤ 150 KB en public/img/og/<page.id>.jpg.
 // También genera public/img/og/ingeniak.jpg (genérica). SEOHead lee /img/og/<page.id>.jpg y cae a la genérica.
 // Uso: npm run og [-- <page.id> …]
@@ -22,6 +24,10 @@ const sitemap = JSON.parse(readFileSync(join(ROOT, 'src/data/sitemap.json'), 'ut
 const plates = JSON.parse(readFileSync(join(ROOT, 'src/data/plates.json'), 'utf8'));
 const metricsSrc = readFileSync(join(ROOT, 'src/lib/metrics.ts'), 'utf8');
 const metricValue = (id) => metricsSrc.match(new RegExp(`'${id}':\\s*\\{\\s*value:\\s*'([^']+)'`))?.[1];
+const metricField = (id, f) => metricsSrc.match(new RegExp(`'${id}':\\s*\\{[^}]*?${f}:\\s*'([^']+)'`))?.[1];
+const SOURCE_NOTE = metricsSrc.match(/SOURCE_NOTE\s*=\s*'([^']+)'/)?.[1] ?? '';
+const PRICE = metricsSrc.match(/PRICE_FROM\s*=\s*'([^']+)'/)?.[1] ?? '';
+const PRICE_CAP = metricsSrc.match(/PRICE_FROM_CAP\s*=\s*'([^']+)'/)?.[1] ?? '';
 const copyOf = (id) => { const p = join(ROOT, 'src/content/paginas', `${id}.json`); return existsSync(p) ? JSON.parse(readFileSync(p, 'utf8')) : null; };
 const routeFiles = (() => {
   const out = [];
@@ -32,10 +38,21 @@ const routeFiles = (() => {
 const built = (p) => !!copyOf(p.id) && routeFiles.some((rx) => rx.test(p.url));
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const fileUrl = (p) => pathToFileURL(p).href;
-const TOKEN = /\{\{(metric:([a-z0-9-]+)(\|full)?|price|Price|source)\}\}/g;
-const plain = (s) => String(s ?? '').replace(TOKEN, (_, k, id) => (k.startsWith('metric') ? metricValue(id) ?? '' : k === 'price' ? 'desde USD 997 al mes' : k === 'Price' ? 'Desde USD 997 al mes' : ''));
+const TOKEN = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|price|Price|source)\}\}/g;
+const plain = (s) => String(s ?? '').replace(TOKEN, (_, k, id, mod) => {
+  if (k === 'price') return PRICE; if (k === 'Price') return PRICE_CAP; if (k === 'source') return SOURCE_NOTE;
+  const v = metricValue(id) ?? '', l = metricField(id, 'label') ?? '';
+  return mod === 'prose' ? (metricField(id, 'prose') ?? `${v} ${l}`) : mod === 'full' ? `${v} ${l}` : v;
+});
 
 const LABEL = 'Agencia de IA · Guadalajara';
+/** Etiqueta de la tarjeta: en casos, sector y ciudad del caso (chips de la portada del copy), nunca la sede. */
+function labelOf(page) {
+  if (page.template !== 'T-CASE') return LABEL;
+  const chips = copyOf(page.id)?.sections?.hero?.chips ?? [];
+  const sector = plain(chips[0] ?? '').trim(), city = plain(chips[1] ?? '').split(',')[0].trim();
+  return ['Caso', sector, city].filter(Boolean).join(' · ');
+}
 const FONT = (f) => fileUrl(join(ROOT, 'public/fonts', f));
 const LOGO = readFileSync(join(ROOT, 'public/img/marca/imagotipo.svg'), 'utf8').replace(/<\?xml[^>]*>/, '');
 
@@ -50,10 +67,10 @@ function headlineOf(page) {
   const h = copyOf(page.id)?.sections?.hero?.h1;
   if (h?.kicker || h?.metricId) return { kicker: plain(h.kicker), metric: metricValue(h.metricId), a: plain(h.text) };
   if (h?.text) return { a: plain(h.text), b: plain(h.soft) };
-  return { a: page.h1 };
+  return { a: plain(page.h1) };
 }
 
-function html({ plate, mirror, fx, head, chip }) {
+function html({ plate, mirror, fx, head, chip, label = LABEL, illus = false }) {
   const big = head.metric ? 46 : (head.a.length + (head.b?.length ?? 0) > 70 ? 50 : 58);
   return `<!doctype html><html lang="es-MX"><head><meta charset="utf-8"><style>
 @font-face{font-family:Lexend;src:url(${FONT('lexend-var-latin.woff2')}) format("woff2");font-weight:100 900}
@@ -76,16 +93,19 @@ h1{font-family:Lexend,sans-serif;letter-spacing:-.025em;text-wrap:balance}
 .m{display:block;font:600 112px/1 Lexend,sans-serif;letter-spacing:-.04em;color:#fff;text-shadow:0 0 42px rgba(0,229,255,.45)}
 .foot{display:flex;align-items:center;gap:16px;font:500 14px/1 Mono,monospace;letter-spacing:.14em;text-transform:uppercase;color:#9EB0C7}
 .chip{padding:10px 14px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(0,229,255,.35);color:#DCE6F2;background:rgba(255,255,255,.04)}
+.src{font:400 13px/1.3 Inter,sans-serif;letter-spacing:0;text-transform:none;color:#9EB0C7}
+.illus{position:absolute;right:28px;bottom:24px;font:500 12px/1 Mono,monospace;letter-spacing:.16em;text-transform:uppercase;color:#C9D6E6;padding:7px 10px;border-radius:999px;background:rgba(3,4,11,.62);box-shadow:inset 0 0 0 1px rgba(158,176,199,.32)}
 </style></head><body>
 <div class="plate"></div><div class="veil"></div>
 <div class="copy">
   <div class="logo">${LOGO}</div>
   <div class="mid">
-    <p class="label"><i></i>${esc(LABEL)}</p>
+    <p class="label"><i></i>${esc(label)}</p>
     <h1>${head.metric ? `<span class="k">${esc(head.kicker)}</span><span class="m">${esc(head.metric)}</span><span class="a" style="font-size:40px;margin-top:10px">${esc(head.a)}</span>` : `<span class="a">${esc(head.a)}</span>${head.b ? `<span class="b">${esc(head.b)}</span>` : ''}`}</h1>
   </div>
-  <div class="foot"><span>ingeniak.mx</span>${chip ? `<span class="chip">${esc(chip)}</span>` : ''}</div>
+  <div class="foot"><span>ingeniak.mx</span>${chip ? `<span class="chip">${esc(chip)}</span>` : ''}${head.metric && SOURCE_NOTE ? `<span class="src">Fuente: ${esc(SOURCE_NOTE.charAt(0).toLowerCase() + SOURCE_NOTE.slice(1))}.</span>` : ''}</div>
 </div>
+${illus ? '<span class="illus">Imagen ilustrativa</span>' : ''}
 </body></html>`;
 }
 
@@ -121,7 +141,7 @@ for (const p of sitemap) {
   if (!master) { console.warn(`[og] ${p.id}: sin placa de portada; se omite (usa la genérica)`); continue; }
   const meta = plates[id] ?? {};
   const mirror = id === pid ? !!hero?.plate?.mirror : !!fb?.mirror;
-  jobs.push([p.id, { plate: master, mirror, fx: meta.d?.fx, head: headlineOf(p) }]);
+  jobs.push([p.id, { plate: master, mirror, fx: meta.d?.fx, head: headlineOf(p), label: labelOf(p), illus: /imagen ilustrativa/i.test(meta.alt ?? '') }]);
 }
 if (!only.length || only.includes('ingeniak')) {
   jobs.push(['ingeniak', { plate: masterOf('home-hero'), fx: plates['home-hero']?.d?.fx, head: { a: 'Agentes de IA, CRM y automatización', b: 'en un solo sistema.' }, chip: 'Partner oficial de Kommo en LATAM' }]);

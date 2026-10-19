@@ -10,10 +10,13 @@
 //   a los 2.2 s se termina todo lo que está en pantalla; nada queda oculto detrás de una animación.
 // · ResizeObserver sobre <main>: cualquier cambio de alto (FAQ que se pliega o se abre, fuentes, imágenes) recalcula los
 //   ScrollTrigger con rebote de 220 ms.
+// · Presupuesto de JS (§7.8): gsap y ScrollTrigger también llegan con import() (chunk compartido con ui.ts), así el
+//   punto de entrada de BaseLayout solo lleva el núcleo propio. Mientras cargan, el CSS ya pinta el estado final de la
+//   portada (priority) y los revelados tienen su red de seguridad (cine-safe, 2.6 s).
 // Eventos que emite: "cine:coldopen-end" (document) · "cine:intro" / "cine:iris" (sección de portada) · "cine:sala" ·
 // "cine:primary-change" (document) · "cine:step" (ChatSim de una escena fijada) · html[data-sala] durante un pin.
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import type gsapNS from 'gsap';
+import type { ScrollTrigger as STNS } from 'gsap/ScrollTrigger';
 import type { SplitText as SPT } from 'gsap/SplitText';
 import type Lenis from 'lenis';
 import { reveals, finishAround, finishInView, clearPending, type Env, type Shot } from './shots/_util';
@@ -28,6 +31,18 @@ let mods = new Map<string, Shot>();
 let mm: gsap.MatchMedia | null = null;
 let SplitTextCls: typeof SPT | null = null;
 let LenisCls: typeof Lenis | null = null;
+let gsap: typeof gsapNS;
+let ScrollTrigger: typeof STNS;
+
+/** gsap + ScrollTrigger diferidos (fuera del punto de entrada). */
+async function loadCore() {
+  const [g, st] = await Promise.all([import('gsap'), import('gsap/ScrollTrigger')]);
+  gsap = ((g as any).gsap ?? g.default) as typeof gsapNS;
+  ScrollTrigger = st.ScrollTrigger;
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.defaults({ ease: 'expo.out', duration: 0.9 });
+  ScrollTrigger.config({ ignoreMobileResize: true });
+}
 
 const motionNow = () => !matchMedia('(prefers-reduced-motion: reduce)').matches && html.dataset.motion !== 'reduced';
 const finePointer = () => matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -47,13 +62,25 @@ async function ensureLibs() {
 export function initCine(): void {
   if (window.__cineInit) return;
   window.__cineInit = true;
-  gsap.registerPlugin(ScrollTrigger);
-  gsap.defaults({ ease: 'expo.out', duration: 0.9 });
-  ScrollTrigger.config({ ignoreMobileResize: true });
   labelSections();
 
   // R11: el foco nunca cae en algo invisible (bloque, titular o escena que aún no entra).
   document.addEventListener('focusin', (e) => finishAround(e.target as Element), true);
+  // gsap y los módulos de escena se piden en paralelo. Si gsap no llega, nada queda oculto (todo a su estado final).
+  const names = [...new Set([...document.querySelectorAll<HTMLElement>('[data-shot]')].map((e) => e.dataset.shot!))];
+  const shots = Promise.all(names.map(async (n) => {
+    const load = loaders[`./shots/${n}.ts`];
+    if (!load) { console.warn(`[cine] no existe el módulo de escena "${n}"`); return null; }
+    try { return [n, (await load()).default] as const; } catch (e) { console.warn(`[cine] falló "${n}"`, e); return null; }
+  }));
+  loadCore().then(() => boot(shots), (e) => {
+    console.warn('[cine] no cargó gsap', e);
+    document.querySelectorAll('[data-split],[data-reveal]').forEach((n) => n.classList.add('is-revealed'));
+    html.classList.remove('co', 'enc');
+  });
+}
+
+function boot(shots: Promise<(readonly [string, Shot] | null)[]>) {
   // R11: ScrollTrigger.refresh() saca y vuelve a meter los elementos fijados (pin-spacer): el foco que estaba dentro se
   // perdería (caería en <body>). Se guarda antes y se devuelve después, sin desplazar la página.
   let focused: Element | null = null;
@@ -63,15 +90,7 @@ export function initCine(): void {
     if (f instanceof HTMLElement && f !== document.body && f.isConnected && document.activeElement !== f) f.focus({ preventScroll: true });
   });
 
-  const names = [...new Set([...document.querySelectorAll<HTMLElement>('[data-shot]')].map((e) => e.dataset.shot!))];
-  Promise.all([
-    ensureLibs(),
-    ...names.map(async (n) => {
-      const load = loaders[`./shots/${n}.ts`];
-      if (!load) { console.warn(`[cine] no existe el módulo de escena "${n}"`); return null; }
-      try { return [n, (await load()).default] as const; } catch (e) { console.warn(`[cine] falló "${n}"`, e); return null; }
-    }),
-  ]).then(([, ...list]) => {
+  Promise.all([ensureLibs(), shots]).then(([, list]) => {
     mods = new Map(list.filter(Boolean) as [string, Shot][]);
     start();
     // Interruptor "Reducir movimiento" (footer): se reconstruye todo en vivo.

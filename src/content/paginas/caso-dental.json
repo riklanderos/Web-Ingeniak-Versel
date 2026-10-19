@@ -7,15 +7,19 @@
   "actualizado": "2026-10-19",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
-    "PREGUNTA AL CLIENTE · publishGate (R2): ficha, punto de partida e implementación tienen que confirmarse por escrito. Mientras no lo estén, la página sale como 'caso breve' (noindex,follow) con solo lo confirmado, y el copy no lleva publishGate.ok. ¿Nos confirmas esos tres bloques o aceptas el caso breve?",
-    "CAMBIO DE AFIRMACIÓN · implementacion: se quitaron del H2 y del lede las dos frases que decían que el agente trabaja sin que intervenga nadie del equipo. No están confirmados y contradicen el paso a una persona. Ahora: H2 'Un agente que atiende, califica y agenda, a cualquier hora del día.' y lede '…que contesta en segundos, califica a cada paciente, le agenda su cita y le da seguimiento.' (respaldado por la cifra dental-respuesta). El brief de D sí lo decía: si la clínica de verdad opera sin nadie revisando, confírmalo por escrito y lo decimos con ese dato.",
+    "PREGUNTA AL CLIENTE · publishGate (R2): ficha, punto de partida e implementación tienen que confirmarse por escrito. Mientras no lo estén, la página sale como 'caso breve' (noindex,follow) y el copy no lleva publishGate.ok. ¿Nos confirmas esos tres bloques o aceptas el caso breve?",
+    "CAMBIO DE AFIRMACIÓN (QA ronda 1, bloqueante) · mientras la clínica no lo confirme por escrito, la página solo afirma lo que respaldan las dos cifras (dental-citas y dental-respuesta) y su fuente. Se quitaron: 'Horario de atención 24/7' (ficha), 'de día y de noche' (lede de portada), 'atendiendo, calificando y agendando a cualquier hora' (entradilla), 'califica', 'le agenda su cita', 'le da seguimiento' y 'a cualquier hora del día' (implementación), 'propone horarios y aparta la cita' (cuerpo), la frase de esperas 'de horas' de noche o en fin de semana (reto) y 'Cita agendada por Kain' (agenda simulada, ahora 'Cita nueva'). Si la clínica confirma que el agente atiende 24/7, califica, agenda directo en su calendario y da seguimiento, vuelven tal cual.",
+    "CAMBIO DE AFIRMACIÓN · implementacion: los nodos 'Agenda' y 'Seguimiento' pasan a confirmed=false (no se pintan) junto con 'CRM'. El diagrama publica solo lo respaldado por las cifras: WhatsApp de la clínica → agente de IA → medición (tiempo de respuesta y citas).",
+    "CAMBIO DE AFIRMACIÓN · ficha.note: antes 'Este reportaje publica solo datos confirmados.' (no era cierto con la puerta abierta); ahora 'El nombre de la clínica está anonimizado. Las cifras son datos internos de Ingeniak.'",
+    "CAMBIO DE TEXTO (QA ronda 1, repetición) · ficha.deck sin cifras (las dos ya están en la ficha); cifra.line eliminada (el pie de CaseFigure ya imprime las dos cifras con su nota); margen del reto sin la cifra; resultado.quote en una sola oración con el token de prosa ('…y bajó su tiempo de respuesta de 8 minutos a 12 segundos'), como el texto de D.",
+    "CAMBIO DE TEXTO · replicar: las tres ideas ahora salen de lo confirmado (responder en segundos, medir antes y después, empezar por el canal donde ya te escriben). Antes: 'Confirma y recuerda automáticamente' y 'Registra a cada paciente en tu CRM', que sugerían que la clínica lo hizo. VKTOR: las fases hablan de 'tu clínica' (ejemplo para quien lee), no de la clínica del caso.",
     "CAMBIO DE TEXTO · CTA primario de portada y cierre: 'Agenda tu Discovery Session' (§2.9 y regla de marca; antes 'Quiero un sistema así: agenda tu Discovery'). La idea queda en el eyebrow del cierre: 'Un sistema así para tu negocio'.",
-    "CAMBIO DE TEXTO · resultado.quote y ficha: la cifra dental-respuesta va como rótulo ('Su tiempo de respuesta: …'), sin flecha dentro de la frase. Cuando exista el token de prosa (ui #9 / orquestador #8) vuelve la oración de D: '…y bajó su tiempo de respuesta en WhatsApp de 8 minutos a 12 segundos.'",
+    "PREGUNTA AL CLIENTE · ¿qué hace el agente en esta clínica además de contestar? (¿califica, agenda directo en el calendario, confirma, da seguimiento, horario 24/7?) Con la confirmación por escrito vuelven los nodos 'Agenda' y 'Seguimiento' y las frases de la portada.",
     "PREGUNTA AL CLIENTE · CRM que usa la clínica (Kommo o GoHighLevel): sin confirmar. El nodo 'CRM' del diagrama va con confirmed=false y no se pinta.",
     "PREGUNTA AL CLIENTE · herramientas y plazo de implementación: sin confirmar; la ficha los omite.",
     "PREGUNTA AL CLIENTE · ¿contra qué periodo se compara 'dental-citas' (más citas en 90 días: antes y después, misma ventana)? Hace falta para explicarlo en el texto.",
-    "PREGUNTA AL CLIENTE · situación inicial con números de la clínica (citas al mes antes, volumen de mensajes, tamaño del equipo): sin confirmar; el texto no los menciona.",
-    "PREGUNTA AL CLIENTE · hitos reales del proyecto por fase de VKTOR™: sin confirmar; la sección muestra las fases genéricas aplicadas a una clínica y enlaza a /metodologia/.",
+    "PREGUNTA AL CLIENTE · situación inicial con números de la clínica (citas al mes antes, volumen de mensajes, tamaño del equipo, mensajes de noche): sin confirmar; el texto no los menciona.",
+    "PREGUNTA AL CLIENTE · hitos reales del proyecto por fase de VKTOR™: sin confirmar; la sección muestra las fases genéricas como ejemplo para la clínica de quien lee y enlaza a /metodologia/.",
     "PREGUNTA AL CLIENTE · canales además de WhatsApp (Instagram, web) en este caso: sin confirmar; el texto solo habla de WhatsApp.",
     "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
   ],
@@ -23,18 +27,11 @@
     "hero": {
       "_componente": "ImageSection hero (caso-dental-hero, persona a la derecha, hora azul) + Breadcrumbs + fila .chip-spec",
       "rail": "Portada",
-      "h1": {
-        "kicker": "Clínica dental en Monterrey:",
-        "metricId": "dental-citas",
-        "text": "más citas en 90 días con un agente de IA"
-      },
+      "h1": { "kicker": "Clínica dental en Monterrey:", "metricId": "dental-citas", "text": "más citas en 90 días con un agente de IA" },
       "chips": ["Salud", "Monterrey, N.L.", "Agente de IA en WhatsApp", "90 días"],
-      "lede": "Tiempo de respuesta en WhatsApp: {{metric:dental-respuesta}}, de día y de noche.",
+      "lede": "Tiempo de respuesta en WhatsApp: {{metric:dental-respuesta}}.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": {
-        "label": "Escríbele a Kain",
-        "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio."
-      },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio." },
       "illus": "Imagen ilustrativa del sector"
     },
     "ficha": {
@@ -46,13 +43,12 @@
         { "term": "Ciudad", "value": "Monterrey, Nuevo León" },
         { "term": "Servicio", "value": "Agente de IA para WhatsApp", "href": "/servicios/agentes-ia-whatsapp/" },
         { "term": "Canal", "value": "WhatsApp" },
-        { "term": "Horario de atención", "value": "24/7" },
         { "term": "Ventana de medición", "value": "90 días" },
         { "term": "Cifras", "value": "{{metric:dental-citas|full}} · tiempo de respuesta: {{metric:dental-respuesta}}" }
       ],
-      "deck": "Una clínica dental de Monterrey tardaba ocho minutos en contestar un WhatsApp. Con un agente de IA atendiendo, calificando y agendando a cualquier hora, en 90 días tuvo {{metric:dental-citas}} más citas.",
+      "deck": "Una clínica dental de Monterrey puso un agente de IA a contestar su WhatsApp. Este reportaje sigue dos números: cuánto tardaba en responder y cuántas citas sumó en 90 días.",
       "byline": "Por el equipo de Ingeniak",
-      "note": "El nombre de la clínica está anonimizado. Este reportaje publica solo datos confirmados."
+      "note": "El nombre de la clínica está anonimizado. Las cifras son datos internos de Ingeniak."
     },
     "punto-partida": {
       "_componente": "Prose + nota al margen (ámbar)",
@@ -60,11 +56,11 @@
       "eyebrow": "El reto",
       "h2": { "text": "Ocho minutos", "soft": "son mucho tiempo en WhatsApp." },
       "body": [
-        "Antes del agente, la clínica tardaba ocho minutos en contestar un WhatsApp. No es un problema de actitud: en casi cualquier clínica, quien contesta los mensajes también recibe pacientes, atiende el teléfono y acomoda la agenda, todo al mismo tiempo.",
-        "Ocho minutos parecen poco. En WhatsApp no lo son: quien busca cita suele escribirle a más de un consultorio y se queda con el primero que le responde. Y cuando el mensaje llega de noche o en fin de semana, la espera ya no es de minutos, sino de horas.",
-        "La clínica no necesitaba a otra persona pegada al teléfono. Necesitaba que cada mensaje tuviera respuesta en el momento, con la información correcta, y que esa respuesta terminara en una cita en la agenda."
+        "Antes del agente, ese era el tiempo que un paciente esperaba respuesta en el WhatsApp de la clínica. No es un problema de actitud: en casi cualquier clínica, quien contesta los mensajes también recibe pacientes, atiende el teléfono y acomoda la agenda, todo al mismo tiempo.",
+        "Parecen pocos minutos. En WhatsApp no lo son: quien busca cita muchas veces le escribe a más de un consultorio y se queda con el primero que le responde.",
+        "La salida no es poner a otra persona pegada al teléfono, sino que cada mensaje tenga respuesta en el momento, mientras el paciente todavía está decidiendo dónde agendar."
       ],
-      "margin": { "text": "Ocho minutos para contestar un mensaje.", "tone": "ambar" }
+      "margin": { "text": "Un mensaje sin respuesta es una cita que se va a otro consultorio.", "tone": "ambar" }
     },
     "cifra": {
       "_componente": "CaseFigure variant=stopwatch (fijada +100 % en escritorio; en móvil, al entrar)",
@@ -79,24 +75,34 @@
         "aria": "Dos cronómetros: el tiempo de respuesta antes del agente y con el agente de IA."
       },
       "metricIds": ["dental-respuesta", "dental-citas"],
-      "line": "Y en la agenda: {{metric:dental-citas}} más citas en 90 días.",
       "sourceNote": true
     },
     "implementacion": {
       "_componente": "SystemFlow (los nodos con confirmed=false no se publican)",
       "rail": "Solución",
       "eyebrow": "Qué implementamos",
-      "h2": { "text": "Un agente que atiende, califica y agenda,", "soft": "a cualquier hora del día." },
-      "lede": "Un agente conversacional en el WhatsApp de la clínica que contesta en segundos, califica a cada paciente, le agenda su cita y le da seguimiento.",
+      "h2": { "text": "Un agente de IA en el WhatsApp de la clínica,", "soft": "contestando en segundos." },
+      "lede": "Conectamos un agente conversacional al WhatsApp de la clínica para que cada paciente reciba respuesta en segundos.",
       "nodes": [
-        { "label": "WhatsApp de la clínica", "line": "El paciente escribe a cualquier hora.", "logos": ["whatsapp"], "confirmed": true },
-        { "label": "Agente de IA (Kain)", "line": "Responde, califica y propone horarios.", "confirmed": true },
-        { "label": "Agenda", "line": "La cita queda apartada.", "confirmed": true },
-        { "label": "Seguimiento", "line": "Da seguimiento a cada paciente.", "confirmed": true },
-        { "label": "CRM", "line": "Cada paciente registrado en su etapa.", "confirmed": false, "_nota": "Kommo o GoHighLevel sin confirmar: no se pinta hasta tener el dato." }
+        { "label": "WhatsApp de la clínica", "line": "El paciente escribe como le escribiría a la recepción.", "logos": ["whatsapp"], "confirmed": true },
+        { "label": "Agente de IA (Kain)", "line": "Contesta cada mensaje en segundos.", "confirmed": true },
+        { "label": "Medición", "line": "Tiempo de respuesta y citas: las dos cifras de este reportaje.", "confirmed": true },
+        {
+          "label": "Agenda",
+          "line": "La cita queda apartada.",
+          "confirmed": false,
+          "_nota": "Sin confirmar por escrito (QA ronda 1): no se pinta hasta que la clínica confirme que el agente agenda directo."
+        },
+        { "label": "Seguimiento", "line": "Da seguimiento a cada paciente.", "confirmed": false, "_nota": "Sin confirmar por escrito (QA ronda 1): no se pinta." },
+        {
+          "label": "CRM",
+          "line": "Cada paciente registrado en su etapa.",
+          "confirmed": false,
+          "_nota": "Kommo o GoHighLevel sin confirmar: no se pinta hasta tener el dato."
+        }
       ],
       "body": [
-        "La diferencia con un chatbot de menús es que el paciente no tiene que elegir entre botones: escribe como escribiría a la recepción y el agente le contesta con la información de la clínica, le propone horarios y aparta la cita."
+        "A diferencia de un chatbot de menús, un agente de IA no obliga al paciente a elegir entre botones: entiende lo que escribe y le contesta en lenguaje natural, con la información que la clínica le dio."
       ]
     },
     "resultado": {
@@ -104,13 +110,13 @@
       "rail": "Resultado",
       "eyebrow": "Resultado",
       "h2": { "text": "El resultado,", "soft": "en una oración." },
-      "quote": "Una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días con un agente de IA en WhatsApp. Su tiempo de respuesta: {{metric:dental-respuesta}}.",
+      "quote": "Una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días con un agente de IA en WhatsApp y bajó su tiempo de respuesta {{metric:dental-respuesta|prose}}.",
       "sourceNote": true,
       "ui": {
         "_nota": "Casillas de agenda que se encienden una a una sobre el panel de cristal. Llevan SIMULACIÓN y data-nosnippet.",
         "title": "Agenda de la semana",
         "days": ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-        "slot": "Cita agendada por Kain"
+        "slot": "Cita nueva"
       }
     },
     "vktor": {
@@ -118,12 +124,27 @@
       "rail": "VKTOR",
       "eyebrow": "Cómo lo hacemos con VKTOR™",
       "h2": { "text": "El mismo protocolo", "soft": "en cada proyecto." },
-      "lede": "Cada implementación pasa por estas cinco fases. En una clínica, así se ven:",
+      "lede": "Así se verían las cinco fases en tu clínica:",
       "phases": [
-        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Cómo llegan los pacientes, cuánto tardan en recibir respuesta y en qué punto se pierden las citas." },
-        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Qué contesta el agente, qué datos pide y cuándo pasa la conversación a recepción." },
-        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Conectamos WhatsApp, el agente y la agenda, y lo probamos antes de encenderlo." },
-        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Recepción aprende a trabajar con el agente y ajustamos respuestas con conversaciones reales." },
+        {
+          "letter": "V",
+          "name": "Verify",
+          "verb": "Verificamos tu operación",
+          "line": "Cómo llegan tus pacientes, cuánto tardan en recibir respuesta y en qué punto se pierden las citas."
+        },
+        {
+          "letter": "K",
+          "name": "Koncept",
+          "verb": "Diseñamos el concepto",
+          "line": "Qué contesta el agente, qué datos pide y cuándo pasa la conversación a tu recepción."
+        },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Conectamos WhatsApp, el agente y tus herramientas, y lo probamos antes de encenderlo." },
+        {
+          "letter": "O",
+          "name": "Operate",
+          "verb": "Operamos junto con tu equipo",
+          "line": "Tu recepción aprende a trabajar con el agente y ajustamos respuestas con conversaciones reales."
+        },
         { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Medimos tiempo de respuesta y citas cada mes, y optimizamos." }
       ],
       "links": [{ "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }]
@@ -134,9 +155,21 @@
       "eyebrow": "Qué puedes replicar",
       "h2": { "text": "Tres ideas para cualquier negocio", "soft": "que vive de su agenda." },
       "items": [
-        { "n": "01", "title": "Responde en segundos", "line": "El primer mensaje decide con quién agenda el cliente. Un agente contesta al instante, de día o de noche." },
-        { "n": "02", "title": "Confirma y recuerda automáticamente", "line": "Las confirmaciones y los recordatorios salen solos, a la hora que tú definas, sin que nadie los mande a mano." },
-        { "n": "03", "title": "Registra a cada paciente en tu CRM", "line": "Quién escribió, qué pidió y en qué etapa va, en un solo lugar para todo tu equipo." }
+        {
+          "n": "01",
+          "title": "Responde en segundos",
+          "line": "El primer mensaje suele decidir con quién agenda el cliente. Un agente de IA contesta al momento, sin que nadie de tu equipo suelte lo que está haciendo."
+        },
+        {
+          "n": "02",
+          "title": "Mide antes y después",
+          "line": "Anota hoy cuánto tardas en contestar y cuántas citas entran al mes. Sin ese punto de partida, ninguna mejora se puede comprobar."
+        },
+        {
+          "n": "03",
+          "title": "Empieza donde ya te escriben",
+          "line": "En este caso fue WhatsApp, donde ya llegaban los pacientes. Empieza por el canal que más mensajes te trae, no por uno nuevo."
+        }
       ],
       "links": [{ "label": "Ver soluciones para salud", "href": "/industrias/salud/" }]
     },
@@ -153,12 +186,7 @@
         { "title": "Agentes de IA para WhatsApp", "line": "El servicio detrás de este caso.", "href": "/servicios/agentes-ia-whatsapp/" },
         { "title": "IA para clínicas y consultorios", "line": "Cómo se ve el sistema completo en una clínica.", "href": "/industrias/salud/" }
       ],
-      "next": {
-        "label": "Siguiente reportaje",
-        "title": "Retail multimarca: Kommo con IA",
-        "metricId": "retail-conversiones",
-        "href": "/casos/retail-multimarca-kommo/"
-      }
+      "next": { "label": "Siguiente reportaje", "title": "Retail multimarca: Kommo con IA", "metricId": "retail-conversiones", "href": "/casos/retail-multimarca-kommo/" }
     },
     "cta-final": {
       "_componente": "Dawn (cta-amanecer)",
@@ -167,10 +195,7 @@
       "h2": { "text": "¿Cuántas citas más cabrían en tu agenda?", "soft": "Lo vemos en 30 minutos." },
       "lede": "En la Discovery Session revisamos cómo llega hoy un cliente a tu agenda y te decimos qué parte de este sistema aplica a tu negocio.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": {
-        "label": "Escríbele a Kain",
-        "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio."
-      },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio." },
       "micro": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet"
     }
   }

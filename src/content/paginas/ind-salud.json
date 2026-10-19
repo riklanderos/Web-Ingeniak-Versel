@@ -4,16 +4,18 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-18",
+  "actualizado": "2026-10-19",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
-    "APROBACIÓN DE PREGUNTAS · S01, S02, S03 y S04 (propias de salud, R2 pide al menos cuatro por industria): redacción nueva, con validar: true en faq.json. Hoy S01 alimenta la definición y S02–S04 no se publican en el acordeón ni en el FAQPage. Al aprobarse, el orquestador suma sus ids a sitemap.json → ind-salud.faq y pasan a validar: false.",
-    "FAQ DISTINTA DE D · G02 (sujeto explícito), W01 (texto de D + 'El agente califica a cada paciente y agenda su cita; cuando hace falta, le pasa la conversación a una persona del equipo.'; sin la afirmación de que nadie interviene), W02 (agrega mover de etapa, crear tareas, avisar y 'Cada conversación queda registrada en tu CRM.'), N01 (agrega el paso a tu equipo con el contexto completo) y G07 (agrega 'No publicamos paquetes cerrados…').",
+    "APROBACIÓN DE PREGUNTAS · S02, S03, S04 y S05 (propias de salud; R2 pide al menos cuatro por industria): redacción nueva, con validar: true en faq.json, así que hoy no salen en el acordeón ni en el FAQPage. S05 (urgencias) es nueva en la ronda 2. Al aprobarse, el orquestador suma sus ids a sitemap.json → ind-salud.faq y pasan a validar: false. S01 también sigue en validar y ya no alimenta la definición.",
+    "FAQ DISTINTA DE D · W01 (vuelve al texto de D con las cifras como token; se quitó 'El agente califica a cada paciente y agenda su cita…', que el caso no tiene confirmado), W02 (agrega mover de etapa, crear tareas, avisar y 'Cada conversación queda registrada en tu CRM.'), N01 (agrega el paso a tu equipo con el contexto completo) y G07 (agrega 'No publicamos paquetes cerrados…'). G02 ya no está en esta página.",
     "CAMBIO DE AFIRMACIÓN · cifras.lede: ya no promete plazo en las tres cifras; ahora: 'con su fuente y, cuando está confirmado, el plazo en que se midieron' (salud-citas-mes no tiene plazo confirmado).",
     "CAMBIO DE TEXTO · kain-sector.eyebrow 'Kain en tu clínica' (antes 'Simulación', que repetía el chip SIMULACIÓN del chat); automatizamos.h2 reordenado ('Seis tareas' / 'que hoy le quitan horas a tu recepción.'); hero.h1.lit = 'IA' (la misma palabra que la plantilla ya iluminaba).",
     "PREGUNTA AL CLIENTE · periodo de medición de salud-citas-mes ('citas al mes en promedio'): ¿qué clientes entran en el promedio, contra qué periodo y en qué ventana? No se escribe hasta tenerlo.",
     "PREGUNTA AL CLIENTE · si Ingeniak tiene clientes de salud además de la clínica dental de Monterrey (salud-citas-mes los promedia), ¿se puede decir de qué tipo son (consultorios médicos, especialidades, fisioterapia) sin nombrarlos?",
-    "VALIDACIÓN LEGAL · sección 'Tus datos': revisar la redacción con el asesor legal del cliente antes de publicar (dice que los datos de salud son datos personales sensibles en México y describe consentimiento, aviso de privacidad y escalamiento)."
+    "VALIDACIÓN LEGAL · sección 'Tus datos': revisar la redacción con el asesor legal del cliente antes de publicar. Desde la ronda 2 ya no describe cómo trabaja Kain hoy con datos de salud (consentimiento al iniciar, aviso citado y enlazado, responsabilidad de la clínica): lo presenta como reglas que se definen con cada clínica antes de encender el agente. La única afirmación de comportamiento es la de N01 (aprobada en D): no da consejo médico ni legal.",
+    "CAMBIO DE AFIRMACIÓN (QA ronda 1) · definicion: el texto ya no sale de S01 (validar: true, se publicaba igual). Ahora es texto de la página armado solo con lo que dicen G02 y N01, aprobadas en D: entiende, responde con tu información, agenda, confirma, da seguimiento, registra en tu CRM y no da consejo médico.",
+    "CAMBIO DE TEXTO (QA ronda 1) · faq: orden S02–S05 primero (en validar), luego N01, W01, W02 y G07; sale G02. Mientras S02–S05 no se aprueben, el acordeón muestra 4 preguntas compartidas. Cuando se aprueben, recomendamos dejar solo N01 y G07 de las compartidas."
   ],
   "sections": {
     "hero": {
@@ -34,7 +36,11 @@
       "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (S01)",
       "rail": "Cómo ayuda",
       "eyebrow": "IA en clínicas",
-      "definition": { "heading": "¿Cómo ayuda un agente de IA a una clínica o consultorio?", "faqId": "S01" },
+      "definition": {
+        "heading": "¿Cómo ayuda un agente de IA a una clínica o consultorio?",
+        "text": "Atiende el WhatsApp de tu clínica: entiende lo que escribe el paciente, le responde con la información de tu consultorio, le agenda su cita, la confirma, le da seguimiento y deja cada conversación registrada en tu CRM. No da consejo médico: cuando la pregunta es clínica, pasa la conversación a tu equipo.",
+        "_nota": "Texto de la página armado solo con lo que ya dicen G02 y N01 (aprobadas en D). Ya no sale de S01, que sigue en validar: true (QA ronda 1)."
+      },
       "body": [
         "Funciona igual en una clínica dental, un consultorio médico, una clínica de especialidades o un centro de fisioterapia: cambia el guion, no el sistema. Kain trabaja con tus servicios, tus horarios y tus reglas de agenda, y tu equipo decide qué preguntas se quedan siempre con una persona."
       ]
@@ -127,13 +133,13 @@
       "rail": "Tus datos",
       "eyebrow": "Tus datos",
       "h2": { "text": "Datos de pacientes,", "soft": "con reglas claras." },
-      "lede": "En México, los datos de salud son datos personales sensibles. Por eso Kain trabaja con estas reglas desde el primer mensaje.",
+      "lede": "En México, los datos de salud son datos personales sensibles. Por eso, antes de que Kain atienda a tu primer paciente, definimos contigo cómo se manejan.",
       "items": [
-        { "title": "Consentimiento", "line": "Al iniciar la conversación, el paciente ve tu aviso de privacidad y decide si continúa." },
-        { "title": "Tu aviso de privacidad", "line": "Kain lo cita y lo enlaza. Tu clínica sigue siendo la responsable de los datos de sus pacientes." },
-        { "title": "Solo lo necesario", "line": "Para agendar pide nombre, teléfono y el motivo general de la cita. Nada de expedientes ni estudios." },
-        { "title": "Escalamiento a una persona", "line": "Síntomas, urgencias, dudas clínicas y quejas pasan a tu equipo con el contexto de la conversación." },
-        { "title": "Sin consejo médico ni legal", "line": "Kain agenda, confirma y da seguimiento. No diagnostica, no receta y no interpreta resultados." }
+        { "title": "Consentimiento", "line": "En qué momento de la conversación ve el paciente tu aviso de privacidad y qué pasa si decide no continuar." },
+        { "title": "Solo lo necesario", "line": "Qué datos pide Kain para agendar. Nuestra propuesta de partida: nombre, teléfono y motivo general de la cita; nada de expedientes ni estudios." },
+        { "title": "Escalamiento a una persona", "line": "Qué temas pasan siempre a tu equipo, como síntomas, urgencias, dudas clínicas o quejas, y con qué contexto." },
+        { "title": "Sin consejo médico ni legal", "line": "Kain atiende, agenda, confirma y da seguimiento. No da consejo médico ni legal." },
+        { "title": "Tu aviso, tus reglas", "line": "Qué dice tu aviso de privacidad y quién responde por los datos lo define tu clínica con su asesor legal; nosotros configuramos a Kain con esas reglas." }
       ],
       "note": "No mostramos sellos ni certificaciones que no tenemos. Si tu clínica tiene requisitos propios, los revisamos en la Discovery Session."
     },
@@ -142,7 +148,8 @@
       "rail": "Preguntas",
       "eyebrow": "Preguntas frecuentes",
       "h2": { "text": "Preguntas de clínicas", "soft": "y consultorios." },
-      "faqIds": ["S02", "S03", "S04", "N01", "G02", "W01", "W02", "G07"],
+      "faqIds": ["S02", "S03", "S04", "S05", "N01", "W01", "W02", "G07"],
+      "_nota": "Orden (QA ronda 1): primero las cuatro propias de salud (S02–S05, en validar: true hasta que el cliente las apruebe; mientras, no se publican) y después las compartidas. Se quitó G02 (la más repetida del sitio y la misma idea que la definición). Al aprobarse S02–S05, la recomendación es dejar solo N01 y G07 de las compartidas.",
       "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
     },
     "cta-final": {
