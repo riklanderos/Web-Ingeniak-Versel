@@ -1,0 +1,22 @@
+{
+  "discovery-vsl-poster": {
+    "alt": "",
+    "srcsetMax": 1920,
+    "d": { "src": "/img/cine/discovery-vsl-poster", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.5, "fy": 0.55, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/discovery-vsl-poster-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.5, "fy": 1, "subjTop": 0.5 },
+    "layout": "subject-center",
+    "safe": {
+      "d": [[0.04, 0.64, 0.37, 0.96], [0.67, 0.64, 0.96, 0.96], [0.04, 0.06, 0.20, 0.64], [0.81, 0.06, 0.96, 0.64]],
+      "m": [[0.04, 0.03, 0.96, 0.48]]
+    },
+    "subject": { "d": [0.375, 0.24, 0.66, 0.93], "m": [0.38, 0.57, 0.66, 0.89] },
+    "anchors": {
+      "play": { "d": [0.79, 0.84], "m": null },
+      "silla": { "d": [0.564, 0.45], "m": [0.563, 0.67] },
+      "piso": { "d": [0.5, 0.92], "m": [0.5, 0.885] }
+    },
+    "leak": { "d": [0.42, 0.32] },
+    "grade": 0,
+    "creationIds": { "desktop": "3zaCsFAREY", "mobile": "Cq96MWKEEy", "mobileUpscale": "9ZtkdHONYZ" }
+  }
+}

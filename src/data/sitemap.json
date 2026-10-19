@@ -17,8 +17,8 @@
     ],
     "title": "Agencia de IA: agentes, CRM y automatización | Ingeniak",
     "titleLength": 55,
-    "metaDescription": "Agentes de IA para WhatsApp, CRM con Kommo y GoHighLevel y automatización con n8n en un solo sistema. Partner oficial de Kommo. Resultados en 60 a 90 días.",
-    "metaLength": 155,
+    "metaDescription": "Agentes de IA para WhatsApp, CRM con Kommo y GoHighLevel y automatización con n8n en un solo sistema. Partner oficial de Kommo en LATAM.",
+    "metaLength": 136,
     "h1": "Agentizamos empresas. Agentes de IA, CRM y automatización en un solo sistema.",
     "breadcrumbs": [],
     "sections": [
@@ -975,8 +975,8 @@
     ],
     "title": "Agentes de IA para WhatsApp Business | Ingeniak",
     "titleLength": 47,
-    "metaDescription": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM. Caso real: de 8 min a 12 s en tiempo de respuesta.",
-    "metaLength": 135,
+    "metaDescription": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM. Caso real: tiempo de respuesta de 8 minutos a 12 segundos.",
+    "metaLength": 143,
     "h1": "Agentes de IA para WhatsApp Business",
     "breadcrumbs": [
       {
@@ -1112,16 +1112,16 @@
       },
       {
         "order": 8,
-        "id": "integraciones",
-        "name": "Dónde trabaja y con qué se conecta",
-        "spec": "Canales (WhatsApp, Instagram, web) + CRM (Kommo, GoHighLevel) + calendarios + n8n; logos en blanco y enlaces a /kommo/, /gohighlevel/, /servicios/automatizacion-n8n/.",
+        "id": "casos",
+        "name": "Agentes reales, operando hoy",
+        "spec": "2 tarjetas de caso: clínica dental (8 min → 12 s, 3.2×) y retail multimarca (+340%) → páginas de caso.",
         "cinematic": false
       },
       {
         "order": 9,
-        "id": "casos",
-        "name": "Agentes reales, operando hoy",
-        "spec": "2 tarjetas de caso: clínica dental (8 min → 12 s, 3.2×) y retail multimarca (+340%) → páginas de caso.",
+        "id": "integraciones",
+        "name": "Dónde trabaja y con qué se conecta",
+        "spec": "Canales (WhatsApp, Instagram, web) + CRM (Kommo, GoHighLevel) + calendarios + n8n; logos en blanco y enlaces a /kommo/, /gohighlevel/, /servicios/automatizacion-n8n/.",
         "cinematic": false
       },
       {
@@ -1190,7 +1190,8 @@
     ],
     "cinematicSections": [
       "hero",
-      "si-no",
+      "senales",
+      "como-funciona",
       "cta-final"
     ],
     "primaryCta": {
@@ -1647,7 +1648,12 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-3-organizar",
+            "mirror": true,
+            "note": "Estación Organizar (carriles de CRM) en espejo para quedar a la izquierda; el kanban genérico se registra en su superficie. Se cambia sola cuando exista kommo-hero."
+          }
         }
       },
       {
@@ -1753,7 +1759,12 @@
             "camFrom": 1.35,
             "camTo": 1.6
           },
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-2-atender",
+            "mirror": true,
+            "note": "Estación Atender en espejo (sujeto a la izquierda); el ChatSim se registra en su teléfono (ancla telefono en lugar de superficie). Distinto de la portada."
+          }
         }
       },
       {
@@ -1975,7 +1986,12 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-5-medir",
+            "mirror": false,
+            "note": "Estación Medir (pantalla curva y superficie, sujeto a la derecha); el calendario de citas se registra en la pantalla. Se cambia sola cuando exista gohighlevel-hero."
+          }
         }
       },
       {
@@ -2074,7 +2090,12 @@
             "camFrom": 1.35,
             "camTo": 1.6
           },
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-3-organizar",
+            "mirror": false,
+            "note": "Estación Organizar sin espejo (sujeto a la derecha) con el calendario en su superficie. Distinto de la portada."
+          }
         }
       },
       {
@@ -6118,10 +6139,11 @@
       },
       {
         "order": 5,
-        "id": "agregados",
-        "name": "Resultados agregados",
+        "id": "registro",
+        "name": "Registro de resultados",
         "spec": "3 bloques: 12 → 47 citas/mes (promedio, salud), −60% tiempo operativo (primeros 90 días), 1 vista · 7 fuentes (e-commerce).",
-        "cinematic": false
+        "cinematic": false,
+        "component": "ResultsLedger (#registro)"
       },
       {
         "order": 6,
@@ -6225,8 +6247,8 @@
     ],
     "title": "Clínica dental en Monterrey: 3.2× más citas con IA",
     "titleLength": 50,
-    "metaDescription": "Cómo una clínica dental de Monterrey logró 3.2× más citas en 90 días con un agente de IA en WhatsApp que responde en 12 s en lugar de 8 min.",
-    "metaLength": 140,
+    "metaDescription": "Una clínica dental de Monterrey logró 3.2× más citas en 90 días con un agente de IA en WhatsApp: tiempo de respuesta de 8 minutos a 12 segundos.",
+    "metaLength": 144,
     "h1": "Clínica dental en Monterrey: 3.2× más citas en 90 días con un agente de IA",
     "breadcrumbs": [
       {
@@ -6295,7 +6317,7 @@
         "order": 5,
         "id": "implementacion",
         "name": "Qué implementamos",
-        "spec": "Agente conversacional que califica, agenda citas y da seguimiento sin intervención humana, conectado al CRM [VALIDAR CRM usado: Kommo o GoHighLevel].",
+        "spec": "Agente conversacional que califica, agenda citas y da seguimiento, conectado al CRM (Kommo o GoHighLevel por confirmar).",
         "cinematic": false
       },
       {

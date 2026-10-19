@@ -34,8 +34,11 @@ Los `spec` de `src/data/sitemap.json` son briefs; **el texto que se publica sale
 ```
 
 - Las secciones condicionales sin contenido aprobado (p. ej. `testimonio` de los casos) existen como clave con `"_omitir": true` y **no se renderizan**.
+- Un **campo suelto** que no se pinta (p. ej. `discovery.hero.chips`) se renombra con `_` delante y guarda su valor en un objeto con `"_omitir": true`, `_nota` y el valor (`"_chips": {"_omitir": true, "_nota": "…", "items": […]}`). Nunca se pone `_omitir` dentro de una sección que sí se pinta: las plantillas la saltarían completa.
 - Todo campo que empieza con `_` es **nota para quien construye** y nunca se imprime (`_componente`, `_nota`, `_omitir`).
-- `pendientes` no se imprime; lo revisa el cliente. Nada de `[POR CONFIRMAR]`, `[VALIDAR]`, `TODO`, `XX` ni `lorem` en campos visibles (R2).
+- `estado` solo pasa a `aprobado` cuando una persona del cliente lo aprueba y su nombre queda en `aprobadoPor`; el equipo de construcción nunca lo cambia.
+- `pendientes` no se imprime; es el paquete de aprobación que revisa el cliente. Cada línea empieza con su tipo: `APROBACIÓN`, `FAQ DISTINTA DE D · <id>` (toda respuesta del banco que difiere del texto aprobado de D), `CAMBIO DE AFIRMACIÓN` (se quitó o se acotó algo que el texto anterior prometía), `CAMBIO DE TEXTO`, `PREGUNTA AL CLIENTE` (dato o frase que solo el cliente decide), `VALIDACIÓN LEGAL`, `DATO PENDIENTE`.
+- Nada de `[POR CONFIRMAR]`, `[VALIDAR]`, `TODO`, `XX` ni `lorem` en campos visibles (R2).
 
 ## 3. Campos comunes de una sección
 
@@ -91,6 +94,8 @@ Ningún texto lleva cifras comerciales escritas a mano (`3.2×`, `−58%`, `27 p
 | `{{source}}` | `SOURCE_NOTE` | `SOURCE_NOTE` |
 
 Las palabras que rodean al token completan la frase: `"logró {{metric:dental-citas}} más citas en 90 días"` → "logró 3.2× más citas en 90 días".
+
+**Cifras con flecha** (`dental-respuesta` = "8 min → 12 s", `salud-citas-mes` = "12 → 47"): nunca dentro de una oración ("pasó de 8 min → 12 s", "respuesta de 8 min → 12 s"). Se escriben como **rótulo**: `"el tiempo de respuesta por WhatsApp: {{metric:dental-respuesta}}"`. Cuando exista el token de prosa (`{{metric:ID|prose}}` → "de 8 minutos a 12 segundos"; peticiones ui #9 y orquestador #8) se cambia a `"bajó {{metric:dental-respuesta|prose}}"`. Mientras no exista, **no se usa**: el `TOKEN_RX` actual no lo reconoce y la página imprimiría las llaves.
 No son cifras comerciales (se escriben normal): horas ilustrativas (`23:48`, `11:48 p. m.`), "30 minutos", "1:1", "24/7", "de 3 a 40 empleados", "60 a 90 días", teléfono y dirección. Donde se pueda, los números sueltos van con letra ("siete preguntas", "dos minutos", "ocho minutos").
 
 Implementación de referencia (para `src/lib/copy.ts`, del orquestador; pedido en `peticiones.md`):

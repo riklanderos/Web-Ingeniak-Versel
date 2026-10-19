@@ -232,10 +232,19 @@ function onKey(e: KeyboardEvent) {
   } else if (e.key === 'Home' && e.ctrlKey) { e.preventDefault(); setActive(0); }
 }
 
+let closing = 0;
+/** Cierra con la salida animada. Igual que sheet.ts: dlg.close(), unlock('search') y la clase se quitan en el MISMO
+ *  timeout, así el bloqueo de scroll nunca depende de que llegue el evento 'close' (que queda como respaldo idempotente). */
 function close() {
   if (!dlg.open) return;
   dlg.classList.remove('is-open');
-  setTimeout(() => { dlg.close(); }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 180);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.motion === 'reduced';
+  clearTimeout(closing);
+  closing = window.setTimeout(() => {
+    if (dlg.open) dlg.close();
+    unlock('search');
+    dlg.classList.remove('is-open');
+  }, reduced ? 0 : 180);
 }
 
 function init() {
@@ -265,12 +274,13 @@ function init() {
 
 export async function openSearch(q = '') {
   init();
+  clearTimeout(closing);                 // reabrir durante la salida no deja un cierre pendiente
   if (!dlg.open) {
     dlg.showModal();
     lock('search', true);
-    requestAnimationFrame(() => dlg.classList.add('is-open'));
     track('search_open');
   }
+  if (!dlg.classList.contains('is-open')) requestAnimationFrame(() => dlg.classList.add('is-open'));
   input.value = q;
   render();
   input.focus();

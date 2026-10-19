@@ -6,16 +6,21 @@
   "aprobadoPor": null,
   "actualizado": "2026-10-18",
   "pendientes": [
-    "Sección 'Tus datos': validar la redacción con el asesor legal del cliente antes de publicar (menciona que los datos de salud son datos personales sensibles en México y describe consentimiento, aviso de privacidad y escalamiento).",
-    "Preguntas nuevas S01–S04 (propias de salud, R2): redacción nueva, validar=true en faq.json; agregar sus ids a sitemap.json → ind-salud.faq si se aprueban.",
-    "Si Ingeniak tiene clientes de salud además de la clínica dental de Monterrey (la cifra 'salud-citas-mes' los menciona en promedio), confirmar si se puede decir de qué tipo son (consultorios médicos, especialidades, fisioterapia) sin nombrarlos."
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "APROBACIÓN DE PREGUNTAS · S01, S02, S03 y S04 (propias de salud, R2 pide al menos cuatro por industria): redacción nueva, con validar: true en faq.json. Hoy S01 alimenta la definición y S02–S04 no se publican en el acordeón ni en el FAQPage. Al aprobarse, el orquestador suma sus ids a sitemap.json → ind-salud.faq y pasan a validar: false.",
+    "FAQ DISTINTA DE D · G02 (sujeto explícito), W01 (texto de D + 'El agente califica a cada paciente y agenda su cita; cuando hace falta, le pasa la conversación a una persona del equipo.'; sin la afirmación de que nadie interviene), W02 (agrega mover de etapa, crear tareas, avisar y 'Cada conversación queda registrada en tu CRM.'), N01 (agrega el paso a tu equipo con el contexto completo) y G07 (agrega 'No publicamos paquetes cerrados…').",
+    "CAMBIO DE AFIRMACIÓN · cifras.lede: ya no promete plazo en las tres cifras; ahora: 'con su fuente y, cuando está confirmado, el plazo en que se midieron' (salud-citas-mes no tiene plazo confirmado).",
+    "CAMBIO DE TEXTO · kain-sector.eyebrow 'Kain en tu clínica' (antes 'Simulación', que repetía el chip SIMULACIÓN del chat); automatizamos.h2 reordenado ('Seis tareas' / 'que hoy le quitan horas a tu recepción.'); hero.h1.lit = 'IA' (la misma palabra que la plantilla ya iluminaba).",
+    "PREGUNTA AL CLIENTE · periodo de medición de salud-citas-mes ('citas al mes en promedio'): ¿qué clientes entran en el promedio, contra qué periodo y en qué ventana? No se escribe hasta tenerlo.",
+    "PREGUNTA AL CLIENTE · si Ingeniak tiene clientes de salud además de la clínica dental de Monterrey (salud-citas-mes los promedia), ¿se puede decir de qué tipo son (consultorios médicos, especialidades, fisioterapia) sin nombrarlos?",
+    "VALIDACIÓN LEGAL · sección 'Tus datos': revisar la redacción con el asesor legal del cliente antes de publicar (dice que los datos de salud son datos personales sensibles en México y describe consentimiento, aviso de privacidad y escalamiento)."
   ],
   "sections": {
     "hero": {
       "_componente": "SharedTake + ImageSection hero (ind-salud-hero, persona del sector) + chip anclado a la tableta (dental-citas) + Breadcrumbs",
       "rail": "Portada",
       "eyebrow": "Industria · Salud",
-      "h1": { "text": "Agentes de IA", "soft": "para clínicas y consultorios" },
+      "h1": { "text": "Agentes de IA", "soft": "para clínicas y consultorios", "lit": "IA" },
       "lede": "Tu agenda llena sin que tu recepción viva pegada al WhatsApp. Kain responde, agenda y confirma citas a cualquier hora, y deja a cada paciente registrado en tu CRM.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": {
@@ -72,7 +77,7 @@
       "_componente": "ScriptList (6 filas)",
       "rail": "Qué automatizamos",
       "eyebrow": "Qué automatizamos",
-      "h2": { "text": "Seis tareas que hoy", "soft": "le quitan horas a tu recepción." },
+      "h2": { "text": "Seis tareas", "soft": "que hoy le quitan horas a tu recepción." },
       "items": [
         { "n": "01", "title": "Respuesta inmediata 24/7", "line": "Servicios, ubicación, horarios y formas de pago, respondidos en segundos con tu información." },
         { "n": "02", "title": "Agenda en tu calendario", "line": "Kain ofrece horarios disponibles y aparta la cita sin que nadie la capture." },
@@ -85,7 +90,7 @@
     "kain-sector": {
       "_componente": "ImageSection mid (ind-salud-kain-sector, Kain a la izquierda, push; mobile split) + ChatSim registrado (script salud). Fijada +100 % en escritorio",
       "rail": "Kain en tu clínica",
-      "eyebrow": "Simulación",
+      "eyebrow": "Kain en tu clínica",
       "h2": { "text": "Así trabaja Kain", "soft": "en tu clínica." },
       "lede": "Un paciente escribe de noche para pedir una limpieza. Kain le ofrece dos horarios, resuelve lo que le toca, confirma y deja la cita en tu CRM.",
       "chat": { "mode": "registered", "script": "salud" },
@@ -97,7 +102,7 @@
       "rail": "Resultados",
       "eyebrow": "Resultados",
       "h2": { "text": "Lo que ya pasó", "soft": "en clínicas reales." },
-      "lede": "Tres cifras del sector salud, con su fuente y su plazo.",
+      "lede": "Tres cifras del sector salud, con su fuente y, cuando está confirmado, el plazo en que se midieron.",
       "rows": [
         { "metricId": "dental-citas", "context": "Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
         { "metricId": "dental-respuesta", "context": "Tiempo de respuesta en WhatsApp · misma clínica", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
@@ -151,7 +156,7 @@
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo una clínica y quiero ver cómo agendarías citas por WhatsApp."
       },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "micro": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet"
     }
   }
 }

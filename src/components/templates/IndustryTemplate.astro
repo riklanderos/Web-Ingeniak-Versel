@@ -19,7 +19,7 @@ import Intertitle from '../cine/Intertitle.astro';
 import DayTimeline from '../cine/DayTimeline.astro';
 import Montage from '../cine/Montage.astro';
 import Dawn from '../cine/Dawn.astro';
-import { resolvePlate } from '../cine/plate';
+import { resolvePlate, anchorStyle, plateReady } from '../cine/plate';
 import Breadcrumbs from '../nav/Breadcrumbs.astro';
 import Btn from '../ui/Btn.astro';
 import Metric from '../ui/Metric.astro';
@@ -31,7 +31,10 @@ import DefinitionBlock from '../ui/DefinitionBlock.astro';
 import FAQAccordion from '../ui/FAQAccordion.astro';
 import EditorNote from '../ui/EditorNote.astro';
 import { annotateFigures, esc, getFaqItems } from '../ui/ui-data';
-import { getPlate, pages, waHref, type Page } from '../../lib/site';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
+import { getPlate, pages, waHref, linkTarget, isBuilt, type Page } from '../../lib/site';
 import { METRICS, type MetricId } from '../../lib/metrics';
 
 interface Props { page: Page; copy: any }
@@ -65,16 +68,13 @@ const resolveSec = (id: string, extra: Record<string, any> = {}) => {
   return resolvePlate(p.id, { mirror: !!p.mirror, fallbackPlate: p.launchFallback, where: `#${id}`, ...extra });
 };
 
-/** Ancla de caja [x, y, w, h] (pantalla, teléfono, tableta) de la placa realmente usada, espejada si toca. */
+/** Ancla de caja [x, y, w, h] (pantalla, teléfono, tableta) de la placa realmente usada: resolvePlate ya la trae espejada
+ *  (anchors[n].box) y anchorStyle(n) da --ax/--ay/--aw/--ah (y sus -m) para registrar UI encima. */
 type Box = [number, number, number, number];
 function boxAnchor(r: ReturnType<typeof resolvePlate> | null, names: string[]) {
-  const raw = r?.id ? getPlate(r.id) : null;
   for (const n of names) {
-    const a = raw?.anchors?.[n];
-    if (a?.d?.length === 4) {
-      const fl = (b: number[]): Box => [r!.mirror ? 1 - b[0] - b[2] : b[0], b[1], b[2], b[3]];
-      return { name: n, d: fl(a.d), m: a.m?.length === 4 ? fl(a.m) : null };
-    }
+    const b = r?.anchors?.[n]?.box;
+    if (b?.d) return { name: n, d: b.d as Box, m: (b.m as Box | null) ?? null };
   }
   return null;
 }
@@ -92,22 +92,21 @@ const lcpPlate = rHero?.id ?? undefined;
 // Una sola .lit por página (§2.3): la del copy; si el copy no la marca, la última palabra de la primera voz del H1.
 const heroLit: string | null = hero?.h1?.lit ?? (hero?.h1?.text ? (hero.h1.text as string).trim().split(/\s+/).pop()!.replace(/[.,:;]$/, '') : null);
 const heroEyebrow: string = hero?.eyebrow ?? `Industria · ${(P.breadcrumbs as any[])?.at(-1)?.name ?? ''}`;
+// R3 · intro móvil: lede ≤ 20 palabras (el resto baja a `more`); la etiqueta repite los crumbs → solo en móvil
+const heroLede = ledeParts(hero?.lede, 20);
+const heroEyebrowDup = eyebrowRepeatsCrumbs(heroEyebrow, P.breadcrumbs);
 
 // Chip de prueba anclado (solo si el sector tiene caso: hero.chip en el copy). Va en la zona de piso, unido a la tableta
-// con una línea guía (§3.8); nunca sobre cara ni torso. Posición: anchors.chip de la placa; si la placa aún no lo trae,
-// el registro local de abajo (pedido a imágenes en peticiones.md); si tampoco, el ancla `fig` (esquina superior derecha).
-const CHIP_AT: Record<string, { d: [number, number]; side: 'right' | 'left' }> = {
-  'ind-salud-hero': { d: [0.8, 0.8], side: 'right' },   // piso a la derecha de los pies de Kain, bajo la tableta
-};
+// con una línea guía (§3.8); nunca sobre cara ni torso. Posición: anchors.chip de la placa (plates.json); si la placa aún
+// no lo trae, el ancla `fig`.
 const chipMetric: MetricId | null = hero?.chip?.metricId && (METRICS as any)[hero.chip.metricId] ? hero.chip.metricId : null;
 let chip: null | { x: number; y: number; side: 'right' | 'left'; tx: number; ty: number; target: string } = null;
 if (chipMetric && rHero && !rHero.aura) {
   const rawChip = rHero.id ? getPlate(rHero.id)?.anchors?.chip?.d : null;
-  const reg = rHero.id ? CHIP_AT[rHero.id] : undefined;
   const fig = pointAnchor(rHero, 'fig');
+  // El chip vive a la derecha del ancla (en el piso, junto a los pies); en espejo, a su izquierda
   const at: { d: [number, number]; side: 'right' | 'left' } | null = rawChip
-    ? { d: [rHero.mirror ? 1 - rawChip[0] : rawChip[0], rawChip[1]], side: rawChip[2] === -1 ? 'left' : 'right' }
-    : reg ? { d: [rHero.mirror ? 1 - reg.d[0] : reg.d[0], reg.d[1]], side: rHero.mirror ? (reg.side === 'right' ? 'left' : 'right') : reg.side }
+    ? { d: [rHero.mirror ? 1 - rawChip[0] : rawChip[0], rawChip[1]], side: (rawChip[2] === -1) !== !!rHero.mirror ? 'left' : 'right' }
     : fig ? { d: fig, side: 'left' } : null;
   const tb = boxAnchor(rHero, ['tableta', 'telefono', 'pantalla']);
   const tp = tb ? ([tb.d[0] + tb.d[2] * 0.5, tb.d[1] + tb.d[3] * 0.62] as [number, number]) : pointAnchor(rHero, 'mano');
@@ -131,12 +130,10 @@ const ks = cp('kain-sector');
 const ksPlate = plateOf('kain-sector');
 const rKs = resolveSec('kain-sector', { srcsetMax: 2752 });
 const panel = boxAnchor(rKs, ['pantalla', 'telefono', 'superficie', 'tableta']);
-// §3.7: en móvil, si la superficie mide menos de 180 px de ancho (a 390 px), la UI baja al flujo del texto.
+// §3.7: en móvil, si la superficie mide menos de 180 px de ancho (a 390 px), la conversación baja al flujo del texto (chat
+// en línea, .glass-panel) y en la pantalla de la placa queda la miniatura encendida de ChatSim (nunca un cristal vacío).
 const panelInPlateM = !!(panel?.m && panel.m[2] * 390 >= 180);
-const panelStyle = panel
-  ? `--ax:${panel.d[0]};--ay:${panel.d[1]};--aw:${panel.d[2]};--ah:${panel.d[3]};` +
-    (panel.m ? `--ax-m:${panel.m[0]};--ay-m:${panel.m[1]};--aw-m:${panel.m[2]};--ah-m:${panel.m[3]};` : '')
-  : '';
+const panelStyle = panel ? anchorStyle(panel.name) : '';
 // Columna del texto: empieza donde termina la zona segura de la placa (sujeto + panel ocupan el otro lado).
 const ksSafeX: number = (() => {
   const raw = rKs?.id ? getPlate(rKs.id) : null;
@@ -168,7 +165,16 @@ for (const id of cifIds) stillFor[id] = caseHero((METRICS as any)[id].href) ?? h
 
 /* ── 07 · servicios (Still ×3) ──────────────────────────────────────────── */
 const svc = cp('servicios');
-const svcItems = (svc?.items ?? []).slice(0, 3).map((it: any) => ({ ...it, plate: caseHero(it.href) }));
+// Fotogramas distintos (R7/R13): la portada del destino si ya existe; si no, un suplente con el mismo tema que no se repita
+// en la fila (GoHighLevel → la estación Organizar); Kommo sin placa propia → aura con el sello oficial (Still de ui).
+const STAND_IN: Record<string, string> = { 'gohighlevel-hero': 'home-sistema-3-organizar', 'crm-ia-hero': 'home-sistema-3-organizar', 'n8n-hero': 'home-sistema-4-automatizar' };
+const svcTaken = new Set<string>([heroPlate?.id, sec('kain-sector')?.plate?.id].filter(Boolean));
+const svcItems = (svc?.items ?? []).slice(0, 3).map((it: any) => {
+  const own = caseHero(it.href);
+  const cand = [own, own ? STAND_IN[own] : undefined].find((id) => id && plateReady(id) && !svcTaken.has(id));
+  if (cand) svcTaken.add(cand);
+  return { ...it, plate: cand };
+});
 
 /* ── riel / FAQ / cierre ───────────────────────────────────────────────── */
 const datos = cp('datos');
@@ -195,27 +201,35 @@ if (dev) {
           fallbackPlate={heroPlate.launchFallback}
           mirror={!!heroPlate.mirror}
           height="hero"
+          mobile="split"
           priority
           take
           encendido
-          class="ind-hero"
-          hud={[{ pos: 'tr', text: heroEyebrow.toUpperCase() }]}
+          class="ind-hero tpl-hero"
         >
-          <Breadcrumbs page={page} />
-          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>
+          {/* Crumbs en escritorio; la etiqueta "Industria · Salud" los repite → solo en móvil, donde los crumbs se ocultan (R3) */}
+          <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
+          <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>
           <h1 id="hero-t" class="t-display-2" data-split set:html={headHtml(hero.h1, heroLit)} />
-          {hero.lede && <Copy as="p" class="t-lede t-lede--2" text={hero.lede} />}
-          <div class="ctas">
-            <Btn variant="primary" href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
-            <Btn variant="ghost" href={wa} label={waLabel(hero)} />
-          </div>
-          {chipMetric && (
-            <p class="only-m ind-proof-m">
-              <span class="node" aria-hidden="true"></span>
-              <span><Metric id={chipMetric} variant="inline" label link /> <span class="ind-proof-m__ctx">· {hero.chip?.context ?? METRICS[chipMetric].ctx}</span></span>
-            </p>
+          {hero.lede && (
+            <p class="t-lede t-lede--2"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
           )}
-          {hero.illus && <p slot="over" class="chip-illus ind-illus">{hero.illus}</p>}
+          <HeroCtas href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+            waHref={wa} waLabel={waLabel(hero)} />
+          {hero.illus && <p slot="over" class="chip-illus ind-illus tpl-mhide">{hero.illus}</p>}
+          {/* R3 · móvil: después de la placa (misma sección) van la cola del lede y la prueba con su contexto */}
+          {(heroLede.rest || chipMetric || hero.illus) && (
+            <Fragment slot="more">
+              {hero.illus && <p class="chip-illus tpl-illus-m tpl-dhide" aria-hidden="true">{hero.illus}</p>}
+              {heroLede.rest && <Copy as="p" class="t-lede t-lede--2 ind-hero__rest tpl-dhide" text={heroLede.rest} />}
+              {chipMetric && (
+                <p class="ind-proof-m tpl-dhide">
+                  <span class="node" aria-hidden="true"></span>
+                  <span><Metric id={chipMetric} variant="inline" label link /> <span class="ind-proof-m__ctx">· {hero.chip?.context ?? METRICS[chipMetric].ctx}</span></span>
+                </p>
+              )}
+            </Fragment>
+          )}
           {chip && (
             <Fragment slot="anchors">
               <span class="leader ind-leader" data-anchor={`${chip.target} chip`} data-lock aria-hidden="true"
@@ -230,7 +244,9 @@ if (dev) {
         </ImageSection>
 
         {defi && order.includes('definicion') && (
-          <Intertitle id="definicion" rack aura="none" class="ind-def" labelledby={defText ? "definicion-d-q" : undefined}>
+          <Intertitle id="definicion" rack aura="none" class="ind-def tpl-glow" labelledby={defText ? "definicion-d-q" : undefined}>
+            <Aura kind="ondas" x="45%" y="108%" o={1} only="d" />
+            <Aura kind="isotipo" x="72%" o={0.9} only="m" sticky />
             {defText ? (
               <DefinitionBlock heading={defText.q} text={defText.a} label={defi.eyebrow ?? 'Definición'} headingLevel={2} id="definicion-d" />
             ) : (
@@ -248,7 +264,8 @@ if (dev) {
       const d = cp('dolores');
       if (!d?.entries?.length) return null;
       return (
-        <DayTimeline id="dolores" entries={d.entries} rack={rHero?.rack ?? undefined} class="ind-day">
+        <DayTimeline id="dolores" entries={d.entries} rack={rHero?.rack ?? undefined} class="ind-day tpl-glow">
+          <Aura kind="isotipo" x="66%" o={0.9} only="m" sticky />
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{d.eyebrow}</p>
           <h2 id="dolores-t" class="t-h2" data-split set:html={headHtml(d.h2)} />
           {d.lede && <Copy as="p" class="t-lede t-lede--2 ind-day__lede" text={d.lede} data-reveal />}
@@ -261,13 +278,15 @@ if (dev) {
       const a = cp('automatizamos');
       if (!a?.items?.length) return null;
       return (
-        <Intertitle id="automatizamos" aura="isotipo" auraSide="right" class="ind-auto">
+        <Intertitle id="automatizamos" aura="isotipo" auraSide="right" class="ind-auto tpl-glow">
           <div class="ind-auto__head">
             <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{a.eyebrow}</p>
             <h2 id="automatizamos-t" class="t-h2" data-split set:html={headHtml(a.h2)} />
             {a.lede && <Copy as="p" class="t-lede t-lede--2" text={a.lede} data-reveal />}
           </div>
-          <ScriptList rows={a.items.map((r: any) => ({ n: r.n, title: r.title, line: r.line, href: r.href }))} label={a.eyebrow} class="ind-auto__list" />
+          <Aura kind="ondas" x="40%" y="104%" o={1} only="d" />
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <ScriptList rows={a.items.map((r: any) => ({ n: r.n, title: r.title, line: r.line, href: r.href ? linkTarget(r.href) ?? undefined : undefined }))} label={a.eyebrow} class="ind-auto__list" />
         </Intertitle>
       );
     }
@@ -283,14 +302,15 @@ if (dev) {
           mirror={!!ksPlate.mirror}
           height="mid"
           mobile={ksPlate.mobile === 'below' ? 'below' : 'split'}
-          push={{ anchor: 'mano', to: 1.12 }}
+          push={{ anchor: panel?.name ?? 'pantalla', to: 1.6 }}
+          pin="+=100%"
           class={['ind-kain', ksCol].filter(Boolean).join(' ')}
         >
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ks.eyebrow}</p>
           <h2 id="kain-sector-t" class="t-h2" data-split set:html={headHtml(ks.h2)} />
           {ks.lede && <Copy as="p" class="t-lede t-lede--2" text={ks.lede} />}
           <div slot="more" class="ind-kain__more" style={`--sb:${ksSubjBottomM}`}>
-            {!panelInPlateM && <div class="only-m ind-kain__chat"><ChatSim mode="inline" script={chatScript} aura={false} note={false} /></div>}
+            {!panelInPlateM && <div class="only-m ind-kain__chat"><ChatSim mode="inline" script={chatScript} aura={false} note={false} id="ks-chat-m" /></div>}
             {ks.limite && (
               <p class="ind-limit"><span class="node" aria-hidden="true"></span><Copy text={ks.limite} /></p>
             )}
@@ -298,9 +318,10 @@ if (dev) {
           </div>
           {/* §3.7: en móvil (superficie < 180 px) la UI baja al flujo; la placa ya trae su cristal encendido */}
           {panel && (
-            <div slot="anchors" class:list={['anchor anchor--panel ind-panel', !panelInPlateM && 'ind-panel--desk']} data-anchor={panel.name} data-lock
-              data-m={panelInPlateM ? undefined : 'none'} style={panelStyle}>
-              <ChatSim mode="registered" script={chatScript} note={false} />
+            <div slot="anchors" class:list={['anchor anchor--panel ind-panel', !panelInPlateM && 'ind-panel--mini']} data-anchor={panel.name} data-lock
+              data-m={panel.m ? undefined : 'none'} style={panelStyle}>
+              {/* Escritorio: el guion avanza con el scroll de la escena fijada (una burbuja por tramo); móvil: miniatura */}
+              <ChatSim mode="registered" script={chatScript} note={false} control="external" id="ks-chat" />
             </div>
           )}
         </ImageSection>
@@ -311,7 +332,8 @@ if (dev) {
     if (id === 'cifras') {
       if (!cif || !cifIds.length) return null;
       return (
-        <Montage id="cifras" ids={cifIds} transversal={cif.transversal} stillFor={stillFor} class="ind-cifras">
+        <Montage id="cifras" ids={cifIds} transversal={cif.transversal} stillFor={stillFor} class="ind-cifras tpl-glow">
+          <Aura kind="ondas" x="50%" y="6%" o={1} clip />
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cif.eyebrow}</p>
           <h2 id="cifras-t" class="t-h2" data-split set:html={headHtml(cif.h2)} />
           {cif.lede && <Copy as="p" class="t-lede t-lede--2 ind-cifras__lede" text={cif.lede} data-reveal />}
@@ -319,7 +341,7 @@ if (dev) {
             <EditorNote label={cif.noteLabel ?? 'Nota del editor'} class="ind-cifras__enote"><Copy as="p" text={cif.note} /></EditorNote>
           )}
           <Fragment slot="foot">
-            {(cif.links ?? []).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+            {(cif.links ?? []).filter((l: any) => l?.href && isBuilt(l.href)).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
           </Fragment>
         </Montage>
       );
@@ -329,7 +351,8 @@ if (dev) {
     if (id === 'servicios') {
       if (!svcItems.length) return null;
       return (
-        <section id="servicios" class="ind-sec ind-svc" aria-labelledby="servicios-t">
+        <section id="servicios" class="ind-sec ind-svc tpl-glow" aria-labelledby="servicios-t">
+          <Aura kind="isotipo" x="18%" y="12%" o={0.9} clip />
           <div class="frame ind-sec__head">
             <div class="ind-sec__intro">
               <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{svc.eyebrow}</p>
@@ -349,12 +372,13 @@ if (dev) {
     if (id === 'datos') {
       if (!datos) return null;
       return (
-        <Intertitle id="datos" aura="isotipo" auraSide="left" layout="split" class="ind-datos">
+        <Intertitle id="datos" aura="isotipo" auraSide="left" layout="split" class="ind-datos tpl-glow">
           <Fragment slot="head">
             <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{datos.eyebrow}</p>
             <h2 id="datos-t" class="t-h2" data-split set:html={headHtml(datos.h2)} />
             {datos.lede && <Copy as="p" class="t-lede t-lede--2" text={datos.lede} data-reveal />}
           </Fragment>
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
           {datos.items?.length > 0 && (
             <ol class="ind-rules" role="list" data-reveal="stagger">
               {datos.items.map((it: any, i: number) => (
@@ -375,13 +399,15 @@ if (dev) {
     if (id === 'faq') {
       if (!faq?.faqIds?.length) return null;
       return (
-        <Intertitle id="faq" aura="ondas" layout="split" class="ind-faq">
+        <Intertitle id="faq" aura="ondas" layout="split" class="ind-faq tpl-glow">
           <Fragment slot="head">
             <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{faq.eyebrow}</p>
             <h2 id="faq-t" class="t-h2" data-split set:html={headHtml(faq.h2)} />
             {faq.footer && <Copy as="p" class="t-lede t-lede--2 ind-faq__foot" text={faq.footer} data-reveal />}
             {faq.footer && <div class="ind-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} /></div>}
           </Fragment>
+          <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
+          <Aura kind="isotipo" x="65%" o={0.9} only="m" sticky />
           <FAQAccordion ids={faq.faqIds} glass id="faq-list" label={faq.eyebrow} />
         </Intertitle>
       );
@@ -391,7 +417,7 @@ if (dev) {
     if (id === 'cta-final') {
       if (!cta) return null;
       return (
-        <Dawn id="cta-final" plate={ctaPlate?.id ?? 'cta-amanecer'} mirror={!!ctaPlate?.mirror} fallbackPlate={ctaPlate?.launchFallback} layout={ctaPlate?.layout}>
+        <Dawn id="cta-final" plate={ctaPlate?.id ?? 'cta-amanecer'} mirror={!!ctaPlate?.mirror} fallbackPlate={ctaPlate?.launchFallback} layout={ctaPlate?.layout} class="tpl-glow-m">
           {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
           <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
           {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
@@ -412,21 +438,3 @@ if (dev) {
     return null;
   })}
 </BaseLayout>
-
-<script>
-  // Las alturas de la página cambian después del arranque (el FAQ se pliega con transición al poner html.ui-ready,
-  // preguntas que se abren, guiones de chat): sin volver a medir, los disparadores de abajo (p. ej. el cierre) quedan
-  // corridos y su texto entra tarde. Usa la API pública de cine (window.__cine.refresh), con rebote.
-  const main = document.getElementById('main');
-  if (main && 'ResizeObserver' in window) {
-    let t = 0;
-    let last = main.offsetHeight;
-    new ResizeObserver(() => {
-      const h = main.offsetHeight;
-      if (Math.abs(h - last) < 2) return;
-      last = h;
-      clearTimeout(t);
-      t = window.setTimeout(() => (window as any).__cine?.refresh(), 220);
-    }).observe(main);
-  }
-</script>

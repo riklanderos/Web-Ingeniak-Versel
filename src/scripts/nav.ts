@@ -5,6 +5,7 @@ import { initHeader } from './nav/header';
 import { initMega, type MegaApi } from './nav/mega';
 import { initSheet, type SheetApi } from './nav/sheet';
 import { initPersist } from './nav/persist';
+import { initKpill } from './nav/kpill';
 import { initRail } from './nav/rail';
 import { initFooter } from './nav/footer';
 import { initVT } from './nav/vt';
@@ -25,6 +26,7 @@ export function initNav(): void {
   const mega = safe('mega', initMega) as MegaApi | undefined;
   const sheet = safe('sheet', initSheet) as SheetApi | undefined;
   safe('persist', initPersist);
+  safe('kpill', initKpill);
   safe('rail', initRail);
   safe('footer', initFooter);
   safe('vt', initVT);

@@ -1,10 +1,11 @@
 // src/scripts/shots/switcher.ts — LocationSwitcher (§7.4, R9, R11). Funciona también sin movimiento (cambio instantáneo).
 // Hover (con intención) / foco / clic / ↑↓ cambian la placa activa: doble capa A/B, fundido .6 s (power2.inOut) + scale 1.04 → 1.
 // Autoavance cada 4 s SOLO en escritorio con movimiento, en pantalla y con la pestaña visible; se detiene con hover/foco,
-// con el botón de pausa y después de una vuelta completa. Solo se descargan la placa activa y la siguiente.
+// con el botón de pausa (etiqueta fija "Pausar el cambio automático" + aria-pressed) y después de una vuelta completa.
+// Solo se descargan la placa activa y la siguiente. El chip SIMULACIÓN cambia sus 2 burbujas con el sector.
 import type { Env } from './_util';
 
-interface SData { vars: string; aura: boolean; mirror: boolean; avifD: string; webpD: string; avifM: string; webpM: string; img: string; sizesD: string; w: number; h: number; name: string }
+interface SData { bubbles?: { who: string; text: string }[]; vars: string; aura: boolean; mirror: boolean; avifD: string; webpD: string; avifM: string; webpM: string; img: string; sizesD: string; w: number; h: number; name: string }
 const MQ = '(max-width: 767px), (max-aspect-ratio: 5/6)';
 const AURA = (layer: HTMLElement) => layer.closest('.loc')?.querySelector<HTMLImageElement>('.is__aura')?.src ?? '';
 
@@ -25,6 +26,7 @@ export default function switcher(el: HTMLElement, env: Env) {
   const layers = [...el.querySelectorAll<HTMLElement>('.loc__layer')];
   const hudN = el.querySelector<HTMLElement>('[data-loc-n]');
   const pauseBtn = el.querySelector<HTMLButtonElement>('[data-pause]');
+  const sims = [...el.querySelectorAll<HTMLElement>('.loc__sim')];
   const N = data.length;
   if (!N || layers.length < 2) return;
   const auraSrc = AURA(layers[0]) || '';
@@ -56,6 +58,22 @@ export default function switcher(el: HTMLElement, env: Env) {
     btns.forEach((b, k) => b.setAttribute('aria-pressed', k === i ? 'true' : 'false'));
     if (hudN) hudN.textContent = String(i + 1);
     el.setAttribute('style', data[i].vars);
+    setSim(i);
+  };
+  /** Burbujas del sector activo (sin animación de texto: el chip se funde con la placa). */
+  const setSim = (i: number) => {
+    const bs = data[i].bubbles ?? [];
+    for (const sim of sims) {
+      sim.hidden = !bs.length;
+      sim.querySelectorAll<HTMLElement>('[data-bub]').forEach((p, k) => {
+        const b = bs[k];
+        p.hidden = !b;
+        if (!b) return;
+        p.textContent = b.text;
+        p.className = `loc__bub loc__bub--${b.who === 'kain' ? 'kain' : 'cliente'}`;
+      });
+      if (env.motion && bs.length) gsap.fromTo(sim, { opacity: 0 }, { opacity: 1, duration: 0.5, delay: 0.15, ease: 'power2.out', overwrite: true });
+    }
   };
 
   let token = 0;
@@ -148,9 +166,8 @@ export default function switcher(el: HTMLElement, env: Env) {
     if (pauseBtn) on(pauseBtn, 'click', () => {
       paused = !paused;
       pauseBtn.setAttribute('aria-pressed', String(paused));
-      pauseBtn.setAttribute('aria-label', paused ? 'Reanudar el cambio automático de escena' : 'Pausar el cambio automático de escena');
       if (paused) prog?.kill(); else tick();
     });
   }
-  return () => { off.forEach((f) => f()); prog?.kill(); el.classList.remove('is-auto'); clearTimeout(hoverT); };
+  return () => { off.forEach((f) => f()); prog?.kill(); el.classList.remove('is-auto'); clearTimeout(hoverT); gsap.set(sims, { clearProps: 'opacity' }); };
 }

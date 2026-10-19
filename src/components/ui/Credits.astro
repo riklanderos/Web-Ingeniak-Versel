@@ -1,13 +1,16 @@
 ---
 // Credits · ESPEC §6 #40. Tipografía de créditos (rol en mono, nombre en Lexend), sin tarjetas.
-//   team      → TeamCredits: fotos reales en duotono con máscara radial. Las fotos actuales traen la placa del nombre
-//               impresa: el encuadre (--crop) la deja fuera y la máscara disuelve hombros y fondo.
+//   team      → TeamCredits (interino hasta la sesión de fotos de R6): UNA línea de reparto, no un mosaico. Mismo encuadre de
+//               cabeza y hombros y la mirada a la misma altura (TEAM[].crop → --fx/--ey/--hw), un solo duotono, retratos sin
+//               radio ni marco que se funden entre sí; debajo, rol y nombre como texto de créditos. La placa del nombre impresa
+//               en las fotos actuales queda fuera del encuadre y bajo la disolución inferior.
 //   logos     → LogoCredits: logos SVG con máscara currentColor al 55 % (100 % en hover). Kommo usa su sello oficial.
 //   countries → CountryList: 7 países tipográficos (de metrics.ts), México marcado como sede. Sin mapa con pines.
 //   stack     → logo + nombre + rol (grupos de StackHub)
 import KommoBadge from './KommoBadge.astro';
 import Metric from './Metric.astro';
 import { TEAM, TOOLS, COUNTRIES, logoUrl, logoWide, type TeamMember } from './ui-data';
+import { linkTarget } from '../../lib/site';
 
 type Logo = { name?: string; logo: string; role?: string; href?: string } | string;
 interface Props {
@@ -25,28 +28,40 @@ const logos = (variant === 'logos' || variant === 'stack' ? ((items as Logo[]) ?
   {label && <p class="t-label t-label--cyan credits__h"><span class="node" aria-hidden="true"></span>{label}</p>}
 
   {variant === 'team' && (
-    <ul class="credits__team" data-ui-stagger>
-      {team.map((p, i) => (
-        <li class="credit" style={`--i:${i}`}>
-          <span class="duo" aria-hidden="true"><img src={p.photo} alt="" width="600" height="600" loading="lazy" decoding="async" /></span>
-          <span class="credit__role">{p.role}</span>
-          <span class="credit__name">{p.name}</span>
-          {p.linkedin && <a class="credit__in lnk--mono" href={p.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>}
-        </li>
-      ))}
+    <ul class="cast" data-ui-stagger>
+      {team.map((p, i) => {
+        const c = p.crop ?? TEAM.find((t) => t.slug === p.slug || t.name === p.name)?.crop ?? { fx: 0.5, ey: 0.36, hw: 0.19 };
+        return (
+          <li class="cast__m" style={`--i:${i}`}>
+            <span class="cast__ph" style={`--fx:${c.fx};--ey:${c.ey};--hw:${c.hw}`}>
+              <img src={p.photo} alt={`Retrato de ${p.name}, ${p.role}`} width="600" height="600" loading="lazy" decoding="async" />
+            </span>
+            <span class="cast__role">{p.role}</span>
+            <span class="cast__name">{p.name}</span>
+            {p.linkedin && <a class="cast__in lnk--mono" href={p.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>}
+          </li>
+        );
+      })}
     </ul>
   )}
 
   {(variant === 'logos' || variant === 'stack') && (
     <ul class="credits__logos" data-ui-stagger>
       {kommo && variant === 'logos' && <li class="credits__kommo"><KommoBadge size="sm" /></li>}
-      {logos.map((l, i) => (
-        <li class="logo-credit" style={`--i:${i}`}>
-          <span class:list={['logo-mask', logoWide(l.slug) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(l.slug)})`} aria-hidden="true"></span>
-          <span class="logo-credit__name">{l.name}</span>
-          {l.role && <span class="logo-credit__role">{l.role}</span>}
-        </li>
-      ))}
+      {logos.map((l, i) => {
+        const inner = (
+          <>
+            <span class:list={['logo-mask', logoWide(l.slug) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(l.slug)})`} aria-hidden="true"></span>
+            <span class="logo-credit__name">{l.name}</span>
+          </>
+        );
+        return (
+          <li class="logo-credit" style={`--i:${i}`}>
+            {l.href && linkTarget(l.href) ? <a class="logo-credit__a" href={linkTarget(l.href)!}>{inner}</a> : inner}
+            {l.role && <span class="logo-credit__role">{l.role}</span>}
+          </li>
+        );
+      })}
     </ul>
   )}
 

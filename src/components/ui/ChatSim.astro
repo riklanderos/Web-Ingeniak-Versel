@@ -1,9 +1,20 @@
 ---
 // ChatSim · ESPEC §6 #31, §3.7, §7.4. Simulador sin backend: guiones JSON del build, "escribiendo…",
 // botón de pausa (WCAG 2.2.2), barra SIMULACIÓN, data-nosnippet. El guion completo está en el HTML como <ol>
-// (es el estado final sin JS o con movimiento reducido).
+// (es el estado final sin JS o con movimiento reducido: la conversación completa, sin recorte).
 //   mode="registered" → llena su contenedor (la .anchor--panel de la pantalla del teléfono en la placa); sin marco propio.
-//   mode="inline"     → teléfono de cristal propio (sobre aura; aura=true pinta el aura del isotipo detrás).
+//                       En paneles estrechos (≤ 220 px) compacta la barra y la pausa pasa a la esquina de la pantalla.
+//                       En móvil, si la superficie mide < 180 px, muestra la miniatura encendida (§3.7) en lugar del chat.
+//   mode="inline"     → teléfono de cristal propio (.glass-panel, §3.7) en el flujo del texto; ≤ 320 px en escritorio;
+//                       en móvil el alto es el de la conversación completa (las burbujas reservan su lugar: sin saltos).
+//   mode="mini"       → miniatura encendida para superficies registradas < 180 px: marca kain + 2–3 burbujas (aria-hidden).
+// control="external" → en escritorio con movimiento, el guion lo avanza la escena (document/sección → "cine:step" {progress});
+//                       en móvil (o si no llega ningún paso) corre el temporizador de siempre.
+// tabsOutside        → sin pestañas dentro del teléfono: la página pinta <ChatTabs for={id} …> bajo el copy.
+// tabsFor="<id>"     → igual que tabsOutside, y además conecta la lista de pestañas con ese id (role=tablist propio de la página).
+// limit              → solo las primeras n líneas del guion (StationUI "atender": 3 burbujas).
+// prefill            → burbujas que ya se ven antes de que empiece el guion (nunca un cristal vacío). 2 por defecto.
+// note               → false (sin pie) · texto propio. noteClause={false} quita la cláusula del sector ("no da diagnósticos…").
 // Guiones: src/data/chats/<sector>.json (área copy, _ESQUEMA.md §8) = ChatLine[] { who, text, delay?, time?, event? }.
 //   who: "cliente" | "kain" (también se aceptan from/de/role); delay (ms) = pausa antes de la línea ("escribiendo…" si es de Kain);
 //   time = hora ilustrativa del primer mensaje (sale como sello "Hora ilustrativa"); event = chip del sistema bajo la burbuja.
@@ -14,10 +25,14 @@ import { annotateFigures, SIM } from './ui-data';
 type Line = { from: 'cliente' | 'kain' | 'sistema'; text: string; time?: string; delay?: number; event?: string };
 type Tab = string | { id: string; label?: string };
 interface Props {
-  scripts?: Record<string, any[]>; tabs?: Tab[]; script?: string; mode?: 'registered' | 'inline'; autoplay?: boolean;
-  aura?: boolean; title?: string; note?: string | false; class?: string; id?: string;
+  scripts?: Record<string, any[]>; tabs?: Tab[]; script?: string; mode?: 'registered' | 'inline' | 'mini'; autoplay?: boolean;
+  aura?: boolean; title?: string; note?: string | false; noteClause?: boolean; control?: 'timer' | 'external';
+  tabsOutside?: boolean; tabsFor?: string; prefill?: number; limit?: number; class?: string; id?: string;
 }
-const { scripts: given, tabs: tabsProp, script, mode = 'inline', autoplay = true, aura = false, title = 'Agente de IA de tu negocio', note, class: cls, id } = Astro.props;
+const {
+  scripts: given, tabs: tabsProp, script, mode = 'inline', autoplay = true, aura = false, title = 'Agente de IA de tu negocio',
+  note, noteClause = true, control = 'timer', tabsOutside: tabsOut = false, tabsFor, prefill = 2, limit, class: cls, id,
+} = Astro.props;
 
 const LABELS: Record<string, string> = { salud: 'Salud', belleza: 'Belleza', nutricion: 'Nutrición', finanzas: 'Finanzas', inmobiliario: 'Inmobiliario', industrial: 'Industrial', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'HoReCa', default: 'General' };
 const NOTES: Record<string, string> = { salud: 'Kain no da diagnósticos ni consejo médico.', nutricion: 'Kain no da diagnósticos ni consejo médico.', finanzas: 'Kain no da asesoría financiera.' };
@@ -35,10 +50,12 @@ FALLBACK.default = FALLBACK.salud;
 
 const files = import.meta.glob('../../data/chats/*.json', { eager: true, import: 'default' }) as Record<string, any>;
 const fileFor = (sector: string) => { const k = Object.keys(files).find((x) => x.endsWith(`/${sector}.json`)); return k ? files[k] : null; };
+/** "11:02 p. m." → "11:02 p. m." con espacios de no separación (la hora nunca se parte). */
+const nbsp = (s?: string) => (s ? String(s).trim().replace(/\s+/g, ' ') : s);
 const norm = (raw: any): Line[] => {
   const list: any[] = Array.isArray(raw) ? raw : raw?.lines ?? raw?.mensajes ?? raw?.guion ?? raw?.messages ?? [];
   const who = (f: string): Line['from'] => (/^(kain|bot|agente|assistant)$/i.test(f) ? 'kain' : /^(sistema|system|crm|evento)$/i.test(f) ? 'sistema' : 'cliente');
-  return list.map((l) => ({ from: who(String(l.who ?? l.from ?? l.de ?? l.role ?? 'cliente')), text: String(l.text ?? l.texto ?? ''), time: l.time ?? l.hora, delay: Number(l.delay) || undefined, event: l.event ?? l.evento }))
+  return list.map((l) => ({ from: who(String(l.who ?? l.from ?? l.de ?? l.role ?? 'cliente')), text: String(l.text ?? l.texto ?? ''), time: nbsp(l.time ?? l.hora), delay: Number(l.delay) || undefined, event: l.event ?? l.evento }))
     .filter((l) => l.text);
 };
 
@@ -48,32 +65,43 @@ const sectors = tabsIn
     const key = typeof t === 'string' ? t : t.id;
     const label = (typeof t === 'string' ? undefined : t.label) ?? LABELS[key] ?? key;
     const raw = given?.[key] ?? fileFor(key) ?? FALLBACK[key];
-    const lines = raw ? norm(raw) : [];
+    const lines = raw ? norm(raw).slice(0, limit && limit > 0 ? limit : undefined) : [];
     if (!lines.length) { if (import.meta.env.DEV) console.warn(`[ui/ChatSim] falta src/data/chats/${key}.json: se omite la pestaña "${key}"`); return null; }
     return { key, label, lines, note: NOTES[key], stamp: lines.find((l) => l.time)?.time };
   })
   .filter(Boolean) as { key: string; label: string; lines: Line[]; note?: string; stamp?: string }[];
-if (!sectors.length) sectors.push({ key: 'salud', label: 'Salud', lines: norm(FALLBACK.salud), note: NOTES.salud, stamp: '11:02 p. m.' });
+if (!sectors.length) sectors.push({ key: 'salud', label: 'Salud', lines: norm(FALLBACK.salud), note: NOTES.salud, stamp: nbsp('11:02 p. m.') });
 
 const uid = id ?? `chat-${Math.random().toString(36).slice(2, 8)}`;
 const whoLabel = (f: Line['from']) => (f === 'kain' ? 'Kain' : f === 'sistema' ? 'Sistema' : 'Cliente');
 const simLabel = String(SIM.label).toUpperCase() === 'SIMULACIÓN' ? 'Simulación' : SIM.label;
+const multi = sectors.length > 1;
+const tabsOutside = tabsOut || !!tabsFor;
+const innerTabs = multi && !tabsOutside;
+const transcript = SIM.transcript ?? 'Conversación completa';
+const moreLabel = SIM.more ?? 'Ver conversación completa';
 ---
-<figure class:list={['chat', `chat--${mode}`, aura && 'chat--aura', cls]} id={uid} data-chat data-autoplay={autoplay ? '' : undefined} data-nosnippet
-  data-label-pause={SIM.pause} data-label-play={SIM.play} aria-label={`Simulación de una conversación con Kain${sectors.length > 1 ? ' por sector' : ''}`}>
+{mode === 'mini' ? (
+  <span class:list={['chat chat--mini', cls]} id={id} aria-hidden="true" data-nosnippet>
+    <span class="chat__mini"><span class="chat__mini-mark"><span class="kain-mark">kain</span></span><i class="chat__mini-b chat__mini-b--c"></i><i class="chat__mini-b chat__mini-b--k"></i><i class="chat__mini-b chat__mini-b--s"></i></span>
+  </span>
+) : (
+<figure class:list={['chat', `chat--${mode}`, aura && 'chat--aura', tabsOutside && multi && 'chat--tabs-out', cls]} id={uid} data-chat
+  data-autoplay={autoplay ? '' : undefined} data-chat-control={control === 'external' ? 'external' : undefined} data-prefill={prefill} data-nosnippet
+  data-label-pause={SIM.pause} data-label-play={SIM.play} data-chat-tabs-ext={tabsFor} aria-label={`Simulación de una conversación con Kain${multi ? ' por sector' : ''}`}>
   {aura && mode === 'inline' && <span class="chat__aura" aria-hidden="true"><img src="/img/marca/isotipo-cristal-640.webp" alt="" width="640" height="640" loading="lazy" decoding="async" /></span>}
   <div class:list={['chat__device', mode === 'inline' && 'glass-panel']}>
     <div class="chat__bar">
       <span class="chat__avatar" aria-hidden="true"><span class="chat__avatar-node"></span></span>
       <span class="chat__who"><span class="kain-mark">kain</span><span class="chat__role">{title}</span></span>
-      <span class="chip-sim">{simLabel}</span>
+      <span class="chip-sim chat__sim">{simLabel}</span>
       {autoplay && (
-        <button type="button" class="chat__pause" data-chat-pause aria-pressed="false" aria-label={SIM.pause}>
+        <button type="button" class="chat__pause" data-chat-pause aria-pressed="false" aria-label={SIM.pause} hidden>
           <Icon name="pause" size={16} class="chat__i-pause" /><Icon name="play" size={16} class="chat__i-play" />
         </button>
       )}
     </div>
-    {sectors.length > 1 && (
+    {innerTabs && (
       <div class="chat__tabs" role="tablist" aria-label={SIM.tabsAria}>
         {sectors.map((s, i) => (
           <button type="button" role="tab" class="chat__tab" id={`${uid}-tab-${s.key}`} aria-controls={`${uid}-p-${s.key}`}
@@ -81,13 +109,13 @@ const simLabel = String(SIM.label).toUpperCase() === 'SIMULACIÓN' ? 'Simulació
         ))}
       </div>
     )}
-    <div class="chat__screen" tabindex="0" aria-label="Conversación completa">
+    <div class="chat__screen" tabindex="0" aria-label={transcript} data-lenis-prevent>
       {sectors.map((s, i) => (
         <ol class="chat__log" id={`${uid}-p-${s.key}`} data-chat-panel={s.key}
-          role={sectors.length > 1 ? 'tabpanel' : undefined} aria-labelledby={sectors.length > 1 ? `${uid}-tab-${s.key}` : undefined}
-          aria-label={sectors.length > 1 ? undefined : `Conversación simulada: ${s.label}`} hidden={i > 0 ? true : undefined}>
-          {s.stamp && <li class="chat__stamp" data-allow-number>{SIM.horaIlustrativa} · {s.stamp}</li>}
-          {s.lines.map((l) => (
+          role={multi ? 'tabpanel' : undefined} aria-labelledby={multi ? `${uid}-tab-${s.key}` : undefined}
+          aria-label={multi ? undefined : `Conversación simulada: ${s.label}`} hidden={i > 0 ? true : undefined}>
+          {s.stamp && <li class="chat__stamp" data-allow-number><span class="chat__stamp-l">{SIM.horaIlustrativa}</span><span class="chat__stamp-sep" aria-hidden="true"> · </span><span class="chat__stamp-t">{s.stamp}</span></li>}
+          {s.lines.map((l, j) => (
             <>
               <li class:list={['chat__msg', `chat__msg--${l.from}`]} data-from={l.from} data-delay={l.delay}>
                 <span class="sr-only">{whoLabel(l.from)}: </span>
@@ -103,13 +131,19 @@ const simLabel = String(SIM.label).toUpperCase() === 'SIMULACIÓN' ? 'Simulació
             </>
           ))}
           <li class="chat__typing" aria-hidden="true"><span></span><span></span><span></span></li>
+          <li class="chat__end" id={`${uid}-end-${s.key}`} aria-hidden="true"></li>
         </ol>
       ))}
     </div>
+    {mode === 'registered' && <a class="chat__more" href={`#${uid}-end-${sectors[0].key}`} data-chat-more>{moreLabel}<span aria-hidden="true"> ↓</span></a>}
   </div>
+  {mode === 'registered' && (
+    <span class="chat__mini" aria-hidden="true"><span class="chat__mini-mark"><span class="kain-mark">kain</span></span><i class="chat__mini-b chat__mini-b--c"></i><i class="chat__mini-b chat__mini-b--k"></i><i class="chat__mini-b chat__mini-b--s"></i></span>
+  )}
   {note !== false && (
     <figcaption class="chat__note t-micro">
-      {sectors.map((s, i) => <span data-chat-note={s.key} hidden={i > 0 ? true : undefined}>{note ?? 'Simulación con un guion de ejemplo; las horas son ilustrativas.'}{s.note && <>{' '}{s.note}</>}</span>)}
+      {sectors.map((s, i) => <span data-chat-note={s.key} hidden={i > 0 ? true : undefined}>{note ?? 'Simulación con un guion de ejemplo; las horas son ilustrativas.'}{noteClause && s.note && <>{' '}{s.note}</>}</span>)}
     </figcaption>
   )}
 </figure>
+)}

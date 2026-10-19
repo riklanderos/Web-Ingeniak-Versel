@@ -1,0 +1,33 @@
+---
+// Aura · luz ambiental de las plantillas (área páginas): el WebP del isotipo o de las ondas, ya desenfocado (sin filtro en
+// vivo), con máscara radial. Ninguna sección pinta fondo (§3.11): la luz la ponen placas, auras, nodos y UI.
+// Se coloca en el contenedor posicionado más cercano (sección .it/.mt/.is/.svc-sec…), detrás del texto (z-index −1).
+//   x, y   → centro (porcentajes de la sección) · w → ancho (aspecto 1:1 isotipo, 3:2 ondas) · o → opacidad
+//   only   → 'd' solo escritorio · 'm' solo móvil (misma condición por proporción que las placas, §3.6)
+//   sticky → móvil: la luz acompaña el scroll dentro de su sección (listas largas), sin ocupar alto en el flujo; cuelga hacia
+//            abajo desde su punto (nunca se asoma sobre la sección anterior).
+//   clip   → (por defecto) la luz no sale de su contenedor (una caja de 100vw con overflow oculto): la penumbra opaca del
+//            WebP nunca tapa la escena anterior (las secciones posteriores pintan encima) ni la siguiente.
+// Deriva suave con animation-timeline: view() (CSS); con movimiento reducido queda fija.
+import { AURA_ISOTIPO, AURA_ONDAS } from '../cine/plate';
+interface Props {
+  kind?: 'isotipo' | 'ondas'; x?: string; y?: string; w?: string; o?: number; only?: 'd' | 'm'; sticky?: boolean; clip?: boolean; class?: string;
+}
+const { kind = 'ondas', x = '50%', y = '50%', w, o = 0.7, only, sticky = false, clip = true, class: cls } = Astro.props;
+const src = kind === 'ondas' ? AURA_ONDAS : AURA_ISOTIPO;
+const [iw, ih] = kind === 'ondas' ? [960, 640] : [640, 640];
+const style = `--x:${x};--y:${y};--o:${o};` + (w ? `--w:${w};` : '');
+---
+{clip && !sticky ? (
+  <span class:list={['tpl-aura-box', only && `tpl-only-${only}`, cls]} aria-hidden="true">
+    <span class:list={['tpl-aura', `tpl-aura--${kind}`]} style={style}><img src={src} alt="" width={iw} height={ih} loading="lazy" decoding="async" /></span>
+  </span>
+) : sticky ? (
+  <span class:list={['tpl-aura-sticky', only && `tpl-only-${only}`, cls]} aria-hidden="true">
+    <span class:list={['tpl-aura', `tpl-aura--${kind}`]} style={style}><img src={src} alt="" width={iw} height={ih} loading="lazy" decoding="async" /></span>
+  </span>
+) : (
+  <span class:list={['tpl-aura', `tpl-aura--${kind}`, only && `tpl-only-${only}`, cls]} style={style} aria-hidden="true">
+    <img src={src} alt="" width={iw} height={ih} loading="lazy" decoding="async" />
+  </span>
+)}

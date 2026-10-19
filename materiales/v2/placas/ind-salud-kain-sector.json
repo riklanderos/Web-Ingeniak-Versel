@@ -1,0 +1,22 @@
+{
+  "ind-salud-kain-sector": {
+    "alt": "Kain, el agente de IA de Ingeniak, en la recepción de una clínica junto a un panel de cristal donde agenda citas",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/ind-salud-kain-sector", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.26, "fy": 0.5, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/ind-salud-kain-sector-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.47, "fy": 1, "subjTop": 0.44 },
+    "layout": "subject-left",
+    "safe": { "d": [[0.49, 0.06, 0.96, 0.95]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.08, 0.10, 0.44, 0.93], "m": [0.21, 0.43, 0.73, 0.91] },
+    "anchors": {
+      "pecho": { "d": [0.207, 0.440], "m": [0.381, 0.631], "scrW": 0.036 },
+      "rostro": { "d": [0.220, 0.280], "m": [0.393, 0.540] },
+      "mano": { "d": [0.313, 0.412], "m": [0.526, 0.613] },
+      "pantalla": { "d": [0.319, 0.200, 0.112, 0.441], "m": [0.530, 0.471, 0.191, 0.278] },
+      "fig": { "d": [0.330, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.880], "m": [0.500, 0.900] }
+    },
+    "leak": { "d": [0.17, 0.22] },
+    "grade": 0,
+    "creationIds": { "desktop": "SyD8dNYUb8", "mobile": "P38fhTx42C" }
+  }
+}

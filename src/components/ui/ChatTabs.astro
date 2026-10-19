@@ -1,0 +1,24 @@
+---
+// ChatTabs · pestañas de sector FUERA del teléfono (ESPEC §5.1 ESC 06: "pestañas de sector bajo el copy").
+// Se usa con <ChatSim tabsOutside id="kain-chat" …> y controla uno o varios simuladores: for="kain-chat kain-chat-m".
+// Mismo patrón ARIA que dentro del teléfono (role=tablist/tab, flechas, Inicio/Fin); ui.ts las conecta por data-chat-tabs-for.
+//   sim=true → antepone la etiqueta SIMULACIÓN (chip-sim) a la fila.
+import { SIM } from './ui-data';
+
+type Tab = string | { id: string; label?: string };
+interface Props { for: string; tabs: Tab[]; sim?: boolean; label?: string; class?: string }
+const { for: target, tabs, sim = true, label = SIM.tabsAria, class: cls } = Astro.props;
+const LABELS: Record<string, string> = { salud: 'Salud', belleza: 'Belleza', nutricion: 'Nutrición', finanzas: 'Finanzas', inmobiliario: 'Inmobiliario', industrial: 'Industrial', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'HoReCa', default: 'General' };
+const first = target.trim().split(/\s+/)[0];
+const list = tabs.map((t) => (typeof t === 'string' ? { id: t, label: LABELS[t] ?? t } : { id: t.id, label: t.label ?? LABELS[t.id] ?? t.id }));
+const simLabel = String(SIM.label).toUpperCase() === 'SIMULACIÓN' ? 'Simulación' : SIM.label;
+---
+<div class:list={['chat-tabs', cls]} data-nosnippet>
+  {sim && <span class="chip-sim">{simLabel}</span>}
+  <div class="chat-tabs__list" role="tablist" aria-label={label} data-chat-tabs-for={target}>
+    {list.map((t, i) => (
+      <button type="button" role="tab" class="chat__tab chat-tabs__tab" id={`${first}-tab-${t.id}`} aria-controls={`${first}-p-${t.id}`}
+        aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-chat-tab={t.id}>{t.label}</button>
+    ))}
+  </div>
+</div>

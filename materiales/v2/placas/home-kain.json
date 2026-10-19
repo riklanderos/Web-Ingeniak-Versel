@@ -1,0 +1,22 @@
+{
+  "home-kain": {
+    "alt": "Kain, el agente de IA de Ingeniak, saluda junto a un teléfono de cristal flotante",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/home-kain", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.26, "fy": 0.5, "fadeFrom": 0.93 },
+    "m": { "src": "/img/cine/home-kain-m", "w": 1856, "h": 2304, "ar": 0.8056, "fx": 0.45, "fy": 1, "subjTop": 0.45 },
+    "layout": "subject-left",
+    "safe": { "d": [[0.45, 0.06, 0.96, 0.94]], "m": [[0.04, 0.03, 0.96, 0.44]] },
+    "subject": { "d": [0.07, 0.12, 0.43, 0.90], "m": [0.22, 0.45, 0.68, 0.90] },
+    "anchors": {
+      "pecho": { "d": [0.199, 0.435], "m": [0.385, 0.633], "scrW": 0.037 },
+      "mano": { "d": [0.098, 0.384], "m": [0.258, 0.602] },
+      "rostro": { "d": [0.208, 0.280], "m": [0.395, 0.545] },
+      "telefono": { "d": [0.328, 0.261, 0.095, 0.361], "m": [0.550, 0.534, 0.116, 0.202] },
+      "fig": { "d": [0.400, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.860], "m": [0.500, 0.870] }
+    },
+    "leak": { "d": [0.27, 0.36] },
+    "grade": 0,
+    "creationIds": { "desktop": "KLGcnuzkqp", "mobile": "jUcDT1TLD0" }
+  }
+}

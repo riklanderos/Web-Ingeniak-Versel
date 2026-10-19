@@ -1,8 +1,10 @@
 // src/lib/metrics.ts — ÚNICA fuente de cifras comerciales del sitio (ESPEC-v2 §2.10).
 // Ningún componente imprime una cifra comercial que no salga de aquí: usa <Metric id="…" />.
+// prose (opcional): la cifra redactada para una oración ({{metric:ID|prose}}). No se agrega periodo/ventana a una cifra
+// (retail-conversiones, horeca-roas, salud-citas-mes) hasta que el cliente lo confirme por escrito.
 export const METRICS = {
   'dental-citas':        { value: '3.2×',                label: 'más citas en 90 días',      ctx: 'Clínica dental · Monterrey',     href: '/casos/clinica-dental-monterrey/', countable: false },
-  'dental-respuesta':    { value: '8 min → 12 s',        label: 'tiempo de respuesta',       ctx: 'Clínica dental · Monterrey',     href: '/casos/clinica-dental-monterrey/', countable: false },
+  'dental-respuesta':    { value: '8 min → 12 s',        label: 'tiempo de respuesta',       ctx: 'Clínica dental · Monterrey',     href: '/casos/clinica-dental-monterrey/', countable: false, prose: 'de 8 minutos a 12 segundos' },
   'ecom-cpl':            { value: '−58%',                label: 'costo por lead en 60 días', ctx: 'E-commerce · CDMX',              href: '/casos/ecommerce-cdmx-costo-por-lead/', countable: false },
   'retail-conversiones': { value: '+340%',               label: 'conversiones',              ctx: 'Retail multimarca · Kommo + IA', href: '/casos/retail-multimarca-kommo/', countable: false },
   'horeca-roas':         { value: 'ROAS 4.8×',           label: 'sostenido',                 ctx: 'HoReCa',                         href: '/casos/horeca-roas/', countable: false },
@@ -10,7 +12,7 @@ export const METRICS = {
   'salud-citas-mes':     { value: '12 → 47',             label: 'citas al mes en promedio',  ctx: 'Clientes del sector salud',      href: undefined, countable: false },
   'tiempo-operativo':    { value: '−60%',                label: 'tiempo operativo',          ctx: 'Promedio, primeros 90 días',     href: undefined, countable: false },
   'ecom-tablero':        { value: '1 vista · 7 fuentes', label: 'tablero unificado',         ctx: 'E-commerce',                     href: '/casos/ecommerce-cdmx-costo-por-lead/', countable: false },
-  'sistemas':            { value: '+73',                 label: 'sistemas en producción',    ctx: 'Ingeniak',                       href: undefined, countable: false },
+  'sistemas':            { value: '+73',                 label: 'sistemas en producción',    ctx: 'Agentes, CRM y automatizaciones',                       href: undefined, countable: false },
   'paises':              { value: '7',                   label: 'países',                    ctx: 'México (sede), Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador', href: '/nosotros/', countable: true, from: 0 },
 } as const;
 

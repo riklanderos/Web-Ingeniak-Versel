@@ -34,11 +34,15 @@ import SystemFlow from '../ui/SystemFlow.astro';
 import DefinitionBlock from '../ui/DefinitionBlock.astro';
 import FAQAccordion from '../ui/FAQAccordion.astro';
 import ResultsLedger from '../ui/ResultsLedger.astro';
+import FigCaption from '../cine/FigCaption.astro';
 import Still from '../ui/Still.astro';
 import KommoBadge from '../ui/KommoBadge.astro';
 import Icon from '../ui/Icon.astro';
 import { annotateFigures, esc, logoUrl, logoWide, TOOLS } from '../ui/ui-data';
-import { getPlate, pages, waHref, SITE, type Page } from '../../lib/site';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs, builtRelated } from './heroKit';
+import { getPlate, pages, waHref, SITE, linkTarget, isBuilt, plateAlt, type Page } from '../../lib/site';
 import { METRICS, type MetricId } from '../../lib/metrics';
 
 interface Props { page: Page; copy: any }
@@ -90,8 +94,28 @@ for (let i = 0; i < list.length; i++) {
 
 /* ── Utilidades de texto ── */
 const lastWord = (t = '') => (t.trim().split(/\s+/).pop() ?? '').replace(/[.,:;!?¿¡]+$/, '');
+/** Espacio duro después de palabras de 1–2 letras (a, la, de, en, un, tu…): ninguna línea del titular termina en ellas.
+ *  Se aplica al texto ya escapado y antes del SplitText (que respeta el espacio duro dentro de su línea). */
+const NBSP_RX = /(?<=^|[\s\u00a0(¿¡])(a|al|de|el|en|la|lo|un|tu|su|mi|y|o|e|u|es|se|te|no|ni)\s+/gi;
+/** Recorre el HTML ya escapado y solo toca el texto fuera de los nodos que guardan cifras o importes exactos
+ *  ([data-allow-number], [data-metric]: precio, cifras de metrics.ts), que check-cifras compara literalmente. */
+const keepShort = (html: string) => {
+  let depth = 0;                              // profundidad dentro de un nodo protegido
+  return html.replace(/(<[^>]+>)|([^<]+)/g, (_m: string, tag?: string, txt?: string) => {
+    if (tag) {
+      if (depth > 0) { if (/^<\//.test(tag)) depth--; else if (!/\/>$/.test(tag)) depth++; return tag; }
+      if (/\sdata-(allow-number|metric)\b/.test(tag) && !/\/>$/.test(tag)) depth = 1;
+      return tag;
+    }
+    return depth > 0 ? txt! : txt!.replace(NBSP_RX, (_x: string, w: string) => `${w}\u00a0`);
+  });
+};
 /** Titular de dos voces {text, soft, lit?} → HTML (tokens resueltos; la .lit solo en la portada). */
 function head(h: any, lit = false): string {
+  if (!h) return '';
+  return keepShort(headRaw(h, lit));
+}
+function headRaw(h: any, lit = false): string {
   if (!h) return '';
   let t = annotateFigures(h.text ?? '');
   if (lit) {
@@ -105,6 +129,9 @@ function head(h: any, lit = false): string {
 const toneOf = (t?: string) => (t === 'ambar' || t === 'amber' ? 'amber' : t === 'muted' ? 'muted' : 'cyan') as 'cyan' | 'amber' | 'muted';
 const wa = (c: any) => (c?.ctaSecondary?.waMessage ? waHref(c.ctaSecondary.waMessage) : P.secondaryCta?.href ?? waHref('Hola Kain'));
 const ext = (href = '') => /^https?:\/\//.test(href);
+/** Enlaces del cuerpo (R12 · QA enlaces): solo rutas construidas; una planeada se omite o se pinta como texto (nunca '#'). */
+const built = (list?: any[]) => (list ?? []).filter((l) => l?.href && isBuilt(l.href));
+const hrefOr = (h?: string) => (h ? linkTarget(h) ?? undefined : undefined);
 
 /* ── Placas de la página (para no repetir encuadre en los fotogramas) ── */
 const plateOf = (s: any) => (s?.plate?.id ? s.plate : null);
@@ -159,6 +186,32 @@ const heroLines = heroUi?.bubbles?.length
       event: i === all.length - 1 && heroUi.status ? heroUi.status : undefined,
     }))
   : null;
+// R3 · intro móvil: lede ≤ 20 palabras (la oración con la cifra baja a `more`); etiqueta solo si no repite los crumbs
+const heroLede = ledeParts(C.hero?.lede, 20);
+const heroBubbles: any[] = (heroUi?.bubbles ?? []).slice(0, 2);
+const heroEyebrowDup = eyebrowRepeatsCrumbs(C.hero?.eyebrow, P.breadcrumbs);
+
+/* ── Señales: pie de foto "Fig. 02" en el piso de la placa, unido al teléfono de la persona (§3.8) ── */
+const painS = list.find((s) => PAIN.includes(s.id));
+const painFig: string | null = painS ? (C[painS.id]?.fig?.label ?? 'Lo que pasa a las 11:48\u00a0p.\u00a0m.') : null;
+const painFigTarget = (id?: string) => {
+  const r = id ? resolvePlate(id, {}) : null;
+  return ['telefono', 'mano', 'rostro'].find((n) => r?.anchors[n]?.d) ?? 'mano';
+};
+
+/* ── Regreso al set (R5): la escena intermedia vuelve a la placa de la portada, ya empujada (--cam 1.35 → 1.6 hacia el
+   teléfono) y con OTRA UI encima (tarjeta de lead que llega a "Cita agendada"): nunca el mismo encuadre dos veces.
+   Va en la sección que trae placa en sitemap.json; si ninguna intermedia la trae, en la primera comparativa
+   (vs-chatbot/comparativa) — pedido a orquestador registrarlo en sitemap.json (sections[].plate.push). ── */
+const midHasPlate = list.some((s) => !['hero', 'cta-final'].includes(s.id) && !PAIN.includes(s.id) && s.id !== 'como-funciona' && plateOf(s));
+const regresoId: string | null = (() => {
+  const own = list.find((s) => TWO.includes(s.id) && plateOf(s));
+  if (own) return own.id;
+  if (midHasPlate) return null;
+  return list.find((s) => ['vs-chatbot', 'comparativa'].includes(s.id) && C[s.id]?.rows?.length)?.id ?? null;
+})();
+const regresoPlate = (s: any) => plateOf(s) ?? { ...hp, push: { from: 1.35, to: 1.6 } };
+const LEAD_STAGES = ['Nuevo', 'Calificado', 'Cita agendada'];
 
 /* ── Cómo funciona: ¿la placa trae los nodos registrables? ── */
 function flowPlate(s: any) {
@@ -170,8 +223,17 @@ function flowPlate(s: any) {
 
 /* Casos: 1–2 filas de Montage (ESPEC §5.2 #07), registro con todas las cifras del copy y la portada de cada caso */
 function casesData(c: any) {
-  const rowIds = ((c.rows ?? []).map((r: any) => r.metricId) as MetricId[]).filter((id) => METRICS[id]).slice(0, 2);
-  const ledgerIds = (c.ledger?.metricIds ?? (c.rows ?? []).map((r: any) => r.metricId)) as MetricId[];
+  // Una fila por caso: dos cifras del mismo caso (mismo href) no ocupan las dos filas del montaje (§5.2 #07: dental + retail)
+  const seen = new Set<string>();
+  const rowIds = ((c.rows ?? []).map((r: any) => r.metricId) as MetricId[]).filter((id) => {
+    if (!METRICS[id]) return false;
+    const k = (METRICS[id] as any).href ?? id;
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  }).slice(0, 2);
+  // Registro filtrado (§5.2 #07): solo las cifras que el montaje no muestra ya
+  const ledgerIds = ((c.ledger?.metricIds ?? (c.rows ?? []).map((r: any) => r.metricId)) as MetricId[]).filter((id) => METRICS[id] && !rowIds.includes(id));
   const stillMap: Record<string, string> = {};
   for (const id of rowIds) {
     const href = METRICS[id]?.href;
@@ -194,10 +256,16 @@ const lay = (p: any) =>(p?.layout && p.layout !== 'sin sujeto' ? p.layout : unde
 function aura(kind: 'isotipo' | 'ondas', pos = ''): string {
   const src = kind === 'ondas' ? AURA_ONDAS : AURA_ISOTIPO;
   const [w, h] = kind === 'ondas' ? [960, 640] : [640, 640];
-  return `<div class="svc-aura svc-aura--${kind}${pos ? ` svc-aura--${pos}` : ''}" aria-hidden="true">`
+  const el = `<div class="svc-aura svc-aura--${kind}${pos ? ` svc-aura--${pos}` : ''}" aria-hidden="true">`
     + `<img src="${src}" alt="" width="${w}" height="${h}" loading="lazy" decoding="async" /></div>`;
+  // Caja de recorte (la penumbra opaca del WebP no tapa la escena anterior ni la siguiente); el teléfono vive en su columna
+  return pos === 'phone' ? el : `<div class="tpl-aura-box" aria-hidden="true">${el}</div>`;
 }
 const lcp = hr.id ?? undefined;
+/* Sigue explorando: los destinos del copy que ya existen y, si faltan, páginas construidas que esta página ya enlaza */
+const relS = list.find((s) => s.id === 'relacionados');
+const prefer = [...((C.casos?.rows ?? []) as any[]).map((r) => r.href), ...((C.industrias?.items ?? []) as any[]).map((r) => r.href)].filter(Boolean);
+const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url, want: 3, prefer }) : [];
 ---
 <BaseLayout page={page} lcpPlate={lcp} lcpSrcsetMax={hp.srcsetMax ?? 2752} bodyClass="svc">
   {blocks.map((b) => {
@@ -209,32 +277,51 @@ const lcp = hr.id ?? undefined;
       <SharedTake plate={hp.id} fallbackPlate={hp.launchFallback} mirror={hp.mirror}>
         <ImageSection
           id={s.id} plate={hp.id} fallbackPlate={hp.launchFallback} layout={lay(hp)} mirror={hp.mirror}
-          height="hero" priority take mobile={hp.mobile === 'below' ? 'top' : hp.mobile ?? 'top'} srcsetMax={hp.srcsetMax}
-          class="svc-hero" data-svc="hero"
+          height="hero" priority take mobile="split" srcsetMax={hp.srcsetMax} alt={plateAlt(hr.id ?? hp.id, P.id) || undefined}
+          class="svc-hero tpl-hero" data-svc="hero"
         >
-          <Breadcrumbs page={page} />
-          {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+          {/* R3: crumbs O etiqueta, nunca ambas en el intro móvil (los crumbs se quedan en escritorio) */}
+          <Breadcrumbs page={page} items={builtCrumbs((page as any).breadcrumbs)} class="tpl-mhide" />
+          {c.eyebrow && <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
           <h1 id={`${s.id}-t`} class="t-display-2 svc-h1" data-split set:html={head(c.h1, true)} />
-          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2 svc-hero__lede" />}
-          <div class="ctas">
-            <Btn variant="primary" href={c.ctaPrimary?.href ?? SITE.discovery} label={c.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
-            <Btn variant="ghost" href={wa(c)} label={c.ctaSecondary?.label ?? 'Escríbele a Kain'} />
-          </div>
+          {c.lede && (
+            <p class="t-lede t-lede--2 svc-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
+          )}
+          <HeroCtas href={c.ctaPrimary?.href ?? SITE.discovery} label={c.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+            waHref={wa(c)} waLabel={c.ctaSecondary?.label ?? 'Escríbele a Kain'} />
           {heroLines && heroPanel && <LightBranch from="mano" via=".svc-ui" />}
           {heroLines && heroPanel && (
-            <div slot="anchors" class="anchor anchor--panel svc-panel svc-ui" data-anchor={heroPanel.name} data-lock style={heroPanel.style}>
+            <div slot="anchors" class="anchor anchor--panel svc-panel svc-ui" data-anchor={heroPanel.name} data-lock style={heroPanel.style} data-nosnippet>
               <ChatSim mode="registered" scripts={{ portada: heroLines }} tabs={[{ id: 'portada', label: 'WhatsApp' }]} note={false} />
             </div>
           )}
-          {heroLines && heroPanel?.m && (
-            <div slot="anchors" class="anchor svc-panel svc-ui-lit" data-lock aria-hidden="true" style={heroPanel.style}>
-              <i></i><i></i><i></i><b></b>
-            </div>
+          {/* R3/R4: en móvil la cifra del lede y las 2 burbujas del guion (versión en línea de la UI registrada) bajan
+              después de la placa, dentro de la misma sección; en el teléfono de la placa queda la miniatura encendida */}
+          {(heroLede.rest || heroBubbles.length > 0) && (
+            <Fragment slot="more">
+              {heroLede.rest && <Copy text={heroLede.rest} as="p" class="t-lede t-lede--2 svc-hero__proof tpl-dhide" />}
+              {heroBubbles.length > 0 && (
+                <div class="svc-bubbles tpl-dhide" role="group" aria-label="Simulación de una conversación por WhatsApp" data-nosnippet>
+                  <p class="svc-bubbles__top">
+                    <span class="chip-sim">SIMULACIÓN</span>
+                    {heroBubbles[0]?.time && <span class="t-micro svc-bubbles__time" data-allow-number>{heroUi?.timeLabel ?? 'Hora ilustrativa'} · {heroBubbles[0].time}</span>}
+                  </p>
+                  {heroBubbles.map((b: any) => (
+                    <p class:list={['svc-bubble', b.who === 'kain' ? 'svc-bubble--kain' : 'svc-bubble--cliente']}>
+                      <span class="sr-only">{b.who === 'kain' ? 'Kain' : 'Cliente'}: </span><span set:html={annotateFigures(b.text)} />
+                    </p>
+                  ))}
+                  {heroUi?.status && <p class="t-micro svc-bubbles__status"><span class="node" aria-hidden="true"></span>{heroUi.status}</p>}
+                </div>
+              )}
+            </Fragment>
           )}
         </ImageSection>
 
         {b.next && (
-          <Intertitle id={b.next.s.id} rack aura="none" labelledby={`${b.next.s.id}-def-q`} class="svc-def">
+          <Intertitle id={b.next.s.id} rack aura="none" labelledby={`${b.next.s.id}-def-q`} class="svc-def tpl-glow">
+            <Aura kind="ondas" x="40%" y="104%" o={1} only="d" />
+            <Aura kind="isotipo" x="75%" o={0.9} only="m" sticky />
             <DefinitionBlock
               id={`${b.next.s.id}-def`}
               faqId={b.next.c.definition?.faqId}
@@ -253,7 +340,7 @@ const lcp = hr.id ?? undefined;
 
     /* ───────────── Definición suelta (si no sigue a la portada) ───────────── */
     if (b.kind === 'def') return (
-      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-def-q`} class="svc-def">
+      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-def-q`} class="svc-def tpl-glow">
         <DefinitionBlock id={`${s.id}-def`} faqId={c.definition?.faqId} heading={c.definition?.heading ?? c.h2?.text} text={c.definition?.text} label={c.eyebrow} />
         {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="svc-body svc-def__body" data-reveal />)}
         {c.metricRow?.metricIds?.length > 0 && <Metric variant="row" ids={c.metricRow.metricIds} heading={c.metricRow.title} note={c.metricRow.sourceNote !== false} class="svc-def__row" />}
@@ -268,12 +355,16 @@ const lcp = hr.id ?? undefined;
       return (
         <ImageSection
           id={s.id} plate={p?.id ?? 'home-problema-a'} fallbackPlate={p?.launchFallback} layout={lay(p)} mirror={p?.mirror}
-          height={p?.height ?? 'mid'} tone="dolor" mobile={p?.mobile ?? 'split'} srcsetMax={p?.srcsetMax ?? 1920} alt="" class="svc-pain"
+          height={p?.height ?? 'mid'} tone="dolor" mobile={p?.mobile ?? 'split'} srcsetMax={p?.srcsetMax ?? 1920} alt="" class="svc-pain tpl-glow-m"
         >
+          <span class="tpl-introglow" aria-hidden="true"></span>
           {c.eyebrow && <p class="t-label t-label--amber eyebrow"><span class="node node--amber" aria-hidden="true"></span>{c.eyebrow}</p>}
           <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
           {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+          {/* Pie de foto anclado al piso (ancla fig de la placa; en la vertical es null → no se pinta en móvil, R4) */}
+          {painFig && <FigCaption slot="anchors" n={2} title={painFig} anchor="fig" target={painFigTarget(p?.id)}></FigCaption>}
           <Fragment slot="more">
+            <Aura kind="ondas" x="50%" o={1} only="m" sticky />
             {withLine ? (
               <div class="pain pain--draw svc-signals" data-pain="draw">
                 <ol class="pain__list" aria-label={c.eyebrow ?? 'Señales y su solución'}>
@@ -298,20 +389,21 @@ const lcp = hr.id ?? undefined;
 
     /* ───────────── 04 · Capacidades (filas de guion + teléfono de cristal sobre aura) ───────────── */
     if (b.kind === 'script') {
-      const rows = (c.items ?? []).map((it: any, i: number) => ({ n: it.n ?? String(i + 1).padStart(2, '0'), title: it.title, line: it.line, href: it.href, external: ext(it.href) }));
-      const groups = c.groups?.map((g: any) => ({ label: g.label, glyph: g.glyph, rows: (g.items ?? []).map((it: any) => ({ title: it.title, line: it.line, href: it.href })) }));
+      const rows = (c.items ?? []).map((it: any, i: number) => ({ n: it.n ?? String(i + 1).padStart(2, '0'), title: it.title, line: it.line, href: hrefOr(it.href), external: ext(it.href) }));
+      const groups = c.groups?.map((g: any) => ({ label: g.label, glyph: g.glyph, rows: (g.items ?? []).map((it: any) => ({ title: it.title, line: it.line, href: hrefOr(it.href) })) }));
       const tabs = c.chat ? (c.chat.tabs ?? c.chat.scripts ?? [c.chat.script ?? 'default']) : null;
       return (
-        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class={tabs ? 'svc-cap svc-cap--chat' : 'svc-cap'}>
+        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class={tabs ? 'svc-cap svc-cap--chat tpl-glow' : 'svc-cap tpl-glow'}>
           <div class="svc-cap__grid">
             <div class="svc-cap__main">
+              <Aura kind="isotipo" x="70%" o={0.9} only="m" sticky />
               {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
               <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
               {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
               <ScriptList rows={groups ? [] : rows} groups={groups} label={c.eyebrow} class="svc-cap__rows" />
               {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="svc-body" data-reveal />)}
-              {c.links?.length > 0 && (
-                <p class="svc-links" data-reveal>{c.links.map((l: any) => <a class="lnk" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>)}</p>
+              {built(c.links).length > 0 && (
+                <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>)}</p>
               )}
             </div>
             {tabs && (
@@ -322,6 +414,7 @@ const lcp = hr.id ?? undefined;
             )}
           </div>
           {!tabs && <Fragment set:html={aura('isotipo', 'right')} />}
+          <Aura kind="ondas" x="30%" y="100%" o={1} only="d" />
         </Intertitle>
       );
     }
@@ -335,8 +428,9 @@ const lcp = hr.id ?? undefined;
       if (registrable) return (
         <ImageSection
           id={s.id} plate={fp!.p.id} fallbackPlate={fp!.p.launchFallback} layout="subject-center" mirror={fp!.p.mirror}
-          height="mid" align="start" mobile="top" srcsetMax={fp!.p.srcsetMax ?? 1920} alt="" class="svc-flow" data-nodes={nodes.length}
+          height="mid" align="start" mobile="top" srcsetMax={fp!.p.srcsetMax ?? 1920} alt="" class="svc-flow tpl-glow-m" data-nodes={nodes.length}
         >
+          <span class="tpl-introglow tpl-introglow--d" aria-hidden="true"></span>
           {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
           <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
           {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
@@ -368,7 +462,7 @@ const lcp = hr.id ?? undefined;
         </ImageSection>
       );
       return (
-        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-flow-alt">
+        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-flow-alt tpl-glow">
           {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
           <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
           <SystemFlow nodes={nodes.map((n) => ({ label: n.label, line: n.line, logo: n.logos?.[0], kain: n.kain ?? /^kain\b/i.test(n.label ?? ''), confirmed: n.confirmed }))} title={c.h2?.text} />
@@ -382,11 +476,7 @@ const lcp = hr.id ?? undefined;
     if (b.kind === 'compare') {
       const L = c.left ?? { title: 'Antes' }; const R = c.right ?? { title: 'Después' };
       const lt = toneOf(L.tone ?? 'ambar'); const rt = toneOf(R.tone ?? 'cian');
-      return (
-        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-cmp-sec">
-          {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
-          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
-          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+      const table = (
           <table class="svc-cmp" data-ui-reveal>
             <caption class="sr-only">{c.h2?.text} {c.h2?.soft}</caption>
             <thead>
@@ -406,9 +496,59 @@ const lcp = hr.id ?? undefined;
               ))}
             </tbody>
           </table>
-          {c.links?.length > 0 && (
-            <p class="svc-links" data-reveal>{c.links.map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
-          )}
+      );
+      const cmpLinks = built(c.links).length > 0 && (
+        <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
+      );
+      /* Regreso al set: la placa de la portada, ya empujada hacia el teléfono, con la tarjeta de lead encima; la tabla nace
+         en la disolución inferior de la misma placa (una sola composición, nunca dos cajas) */
+      if (s.id === regresoId) {
+        const rp = regresoPlate(s);
+        const rr = resolvePlate(rp.id, { fallbackPlate: rp.launchFallback, mirror: rp.mirror });
+        const pan = panel(rr);
+        return (
+          <ImageSection
+            id={s.id} plate={rp.id} fallbackPlate={rp.launchFallback} layout={lay(rp)} mirror={rp.mirror} height="mid" align="start"
+            mobile="split" srcsetMax={2752} alt="" class="svc-back tpl-glow-m"
+            push={{ anchor: pan?.name ?? 'telefono', camFrom: rp.push?.from ?? 1.35, camTo: rp.push?.to ?? 1.6 }}
+          >
+            <span class="tpl-introglow" aria-hidden="true"></span>
+            {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+            <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+            {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+            {pan && (
+              <div slot="anchors" class="anchor anchor--panel svc-panel svc-lead" data-anchor={pan.name} data-m={pan.m ? undefined : 'none'} data-lock data-nosnippet style={pan.style} role="img"
+                aria-label="Simulación: un lead de WhatsApp llega a la etapa Cita agendada de tu CRM">
+                <div class="svc-lead__card" aria-hidden="true">
+                  <p class="svc-lead__top"><span class="chip-sim">SIMULACIÓN</span></p>
+                  <p class="svc-lead__k"><span class="node" aria-hidden="true"></span>Lead nuevo · WhatsApp</p>
+                  <ol class="svc-lead__stages">
+                    {LEAD_STAGES.map((t, i) => <li class:list={['svc-lead__st', i === LEAD_STAGES.length - 1 && 'is-on']} style={`--i:${i}`}><i></i><span>{t}</span></li>)}
+                  </ol>
+                  <p class="svc-lead__evt"><span class="svc-lead__ok"></span>Cita registrada en tu CRM</p>
+                </div>
+                {/* Móvil: el teléfono de la placa vertical mide < 180 px → miniatura encendida (§3.7), nunca un cristal vacío */}
+                <ChatSim mode="mini" class="svc-lead__mini" />
+              </div>
+            )}
+            <Fragment slot="more">
+              <div class="svc-back__table">
+                <Aura kind="ondas" x="55%" y="70%" o={1} only="d" />
+                <Aura kind="isotipo" x="70%" o={0.9} only="m" sticky />
+                {table}
+                {cmpLinks}
+              </div>
+            </Fragment>
+          </ImageSection>
+        );
+      }
+      return (
+        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-cmp-sec tpl-glow">
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+          {table}
+          {cmpLinks}
           <Fragment set:html={aura('ondas', 'cmp')} />
         </Intertitle>
       );
@@ -419,11 +559,13 @@ const lcp = hr.id ?? undefined;
       const variant = s.id === 'antes-despues' ? 'before-after' : s.id === 'si-no' ? 'dodont' : 'fit';
       const side = (x: any, d: 'cyan' | 'amber') => ({ title: x?.title ?? '', items: x?.items ?? [], tone: x?.tone ? toneOf(x.tone) : d });
       return (
-        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-two">
+        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-two tpl-glow">
           {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
           <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
           {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
           <TwoColumnScript variant={variant} left={side(c.left, 'cyan')} right={side(c.right, 'amber')} slogan={c.slogan} class="svc-two__cols" />
+          <Fragment set:html={aura('ondas', 'two')} />
         </Intertitle>
       );
     }
@@ -432,7 +574,8 @@ const lcp = hr.id ?? undefined;
     if (b.kind === 'logos') {
       const groups = (c.groups ?? (c.logos ? [{ label: c.eyebrow ?? '', logos: c.logos }] : [])) as any[];
       return (
-        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-int">
+        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-int tpl-glow">
+            <Aura kind="ondas" x="50%" o={1} only="m" sticky />
             <div class="svc-int__head">
               {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
               <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
@@ -443,9 +586,10 @@ const lcp = hr.id ?? undefined;
                   <dt class="t-label svc-int__label">{g.label}</dt>
                   <dd class="svc-int__logos">
                     {(g.logos ?? []).length ? (g.logos as any[]).map((l) => {
-                      const Tag = l.href ? 'a' : 'span';
+                      const lh = hrefOr(l.href);
+                      const Tag = lh ? 'a' : 'span';
                       return (
-                        <Tag class="logo-credit svc-int__logo" href={l.href}>
+                        <Tag class="logo-credit svc-int__logo" href={lh}>
                           <span class:list={['logo-mask', logoWide(l.slug) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(l.slug)})`} aria-hidden="true"></span>
                           <span class="logo-credit__name">{l.label ?? TOOLS[l.slug]?.name ?? l.slug}</span>
                         </Tag>
@@ -472,42 +616,57 @@ const lcp = hr.id ?? undefined;
       const { rowIds, ledgerIds, stillMap } = casesData(c);
       return (
         <>
-          <Montage id={s.id} ids={rowIds} stillFor={stillMap} anonNote={c.note ?? 'Nombres de clientes anonimizados.'} class="svc-mt">
+          <Montage id={s.id} ids={rowIds} stillFor={stillMap} anonNote={c.note ?? 'Nombres de clientes anonimizados.'} class={['svc-mt', 'tpl-glow', ledgerIds.length > 0 && 'svc-mt--ledger'].filter(Boolean).join(' ')}>
             {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
             <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
             {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+            {/* El registro filtrado vive DENTRO de #casos (pie del montaje), con su propio titular */}
             <Fragment slot="foot">
-              <a class="lnk" href="/casos/">Ver todos los casos <Icon name="arrow" size={16} /></a>
+              {ledgerIds.length > 0 && (
+                <div class="svc-ledger" role="group" aria-labelledby={`${s.id}-registro-h`}>
+                  <Fragment set:html={aura('ondas', 'ledger')} />
+                  <h3 id={`${s.id}-registro-h`} class="t-label t-label--cyan eyebrow svc-ledger__h"><span class="node" aria-hidden="true"></span>{c.ledger?.caption ?? 'Registro de resultados'}</h3>
+                  <ResultsLedger ids={ledgerIds} caption={c.ledger?.caption} id={`${s.id}-registro`} />
+                </div>
+              )}
+              {[{ href: '/casos/', label: 'Ver todos los casos' }, { href: '/casos/#registro', label: 'Registro de resultados completo' }].filter((l) => isBuilt(l.href)).map((l) => (
+                <a class="lnk" href={l.href}>{l.label} <Icon name="arrow" size={16} /></a>
+              ))}
             </Fragment>
           </Montage>
-          {ledgerIds.length > 0 && (
-            <div class="svc-sec svc-ledger">
-              <div class="frame">
-                <div class="svc-ledger__body" data-ui-reveal>
-                  <p class="t-label t-label--cyan eyebrow svc-ledger__h"><span class="node" aria-hidden="true"></span>{c.ledger?.caption ?? 'Registro de resultados'}</p>
-                  <ResultsLedger ids={ledgerIds} caption={c.ledger?.caption} id={`${s.id}-registro`} />
-                  <p class="svc-links"><a class="lnk" href="/casos/#registro">Registro de resultados completo <Icon name="arrow" size={16} /></a></p>
-                </div>
-              </div>
-            </div>
-          )}
         </>
       );
     }
 
-    /* ───────────── 08b · Industrias (Still mini ×4) ───────────── */
+    /* ───────────── 08b · Industrias: filas de guion (R7: una sola fila de stills por página fuera de los hubs, que es
+       "Sigue explorando"). Sector, una línea y "Ver industria →" solo si la industria ya existe. ───────────── */
     if (b.kind === 'ind') return (
-      <section id={s.id} class="svc-sec svc-ind" aria-labelledby={`${s.id}-t`}>
-        <div class="frame">
-          <div class="svc-sec__head">
+      <section id={s.id} class="svc-sec svc-ind tpl-glow" aria-labelledby={`${s.id}-t`}>
+        <Fragment set:html={aura('ondas', 'ind')} />
+        <div class="frame svc-ind__frame">
+          <div class="svc-sec__head svc-ind__head">
             {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
             <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
           </div>
-          <ul class="svc-ind__grid" role="list" data-ui-stagger>
-            {(c.items ?? []).map((it: any, i: number) => (
-              <li style={`--i:${i}`}><Still variant="mini" href={it.href} plate={stillFor(it.href)} label={it.label} title={it.title} line={it.line} /></li>
-            ))}
-          </ul>
+          <ol class="svc-ind__list" role="list" data-ui-stagger>
+            {(c.items ?? []).map((it: any, i: number) => {
+              const href = hrefOr(it.href);
+              const inner = (
+                <>
+                  <span class="svc-ind__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="svc-ind__sector t-label">{it.label}</span>
+                  <h3 class="svc-ind__t">{it.title}</h3>
+                  {it.line && <span class="svc-ind__l">{it.line}</span>}
+                  {href && <span class="svc-ind__go lnk--mono">Ver industria <span aria-hidden="true">→</span></span>}
+                </>
+              );
+              return (
+                <li class="svc-ind__row" style={`--i:${i}`}>
+                  {href ? <a class="svc-ind__link" href={href}>{inner}</a> : <div class="svc-ind__link svc-ind__link--static">{inner}</div>}
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </section>
     );
@@ -516,21 +675,22 @@ const lcp = hr.id ?? undefined;
     if (b.kind === 'vktor') {
       const link = c.links?.[0];
       return (
-        <section id={s.id} class="svc-sec svc-vk" aria-labelledby={`${s.id}-t`}>
+        <section id={s.id} class="svc-sec svc-vk tpl-glow" aria-labelledby={`${s.id}-t`}>
           <div class="frame">
             <div class="svc-sec__head">
               {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
               <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
             </div>
-            <VktorRail variant="phases" lines={(c.phases ?? []).map((f: any) => f.line)} href={link?.href ?? '/metodologia/'} linkLabel={link?.label ?? 'Conoce el protocolo completo'} class="svc-vk__rail" />
+            <VktorRail variant="phases" lines={(c.phases ?? []).map((f: any) => f.line)} href={hrefOr(link?.href ?? '/metodologia/') ?? false} linkLabel={link?.label ?? 'Conoce el protocolo completo'} class="svc-vk__rail" />
           </div>
+          <Fragment set:html={aura('ondas', 'vk')} />
         </section>
       );
     }
 
     /* ───────────── 10 · Inversión (una línea + 3 factores, sin tabla) ───────────── */
     if (b.kind === 'price') return (
-      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-price">
+      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-price tpl-glow">
         <div class="svc-price__grid">
           <div class="svc-price__head">
             <Fragment set:html={aura('isotipo', 'price')} />
@@ -538,6 +698,8 @@ const lcp = hr.id ?? undefined;
             <h2 id={`${s.id}-t`} class="t-display-2 svc-price__h" data-split set:html={head(c.h2)} />
           </div>
           <div class="svc-price__body">
+            <Aura kind="ondas" x="50%" y="110%" o={1} only="d" />
+            <Aura kind="isotipo" x="60%" o={0.9} only="m" sticky />
             {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
             {c.items?.length > 0 && (
               <ol class="svc-factors" data-ui-stagger>
@@ -558,7 +720,7 @@ const lcp = hr.id ?? undefined;
 
     /* ───────────── 11 · Preguntas frecuentes ───────────── */
     if (b.kind === 'faq') return (
-      <Intertitle id={s.id} aura="none" layout="split" labelledby={`${s.id}-t`} class="svc-faq">
+      <Intertitle id={s.id} aura="none" layout="split" labelledby={`${s.id}-t`} class="svc-faq tpl-glow">
         <Fragment slot="head">
           {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
           <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
@@ -567,21 +729,23 @@ const lcp = hr.id ?? undefined;
           )}
           <div class="svc-faq__cta" data-reveal><Btn variant="ghost" href={wa(C.hero)} label={C.hero?.ctaSecondary?.label ?? 'Escríbele a Kain'} /></div>
         </Fragment>
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
         <FAQAccordion ids={c.faqIds ?? []} glass id={`${s.id}-list`} label={c.h2?.text ?? 'Preguntas frecuentes'} />
         <Fragment set:html={aura('ondas', 'faq')} />
       </Intertitle>
     );
 
     /* ───────────── 12 · Sigue explorando (Still ×3, texto dentro de la penumbra) ───────────── */
+    if (b.kind === 'related' && !relItems.length) return null;
     if (b.kind === 'related') return (
-      <section id={s.id} class="svc-sec svc-rel" aria-labelledby={`${s.id}-t`}>
+      <section id={s.id} class="svc-sec svc-rel tpl-glow" aria-labelledby={`${s.id}-t`}>
         <div class="frame">
           <div class="svc-sec__head">
             {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
             <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
           </div>
           <ul class="svc-rel__grid" role="list" data-ui-stagger>
-            {(c.items ?? []).slice(0, 3).map((it: any, i: number) => (
+            {relItems.map((it: any, i: number) => (
               <li style={`--i:${i}`}><Still href={it.href} plate={stillFor(it.href)} label={it.label} title={it.title} line={it.line} /></li>
             ))}
           </ul>
@@ -591,7 +755,7 @@ const lcp = hr.id ?? undefined;
 
     /* ───────────── 13 · Cierre (Dawn) ───────────── */
     if (b.kind === 'dawn') return (
-      <Dawn id={s.id} plate={p?.id ?? 'cta-amanecer'} mirror={p?.mirror} fallbackPlate={p?.launchFallback} layout={lay(p)}>
+      <Dawn id={s.id} plate={p?.id ?? 'cta-amanecer'} mirror={p?.mirror} fallbackPlate={p?.launchFallback} layout={lay(p)} class="tpl-glow-m">
         {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
         <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
         {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
@@ -622,7 +786,7 @@ const lcp = hr.id ?? undefined;
           <Fragment slot="more">
             {c.items?.length > 0 && <ul class="svc-bullets">{c.items.map((t: any) => <li><span class="node" aria-hidden="true"></span><span set:html={annotateFigures(typeof t === 'string' ? t : t.title ?? '')} /></li>)}</ul>}
             {c.slogan && <Copy text={c.slogan} as="p" class="t-deck svc-slogan" />}
-            {c.links?.length > 0 && <p class="svc-links">{c.links.map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
+            {built(c.links).length > 0 && <p class="svc-links">{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
             {c.chat && !pan && <ChatSim mode="inline" tabs={c.chat.tabs ?? c.chat.scripts ?? [c.chat.script ?? 'default']} />}
           </Fragment>
           {pan && (
@@ -636,35 +800,16 @@ const lcp = hr.id ?? undefined;
 
     /* ───────────── Sección sin componente propio (texto sobre aura) ───────────── */
     return (
-      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-gen">
+      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-gen tpl-glow">
         {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
         {c.h2 && <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />}
         {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
         {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="svc-body" data-reveal />)}
         {c.items?.length > 0 && (
-          <ScriptList rows={c.items.map((it: any, i: number) => (typeof it === 'string' ? { n: String(i + 1).padStart(2, '0'), title: it } : { n: it.n, title: it.title, line: it.line, href: it.href }))} />
+          <ScriptList rows={c.items.map((it: any, i: number) => (typeof it === 'string' ? { n: String(i + 1).padStart(2, '0'), title: it } : { n: it.n, title: it.title, line: it.line, href: hrefOr(it.href) }))} />
         )}
-        {c.links?.length > 0 && <p class="svc-links">{c.links.map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
+        {built(c.links).length > 0 && <p class="svc-links">{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
       </Intertitle>
     );
   })}
 </BaseLayout>
-
-<script>
-  // Respaldo local (pedido a cine/ui en materiales/v2/build/peticiones.md): ScrollTrigger mide la página al cargar,
-  // pero después el alto cambia (el FAQ se pliega con transición al marcar html.ui-ready, una respuesta se abre, el guion
-  // del ChatSim crece). Con medidas viejas, los disparadores del final (relacionados, cierre) quedaban por debajo de lo
-  // alcanzable y su texto no entraba nunca. Si el alto de <main> cambia, se vuelve a medir (con pausa de 220 ms).
-  const main = document.querySelector('main');
-  if (main && 'ResizeObserver' in window) {
-    let last = main.offsetHeight;
-    let t = 0;
-    new ResizeObserver(() => {
-      const h = main.offsetHeight;
-      if (Math.abs(h - last) < 2) return;
-      last = h;
-      clearTimeout(t);
-      t = window.setTimeout(() => (window as any).__cine?.refresh?.(), 220);
-    }).observe(main);
-  }
-</script>

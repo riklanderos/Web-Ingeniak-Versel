@@ -1,7 +1,9 @@
 // src/scripts/shots/twin.ts — TwinScene (§7.4): pin +=100 % (escritorio), scrub .6.
 // 0–.4 dolores sobre A · .4–.75 barrido --wipe 100% → 0% con haz y cada dolor dibuja su salida (--mix) · .75–1 remate.
 // Sin pin (móvil/táctil): el haz barre una vez al entrar la placa B (0.9 s) y cada salida se dibuja al entrar.
-import { sala, wireSkip, type Env } from './_util';
+// R11: el remate solo baja su opacidad (nunca visibility); si el foco entra en él antes de tiempo, el scroll va al tramo
+// del remate. El haz es una pista a todo lo ancho movida con translate (CSS), sin cambios de layout (CLS).
+import { sala, scrollToY, wireSkip, type Env } from './_util';
 
 export default function twin(el: HTMLElement, env: Env) {
   const { gsap, ScrollTrigger } = env;
@@ -23,12 +25,12 @@ export default function twin(el: HTMLElement, env: Env) {
   if (env.pin) {
     gsap.set(el, { '--wipe': '100%', '--beam': 0 });
     gsap.set(items, { '--mix': 0 });
-    if (endHas) gsap.set(end, { autoAlpha: 0, y: 16 });
+    if (endHas) gsap.set(end, { opacity: 0, y: 16 });
     setClock(0);
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: {
-        trigger: el, start: 'top top', end: el.dataset.pin || '+=100%', pin: true, scrub: 0.6, anticipatePin: 1,
+        trigger: el, start: 'top top', end: el.dataset.pin || '+=100%', pin: true, scrub: 0.6, anticipatePin: 0,
         onUpdate: (s) => setClock(s.progress),
         onToggle: (s) => { el.classList.toggle('is-pinned', s.isActive); sala(s.isActive); },
       },
@@ -39,10 +41,23 @@ export default function twin(el: HTMLElement, env: Env) {
       .to(el, { '--beam': 0, duration: 0.05 }, 0.72)
       .to(items, { '--mix': 1, duration: 0.12, stagger: 0.06, ease: 'power2.out' }, 0.44)
       .to(el, { '--cam': 1, duration: 0.35 }, 0.4);
-    if (endHas) tl.to(end, { autoAlpha: 1, y: 0, duration: 0.15, ease: 'power2.out' }, 0.78);
+    if (endHas) tl.to(end, { opacity: 1, y: 0, duration: 0.15, ease: 'power2.out' }, 0.78);
     tl.to({}, { duration: 0.07 }, 0.93); // respiro final antes de soltar el pin
-    const unskip = wireSkip(el, env, tl.scrollTrigger ?? null);
-    return () => { unskip(); sala(false); el.classList.remove('is-pinned'); };
+    const st = tl.scrollTrigger!;
+    // Foco en el remate (o en un dolor) antes de su tramo → el scroll va a donde ya se lee completo.
+    const onFocus = (e: FocusEvent) => {
+      const t = e.target as Element;
+      const want = end && end.contains(t) ? 0.95 : items.some((it) => it.contains(t)) ? 0.8 : -1;
+      if (want < 0 || st.progress >= want) return;
+      scrollToY(st.start + (st.end - st.start) * want, env, true);
+      tl.progress(want);
+    };
+    el.addEventListener('focusin', onFocus);
+    const unskip = wireSkip(el, env, st);
+    return () => {
+      unskip(); sala(false); el.classList.remove('is-pinned'); el.removeEventListener('focusin', onFocus);
+      if (end) gsap.set(end, { clearProps: 'opacity,transform' });
+    };
   }
 
   // Sin pin

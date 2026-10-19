@@ -4,13 +4,33 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-18",
+  "actualizado": "2026-10-19",
   "pendientes": [
-    "Frase del manifiesto ('No hacemos marketing. Construimos sistemas que generan y convierten clientes automáticamente.'): confirmar con el cliente (ESPEC §11-4).",
-    "Narrativa del turno de noche (horas del HUD de 23:47 a 06:00): validar con el cliente (ESPEC §11-2).",
-    "Teléfono único para la ficha técnica: hoy se usa +52 33 2101 7799; el Sales Brief dice +52 33 2101 2962 (D §15).",
-    "Línea de cada integrante del equipo: tomada del sitio actual y de v1; confirmar con cada persona.",
-    "Contexto de los casos e-commerce, HoReCa y logística: solo se escribe lo que dicen metrics.ts y el sitio actual (sin herramientas ni detalles nuevos)."
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'. Nadie del equipo de construcción cambia ese campo.",
+    "FAQ DISTINTA DE D · G01: agrega 'conectados en un solo sistema' y 'Somos partner oficial de Kommo en Latinoamérica'; las cifras van como token (sistemas, paises).",
+    "FAQ DISTINTA DE D · G02: misma respuesta con sujeto explícito ('Un agente de IA para WhatsApp es…') para que se pueda citar sola.",
+    "FAQ DISTINTA DE D · G04: agrega 'Por eso podemos encargarnos de todo el proceso: desde elegir las licencias que necesitas hasta dejar el CRM operando con tu equipo.'",
+    "FAQ DISTINTA DE D · G07: agrega 'No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.'",
+    "FAQ DISTINTA DE D · G08: cifras como token + nota de fuente; el e-commerce 'bajó su costo por lead (ecom-cpl) en 60 días' (D: 'redujo … su costo por lead').",
+    "FAQ DISTINTA DE D · G11: agrega 'por Google Meet', el formulario de siete preguntas que toma dos minutos y 'Si tiene sentido para los dos, después te enviamos una propuesta con alcance, tiempos y costo.'",
+    "CAMBIO DE AFIRMACIÓN · casos.lede: ya no dice que cada cifra 'sigue en producción' ni promete ciudad y plazo en todas; ahora: 'Cada cifra viene de un sistema real que implementamos, con su sector y, cuando lo tenemos confirmado, su ciudad y el plazo en que se midió.'",
+    "CAMBIO DE AFIRMACIÓN · industrias.footer: se quitó 'El sistema funciona en cualquier negocio que vende por conversación' (promesa sin respaldo); ahora: '¿No ves tu sector? Si vendes por conversación, lo revisamos en tu Discovery Session.'",
+    "CAMBIO DE TEXTO · hero.fig: la cifra dental-respuesta va como rótulo ('el tiempo de respuesta por WhatsApp: …'), sin flecha dentro de la frase. Cuando exista el token de prosa (ui #9 / orquestador #8) se escribe 'bajó de 8 minutos a 12 segundos'.",
+    "CAMBIO DE TEXTO · casos.transversal: sale dental-respuesta (es el mismo sistema de la fila 1). cta-final sin lede (la ESC 13 no lo tiene). kain.items[0] y servicios.h2.soft, pulidos.",
+    "PREGUNTA AL CLIENTE · periodo de medición de retail-conversiones, horeca-roas y salud-citas-mes: ¿contra qué periodo se compara y en qué ventana se midió cada una? No se escribe ningún plazo hasta tenerlo por escrito.",
+    "PREGUNTA AL CLIENTE · ¿los cinco sistemas de la sección Casos siguen operando hoy? El H2 de la ESPEC dice 'Sistemas reales, operando hoy mismo.'; si alguno ya no opera, hay que cambiar el H2.",
+    "PREGUNTA AL CLIENTE · lede del manifiesto (#que-es, texto de la ESPEC): '…un solo sistema que atiende, califica y cierra por ti, 24/7.' El agente le pasa la conversación a una persona para cerrar (H03, N12); 'cierra por ti' promete más. Propuesta: '…que atiende, califica y agenda por ti, 24/7.' No se cambió sin tu visto bueno.",
+    "PREGUNTA AL CLIENTE · 'No hacemos marketing.' (manifiesto, ESPEC §11-4): Ingeniak sí vende paid media, web y branding; ¿se queda la frase tal cual?",
+    "PREGUNTA AL CLIENTE · H2 de #sistema (texto de la ESPEC): 'Creamos el tráfico, lo convertimos y lo operamos automáticamente.' ¿'automáticamente' es exacto, si en la fase Operate tu equipo y el nuestro también intervienen?",
+    "PREGUNTA AL CLIENTE · lede de #equipo (texto de la ESPEC): 'Seis personas que diseñan, construyen y operan tu sistema contigo…'. ¿Son seis y las seis trabajan en los sistemas de los clientes (incluida Administración y Finanzas)?",
+    "PREGUNTA AL CLIENTE · H2 del cierre (texto de la ESPEC): '30 minutos para ver tu operación como es, no como crees que es.' es idéntico al H1 de /discovery/. ¿Se quiere la repetición?",
+    "PREGUNTA AL CLIENTE · fila 'Ingeniak en datos' de #que-es (ids de la ESPEC: sistemas, paises, salud-citas-mes, ecom-cpl): mezcla datos de la empresa con cifras de casos, y salud-citas-mes todavía no tiene plazo. ¿Se queda así?",
+    "PREGUNTA AL CLIENTE · FAQ del inicio (ids de la ESPEC, ESC 12): G01 sale dos veces en la página (definición de #que-es y acordeón de #faq). ¿Se mantiene?",
+    "PREGUNTA AL CLIENTE · selector de industrias (ESPEC: 'cifra solo donde existe'): cuatro de los ocho sectores no muestran cifra. ¿Está bien así?",
+    "PREGUNTA AL CLIENTE · teléfono único para la ficha técnica: hoy se usa +52 33 2101 7799; el Sales Brief dice +52 33 2101 2962 (D §15).",
+    "PREGUNTA AL CLIENTE · líneas del equipo: tomadas del sitio actual y de v1; cada persona confirma su cargo y su línea.",
+    "PREGUNTA AL CLIENTE · narrativa del turno de noche (horas del HUD de 23:47 a 06:00): validar (ESPEC §11-2).",
+    "DATO PENDIENTE · contexto de los casos e-commerce, HoReCa y logística: solo se escribe lo que dicen metrics.ts y el sitio actual (sin herramientas ni detalles nuevos)."
   ],
   "sections": {
     "hero": {
@@ -34,7 +54,7 @@
       },
       "fig": {
         "label": "Fig. 01 · Kain",
-        "text": "El agente de IA de Ingeniak (render). En una clínica dental de Monterrey, la respuesta por WhatsApp pasó de {{metric:dental-respuesta}}."
+        "text": "El agente de IA de Ingeniak (render). En una clínica dental de Monterrey, el tiempo de respuesta por WhatsApp: {{metric:dental-respuesta}}."
       },
       "hud": [
         { "pos": "tr", "text": "01 / 13 — El agente" },
@@ -192,7 +212,7 @@
       "h2": { "text": "Soy Kain, el agente de IA de tu empresa." },
       "lede": "Respondo, agendo y confirmo por ti en WhatsApp, Instagram y tu web, y registro cada conversación en tu CRM.",
       "items": [
-        "Respondo en segundos, de día, de noche y en fin de semana.",
+        "En segundos, de día, de noche y en fin de semana.",
         "Califico a cada prospecto y le agendo cita en tu calendario.",
         "Doy seguimiento y mando recordatorios para que nadie falte.",
         "Todo queda en Kommo o GoHighLevel, listo para tu equipo."
@@ -225,7 +245,7 @@
       "eyebrow": "Servicios",
       "h2": {
         "text": "Todo lo que tu operación necesita,",
-        "soft": "conectado en un solo sistema."
+        "soft": "conectado de punta a punta."
       },
       "groups": [
         {
@@ -281,7 +301,7 @@
         "text": "Sistemas reales,",
         "soft": "operando hoy mismo."
       },
-      "lede": "Cada cifra sale de un sistema que sigue en producción, con su sector, su ciudad cuando la conocemos y el plazo en que se midió.",
+      "lede": "Cada cifra viene de un sistema real que implementamos, con su sector y, cuando lo tenemos confirmado, su ciudad y el plazo en que se midió.",
       "rows": [
         { "metricId": "dental-citas", "context": "Agente de IA en WhatsApp · Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
         { "metricId": "retail-conversiones", "context": "Kommo con calificación de leads por IA · Retail multimarca", "href": "/casos/retail-multimarca-kommo/", "linkLabel": "Ver el caso" },
@@ -289,7 +309,8 @@
         { "metricId": "horeca-roas", "context": "Paid media · Hoteles y restaurantes", "href": "/casos/horeca-roas/", "linkLabel": "Ver el caso" },
         { "metricId": "logistica-procesos", "context": "Automatización con n8n · Logística", "href": "/casos/logistica-n8n/", "linkLabel": "Ver el caso" }
       ],
-      "transversal": ["salud-citas-mes", "tiempo-operativo", "dental-respuesta"],
+      "transversal": ["salud-citas-mes", "tiempo-operativo"],
+      "_nota": "dental-respuesta sale de la transversal: es el mismo sistema de la fila 1 (dental-citas), no 'otro sistema'.",
       "sourceNote": true,
       "note": "Nombres de clientes anonimizados.",
       "links": [
@@ -385,7 +406,7 @@
         }
       ],
       "rowLink": "Ver industria",
-      "footer": "¿No ves tu sector? El sistema funciona en cualquier negocio que vende por conversación.",
+      "footer": "¿No ves tu sector? Si vendes por conversación, lo revisamos en tu Discovery Session.",
       "links": [{ "label": "Ver todas las industrias", "href": "/industrias/" }],
       "hud": [{ "pos": "tr", "text": "05:00 · Locación 1/8" }]
     },
@@ -435,13 +456,12 @@
         "text": "30 minutos para ver tu operación",
         "soft": "como es, no como crees que es."
       },
-      "lede": "En la Discovery Session revisamos cómo vendes y operas hoy, y te decimos qué conviene automatizar y en qué orden. Gratis, 1:1 y sin compromiso.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de inicio de ingeniak.mx y quiero ver cómo un agente de IA atendería mi negocio."
       },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet",
+      "micro": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet",
       "hud": [{ "pos": "tr", "text": "13 / 13 — 06:00" }]
     }
   }

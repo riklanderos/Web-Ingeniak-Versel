@@ -6,9 +6,17 @@
   "aprobadoPor": null,
   "actualizado": "2026-10-18",
   "pendientes": [
-    "Firma 'Construimos empresarios libres, no héroes cansados.': confirmar con el cliente (ESPEC §11-4).",
-    "VSL: subtítulos .vtt y póster limpio pendientes (R14). La escena no promete subtítulos hasta que existan.",
-    "Teléfono de la respuesta D05 (33 2101 7799): confirmar el número único (D §15)."
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "FAQ DISTINTA DE D · D01: agrega 'no tiene sentido proponerte un sistema sin haber visto cómo vendes, atiendes y operas hoy. Si después decides implementar, eso sí se cotiza aparte.'",
+    "FAQ DISTINTA DE D · D02: agrega 'No hay presentación de ventas disfrazada de diagnóstico ni compromiso de compra: tú decides si avanzas.'",
+    "FAQ DISTINTA DE D · D03: agrega ejemplos de números útiles (mensajes o prospectos por semana, tiempo de respuesta, herramientas de venta).",
+    "FAQ DISTINTA DE D · D04: agrega 'y costo' a la propuesta y 'Si tu caso no encaja… te orientamos a dónde sí. Nadie te va a perseguir con llamadas después.' Esta última es una promesa del equipo comercial: confírmala.",
+    "FAQ DISTINTA DE D · D05: agrega 'Si te surge algo de último momento, avísanos de todos modos: preferimos mover la llamada a que la tomes con prisa.'",
+    "FAQ DISTINTA DE D · D06: agrega 'Lo que más pesa no es el tamaño, sino que el negocio dependa de ti para operar y quieras sistematizarlo.'",
+    "CAMBIO DE TEXTO · hero.chips y hero.micro quedan como _chips / _micro con _omitir (no se pintaban: repetían el eyebrow, el lede y la microcopia fija del primario).",
+    "PREGUNTA AL CLIENTE · firma 'Construimos empresarios libres, no héroes cansados.' (ESPEC §11-4).",
+    "PREGUNTA AL CLIENTE · teléfono único de la respuesta D05 (33 2101 7799 frente a 33 2101 2962 del Sales Brief, D §15).",
+    "DATO PENDIENTE · VSL: subtítulos .vtt y póster limpio (R14). La escena no promete subtítulos hasta que existan."
   ],
   "sections": {
     "hero": {
@@ -18,9 +26,9 @@
       "h1": { "text": "30 minutos para ver tu operación", "soft": "como es, no como crees que es" },
       "lede": "Discovery Session: una llamada 1:1 y gratuita con Ingeniak. Mapeamos tus necesidades, detectamos las áreas de oportunidad de tu negocio y sales con sugerencias concretas.",
       "remate": "No entregamos nada: diagnosticamos. Cotizar sin diagnóstico es adivinar con dinero ajeno.",
-      "chips": ["Media hora · 1:1", "Cero costo", "Sugerencias concretas"],
+      "_chips": { "_omitir": true, "_nota": "No se pinta: repetiría el eyebrow (.chip-spec 'Llamada 1:1 · 30 minutos · sin costo') y el lede en el primer pantallazo (páginas · ConversionTemplate #7a y #12).", "items": ["Media hora · 1:1", "Cero costo", "Sugerencias concretas"] },
       "ctaPrimary": { "label": "Agendar mi Discovery Session", "href": "https://agenda.ingeniak.tech/discovery/agendar" },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet",
+      "_micro": { "_omitir": true, "_nota": "No se pinta: el primario de la portada lleva la microcopia fija de §2.9 (_comun.cta.micro: '30 min · 1:1 · Google Meet · sin costo'); esta solo vive en el cierre (páginas · ConversionTemplate #12).", "text": "Sin costo · Sin compromiso · 30 minutos por Google Meet" },
       "ctaSecondary": {
         "label": "Escríbenos por WhatsApp",
         "waMessage": "Hola, vengo de la página de la Discovery Session y tengo una duda antes de agendar."
@@ -144,7 +152,7 @@
       "h2": { "text": "30 minutos hoy valen más", "soft": "que una cotización a ciegas mañana." },
       "quote": "No cotizamos lo que no hemos visto. Revisa la operación con nosotros: es gratis, y aun así va a valer más que la mayoría de las juntas de tu semana.",
       "ctaPrimary": { "label": "Agendar mi Discovery Session", "href": "https://agenda.ingeniak.tech/discovery/agendar" },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet",
+      "micro": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet",
       "firma": "Construimos empresarios libres, no héroes cansados."
     }
   }

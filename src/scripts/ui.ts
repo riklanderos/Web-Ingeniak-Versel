@@ -1,16 +1,23 @@
 // src/scripts/ui.ts — comportamiento del área "ui" (ESPEC-v2 §2.9–§2.13, §6 #25–45, §7.4).
 // Todo por ganchos data-*; nada por elemento. Sin JS o con movimiento reducido, el contenido completo ya está en el HTML.
-//   [data-ui-reveal] / [data-ui-stagger]  entradas (clase .is-in; estados ocultos solo bajo html.ui-motion)
-//   [data-faq]                            acordeón (grid-template-rows 0fr → 1fr)
-//   [data-chat]                           ChatSim: "escribiendo…", pestañas, pausa (WCAG 2.2.2), se detiene fuera de pantalla
+//   [data-ui-reveal] / [data-ui-stagger]  entradas (clase .is-in; estados previos solo opacity/translate bajo html.ui-motion,
+//                                         nunca visibility; los bloques que anima cine no se pre-ocultan; el foco termina la entrada)
+//   [data-faq]                            acordeón (grid-template-rows 0fr → 1fr). Plegado desde el primer cuadro (html.js), sin
+//                                         transición en el arranque (.is-anim un cuadro después de ui-ready); al abrir o cerrar
+//                                         vuelve a medir las escenas de cine (window.__cine.refresh, con rebote)
+//   [data-chat]                           ChatSim: "escribiendo…", pestañas (dentro o fuera: [data-chat-tabs-for]), pausa
+//                                         (WCAG 2.2.2), se detiene fuera de pantalla; data-chat-control="external" sigue "cine:step"
+//   [data-station]                        StationUI: la demo se enciende (.is-on) al entrar
 //   [data-follow-still]                   ScriptList: fotograma 21:9 que sigue al cursor (gsap.quickTo, pointer:fine)
 //   [data-ledger]                         filtros del registro de resultados (sin fetch)
 //   [data-video]                          VideoPoster: diálogo modal o reproducción en línea, carga al clic
 //   [data-magnetic]                       botón primario magnético ±6 px (pointer:fine)
-//   [data-primary]                        regla de un azul (F15): html[data-primary-visible]
+//   [data-primary]                        regla de un azul (F15): html[data-primary-visible] solo si el primario SE VE (intersecta,
+//                                         sin [inert]/[data-primary-hidden], visibility visible, opacidad efectiva ≥ .5)
+//                                         + atribución R10 (sessionStorage ingeniak-src / ingeniak-utm, evento cta_discovery_click)
 //   a[data-still]                         corte por coincidencia: view-transition-name:plate en su imagen (§7.6)
 //   [data-vrail] · [data-flow] · [data-pain] · [data-count] · [data-toc]
-// Medición (R10): document dispatch "ingeniak:track" {name, …} — faq_open, chat_sim_tab, video_play/50/complete.
+// Medición (R10): document dispatch "ingeniak:track" {name, …} — cta_discovery_click, faq_open, chat_sim_tab, video_play/50/complete.
 
 type GSAP = typeof import('gsap').gsap;
 const root = document.documentElement;
@@ -28,22 +35,53 @@ const inView = (el: Element, margin = 0) => {
 };
 
 /* ───────────── Entradas ───────────── */
+const REVEAL_SEL = '[data-ui-reveal],[data-ui-stagger],[data-pain="draw"]';
+/** Bloques cuya entrada ya anima cine (hijos directos del texto de una escena): ui no los pre-oculta.
+ *  Si ui los dejara en opacity 0, el `from(autoAlpha:0)` de cine tomaría 0 como valor final y quedarían invisibles. */
+const CINE_OWNED = ':is(.is__text,.is__aside) > *';
 function initReveal() {
-  const els = $$('[data-ui-reveal],[data-ui-stagger],[data-pain="draw"]');
+  const els = $$(REVEAL_SEL);
+  // El foco (teclado) termina la entrada del bloque y de sus ancestros: nunca se enfoca algo invisible.
+  document.addEventListener('focusin', (e) => {
+    for (let n = e.target as Element | null; n && n !== document.body; n = n.parentElement) if (n.matches(REVEAL_SEL)) n.classList.add('is-in');
+  });
   if (!els.length) return;
   if (reduced() || !('IntersectionObserver' in window)) { els.forEach((e) => e.classList.add('is-in')); return; }
-  // Lo que ya está en pantalla al cargar no se oculta (sin parpadeo).
-  els.forEach((e) => { if (inView(e)) e.classList.add('is-in'); });
+  // Lo que ya está en pantalla al cargar, y lo que anima cine, no se oculta (sin parpadeo, sin bloques atrapados en 0).
+  els.forEach((e) => { if (inView(e) || e.matches(CINE_OWNED) || e.closest('[data-claimed]')) e.classList.add('is-in'); });
   root.classList.add('ui-motion');
+  const pending = new Set<Element>();
+  const done = (e: Element) => { e.classList.add('is-in'); io.unobserve(e); pending.delete(e); };
   const io = new IntersectionObserver((entries) => {
-    for (const en of entries) if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+    // Entra al cruzar; y lo que ya quedó ARRIBA de la pantalla (scroll restaurado, salto a un ancla) se muestra sin animar.
+    for (const en of entries) if (en.isIntersecting || en.boundingClientRect.bottom < 0) done(en.target);
   }, { rootMargin: '0px 0px -12% 0px', threshold: 0.01 });
-  els.forEach((e) => { if (!e.classList.contains('is-in')) io.observe(e); });
+  els.forEach((e) => { if (!e.classList.contains('is-in')) { pending.add(e); io.observe(e); } });
+  // Un salto de scroll puede pasar un bloque sin que llegue a cruzar (no hay callback): al hacer scroll, lo que quedó arriba
+  // entra; y al final del documento (el margen inferior de -12 % nunca se cruza) entra lo que esté en pantalla.
+  let raf = 0;
+  const sweep = () => {
+    raf = 0;
+    if (!pending.size) return;
+    const end = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+    pending.forEach((e) => { const r = e.getBoundingClientRect(); if (r.bottom < 0 || (end && inView(e))) done(e); });
+  };
+  addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(sweep); }, { passive: true });
 }
 
 /* ───────────── FAQ ───────────── */
+/** Vuelve a medir los ScrollTrigger de cine cuando cambia el alto de la página (rebote). */
+let refreshT = 0;
+const cineRefresh = (delay = 120) => {
+  clearTimeout(refreshT);
+  refreshT = window.setTimeout(() => { try { (window as any).__cine?.refresh?.(); } catch { /* cine aún no arranca */ } }, delay);
+};
 function initFaq() {
-  for (const faq of $$('[data-faq]')) {
+  const faqs = $$('[data-faq]');
+  if (!faqs.length) return;
+  // Las transiciones se habilitan un cuadro después del arranque: el estado inicial (plegado bajo html.js) nunca se anima.
+  requestAnimationFrame(() => requestAnimationFrame(() => faqs.forEach((f) => f.classList.add('is-anim'))));
+  for (const faq of faqs) {
     faq.addEventListener('click', (e) => {
       const btn = (e.target as Element).closest<HTMLButtonElement>('[data-faq-toggle]');
       if (!btn || !faq.contains(btn)) return;
@@ -52,83 +90,207 @@ function initFaq() {
       btn.setAttribute('aria-expanded', String(open));
       item.classList.toggle('is-open', open);
       if (open) track('faq_open', { id: item.dataset.faqId });
+      // Sin transición (movimiento reducido) el alto cambia ya; con transición, al terminar (y un respaldo por si no llega).
+      cineRefresh(reduced() ? 60 : 520);
+    });
+    faq.addEventListener('transitionend', (e) => {
+      if ((e as TransitionEvent).propertyName === 'grid-template-rows') cineRefresh(40);
     });
   }
 }
 
 /* ───────────── ChatSim ───────────── */
+// Las burbujas pendientes RESERVAN su lugar (visibility:hidden): el teléfono no cambia de alto mientras corre el guion
+// (sin saltos de maquetación y sin disparadores de cine desfasados). "escribiendo…" se coloca sobre la siguiente burbuja de Kain.
+const deskMQ = () => matchMedia('(min-width: 768px) and (min-aspect-ratio: 5/6)').matches;
+const fitted = new WeakSet<Element>();
+function wireTablist(list: HTMLElement, onPick: (key: string, focus: boolean) => void) {
+  const tabs = () => $$<HTMLButtonElement>('[data-chat-tab]', list);
+  list.addEventListener('click', (e) => {
+    const t = (e.target as Element).closest<HTMLButtonElement>('[data-chat-tab]');
+    if (t && list.contains(t)) onPick(t.dataset.chatTab!, false);
+  });
+  list.addEventListener('keydown', (e) => {
+    const t = (e.target as Element).closest<HTMLButtonElement>('[data-chat-tab]'); if (!t) return;
+    const all = tabs(); const i = all.indexOf(t);
+    let j = -1;
+    if (e.key === 'Home') j = 0; else if (e.key === 'End') j = all.length - 1;
+    else if (e.key === 'ArrowRight') j = (i + 1) % all.length; else if (e.key === 'ArrowLeft') j = (i - 1 + all.length) % all.length;
+    if (j < 0) return;
+    e.preventDefault(); onPick(all[j].dataset.chatTab!, true);
+  });
+  // Pestañas que no caben (320 px, teléfonos estrechos): desplazamiento horizontal con snap y un borde que se desvanece.
+  if (fitted.has(list)) return;
+  fitted.add(list);
+  const fit = () => list.classList.toggle('is-scroll', list.scrollWidth > list.clientWidth + 1);
+  fit();
+  if ('ResizeObserver' in window) new ResizeObserver(fit).observe(list);
+}
 function initChat() {
   for (const chat of $$('[data-chat]')) {
-    const tabs = $$<HTMLButtonElement>('[data-chat-tab]', chat);
+    const ext = chat.id ? $$<HTMLElement>(`[data-chat-tabs-for~="${CSS.escape(chat.id)}"]`) : [];
+    // tabsFor="<id>": la página trae su propia lista de pestañas (role=tablist) con ese id
+    const own = chat.dataset.chatTabsExt ? document.getElementById(chat.dataset.chatTabsExt) : null;
+    if (own && !ext.includes(own)) { own.dataset.chatTabsFor ??= chat.id; ext.push(own); }
+    const lists = [...$$<HTMLElement>('.chat__tabs[role="tablist"]', chat), ...ext];
+    const tabs = () => lists.flatMap((l) => $$<HTMLButtonElement>('[data-chat-tab]', l));
     const panels = $$<HTMLOListElement>('[data-chat-panel]', chat);
+    if (!panels.length) continue;
     const notes = $$<HTMLElement>('[data-chat-note]', chat);
     const screen = chat.querySelector<HTMLElement>('.chat__screen')!;
+    const device = chat.querySelector<HTMLElement>('.chat__device')!;
     const pauseBtn = chat.querySelector<HTMLButtonElement>('[data-chat-pause]');
+    const more = chat.querySelector<HTMLAnchorElement>('[data-chat-more]');
     const live = chat.hasAttribute('data-autoplay') && !reduced();
+    const external = chat.dataset.chatControl === 'external';
+    const prefill = Math.max(0, Number(chat.dataset.prefill ?? 2) || 0);
     let current = panels.find((p) => !p.hidden) ?? panels[0];
-    let timer = 0, idx = 0, paused = false, visible = false, running = false;
+    let timer = 0, idx = 0, paused = false, visible = false, running = false, stepMode = false, lastP = 0, waited = false;
 
-    if (!live && pauseBtn) pauseBtn.hidden = true;
     const msgs = () => $$<HTMLElement>('.chat__msg', current);
-    const typing = () => current.querySelector<HTMLElement>('.chat__typing');
-    const toEnd = () => { screen.scrollTop = screen.scrollHeight; };
-    const reset = () => { clearTimeout(timer); idx = 0; msgs().forEach((m) => m.classList.add('is-pending')); typing()?.classList.remove('is-on'); screen.scrollTop = 0; };
-    const show = (m: HTMLElement) => {
-      m.classList.remove('is-pending'); m.classList.add('is-enter'); toEnd();
-      requestAnimationFrame(() => requestAnimationFrame(() => m.classList.remove('is-enter')));
+    const typingEl = () => current.querySelector<HTMLElement>('.chat__typing');
+    const rendered = () => device.getClientRects().length > 0;            // con la miniatura en su lugar, el chat no corre
+    /** Desplaza la pantalla (no la página) lo justo para que se vea el elemento. */
+    const reveal = (el?: HTMLElement | null) => {
+      if (!el || screen.scrollHeight <= screen.clientHeight + 1) return;
+      const r = el.getBoundingClientRect(), s = screen.getBoundingClientRect();
+      const pad = pauseBtn && !pauseBtn.hidden && getComputedStyle(pauseBtn).position === 'absolute' ? pauseBtn.offsetHeight + 14 : 10;
+      const d = r.bottom - s.bottom + pad;
+      if (d > 0) screen.scrollTo({ top: screen.scrollTop + d, behavior: reduced() ? 'auto' : 'smooth' });
+    };
+    const setShown = (n: number) => msgs().forEach((m, i) => m.classList.toggle('is-pending', i >= n));
+    const typingAt = (m: HTMLElement | null) => {
+      const t = typingEl(); if (!t) return;
+      if (!m) { t.classList.remove('is-on'); return; }
+      t.style.top = `${m.offsetTop}px`;
+      t.classList.add('is-on');
+      reveal(t);
+    };
+    const moreState = () => {
+      if (!more) return;
+      chat.classList.toggle('has-more', screen.scrollHeight - screen.clientHeight - screen.scrollTop > 8);
+    };
+    const halt = () => { clearTimeout(timer); running = false; };
+    const finish = () => {               // estado final (movimiento reducido en vivo): conversación completa, quieta
+      halt(); stepMode = false; chat.classList.remove('is-live', 'is-paused');
+      panels.forEach((p) => $$('.chat__msg', p).forEach((m) => m.classList.remove('is-pending')));
+      typingEl()?.classList.remove('is-on');
+      if (pauseBtn) pauseBtn.hidden = true;
+      screen.setAttribute('data-lenis-prevent', '');
+      moreState();
     };
     const step = () => {
       running = false;
-      if (motionKilled) { halt(); chat.classList.remove('is-live'); pauseBtn && (pauseBtn.hidden = true); return; }
-      if (paused || !visible || document.hidden) return;
+      if (motionKilled) { finish(); return; }
+      if (paused || !visible || document.hidden || stepMode || !rendered()) return;
       running = true;
       const list = msgs();
-      if (idx >= list.length) { timer = window.setTimeout(() => { reset(); step(); }, 5200); return; }
+      if (idx >= list.length) {
+        timer = window.setTimeout(() => {
+          setShown(0); typingAt(null);                                    // se desvanece y vuelve a empezar
+          timer = window.setTimeout(() => { screen.scrollTop = 0; idx = 0; step(); }, 600);
+        }, 5200);
+        return;
+      }
       const m = list[idx];
       const from = m.dataset.from;
-      const d = idx === 0 ? 350 : Number(m.dataset.delay) || (from === 'kain' ? 1100 : from === 'sistema' ? 500 : 1000);
-      if (from === 'kain') { typing()?.classList.add('is-on'); toEnd(); }
-      timer = window.setTimeout(() => { typing()?.classList.remove('is-on'); show(m); idx++; step(); }, d);
+      const d = idx === 0 ? 450 : Number(m.dataset.delay) || (from === 'kain' ? 1100 : from === 'sistema' ? 500 : 1000);
+      if (from === 'kain') typingAt(m);
+      timer = window.setTimeout(() => { typingAt(null); m.classList.remove('is-pending'); reveal(m); idx++; step(); }, d);
     };
-    const resume = () => { if (!running && !paused && visible && !document.hidden) { clearTimeout(timer); step(); } };
-    const halt = () => { clearTimeout(timer); running = false; };
+    const resume = () => {
+      if (running || paused || !visible || document.hidden || stepMode) return;
+      clearTimeout(timer);
+      // Control externo en escritorio: se espera el primer "cine:step" (1.2 s); si no llega, corre el temporizador.
+      if (external && deskMQ() && !waited) { running = true; timer = window.setTimeout(() => { waited = true; running = false; resume(); }, 1200); return; }
+      step();
+    };
+    /** Control externo: progreso 0 → 1 de la escena = burbuja n (y "escribiendo…" a media transición hacia una de Kain). */
+    const applyProgress = (p: number) => {
+      lastP = p;
+      const list = msgs(); const total = list.length;
+      const x = Math.max(0, Math.min(1, p)) * total;
+      const n = Math.max(Math.min(prefill, total), Math.min(total, Math.floor(x + 0.15)));
+      setShown(n);
+      const next = list[n];
+      typingAt(next && next.dataset.from === 'kain' && x - Math.floor(x) > 0.45 ? next : null);
+      reveal(list[n - 1]);
+      idx = n;
+    };
 
     const select = (key: string, focus = false) => {
-      const next = panels.find((p) => p.dataset.chatPanel === key); if (!next || next === current) return;
-      tabs.forEach((t) => { const on = t.dataset.chatTab === key; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; if (on && focus) t.focus(); });
-      notes.forEach((n) => (n.hidden = n.dataset.chatNote !== key));
-      if (live) { halt(); msgs().forEach((m) => m.classList.remove('is-pending')); typing()?.classList.remove('is-on'); }
-      current.hidden = true; next.hidden = false; current = next;
-      screen.classList.remove('is-swipe'); void screen.offsetWidth; screen.classList.add('is-swipe');
-      if (live) { reset(); resume(); } else screen.scrollTop = 0;
-      track('chat_sim_tab', { sector: key });
-    };
-    tabs.forEach((t, i) => {
-      t.addEventListener('click', () => select(t.dataset.chatTab!));
-      t.addEventListener('keydown', (e) => {
-        if (e.key === 'Home' || e.key === 'End') { e.preventDefault(); select(tabs[e.key === 'Home' ? 0 : tabs.length - 1].dataset.chatTab!, true); return; }
-        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-        if (!d) return; e.preventDefault();
-        select(tabs[(i + d + tabs.length) % tabs.length].dataset.chatTab!, true);
+      const next = panels.find((p) => p.dataset.chatPanel === key);
+      tabs().forEach((t) => {
+        const on = t.dataset.chatTab === key;
+        t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
+        if (on) { const l = t.parentElement!; l.scrollTo({ left: Math.max(0, t.offsetLeft - l.offsetLeft - 8), behavior: 'smooth' }); if (focus) t.focus(); }
       });
-    });
-    if (!live) continue;
+      if (!next || next === current) return;
+      notes.forEach((n) => (n.hidden = n.dataset.chatNote !== key));
+      halt(); typingAt(null);
+      current.hidden = true; next.hidden = false; current = next;
+      if (more) more.href = `#${chat.id}-end-${key}`;
+      screen.classList.remove('is-swipe'); void screen.offsetWidth; screen.classList.add('is-swipe');
+      screen.scrollTop = 0;
+      if (chat.classList.contains('is-live')) {
+        if (stepMode) applyProgress(lastP);
+        else { idx = Math.min(prefill, msgs().length); setShown(idx); resume(); }
+      }
+      moreState();
+      cineRefresh(200);                                                   // el alto del chat en línea cambia con el guion
+      const owner = ext.find((l) => l.contains(document.activeElement));
+      if (!owner || owner.dataset.chatTabsFor!.trim().split(/\s+/)[0] === chat.id) track('chat_sim_tab', { sector: key });
+    };
+    lists.forEach((l) => wireTablist(l, (k, f) => select(k, f)));
+
+    if (more) {
+      more.addEventListener('click', (e) => { e.preventDefault(); screen.scrollTo({ top: screen.scrollHeight, behavior: reduced() ? 'auto' : 'smooth' }); });
+      screen.addEventListener('scroll', moreState, { passive: true });
+      if ('ResizeObserver' in window) new ResizeObserver(moreState).observe(screen);
+      moreState();
+    }
+    if (!live) { screen.setAttribute('data-lenis-prevent', ''); continue; }
 
     chat.classList.add('is-live');
     screen.removeAttribute('tabindex');
-    reset();
-    pauseBtn?.addEventListener('click', () => {
-      paused = !paused;
-      pauseBtn.setAttribute('aria-pressed', String(paused));
-      pauseBtn.setAttribute('aria-label', (paused ? chat.dataset.labelPlay : chat.dataset.labelPause) ?? (paused ? 'Reanudar' : 'Pausar'));
-      if (paused) halt(); else resume();
-    });
+    screen.removeAttribute('data-lenis-prevent');
+    panels.forEach((p) => { if (p !== current) $$('.chat__msg', p).forEach((m) => m.classList.add('is-pending')); });
+    idx = Math.min(prefill, msgs().length);
+    setShown(idx);                                                        // nunca un cristal vacío: 2 burbujas de entrada
+    if (pauseBtn) {
+      pauseBtn.hidden = false;
+      pauseBtn.addEventListener('click', () => {
+        paused = !paused;
+        chat.classList.toggle('is-paused', paused);
+        paused ? screen.setAttribute('data-lenis-prevent', '') : screen.removeAttribute('data-lenis-prevent');
+        pauseBtn.setAttribute('aria-pressed', String(paused));
+        pauseBtn.setAttribute('aria-label', (paused ? chat.dataset.labelPlay : chat.dataset.labelPause) ?? (paused ? 'Reanudar' : 'Pausar'));
+        if (paused) halt(); else resume();
+      });
+    }
+    if (external) {
+      document.addEventListener('cine:step', (e) => {
+        const d = ((e as CustomEvent).detail ?? {}) as { progress?: number; controlled?: boolean; el?: Element; section?: Element };
+        const scope = d.el ?? d.section ?? (e.target instanceof Element ? e.target : null);
+        if (scope && !scope.contains(chat)) return;
+        if (motionKilled || !chat.classList.contains('is-live')) return;
+        // La escena suelta el control (pin destruido, cambio a móvil): vuelve el temporizador desde donde iba.
+        if (d.controlled === false) {
+          if (stepMode) { stepMode = false; if (pauseBtn) pauseBtn.hidden = false; resume(); }
+          return;
+        }
+        if (typeof d.progress !== 'number' || !deskMQ()) return;
+        if (!stepMode) { stepMode = true; halt(); if (pauseBtn) pauseBtn.hidden = true; }
+        applyProgress(d.progress);
+      });
+    }
     // Visible = la mitad del chat en pantalla (o media pantalla ocupada, si el chat es más alto que el viewport).
     new IntersectionObserver(([en]) => {
       visible = en.isIntersecting && en.intersectionRect.height >= Math.min(en.boundingClientRect.height, innerHeight) * 0.5;
       visible ? resume() : halt();
     }, { threshold: [0, 0.25, 0.5, 0.75, 1] }).observe(chat);
     document.addEventListener('visibilitychange', () => (document.hidden ? halt() : resume()));
+    (chat as any).__chatFinish = finish;
   }
 }
 
@@ -256,16 +418,68 @@ async function initMagnetic() {
 }
 
 /* ───────────── Regla de un azul (F15) ───────────── */
+// Un primario cuenta como visible solo si intersecta Y se ve: fuera de [inert]/[data-primary-hidden], visibility visible y
+// opacidad efectiva (el botón y 4 ancestros multiplicados) ≥ .5. Un CTA atenuado por una toma compartida no apaga el del encabezado.
+const HEADER_SEL = '.hdr,[data-nav],[role="banner"],body > header';
+function seen(el: HTMLElement) {
+  if (el.closest('[inert],[data-primary-hidden]')) return false;
+  const cs = getComputedStyle(el);
+  if (cs.visibility === 'hidden' || cs.display === 'none') return false;
+  let o = Number(cs.opacity) || 0;
+  for (let n = el.parentElement, k = 0; n && k < 4 && o >= 0.5; n = n.parentElement, k++) o *= Number(getComputedStyle(n).opacity);
+  return o >= 0.5;
+}
 function initPrimaryRule() {
-  const prim = $$('[data-primary]').filter((el) => !el.closest('.hdr,[data-nav],[role="banner"],body > header'));
-  if (!prim.length || !('IntersectionObserver' in window)) return;
-  root.dataset.primaryIo = 'ui';
-  const vis = new Set<Element>();
+  if (!('IntersectionObserver' in window)) return;
+  root.dataset.primaryIo = 'ui';                     // nav (persist.ts) cede la regla a ui y no duplica el observador
+  const inter = new Set<HTMLElement>();
+  const watched = new WeakSet<Element>();
+  const evaluate = () => {
+    let on = false;
+    for (const el of inter) if (seen(el)) { on = true; break; }
+    if (on !== root.hasAttribute('data-primary-visible')) root.toggleAttribute('data-primary-visible', on);
+  };
+  let raf = 0;
+  const schedule = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; evaluate(); }); };
   const io = new IntersectionObserver((entries) => {
-    for (const en of entries) en.isIntersecting ? vis.add(en.target) : vis.delete(en.target);
-    if (vis.size) root.setAttribute('data-primary-visible', ''); else root.removeAttribute('data-primary-visible');
+    for (const en of entries) en.isIntersecting ? inter.add(en.target as HTMLElement) : inter.delete(en.target as HTMLElement);
+    evaluate();
   });
-  prim.forEach((p) => io.observe(p));
+  const scan = () => $$('[data-primary]').forEach((p) => {
+    if (watched.has(p) || p.closest(HEADER_SEL)) return;
+    watched.add(p); io.observe(p);
+  });
+  scan();
+  // Mientras haya un primario en pantalla, su opacidad puede cambiar con el scroll (tomas compartidas, salidas con parallax).
+  addEventListener('scroll', () => { if (inter.size) schedule(); }, { passive: true });
+  document.addEventListener('cine:primary-change', schedule);
+  addEventListener('load', () => { scan(); schedule(); }, { once: true });
+}
+
+/* ───────────── Atribución R10 ───────────── */
+// Primer clic en un primario (o el CTA del encabezado/barra) hacia /discovery/: sessionStorage['ingeniak-src'] = `${folio}-${sección}` + evento cta_discovery_click.
+// Llegada con utm_*: sessionStorage['ingeniak-utm'] = JSON. Nada personal en la URL; todo almacenamiento dentro de try/catch.
+const UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+const ssGet = (k: string): string | null => { try { return sessionStorage.getItem(k); } catch { return null; } };
+const ssSet = (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch { /* bloqueado: sin atribución */ } };
+function initAttribution() {
+  try {
+    const q = new URLSearchParams(location.search);
+    const utm = UTM.filter((k) => q.get(k)).map((k) => [k, q.get(k)!.slice(0, 120)]);
+    if (utm.length && !ssGet('ingeniak-utm')) ssSet('ingeniak-utm', JSON.stringify(Object.fromEntries(utm)));
+  } catch { /* URL sin parámetros legibles */ }
+  const folio = () => document.body.dataset.folio ?? document.querySelector<HTMLElement>('[data-folio]')?.dataset.folio ?? document.body.dataset.page ?? 'web';
+  document.addEventListener('click', (e) => {
+    const a = (e.target as Element | null)?.closest?.('a[data-primary],a.btn') as HTMLAnchorElement | null;
+    if (!a) return;
+    let path = '';
+    try { path = new URL(a.href, location.href).pathname; } catch { return; }
+    if (!/^\/discovery\/?$/.test(path)) return;
+    const section = a.dataset.section ?? a.closest('section[id],[data-section-id]')?.id ?? (a.closest(HEADER_SEL) ? 'header' : a.closest('[data-cta-bar],.mcta') ? 'barra' : 'page');
+    const src = `${folio()}-${section}`;
+    if (!ssGet('ingeniak-src')) ssSet('ingeniak-src', src);
+    track('cta_discovery_click', { section, folio: folio(), src });
+  }, true);
 }
 
 /* ───────────── VktorRail: la línea se dibuja con scrub ───────────── */
@@ -406,6 +620,25 @@ function initToc() {
   }
 }
 
+/* ───────────── StationUI: la demo de cada estación se enciende al entrar ───────────── */
+// .is-on una sola vez (con 35 % visible). Sin JS o con movimiento reducido el CSS ya pinta el estado final.
+// Una escena puede encenderla por su cuenta: document → "ui:station" {el, on}.
+function initStations() {
+  const st = $$('[data-station]');
+  if (!st.length) return;
+  if (reduced() || !('IntersectionObserver' in window)) { st.forEach((s) => s.classList.add('is-on')); return; }
+  root.classList.add('ui-motion');
+  st.forEach((s) => s.classList.add('is-armed'));
+  const io = new IntersectionObserver((entries) => {
+    for (const en of entries) if (en.isIntersecting && en.intersectionRatio >= 0.35) { en.target.classList.add('is-on'); io.unobserve(en.target); }
+  }, { threshold: [0, 0.35, 0.6] });
+  st.forEach((s) => io.observe(s));
+  document.addEventListener('ui:station', (e) => {
+    const d = (e as CustomEvent).detail ?? {};
+    if (d.el instanceof Element && d.el.matches('[data-station]')) d.el.classList.toggle('is-on', d.on !== false);
+  });
+}
+
 /* ───────────── Interruptor "Reducir movimiento" en vivo ───────────── */
 function initMotionSwitch() {
   addEventListener('ingeniak:motion', (e: Event) => {
@@ -413,7 +646,9 @@ function initMotionSwitch() {
     motionKilled = true;
     root.classList.remove('ui-motion');
     $$('[data-ui-reveal],[data-ui-stagger],[data-pain]').forEach((el) => el.classList.add('is-in'));
-    $$('.chat.is-live').forEach((c) => { c.classList.remove('is-live'); c.querySelector<HTMLElement>('[data-chat-pause]')?.setAttribute('hidden', ''); });
+    $$('.chat.is-live').forEach((c) => (c as any).__chatFinish?.());
+    $$('[data-station]').forEach((st) => st.classList.add('is-on'));
+    $$('[data-faq]').forEach((f) => f.classList.remove('is-anim'));
     $$('[data-vrail]').forEach((r) => { r.classList.remove('is-armed'); r.style.setProperty('--p', '1'); });
     $$('.script__still').forEach((s) => s.classList.remove('is-on'));
   });
@@ -427,9 +662,11 @@ export function initUI(): void {
   run('reveal', initReveal);
   run('faq', initFaq);
   run('chat', initChat);
+  run('stations', initStations);
   run('ledger', initLedger);
   run('video', initVideo);
   run('primary', initPrimaryRule);
+  run('attribution', initAttribution);
   run('still', initStillTransition);
   run('flow', initFlow);
   run('toc', initToc);

@@ -18,6 +18,7 @@ import LocationSwitcher from '../cine/LocationSwitcher.astro';
 import Dawn from '../cine/Dawn.astro';
 import { resolvePlate, anchorStyle } from '../cine/plate';
 import Btn from '../ui/Btn.astro';
+import HeroCtas from './HeroCtas.astro';
 import Metric from '../ui/Metric.astro';
 import Copy from '../ui/Copy.astro';
 import SumarioCover from '../ui/SumarioCover.astro';
@@ -25,13 +26,16 @@ import PainList from '../ui/PainList.astro';
 import DefinitionBlock from '../ui/DefinitionBlock.astro';
 import ScriptList from '../ui/ScriptList.astro';
 import ChatSim from '../ui/ChatSim.astro';
+import ChatTabs from '../ui/ChatTabs.astro';
+import HomeStation from './HomeStation.astro';
+import Aura from './Aura.astro';
 import Credits from '../ui/Credits.astro';
 import EntitySheet from '../ui/EntitySheet.astro';
 import FAQAccordion from '../ui/FAQAccordion.astro';
 import { annotateFigures, esc, TEAM } from '../ui/ui-data';
 import { heroPlateOf } from '../layout/navData';
-import { section, getPlate, waHref, SITE, type Page } from '../../lib/site';
-import type { MetricId } from '../../lib/metrics';
+import { section, getPlate, waHref, SITE, linkTarget, isBuilt, type Page } from '../../lib/site';
+import { METRICS, type MetricId } from '../../lib/metrics';
 
 interface Props {
   page: Page;
@@ -88,38 +92,74 @@ const logoCols = Math.max(1, Math.ceil((stackLogos.length + 1) / 2)); // +1: el 
 const prob = S('problema');
 const [twinA, twinB] = plateIds('problema');
 
+/* Enlaces del cuerpo (R12 · QA enlaces): solo rutas construidas; una planeada se omite (nunca '#'). */
+const built = <T extends { href?: string }>(list?: T[]): T[] => (list ?? []).filter((l) => !!l?.href && isBuilt(l.href));
+/** ¿Todas las cifras de una fila enlazan a una ruta construida? (MetricRow enlaza todas o ninguna) */
+const allBuilt = (ids: MetricId[] = []) => ids.every((id) => !METRICS[id]?.href || isBuilt(METRICS[id].href as string));
+
 /* ── 05 · Sistema (SystemRuntime) ─────────────────────────────────────────── */
 const sis = S('sistema');
 const sisPlates = plateIds('sistema');
+// stage (etiqueta mono "01 · Atraer" + nodo del riel) y title (H3 "Tráfico que sí compra") van por separado (§5.1 ESC 05)
 const stations = (sis.steps ?? []).map((s: any, i: number) => ({
   id: s.id,
-  title: s.stage ?? s.title,
-  line: s.stage && s.title ? `${s.title}. ${s.line}` : s.line,
+  stage: s.stage,
+  title: s.title ?? s.stage,
+  line: s.line,
   plate: sisPlates[i],
-  href: s.link?.href,
+  href: s.link?.href ? linkTarget(s.link.href) ?? undefined : undefined,
   hrefLabel: s.link?.label,
   metricIds: s.metricIds,
+  leadCard: s.leadCard as string | undefined,
 }));
+/* UI registrada de cada estación (StationUI de ui): sobre la superficie de cristal vacía de su placa, dentro de su caja
+   (anclas de caja de plates.json → --aw/--ah), SIMULACIÓN y data-nosnippet. Kain nunca queda debajo de un cristal: en
+   pages.css cada UI se recorta a la parte de la superficie libre del sujeto. Móvil: la superficie mide < 180 px → mini demo
+   bajo el copy de la estación (slot metric-<id>, que vive dentro de un <p>: solo elementos en línea; pedido a cine un
+   slot demo-<id> fuera del <p> para pasar a <StationUI demo>). */
+const STATION_UI: Record<string, { kind: 'ads' | 'chat' | 'kanban' | 'flow' | 'dash'; anchors: string[] }> = {
+  atraer: { kind: 'ads', anchors: ['pantalla', 'superficie'] },
+  atender: { kind: 'chat', anchors: ['telefono', 'pantalla'] },
+  organizar: { kind: 'kanban', anchors: ['superficie', 'carriles'] },
+  automatizar: { kind: 'flow', anchors: ['constelacion', 'superficie'] },
+  medir: { kind: 'dash', anchors: ['pantalla', 'superficie'] },
+};   // la pieza la pinta StationUI (ui); aquí solo la superficie de cada placa
+const stationUi = stations.map((st: any) => {
+  const def = STATION_UI[st.id];
+  if (!def || !st.plate) return null;
+  const r = resolvePlate(st.plate, {});
+  const anchor = def.anchors.find((n) => r.anchors[n]?.box?.d);
+  return anchor ? { ...def, anchor, id: st.id, lead: st.leadCard, mobile: !!r.anchors[anchor]?.box?.m } : null;
+});
+const KANBAN = ['Nuevo', 'Calificado', 'Cita agendada', 'Ganado'];
+const SU: Record<string, any> = Object.fromEntries(stationUi.filter(Boolean).map((u: any) => [u.id, u]));
 
 /* ── 06 · Kain (push hacia el teléfono, ChatSim registrado) ───────────────── */
 const kain = S('kain');
 const kainKey = plateIds('kain')[0] ?? 'home-kain';
 const kainPlate = plateOf('kain');
 const kainR = resolvePlate(kainKey, { layout: kainPlate.layout });
-// El teléfono de cristal: [x, y, ancho, alto] (fracciones de la placa). Si la placa no lo trae, la UI va en el texto.
-const tel = kainR.id ? (getPlate(kainR.id)?.anchors?.telefono ?? null) : null;
-const telD: number[] | null = tel?.d && tel.d.length >= 4 ? (kainR.mirror ? [1 - tel.d[0] - tel.d[2], tel.d[1], tel.d[2], tel.d[3]] : tel.d) : null;
-const phoneStyle = telD ? `--ax:${telD[0]};--ay:${telD[1]};--aw:${telD[2]};--ah:${telD[3]};` : '';
+// El teléfono de cristal: ancla de caja de la placa (resolvePlate ya la trae espejada; anchorStyle da --ax/--ay/--aw/--ah).
+// Si la placa no lo trae, la UI va en el texto.
+const telD = kainR.anchors.telefono?.box?.d ?? null;
+const phoneStyle = telD ? anchorStyle('telefono') : '';
 const chatTabs = (kain.chat?.tabs ?? (kain.chat?.scripts ?? ['salud']).map((id: string) => ({ id }))) as { id: string; label?: string }[];
 const chatId = 'kain-chat';
 
 /* ── 07 · Servicios ───────────────────────────────────────────────────────── */
 const serv = S('servicios');
+// Filas: la planeada se pinta como texto (sin enlace ni flecha); el fotograma que sigue al cursor sigue funcionando.
 const servGroups = (serv.groups ?? []).map((g: any) => ({
   label: g.label,
   glyph: g.glyph,
-  rows: (g.items ?? []).map((it: any) => ({ title: it.title, line: it.line, href: it.href, plate: it.href ? heroPlateOf(it.href) : undefined })),
+  rows: (g.items ?? []).map((it: any) => ({ title: it.title, line: it.line, href: it.href ? linkTarget(it.href) ?? undefined : undefined, plate: it.href ? heroPlateOf(it.href) : undefined })),
 }));
+// Fotograma 21:9 fijo bajo el H2 (columna izquierda, máscara a --ink): el riel de servicios por defecto; al pasar por una
+// fila (puntero fino) toma la portada de esa fila. Luz propia de la escena: nunca 40vh de tinta plana (§5).
+const servStill = (() => {
+  const base = '/img/cine/riel-servicios-still';
+  return { src: `${base}-640.webp`, srcset: `${base}-360.webp 360w, ${base}-640.webp 640w` };
+})();
 
 /* ── 08 · Casos (Montaje) ─────────────────────────────────────────────────── */
 const casos = S('casos');
@@ -135,15 +175,28 @@ const vkPlate = plateOf('vktor');
 /* ── 10 · Industrias ──────────────────────────────────────────────────────── */
 const ind = S('industrias');
 const indPlates = plateIds('industrias');
+// §5.1 ESC 10: chip SIMULACIÓN con 2 burbujas del guion del sector activo (copy: sectors[].bubbles)
 const sectors = (ind.sectors ?? []).map((s: any, i: number) => ({
   slug: s.slug,
   name: s.name,
   line: s.line,
   metricId: s.metricId,
-  href: s.href,
+  href: s.href ? linkTarget(s.href) ?? undefined : undefined,
+  bubbles: s.bubbles,
   plate: indPlates.find((p) => p === `ind-${s.slug}-hero`) ?? indPlates[i] ?? `ind-${s.slug}-hero`,
 }));
 const indLabel = (ind.hud?.[0]?.text ?? '').replace(/\s*\d+\s*\/\s*\d+\s*$/, '') || 'Locación';
+// R13: 09 (VKTOR, Kain presenta sobre su escalón) y 10 son escenas seguidas → la locación arranca en un sector cuya
+// placa tenga otra pose. LocationSwitcher siempre abre en la primera fila (pedido `start` a cine): ese sector sube al
+// frente. Poses de las portadas de sector (lista de aceptación §9.4 · pedido `pose` en plates.json a imágenes).
+const POSE: Record<string, string> = {
+  'metodologia-hero': 'presenta', 'ind-salud-hero': 'presenta', 'ind-belleza-hero': 'presenta', 'ind-nutricion-hero': 'sostiene la tableta',
+  'ind-finanzas-hero': 'presenta', 'ind-inmobiliario-hero': 'presenta', 'ind-industrial-hero': 'señala', 'ind-retail-hero': 'sostiene el teléfono',
+  'ind-horeca-hero': 'presenta',
+};
+const vkPose = POSE[vkKey];
+const firstOther = sectors.findIndex((s: any) => POSE[s.plate] && POSE[s.plate] !== vkPose);
+if (vkPose && firstOther > 0 && POSE[sectors[0]?.plate] === vkPose) sectors.unshift(...sectors.splice(firstOther, 1));
 
 /* ── 11 · Equipo (R6: sin placa equipo-real → TeamCredits con las fotos reales sobre un aura, sin collage) ── */
 const eq = S('equipo');
@@ -179,30 +232,36 @@ const railGroups = [3, 6, 4];
     layout={heroPlate.layout}
     mirror={heroPlate.mirror}
     height="hero"
+    mobile="split"
     priority
     wide
     breathe
     srcsetMax={heroPlate.srcsetMax ?? 2752}
     hud={hero.hud}
-    class="hm-hero"
+    class="hm-hero tpl-hero"
   >
     <ColdOpen slot="over" plate={heroPlateKey} />
     {sumarioIds.length === 3 && <SumarioCover slot="over" ids={sumarioIds} />}
     {hero.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(hero.eyebrow)} /></p>}
     <h1 id="hero-t" data-split><span class="t-display" set:html={voice(hero.h1?.text, hero.h1?.lit)} />{hero.h1?.soft && <> <span class="t-deck" set:html={annotateFigures(hero.h1.soft)} /></>}</h1>
-    <div class="ctas">
-      <Btn variant="primary" href={hero.ctaPrimary?.href ?? primary.href} micro label={hero.ctaPrimary?.label ?? primary.label} />
-      <Btn variant="ghost" href={wa(hero.ctaSecondary?.waMessage)} label={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
-    </div>
-    {hero.trust && <Copy as="p" class="t-label trust" text={hero.trust} />}
-    {hero.fig && <FigCaption variant="inline" n={1} title={(hero.fig.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '')}><Copy text={hero.fig.text} /></FigCaption>}
+    <HeroCtas href={hero.ctaPrimary?.href ?? primary.href} label={hero.ctaPrimary?.label ?? primary.label}
+      waHref={wa(hero.ctaSecondary?.waMessage)} waLabel={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
     <LightBranch from="mano" />
     {hero.fig && <FigCaption slot="anchors" n={1} title={(hero.fig.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '')} anchor="fig" target="mano"><Copy text={hero.fig.text} /></FigCaption>}
+    {/* R3: la línea de confianza y el Fig. 01 en línea (§5.1.1: el Fig. 01 se queda en la portada) van después de la placa en móvil;
+        en escritorio `more` es la misma columna de texto, justo bajo los CTA */}
+    {(hero.trust || hero.fig) && (
+      <Fragment slot="more">
+        {hero.trust && <Copy as="p" class="t-label trust" text={hero.trust} />}
+        {hero.fig && <FigCaption variant="inline" n={1} title={(hero.fig.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '')}><Copy text={hero.fig.text} /></FigCaption>}
+      </Fragment>
+    )}
   </ImageSection>
 
   {/* ── 02 · Con qué construimos (créditos; sumario en fila en escritorios bajos y móvil) ── */}
   {has('stack') && (
-    <section id="stack" class="hm-stack" aria-labelledby="stack-t" style={`--logo-cols:${logoCols}`}>
+    <section id="stack" class="hm-stack tpl-glow" aria-labelledby="stack-t" style={`--logo-cols:${logoCols}`}>
+      <Aura kind="ondas" x="50%" y="45%" o={1} only="m" />
       <div class="frame hm-stack__frame">
         {sumarioIds.length === 3 && <SumarioCover ids={sumarioIds} variant="row" class="hm-stack__sumario" />}
         <div class="hm-stack__head">
@@ -220,7 +279,7 @@ const railGroups = [3, 6, 4];
 
   {/* ── 03 · El problema (TwinScene, fijada +100 % en escritorio) ─────────── */}
   {has('problema') && twinA && twinB && (
-    <TwinScene id="problema" plateA={twinA} plateB={twinB} layout={plateOf('problema').layout} mirror={plateOf('problema').mirror} clock={prob.hudClock}>
+    <TwinScene id="problema" class="tpl-glow-m" plateA={twinA} plateB={twinB} layout={plateOf('problema').layout} mirror={plateOf('problema').mirror} clock={prob.hudClock}>
       {prob.eyebrow && <p class="t-label eyebrow"><span class="node node--amber" aria-hidden="true"></span><Fragment set:html={annotateFigures(prob.eyebrow)} /></p>}
       <h2 id="problema-t" class="t-h2" data-split set:html={headline(prob.h2)} />
       {/* Escena fijada: todo debe caber en una pantalla (1280 × 720). El lede del copy no entra en el plano; los dolores sí. */}
@@ -231,7 +290,9 @@ const railGroups = [3, 6, 4];
 
   {/* ── 04 · Qué es Ingeniak (intertítulo: manifiesto + definición citable + "en datos") ── */}
   {has('que-es') && (
-    <Intertitle id="que-es" aura="isotipo" auraSide="right" ghost={S('que-es').ghost ? { text: S('que-es').ghost, mode: 'bleed', side: 'right' } : undefined} class="hm-quees">
+    <Intertitle id="que-es" aura="isotipo" auraSide="right" ghost={S('que-es').ghost ? { text: S('que-es').ghost, mode: 'bleed', side: 'right' } : undefined} class="hm-quees tpl-glow" hud={S('que-es').hud?.[0]?.text}>
+      <Aura kind="ondas" x="62%" y="94%" o={1} only="d" />
+      <Aura kind="isotipo" x="72%" o={0.9} only="m" sticky />
       {S('que-es').eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(S('que-es').eyebrow)} /></p>}
       <h2 id="que-es-t" class="t-h2 hm-manifesto" data-words set:html={headline(S('que-es').h2)} />
       {S('que-es').lede && <Copy as="p" class="t-lede t-lede--2 hm-quees__lede" text={S('que-es').lede} data-reveal />}
@@ -246,7 +307,7 @@ const railGroups = [3, 6, 4];
         )}
       </div>
       {S('que-es').metricRow && (
-        <Metric variant="row" ids={S('que-es').metricRow.metricIds} heading={S('que-es').metricRow.title} note={S('que-es').metricRow.sourceNote !== false} link class="hm-quees__row" />
+        <Metric variant="row" ids={S('que-es').metricRow.metricIds} heading={S('que-es').metricRow.title} note={S('que-es').metricRow.sourceNote !== false} link={allBuilt(S('que-es').metricRow.metricIds)} class="hm-quees__row" />
       )}
     </Intertitle>
   )}
@@ -259,10 +320,23 @@ const railGroups = [3, 6, 4];
       steps={stations}
       figLabel={sis.fig ? `${sis.fig.label} — ${String(sis.fig.text ?? '').replace(/\.$/, '')}` : undefined}
       note={sis.note}
-      class="hm-sistema"
+      class="hm-sistema tpl-glow"
     >
+      {/* Sin escena fijada (móvil, movimiento reducido) el titular va solo antes de las estaciones: luz propia bajo él */}
+      <span class="hm-seq-glow" aria-hidden="true"></span>
       {sis.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(sis.eyebrow)} /></p>}
       <h2 id="sistema-t" class="t-h2" data-split set:html={headline(sis.h2)} />
+      {SU.atraer && <HomeStation slot="ui-atraer" u={SU.atraer} />}
+      {SU.atender && <HomeStation slot="ui-atender" u={SU.atender} />}
+      {SU.organizar && <HomeStation slot="ui-organizar" u={SU.organizar} />}
+      {SU.automatizar && <HomeStation slot="ui-automatizar" u={SU.automatizar} />}
+      {SU.medir && <HomeStation slot="ui-medir" u={SU.medir} />}
+      {/* Móvil: la superficie de la placa vertical mide < 180 px → mini demo bajo el copy de cada estación */}
+      {SU.atraer && <HomeStation slot="metric-atraer" u={SU.atraer} mode="demo" kanban={KANBAN} />}
+      {SU.atender && <HomeStation slot="metric-atender" u={SU.atender} mode="demo" kanban={KANBAN} />}
+      {SU.organizar && <HomeStation slot="metric-organizar" u={SU.organizar} mode="demo" kanban={KANBAN} />}
+      {SU.automatizar && <HomeStation slot="metric-automatizar" u={SU.automatizar} mode="demo" kanban={KANBAN} />}
+      {SU.medir && <HomeStation slot="metric-medir" u={SU.medir} mode="demo" kanban={KANBAN} />}
     </PlateSequence>
   )}
 
@@ -278,42 +352,43 @@ const railGroups = [3, 6, 4];
       srcsetMax={kainPlate.srcsetMax ?? 2752}
       push={{ anchor: telD ? 'telefono' : 'pecho', to: 1.12 }}
       hud={kain.hud}
-      class="hm-kain"
+      class="hm-kain tpl-glow-m"
     >
+      <span class="tpl-introglow" aria-hidden="true"></span>
       {kain.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(kain.eyebrow)} /></p>}
       <h2 id="kain-t" class="t-h2" data-split set:html={headline(kain.h2)} />
       {kain.lede && <Copy as="p" class="t-lede t-lede--2" text={kain.lede} />}
 
+      {/* Escritorio ≤ 100svh: viñetas en 2 columnas; pestañas de sector (ChatTabs, fuera del teléfono) con el límite de Kain
+          como su nota; CTAs en una fila. Móvil (split): todo esto va después de la placa, con el chat en línea arriba. */}
       <Fragment slot="more">
         {(kain.items ?? []).length > 0 && (
           <ul class="hm-kain__list" role="list" data-reveal="stagger">
             {(kain.items as string[]).map((it) => <li><span class="hm-kain__bar" aria-hidden="true"></span><Copy text={it} /></li>)}
           </ul>
         )}
-        {telD && chatTabs.length > 1 && (
-          <div class="hm-kain__tabs only-d" role="group" aria-label="Elige un sector para ver la conversación de Kain" data-kain-proxy={chatId} data-reveal>
-            <span class="chip-sim">SIMULACIÓN</span>
-            {chatTabs.map((t, i) => (
-              <button type="button" class="hm-kain__tab" aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={chatId} data-proxy-tab={t.id}>{t.label ?? t.id}</button>
-            ))}
+        {chatTabs.length > 1 && (
+          <div class="hm-kain__sim" data-reveal>
+            <ChatTabs for={telD ? `${chatId} ${chatId}-m` : `${chatId}-m`} tabs={chatTabs} class="hm-kain__tabs" />
+            {kain.limite && <Copy as="p" class="t-micro hm-kain__limit" text={kain.limite} />}
           </div>
         )}
         <div class:list={['hm-kain__inline', telD && 'only-m']}>
-          <ChatSim mode="inline" tabs={chatTabs} id={`${chatId}-m`} />
+          <ChatSim mode="inline" tabs={chatTabs} tabsOutside={chatTabs.length > 1} id={`${chatId}-m`} note={false} />
         </div>
+        {chatTabs.length <= 1 && kain.limite && <Copy as="p" class="t-micro hm-kain__limit" text={kain.limite} />}
         {kain.slogan && <p class="t-deck hm-kain__slogan" set:html={sloganHTML(kain.slogan)} />}
         <div class="ctas hm-kain__ctas">
           <Btn variant="ghost" href={wa(kain.ctaSecondary?.waMessage)} label={kain.ctaSecondary?.label ?? 'Escríbele a Kain'} />
-          {(kain.links ?? []).map((l: any) => l.external
+          {built(kain.links).map((l: any) => l.external
             ? <a class="lnk" href={l.href} target="_blank" rel="noopener">{l.label} <span aria-hidden="true">↗</span></a>
             : <a class="lnk" href={l.href} set:html={`${esc(l.label).replace(/\bKain\b/, '<span class="kain-mark">kain</span>')} <span aria-hidden="true">→</span>`} />)}
         </div>
-        {kain.limite && <Copy as="p" class="t-small hm-kain__limit" text={kain.limite} />}
       </Fragment>
 
       {telD && (
         <div slot="anchors" class="anchor anchor--panel hm-phone" data-anchor="telefono" data-m="none" data-lock style={phoneStyle}>
-          <ChatSim mode="registered" tabs={chatTabs} id={chatId} note={false} />
+          <ChatSim mode="registered" tabs={chatTabs} tabsOutside={chatTabs.length > 1} id={chatId} note={false} />
         </div>
       )}
     </ImageSection>
@@ -321,28 +396,35 @@ const railGroups = [3, 6, 4];
 
   {/* ── 07 · Servicios (filas de guion por 5 etapas, fotograma que sigue al cursor) ── */}
   {has('servicios') && (
-    <Intertitle id="servicios" aura="ondas" layout="split" class="hm-serv">
+    <Intertitle id="servicios" aura="ondas" auraSide="center" layout="split" class="hm-serv tpl-glow">
       <Fragment slot="head">
         <div class="hm-serv__head">
           {serv.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(serv.eyebrow)} /></p>}
           <h2 id="servicios-t" class="t-h2" data-split set:html={headline(serv.h2)} />
+          {/* Fotograma 21:9 a sangre de la columna (máscara a --ink, sin caja): el riel; al recorrer las filas, su portada */}
+          <figure class="hm-serv__still" aria-hidden="true" data-serv-still>
+            <img src={servStill.src} srcset={servStill.srcset} sizes="(min-width: 1280px) 30vw, 90vw" alt="" width="640" height="274" loading="lazy" decoding="async" />
+          </figure>
           {serv.closing && <Copy as="p" class="t-lede t-lede--2 hm-serv__closing" text={serv.closing} data-reveal />}
-          {(serv.links ?? []).length > 0 && (
-            <p class="hm-links" data-reveal>{(serv.links as any[]).map((l) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+          {built(serv.links).length > 0 && (
+            <p class="hm-links" data-reveal>{built(serv.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
           )}
         </div>
       </Fragment>
+      <Aura kind="isotipo" x="8%" y="2%" o={0.9} only="d" clip />
+      <Aura kind="ondas" x="60%" o={1} only="m" sticky />
       <ScriptList groups={servGroups} followStill label="Servicios de Ingeniak" />
     </Intertitle>
   )}
 
   {/* ── 08 · Casos (Montaje: cifras con la portada del caso dentro de las letras) ── */}
   {has('casos') && casoIds.length > 0 && (
-    <Montage id="casos" ids={casoIds} transversal={casos.transversal} stillFor={stillFor} anonNote={casos.note} class="hm-casos">
+    <Montage id="casos" ids={casoIds} transversal={casos.transversal} stillFor={stillFor} anonNote={casos.note} class="hm-casos tpl-glow">
+      <Aura kind="ondas" x="55%" y="10%" o={1} clip />
       {casos.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(casos.eyebrow)} /></p>}
       <h2 id="casos-t" class="t-h2" data-split set:html={headline(casos.h2)} />
       {casos.lede && <Copy as="p" class="t-lede t-lede--2 hm-casos__lede" text={casos.lede} data-reveal />}
-      <Fragment slot="foot">{(casos.links ?? []).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</Fragment>
+      <Fragment slot="foot">{built(casos.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</Fragment>
     </Montage>
   )}
 
@@ -360,8 +442,9 @@ const railGroups = [3, 6, 4];
       srcsetMax={vkPlate.srcsetMax ?? 1920}
       alt=""
       hud={vk.hud}
-      class="hm-vktor"
+      class="hm-vktor tpl-glow-m"
     >
+      <span class="tpl-introglow" aria-hidden="true"></span>
       {vk.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(vk.eyebrow)} /></p>}
       <h2 id="vktor-t" class="t-h2" data-split set:html={headline(vk.h2)} />
       {vk.lede && <Copy as="p" class="t-lede t-lede--2" text={vk.lede} />}
@@ -373,8 +456,8 @@ const railGroups = [3, 6, 4];
           ))}
         </ol>
       )}
-      {(vk.links ?? []).length > 0 && (
-        <p class="hm-links hm-vktor__go">{(vk.links as any[]).map((l) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+      {built(vk.links).length > 0 && (
+        <p class="hm-links hm-vktor__go">{built(vk.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
       )}
       <Fragment slot="anchors">
         {(vk.phases ?? []).length > 0 && (
@@ -394,48 +477,51 @@ const railGroups = [3, 6, 4];
   {/* ── 10 · Industrias (locaciones: la portada del sector activo a sangre) ── */}
   {has('industrias') && sectors.length > 0 && (
     <LocationSwitcher id="industrias" sectors={sectors} label={indLabel.toUpperCase()} class="hm-ind">
+      <Aura kind="isotipo" x="70%" o={0.9} only="m" sticky />
       {ind.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(ind.eyebrow)} /></p>}
       <h2 id="industrias-t" class="t-h2" data-split set:html={headline(ind.h2)} />
       {ind.lede && <Copy as="p" class="t-lede t-lede--2 hm-ind__lede" text={ind.lede} />}
       <Fragment slot="foot">
         {ind.footer && <Copy as="p" class="t-micro hm-ind__foot" text={ind.footer} />}
-        {(ind.links ?? []).map((l: any) => <a class="lnk hm-ind__all" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+        {built(ind.links).map((l: any) => <a class="lnk hm-ind__all" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
       </Fragment>
     </LocationSwitcher>
   )}
 
   {/* ── 11 · El equipo (fotos reales en duotono sobre aura; R6: sin collage generado) ── */}
   {has('equipo') && (
-    <Intertitle id="equipo" aura="isotipo" auraSide="left" layout="split" class="hm-team">
-      <Fragment slot="head">
+    <Intertitle id="equipo" aura="isotipo" auraSide="center" class="hm-team tpl-glow">
+      {/* Interino R6: la línea de reparto de Credits (ui) a lo ancho, sobre UNA aura centrada; titular arriba */}
         <div class="hm-team__head">
           {eq.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(eq.eyebrow)} /></p>}
           <h2 id="equipo-t" class="t-h2" data-split set:html={headline(eq.h2)} />
           {eq.lede && <Copy as="p" class="t-lede t-lede--2" text={eq.lede} data-reveal />}
-          {(eq.links ?? []).length > 0 && (
-            <p class="hm-links" data-reveal>{(eq.links as any[]).map((l) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+          {built(eq.links).length > 0 && (
+            <p class="hm-links" data-reveal>{built(eq.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
           )}
         </div>
-      </Fragment>
       <Credits variant="team" size="lg" items={team} class="hm-team__credits" />
     </Intertitle>
   )}
 
   {/* ── 12 · Ficha técnica + preguntas (G01, G02, G04, G07, G08, G11) ──────── */}
   {has('faq') && (
-    <Intertitle id="faq" aura="ondas" layout="split" class="hm-faq">
+    <Intertitle id="faq" aura="ondas" layout="split" class="hm-faq tpl-glow">
       <Fragment slot="head">
         <EntitySheet variant="home" title={faq.eyebrow} class="hm-faq__sheet" />
       </Fragment>
+      <Aura kind="isotipo" x="-30%" y="4%" o={0.9} only="d" clip />
+      <Aura kind="ondas" x="50%" o={1} only="m" sticky />
       <h2 id="faq-t" class="t-h2 hm-faq__h" data-split set:html={headline(faq.h2)} />
-      <FAQAccordion ids={faq.faqIds ?? []} glass open={0} id="faq-list" />
+      <FAQAccordion ids={faq.faqIds ?? []} glass id="faq-list" />
       {faqFooter && <p class="t-small hm-faq__foot" set:html={faqFooter} data-reveal />}
     </Intertitle>
   )}
 
   {/* ── 13 · 06:00 · Rise (Dawn) ─────────────────────────────────────────── */}
   {has('cta-final') && (
-    <Dawn id="cta-final" plate={plateIds('cta-final')[0] ?? 'cta-amanecer'} mirror={finPlate.mirror} layout={finPlate.layout}>
+    <Dawn id="cta-final" plate={plateIds('cta-final')[0] ?? 'cta-amanecer'} mirror={finPlate.mirror} layout={finPlate.layout} hud={fin.hud} class="tpl-glow-m">
+      <span class="tpl-introglow" aria-hidden="true"></span>
       {fin.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(fin.eyebrow)} /></p>}
       <h2 id="cta-final-t" class="t-h2" data-split set:html={headline(fin.h2)} />
       {fin.lede && <Copy as="p" class="t-lede t-lede--2" text={fin.lede} />}
@@ -455,57 +541,31 @@ const railGroups = [3, 6, 4];
 </BaseLayout>
 
 <script>
-  import gsap from 'gsap';
-
-  // Respaldo local del sumario de la portada (peticiones.md · HomeTemplate #1, cine/scene.ts): con la firma, la salida
-  // con scrub del sumario registra autoAlpha 0 como valor inicial y el primer refresh lo deja invisible. Al terminar la
-  // entrada (la firma acaba + 1.4 s de la entrada del sumario) se repone su estado y se invalida esa salida, que vuelve a
-  // tomar el valor real. Si cine corrige scene.ts, esto no cambia nada (el inicio ya será 1).
-  const sumario = document.querySelector<HTMLElement>('#hero .sumario');
-  if (sumario) {
-    document.addEventListener('cine:coldopen-end', () => {
+  // 07 · Servicios: el fotograma fijo bajo el H2 toma la portada de la fila que se recorre (puntero fino o foco) y vuelve al
+  // riel al salir de la lista. Usa la misma fuente que el fotograma que sigue al cursor de ScriptList (data-still-src).
+  const still = document.querySelector<HTMLElement>('[data-serv-still]');
+  const list = document.querySelector<HTMLElement>('#servicios [data-script]');
+  const img = still?.querySelector('img');
+  if (still && list && img) {
+    const base = { src: img.getAttribute('src') ?? '', srcset: img.getAttribute('srcset') ?? '' };
+    let cur = base.src;
+    const show = (src: string, srcset = '') => {
+      if (!src || src === cur) return;
+      cur = src;
+      still.classList.add('is-swap');
       window.setTimeout(() => {
-        const exits = gsap.getTweensOf(sumario).filter((t) => !!t.scrollTrigger);
-        if (!exits.length) return;
-        gsap.set(sumario, { autoAlpha: 1, y: 0 });
-        exits.forEach((t) => {
-          t.invalidate();
-          t.scrollTrigger?.refresh();
-          t.progress(t.scrollTrigger?.progress ?? 0); // ya con el inicio real (1), en el punto del scroll actual
-        });
-      }, 1700);
-    }, { once: true });
-  }
-
-  // Pestañas de sector "bajo el copy" (§5.1 ESC 06) → mueven el ChatSim registrado en el teléfono de la placa.
-  // Son un control proxy: el ChatSim conserva su propio tablist (oculto en escritorio) y su analítica (chat_sim_tab).
-  const groups = document.querySelectorAll<HTMLElement>('[data-kain-proxy]');
-  groups.forEach((g) => {
-    const chat = document.getElementById(g.dataset.kainProxy || '');
-    if (!chat) return;
-    const btns = [...g.querySelectorAll<HTMLButtonElement>('[data-proxy-tab]')];
-    const sync = () => {
-      const sel = chat.querySelector<HTMLElement>('[data-chat-tab][aria-selected="true"]')?.dataset.chatTab;
-      btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.proxyTab === sel)));
+        img.srcset = srcset;
+        img.src = src;
+        still.classList.remove('is-swap');
+      }, 160);
     };
-    g.addEventListener('click', (e) => {
-      const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-proxy-tab]');
-      if (!b) return;
-      chat.querySelector<HTMLElement>(`[data-chat-tab="${b.dataset.proxyTab}"]`)?.click();
-      sync();
-    });
-    new MutationObserver(sync).observe(chat, { subtree: true, attributes: true, attributeFilter: ['aria-selected'] });
-  });
-
-  // El acordeón de preguntas cambia el alto de la página (al cerrarse por primera vez y en cada apertura): el cierre (Dawn)
-  // está debajo y sus disparadores de ScrollTrigger quedarían corridos. Se recalculan al terminar cada transición.
-  const faq = document.querySelector<HTMLElement>('#faq [data-faq]');
-  if (faq) {
-    let t = 0;
-    faq.addEventListener('transitionend', (e) => {
-      if ((e as TransitionEvent).propertyName !== 'grid-template-rows') return;
-      clearTimeout(t);
-      t = window.setTimeout(() => (window as any).__cine?.refresh?.(), 80);
-    });
+    const pick = (e: Event) => {
+      const row = (e.target as HTMLElement).closest<HTMLElement>('.script__row');
+      const src = row?.dataset.stillSrc;
+      if (src) show(src);
+    };
+    list.addEventListener('pointerover', pick);
+    list.addEventListener('focusin', pick);
+    list.addEventListener('pointerleave', () => show(base.src, base.srcset));
   }
 </script>

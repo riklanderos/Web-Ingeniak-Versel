@@ -77,18 +77,20 @@ export function setupBranch(section: HTMLElement, spec: HTMLElement): BranchHand
       const x1 = Math.min(a.x, b.x + lead + dy);
       cands.push([a, { x: x1, y: a.y }, { x: b.x + lead, y: b.y }, b]);
     }
-    // R2 · por el carril que queda sobre la fila de CTAs, entrando por el borde superior del botón
+    // R2 · por el carril que queda sobre la fila de CTAs, bajando a 45° y entrando EN HORIZONTAL por el costado del botón
+    // (§3.8: horizontal → 45° → horizontal; nunca por su borde superior). Si otro botón ocupa ese costado, se descarta.
     {
       const row = (to.closest('.ctas') ?? to).getBoundingClientRect();
       const rowTop = row.top - o.top;
       // carril a media altura entre el último texto de arriba y la fila de CTAs
       const above = OB.filter((r) => r.b <= rowTop + 1 && r.r > B.l).reduce((m, r) => Math.max(m, r.b), rowTop - 48);
       const lane = Math.round((above + rowTop) / 2);
-      const e = { x: B.r - Math.min(30, (B.r - B.l) / 4), y: B.t };
+      const b = { x: B.r, y: (B.t + B.b) / 2 };
+      const e1 = { x: b.x + lead, y: b.y };
+      const p2 = { x: e1.x + (e1.y - lane), y: lane };
       const a = { x: C.l, y: Math.max(lane, C.t + 12) };
       const p1 = { x: a.x - Math.max(0, a.y - lane), y: lane };
-      const p2 = { x: e.x + (e.y - lane), y: lane };
-      if (p1.x > p2.x + 8) cands.push(a.y > lane ? [a, p1, p2, e] : [{ x: a.x, y: lane }, p2, e]);
+      if (lane < b.y - 4 && p1.x > p2.x + 8) cands.push(a.y > lane ? [a, p1, p2, e1, b] : [{ x: a.x, y: lane }, p2, e1, b]);
     }
     const pick = cands.find((pts) => ok(pts, OB));
     if (!pick) { svg.style.display = 'none'; return false; }

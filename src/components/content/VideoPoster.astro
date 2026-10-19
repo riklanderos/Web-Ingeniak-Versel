@@ -3,14 +3,17 @@
 //   mode="modal"  → (VSL de /discovery/, VideoScene) botón de reproducir; el video se abre en <dialog> a pantalla completa,
 //                   foco atrapado por el diálogo nativo, Esc cierra y pausa. Sin poster: solo el botón (la placa ya es el fondo).
 //   mode="inline" → póster a sangre dentro de su contenedor; al clic se cambia por el <video> con controles.
-// Gancho: [data-video] (ui.ts). Eventos de medición R10: dispara CustomEvent "ingeniak:video" con {type: play|50|complete}.
+//   videoPoster → póster SOLO del <video> del diálogo (el disparador no se pinta como caja 16:9; la placa ya es el fondo).
+//   closeLabel  → texto accesible del botón de cerrar (el copy trae "Cerrar el video").
+// Gancho: [data-video] (ui.ts). Medición R10: document → "ingeniak:track" {name: video_play | video_50 | video_complete}.
 import Icon from '../ui/Icon.astro';
 
 interface Props {
-  src: string; poster?: string; captions?: string; mode?: 'inline' | 'modal'; title: string;
+  src: string; poster?: string; videoPoster?: string; closeLabel?: string; captions?: string; mode?: 'inline' | 'modal'; title: string;
   label?: string; duration?: string; width?: number; height?: number; class?: string; id?: string;
 }
-const { src, poster, captions, mode = 'modal', title, label = 'Ver video', duration, width = 1280, height = 720, class: cls, id } = Astro.props;
+const { src, poster, videoPoster, closeLabel = 'Cerrar video', captions, mode = 'modal', title, label = 'Ver video', duration, width = 1280, height = 720, class: cls, id } = Astro.props;
+const vPoster = videoPoster ?? poster;
 const uid = id ?? `vid-${Math.random().toString(36).slice(2, 7)}`;
 const type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
 ---
@@ -24,7 +27,7 @@ const type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
         <span class="vposter__label">{label}{duration && <span class="vposter__dur" data-allow-number> · {duration}</span>}</span>
       </button>
       <template data-video-tpl>
-        <video class="vposter__video" controls playsinline preload="none" poster={poster} width={width} height={height}>
+        <video class="vposter__video" controls playsinline preload="none" poster={vPoster} width={width} height={height}>
           <source src={src} type={type} />
           {captions && <track kind="subtitles" srclang="es" label="Español" src={captions} default />}
         </video>
@@ -41,10 +44,10 @@ const type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
       <dialog class="vdialog" id={`${uid}-dlg`} aria-label={title} data-video-dialog>
         <div class="vdialog__bar">
           <p class="t-label vdialog__t"><span class="node" aria-hidden="true"></span>{title}</p>
-          <button type="button" class="btn-icon vdialog__close" data-video-close aria-label="Cerrar video"><Icon name="close" size={18} /></button>
+          <button type="button" class="btn-icon vdialog__close" data-video-close aria-label={closeLabel}><Icon name="close" size={18} /></button>
         </div>
         <div class="vdialog__stage">
-          <video class="vposter__video" controls playsinline preload="none" poster={poster} width={width} height={height} data-src={src} data-type={type}>
+          <video class="vposter__video" controls playsinline preload="none" poster={vPoster} width={width} height={height} data-src={src} data-type={type}>
             {captions && <track kind="subtitles" srclang="es" label="Español" src={captions} default />}
           </video>
         </div>

@@ -32,7 +32,7 @@
 .is__stagebox .stage,.is > .is__layer .stage{scale:var(--cam)}
 .is__layer--media{z-index:-6;--mask-y:linear-gradient(180deg,transparent 0,#000 var(--fade-top,11%),#000 calc(var(--fade-from) * 100%),transparent 100%);
   -webkit-mask-image:var(--mask-y);mask-image:var(--mask-y)}
-.is__layer--ghost{z-index:-5} .is__layer--cutout{z-index:-4;-webkit-mask-image:var(--mask-y,none);mask-image:var(--mask-y,none)}
+.is__layer--ghost,.is__layer--over{z-index:-5} .is__layer--cutout{z-index:-4;-webkit-mask-image:var(--mask-y,none);mask-image:var(--mask-y,none)}
 .is__layer--anchors{z-index:2}
 .stage picture,.stage img{display:block;width:100%;height:100%}
 :is(.is[data-mirror],.is__layer[data-mirror]) :is(.is__img,.is__rack,.is__cut){scale:-1 1}
@@ -84,11 +84,16 @@
 
 /* Ultra ancho: la placa no pasa de ~2200 px ni recorta más de 8 % en vertical; los lados se funden */
 @media (min-width:1800px){
-  .is{--cap:min(2200px, var(--is-h,100svh) * var(--ar-d) * 1.08)}
+  /* Máscara lateral con paradas suavizadas (sin banda de Mach) y, en placas con sujeto a un lado, nunca más ancha que el
+     margen libre entre el sujeto y el borde − 16 px (la mano del sujeto no se vuelve fantasma a 2560). */
+  .is{--cap:min(2200px, var(--is-h,100svh) * var(--ar-d) * 1.08);
+    --mL:max(0px, min(10%, var(--sx0,.1) * 100% - 16px));--mR:max(0px, min(10%, (1 - var(--sx1,.9)) * 100% - 16px));
+    --mask-x:linear-gradient(90deg,transparent 0,rgb(0 0 0 / .35) calc(var(--mL) * .33),rgb(0 0 0 / .8) calc(var(--mL) * .66),#000 var(--mL),
+      #000 calc(100% - var(--mR)),rgb(0 0 0 / .8) calc(100% - var(--mR) * .66),rgb(0 0 0 / .35) calc(100% - var(--mR) * .33),transparent 100%)}
   .is__stagebox{inset:0 max(0px, (100% - var(--cap)) / 2)}
   .is__layer--media,.is__layer--cutout{
-    -webkit-mask-image:var(--mask-y),linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-composite:source-in;
-    mask-image:var(--mask-y),linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-composite:intersect}
+    -webkit-mask-image:var(--mask-y),var(--mask-x);-webkit-mask-composite:source-in;
+    mask-image:var(--mask-y),var(--mask-x);mask-composite:intersect}
 }
 
 /* HUD (action-safe) */
@@ -97,11 +102,14 @@
 .hud--tr{top:calc(var(--hdr) + 32px);right:var(--action-x);writing-mode:vertical-rl;line-height:1.2} .hud--tl{top:calc(var(--hdr) + 32px);left:var(--action-x)}
 .hud--bl{bottom:28px;left:var(--action-x)} .hud--br{bottom:28px;right:var(--action-x)}
 
-/* Con el riel de escenas (≥ 1280 px, nav) y poca altura, el HUD vertical chocaría con sus marcas: se retira */
-@media (min-width:1280px) and (max-height:899px){.hud--tr{display:none}}
+/* Con el riel de escenas (≥ 1280 px, nav) el HUD vertical compartía su X con las marcas del riel a cualquier altura:
+   se corre 40 px hacia dentro. En escritorios bajos el HUD inferior izquierdo chocaría con la fila de CTAs: se retira. */
+@media (min-width:1280px){.hud--tr{right:calc(var(--action-x) + 40px)}}
+@media (max-height:760px){.hud--bl{display:none}}
 
-/* Portada (§5.1): en escritorios bajos manda la altura */
-.is--hero .t-display{font-size:min(clamp(2.75rem,.6rem + 7.2vw,9.25rem),12.6svh)}
+/* Portada (§5.1): en escritorios bajos manda la altura; la línea más larga termina antes de la mitad del escenario
+   (bajo los brazos del isotipo de cristal de la portada del inicio): tope 6.6vw y, con el marco centrado (≥ 1600), marco / 11.9. */
+.is--hero .t-display{font-size:min(clamp(2.75rem,.6rem + 7.2vw,9.25rem),12.6svh,max(6.6vw,2.75rem),max(var(--frame) / 11.9,2.75rem))}
 .is--hero h1 .t-deck{margin-top:var(--s-4)}
 :is(h1,h2) > :is(.t-display,.t-display-2,.t-mega){display:block}
 
@@ -125,6 +133,10 @@
   .anchor[data-m="none"],.leader[data-m="none"]{display:none}
   .anchor[style*="--ax-m"]{left:calc(var(--ax-m) * 100%);top:calc(var(--ay-m) * 100%)}
   .is__hud{display:none}
+  /* R9: el recorte con alfa es solo de escritorio (su <picture> pide un GIF de 1 × 1 en móvil) y la palabra fantasma
+     registrada detrás de un recorte también: sin él quedaría encima del sujeto (un segundo Kain aplastado sobre el texto). */
+  .is__layer--cutout,:is(.is__stagebox,.seq__stagebox):has(> .is__layer--cutout) > .is__layer--ghost{display:none}
+  .anchor--panel{width:calc(var(--aw-m,var(--aw)) * 100%);height:calc(var(--ah-m,var(--ah)) * 100%)}
   .stage .is__aura{width:92%}
   .is[data-m="below"]{--crop:calc(1 - var(--subj-top-m) + .08);
     padding:calc(var(--plate-h) * var(--crop) - 64px) 0 calc(var(--seam) + var(--s-5))}
@@ -143,6 +155,10 @@
   .is[data-mnull~="tableta"] [data-anchor~="tableta"],.is[data-mnull~="rostro"] [data-anchor~="rostro"],.is[data-mnull~="superficie"] [data-anchor~="superficie"],
   .is[data-mnull~="escalon-1"] [data-anchor~="escalon-1"],.is[data-mnull~="escalon-2"] [data-anchor~="escalon-2"],.is[data-mnull~="escalon-3"] [data-anchor~="escalon-3"],
   .is[data-mnull~="escalon-4"] [data-anchor~="escalon-4"],.is[data-mnull~="escalon-5"] [data-anchor~="escalon-5"]{display:none}
+}
+/* Tableta vertical (600–1023 px): la placa vertical cubre todo el ancho (sin caja ni costura a los lados) */
+@media (min-width:600px) and (max-width:1023px) and (max-aspect-ratio:5/6){
+  .is,.is__layer[data-own],.seq__step{--plate-w:100vw}
 }
 @media (min-width:600px) and (max-width:767px), (min-width:600px) and (max-aspect-ratio:5/6){
   .is__layer--media{-webkit-mask-image:var(--mask-y),linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-composite:source-in;
@@ -179,8 +195,11 @@
 @media (max-width:767px), (max-aspect-ratio:5/6){.is > .branch{display:none}}
 
 /* ── Firma "Del nodo al pecho" (ColdOpen, §7.3) y mini firma "Encendido" ── */
+/* La capa óptica tapa toda la sección (texto incluido) en la firma: el H1 queda pintado debajo (LCP, §8.3) y no se oculta.
+   En el Encendido el velo vive DEBAJO del texto (z 0): solo la placa se "enciende"; el texto ya está en su sitio. */
 .co-layer{z-index:3}
-.is > .is__layer.co-layer .stage{scale:none}
+.co-layer--enc{z-index:0}
+.is .is__layer.co-layer .stage{scale:none}
 .co-optic{position:absolute;left:calc(var(--cx) * 100%);top:calc(var(--cy) * 100%);translate:-50% -50%}
 .co-iris{width:300vmax;height:300vmax;opacity:var(--veil,0);
   background:radial-gradient(circle var(--iris,0px) at 50% 50%,transparent 0 70%,var(--ink) 100%)}
@@ -192,14 +211,13 @@
 .co-word{position:absolute;left:50%;bottom:9%;translate:-50% 0;margin:0;font:500 .6875rem/1 var(--f-mono);letter-spacing:.42em;color:rgb(0 229 255 / .75);opacity:0}
 .co-layer:not(.is-live){visibility:hidden}
 html.co .co-layer:not(.co-layer--enc),html.enc .co-layer--enc{visibility:visible}
-/* Estado inicial antes de que GSAP tome el control: negro con el iris cerrado (nunca opacity 0 en la <img> LCP) */
-html.co .is:has(> [data-shot="coldopen"]){--veil:1;--iris:0px}
+/* Estado inicial antes de que GSAP tome el control: negro con el iris cerrado (nunca opacity 0 en la <img> LCP ni en el H1) */
+html.co .is:has(> [data-shot="coldopen"], > .is__stagebox > [data-shot="coldopen"]){--veil:1;--iris:0px}
 html.enc .is[data-encendido]{--veil:1;--iris:0px}
-/* Red de seguridad: si el JS no carga o se cae, la portada queda completa a los 3.2 s (1.6 s la mini firma) */
-html.co .is:has(> [data-shot="coldopen"]) :is(.is__copy > *,.is__layer--anchors,.is__hud,.branch){opacity:0;animation:co-show 0s 3.2s forwards}
+/* Red de seguridad: si el JS no carga o se cae, la portada queda completa a los 3.2 s (1.4 s el Encendido) */
 html.co .co-layer:not(.co-layer--enc){animation:co-safety 0s 3.2s forwards}
-html.enc .is[data-encendido] :is(.is__copy > *,.is__layer--anchors,.is__hud){opacity:0;animation:co-show 0s 1.6s forwards}
-html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
+html.enc .is[data-encendido] :is(.is__layer--anchors,.is__hud){opacity:0;animation:co-show 0s 1.4s forwards}
+html.enc .co-layer--enc{animation:co-safety 0s 1.4s forwards}
 @keyframes co-show{to{opacity:1}} @keyframes co-safety{to{opacity:0;visibility:hidden}}
 
 /* ── SharedTake (§3.12): portada sticky detrás de la sección siguiente + rack focus ── */
@@ -208,6 +226,8 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 .is__rack{position:absolute;inset:0;opacity:var(--rack,0);object-fit:cover}
 .is__rackveil{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgb(3 4 11 / .35),var(--ink));opacity:var(--rackveil,0)}
 .take > .is[data-take] > .branch{opacity:calc(1 - var(--rack,0) * 4)}
+/* El tramo 2 de la rama se retira en cuanto el texto de la portada empieza a irse (take.ts → .is-copy-moving) */
+.take > .is[data-take].is-copy-moving > .branch{opacity:0;transition:opacity .2s var(--ease-ui)}
 .take__still{position:absolute;left:0;right:0;top:var(--take-h,100svh);bottom:0;z-index:0;pointer-events:none;overflow:clip}
 .take__still img{width:100%;height:100%;object-fit:cover;opacity:.3;
   -webkit-mask-image:linear-gradient(180deg,transparent,#000 22%,#000 60%,transparent);mask-image:linear-gradient(180deg,transparent,#000 22%,#000 60%,transparent)}
@@ -220,7 +240,10 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 /* ── TwinScene (§3.12): A ámbar / B cian en el mismo stage, haz de barrido ── */
 .twin .twin__b{-webkit-clip-path:inset(0 0 0 var(--wipe,0%));clip-path:inset(0 0 0 var(--wipe,0%))}
 .twin__leak--amber{background:radial-gradient(32% 42% at calc(var(--lx) * 100%) calc(var(--ly) * 100%),rgb(255 181 71 / .2),rgb(255 120 40 / .08) 50%,transparent 75%)}
-.twin__beam{position:absolute;top:0;bottom:0;left:var(--wipe,0%);width:2px;translate:-1px 0;z-index:-2;pointer-events:none;opacity:var(--beam,0);
+/* Haz: pista a todo lo ancho movida con translate (su borde derecho = --wipe), sin cambios de layout; la línea de 2 px
+   vive en su pseudo-elemento */
+.twin__beam{position:absolute;top:0;bottom:0;left:0;width:100%;translate:calc(var(--wipe,0%) - 100%) 0;z-index:-2;pointer-events:none;opacity:var(--beam,0)}
+.twin__beam::after{content:"";position:absolute;top:0;bottom:0;right:-1px;width:2px;
   background:linear-gradient(180deg,transparent 4%,rgb(168 243 255 / .9) 30%,#fff 50%,rgb(168 243 255 / .9) 70%,transparent 96%);
   box-shadow:0 0 24px 6px rgb(0 229 255 / .55),0 0 90px 34px rgb(0 85 255 / .28)}
 .twin__text{gap:0}
@@ -239,9 +262,14 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 }
 
 /* ── Saltar escena (secuencias fijadas) ───────────────────────────────────── */
-.skip-scene{position:absolute;z-index:4;right:var(--action-x);bottom:20px;opacity:0;pointer-events:none;text-decoration:none;transition:opacity .3s var(--ease-ui)}
-.skip-scene:focus-visible,.is-pinned .skip-scene{opacity:.8;pointer-events:auto}
+/* Solo existe con la secuencia fijada (sin pin el contenido ya está apilado: fuera del orden de tabulación). Arriba a la
+   izquierda, objetivo ≥ 24 px; al usarlo, el titular siguiente queda bajo el encabezado y recibe el foco (_util.ts). */
+.skip-scene{display:none;position:absolute;z-index:4;left:var(--action-x);top:calc(var(--hdr) + 4px);min-height:24px;min-width:24px;
+  align-items:center;gap:6px;padding:4px 8px;margin-left:-8px;opacity:0;pointer-events:none;text-decoration:none;transition:opacity .3s var(--ease-ui)}
+:is(.is-pin-ready,.seq--pinned) > .skip-scene{display:inline-flex}
+.skip-scene:focus-visible,.is-pinned > .skip-scene{opacity:.8;pointer-events:auto}
 .skip-scene:hover{opacity:1}
+.skip-scene:focus-visible{opacity:1;transition:none}
 .scene-end{position:absolute;left:0;bottom:0;width:1px;height:1px;outline:none}
 
 /* ── PlateSequence (runtime / phases) ─────────────────────────────────────── */
@@ -251,7 +279,7 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 .seq__head,.seq__body,.seq__foot-col{grid-column:1 / span 6}
 .seq__body{grid-column:1 / span 5;display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-4)}
 .seq[data-layout="subject-left"] :is(.seq__head,.seq__body,.seq__foot-col){grid-column:7 / span 6}
-.seq__steps{position:relative}
+.seq__track,.seq__steps{position:relative}
 .seq__step{position:relative;isolation:isolate;min-height:max(88svh,600px);display:grid;align-content:center;padding:var(--s-8) 0}
 .seq__step > .is__stagebox{z-index:-1}
 .seq__step + .seq__step{margin-top:calc(-1 * var(--seam))}
@@ -261,8 +289,11 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 .seq__line{max-width:40ch}
 .seq__metrics{display:flex;flex-wrap:wrap;gap:6px 18px;font:400 .875rem/1.4 var(--f-body);color:var(--text-2)}
 .seq__metrics .metric--inline b{font:300 1.25rem/1 var(--f-display);color:var(--cyan);letter-spacing:-.02em;margin-right:4px}
-.seq__sweep{position:absolute;top:0;bottom:0;left:var(--sx,-20%);width:24vw;z-index:0;pointer-events:none;opacity:var(--so,0);translate:-50% 0;
-  background:linear-gradient(90deg,transparent,rgb(0 229 255 / .08) 30%,rgb(168 243 255 / .5) 50%,rgb(0 229 255 / .08) 70%,transparent);mix-blend-mode:screen}
+/* Barrido de luz: pista a todo lo ancho movida con translate (sin CLS); la banda de 24vw vive en su centro */
+.seq__sweep{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:clip;opacity:var(--so,0)}
+.seq__sweep i{position:absolute;inset:0;translate:calc(var(--sx,-20%) - 50%) 0}
+.seq__sweep i::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:24vw;translate:-50% 0;mix-blend-mode:screen;
+  background:linear-gradient(90deg,transparent,rgb(0 229 255 / .08) 30%,rgb(168 243 255 / .5) 50%,rgb(0 229 255 / .08) 70%,transparent)}
 .seq__rail{display:flex;align-items:flex-start;position:relative;margin-top:var(--s-6);max-width:460px}
 .seq__rail-line{position:absolute;left:4px;right:4px;top:4px;height:1px;background:var(--hair-2)}
 .seq__rail-fill{position:absolute;inset:0;background:var(--cyan);box-shadow:var(--glow-cyan);scale:var(--p,1) 1;transform-origin:0 50%}
@@ -274,14 +305,17 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 .seq__rail-node b{font-weight:500}
 .seq__foot{margin-top:var(--s-5);display:flex;flex-direction:column;gap:6px}
 .seq__note{max-width:56ch}
+/* Tarjeta de lead (.solid): dentro de la caja de su superficie (centrada, arriba a 22 % de su alto y nunca más ancha que
+   la caja); sin caja, centrada en su punto. */
 .lead-card{width:min(250px,20cqw);min-width:190px;translate:-50% -50%;padding:12px 14px 13px;display:flex;flex-direction:column;gap:8px;font:400 13px/1.35 var(--f-body);color:var(--text-2)}
+.seq__slot[data-box] .lead-card{translate:-50% 0;min-width:0;width:clamp(150px,calc(var(--bw) * 100cqw - 20px),250px)}
 .lead-card figcaption{display:flex;flex-direction:column;gap:6px}
 .lead-card .chip-sim{align-self:flex-start}
 .lead-card__k{color:var(--cyan)}
 .lead-card__t b{font-weight:600;color:var(--text)}
 .lead-card__node{position:absolute;left:-4px;top:50%;width:7px;height:7px;translate:0 -50%;background:var(--cyan);box-shadow:var(--glow-cyan)}
-.seq__slot{width:0;height:0}
-.seq__pill{display:none}
+.seq__slot{width:0;height:0;z-index:5}
+.seq__pillw{display:none}
 .seq__light{width:0;height:0}
 .seq__light i{position:absolute;width:10px;height:10px;translate:-50% -50%;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan),0 0 40px 10px rgb(0 229 255 / .3);opacity:var(--on,1)}
 .seq__light b{position:absolute;left:14px;top:-7px;font:600 13px/1 var(--f-display);color:var(--cyan);opacity:var(--on,1)}
@@ -291,23 +325,39 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 .seq--phases .seq__steps{padding-top:var(--s-6)}
 /* Escritorio con pin (cine.ts agrega .seq--pinned): todas las placas en un solo escenario, un paso a la vez */
 .seq--pinned{height:100svh;min-height:640px;padding:calc(var(--hdr) + var(--s-6)) 0 var(--s-7);display:grid;grid-template-rows:auto 1fr auto;align-content:stretch}
-.seq--pinned .seq__steps{position:static;display:grid}
+.seq--pinned :is(.seq__track,.seq__steps){position:static;display:grid;min-height:0}
 .seq--pinned .seq__head .t-h2{font-size:clamp(2rem,.6rem + 3vw,4.25rem)}
 .seq--pinned .seq__step{position:static;isolation:auto;grid-area:1 / 1;min-height:0;padding:var(--s-5) 0;margin:0;align-content:center}
 .seq--pinned .seq__step > .is__stagebox{z-index:auto}
-.seq--pinned .seq__step:not(.is-active) .seq__copyf{visibility:hidden}
+/* Las copias inactivas quedan en el árbol de accesibilidad (opacidad 0, nunca visibility): si el foco entra en una,
+   sequence.ts lleva el scroll a su estación (R11). */
+.seq--pinned .seq__step:not(.is-active) .seq__copyf{pointer-events:none}
 .seq--pinned .seq__step .is__layer--anchors{opacity:0;transition:opacity .5s var(--ease-ui)}
 .seq--pinned .seq__step.is-active .is__layer--anchors{opacity:1}
+.seq--instant .seq__step .is__layer--anchors{transition:none}
 .seq--pinned.seq--phases .seq__stagebox{height:auto;bottom:0}
 .seq--pinned.seq--phases .seq__steps{padding-top:0}
+/* Escritorios bajos (1280 × 720): titular más corto, Fig. 02 en una línea y sin nota (la tarjeta conserva SIMULACIÓN) */
+@media (max-height:760px){
+  .seq--pinned{padding-top:calc(var(--hdr) + var(--s-6));padding-bottom:var(--s-5)}
+  .seq--pinned .seq__head .t-h2{font-size:min(clamp(2rem,.6rem + 3vw,4.25rem),6.4svh)}
+  .seq--pinned .seq__rail{margin-top:var(--s-4)}
+  .seq--pinned .seq__foot{margin-top:var(--s-3)}
+  .seq--pinned .seq__fig{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .seq--pinned .seq__note{display:none}
+}
 @media (max-width:767px), (max-aspect-ratio:5/6){
   .seq{padding-top:calc(var(--hdr) + var(--s-5))}
   .seq__head,.seq__body,.seq__foot-col,.seq[data-layout] :is(.seq__head,.seq__body,.seq__foot-col){grid-column:1 / -1}
   .seq__step{min-height:0;display:block;padding:var(--s-6) 0 calc(var(--plate-h) * (1 - var(--subj-top-m)) + var(--s-6))}
   .seq__step + .seq__step{margin-top:0}
   .seq--runtime .lead-card{display:none}
-  .seq--runtime .seq__pill{display:flex;position:fixed;z-index:30;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));translate:-50% 0;align-items:center;gap:8px;
-    padding:8px 12px;font:500 12px/1 var(--f-body);color:var(--text-2);opacity:var(--pill,0);transition:opacity .3s var(--ease-ui);pointer-events:none;white-space:nowrap}
+  /* Píldora de etapa (§5.1.1): sticky arriba de la lista (bajo el encabezado), nivel .solid; nunca sobre el texto del pie
+     ni sobre las piernas de Kain. Muestra la etapa que cruza el centro de la pantalla (sequence.ts). */
+  .seq--runtime .seq__pillw{display:flex;justify-content:center;position:sticky;z-index:5;top:calc(var(--hdr) + 8px);height:0;overflow:visible;pointer-events:none}
+  .seq--runtime .seq__pill{display:inline-flex;align-items:center;gap:8px;height:34px;margin:0;padding:0 12px;border-radius:999px;
+    font:500 12px/1 var(--f-body);color:var(--text-2);white-space:nowrap}
+  .seq--runtime .seq__pill b{color:var(--text);font-weight:600}
   .seq--phases .seq__stagebox{position:relative;inset:auto;height:var(--plate-h);margin-top:calc(var(--plate-h) * -.3)}
   .seq--phases .seq__stagebox > .is__layer{inset:0 auto auto calc((100% - var(--plate-w)) / 2)}
   .seq--phases .seq__step{padding:var(--s-5) 0}
@@ -315,22 +365,44 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
   .seq__rail{display:none}
 }
 
-/* ── Dawn · amanecer de cierre (horizonte + haz + recorrido del botón) ──── */
+/* ── Dawn · amanecer de cierre (filo del horizonte registrado + haz + recorrido del botón) ──── */
 .dawn{--hy:0px;--edge:1;--bs:1}
-.dawn__veil{position:absolute;inset:0;z-index:-2;pointer-events:none;background:var(--ink);opacity:var(--dveil,0)}
+/* El texto sube: alineado arriba bajo el encabezado → la línea base de los CTAs queda en y ≤ .66 de la placa */
+@media (min-width:768px) and (min-aspect-ratio:5/6){.dawn.is{padding-top:calc(var(--hdr) + var(--s-6))}}
+.dawn .is__text > .t-h2{text-wrap:balance;max-width:min(100%,13.5em)}
+@media (min-width:768px) and (min-aspect-ratio:5/6){.dawn .is__text > .t-h2{font-size:min(clamp(2.25rem,1rem + 3.9vw,5.5rem),7.2svh)}}
+.dawn .btn-micro{color:var(--text-2)}
+/* El primer plano (suelo bajo los pies) se disuelve con una curva larga: sin borde recto en la costura con el pie */
+.dawn > .is__stagebox > .is__layer--media{--mask-y:linear-gradient(180deg,transparent 0,#000 var(--fade-top,11%),#000 80%,rgb(0 0 0 / .78) 87%,rgb(0 0 0 / .4) 93%,rgb(0 0 0 / .12) 97.5%,transparent 100%)}
+/* Velo que se levanta: nace con la costura (nunca un borde recto sobre el aura de la sección anterior) */
+.dawn__veil{position:absolute;inset:0;z-index:-2;pointer-events:none;background:var(--ink);opacity:var(--dveil,0);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 calc(var(--seam) * 1.4));mask-image:linear-gradient(180deg,transparent 0,#000 calc(var(--seam) * 1.4))}
+/* Haz vertical: máscara suave en todos sus bordes (nunca una caja ni una línea en la costura inferior) */
 .dawn__beam{position:absolute;left:calc(var(--cx-d) * 100%);bottom:0;height:92%;width:min(34vw,520px);translate:-50% 0;z-index:-2;pointer-events:none;
   transform-origin:50% 100%;scale:var(--bs) 1;mix-blend-mode:screen;opacity:.9;
   background:radial-gradient(50% 100% at 50% 100%,rgb(0 229 255 / .3),rgb(69 93 255 / .12) 55%,transparent 78%),
              linear-gradient(90deg,transparent 38%,rgb(168 243 255 / .2) 50%,transparent 62%);
-  -webkit-mask-image:linear-gradient(0deg,#000 20%,transparent);mask-image:linear-gradient(0deg,#000 20%,transparent)}
-.dawn__horizon{position:absolute;left:50%;bottom:0;width:min(max(170vw,1900px),3200px);aspect-ratio:3.6 / 1;z-index:-2;pointer-events:none;border-radius:50%;
-  translate:-50% calc(90% + var(--hy));
-  background:radial-gradient(closest-side,var(--ink) 96%,transparent 100%)}
-.dawn__edge{position:absolute;inset:0;border-radius:50%;opacity:var(--edge);
-  box-shadow:0 -1px 0 0 rgb(168 243 255 / .9),0 -6px 18px -2px rgb(0 229 255 / .55),0 -30px 90px -10px rgb(0 85 255 / .45),var(--glow-cyan-soft)}
+  -webkit-mask-image:linear-gradient(0deg,transparent 0,#000 24%,#000 46%,transparent 100%),linear-gradient(90deg,transparent,#000 28%,#000 72%,transparent);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(0deg,transparent 0,#000 24%,#000 46%,transparent 100%),linear-gradient(90deg,transparent,#000 28%,#000 72%,transparent);mask-composite:intersect}
+/* Filo del horizonte en la capa registrada (slot "stage", sin máscaras: llega a los bordes del cuadro también a 2560):
+   elipse con la curvatura del horizonte horneado (240 % × 191 % del escenario; vertical 240 % × 85 %), sin domo de tinta.
+   La caja sube --gl para alojar el resplandor; se apaga antes del borde inferior de la sección (nada de línea recta en la
+   costura) y deja un hueco suave donde el sujeto está delante del horizonte. */
+.dawn .is__layer--over{mix-blend-mode:screen}
+.dawn__arc{--gl:140px;--fade0:6cqh;--fade1:15cqh;--s0:var(--sx0,.5);--s1:var(--sx1,.5);
+  --g0:calc(var(--s0) + (var(--s1) - var(--s0)) * .25);--g1:calc(var(--s1) - (var(--s1) - var(--s0)) * .25);
+  --gap:linear-gradient(90deg,#000 0,#000 calc((var(--g0) + .7) / 2.4 * 100% - 1.5%),transparent calc((var(--g0) + .7) / 2.4 * 100% + .5%),
+    transparent calc((var(--g1) + .7) / 2.4 * 100% - .5%),#000 calc((var(--g1) + .7) / 2.4 * 100% + 1.5%));
+  --fade:linear-gradient(180deg,#000 0,#000 calc(var(--gl) + var(--fade0)),transparent calc(var(--gl) + var(--fade1)));
+  position:absolute;left:-70%;width:240%;top:calc(var(--hz-y) * 100% - var(--gl));height:calc(191% + var(--gl));translate:0 var(--hy);pointer-events:none;
+  -webkit-mask-image:var(--gap),var(--fade);-webkit-mask-composite:source-in;mask-image:var(--gap),var(--fade);mask-composite:intersect}
+.dawn__edge{position:absolute;left:0;right:0;top:var(--gl);bottom:0;border-radius:50%;opacity:var(--edge);
+  box-shadow:0 -1px 0 0 rgb(168 243 255 / .85),0 -6px 18px -2px rgb(0 229 255 / .5),0 -30px 90px -10px rgb(0 85 255 / .42)}
+/* Placa con horizonte horneado: solo el resplandor (el trazo fino ya está en la placa) */
+.dawn--baked .dawn__edge{box-shadow:0 -3px 12px -3px rgb(0 229 255 / .5),0 -24px 70px -12px rgb(0 85 255 / .42)}
 .dawn__note{margin-top:var(--s-4)}
 @media (max-width:767px), (max-aspect-ratio:5/6){
-  .dawn__horizon{width:240vw;aspect-ratio:3 / 1;translate:-50% calc(92% + var(--hy))}
+  .dawn__arc{--s0:var(--sx0-m,.5);--s1:var(--sx1-m,.5);--gl:90px;--fade0:5cqh;--fade1:14cqh;top:calc(var(--hz-ym) * 100% - var(--gl));height:calc(85% + var(--gl))}
   .dawn__beam{left:50%;width:70vw;height:60%}
 }
 
@@ -360,7 +432,9 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 
 /* ── Montage: cifras con la placa del caso dentro de las letras ─────────── */
 .mt{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0}
-.mt__head{margin-bottom:var(--s-7)} .mt__intro{grid-column:1 / span 8}
+.mt__head{margin-bottom:var(--s-7)} .mt__intro{grid-column:1 / span 8;display:flex;flex-direction:column;align-items:flex-start}
+.mt__intro > :is(.eyebrow,.t-label) + *{margin-top:var(--s-4)}
+.mt__intro > :is(h2,.t-h2) + *{margin-top:var(--s-5)}
 .mt__rows{display:flex;flex-direction:column;gap:clamp(4px,1.4vw,20px)}
 .mt__row{width:var(--frame);margin-inline:auto;border-top:1px solid var(--hair)}
 .mt__row{position:relative;isolation:isolate}
@@ -372,10 +446,16 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 .mt__row--r .mt__link{flex-direction:row-reverse;text-align:right}
 .mt__fig{display:block;line-height:.8;flex:none}
 .mt__fig .metric{display:block}
-.mt__fig .metric__v{display:block;font:200 clamp(5rem,1.6rem + 14vw,15.5rem)/.82 var(--f-display);letter-spacing:-.06em;padding:.04em .02em .02em;
-  background-image:linear-gradient(rgb(255 255 255 / .3),rgb(255 255 255 / .3)),var(--img);background-size:auto,auto 160%;
-  background-position:0 0,var(--px,50%) 42%;background-blend-mode:screen;-webkit-background-clip:text;background-clip:text;
-  color:transparent;-webkit-text-fill-color:transparent}
+/* Placa dentro de las letras: pantalla blanca .12 · la imagen (sin repetir y al menos tan ancha como la cifra: nunca un
+   borde recto) encuadrada en el sujeto iluminado (x = foco de la placa con deriva ±8 % --pd; y en el torso/contraluz:
+   con ≥ 2× el alto de la cifra, el 86 % deja fuera las caras) · base cian → blanco (nunca glifos grises). */
+.mt__fig .metric__v{display:block;font:400 clamp(5rem,1.6rem + 14vw,15.5rem)/.82 var(--f-display);letter-spacing:-.06em;padding:.04em .02em .02em;
+  background-image:linear-gradient(rgb(255 255 255 / .12),rgb(255 255 255 / .12)),var(--img),linear-gradient(100deg,rgb(0 229 255 / .72),rgb(168 243 255 / .8) 55%,rgb(255 255 255 / .88));
+  background-repeat:no-repeat;background-size:auto,max(100%,4.4em) auto,auto;
+  background-position:0 0,calc(var(--fx-d,.7) * 100% + var(--pd,0) * 1%) 86%,0 0;background-blend-mode:screen,screen,normal;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.mt__fig[data-img="aura"] .metric__v{font-weight:200;background:linear-gradient(92deg,#fff 0%,var(--cyan-soft) 30%,var(--cyan) 65%,var(--indigo) 100%);
+  -webkit-background-clip:text;background-clip:text}
 .mt__fig .metric__v *{color:transparent;-webkit-text-fill-color:transparent}
 .mt__meta{display:flex;flex-direction:column;gap:10px;padding-bottom:clamp(8px,1.4vw,22px);max-width:30ch}
 .mt__row--r .mt__meta{align-items:flex-end}
@@ -397,36 +477,52 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 /* ── LocationSwitcher (§5.1 ESC 10) ───────────────────────────────────────── */
 .loc .loc__text{grid-column:1 / span 5}
 .loc__list{margin-top:var(--s-6);border-top:1px solid var(--hair);width:100%}
-.loc__row{position:relative;display:flex;align-items:center;gap:var(--s-4);border-bottom:1px solid var(--hair)}
-.loc__btn{flex:1;display:grid;grid-template-columns:2.25rem 1fr;align-items:baseline;column-gap:10px;padding:9px 8.5rem 9px 0;text-align:left;opacity:.42;
+.loc__row{position:relative;display:flex;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--hair)}
+/* Filas inactivas a .6 fija (≥ 4.5:1 sobre la tinta), sin desvanecido progresivo */
+.loc__btn{flex:1 1 100%;display:grid;grid-template-columns:2.25rem 1fr;align-items:baseline;column-gap:10px;padding:9px 0;text-align:left;opacity:.6;
   transition:opacity .45s var(--ease-ui)}
 .loc__btn:hover,.loc__btn:focus-visible,.loc__row[aria-current] .loc__btn{opacity:1}
-.loc__n{color:var(--muted)}
+.loc__n{color:var(--text-2)}
 .loc__row[aria-current] .loc__n{color:var(--cyan)}
 .loc__name{font:600 clamp(1.25rem,.7rem + 1.2vw,2.125rem)/1.04 var(--f-display);letter-spacing:-.035em;white-space:nowrap}
-.loc__line{grid-column:2;display:grid;grid-template-rows:0fr;font:400 .875rem/1.4 var(--f-body);color:var(--text-2);transition:grid-template-rows .45s var(--ease-cine),margin .45s var(--ease-cine)}
-.loc__line > *{min-height:0}
-.loc__line{overflow:hidden;max-height:0}
-.loc__row[aria-current] .loc__line{max-height:3em;margin-top:6px}
+/* La micro-promesa y su cifra (con rótulo, contexto y nota) en un solo bloque de texto, no en filas de una retícula */
+.loc__line{grid-column:2;display:block;font:400 .875rem/1.4 var(--f-body);color:var(--text-2);overflow:hidden;max-height:0;
+  transition:max-height .45s var(--ease-cine),margin .45s var(--ease-cine)}
+.loc__line .metric b{font-weight:600;color:var(--text)}
+.loc__ctx{color:var(--muted)}
+.loc__row[aria-current] .loc__line{max-height:4.4em;margin-top:6px}
 .loc__bar{position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--cyan);box-shadow:var(--glow-cyan);scale:var(--prog,0) 1;transform-origin:0 50%;opacity:0}
 .loc__row[aria-current] .loc__bar{opacity:1}
 .loc:not(.is-auto) .loc__row[aria-current] .loc__bar{--prog:1;opacity:.6}
-.loc__go{position:absolute;right:0;top:calc(9px + .62em);opacity:0;transition:opacity .3s var(--ease-ui)}
-.loc__row[aria-current] .loc__go,.loc__go:focus-visible,.loc__row:hover .loc__go{opacity:1}
+/* "Ver industria →" de la fila activa en su propia línea: objetivo ≥ 24 px (44 con puntero grueso), 8 px bajo el botón */
+.loc__go{display:none;align-items:center;min-height:24px;margin:8px 0 12px calc(2.25rem + 10px);padding-right:8px}
+.loc__row[aria-current] .loc__go{display:inline-flex}
+@media (pointer:coarse){.loc__go{min-height:44px;margin-block:8px 4px}}
 .loc__ctrl{display:flex;align-items:center;gap:var(--s-5);margin-top:var(--s-5);flex-wrap:wrap}
 .loc__pause svg{width:18px;height:18px}
 .loc__pause .ico-play,.loc__pause[aria-pressed="true"] .ico-pause{display:none}
 .loc__pause[aria-pressed="true"] .ico-play{display:block}
 .loc:not(.is-auto) .loc__pause{display:none}
+.loc__note{margin-top:var(--s-4);color:var(--text-2);max-width:56ch}
 .loc__layer{opacity:0}
 .loc__layer.is-on{opacity:1}
+/* Chip SIMULACIÓN con 2 burbujas del sector activo: registrado a la izquierda de la tableta / teléfono de la placa */
+.loc__simbox{z-index:1}
+.loc__sim{display:flex;flex-direction:column;gap:8px;margin:0;padding:12px 14px 14px;font:400 13px/1.4 var(--f-body);color:var(--text-2)}
+.loc__sim[hidden],.loc__bub[hidden]{display:none}
+.loc__sim .chip-sim{align-self:flex-start}
+.loc__sim--d{left:calc(var(--simx,.6) * 100%);top:calc(var(--simy,.5) * 100%);translate:calc(-100% - 18px) -50%;width:min(300px,22cqw);min-width:240px}
+.loc__sim--m{display:none}
+.loc__bub{margin:0;padding:8px 11px;border-radius:12px;max-width:92%;color:var(--text)}
+.loc__bub--cliente{align-self:flex-start;background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--hair-2);border-bottom-left-radius:4px}
+.loc__bub--kain{align-self:flex-end;background:rgb(0 85 255 / .22);box-shadow:inset 0 0 0 1px var(--hair-cyan);border-bottom-right-radius:4px}
 @media (max-width:767px), (max-aspect-ratio:5/6){
   .loc .loc__text{grid-column:1 / -1}
   .loc__name{font-size:1.3125rem;white-space:normal}
-  .loc__btn{padding-right:0}
-  .loc__go{position:static;opacity:.75;font-size:10px;padding:0 0 12px calc(2.25rem + 10px);margin-top:-4px}
-  .loc__row{flex-wrap:wrap;gap:0}
-  .loc__btn{flex-basis:100%}
+  .loc__go{font-size:10px}
+  .loc__simbox{display:none}
+  .loc__sim--m{display:flex;margin-top:var(--s-5)}
+  .loc__sim--m[hidden]{display:none}
 }
 
 /* ── CaseFigure (§5.4.1) ──────────────────────────────────────────────────── */
@@ -437,6 +533,8 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 .cf__head{grid-column:1 / span 7} .cf__stage{grid-column:1 / -1} .cf__caption{grid-column:1 / span 8;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline;color:var(--text-2)}
 .cf__caption .metric--inline b{font:300 1.375rem/1 var(--f-display);color:var(--cyan);margin-right:4px}
 .cf__src{flex-basis:100%}
+.cf__foot{grid-column:1 / span 8;max-width:60ch}
+.cf__foot > *{margin:0}
 .cf-sw{display:grid;gap:var(--s-6)}
 .cf-sw__row{display:grid;grid-template-columns:8rem minmax(0,auto) 1fr;align-items:center;column-gap:var(--s-6)}
 .cf-sw__clock{font:200 clamp(3.5rem,1.6rem + 6vw,9rem)/.9 var(--f-display);letter-spacing:-.05em;font-variant-numeric:tabular-nums;min-width:4.2ch}
@@ -465,7 +563,7 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 .cf-nd__wires{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .cf-nd__wires path{fill:none;stroke:var(--cyan);stroke-opacity:.45;stroke-width:1;stroke-dasharray:1;stroke-dashoffset:var(--draw,0)}
 @media (max-width:767px){
-  .cf__head,.cf__caption{grid-column:1 / -1}
+  .cf__head,.cf__caption,.cf__foot{grid-column:1 / -1}
   .cf-sw__row{grid-template-columns:1fr;row-gap:10px}
   .cf-ix{column-gap:var(--s-6);height:300px}
 }
@@ -504,11 +602,25 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.6s forwards}
 
 /* ── Revelados genéricos ([data-split], [data-reveal]) ────────────────────── */
 @media (prefers-reduced-motion:no-preference){
-  html.js:not([data-motion="reduced"]) :is([data-split],[data-reveal]):not(.is-revealed){opacity:0;animation:cine-safe 0s 2.6s forwards}
+  /* La portada (priority) nunca se oculta por CSS: su H1 y sus CTAs se pintan desde el primer cuadro (LCP, §8.3); la firma
+     y el Encendido los tapan con su capa óptica, no con opacidad. */
+  html.js:not([data-motion="reduced"]) :is([data-split],[data-reveal]):not(.is-revealed):not(.is[data-priority] *){opacity:0;animation:cine-safe 0s 2.6s forwards}
 }
 @keyframes cine-safe{to{opacity:1}}
 .split-line{padding-bottom:.06em;margin-bottom:-.06em}
 .split-line :is(.kain-mark,.lit,.soft):empty{display:none}
+
+/* ── QA de registro (?anchors=1, cine.ts) ──────────────────────────────────── */
+.qa-anchors{position:absolute;inset:0;z-index:9;pointer-events:none}
+.qa-a{position:absolute;left:calc(var(--qx) * 100%);top:calc(var(--qy) * 100%);width:9px;height:9px;translate:-50% -50%;background:#ff2bd6;box-shadow:0 0 0 2px #000}
+.qa-a--box{width:calc(var(--qw) * 100%);height:calc(var(--qh) * 100%);translate:none;background:rgb(255 43 214 / .12);box-shadow:inset 0 0 0 2px #ff2bd6}
+.qa-a::after{content:attr(data-n);position:absolute;left:12px;top:-6px;font:600 11px/1 var(--f-mono);color:#ff2bd6;white-space:nowrap;text-shadow:0 0 3px #000}
+.qa-a--box::after{left:4px;top:4px}
+@media (max-width:767px), (max-aspect-ratio:5/6){
+  .qa-a{left:calc(var(--qxm) * 100%);top:calc(var(--qym) * 100%)}
+  .qa-a--box{width:calc(var(--qwm) * 100%);height:calc(var(--qhm) * 100%)}
+  .qa-a--mnull{display:none}
+}
 
 /* ── Movimiento reducido / alto contraste ─────────────────────────────────── */
 @media (prefers-reduced-motion:reduce){

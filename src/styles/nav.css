@@ -21,8 +21,11 @@ main:focus{outline:none}
 /* El nombre solo existe durante el corte: un view-transition-name permanente vuelve al encabezado "backdrop root"
    y apaga el desenfoque de su cristal y del mega menú. vt.ts / el <head> ponen html.vt-hdr en pageswap / pagereveal. */
 html.vt-hdr .hdr{view-transition-name:hdr}
-.is--hero[data-priority] .is__layer--media img{view-transition-name:plate}
-html[data-vt-still] .is--hero[data-priority] .is__layer--media img{view-transition-name:none}
+/* Solo la placa de la portada (img.is__img): el .is__rack de SharedTake vive en la misma capa y, con un selector "img",
+   también tomaba el nombre → dos "plate" = InvalidStateError y el corte se cancela. Al hacer clic en un still, vt.ts pone
+   html[data-vt-still] y la portada lo suelta (el still clicado es la única "plate" de la página de origen). */
+.is--hero[data-priority] .is__layer--media img.is__img{view-transition-name:plate}
+html[data-vt-still] .is--hero[data-priority] .is__layer--media img.is__img{view-transition-name:none}
 ::view-transition-group(plate){animation-duration:.7s;animation-timing-function:var(--ease-cut)}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.35s}
 ::view-transition-group(hdr){animation-duration:.35s}
@@ -30,21 +33,28 @@ html[data-vt-still] .is--hero[data-priority] .is__layer--media img{view-transiti
 
 /* ---------------------------------------------------------------------
    Encabezado (§4.1)
-   Estados en <html data-hdr="top|glass|hidden">; mega abierto: html[data-mm-open]
+   Estados en <html data-hdr-state="top|glass|hidden">; mega abierto: html[data-mm-open]; velo en "top" con y > 0: html[data-hdr-scrim]
+   (el atributo de estado vive en <html> y NO se llama como el gancho del elemento: los scripts toman header.hdr)
    Ojo: .hdr__bar, .hdr__nav, .hdr__list y .hdr__item NO llevan position (los paneles se colocan contra .hdr).
    --------------------------------------------------------------------- */
 .hdr{position:fixed;inset:0 0 auto;z-index:60;height:var(--hdr);translate:0 0;transition:translate .35s var(--ease-cut),opacity .6s var(--ease-cine)}
-/* Firma (§7.3): el encabezado entra con la portada real; cine quita html.co al terminar. Red de seguridad a los 3.2 s. */
-html.co .hdr{opacity:0;pointer-events:none;animation:hdr-co 0s 3.2s forwards}
+/* Firma (§7.3): el encabezado entra con la portada real, cuando cine retira html.co ('cine:coldopen-end').
+   Red de seguridad solo por si cine no llega a correr (la firma dura ≈ 3 s; 3.6 s en móvil). */
+html.co .hdr{opacity:0;pointer-events:none;animation:hdr-co 0s 8s forwards}
 @keyframes hdr-co{to{opacity:1;pointer-events:auto}}
-html[data-hdr="hidden"]:not([data-mm-open]) .hdr:not(:has(:focus-visible)){translate:0 calc(-100% - 48px)}
+html[data-hdr-state="hidden"]:not([data-mm-open]) .hdr:not(:has(:focus-visible)){translate:0 calc(-100% - 48px)}
+/* Velo protector en "top" en cuanto la página se mueve: el texto que sube nunca queda limpio bajo logo y entradas. */
+.hdr::before{content:"";position:absolute;left:0;right:0;top:0;height:96px;z-index:-2;pointer-events:none;opacity:0;
+  background:linear-gradient(180deg,rgb(3 4 11 / .9),rgb(3 4 11 / .55) 55%,transparent);transition:opacity .3s var(--ease-ui)}
+html[data-hdr-state="top"][data-hdr-scrim] .hdr::before{opacity:1}
 .hdr__glass{position:absolute;inset:0;z-index:-1;opacity:0;pointer-events:none;
   background:rgb(3 4 11 / .62);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);
   border-bottom:1px solid rgb(0 229 255 / .12);transition:opacity .35s var(--ease-ui)}
-html[data-hdr="glass"] .hdr__glass,html[data-mm-open] .hdr__glass,.hdr:has(:focus-visible) .hdr__glass{opacity:1}
-html:not([data-hdr]) .hdr__glass{opacity:0}
+html[data-hdr-state="glass"] .hdr__glass,html[data-mm-open] .hdr__glass,.hdr:has(:focus-visible) .hdr__glass{opacity:1}
+html:not([data-hdr-state]) .hdr__glass{opacity:0}
 .hdr__bar{height:100%;display:flex;align-items:center;gap:clamp(18px,2vw,36px);padding-inline:var(--action-x)}
 .hdr__logo svg{height:19px}
+@media (pointer:coarse){.hdr__logo{min-height:44px;padding-block:12px}}
 .hdr__nav{display:none}
 .hdr__list{display:flex;align-items:center;gap:2px}
 .hdr__link{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;border-radius:var(--r-pill);
@@ -68,11 +78,14 @@ html:not([data-hdr]) .hdr__glass{opacity:0}
 .hdr__wa svg{width:19px;height:19px}
 .hdr__cta{flex:none}
 .hdr__cta-s{display:none}
-html[data-primary-visible] .hdr__cta{background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 1px var(--hair-cyan)}
-html[data-primary-visible] .hdr__cta .btn__node{background:rgb(0 229 255 / .1)}
+/* Regla de un azul (F15): contorno mientras haya un primario del contenido en pantalla. Sin JS no hay observador:
+   el del encabezado va SIEMPRE en contorno (el único azul es el primario de la portada). */
+html[data-primary-visible] .hdr__cta,html.no-js .hdr__cta{background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 1px var(--hair-cyan)}
+html[data-primary-visible] .hdr__cta .btn__node,html.no-js .hdr__cta .btn__node{background:rgb(0 229 255 / .1)}
+html.no-js .hdr__cta:hover,html.no-js .hdr__cta:focus-visible,
 html[data-primary-visible] .hdr__cta:hover,html[data-primary-visible] .hdr__cta:focus-visible{background:rgb(0 229 255 / .08);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .6),0 0 40px rgb(0 229 255 / .15)}
 .hdr__menu{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 12px 0 16px;border-radius:var(--r-pill);
-  box-shadow:inset 0 0 0 1px var(--hair-2);font:500 14px/1 var(--f-body);color:#fff;transition:box-shadow .3s,background .3s}
+  box-shadow:inset 0 0 0 1px var(--hair-2);font:500 14px/1 var(--f-body);color:#fff;text-decoration:none;transition:box-shadow .3s,background .3s}
 .hdr__menu:hover,.hdr__menu:focus-visible{box-shadow:inset 0 0 0 1px var(--hair-cyan);background:rgb(0 229 255 / .06)}
 .hdr__menu .ico{width:18px;height:18px;color:var(--cyan)}
 
@@ -226,7 +239,10 @@ html[data-primary-visible] .hdr__cta:hover,html[data-primary-visible] .hdr__cta:
 .no-js .mm-panel [data-i]{opacity:1;translate:none}
 .no-js .mm-screen-col{display:none}
 .no-js .mm-panel .mm-main{grid-column:1 / -1}
-.no-js .hdr__menu,.no-js .hdr__search{display:none}
+/* Sin JS: el buscador no funciona (se retira); "Menú" sigue visible como enlace al mapa del footer (#mapa-del-sitio).
+   El encabezado deja de ser fijo: sin el JS de estados no hay cristal ni ocultamiento, y así el logo nunca pasa sobre el texto. */
+.no-js .hdr__search{display:none}
+html.no-js .hdr{position:absolute}
 @media (max-width:1179px){.mm-panel,.mm-bg{display:none}}
 
 /* ---------------------------------------------------------------------
@@ -319,6 +335,7 @@ dialog.sd::backdrop{background:rgb(3 4 11 / .58);-webkit-backdrop-filter:blur(6p
 .sd-group__h{padding:6px 12px 8px;font:500 10.5px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .sd-opt{display:grid;grid-template-columns:18px minmax(0,1fr) auto;align-items:center;column-gap:12px;row-gap:3px;padding:10px 12px;border-radius:12px;
   color:var(--text);text-decoration:none;scroll-margin:12px}
+button.sd-opt{width:100%;text-align:left}
 .sd-opt[aria-selected="true"]{background:rgb(0 229 255 / .08);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .28)}
 .sd-opt:hover{background:rgb(255 255 255 / .05)}
 .sd-opt__node{width:6px;height:6px;margin-left:6px;border-radius:1.5px;background:rgb(158 176 199 / .45)}
@@ -362,51 +379,78 @@ dialog.sd::backdrop{background:rgb(3 4 11 / .58);-webkit-backdrop-filter:blur(6p
 /* ---------------------------------------------------------------------
    Riel de escenas (§4.7): solo ≥ 1280 px
    --------------------------------------------------------------------- */
+/* Área de clic = 32 × 24 px por tick (R11): la etiqueta va fuera del flujo y nunca recibe el puntero, así el riel no tapa
+   botones, filas ni enlaces del contenido que pasan por debajo. */
 .rail{display:none}
 @media (min-width:1280px){
-  .rail{display:block;position:fixed;right:calc(var(--action-x) - 6px);top:50%;translate:0 -50%;z-index:40;transition:opacity .3s}
-  html[data-overlay] .rail,html[data-sala] .rail,html[data-end-visible] .rail{opacity:0;pointer-events:none}
+  .rail{display:block;position:fixed;right:calc(var(--action-x) - 6px);top:50%;translate:0 -50%;z-index:40;transition:opacity .3s,visibility 0s}
+  /* Sobre la portada, atenuado (no compite con el sujeto); con puntero o foco vuelve a 1 */
+  html[data-hdr-state="top"] .rail,html:not([data-fold]) .rail{opacity:.25}
+  html .rail:hover,html .rail:focus-within{opacity:1}
+  /* Oculto de verdad (sale del orden de tabulación): capas abiertas, secuencias fijadas, final del footer y la firma */
+  html[data-overlay] .rail,html[data-sala] .rail,html[data-end-visible] .rail,html.co .rail{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility 0s linear .3s}
 }
 .rail__list{display:flex;flex-direction:column;align-items:flex-end}
 .rail__item[data-gap]{margin-top:8px}
-.rail__tick{display:flex;align-items:center;justify-content:flex-end;gap:10px;height:24px;min-width:32px;padding-left:8px;color:var(--muted);text-decoration:none}
+.rail__tick{position:relative;display:flex;align-items:center;justify-content:flex-end;width:32px;height:24px;color:var(--muted);text-decoration:none}
 .rail__tick:focus-visible{outline-offset:0;border-radius:6px}
-.rail__bar{width:14px;height:1px;background:rgb(158 176 199 / .55);transition:width .35s var(--ease-ui),background .35s,box-shadow .35s}
+.rail__bar{width:14px;height:1px;background:rgb(158 176 199 / .55);transform-origin:right center;transition:scale .35s var(--ease-ui),background .35s,box-shadow .35s}
 .rail__tick:hover .rail__bar{background:#fff}
-.rail__tick.is-active .rail__bar{width:26px;background:var(--cyan);box-shadow:var(--glow-cyan)}
-.rail__label{font:500 10px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;padding:6px 9px;border-radius:var(--r-pill);
-  background:rgb(3 4 11 / .72);color:var(--text-2);opacity:0;translate:6px 0;pointer-events:none;transition:opacity .25s var(--ease-ui),translate .35s var(--ease-ui)}
+.rail__tick.is-active .rail__bar{scale:1.857 1;background:var(--cyan);box-shadow:var(--glow-cyan)}   /* 14 → 26 px sin cambiar el layout */
+.rail__label{position:absolute;right:calc(100% + 8px);top:50%;translate:6px -50%;pointer-events:none;
+  font:500 10px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;padding:6px 9px;border-radius:var(--r-pill);
+  background:rgb(3 4 11 / .72);color:var(--text-2);opacity:0;transition:opacity .25s var(--ease-ui),translate .35s var(--ease-ui)}
 .rail__n{color:var(--cyan)}
-.rail__tick:hover .rail__label,.rail__tick:focus-visible .rail__label{opacity:1;translate:0 0}
-.rail[data-mode="labels"] .rail__label{opacity:.6;translate:0 0;background:none;padding-inline:0}
-.rail[data-mode="labels"] .rail__tick.is-active .rail__label,.rail[data-mode="labels"] .rail__tick:hover .rail__label{opacity:1;color:#fff}
+.rail__tick:hover .rail__label,.rail__tick:focus-visible .rail__label{opacity:1;translate:0 -50%}
+.rail[data-mode="labels"] .rail__label{opacity:.6;translate:0 -50%;background:none;padding-inline:0}
+.rail[data-mode="labels"] .rail__tick.is-active .rail__label,.rail[data-mode="labels"] .rail__tick:hover .rail__label,.rail[data-mode="labels"] .rail__tick:focus-visible .rail__label{opacity:1;color:#fff}
+/* Casos: sobre la portada solo ticks (las etiquetas aparecen desde la ficha, §5.4 #02) */
+html:not([data-fold]) .rail[data-mode="labels"] .rail__tick:not(:hover):not(:focus-visible) .rail__label{opacity:0}
 
 /* ---------------------------------------------------------------------
    CTA persistente (§4.6): barra móvil + píldora de Kain
    --------------------------------------------------------------------- */
-.mbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:none;grid-template-columns:2fr 1fr;gap:8px;
+.qa{display:block}   /* <aside aria-label="Acciones rápidas">: solo agrupa la píldora y la barra (fijas) como un landmark */
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:none;grid-template-columns:minmax(0,1fr) 48px;gap:8px;align-items:center;
   padding:6px 12px calc(6px + env(safe-area-inset-bottom));
   background:linear-gradient(180deg,rgb(3 4 11 / 0),rgb(3 4 11 / .82) 45%);
   translate:0 115%;visibility:hidden;transition:translate .4s var(--ease-cut),visibility 0s linear .4s}
 @media (max-width:767px){.mbar{display:grid}}
-html[data-fold]:not([data-primary-visible]):not([data-dawn-visible]):not([data-end-visible]):not([data-menu-open]):not([data-sala]):not([data-overlay]) .mbar{translate:0 0;visibility:visible;transition:translate .4s var(--ease-cut),visibility 0s}
-.mbar .btn{height:44px;padding:0 6px 0 18px;font-size:14px;justify-content:space-between;min-width:0}
-.mbar .btn .btn__node{width:32px;height:32px}
-.mbar__wa{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:var(--r-pill);color:#fff;text-decoration:none;
-  font:500 14px/1 var(--f-display);background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--hair-cyan);
+html[data-fold]:not([data-primary-visible]):not([data-dawn-visible]):not([data-end-visible]):not([data-menu-state]):not([data-sala]):not([data-overlay]) .mbar{translate:0 0;visibility:visible;transition:translate .4s var(--ease-cut),visibility 0s}
+.mbar .btn{height:48px;padding:0 6px 0 18px;gap:10px;font-size:14px;justify-content:space-between;min-width:0;white-space:nowrap}
+.mbar .btn .btn__node{width:36px;height:36px}
+.mbar .btn::after{inset:0}   /* el anillo del trazo queda dentro del botón: sin 1 px de desborde (scrollWidth = clientWidth) */
+.mbar__wa{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;color:#fff;text-decoration:none;
+  background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px var(--hair-cyan);
   -webkit-backdrop-filter:blur(12px) saturate(140%);backdrop-filter:blur(12px) saturate(140%)}
-.mbar__wa .ico{width:18px;height:18px;color:var(--cyan)}
+.mbar__wa .ico{width:20px;height:20px;color:var(--cyan)}
+@media (max-width:359px){
+  .mbar{grid-template-columns:minmax(0,1fr) auto;padding-inline:10px}
+  .mbar .btn{padding:0 14px;font-size:13.5px;justify-content:center}
+  .mbar .btn .btn__node{display:none}
+}
 
 .kpill{position:fixed;right:var(--action-x);bottom:24px;z-index:55;display:none;align-items:center;gap:12px;height:54px;padding:0 20px 0 8px;border-radius:var(--r-pill);
   color:var(--text);text-decoration:none;background:rgb(7 11 24 / .6);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);
   box-shadow:inset 0 0 0 1px var(--hair-cyan),var(--e-2);opacity:0;visibility:hidden;translate:0 calc(100% + 28px);
   transition:translate .45s var(--ease-cut),opacity .3s var(--ease-ui),visibility 0s linear .45s,box-shadow .3s}
 @media (min-width:768px){.kpill{display:inline-flex}}
-html[data-hdr="hidden"][data-fold]:not([data-sala]):not([data-dawn-visible]):not([data-end-visible]):not([data-overlay]) .kpill{opacity:1;visibility:visible;translate:0 0;transition:translate .45s var(--ease-cut),opacity .3s var(--ease-ui),visibility 0s,box-shadow .3s}
+/* Visible solo con el encabezado oculto, pasado el primer viewport y sin tapar nada: se retira en secuencias fijadas, con el
+   cierre o el final del footer en pantalla, con #kain / #casos / #cta-final a la vista (ya ofrecen "Escríbele a Kain"),
+   cuando su caja caería sobre texto o UI del contenido (data-kpill-cover, kpill.ts), con foco de teclado en el
+   contenido y durante la firma. */
+html[data-hdr-state="hidden"][data-fold]:not(.co):not([data-sala]):not([data-dawn-visible]):not([data-end-visible]):not([data-overlay]):not([data-kpill-off]):not([data-kpill-cover]):not(:has(main :focus-visible)) .kpill{opacity:1;visibility:visible;translate:0 0;transition:translate .45s var(--ease-cut),opacity .3s var(--ease-ui),visibility 0s,box-shadow .3s}
+/* Si se retira porque el contenido llega a su caja, sale rápido (el texto no alcanza a pasar por debajo). */
+html[data-kpill-cover] .kpill{transition:translate .3s var(--ease-cut),opacity .1s linear,visibility 0s linear .3s,box-shadow .3s}
 .kpill:hover,.kpill:focus-visible{box-shadow:inset 0 0 0 1px rgb(0 229 255 / .65),0 0 40px rgb(0 229 255 / .18),var(--e-2)}
 .kpill__kain{position:relative;width:40px;height:40px;flex:none;border-radius:50%;
   background:radial-gradient(70% 55% at 50% 88%,rgb(0 229 255 / .5),rgb(0 85 255 / .18) 60%,transparent 75%),rgb(10 31 76 / .5);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .1)}
-.kpill__kain img{position:absolute;left:50%;bottom:3px;height:42px;width:auto;translate:-50% 0;filter:drop-shadow(0 2px 6px rgb(0 229 255 / .35))}
+.kpill__kain img{position:absolute;left:50%;bottom:3px;height:42px;width:auto;max-width:none;translate:-50% 0;filter:drop-shadow(0 2px 6px rgb(0 229 255 / .35))}
+/* < 1600 px: solo el avatar (48 px). El texto sigue en el nombre accesible del enlace. */
+@media (max-width:1599px){
+  .kpill{width:48px;height:48px;padding:0;gap:0;justify-content:center}
+  .kpill__txt{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+}
 .kpill__txt{display:grid;gap:4px}
 .kpill__t{font:500 14px/1 var(--f-display);letter-spacing:-.01em}
 .kpill__s{display:inline-flex;align-items:center;gap:7px;font:400 10.5px/1 var(--f-mono);letter-spacing:.08em;color:var(--muted)}
@@ -421,16 +465,19 @@ html[data-hdr="hidden"][data-fold]:not([data-sala]):not([data-dawn-visible]):not
   background:linear-gradient(90deg,transparent 4%,rgb(0 229 255 / .35) 28%,rgb(168 243 255 / .85) 50%,rgb(0 229 255 / .35) 72%,transparent 96%)}
 .ftr__horizon::after{content:"";position:absolute;left:20%;right:20%;top:0;height:120px;
   background:radial-gradient(50% 100% at 50% 0,rgb(0 229 255 / .1),transparent 70%)}
+/* Si el footer sigue directo al cierre Dawn, el amanecer ya es el horizonte: una línea recta de 1 px cruzaría su arco. */
+main:has(> section:last-of-type:is(.dawn,[data-shot="dawn"],[data-dawn])) ~ .ftr .ftr__horizon{display:none}
 .ftr__eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:clamp(36px,5vh,56px);font:500 11px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
 .ftr__map{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:44px var(--gap)}
-.ftr__h{margin:0 0 18px;font:500 11px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.ftr__h{display:flex;align-items:baseline;gap:10px;margin:0 0 18px;font:500 11px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.ftr__n{color:rgb(158 176 199 / .5);letter-spacing:.08em}
 .ftr__ul{display:grid;gap:2px}
 .ftr__a{display:inline-flex;align-items:center;gap:0;padding:5px 0;font:400 15px/1.35 var(--f-body);color:var(--text-2);text-decoration:none;transition:color .25s}
 .ftr__a .ico{width:13px;height:13px;margin-left:6px;color:var(--muted)}
 .ftr__a:hover,.ftr__a:focus-visible{color:#fff}
 .ftr__ul .ftr__a::before{content:"";width:0;height:4px;border-radius:1px;background:var(--cyan);box-shadow:var(--glow-cyan);margin-right:0;transition:width .3s var(--ease-ui),margin-right .3s var(--ease-ui)}
 .ftr__ul .ftr__a:hover::before,.ftr__ul .ftr__a:focus-visible::before{width:4px;margin-right:4px}
-.ftr__a--inline{padding:0}
+.ftr__a--inline{padding:0;min-height:24px}   /* objetivo táctil ≥ 24 px (WCAG 2.5.8) */
 .ftr__entity{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:var(--s-7);margin-top:clamp(64px,9vh,104px);padding-top:28px;border-top:1px solid var(--hair)}
 .ftr__sheet{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px var(--gap)}
 .ftr__row{display:grid;gap:7px;align-content:start}

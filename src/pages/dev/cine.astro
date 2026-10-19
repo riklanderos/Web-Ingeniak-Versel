@@ -17,6 +17,14 @@ import CaseFigure from '../../components/cine/CaseFigure.astro';
 import DayTimeline from '../../components/cine/DayTimeline.astro';
 import Dawn from '../../components/cine/Dawn.astro';
 import SharedTake from '../../components/cine/SharedTake.astro';
+import ChatSim from '../../components/ui/ChatSim.astro';
+import { anchorStyle } from '../../components/cine/plate';
+import chatSalud from '../../data/chats/salud.json';
+import chatBelleza from '../../data/chats/belleza.json';
+import chatInmo from '../../data/chats/inmobiliario.json';
+import chatRetail from '../../data/chats/retail.json';
+// Chip SIMULACIÓN de LocationSwitcher: la primera línea del cliente y la primera de Kain del guion del sector.
+const bub = (c: any[]) => [c.find((l) => l.who === 'cliente'), c.find((l) => l.who === 'kain')].filter(Boolean).map((l: any) => ({ who: l.who, text: l.text }));
 import { waHref, getPage } from '../../lib/site';
 const page = getPage('/');
 // Interruptores de la demo: preset de la secuencia y variante de CaseFigure.
@@ -42,13 +50,13 @@ const node = '<span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16
 const HH = { plate: 'home-hero', mirror: false };
 const HHm = { plate: 'home-hero', mirror: true };
 const sectors = [
-  { slug: 'salud', name: 'Salud y clínicas', line: 'Citas agendadas y confirmadas 24/7', metricId: 'dental-citas' as const, plate: 'ind-salud-hero', href: '/industrias/salud/', fallbackPlate: HH },
-  { slug: 'belleza', name: 'Belleza y estética', line: 'Agenda llena sin vivir en el WhatsApp', plate: 'ind-belleza-hero', href: '/industrias/belleza/', fallbackPlate: HHm },
+  { slug: 'salud', name: 'Salud y clínicas', line: 'Citas agendadas y confirmadas 24/7', metricId: 'dental-citas' as const, plate: 'ind-salud-hero', href: '/industrias/salud/', fallbackPlate: HH, bubbles: bub(chatSalud) },
+  { slug: 'belleza', name: 'Belleza y estética', line: 'Agenda llena sin vivir en el WhatsApp', plate: 'ind-belleza-hero', href: '/industrias/belleza/', fallbackPlate: HHm, bubbles: bub(chatBelleza) },
   { slug: 'nutricion', name: 'Nutrición', line: 'Pacientes que agendan y regresan', plate: 'ind-nutricion-hero', href: '/industrias/nutricion/', fallbackPlate: HH },
   { slug: 'finanzas', name: 'Finanzas', line: 'Prospectos calificados antes de llamar', plate: 'ind-finanzas-hero', href: '/industrias/finanzas/', fallbackPlate: HHm },
-  { slug: 'inmobiliario', name: 'Inmobiliario', line: 'Cada lead atendido en segundos', plate: 'ind-inmobiliario-hero', href: '/industrias/inmobiliario/', fallbackPlate: HH },
+  { slug: 'inmobiliario', name: 'Inmobiliario', line: 'Cada lead atendido en segundos', plate: 'ind-inmobiliario-hero', href: '/industrias/inmobiliario/', fallbackPlate: HH, bubbles: bub(chatInmo) },
   { slug: 'industrial', name: 'Industrial y logística', line: 'Operación que se mueve sola', metricId: 'logistica-procesos' as const, plate: 'ind-industrial-hero', href: '/industrias/industrial-logistica/', fallbackPlate: HHm },
-  { slug: 'retail', name: 'Retail y e-commerce', line: 'Ventas por chat, medidas', metricId: 'retail-conversiones' as const, plate: 'ind-retail-hero', href: '/industrias/retail-ecommerce/', fallbackPlate: HH },
+  { slug: 'retail', name: 'Retail y e-commerce', line: 'Ventas por chat, medidas', metricId: 'retail-conversiones' as const, plate: 'ind-retail-hero', href: '/industrias/retail-ecommerce/', fallbackPlate: HH, bubbles: bub(chatRetail) },
   { slug: 'horeca', name: 'HoReCa', line: 'Reservas medidas por campaña', metricId: 'horeca-roas' as const, plate: 'ind-horeca-hero', href: '/industrias/horeca/', fallbackPlate: HHm },
 ];
 const stations = [
@@ -174,6 +182,16 @@ const stations = [
       <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>RESPALDO · PLACA FALTANTE</p>
       <h2 id="sin-placa-t" class="t-h2">Si una placa aún no existe, <span class="soft">la escena se sostiene con el aura del isotipo.</span></h2>
       <p class="t-lede t-lede--2">Misma penumbra, misma retícula y el mismo lado del sujeto. En desarrollo, la consola avisa qué placa falta.</p>
+    </ImageSection>
+
+    {/* Escena fijada (§5.3 industria 05): pin +100 % en escritorio, --cam 1 → 1.6 hacia el centro del panel, una burbuja por tramo */}
+    <ImageSection id="fijada" plate="ind-salud-kain-sector" height="mid" mobile="split" pin="+=100%" push={{ anchor: 'pantalla', to: 1.6 }}>
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>ESCENA FIJADA · KAIN EN TU CLÍNICA</p>
+      <h2 id="fijada-t" class="t-h2" data-split>Una burbuja por tramo <span class="soft">mientras la cámara entra al panel.</span></h2>
+      <p class="t-lede t-lede--2">Con movimiento y puntero fino la escena se fija +100 %; en táctil, móvil o movimiento reducido no hay pin y el chat corre solo.</p>
+      <div slot="anchors" class="anchor anchor--panel" data-anchor="pantalla" style={anchorStyle('pantalla')}>
+        <ChatSim mode="registered" script="salud" note={false} control="external" />
+      </div>
     </ImageSection>
 
     <SharedTake plate="home-sistema-2-atender" fallbackPlate={HH}>

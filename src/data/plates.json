@@ -121,9 +121,9 @@
     },
     "m": {
       "src": "/img/cine/caso-dental-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.6,
       "fy": 1,
       "subjTop": 0.44
@@ -209,7 +209,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "bx2GA9G5Y2",
-      "mobile": "79dBXUmJAL"
+      "mobile": "79dBXUmJAL",
+      "mobileUpscale": "KLGo9Mckqp"
     }
   },
   "caso-ecommerce-hero": {
@@ -226,9 +227,9 @@
     },
     "m": {
       "src": "/img/cine/caso-ecommerce-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.57,
       "fy": 1,
       "subjTop": 0.46
@@ -318,7 +319,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "WDbrryUcXe",
-      "mobile": "JNXttkcOq4"
+      "mobile": "JNXttkcOq4",
+      "mobileUpscale": "BhgZxxZoQR"
     }
   },
   "caso-horeca-hero": {
@@ -335,9 +337,9 @@
     },
     "m": {
       "src": "/img/cine/caso-horeca-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.53,
       "fy": 1,
       "subjTop": 0.5
@@ -417,7 +419,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "jUcTDTlLD0",
-      "mobile": "3zaCQuDREY"
+      "mobile": "3zaCQuDREY",
+      "mobileUpscale": "EbNVO90uuO"
     }
   },
   "caso-logistica-hero": {
@@ -434,9 +437,9 @@
     },
     "m": {
       "src": "/img/cine/caso-logistica-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.53,
       "fy": 1,
       "subjTop": 0.46
@@ -526,7 +529,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "Doxgw4Gpcl",
-      "mobile": "p8jS7iKehw"
+      "mobile": "p8jS7iKehw",
+      "mobileUpscale": "lJVfYpHgv9"
     }
   },
   "caso-retail-hero": {
@@ -543,9 +547,9 @@
     },
     "m": {
       "src": "/img/cine/caso-retail-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.52,
       "fy": 1,
       "subjTop": 0.44
@@ -647,7 +651,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "SyDepcdUb8",
-      "mobile": "N2mvhvt6D9"
+      "mobile": "N2mvhvt6D9",
+      "mobileUpscale": "ksz83hA16B"
     }
   },
   "cta-amanecer": {
@@ -796,9 +801,9 @@
     },
     "m": {
       "src": "/img/cine/discovery-cta-final-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.68,
       "fy": 1,
       "subjTop": 0.44
@@ -839,19 +844,19 @@
     "anchors": {
       "pecho": {
         "d": [
-          0.667,
-          0.562
+          0.673,
+          0.568
         ],
         "m": [
           0.668,
           0.725
         ],
-        "scrW": 0.033
+        "scrW": 0.03
       },
       "rostro": {
         "d": [
-          0.67,
-          0.445
+          0.676,
+          0.451
         ],
         "m": [
           0.671,
@@ -860,8 +865,8 @@
       },
       "mano": {
         "d": [
-          0.586,
-          0.535
+          0.596,
+          0.527
         ],
         "m": [
           0.583,
@@ -908,8 +913,9 @@
     },
     "grade": 0,
     "creationIds": {
-      "desktop": "s7TXtAVl8e",
-      "mobile": "dtsJ95yXSL"
+      "desktop": "nVHLtBJYQD",
+      "mobile": "dtsJ95yXSL",
+      "mobileUpscale": "ksz838316B"
     }
   },
   "discovery-hero": {
@@ -926,9 +932,9 @@
     },
     "m": {
       "src": "/img/cine/discovery-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.7,
       "fy": 1,
       "subjTop": 0.44
@@ -1018,7 +1024,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "jUcTtu9LD0",
-      "mobile": "VX1xy2yMMU"
+      "mobile": "VX1xy2yMMU",
+      "mobileUpscale": "0eKyCJeTfW"
     }
   },
   "discovery-para-quien": {
@@ -1144,9 +1151,9 @@
     },
     "m": {
       "src": "/img/cine/discovery-vsl-poster-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.5,
       "fy": 1,
       "subjTop": 0.5
@@ -1240,7 +1247,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "3zaCsFAREY",
-      "mobile": "Cq96MWKEEy"
+      "mobile": "Cq96MWKEEy",
+      "mobileUpscale": "9ZtkdHONYZ"
     }
   },
   "home-kain": {
@@ -1387,9 +1395,9 @@
     },
     "m": {
       "src": "/img/cine/home-problema-a-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.45,
       "fy": 1,
       "subjTop": 0.44
@@ -1495,7 +1503,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "N2mvAJc6D9",
-      "mobile": "p8jsITpehw"
+      "mobile": "p8jsITpehw",
+      "mobileUpscale": "yiobDYdPW9"
     }
   },
   "home-problema-b": {
@@ -1512,9 +1521,9 @@
     },
     "m": {
       "src": "/img/cine/home-problema-b-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.43,
       "fy": 1,
       "subjTop": 0.41
@@ -1621,7 +1630,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "1lnWUS4r4r",
-      "mobile": "mEJyFHHhJQ"
+      "mobile": "mEJyFHHhJQ",
+      "mobileUpscale": "DoxNbFnpcl"
     }
   },
   "home-sistema-1-atraer": {
@@ -1756,6 +1766,9 @@
   },
   "home-sistema-2-atender": {
     "alt": "Kain, el agente de IA de Ingeniak, junto a un teléfono de cristal gigante con la pantalla en blanco",
+    "altBy": {
+      "agentes-whatsapp": "Kain, el agente de IA de Ingeniak, junto a un teléfono con una conversación de WhatsApp"
+    },
     "srcsetMax": 2752,
     "d": {
       "src": "/img/cine/home-sistema-2-atender",
@@ -1768,9 +1781,9 @@
     },
     "m": {
       "src": "/img/cine/home-sistema-2-atender-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.6,
       "fy": 1,
       "subjTop": 0.41
@@ -1881,7 +1894,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "p8jsC15ehw",
-      "mobile": "u563lsWQLD"
+      "mobile": "u563lsWQLD",
+      "mobileUpscale": "3zajXaKREY"
     }
   },
   "home-sistema-3-organizar": {
@@ -1898,8 +1912,8 @@
     },
     "m": {
       "src": "/img/cine/home-sistema-3-organizar-m",
-      "w": 784,
-      "h": 980,
+      "w": 1536,
+      "h": 1920,
       "ar": 0.8,
       "fx": 0.74,
       "fy": 1,
@@ -2035,7 +2049,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "DoxLf6vpcl",
-      "mobile": "DoxLf0kpcl"
+      "mobile": "DoxLf0kpcl",
+      "mobileUpscale": "ksz83G716B"
     }
   },
   "home-sistema-4-automatizar": {
@@ -2052,9 +2067,9 @@
     },
     "m": {
       "src": "/img/cine/home-sistema-4-automatizar-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.5,
       "fy": 1,
       "subjTop": 0.45
@@ -2070,7 +2085,7 @@
         ],
         [
           0.46,
-          0.7,
+          0.84,
           0.66,
           0.97
         ]
@@ -2170,6 +2185,15 @@
           0.5,
           0.855
         ]
+      },
+      "superficie": {
+        "d": [
+          0.48,
+          0.7,
+          0.17,
+          0.12
+        ],
+        "m": null
       }
     },
     "leak": {
@@ -2181,7 +2205,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "s7TeTV9l8e",
-      "mobile": "gOMoWTeSXO"
+      "mobile": "gOMoWTeSXO",
+      "mobileUpscale": "vQyWS96a47"
     }
   },
   "home-sistema-5-medir": {
@@ -2358,9 +2383,9 @@
     },
     "m": {
       "src": "/img/cine/ind-belleza-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.5,
       "fy": 1,
       "subjTop": 0.44
@@ -2473,7 +2498,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "gOMpBMLSXO",
-      "mobile": "9ZthCvBNYZ"
+      "mobile": "9ZthCvBNYZ",
+      "mobileUpscale": "ovS2jPs829"
     }
   },
   "ind-finanzas-hero": {
@@ -2490,9 +2516,9 @@
     },
     "m": {
       "src": "/img/cine/ind-finanzas-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.5,
       "fy": 1,
       "subjTop": 0.44
@@ -2589,7 +2615,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "ksz0pNc16B",
-      "mobile": "Cq9RWH0EEy"
+      "mobile": "Cq9RWH0EEy",
+      "mobileUpscale": "aFPcwAYfSh"
     }
   },
   "ind-horeca-hero": {
@@ -2606,9 +2633,9 @@
     },
     "m": {
       "src": "/img/cine/ind-horeca-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.5,
       "fy": 1,
       "subjTop": 0.41
@@ -2700,6 +2727,13 @@
           0.5,
           0.82
         ]
+      },
+      "chip": {
+        "d": [
+          0.785,
+          0.8
+        ],
+        "m": null
       }
     },
     "leak": {
@@ -2715,7 +2749,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "iGvfkDx3uK",
-      "mobile": "eILlNofdqL"
+      "mobile": "eILlNofdqL",
+      "mobileUpscale": "jUchGtVLD0"
     }
   },
   "ind-industrial-hero": {
@@ -2732,9 +2767,9 @@
     },
     "m": {
       "src": "/img/cine/ind-industrial-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.6,
       "fy": 1,
       "subjTop": 0.38
@@ -2832,6 +2867,14 @@
           0.5,
           0.93
         ]
+      },
+      "chip": {
+        "d": [
+          0.655,
+          0.8,
+          -1
+        ],
+        "m": null
       }
     },
     "leak": {
@@ -2847,7 +2890,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "IfwJ3hktvE",
-      "mobile": "JNXoEVHOq4"
+      "mobile": "JNXoEVHOq4",
+      "mobileUpscale": "WDbJuOYcXe"
     }
   },
   "ind-inmobiliario-hero": {
@@ -2864,9 +2908,9 @@
     },
     "m": {
       "src": "/img/cine/ind-inmobiliario-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.55,
       "fy": 1,
       "subjTop": 0.41
@@ -2967,7 +3011,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "XmlSP2VBfo",
-      "mobile": "rgYceFWxtc"
+      "mobile": "rgYceFWxtc",
+      "mobileUpscale": "ksz8Rv016B"
     }
   },
   "ind-nutricion-hero": {
@@ -3104,9 +3149,9 @@
     },
     "m": {
       "src": "/img/cine/ind-retail-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.5,
       "fy": 1,
       "subjTop": 0.44
@@ -3206,6 +3251,13 @@
           0.5,
           0.88
         ]
+      },
+      "chip": {
+        "d": [
+          0.785,
+          0.8
+        ],
+        "m": null
       }
     },
     "leak": {
@@ -3221,7 +3273,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "Xml7NtFBfo",
-      "mobile": "1lnTo7Cr4r"
+      "mobile": "1lnTo7Cr4r",
+      "mobileUpscale": "s7TanqHl8e"
     }
   },
   "ind-salud-hero": {
@@ -3238,9 +3291,9 @@
     },
     "m": {
       "src": "/img/cine/ind-salud-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.52,
       "fy": 1,
       "subjTop": 0.46
@@ -3346,6 +3399,13 @@
           0.5,
           0.93
         ]
+      },
+      "chip": {
+        "d": [
+          0.8,
+          0.8
+        ],
+        "m": null
       }
     },
     "leak": {
@@ -3357,7 +3417,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "N2mvEeW6D9",
-      "mobile": "N2mvuNU6D9"
+      "mobile": "N2mvuNU6D9",
+      "mobileUpscale": "6Ahre8wiJO"
     }
   },
   "ind-salud-kain-sector": {
@@ -3504,9 +3565,9 @@
     },
     "m": {
       "src": "/img/cine/metodologia-hero-m",
-      "w": 928,
-      "h": 1152,
-      "ar": 0.8056,
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
       "fx": 0.7,
       "fy": 1,
       "subjTop": 0.55
@@ -3673,7 +3734,8 @@
     "grade": 0,
     "creationIds": {
       "desktop": "DoxL5PMpcl",
-      "mobile": "kszYZjz16B"
+      "mobile": "kszYZjz16B",
+      "mobileUpscale": "O6BqMvZynm"
     }
   },
   "riel-servicios": {

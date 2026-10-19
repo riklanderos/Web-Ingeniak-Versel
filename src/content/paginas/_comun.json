@@ -6,7 +6,8 @@
   "aprobadoPor": null,
   "actualizado": "2026-10-18",
   "pendientes": [
-    "Firma del footer y del cierre de /discovery/ ('Construimos empresarios libres, no héroes cansados.'): pendiente de confirmar con el cliente (ESPEC §11-4)."
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede aprobar la microcopia compartida (CTA, simulación, escenas, fuente).",
+    "PREGUNTA AL CLIENTE · firma del footer y del cierre de /discovery/ ('Construimos empresarios libres, no héroes cansados.') (ESPEC §11-4)."
   ],
   "cta": {
     "discovery": "Agenda tu Discovery Session",

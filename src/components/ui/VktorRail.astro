@@ -1,4 +1,5 @@
 ---
+import { linkTarget } from '../../lib/site';
 // VktorRail · ESPEC §6 #35. Las 5 fases de VKTOR™ (texto oficial) en 5 nodos cuadrados unidos por una línea cian
 // que se dibuja con scrub (ui.ts: --p de 0 a 1); cada nodo se enciende al llegar la línea. Vertical en móvil.
 //   variant="phases"     → verbos oficiales (+ lines[i] opcional: cómo se aplica cada fase en este servicio)
@@ -27,5 +28,5 @@ const { variant = 'phases', milestones = [], lines = [], href = '/metodologia/',
     })}
   </ol>
   </div>
-  {href && <a class="lnk vrail__more" href={href}>{linkLabel}<Icon name="arrow" size={18} /></a>}
+  {href && linkTarget(href) && <a class="lnk vrail__more" href={linkTarget(href)!}>{linkLabel}<Icon name="arrow" size={18} /></a>}
 </div>

@@ -1,0 +1,23 @@
+{
+  "ind-salud-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, con bata en un consultorio dental; al fondo, una odontóloga (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/ind-salud-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.69, "fy": 0.5, "fadeFrom": 0.93 },
+    "m": { "src": "/img/cine/ind-salud-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.52, "fy": 1, "subjTop": 0.46 },
+    "layout": "subject-right",
+    "safe": { "d": [[0.04, 0.06, 0.45, 0.97], [0.45, 0.06, 0.50, 0.34]], "m": [[0.04, 0.03, 0.96, 0.44]] },
+    "subject": { "d": [0.54, 0.08, 0.94, 0.95], "m": [0.33, 0.46, 0.90, 0.96] },
+    "anchors": {
+      "pecho": { "d": [0.691, 0.458], "m": [0.522, 0.682], "scrW": 0.039 },
+      "rostro": { "d": [0.688, 0.279], "m": [0.522, 0.580] },
+      "mano": { "d": [0.566, 0.529], "m": [0.367, 0.715] },
+      "tableta": { "d": [0.730, 0.545, 0.089, 0.160], "m": [0.571, 0.732, 0.112, 0.091] },
+      "fig": { "d": [0.610, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.920], "m": [0.500, 0.930] },
+      "chip": { "d": [0.800, 0.800], "m": null }
+    },
+    "leak": { "d": [0.62, 0.34] },
+    "grade": 0,
+    "creationIds": { "desktop": "N2mvEeW6D9", "mobile": "N2mvuNU6D9", "mobileUpscale": "6Ahre8wiJO" }
+  }
+}

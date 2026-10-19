@@ -1,0 +1,24 @@
+{
+  "home-sistema-3-organizar": {
+    "alt": "Kain, el agente de IA de Ingeniak, sostiene una tarjeta de cristal frente a carriles de luz que ordenan los prospectos",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/home-sistema-3-organizar", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.79, "fy": 0.5, "fadeFrom": 0.94 },
+    "m": { "src": "/img/cine/home-sistema-3-organizar-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.74, "fy": 1, "subjTop": 0.43 },
+    "layout": "subject-right",
+    "safe": { "d": [[0.04, 0.06, 0.44, 0.97], [0.44, 0.74, 0.67, 0.97]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.68, 0.08, 0.90, 0.95], "m": [0.36, 0.42, 0.94, 0.89] },
+    "anchors": {
+      "pecho": { "d": [0.785, 0.450], "m": [0.746, 0.616], "scrW": 0.037 },
+      "mano": { "d": [0.705, 0.494], "m": [0.653, 0.644] },
+      "rostro": { "d": [0.779, 0.273], "m": [0.750, 0.520] },
+      "tarjeta": { "d": [0.700, 0.425, 0.068, 0.089], "m": null },
+      "carriles": { "d": [0.469, 0.202, 0.472, 0.495], "m": [0.372, 0.485, 0.559, 0.268] },
+      "superficie": { "d": [0.469, 0.202, 0.266, 0.495], "m": null },
+      "fig": { "d": [0.665, 0.880], "m": null },
+      "piso": { "d": [0.500, 0.779], "m": [0.500, 0.796] }
+    },
+    "leak": { "d": [0.80, 0.30] },
+    "grade": 0,
+    "creationIds": { "desktop": "DoxLf6vpcl", "mobile": "DoxLf0kpcl", "mobileUpscale": "ksz83G716B" }
+  }
+}

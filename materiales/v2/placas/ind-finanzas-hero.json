@@ -1,0 +1,20 @@
+{
+  "ind-finanzas-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, en una oficina financiera de noche con una mano abierta y la otra sobre el escritorio; al fondo, un asesor habla por teléfono junto a la ventana (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/ind-finanzas-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.70, "fy": 0.46, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/ind-finanzas-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.50, "fy": 1, "subjTop": 0.44 },
+    "layout": "subject-right",
+    "safe": { "d": [[0.04, 0.06, 0.54, 0.97], [0.54, 0.72, 0.62, 0.97]], "m": [[0.04, 0.03, 0.96, 0.42]] },
+    "subject": { "d": [0.55, 0.10, 0.93, 0.92], "m": [0.32, 0.44, 0.85, 0.92] },
+    "anchors": {
+      "pecho": { "d": [0.692, 0.447], "m": [0.506, 0.647], "scrW": 0.039 },
+      "mano": { "d": [0.574, 0.512], "m": [0.358, 0.682] },
+      "fig": { "d": [0.630, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.880], "m": [0.500, 0.885] }
+    },
+    "leak": { "d": [0.735, 0.37], "m": [0.56, 0.60] },
+    "grade": 0,
+    "creationIds": { "desktop": "ksz0pNc16B", "mobile": "Cq9RWH0EEy", "mobileUpscale": "aFPcwAYfSh" }
+  }
+}

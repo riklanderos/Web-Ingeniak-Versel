@@ -1,14 +1,20 @@
 ---
-// KommoBadge · ESPEC §2.12 / §6 #41. Sello oficial de Kommo Partner (no se recolorea ni se recorta; alto 28–36 px),
-// enlazado a https://www.kommo.com/. Kommo es el ÚNICO partner del sitio. glass=true lo monta en .glass-chip (sobre placa).
+// KommoBadge · ESPEC §2.12 / §6 #41. Sello oficial de Kommo Partner, versión blanca sobre transparente (no se recolorea ni se
+// recorta), 32 px de alto dentro de un filete de 1 px --hair-cyan, con el rótulo mono "PARTNER OFICIAL".
+// Enlazado a https://www.kommo.com/ (link={false} → <span>, p. ej. dentro de un Still que ya es un enlace).
+// Kommo es el ÚNICO partner del sitio. glass=true lo monta en .glass-chip (sobre placa).
+//   label → rótulo "PARTNER OFICIAL" junto al sello (por defecto sí) · text → frase larga "Partner oficial de Kommo en LATAM"
 import { SITE } from '../../lib/site';
-interface Props { size?: 'sm' | 'md'; glass?: boolean; text?: boolean; class?: string }
-const { size = 'md', glass = false, text = false, class: cls } = Astro.props;
-const BADGE = '/img/logos/kommo-partner.webp'; // 400 × 178 (pendiente: versión oficial blanca sobre transparente, ver peticiones.md)
-const h = size === 'sm' ? 28 : 36;
+interface Props { size?: 'sm' | 'md'; glass?: boolean; text?: boolean; label?: boolean; link?: boolean; class?: string }
+const { size = 'md', glass = false, text = false, label = true, link = true, class: cls } = Astro.props;
+const BADGE = '/img/logos/kommo-partner-blanco.webp'; // 318 × 144, blanco sobre transparente
+const h = 32;
+const w = Math.round((h * 318) / 144);
+const Tag = link ? 'a' : 'span';
+const attrs = link ? { href: SITE.kommo, target: '_blank', rel: 'noopener', 'aria-label': 'Partner oficial de Kommo en LATAM (abre kommo.com)' } : {};
 ---
-<a class:list={['kommo-badge', `kommo-badge--${size}`, glass && 'glass-chip', cls]} href={SITE.kommo} target="_blank" rel="noopener"
-   aria-label="Partner oficial de Kommo en LATAM (abre kommo.com)">
-  <img src={BADGE} alt="Kommo partner" width={Math.round((h * 400) / 178)} height={h} loading="lazy" decoding="async" />
+<Tag class:list={['kommo-badge', `kommo-badge--${size}`, glass && 'glass-chip', cls]} {...attrs}>
+  <span class="kommo-badge__seal"><img src={BADGE} alt="Sello de partner oficial de Kommo" width={w} height={h} loading="lazy" decoding="async" /></span>
+  {label && !text && <span class="kommo-badge__k">Partner oficial</span>}
   {text && <span class="kommo-badge__t">Partner oficial de Kommo en LATAM</span>}
-</a>
+</Tag>

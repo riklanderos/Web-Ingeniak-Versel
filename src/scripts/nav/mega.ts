@@ -10,7 +10,8 @@ const DESK = '(min-width: 1180px)';
 export type MegaApi = { open: (key: string, focusFirst?: boolean) => void; close: (returnFocus?: boolean) => void; current: () => string | null };
 
 export function initMega(): MegaApi | undefined {
-  const hdr = document.querySelector<HTMLElement>('[data-hdr]');
+  // El elemento se toma explícito: <html> lleva data-hdr-state y un selector de atributo podría devolverlo a él.
+  const hdr = document.querySelector<HTMLElement>('header.hdr');
   if (!hdr) return;
   const html = document.documentElement;
   const bg = hdr.querySelector<HTMLElement>('.mm-bg');
@@ -27,6 +28,7 @@ export function initMega(): MegaApi | undefined {
   let openedBy: 'hover' | 'click' | 'key' = 'click';
   let tOpen = 0;
   let tClose = 0;
+  let arrowing = false;
 
   const panelOf = (k: string) => hdr.querySelector<HTMLElement>(`#mm-${k}`);
   const triggerOf = (k: string) => triggers.find((t) => t.dataset.mmTrigger === k);
@@ -223,7 +225,9 @@ export function initMega(): MegaApi | undefined {
       const i = entries.indexOf(el);
       const n = e.key === 'Home' ? 0 : e.key === 'End' ? entries.length - 1 : (i + (e.key === 'ArrowRight' ? 1 : -1) + entries.length) % entries.length;
       const to = entries[n];
+      arrowing = true;                    // el focusout de esta entrada no cierra el panel: lo cambia open()
       to.focus();
+      arrowing = false;
       if (openKey) { const k = to.dataset.mmTrigger; if (k) open(k, false, 'key'); else close(); }
     });
     el.addEventListener('pointerenter', (e) => {
@@ -291,14 +295,22 @@ export function initMega(): MegaApi | undefined {
   // ---------- cierre global ----------
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && openKey) {
-      const inside = hdr.contains(document.activeElement);
-      close(inside || openedBy !== 'hover');
+      // Devuelve el foco al disparador solo si el foco estaba en el encabezado o en su panel (los paneles viven dentro de .hdr).
+      close(hdr.contains(document.activeElement));
     }
   });
   document.addEventListener('pointerdown', (e) => { if (openKey && !hdr.contains(e.target as Node)) close(); });
   hdr.addEventListener('focusout', (e) => {
+    if (!openKey || arrowing) return;
     const to = e.relatedTarget as Node | null;
-    if (openKey && to && !hdr.contains(to)) close();
+    if (to && !hdr.contains(to)) { close(); return; }
+    // Tab más allá del último enlace (o Mayús+Tab antes del disparador): el foco sale del panel abierto → se cierra,
+    // para que el foco nunca quede debajo del panel (WCAG 2.4.11).
+    const panel = panelOf(openKey);
+    const trig = triggerOf(openKey);
+    const from = e.target as Node;
+    const inOpen = (n: Node | null) => !!n && (n === trig || !!panel?.contains(n));
+    if (inOpen(from) && to && !inOpen(to)) close();
   });
   window.addEventListener('wheel', (e) => {
     if (!openKey) return;

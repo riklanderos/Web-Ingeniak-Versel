@@ -4,7 +4,9 @@
 // 2) Ficha de la entidad (mismos datos que el JSON-LD; sin razón social hasta confirmarla, §12.1-14)
 // 3) Redes reales (SITE.social) · 4) Reprise de la firma: el isotipo se dibuja una vez en cian · legal ·
 //    interruptor "Reducir movimiento" (localStorage 'ingeniak-motion' → html[data-motion="reduced"]).
-// Props: ninguna obligatoria. compact?: true omite el mapa (no se usa por defecto).
+// Props: waHref (WhatsApp con el mensaje ÚNICO de la página: secondaryCta, igual que encabezado, píldora y barra; R10),
+//        folio? (si no hay waHref, el mensaje genérico lleva el folio de la página), compact?: true omite el mapa.
+// El mapa lleva id="mapa-del-sitio": sin JS, "Menú" del encabezado es un enlace a él.
 import { SITE, pages } from '../../lib/site';
 import { METRICS } from '../../lib/metrics';
 import { FOOTER, shortName } from '../layout/navData';
@@ -28,7 +30,8 @@ const social = [
   { href: SITE.social.linkedin, label: 'LinkedIn', logo: '/img/logos/linkedin.svg' },
 ];
 const year = 2026;
-const { compact = false } = Astro.props as { compact?: boolean };
+const { compact = false, waHref, folio } = Astro.props as { compact?: boolean; waHref?: string; folio?: string };
+const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain, vengo del pie de página de ingeniak.mx${folio ? ` (${folio})` : ''} y quiero información.`)}`;
 ---
 <footer class="ftr" data-ftr>
   <span class="ftr__horizon" aria-hidden="true"></span>
@@ -36,10 +39,10 @@ const { compact = false } = Astro.props as { compact?: boolean };
   {!compact && (
     <div class="ftr__frame ftr__credits">
       <p class="ftr__eyebrow"><span class="node" aria-hidden="true"></span>Créditos finales</p>
-      <nav class="ftr__map" aria-label="Mapa del sitio">
+      <nav class="ftr__map" id="mapa-del-sitio" aria-label="Mapa del sitio" tabindex="-1">
         {cols.map((c, ci) => (
           <div class="ftr__col" style={`--i:${ci}`}>
-            <h2 class="ftr__h">{c.title}</h2>
+            <p class="ftr__h">{c.title}<span class="ftr__n" aria-hidden="true">{String(c.links.length).padStart(2, '0')}</span></p>
             <ul class="ftr__ul" role="list">
               {c.links.map((l) => (
                 <li>
@@ -61,7 +64,7 @@ const { compact = false } = Astro.props as { compact?: boolean };
       <div class="ftr__row"><dt>Sede</dt><dd>{SITE.city}</dd></div>
       <div class="ftr__row"><dt>Oficina</dt><dd data-allow-number>{SITE.address.street}, {SITE.address.locality}, {SITE.address.region} {SITE.address.postal}</dd></div>
       <div class="ftr__row"><dt>Correo</dt><dd><a class="ftr__a ftr__a--inline" href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
-      <div class="ftr__row"><dt>WhatsApp</dt><dd><a class="ftr__a ftr__a--inline" href={`${SITE.waBase}?text=${encodeURIComponent('Hola Kain, vengo del pie de página de ingeniak.mx y quiero información.')}`} target="_blank" rel="noopener" data-allow-number>{SITE.phone}</a></dd></div>
+      <div class="ftr__row"><dt>WhatsApp</dt><dd><a class="ftr__a ftr__a--inline" href={waFooter} target="_blank" rel="noopener" data-allow-number>{SITE.phone}</a></dd></div>
       <div class="ftr__row"><dt>En producción</dt><dd><b data-metric="sistemas">{METRICS.sistemas.value}</b> {METRICS.sistemas.label} · <b data-metric="paises">{METRICS.paises.value}</b> {METRICS.paises.label}</dd></div>
     </dl>
     <div class="ftr__seals">

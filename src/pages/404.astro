@@ -3,6 +3,8 @@
 // Placa: "404-hero" (Kain mirando una rama de luz cortada). Mientras no exista, respaldo = home-hero en espejo (el sujeto pasa
 // a la izquierda y el texto a la derecha; cuando llegue 404-hero, su propio lado manda).
 // Texto: src/content/paginas/404.json → sections.hero si el área copy lo publica; si no, el brief de sitemap.json + ESPEC §5.13.
+// R3: móvil 'split' (intro arriba: etiqueta, H1, lede y la búsqueda; la placa; las rutas de rescate después, en la misma sección).
+// Enlaces: SOLO rutas construidas (isBuilt); si el copy trae rutas planeadas, se omiten y la lista se completa con las que existen.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ImageSection from '../components/cine/ImageSection.astro';
 import ScriptList from '../components/ui/ScriptList.astro';
@@ -11,7 +13,8 @@ import Copy from '../components/ui/Copy.astro';
 import { plateReady } from '../components/cine/plate';
 import { tryCopy } from '../components/layout/copyText';
 import { tokensToText } from '../components/ui/ui-data';
-import { getPage, section, waHref } from '../lib/site';
+import { sentences } from '../components/templates/heroKit';
+import { getPage, section, waHref, isBuilt, builtRoutes, pages } from '../lib/site';
 
 const page = getPage('/404') as any;
 const hero = section(page, 'hero') ?? {};
@@ -21,16 +24,23 @@ const fbId = typeof fallback === 'string' ? fallback : fallback.plate;
 const lcpPlate = plateReady(pl.id) ? pl.id : plateReady(fbId) ? fbId : undefined;
 
 const c = tryCopy(page.id)?.sections?.hero ?? {};
+const GROUP_LINE: Record<string, string> = { Servicios: 'Servicio', Industrias: 'Industria', Casos: 'Caso de estudio', 'Conversión': 'Llamada 1:1 sin costo' };
+/** Fila de rescate para una ruta construida: nombre del breadcrumb y la primera oración sin cifras de su portada. */
+function rowFor(url: string) {
+  const pg = (pages as any[]).find((p) => p.url === url);
+  if (!pg) return null;
+  const cp = tryCopy(pg.id);
+  const first = sentences(cp?.sections?.hero?.lede).find((x) => !/\{\{/.test(x) && !/\d/.test(x.replace(/24\/7/g, '')));
+  const title = url === '/' ? 'Inicio' : (pg.breadcrumbs as any[])?.at(-1)?.name ?? pg.h1;
+  return { title, line: first ?? GROUP_LINE[pg.group] ?? '', href: url };
+}
+const given: any[] = ((c.items as any[] | undefined) ?? [{ title: 'Inicio', line: 'Qué hacemos y cómo funciona el sistema.', href: '/' }]).filter((r) => r?.href && isBuilt(r.href));
+const extra = [...builtRoutes].filter((u) => u !== '/404' && !given.some((r) => r.href === u)).map(rowFor).filter(Boolean) as any[];
 const T = {
   eyebrow: c.eyebrow ?? 'Error 404 · Ruta sin conexión',
   h1: c.h1?.text ?? page.h1,
   lede: c.lede ?? 'Kain buscó por todos lados y esta página no existe (o se mudó).',
-  rows: (c.items as any[] | undefined) ?? [
-    { title: 'Inicio', line: 'Qué hacemos y cómo funciona el sistema.', href: '/' },
-    { title: 'Servicios', line: 'Agentes de IA, CRM, automatización y más, por etapa.', href: '/servicios/' },
-    { title: 'Casos', line: 'Sistemas reales operando hoy, con su fuente.', href: '/casos/' },
-    { title: 'Blog', line: 'Guías sin humo para decidir mejor.', href: '/blog/' },
-  ],
+  rows: [...given, ...extra].slice(0, 5),
   search: c.search ?? 'Buscar en el sitio',
   rescueLabel: c.rescueLabel ?? 'Rutas que sí están conectadas',
   wa: { label: c.ctaSecondary?.label ?? page.secondaryCta?.label ?? 'Escríbele a Kain', msg: c.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage },
@@ -38,16 +48,20 @@ const T = {
 const wa = T.wa.msg ? waHref(T.wa.msg) : page.secondaryCta?.href;
 ---
 <BaseLayout page={page} lcpPlate={lcpPlate} lcpSrcsetMax={pl.srcsetMax ?? 2752} rail={false} noindex bodyClass="e404-page">
-  <ImageSection id="hero" plate={pl.id} fallbackPlate={fallback} height="hero" mobile="top" priority srcsetMax={pl.srcsetMax} class="e404">
+  <ImageSection id="hero" plate={pl.id} fallbackPlate={fallback} height="hero" mobile="split" priority srcsetMax={pl.srcsetMax} class="e404 tpl-hero">
     <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{T.eyebrow}</p>
     <h1 id="hero-t" class="t-display-2 e404__h1" data-split>{T.h1}</h1>
     <Copy text={T.lede} as="p" class="t-lede t-lede--2" />
-    <ScriptList label={T.rescueLabel} headingLevel={3} rows={T.rows.map((r: any, i: number) => ({ n: String(i + 1).padStart(2, '0'), title: tokensToText(r.title), line: tokensToText(r.line ?? ''), href: r.href }))} />
-    <div class="ctas">
+    <div class="ctas e404__ctas">
       <Btn variant="ghost" icon="search" label={T.search} data-search-open aria-keyshortcuts="Meta+K Control+K">
         {T.search} <kbd class="e404__kbd" data-kbd-mod aria-hidden="true">⌘K</kbd>
       </Btn>
       {wa && <Btn variant="ghost" href={wa} label={T.wa.label} />}
     </div>
+    {T.rows.length > 0 && (
+      <Fragment slot="more">
+        <ScriptList label={T.rescueLabel} headingLevel={3} rows={T.rows.map((r: any, i: number) => ({ n: String(i + 1).padStart(2, '0'), title: tokensToText(r.title), line: tokensToText(r.line ?? ''), href: r.href }))} />
+      </Fragment>
+    )}
   </ImageSection>
 </BaseLayout>

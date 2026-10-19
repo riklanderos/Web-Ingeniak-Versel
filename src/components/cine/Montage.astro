@@ -1,8 +1,11 @@
 ---
-// Montage · cifras como escena (§5.1 ESC 08, §6 #21, §7.4): cada cifra confirmada en --fs-mega (Lexend 200)
-// con la placa del caso DENTRO de las letras (capa blanca en `screen` para legibilidad), filas alternadas,
-// contexto mono, enlace al caso y nota de fuente. Las cifras son texto real (<Metric>, data-metric).
-// Movimiento: filas xPercent ±6 en sentidos alternos y --px 20 % → 80 % dentro de las letras (scrub, sin pin).
+// Montage · cifras como escena (§5.1 ESC 08, §6 #21, §7.4): cada cifra confirmada en --fs-mega con la placa del caso
+// DENTRO de las letras (Lexend 400; capa de pantalla blanca .12 sobre una base cian → blanco: nunca glifos grises),
+// encuadrada en el sujeto iluminado (x = foco de la placa, y 38 %: nunca en una cara); sin placa, relleno .lit (200).
+// Filas alternadas, contexto mono, enlace al caso con data-still (corte por coincidencia, §5.1 ESC 08) y nota de fuente.
+// Las cifras son texto real (<Metric>, data-metric).
+// Movimiento: filas xPercent ±3 en sentidos alternos, deriva ±8 % alrededor del sujeto dentro de las letras (scrub) y
+// entrada con barrido limpio (clip-path; el contenido nunca sale del árbol de accesibilidad).
 // Slots: default (eyebrow + H2 con id "<id>-t") · foot (enlaces "Ver todos los casos →" …).
 import Metric from '../ui/Metric.astro';
 import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
@@ -17,11 +20,11 @@ interface Props {
   class?: string;
 }
 const { id = 'casos', ids, transversal, stillFor = {}, anonNote = 'Nombres de clientes anonimizados.', class: cls } = Astro.props;
-const still = (mid: MetricId) => {
+const still = (mid: MetricId): { src: string; fx: number; real: boolean } => {
   const key = stillFor[mid];
-  if (!key) return AURA_ONDAS;
+  if (!key) return { src: AURA_ONDAS, fx: 0.5, real: false };
   const r = resolvePlate(key, { where: `Montage ${mid}` });
-  return r.still ?? AURA_ONDAS;
+  return r.still ? { src: r.still, fx: r.d.fx, real: true } : { src: AURA_ONDAS, fx: 0.5, real: false };
 };
 ---
 <section id={id} class:list={['mt', cls]} data-shot="montage" aria-labelledby={`${id}-t`}>
@@ -29,9 +32,10 @@ const still = (mid: MetricId) => {
   <ol class="mt__rows" role="list">
     {ids.map((mid, i) => {
       const m = METRICS[mid];
+      const st = still(mid);
       const inner = (
         <>
-          <span class="mt__fig" style={`--img:url('${still(mid)}')`}><Metric id={mid} variant="mega" label={false} /></span>
+          <span class="mt__fig" data-img={st.real ? 'still' : 'aura'} style={`--img:url('${st.src}');--fx-d:${st.fx}`}><Metric id={mid} variant="mega" label={false} /></span>
           <span class="mt__meta">
             <span class="mt__label">{m.label}</span>
             <span class="t-label mt__ctx">{m.ctx}</span>
@@ -41,14 +45,14 @@ const still = (mid: MetricId) => {
       );
       return (
         <li class:list={['mt__row', i % 2 ? 'mt__row--r' : 'mt__row--l']} data-mt-row data-dir={i % 2 ? 1 : -1}>
-          {m.href ? <a class="mt__link" href={m.href}>{inner}</a> : <div class="mt__link">{inner}</div>}
+          {m.href ? <a class="mt__link" href={m.href} data-still>{inner}</a> : <div class="mt__link">{inner}</div>}
         </li>
       );
     })}
   </ol>
   {transversal && transversal.length > 0 && (
     <div class="frame mt__cross" data-reveal>
-      <p class="t-label mt__cross-h"><span class="node" aria-hidden="true"></span>También en otros sistemas</p>
+      <p class="t-label mt__cross-h"><span class="node" aria-hidden="true"></span>Más resultados</p>
       <ul class="mt__cross-list" role="list">
         {transversal.map((t) => <li><Metric id={t} variant="inline" label /> <span class="t-micro">· {METRICS[t].ctx}</span></li>)}
       </ul>

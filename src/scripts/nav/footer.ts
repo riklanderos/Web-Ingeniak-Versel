@@ -22,7 +22,7 @@ export function initFooter() {
     else delete html.dataset.motion;
     try { reduced ? localStorage.setItem('ingeniak-motion', 'reduced') : localStorage.removeItem('ingeniak-motion'); } catch {}
     sync();
-    if (reduced) html.dataset.hdr = html.dataset.hdr === 'hidden' ? 'glass' : html.dataset.hdr ?? 'top';
+    if (reduced) html.dataset.hdrState = html.dataset.hdrState === 'hidden' ? 'glass' : html.dataset.hdrState ?? 'top';
     window.dispatchEvent(new CustomEvent('ingeniak:motion', { detail: { reduced } }));
   });
 }

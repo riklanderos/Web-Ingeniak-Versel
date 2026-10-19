@@ -1,0 +1,30 @@
+---
+// HeroCtas · fila de CTA de las portadas de plantilla (área páginas). Mismo marcado que <Btn micro> (.ctas > .cta-p > .btn +
+// .btn-micro) más el WhatsApp ghost, con la microcopia partida en grupos que no se cortan por dentro
+// ("30 min · 1:1 · / Google Meet · sin costo", nunca "Google / Meet"). En móvil (pages.css · compartido) el primario
+// va a todo el ancho y el WhatsApp queda como botón redondo de 48 px junto a la microcopia (nombre accesible completo).
+import Btn from '../ui/Btn.astro';
+import { DISCOVERY_MICRO } from '../ui/ui-data';
+
+interface Props {
+  href: string;
+  label: string;
+  waHref?: string | null;
+  waLabel?: string;
+  micro?: string;
+  primaryAttrs?: Record<string, any>;
+  waClass?: string;
+  class?: string;
+}
+const { href, label, waHref, waLabel = 'Escríbele a Kain', micro = DISCOVERY_MICRO, primaryAttrs = {}, waClass, class: cls } = Astro.props;
+const groups = String(micro ?? '').split(/\s+·\s+/).filter(Boolean);
+---
+<div class:list={['ctas', cls]}>
+  <div class="cta-p">
+    <Btn variant="primary" href={href} label={label} {...primaryAttrs} />
+    {groups.length > 0 && (
+      <p class="t-micro btn-micro" data-allow-number>{groups.map((g, i) => <>{i > 0 && ' · '}<span class="tpl-nw">{g}</span></>)}</p>
+    )}
+  </div>
+  {waHref && <Btn variant="ghost" href={waHref} label={waLabel} class={waClass} />}
+</div>

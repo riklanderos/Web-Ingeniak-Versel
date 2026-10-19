@@ -6,8 +6,10 @@
 //   answer     → AnswerBox de artículos: "Respuesta corta" con filete cian lateral, primero en el artículo
 import { getFaqItems, annotateFigures } from './ui-data';
 
-interface Props { faqId?: string; heading?: string; text?: string; variant?: 'definition' | 'answer'; headingLevel?: 2 | 3; label?: string; class?: string; id?: string }
-const { faqId, heading, text, variant = 'definition', headingLevel = 2, label, class: cls, id } = Astro.props;
+//   region → true solo si el bloque NO vive dentro de una sección con nombre: entonces es <section aria-labelledby> (landmark).
+//            Por defecto es un <div> (la sección de la página ya nombra la región; evita un landmark duplicado).
+interface Props { faqId?: string; heading?: string; text?: string; variant?: 'definition' | 'answer'; headingLevel?: 2 | 3; label?: string; region?: boolean; class?: string; id?: string }
+const { faqId, heading, text, variant = 'definition', headingLevel = 2, label, region = false, class: cls, id } = Astro.props;
 const f = faqId ? getFaqItems([faqId])[0] : undefined;
 const q = heading ?? f?.q ?? '';
 const a = text ?? f?.a ?? '';
@@ -17,11 +19,12 @@ const cut = a.search(/[.!?](\s|$)/);
 const first = cut > 0 ? a.slice(0, cut + 1) : a;
 const rest = cut > 0 ? a.slice(cut + 1).trim() : '';
 const H = `h${headingLevel}` as any;
+const Tag = region ? 'section' : 'div';
 ---
 {a && (
-  <section class:list={['defn', `defn--${variant}`, cls]} id={id} aria-labelledby={id ? `${id}-q` : undefined} data-ui-reveal>
+  <Tag class:list={['defn', `defn--${variant}`, cls]} id={id} aria-labelledby={region && id && q ? `${id}-q` : undefined} data-ui-reveal>
     <p class="t-label t-label--cyan defn__label"><span class="node" aria-hidden="true"></span>{label ?? (variant === 'answer' ? 'Respuesta corta' : 'Definición')}</p>
     {q && <H class="defn__q" id={id ? `${id}-q` : undefined}>{q}</H>}
     <p class="defn__a"><b set:html={annotateFigures(first)} />{rest && <>{' '}<span set:html={annotateFigures(rest)} /></>}</p>
-  </section>
+  </Tag>
 )}

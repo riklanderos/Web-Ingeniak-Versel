@@ -3,8 +3,10 @@
 //   variant  'full' (por defecto) | 'reduced' (/discovery/: solo logo + "Agendar mi Discovery Session" directo a la agenda)
 //   current  URL de la página actual (marca la entrada activa con un nodo cian)
 //   waHref   enlace de WhatsApp con el mensaje de la página (secondaryCta.href)
-// Estados (scripts/nav/header.ts → html[data-hdr]): top (transparente) · hidden · glass. Regla de un azul (F15):
-// con html[data-primary-visible] el CTA del encabezado pasa a contorno.
+// Estados (scripts/nav/header.ts → html[data-hdr-state]): top (transparente) · hidden · glass. Los scripts toman el
+// elemento como header.hdr (el atributo data-hdr de abajo es solo un gancho; el estado vive en <html>).
+// Regla de un azul (F15): con html[data-primary-visible] (o sin JS) el CTA del encabezado pasa a contorno.
+// "Menú" es un enlace al mapa del sitio del footer (#mapa-del-sitio) que el JS convierte en el botón de la hoja (sheet.ts).
 import Logo from './Logo.astro';
 import MegaMenu from './MegaMenu.astro';
 import { ICONS } from './icons';
@@ -64,9 +66,9 @@ const ctaLabel = full ? 'Agenda tu Discovery Session' : 'Agendar mi Discovery Se
         <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span>
       </a>
       {full && (
-        <button class="hdr__menu" type="button" data-menu-open aria-expanded="false" aria-controls="msheet" aria-haspopup="dialog">
+        <a class="hdr__menu" href="#mapa-del-sitio" data-menu-open>
           <span>Menú</span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.menu} />
-        </button>
+        </a>
       )}
     </div>
   </div>

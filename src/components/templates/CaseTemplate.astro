@@ -19,9 +19,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ImageSection from '../cine/ImageSection.astro';
 import CaseFigure from '../cine/CaseFigure.astro';
 import Dawn from '../cine/Dawn.astro';
-import { resolvePlate, type Resolved } from '../cine/plate';
+import { resolvePlate, AURA_ISOTIPO, AURA_ONDAS, type Resolved } from '../cine/plate';
 import Breadcrumbs from '../nav/Breadcrumbs.astro';
 import Btn from '../ui/Btn.astro';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { builtCrumbs } from './heroKit';
 import Copy from '../ui/Copy.astro';
 import Metric from '../ui/Metric.astro';
 import EntitySheet from '../ui/EntitySheet.astro';
@@ -32,7 +35,7 @@ import Still from '../ui/Still.astro';
 import Icon from '../ui/Icon.astro';
 import Prose from '../content/Prose.astro';
 import Quote from '../content/Quote.astro';
-import { getCopy, getPage, getPlate, waHref, SITE, type Page } from '../../lib/site';
+import { getCopy, getPage, getPlate, waHref, SITE, linkTarget, type Page } from '../../lib/site';
 import { SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 
 interface Props { page: Page }
@@ -57,7 +60,12 @@ const order: string[] = sitemapSecs.filter(shows).map((s) => s.id);
 const breve = !!page.publishGate && copy.publishGate?.ok !== true;
 
 // ── Utilidades ───────────────────────────────────────────────────────────────
+// Etiqueta del primario: la del copy (o la compartida de _comun), nunca la variante de sitemap.json (regla de un azul, §0.1)
+const comun = (() => { try { return getCopy('_comun'); } catch { return null; } })();
+const primaryLabel = (c: any): string => c?.ctaPrimary?.label ?? comun?.cta?.discovery ?? 'Agenda tu Discovery Session';
 const wa = (msg?: string) => (msg ? waHref(msg) : page.secondaryCta?.href ?? waHref('Hola Kain, quiero información.'));
+/** Enlaces del cuerpo (R12 · QA enlaces): solo rutas construidas; una planeada se pinta como texto (nunca '#'). */
+const hrefOr = (h?: string) => (h ? linkTarget(h) ?? undefined : undefined);
 const TOKEN = /\{\{metric:([a-z0-9-]+)(?:\|full)?\}\}/g;
 const metricIdsIn = (s: string): MetricId[] => [...String(s ?? '').matchAll(TOKEN)].map((m) => m[1] as MetricId);
 const H2 = (h: any) => h ?? { text: '' };
@@ -87,7 +95,7 @@ const h1 = hero.h1 ?? {};
 // ── 02 Ficha ─────────────────────────────────────────────────────────────────
 const ficha = C.ficha ?? {};
 // Filas con tokens de cifra → salen como filas "Cifra" con <Metric> (EntitySheet imprime el resto como texto).
-const fichaRows = (ficha.entity ?? []).filter((r: any) => !/\{\{/.test(r.value));
+const fichaRows = (ficha.entity ?? []).filter((r: any) => !/\{\{/.test(r.value)).map((r: any) => ({ ...r, href: hrefOr(r.href) }));
 const fichaMetrics = [...new Set((ficha.entity ?? []).flatMap((r: any) => metricIdsIn(r.value)))] as MetricId[];
 const rack = heroR?.rack ?? null;
 
@@ -102,8 +110,9 @@ const cifraVariant = cifra.figure?.variant ?? VARIANT_BY_METRIC[cifraIds[0]] ?? 
 
 // ── 05 Implementación ────────────────────────────────────────────────────────
 const impl = C.implementacion ?? {};
-const flowNodes = (impl.nodes ?? []).map((n: any) => ({
-  label: n.label, line: n.line, logo: n.logo ?? n.logos?.[0], kain: /\bkain\b/i.test(n.label), confirmed: n.confirmed !== false,
+// Los nodos sin confirmar (confirmed:false) no se publican: ni en el HTML ni en el JSON-LD (§5.4 #05, R2)
+const flowNodes = (impl.nodes ?? []).filter((n: any) => n.confirmed !== false).map((n: any) => ({
+  label: n.label, line: n.line, logo: n.logo ?? n.logos?.[0], kain: /\bkain\b/i.test(n.label), confirmed: true,
 }));
 
 // ── 06 Resultado ─────────────────────────────────────────────────────────────
@@ -134,7 +143,9 @@ const testi = C.testimonio ?? {};
 const rel = C.relacionados ?? {};
 const next = rel.next ?? null;
 let nextPlate: string | undefined;
-if (next?.href) {
+// Siguiente reportaje: solo si el caso siguiente ya existe (si no, no se anuncia una puerta cerrada)
+const nextHref = next?.href ? linkTarget(next.href) : null;
+if (nextHref) {
   try { nextPlate = (getPage(next.href) as any).sections?.find((s: any) => s.id === 'hero')?.plate?.id; } catch { nextPlate = undefined; }
 }
 
@@ -144,14 +155,15 @@ const ctaPlate = plateOf('cta-final');
 
 // ── JSON-LD (Article de SEOHead + about → Service de la ficha; autor = Organization hasta confirmar, R8) ──
 const svcRow = (ficha.entity ?? []).find((r: any) => /^\/servicios\//.test(r.href ?? ''));
-const articleId = `${SITE.url}${page.url}#article`;
-const jsonLd = svcRow
-  ? [{ '@type': 'Article', '@id': articleId, about: { '@type': 'Service', '@id': `${SITE.url}${svcRow.href}#service`, name: svcRow.value, url: `${SITE.url}${svcRow.href}` } }]
+// about → Service del Article de SEOHead (nav · articleAbout): un solo nodo Article en el @graph
+const articleAbout = svcRow
+  ? { '@type': 'Service', '@id': `${SITE.url}${svcRow.href}#service`, name: svcRow.value, url: `${SITE.url}${svcRow.href}` }
   : undefined;
 const dates = copy.actualizado ? { datePublished: copy.publicado ?? copy.actualizado, dateModified: copy.actualizado } : {};
 
 // ── Riel "Quick Jump" (§4.7, §5.4 #02): Contexto · Reto · Cifra · Solución · Resultado · VKTOR · Replicar ──
-const NOT_IN_RAIL = ['hero', 'relacionados', 'cta-final'];
+// nav ya oculta las etiquetas del riel sobre la portada (html:not([data-fold])): el riel vuelve a tener todas las escenas.
+const NOT_IN_RAIL: string[] = [];
 const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
   .map((id) => ({ id, label: C[id]?.rail ?? sitemapSecs.find((s) => s.id === id)?.name ?? id }));
 ---
@@ -160,7 +172,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
   lcpPlate={heroR?.id ?? undefined}
   lcpSrcsetMax={heroPlate?.srcsetMax}
   noindex={breve}
-  jsonLd={jsonLd}
+  articleAbout={articleAbout}
   rail={rail.length > 1 ? rail : false}
   railMode="labels"
   {...dates}
@@ -174,14 +186,17 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
         plate={heroPlate?.id ?? 'caso-hero'}
         layout={heroPlate?.layout}
         mirror={heroPlate?.mirror}
-        mobile={heroPlate?.mobile ?? 'top'}
+        mobile="split"
         srcsetMax={heroPlate?.srcsetMax}
         fallbackPlate={heroPlate?.launchFallback}
         height="hero"
         priority
-        class="case-hero"
+        class="case-hero tpl-hero tpl-glow"
       >
-        <Breadcrumbs page={page} />
+        {/* R3: en móvil el intro es solo H1 + lede + CTAs (crumbs fuera); la fila de datos baja a `more` en una línea */}
+        <Breadcrumbs page={page} items={builtCrumbs(page.breadcrumbs)} class="tpl-mhide" />
+        <span class="tpl-introglow" aria-hidden="true"></span>
+        <span class="case-hero__floor" aria-hidden="true"></span>
         <h1 id="hero-t" class="case-h1">
           {h1.kicker && <span class="t-h4 case-h1__kicker">{h1.kicker}</span>}
           {' '}
@@ -190,23 +205,33 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
           <span class="t-display-2 case-h1__text">{h1.text}</span>
         </h1>
         {hero.chips?.length > 0 && (
-          <ul class="case-specs" role="list" aria-label="Datos del caso">
+          <ul class="case-specs tpl-mhide" role="list" aria-label="Datos del caso">
             {hero.chips.map((c: string) => <li class="chip-spec">{c}</li>)}
           </ul>
         )}
         {hero.lede && <Copy as="p" class="t-lede t-lede--2 case-hero__lede" text={hero.lede} />}
-        <div class="ctas">
-          <Btn variant="primary" micro href={hero.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={hero.ctaPrimary?.label ?? page.primaryCta?.label} />
-          <Btn variant="ghost" href={wa(hero.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} label={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
-        </div>
-        {hero.illus && <p slot="aside" class="chip-illus case-illus">{hero.illus}</p>}
+        <HeroCtas href={hero.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={primaryLabel(hero)}
+          waHref={wa(hero.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} waLabel={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+        {hero.illus && <p slot="aside" class="chip-illus case-illus tpl-mhide">{hero.illus}</p>}
+        {(hero.chips?.length > 0 || hero.illus) && (
+          <Fragment slot="more">
+            {hero.illus && <p class="chip-illus tpl-illus-m tpl-dhide" aria-hidden="true">{hero.illus}</p>}
+            {hero.chips?.length > 0 && (
+              <ul class="case-specs case-specs--m tpl-dhide" role="list" aria-label="Datos del caso" tabindex="0">
+                {hero.chips.map((c: string) => <li class="chip-spec">{c}</li>)}
+              </ul>
+            )}
+          </Fragment>
+        )}
       </ImageSection>
     );
 
     /* ───────────── 02 · Ficha del caso ───────────── */
     if (id === 'ficha') return (
-      <section id="ficha" class="case-sec case-ficha" aria-labelledby="ficha-t">
+      <section id="ficha" class="tpl-glow case-sec case-ficha" aria-labelledby="ficha-t">
         {rack && <span class="case-ficha__rack" aria-hidden="true"><img src={rack} alt="" width="320" height="179" loading="lazy" decoding="async" /></span>}
+        <span class="tpl-aura-box" aria-hidden="true"><span class="case-aura case-aura--ficha"><img src={AURA_ISOTIPO} alt="" width="640" height="640" loading="lazy" decoding="async" /></span></span>
+        <Aura kind="ondas" x="30%" y="8%" o={1} clip />
         <div class="frame case-ficha__frame">
           <div class="case-ficha__lead">
             <h2 id="ficha-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ficha.eyebrow ?? 'Ficha del caso'}</h2>
@@ -227,8 +252,9 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
 
     /* ───────────── 03 · Punto de partida ───────────── */
     if (id === 'punto-partida') { const R = C['punto-partida']; return (
-      <section id="punto-partida" class="case-sec case-reto" data-tone="dolor" aria-labelledby="punto-partida-t">
+      <section id="punto-partida" class="tpl-glow case-sec case-reto" data-tone="dolor" aria-labelledby="punto-partida-t">
         <span class="case-glow case-glow--amber" aria-hidden="true"></span>
+        <span class="tpl-aura-box" aria-hidden="true"><span class="case-aura case-aura--reto"><img src={AURA_ONDAS} alt="" width="960" height="640" loading="lazy" decoding="async" /></span></span>
         <div class="frame case-reto__frame">
           <header class="case-head case-reto__head">
             {R.eyebrow && <p class="t-label t-label--amber eyebrow"><span class="node node--amber" aria-hidden="true"></span>{R.eyebrow}</p>}
@@ -249,17 +275,20 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
 
     /* ───────────── 04 · La cifra (CaseFigure) ───────────── */
     if (id === 'cifra' && cifraIds.length) return (
-      <CaseFigure id="cifra" variant={cifraVariant} metricIds={cifraIds} class="case-cifra">
+      <CaseFigure id="cifra" variant={cifraVariant} metricIds={cifraIds} labels={{ before: cifra.figure?.before, after: cifra.figure?.after }} class="case-cifra tpl-glow">
         {cifra.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cifra.eyebrow}</p>}
         <h2 id="cifra-t" class="t-h2" data-split>{H2(cifra.h2).text}{cifra.h2?.soft && <> <span class="soft">{cifra.h2.soft}</span></>}</h2>
         {cifra.figure?.caption && <p class="t-micro case-cifra__cap" data-reveal>{cifra.figure.caption}</p>}
+        {cifra.line && <Fragment slot="foot"><Copy as="p" class="t-lede t-lede--2 case-cifra__line" text={cifra.line} /></Fragment>}
       </CaseFigure>
     );
 
     /* ───────────── 05 · Qué implementamos (SystemFlow) ───────────── */
     if (id === 'implementacion') return (
-      <section id="implementacion" class="case-sec case-impl" aria-labelledby="implementacion-t">
+      <section id="implementacion" class="tpl-glow case-sec case-impl" aria-labelledby="implementacion-t">
         <span class="case-glow case-glow--cyan" aria-hidden="true"></span>
+        <Aura kind="ondas" x="55%" y="40%" o={1} />
+        <Aura kind="isotipo" x="70%" o={0.9} only="m" sticky />
         <div class="frame">
           <header class="case-head">
             {impl.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{impl.eyebrow}</p>}
@@ -330,7 +359,8 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
 
     /* ───────────── 07 · VKTOR ───────────── */
     if (id === 'vktor') return (
-      <section id="vktor" class="case-sec case-vktor" aria-labelledby="vktor-t">
+      <section id="vktor" class="tpl-glow case-sec case-vktor" aria-labelledby="vktor-t">
+        <Aura kind="ondas" x="40%" y="55%" o={1} />
         <div class="frame">
           <header class="case-head">
             {vk.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{vk.eyebrow}</p>}
@@ -342,7 +372,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
               variant={vkMilestones ? 'milestones' : 'phases'}
               milestones={vkMilestones ?? undefined}
               lines={(vk.phases ?? []).map((p: any) => p.line)}
-              href={vkLink?.href ?? '/metodologia/'}
+              href={hrefOr(vkLink?.href ?? '/metodologia/') ?? false}
               linkLabel={vkLink?.label ?? 'Conoce el protocolo completo'}
             />
           </div>
@@ -352,16 +382,17 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
 
     /* ───────────── 08 · Qué puedes replicar ───────────── */
     if (id === 'replicar') return (
-      <section id="replicar" class="case-sec case-rep" aria-labelledby="replicar-t">
+      <section id="replicar" class="tpl-glow case-sec case-rep" aria-labelledby="replicar-t">
+        <Aura kind="isotipo" x="78%" y="50%" o={0.9} />
         <div class="frame">
           <header class="case-head">
             {rep.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{rep.eyebrow}</p>}
             <h2 id="replicar-t" class="t-h2" data-split>{H2(rep.h2).text}{rep.h2?.soft && <> <span class="soft">{rep.h2.soft}</span></>}</h2>
           </header>
           <div class="case-rep__list">
-            <ScriptList rows={(rep.items ?? []).map((r: any) => ({ n: r.n, title: r.title, line: r.line, href: r.href }))} label={H2(rep.h2).text} />
-            {rep.links?.length > 0 && (
-              <p class="case-links">{rep.links.map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name="arrow" size={18} /></a>)}</p>
+            <ScriptList rows={(rep.items ?? []).map((r: any) => ({ n: r.n, title: r.title, line: r.line, href: hrefOr(r.href) }))} label={H2(rep.h2).text} />
+            {(rep.links ?? []).some((l: any) => hrefOr(l.href)) && (
+              <p class="case-links">{(rep.links as any[]).filter((l) => hrefOr(l.href)).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name="arrow" size={18} /></a>)}</p>
             )}
           </div>
         </div>
@@ -370,7 +401,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
 
     /* ───────────── 09 · Testimonio (solo con aprobación escrita) ───────────── */
     if (id === 'testimonio') return (
-      <section id="testimonio" class="case-sec case-testi" aria-labelledby="testimonio-t">
+      <section id="testimonio" class="tpl-glow case-sec case-testi" aria-labelledby="testimonio-t">
         <div class="frame">
           <header class="case-head">
             <h2 id="testimonio-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{testi.eyebrow ?? 'En sus palabras'}</h2>
@@ -384,20 +415,21 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
 
     /* ───────────── 10 · Sigue explorando + Siguiente reportaje ───────────── */
     if (id === 'relacionados') return (
-      <section id="relacionados" class="case-sec case-rel" aria-labelledby="relacionados-t">
+      <section id="relacionados" class="tpl-glow case-sec case-rel" aria-labelledby="relacionados-t">
+        <Aura kind="ondas" x="50%" y="60%" o={1} only="m" />
         <div class="frame">
           <header class="case-head">
             <h2 id="relacionados-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{rel.eyebrow ?? 'Sigue explorando'}</h2>
           </header>
           {rel.items?.length > 0 && (
             <div class="case-rel__list">
-              <ScriptList rows={rel.items.map((r: any) => ({ title: r.title, line: r.line, href: r.href }))} label={rel.eyebrow ?? 'Sigue explorando'} />
+              <ScriptList rows={rel.items.map((r: any) => ({ title: r.title, line: r.line, href: hrefOr(r.href) }))} label={rel.eyebrow ?? 'Sigue explorando'} />
             </div>
           )}
         </div>
-        {next?.href && (
+        {nextHref && (
           <div class="case-next">
-            <Still variant="next" href={next.href} plate={nextPlate} title={next.title} metricId={next.metricId} headingLevel={3} />
+            <Still variant="next" href={nextHref} plate={nextPlate} title={next.title} metricId={next.metricId} headingLevel={3} />
           </div>
         )}
       </section>
@@ -412,6 +444,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
         mirror={ctaPlate?.mirror}
         layout={ctaPlate?.layout}
         fallbackPlate={ctaPlate?.launchFallback}
+        class="tpl-glow-m"
       >
         {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
         <h2 id="cta-final-t" class="t-h2" data-split>
@@ -421,11 +454,11 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
         <div class="ctas">
           {cta.micro ? (
             <div class="cta-p">
-              <Btn variant="primary" href={cta.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? page.primaryCta?.label} />
+              <Btn variant="primary" href={cta.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={primaryLabel(cta)} />
               <p class="t-micro btn-micro" data-allow-number>{cta.micro}</p>
             </div>
           ) : (
-            <Btn variant="primary" micro href={cta.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? page.primaryCta?.label} />
+            <Btn variant="primary" micro href={cta.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={primaryLabel(cta)} />
           )}
           <Btn variant="ghost" href={wa(cta.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} label={cta.ctaSecondary?.label ?? 'Escríbele a Kain'} />
         </div>

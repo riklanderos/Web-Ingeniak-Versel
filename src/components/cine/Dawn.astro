@@ -1,10 +1,16 @@
 ---
-// Dawn · cierre de todas las páginas (F14, §5.1 ESC 13, §7.4): ImageSection height="cta" + arco de horizonte CSS
-// con filo cian (costura con el footer) + haz vertical + velo que se levanta + recorrido de luz del botón (una vez).
+// Dawn · cierre de todas las páginas (F14, §5.1 ESC 13, §7.4): ImageSection height="cta" + filo del horizonte REGISTRADO a
+// la placa (ancla `horizonte`: d .766 / m .695, con la curvatura de la placa; si la placa no la trae, en el `piso`) + haz
+// vertical + velo que se levanta + recorrido de luz del botón (una vez).
+// Un solo horizonte: la placa ya lo trae horneado (cta-amanecer); el CSS solo enciende su filo (sin domo de tinta que
+// pinte sobre el primer plano), al menos tan ancho como el escenario, se apaga antes del borde inferior (sin línea recta
+// en la costura) y no cruza al sujeto. El texto sube (alineado arriba): la línea base de los CTAs queda en y ≤ .66 de la
+// placa, fuera de la franja .70–.87 del filo.
 // Contenido: slot por defecto (la página pasa eyebrow, H2 con id "<id>-t", CTAs con Btn) o la prop `copy`.
+// hud: etiqueta de acción (p. ej. "13 / 13 — 06:00").
 import ImageSection from './ImageSection.astro';
 import Btn from '../ui/Btn.astro';
-import type { Fallback, Layout } from './plate';
+import { resolvePlate, type Fallback, type Layout } from './plate';
 
 interface CtaCopy {
   eyebrow?: string;
@@ -22,10 +28,17 @@ interface Props {
   layout?: Layout;
   fallbackPlate?: Fallback;
   copy?: CtaCopy;
+  hud?: string | { pos: 'tr' | 'bl' | 'br' | 'tl'; text: string }[];
   class?: string;
 }
-const { id = 'cta-final', plate = 'cta-amanecer', mirror = false, layout, fallbackPlate, copy, class: cls } = Astro.props;
+const { id = 'cta-final', plate = 'cta-amanecer', mirror = false, layout, fallbackPlate, copy, hud, class: cls } = Astro.props;
 const hasSlot = Astro.slots.has('default');
+// Altura del filo: el horizonte horneado de la placa o, si no lo trae, el piso (sus coordenadas viven en las variables
+// --A-horizonte-* / --A-piso-* que ImageSection ya escribe).
+const r = resolvePlate(plate, { mirror, layout, fallbackPlate });
+const baked = !!r.anchors.horizonte?.d;
+const at = baked ? 'horizonte' : 'piso';
+const hudList = typeof hud === 'string' ? [{ pos: 'tr' as const, text: hud }] : hud;
 ---
 <ImageSection
   id={id}
@@ -34,16 +47,18 @@ const hasSlot = Astro.slots.has('default');
   layout={layout}
   fallbackPlate={fallbackPlate}
   height="cta"
-  align="center"
+  align="start"
   alt=""
   shot="dawn"
-  class={['dawn', cls].filter(Boolean).join(' ')}
+  hud={hudList}
+  class={['dawn', baked && 'dawn--baked', cls].filter(Boolean).join(' ')}
+  data-horizon={at}
 >
   <Fragment slot="over">
     <span class="dawn__veil" aria-hidden="true"></span>
     <span class="dawn__beam" aria-hidden="true"></span>
-    <span class="dawn__horizon" aria-hidden="true"><span class="dawn__edge"></span></span>
   </Fragment>
+  <span slot="stage" class="dawn__arc" aria-hidden="true" style={`--hz-x:var(--A-${at}-x,.5);--hz-y:var(--A-${at}-y,.86);--hz-ym:var(--A-${at}-ym,var(--A-${at}-y,.9));`}><span class="dawn__edge"></span></span>
   {hasSlot ? <slot /> : copy && (
     <>
       {copy.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{copy.eyebrow}</p>}

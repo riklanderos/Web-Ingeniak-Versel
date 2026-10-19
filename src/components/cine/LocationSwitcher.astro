@@ -2,15 +2,20 @@
 // LocationSwitcher · "Mismo sistema, tu industria" (§5.1 ESC 10, §5.1.1, R7, R9, R11, §7.4).
 // Escritorio: lista de 8 filas (columnas 1–5) y la portada del sector activo a sangre (doble capa A/B, fundido .6 s +
 // scale 1.04 → 1). Hover/foco/↑↓ cambian la placa; autoavance cada 4 s solo en escritorio y en pantalla, se detiene con
-// hover/foco y tras una vuelta completa; botón de pausa. Espejo automático si el sujeto de la placa está a la izquierda.
-// Móvil: la misma lista arriba (botones aria-pressed + enlace "Ver industria →") y UNA placa 4:5 a sangre abajo. Sin
-// carrusel de tarjetas y sin autoavance. Solo se descargan la placa activa y la siguiente (el resto con intención).
+// hover/foco y tras una vuelta completa; botón de pausa (etiqueta fija + aria-pressed). Espejo automático si el sujeto de
+// la placa está a la izquierda.
+// Chip SIMULACIÓN con 2 burbujas del guion del sector activo (`bubbles`): registrado en la tableta (o el teléfono, o junto
+// a la mano) de la placa activa en escritorio; bajo la lista en móvil. data-nosnippet, aria-live off.
+// Cifras: solo donde existen, siempre con rótulo, contexto y llamada a la nota de fuente (SOURCE_NOTE en el pie).
+// Móvil: la misma lista arriba (botones aria-pressed + enlace "Ver industria →" de la fila activa) y UNA placa 4:5 a
+// sangre abajo. Sin carrusel de tarjetas y sin autoavance. Solo se descargan la placa activa y la siguiente.
 import Metric from '../ui/Metric.astro';
-import { resolvePlate, type Fallback } from './plate';
+import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { resolvePlate, boxPoint, type Fallback, type Resolved } from './plate';
 import PlatePicture from './PlatePicture.astro';
-import type { MetricId } from '../../lib/metrics';
 
-interface Sector { slug: string; name: string; line: string; metricId?: MetricId; plate: string; href?: string; fallbackPlate?: Fallback }
+interface Bubble { who: 'cliente' | 'kain'; text: string }
+interface Sector { slug: string; name: string; line: string; metricId?: MetricId; plate: string; href?: string; fallbackPlate?: Fallback; bubbles?: Bubble[] }
 interface Props { id?: string; sectors: Sector[]; autoplay?: number; label?: string; class?: string }
 const { id = 'industrias', sectors, autoplay = 4000, label = 'LOCACIÓN', class: cls } = Astro.props;
 
@@ -19,14 +24,25 @@ const resolved = sectors.map((s) => {
   if (r.layout === 'subject-left') r = resolvePlate(s.plate, { fallbackPlate: s.fallbackPlate, mirror: !r.mirror, alt: '', srcsetMax: 1920, layout: 'subject-right' });
   return r;
 });
+// Punto de registro del chip: borde izquierdo y centro vertical de la tableta / teléfono; si no hay caja, junto a la mano.
+const simAt = (r: Resolved) => {
+  const box = ['tableta', 'telefono', 'pantalla'].map((n) => r.anchors[n]).find((a) => a?.box?.d);
+  if (box?.box?.d) { const [x, y, , h] = box.box.d; return `--simx:${x};--simy:${+(y + h / 2).toFixed(4)};`; }
+  const p = boxPoint(r.anchors.mano ?? r.anchors.pecho).d ?? [0.66, 0.5];
+  return `--simx:${+(p[0] - 0.03).toFixed(4)};--simy:${p[1]};`;
+};
+const bubbles = sectors.map((s) => (s.bubbles ?? []).filter((b) => b && b.text).slice(0, 2));
 const data = resolved.map((r, i) => ({
-  vars: r.vars, aura: r.aura, mirror: r.mirror,
+  vars: r.vars + simAt(r), aura: r.aura, mirror: r.mirror,
   avifD: r.srcset.avifD, webpD: r.srcset.webpD, avifM: r.srcset.avifM, webpM: r.srcset.webpM, img: r.srcset.imgSrc, sizesD: r.srcset.sizesD,
-  w: r.d.w, h: r.d.h, name: sectors[i].name,
+  w: r.d.w, h: r.d.h, name: sectors[i].name, bubbles: bubbles[i],
 }));
 const r0 = resolved[0];
 const r1 = resolved[1] ?? resolved[0];
 const pad = (n: number) => String(n).padStart(2, '0');
+const b0 = bubbles[0] ?? [];
+const anySim = bubbles.some((b) => b.length);
+const anyMetric = sectors.some((s) => s.metricId);
 ---
 <section
   id={id}
@@ -36,7 +52,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   data-align="center"
   data-shot="switcher"
   data-autoplay={autoplay}
-  style={r0.vars}
+  style={data[0]?.vars ?? r0.vars}
   aria-labelledby={`${id}-t`}
 >
   <div class="is__fx" aria-hidden="true"></div>
@@ -50,20 +66,27 @@ const pad = (n: number) => String(n).padStart(2, '0');
             <button class="loc__btn" type="button" aria-pressed={i === 0 ? 'true' : 'false'} data-i={i} aria-label={`Ver la escena de ${s.name}`}>
               <span class="loc__n t-label" aria-hidden="true">{pad(i + 1)}</span>
               <span class="loc__name">{s.name}</span>
-              <span class="loc__line">{s.line}{s.metricId && <> · <Metric id={s.metricId} variant="inline" /></>}</span>
+              <span class="loc__line">{s.line}{s.metricId && <> · <Metric id={s.metricId} variant="inline" label fn="1" /> <span class="loc__ctx">· {METRICS[s.metricId].ctx}</span></>}</span>
               <span class="loc__bar" aria-hidden="true"></span>
             </button>
             {s.href && <a class="loc__go lnk--mono" href={s.href}>Ver industria <span aria-hidden="true">→</span></a>}
           </li>
         ))}
       </ol>
+      {anySim && (
+        <figure class="loc__sim loc__sim--m solid" data-nosnippet aria-live="off" hidden={!b0.length || undefined}>
+          <span class="chip-sim">SIMULACIÓN</span>
+          {[0, 1].map((k) => <p class:list={['loc__bub', `loc__bub--${b0[k]?.who ?? 'cliente'}`]} data-bub={k} hidden={!b0[k] || undefined}>{b0[k]?.text}</p>)}
+        </figure>
+      )}
       <div class="loc__ctrl">
-        <button class="btn-icon loc__pause" type="button" aria-label="Pausar el cambio automático de escena" aria-pressed="false" data-pause>
+        <button class="btn-icon loc__pause" type="button" aria-label="Pausar el cambio automático" aria-pressed="false" data-pause>
           <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-pause"><path d="M9 6v12M15 6v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none" /></svg>
           <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-play"><path d="M8 6l10 6-10 6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none" /></svg>
         </button>
         <slot name="foot" />
       </div>
+      {anyMetric && <p class="t-micro loc__note"><sup class="fn">1</sup> {SOURCE_NOTE}.</p>}
     </div>
   </div>
   <div class="is__stagebox" aria-hidden="true">
@@ -74,5 +97,17 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <div class="stage"><PlatePicture r={r1} alt="" /><span class="is__vignette"></span><span class="is__leak"></span></div>
     </div>
   </div>
+  {anySim && (
+    <div class="is__stagebox loc__simbox">
+      <div class="is__layer is__layer--anchors">
+        <div class="stage">
+          <figure class="anchor loc__sim loc__sim--d solid" data-nosnippet aria-live="off" hidden={!b0.length || undefined}>
+            <span class="chip-sim">SIMULACIÓN</span>
+            {[0, 1].map((k) => <p class:list={['loc__bub', `loc__bub--${b0[k]?.who ?? 'cliente'}`]} data-bub={k} hidden={!b0[k] || undefined}>{b0[k]?.text}</p>)}
+          </figure>
+        </div>
+      </div>
+    </div>
+  )}
   <script type="application/json" data-loc-data set:html={JSON.stringify(data)}></script>
 </section>

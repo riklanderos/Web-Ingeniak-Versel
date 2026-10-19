@@ -3,6 +3,7 @@
 //   y la barra móvil se oculta.
 // html[data-dawn-visible]: el cierre Dawn ([data-dawn] o [data-shot="dawn"]) está en pantalla → se ocultan barra móvil y píldora.
 // html[data-end-visible]: el final del footer está en pantalla → también se ocultan (y el riel).
+// html[data-kpill-off]: #kain, #casos o #cta-final a la vista → la píldora se retira (esas escenas ya llevan "Escríbele a Kain").
 export function initPersist() {
   const html = document.documentElement;
   if (!('IntersectionObserver' in window)) return;
@@ -25,6 +26,7 @@ export function initPersist() {
   const scanDawn = watch('main [data-dawn], main [data-shot="dawn"]', 'data-dawn-visible', 0.2);
   // Final del footer (reprise + legal): la píldora, la barra móvil y el riel se retiran para no tapar la firma ni el legal.
   watch('[data-ftr-end]', 'data-end-visible', 0);
+  const scanKpill = watch('main #kain, main #casos, main #cta-final', 'data-kpill-off', 0);
   // La regla de un azul también la implementa ui.ts (html[data-primary-io="ui"]): si ui la tomó, nav no duplica el observador.
   let scanPrimary = () => {};
   setTimeout(() => {
@@ -33,5 +35,5 @@ export function initPersist() {
     scanPrimary = watch('main [data-primary]', 'data-primary-visible', 0);
   }, 0);
   // Contenido que llega tarde (escenas que montan HTML con JS)
-  window.addEventListener('load', () => { scanPrimary(); scanDawn(); }, { once: true });
+  window.addEventListener('load', () => { scanPrimary(); scanDawn(); scanKpill(); }, { once: true });
 }

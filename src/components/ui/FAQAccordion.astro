@@ -1,7 +1,9 @@
 ---
 // FAQAccordion · ESPEC §6 #38. Preguntas del banco (D §12 / src/data/faq.json) por id; las "validar" no se publican.
 // El FAQPage del @graph lo emite SEOHead con faqPageLd(ids) de ./ui-data (mismo texto que el visible).
-// Apertura con grid-template-rows 0fr → 1fr (0.45 s) en ui.ts; sin JS, todas las respuestas quedan abiertas.
+// Apertura con grid-template-rows 0fr → 1fr (0.45 s) en ui.ts; sin JS, todas las respuestas quedan abiertas. Con JS llegan
+// plegadas desde el primer cuadro (ninguna abierta salvo open={i}). Las respuestas no son role="region": con 6+ preguntas
+// llenarían la lista de landmarks y repetirían nombres (p. ej. "¿Qué es…?" de la definición de la página).
 //   glass=true → la pregunta abierta usa cristal (solo cuando hay aura o imagen detrás, §2.8).
 import Icon from './Icon.astro';
 import { getFaqItems, annotateFigures } from './ui-data';
@@ -24,7 +26,7 @@ const H = `h${headingLevel}` as any;
               <span class="faq__ico" aria-hidden="true"><Icon name="plus" size={18} /></span>
             </button>
           </H>
-          <div class="faq__a" id={`${uid}-a${i}`} role="region" aria-labelledby={`${uid}-q${i}`}>
+          <div class="faq__a" id={`${uid}-a${i}`}>
             <div class="faq__inner"><p set:html={annotateFigures(f.a)} /></div>
           </div>
         </div>

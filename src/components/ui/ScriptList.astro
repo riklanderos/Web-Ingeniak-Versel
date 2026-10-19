@@ -5,9 +5,12 @@
 //   groups → filas agrupadas por etapa con su glifo (atraer · atender · organizar · automatizar · medir).
 //   followStill → en escritorio (pointer:fine) un fotograma 21:9 de 360 px sigue al cursor (gsap.quickTo, ui.ts).
 //   steps  → pasos en fila unidos por la rama del isotipo (Discovery: formulario · horario · Google Meet).
+// .script es contenedor: por debajo de 680 px de ANCHO DEL CONTENEDOR (no del viewport) pasa a 2 filas (nombre / línea).
+// Cada enlace interno lleva data-still: corte por coincidencia con el fotograma que sigue al cursor (§7.6).
 import Icon from './Icon.astro';
 import Metric from './Metric.astro';
 import { stillOf } from './ui-data';
+import { linkTarget } from '../../lib/site';
 import type { MetricId } from '../../lib/metrics';
 
 type Row = { n?: string | number; title: string; line?: string; href?: string; plate?: string; group?: string; metricId?: MetricId; external?: boolean };
@@ -43,11 +46,12 @@ if (followStill) for (const b of blocks) for (const r of b.rows) if (r.plate) { 
         {b.group && (
           <p class="script__glabel t-label">
             {b.group.glyph && <Icon name={b.group.glyph} size={20} class="script__glyph" />}
-            {b.group.href ? <a href={b.group.href}>{b.group.label}</a> : b.group.label}
+            {b.group.href && linkTarget(b.group.href) ? <a href={linkTarget(b.group.href)!}>{b.group.label}</a> : b.group.label}
           </p>
         )}
         <ol class="script__list" aria-label={b.group?.label ?? label} data-ui-stagger>
-          {b.rows.map((r, i) => {
+          {b.rows.map((r0, i) => {
+            const r = { ...r0, href: r0.href ? linkTarget(r0.href) ?? undefined : undefined };   // ruta sin construir → fila sin enlace
             const inner = (
               <>
                 {numbered && <span class="script__n" aria-hidden="true">{numbered2(r)}</span>}
@@ -63,7 +67,7 @@ if (followStill) for (const b of blocks) for (const r of b.rows) if (r.plate) { 
             return (
               <li class="script__row" style={`--i:${i}`} data-still-src={r.plate ? stills.get(r.plate) : undefined}>
                 {r.href
-                  ? <a class="script__link" href={r.href} data-still={r.plate && !r.external ? '' : undefined}
+                  ? <a class="script__link" href={r.href} data-still={!r.external ? '' : undefined}
                       target={r.external ? '_blank' : undefined} rel={r.external ? 'noopener' : undefined}>{inner}</a>
                   : <div class="script__link script__link--static">{inner}</div>}
               </li>

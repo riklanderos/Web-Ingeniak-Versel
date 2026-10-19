@@ -36,18 +36,30 @@ const ALLOW_PATTERNS: RegExp[] = [
   /\+52\s?33\s?2101\s?7799/g,
 ];
 
-/** Tokens del copy (src/content/paginas/_ESQUEMA.md §5): {{metric:ID}}, {{metric:ID|full}}, {{price}}, {{Price}}, {{source}}. */
-export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(\|full)?|price|Price|source)\}\}/g;
+/** Tokens del copy (src/content/paginas/_ESQUEMA.md §5): {{metric:ID}}, {{metric:ID|full}} (valor + rótulo),
+ *  {{metric:ID|prose}} (la cifra redactada para una oración: METRICS[id].prose, p. ej. "de 8 minutos a 12 segundos"),
+ *  {{price}}, {{Price}}, {{source}}. Grupos: 1 = token, 2 = id de la cifra, 3 = modificador (full | prose). */
+export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|price|Price|source)\}\}/g;
 const metricOf = (id: string) => {
   const m = (METRICS as any)[id];
   if (!m) throw new Error(`[ui/copy] cifra desconocida en el texto: {{metric:${id}}}`);
-  return m as { value: string; label: string };
+  return m as { value: string; label: string; prose?: string };
+};
+/** Texto de una cifra según el modificador del token. |prose sin prose en metrics.ts → valor + rótulo (y aviso en dev). */
+const metricText = (id: string, mod?: string) => {
+  const m = metricOf(id);
+  if (mod === 'prose') {
+    if (m.prose) return m.prose;
+    if (import.meta.env?.DEV) console.warn(`[ui/copy] {{metric:${id}|prose}}: metrics.ts no trae "prose"; se usa valor + rótulo`);
+    return `${m.value} ${m.label}`;
+  }
+  return mod === 'full' ? `${m.value} ${m.label}` : m.value;
 };
 /** Texto plano con los tokens resueltos (JSON-LD FAQPage, ⌘K, meta, aria-label). */
 export function tokensToText(s: string): string {
-  return String(s ?? '').replace(TOKEN_RX, (_, k, id, full) => {
+  return String(s ?? '').replace(TOKEN_RX, (_, k, id, mod) => {
     if (k === 'price') return PRICE_FROM; if (k === 'Price') return PRICE_FROM_CAP; if (k === 'source') return SOURCE_NOTE;
-    const m = metricOf(id); return full ? `${m.value} ${m.label}` : m.value;
+    return metricText(id, mod);
   });
 }
 function legacyFigures(text: string): string {
@@ -66,10 +78,11 @@ export function annotateFigures(text: string): string {
   const rx = new RegExp(TOKEN_RX.source, 'g');
   while ((m = rx.exec(src))) {
     out += legacyFigures(src.slice(last, m.index));
-    const [, k, id, full] = m;
+    const [, k, id, mod] = m;
     if (k === 'price' || k === 'Price') out += `<span data-allow-number>${esc(k === 'price' ? PRICE_FROM : PRICE_FROM_CAP)}</span>`;
     else if (k === 'source') out += esc(SOURCE_NOTE);
-    else { const x = metricOf(id); out += `<span class="metric metric--inline" data-metric="${id}"><b>${esc(x.value)}</b>${full ? ' ' + esc(x.label) : ''}</span>`; }
+    else if (mod === 'prose') out += `<span class="metric metric--prose" data-metric="${id}">${esc(metricText(id, 'prose'))}</span>`;
+    else { const x = metricOf(id); out += `<span class="metric metric--inline" data-metric="${id}"><b>${esc(x.value)}</b>${mod === 'full' ? ' ' + esc(x.label) : ''}</span>`; }
     last = m.index + m[0].length;
   }
   return out + legacyFigures(src.slice(last));
@@ -157,20 +170,24 @@ export const VKTOR = [
   { l: 'R', name: 'Rise', verb: 'Hacemos crecer los resultados' },
 ] as const;
 
-export type TeamMember = { slug: string; name: string; role: string; photo: string; linkedin?: string };
+/** crop: encuadre de cabeza y hombros de la foto actual (fracciones de la foto cuadrada de 600 px): fx = centro del rostro,
+ *  ey = línea de los ojos, hw = ancho de la cabeza. Con esto todas las caras quedan del mismo tamaño y con la mirada a la
+ *  misma altura (Credits variant="team"). Con la sesión de R6 basta con reemplazar las fotos y ajustar estos tres números. */
+export type TeamCrop = { fx: number; ey: number; hw: number };
+export type TeamMember = { slug: string; name: string; role: string; photo: string; linkedin?: string; crop?: TeamCrop };
 /** Equipo de 6 (ESPEC §5.1 ESC 11). Las fotos actuales traen la placa del nombre impresa: Credits/AuthorCard las recortan. */
 export const TEAM: TeamMember[] = [
-  { slug: 'rik-landeros', name: 'Rik Landeros', role: 'Director de Estrategia Comercial', photo: '/img/equipo/rik-landeros.webp' },
-  { slug: 'alonso-vega', name: 'Alonso Vega', role: 'Arquitecto de IA y Automatización', photo: '/img/equipo/alonso-vega.webp' },
-  { slug: 'cesar-ovalle', name: 'César Ovalle', role: 'Director Creativo', photo: '/img/equipo/cesar-ovalle.webp' },
-  { slug: 'richard-vela', name: 'Richard Vela', role: 'Medios de Performance', photo: '/img/equipo/richard-vela.webp' },
-  { slug: 'andy-pizano', name: 'Andy Pizano', role: 'Administración y Finanzas', photo: '/img/equipo/andy-pizano.webp' },
-  { slug: 'marcos-gonzalez', name: 'Marcos González', role: 'Líder Comercial', photo: '/img/equipo/marcos-gonzalez.webp' },
+  { slug: 'rik-landeros', name: 'Rik Landeros', role: 'Director de Estrategia Comercial', photo: '/img/equipo/rik-landeros.webp', crop: { fx: 0.535, ey: 0.3, hw: 0.2 } },
+  { slug: 'alonso-vega', name: 'Alonso Vega', role: 'Arquitecto de IA y Automatización', photo: '/img/equipo/alonso-vega.webp', crop: { fx: 0.47, ey: 0.39, hw: 0.175 } },
+  { slug: 'cesar-ovalle', name: 'César Ovalle', role: 'Director Creativo', photo: '/img/equipo/cesar-ovalle.webp', crop: { fx: 0.5, ey: 0.35, hw: 0.155 } },
+  { slug: 'richard-vela', name: 'Richard Vela', role: 'Medios de Performance', photo: '/img/equipo/richard-vela.webp', crop: { fx: 0.5, ey: 0.355, hw: 0.23 } },
+  { slug: 'andy-pizano', name: 'Andy Pizano', role: 'Administración y Finanzas', photo: '/img/equipo/andy-pizano.webp', crop: { fx: 0.5, ey: 0.405, hw: 0.21 } },
+  { slug: 'marcos-gonzalez', name: 'Marcos González', role: 'Líder Comercial', photo: '/img/equipo/marcos-gonzalez.webp', crop: { fx: 0.5, ey: 0.33, hw: 0.165 } },
 ];
 
 /** Herramientas con logo en public/img/logos (pintadas con máscara currentColor). Nunca "partner" salvo Kommo. */
 export const TOOLS: Record<string, { name: string; logo: string; wide?: boolean }> = {
-  whatsapp: { name: 'WhatsApp Business', logo: 'whatsapp' }, gohighlevel: { name: 'GoHighLevel', logo: 'gohighlevel', wide: true },
+  whatsapp: { name: 'WhatsApp Business', logo: 'whatsapp' }, gohighlevel: { name: 'GoHighLevel', logo: 'gohighlevel-mark' },
   kommo: { name: 'Kommo', logo: 'kommo', wide: true }, n8n: { name: 'n8n', logo: 'n8n' }, make: { name: 'Make', logo: 'make' },
   openai: { name: 'OpenAI', logo: 'openai' }, claude: { name: 'Claude', logo: 'claude' }, anthropic: { name: 'Anthropic', logo: 'anthropic' },
   gemini: { name: 'Gemini', logo: 'googlegemini' }, meta: { name: 'Meta', logo: 'meta' }, googleads: { name: 'Google Ads', logo: 'googleads' },

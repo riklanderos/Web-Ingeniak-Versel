@@ -26,6 +26,9 @@ import Intertitle from '../cine/Intertitle.astro';
 import Dawn from '../cine/Dawn.astro';
 import Breadcrumbs from '../nav/Breadcrumbs.astro';
 import Btn from '../ui/Btn.astro';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { ledeParts, builtCrumbs } from './heroKit';
 import Copy from '../ui/Copy.astro';
 import Icon from '../ui/Icon.astro';
 import ScriptList from '../ui/ScriptList.astro';
@@ -122,6 +125,8 @@ const nextAura = () => auraCycle[auraI++ % auraCycle.length];
 
 const hero = sections.find((x) => x.kind === 'hero');
 const lcpPlate = usedPlate(hero?.s.plate);
+// R3 · intro móvil: una oración de lede (≤ 20 palabras); la otra baja a `more` (en escritorio el lede sigue completo)
+const heroLede = ledeParts(hero?.c?.lede, 20, 'last');
 const lcpMax = hero?.s.plate?.srcsetMax ?? getPlate(lcpPlate ?? '')?.srcsetMax ?? 2752;
 const vslDur = mp4Duration(vsl.src);
 const folio = page.folio ?? page.id;
@@ -145,27 +150,35 @@ const folio = page.folio ?? page.id;
     /* ───────────── 01 · Portada ───────────── */
     if (kind === 'hero') return (
       <ImageSection id={s.id} plate={pl.id} fallbackPlate={fbOf(pl)} layout={pl.layout} mirror={pl.mirror} height="hero"
-        mobile="top" priority srcsetMax={pl.srcsetMax} class="cv-hero" data-folio={folio}>
-        <Breadcrumbs page={page} />
+        mobile="split" priority srcsetMax={pl.srcsetMax} class="cv-hero tpl-hero" data-folio={folio}>
+        {/* R3: en móvil el intro lleva la etiqueta (no los crumbs), H1, una oración de lede y los CTA; el resto, después de la placa */}
+        <Breadcrumbs page={page} items={builtCrumbs(page.breadcrumbs)} class="tpl-mhide" />
         {/* §5.11: la etiqueta de la portada es un .chip-spec ("LLAMADA 1:1 · 30 MINUTOS · SIN COSTO"), no un eyebrow suelto */}
         {c.eyebrow && <p class="chip-spec eyebrow cv-hero__chip" data-allow-number><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
         <h1 id={tid} class="cv-h1" data-split>
           <span class="t-display-2" set:html={withLit(c.h1?.text ?? page.h1, c.h1?.lit)} />{c.h1?.soft && <> <span class="t-deck cv-h1__soft" set:html={ann(c.h1.soft)} /></>}
         </h1>
-        <Copy text={c.lede} as="p" class="t-lede t-lede--2 cv-hero__lede" />
-        <div class="ctas">
-          <Btn variant="primary" href={primaryHref(c)} external={false} micro label={primaryLabel(c)} data-agenda-section={s.id} />
-          <Btn variant="ghost" href={waOfSec(c)} label={waLabel(c)} class="cv-wa" />
-        </div>
-        {(c.remate || showChips(c)) && (
-          <div class="cv-hero__foot">
-            <Copy text={c.remate} as="p" class="cv-remate" />
-            {showChips(c) && (
-              <ul class="cv-chips" role="list">
-                {c.chips.map((t: string) => <li class="chip-spec"><span class="node" aria-hidden="true"></span><span set:html={ann(t)} /></li>)}
-              </ul>
+        {/* La primera oración del lede repite la etiqueta ("llamada 1:1 y gratuita"): en móvil el intro toma la última */}
+        {c.lede && (
+          <p class="t-lede t-lede--2 cv-hero__lede">{heroLede.rest && <span class="tpl-mhide"><Fragment set:html={ann(heroLede.rest)} /> </span>}<Fragment set:html={ann(heroLede.intro)} /></p>
+        )}
+        <HeroCtas href={primaryHref(c)} label={primaryLabel(c)} primaryAttrs={{ external: false, 'data-agenda-section': s.id }}
+          waHref={waOfSec(c)} waLabel={waLabel(c)} waClass="cv-wa" />
+        {(heroLede.rest || c.remate || showChips(c)) && (
+          <Fragment slot="more">
+            <span class="tpl-introglow" aria-hidden="true"></span>
+            {heroLede.rest && <p class="t-lede t-lede--2 cv-hero__rest tpl-dhide" set:html={ann(heroLede.rest)} />}
+            {(c.remate || showChips(c)) && (
+              <div class="cv-hero__foot">
+                <Copy text={c.remate} as="p" class="cv-remate" />
+                {showChips(c) && (
+                  <ul class="cv-chips" role="list">
+                    {c.chips.map((t: string) => <li class="chip-spec"><span class="node" aria-hidden="true"></span><span set:html={ann(t)} /></li>)}
+                  </ul>
+                )}
+              </div>
             )}
-          </div>
+          </Fragment>
         )}
       </ImageSection>
     );
@@ -179,6 +192,7 @@ const folio = page.folio ?? page.id;
       return (
         <ImageSection id={s.id} plate={pl.id} fallbackPlate={fbOf(pl)} layout={pl.layout ?? 'subject-center'} mirror={pl.mirror}
           height="mid" align="end" mobile="top" srcsetMax={pl.srcsetMax} alt="" class="cv-video">
+          <span class="tpl-introglow" aria-hidden="true"></span>
           {Eyebrow()}
           {H2()}
           <Copy text={c.lede} as="p" class="t-lede t-lede--2" />
@@ -214,7 +228,9 @@ const folio = page.folio ?? page.id;
     if (kind === 'steps') {
       const a = nextAura();
       return (
-        <Intertitle id={s.id} aura={a.aura} auraSide={a.side} class="cv-steps">
+        <Intertitle id={s.id} aura={a.aura} auraSide={a.side} class="cv-steps tpl-glow">
+          <Aura kind="ondas" x="45%" y="104%" o={1} only="d" />
+          <Aura kind="isotipo" x="70%" o={0.9} only="m" sticky />
           {Eyebrow()}
           {H2()}
           {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
@@ -229,7 +245,9 @@ const folio = page.folio ?? page.id;
       const a = nextAura();
       const rv = c.revisamos;
       return (
-        <Intertitle id={s.id} aura={a.aura} auraSide={a.side} class="cv-dodont">
+        <Intertitle id={s.id} aura={a.aura} auraSide={a.side} class="cv-dodont tpl-glow">
+          <Aura kind="isotipo" x="22%" y="60%" o={0.9} only="d" />
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
           <div class="cv-head">
             {Eyebrow()}
             {H2()}
@@ -263,12 +281,13 @@ const folio = page.folio ?? page.id;
     /* ───────────── Para quién (ImageSection con placa + listas, móvil split) ───────────── */
     if (kind === 'fit') return (
       <ImageSection id={s.id} plate={pl.id} fallbackPlate={fbOf(pl)} layout={pl.layout} mirror={pl.mirror} height="mid"
-        align="start" mobile={(pl.mobile as any) ?? 'split'} srcsetMax={pl.srcsetMax} class="cv-fit">
+        align="start" mobile={(pl.mobile as any) ?? 'split'} srcsetMax={pl.srcsetMax} class="cv-fit tpl-glow-m">
         {Eyebrow()}
         {H2()}
         <Copy text={c.lede} as="p" class="t-lede t-lede--2" />
         <Fragment slot="more">
           <div class="cv-fit__lists">
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
           <TwoColumnScript variant="fit" headingLevel={3}
             left={{ title: plain(c.left.title), items: c.left.items.map(plain), tone: tone(c.left.tone) ?? 'cyan' }}
             right={{ title: plain(c.right.title), items: c.right.items.map(plain), tone: tone(c.right.tone) ?? 'amber' }} />
@@ -281,13 +300,15 @@ const folio = page.folio ?? page.id;
     if (kind === 'faq') {
       const a = { aura: 'ondas' as const, side: 'center' as const };
       return (
-        <Intertitle id={s.id} aura={a.aura} auraSide={a.side} layout="split" class="cv-faq">
+        <Intertitle id={s.id} aura={a.aura} auraSide={a.side} layout="split" class="cv-faq tpl-glow">
           <Fragment slot="head">
             {Eyebrow()}
             {H2()}
             {c.footer && <Copy text={c.footer} as="p" class="t-lede t-lede--2 cv-faq__more" data-reveal />}
             {c.ctaSecondary && <div class="ctas cv-faq__cta" data-reveal><Btn variant="ghost" href={waOfSec(c)} label={waLabel(c)} /></div>}
           </Fragment>
+          <Aura kind="isotipo" x="-20%" y="6%" o={0.9} only="d" clip />
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
           <FAQAccordion ids={c.faqIds ?? []} glass headingLevel={3} label={plain(c.h2?.text) || 'Preguntas frecuentes'} id={`${s.id}-list`} />
         </Intertitle>
       );
@@ -295,7 +316,7 @@ const folio = page.folio ?? page.id;
 
     /* ───────────── Cierre (Dawn con la placa propia de la página) ───────────── */
     if (kind === 'dawn') return (
-      <Dawn id={s.id} plate={pl.id ?? 'cta-amanecer'} mirror={pl.mirror} layout={pl.layout} fallbackPlate={fbOf(pl) ?? { plate: 'cta-amanecer', mirror: !!pl.mirror }} class="cv-dawn">
+      <Dawn id={s.id} plate={pl.id ?? 'cta-amanecer'} mirror={pl.mirror} layout={pl.layout} fallbackPlate={fbOf(pl) ?? { plate: 'cta-amanecer', mirror: !!pl.mirror }} class="cv-dawn tpl-glow-m">
         {Eyebrow()}
         {H2()}
         {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
@@ -316,11 +337,13 @@ const folio = page.folio ?? page.id;
     /* ───────────── Intertítulo con CTA (después de la llamada) ───────────── */
     const a = nextAura();
     return (
-      <Intertitle id={s.id} aura={a.aura} auraSide={a.side} layout="split" class="cv-after">
+      <Intertitle id={s.id} aura={a.aura} auraSide={a.side} layout="split" class="cv-after tpl-glow">
         <Fragment slot="head">
           {Eyebrow()}
           {H2()}
         </Fragment>
+        <Aura kind="ondas" x="40%" y="100%" o={1} only="d" />
+        <Aura kind="isotipo" x="65%" o={0.9} only="m" sticky />
         {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
         {(c.body ?? []).map((p: string) => <Copy text={p} as="p" class="cv-body" data-reveal />)}
         {c.remate && <Copy text={c.remate} as="p" class="cv-remate cv-remate--lg" data-reveal />}
@@ -361,20 +384,4 @@ const folio = page.folio ?? page.id;
     } catch {}
     try { document.dispatchEvent(new CustomEvent('ingeniak:track', { detail: { name: 'agenda_click', page: location.pathname, section } })); } catch {}
   }, true);
-
-  // Red de seguridad de ScrollTrigger: el FAQ se pliega (0.45 s) DESPUÉS de que cine midió las escenas, y todo lo que va
-  // debajo (el cierre Dawn) quedaba con disparadores ~1,700 px tarde en móvil (el texto del cierre no entraba).
-  // Si el alto de <main> cambia, se vuelve a medir (debounce). Pedido el arreglo global a ui/cine en peticiones.md.
-  const main = document.getElementById('main');
-  if (main && 'ResizeObserver' in window) {
-    let h = main.offsetHeight;
-    let t = 0;
-    new ResizeObserver(() => {
-      const nh = main.offsetHeight;
-      if (Math.abs(nh - h) < 2) return;
-      h = nh;
-      clearTimeout(t);
-      t = window.setTimeout(() => (window as any).__cine?.refresh?.(), 180);
-    }).observe(main);
-  }
 </script>

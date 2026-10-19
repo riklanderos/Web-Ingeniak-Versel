@@ -9,11 +9,15 @@
 //   noindex?      fuerza "noindex,follow" (casos breves, R2). El 404 y las no indexables ya lo llevan.
 //   datePublished?, dateModified?  ISO, para Article/BlogPosting
 //   jsonLd?       nodos extra para el @graph (Person, etc.)
+//   articleAbout? Article/BlogPosting → about (casos: el Service; CaseTemplate #9)
+// FAQPage: faqPageLd() de src/components/ui/ui-data.ts (la misma fuente, filtro y texto que FAQAccordion; una sola implementación).
 import fs from 'node:fs';
 import path from 'node:path';
-import { SITE, type Page } from '../../lib/site';
+import { SITE, getPlate, type Page } from '../../lib/site';
 import { buildGraph, type FaqItem } from './jsonld';
-import { copyText, faqBank, tryCopy } from './copyText';
+import { tryCopy } from './copyText';
+import { faqPageLd, tokensToText } from '../ui/ui-data';
+import { heroPlateOf } from './navData';
 
 interface Props {
   page: Page;
@@ -26,6 +30,7 @@ interface Props {
   datePublished?: string;
   dateModified?: string;
   jsonLd?: Record<string, any>[];
+  articleAbout?: Record<string, any> | Record<string, any>[];
 }
 const p = Astro.props;
 const page = p.page as any;
@@ -38,28 +43,29 @@ const canonical: string = page.canonical ?? `${SITE.url}${page.url}`;
 
 // Imagen OG: la de la página si ya existe en public/img/og/, si no la general.
 const pub = (u: string) => fs.existsSync(path.join(process.cwd(), 'public', u));
+const ownCard = pub(`/img/og/${page.id}.jpg`);
 const ogImage =
   p.ogImage ??
-  (pub(`/img/og/${page.id}.jpg`) ? `/img/og/${page.id}.jpg` : pub('/img/og/ingeniak.jpg') ? '/img/og/ingeniak.jpg' : '/img/og-ingeniak.jpg');
+  (ownCard ? `/img/og/${page.id}.jpg` : pub('/img/og/ingeniak.jpg') ? '/img/og/ingeniak.jpg' : '/img/og-ingeniak.jpg');
 const ogAbs = `${SITE.url}${ogImage}`;
+// og:image:alt describe la TARJETA (no repite el H1 como si fuera la imagen). Tarjeta por página (tarea 5 del orquestador):
+// still de su portada + su titular + logotipo. Tarjeta general: logotipo, isotipo de cristal y el lema.
+const heroPlate = heroPlateOf(page.url);
+const heroAlt = (heroPlate ? (getPlate(heroPlate) as any)?.alt : '') as string;
+const cardOf = page.url === '/' ? 'de la portada' : `de la página «${page.breadcrumbs?.at?.(-1)?.name ?? title}»`;
+const ogAlt = ownCard && !p.ogImage
+  ? `Tarjeta de Ingeniak ${cardOf}: su titular y el logotipo de Ingeniak sobre la escena de su portada${heroAlt ? ` (${heroAlt.replace(/\.$/, '')})` : ''}`
+  : 'Tarjeta de Ingeniak: logotipo, isotipo de cristal azul y el lema «Agentizamos empresas.» sobre fondo azul noche';
 
-// FAQ (FAQPage idéntico al texto visible): 1) las que la página pasa; 2) faqIds; 3) las faqIds del copy de la página
-// (src/content/paginas/<id>.json → sections.faq.faqIds) si la página tiene sección "faq". Banco: src/data/faq.json
-// (sin las "validar"), con respaldo en sitemap.json → page.faq. Los tokens {{metric:…}} se pasan a texto plano.
-const bank = faqBank();
-const fromIds = (ids: string[]): FaqItem[] =>
-  ids
-    .map((id) => {
-      const b = bank.find((f) => f.id === id);
-      if (b) return { id, q: b.q, a: b.a };
-      const s = (page.faq ?? []).find((f: any) => f.id === id && (f.estado ?? 'aprobada') === 'aprobada');
-      return s ? { id, q: copyText(s.q), a: copyText(s.a) } : null;
-    })
-    .filter(Boolean) as FaqItem[];
+// FAQ (FAQPage idéntico al texto visible): 1) las que la página pasa (faq); 2) faqIds; 3) las faqIds del copy de la página
+// (src/content/paginas/<id>.json → sections.faq.faqIds) si la página tiene sección "faq". 2 y 3 salen de faqPageLd (ui-data):
+// banco src/data/faq.json (sin "validar"), respaldo sitemap.json → page.faq, tokens {{metric:…}} en texto plano.
 const autoIds: string[] | undefined = (page.sections ?? []).some((s: any) => s.id === 'faq') ? tryCopy(page.id)?.sections?.faq?.faqIds : undefined;
-const faq: FaqItem[] = p.faq ?? (p.faqIds ? fromIds(p.faqIds) : autoIds?.length ? fromIds(autoIds) : []);
+const ids = p.faq ? undefined : p.faqIds ?? (autoIds?.length ? autoIds : undefined);
+const faq: FaqItem[] | undefined = p.faq?.map((f) => ({ ...f, q: tokensToText(f.q), a: tokensToText(f.a) }));
+const faqNode = ids?.length ? faqPageLd(ids, canonical) : null;
 
-const graph = is404 ? [] : buildGraph(page, { faq, title, description, ogImage, datePublished: p.datePublished, dateModified: p.dateModified, extra: p.jsonLd });
+const graph = is404 ? [] : buildGraph(page, { faq, faqNode, title, description, ogImage, datePublished: p.datePublished, dateModified: p.dateModified, extra: p.jsonLd, articleAbout: p.articleAbout });
 const isArticle = page.template === 'T-ARTICLE' || page.template === 'T-CASE';
 const ld = graph.length ? JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c') : '';
 ---
@@ -76,7 +82,8 @@ const ld = graph.length ? JSON.stringify({ '@context': 'https://schema.org', '@g
 <meta property="og:image" content={ogAbs} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content={page.h1 ?? title} />
+<meta property="og:image:alt" content={ogAlt} />
+<meta name="twitter:image:alt" content={ogAlt} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />

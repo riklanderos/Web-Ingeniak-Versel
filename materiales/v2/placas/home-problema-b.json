@@ -1,0 +1,21 @@
+{
+  "home-problema-b": {
+    "alt": "",
+    "srcsetMax": 1920,
+    "d": { "src": "/img/cine/home-problema-b", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.30, "fy": 0.5, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/home-problema-b-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.43, "fy": 1, "subjTop": 0.41 },
+    "layout": "subject-left",
+    "safe": { "d": [[0.50, 0.06, 0.96, 0.36], [0.56, 0.36, 0.96, 0.97]], "m": [[0.04, 0.03, 0.96, 0.40]] },
+    "subject": { "d": [0.17, 0.07, 0.47, 0.93], "m": [0.25, 0.40, 0.67, 0.96] },
+    "anchors": {
+      "pecho": { "d": [0.289, 0.445], "m": [0.413, 0.638], "scrW": 0.038 },
+      "mano": { "d": [0.410, 0.390], "m": [0.585, 0.610] },
+      "telefono": { "d": [0.423, 0.405], "m": [0.602, 0.623] },
+      "fig": { "d": [0.580, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.900], "m": [0.5, 0.95] }
+    },
+    "leak": { "d": [0.440, 0.370], "m": [0.600, 0.600] },
+    "grade": 0,
+    "creationIds": { "desktop": "1lnWUS4r4r", "mobile": "mEJyFHHhJQ", "mobileUpscale": "DoxNbFnpcl" }
+  }
+}

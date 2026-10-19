@@ -2,38 +2,46 @@
 // runtime (+280 %): 5 placas; cambio de estación = barrido de luz 0.8 s + Flip de la tarjeta de lead (fuera del scrub,
 //   disparado por onUpdate al cambiar de paso); riel con scrub; snap a las 5 etiquetas.
 // phases (+250 %): una placa; --cam y su origen viajan de escalon-1 a escalon-5 con scrub; la letra pasa de contorno a sólido.
-// Sin pin: escenas apiladas con revelado de bloques; en móvil la píldora "Lead nuevo · etapa n/5" avanza con el scroll.
+// Sin pin: escenas apiladas con revelado de bloques; en móvil la píldora "Lead nuevo · etapa n/5" (sticky, CSS) muestra
+// la etapa que cruza el centro de la pantalla.
+// R11: las copias inactivas solo bajan su opacidad (siguen en el árbol de accesibilidad); si el foco entra en una, el
+// scroll va a su estación y la copia aparece al instante. R9: las placas 2…5 se piden cuando la escena está cerca.
 import { Flip } from 'gsap/Flip';
-import { blockReveal, sala, wireSkip, type Env } from './_util';
+import { blockReveal, sala, scrollToY, wireSkip, type Env } from './_util';
 
 export default function sequence(el: HTMLElement, env: Env) {
   const { gsap, ScrollTrigger } = env;
-  if (!env.motion) return;
-  gsap.registerPlugin(Flip);
   const preset = el.dataset.preset as 'runtime' | 'phases';
   const steps = [...el.querySelectorAll<HTMLElement>('.seq__step')];
   const N = steps.length;
   if (!N) return;
+  const pillN = el.querySelector<HTMLElement>('[data-pill-n]');
+
+  // Píldora móvil (con y sin movimiento): la etapa que cruza el centro de la pantalla.
+  let io: IntersectionObserver | null = null;
+  if (preset === 'runtime' && pillN && 'IntersectionObserver' in window) {
+    io = new IntersectionObserver((ents) => {
+      for (const en of ents) if (en.isIntersecting) pillN.textContent = String(steps.indexOf(en.target as HTMLElement) + 1);
+    }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+    steps.forEach((s) => io!.observe(s));
+  }
+  const offIO = () => io?.disconnect();
+  if (!env.motion) return offIO;
+  gsap.registerPlugin(Flip);
   const data: { title: string; ox: number; oy: number; cam: number }[] = JSON.parse(el.querySelector('[data-seq-data]')?.textContent || '[]');
   const nodes = [...el.querySelectorAll<HTMLElement>('.seq__rail-node')];
   const card = el.querySelector<HTMLElement>('[data-lead]');
   const slots = [...el.querySelectorAll<HTMLElement>('[data-lead-slot]')];
   const leadN = el.querySelector<HTMLElement>('[data-lead-n]');
   const leadStage = el.querySelector<HTMLElement>('[data-lead-stage]');
-  const pill = el.querySelector<HTMLElement>('.seq__pill');
-  const pillN = el.querySelector<HTMLElement>('[data-pill-n]');
   const lights = [...el.querySelectorAll<HTMLElement>('[data-light]')];
   const letters = [...el.querySelectorAll<HTMLElement>('.seq__ghost .ghost__l')];
   const bodies = steps.map((s) => s.querySelector<HTMLElement>('.seq__body')!).filter(Boolean);
 
   if (!env.pin) {
-    // Apiladas: cada estación entra como un bloque; móvil: píldora de etapa.
+    // Apiladas: cada estación entra como un bloque.
     bodies.forEach((b) => blockReveal(b, env, { start: 'top 82%' }));
-    if (preset === 'runtime' && pill) {
-      ScrollTrigger.create({ trigger: el.querySelector('.seq__steps'), start: 'top 70%', end: 'bottom 40%', onToggle: (s) => gsap.to(pill, { '--pill': s.isActive ? 1 : 0, duration: 0.3 }) });
-      steps.forEach((s, i) => ScrollTrigger.create({ trigger: s, start: 'top 55%', end: 'bottom 55%', onToggle: (st) => { if (st.isActive && pillN) pillN.textContent = String(i + 1); } }));
-    }
-    return;
+    return offIO;
   }
 
   // ── Pin (escritorio) ──
@@ -43,50 +51,76 @@ export default function sequence(el: HTMLElement, env: Env) {
   const SHOW = 'inset(0% 0% 0% 0%)', HIDE = 'inset(0% 0% 0% 100%)', HIDE_L = 'inset(0% 100% 0% 0%)';
   let cur = 0;
   steps.forEach((s, i) => s.classList.toggle('is-active', i === 0));
-  copies.forEach((c, i) => gsap.set(c, { autoAlpha: i === 0 ? 1 : 0 }));
+  copies.forEach((c, i) => gsap.set(c, { opacity: i === 0 ? 1 : 0, y: 0 }));
   layers.forEach((L, i) => gsap.set(L, { clipPath: i === 0 ? SHOW : HIDE }));
   nodes.forEach((n, i) => n.classList.toggle('is-on', i === 0));
   if (lights.length) gsap.set(lights, { '--on': (i: number) => (i === 0 ? 1 : 0.22) });
   if (letters.length) gsap.set(letters, { '--fill': (i: number) => (i === 0 ? 1 : 0) });
   gsap.set(el, { '--p': 0, '--so': 0 });
 
-  // Decodifica las placas antes de medir el pin (§7.1)
+  // R9: las placas de las estaciones 2…5 se piden solo cerca de la escena; luego se decodifican y se vuelve a medir (§7.1).
   const imgs = [...el.querySelectorAll<HTMLImageElement>('.is__layer--media img')];
-  imgs.forEach((im) => { im.loading = 'eager'; });
-  Promise.all(imgs.map((im) => im.decode?.().catch(() => {}))).then(() => ScrollTrigger.refresh());
+  const near = new IntersectionObserver((ents) => {
+    if (!ents.some((e) => e.isIntersecting)) return;
+    near.disconnect();
+    imgs.forEach((im) => { im.loading = 'eager'; });
+    Promise.all(imgs.map((im) => im.decode?.().catch(() => {}))).then(() => ScrollTrigger.refresh());
+  }, { rootMargin: '150% 0px' });
+  near.observe(el);
 
-  const go = (i: number) => {
-    if (i === cur) return;
+  const live = new Set<gsap.core.Animation>();
+  const keep = <T extends gsap.core.Animation>(a: T) => { live.add(a); return a; };
+
+  const go = (i: number, instant = false) => {
+    if (i === cur) {
+      if (instant) { gsap.killTweensOf(copies[i]); gsap.set(copies[i], { opacity: 1, y: 0 }); }
+      return;
+    }
     const prev = cur; cur = i;
     const fwd = i > prev;
+    live.forEach((a) => { if (a.progress() === 1 && !a.isActive()) live.delete(a); });
     steps.forEach((s, k) => s.classList.toggle('is-active', k === i));
     nodes.forEach((n, k) => n.classList.toggle('is-on', k <= i));
-    copies.forEach((c, k) => { if (k !== i && k !== prev) { gsap.killTweensOf(c); gsap.set(c, { autoAlpha: 0 }); } });
-    gsap.to(copies[prev], { autoAlpha: 0, y: fwd ? -14 : 14, duration: 0.25, ease: 'power2.in', overwrite: true });
-    gsap.fromTo(copies[i], { autoAlpha: 0, y: fwd ? 18 : -18 }, { autoAlpha: 1, y: 0, duration: 0.6, delay: 0.12, ease: 'expo.out', overwrite: true });
+    copies.forEach((c, k) => { if (k !== i && k !== prev) { gsap.killTweensOf(c); gsap.set(c, { opacity: 0 }); } });
+    if (instant) {
+      // Sin transiciones CSS en este cambio (la UI registrada de la estación aparece ya, R11)
+      el.classList.add('seq--instant');
+      requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove('seq--instant')));
+      gsap.killTweensOf([copies[prev], copies[i]]);
+      gsap.set(copies[prev], { opacity: 0, y: 0 });
+      gsap.set(copies[i], { opacity: 1, y: 0 });
+    } else {
+      keep(gsap.to(copies[prev], { opacity: 0, y: fwd ? -14 : 14, duration: 0.25, ease: 'power2.in', overwrite: true }));
+      keep(gsap.fromTo(copies[i], { opacity: 0, y: fwd ? 18 : -18 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.12, ease: 'expo.out', overwrite: true }));
+    }
     if (preset === 'runtime') {
       layers.forEach((L, k) => { if (k !== i && k !== prev) gsap.set(L, { clipPath: k < i ? SHOW : HIDE }); });
-      if (fwd) {
+      if (instant) {
+        gsap.killTweensOf(layers);
+        layers.forEach((L, k) => gsap.set(L, { clipPath: k <= i ? SHOW : HIDE }));
+      } else if (fwd) {
         gsap.set(layers[prev], { clipPath: SHOW });
-        gsap.fromTo(layers[i], { clipPath: HIDE }, { clipPath: SHOW, duration: 0.8, ease: 'power3.inOut', overwrite: true });
+        keep(gsap.fromTo(layers[i], { clipPath: HIDE }, { clipPath: SHOW, duration: 0.8, ease: 'power3.inOut', overwrite: true }));
       } else {
         gsap.set(layers[i], { clipPath: SHOW });
-        gsap.fromTo(layers[prev], { clipPath: SHOW }, { clipPath: HIDE_L, duration: 0.8, ease: 'power3.inOut', overwrite: true,
-          onComplete: () => gsap.set(layers[prev], { clipPath: HIDE }) });
+        keep(gsap.fromTo(layers[prev], { clipPath: SHOW }, { clipPath: HIDE_L, duration: 0.8, ease: 'power3.inOut', overwrite: true,
+          onComplete: () => { gsap.set(layers[prev], { clipPath: HIDE }); } }));
       }
-      gsap.timeline({ overwrite: true })
-        .fromTo(el, { '--sx': fwd ? '100%' : '0%', '--so': 1 }, { '--sx': fwd ? '0%' : '100%', duration: 0.8, ease: 'power3.inOut' })
-        .to(el, { '--so': 0, duration: 0.3 }, '-=.15');
+      if (!instant) {
+        keep(gsap.timeline()
+          .fromTo(el, { '--sx': fwd ? '100%' : '0%', '--so': 1 }, { '--sx': fwd ? '0%' : '100%', duration: 0.8, ease: 'power3.inOut' })
+          .to(el, { '--so': 0, duration: 0.3 }, '-=.15'));
+      }
       if (card && slots[i]) {
         const state = Flip.getState(card);
         slots[i].appendChild(card);
-        Flip.from(state, { duration: 0.8, ease: 'power3.inOut', absolute: true });
+        if (!instant) keep(Flip.from(state, { duration: 0.8, ease: 'power3.inOut', absolute: true }));
       }
       if (leadN) leadN.textContent = String(i + 1);
       if (leadStage) leadStage.textContent = data[i]?.title ?? '';
     } else {
-      lights.forEach((l, k) => gsap.to(l, { '--on': k === i ? 1 : 0.22, duration: 0.5 }));
-      letters.forEach((l, k) => gsap.to(l, { '--fill': k <= i ? 1 : 0, duration: 0.6 }));
+      lights.forEach((l, k) => keep(gsap.to(l, { '--on': k === i ? 1 : 0.22, duration: instant ? 0 : 0.5 })));
+      letters.forEach((l, k) => keep(gsap.to(l, { '--fill': k <= i ? 1 : 0, duration: instant ? 0 : 0.6 })));
     }
   };
 
@@ -94,8 +128,8 @@ export default function sequence(el: HTMLElement, env: Env) {
     defaults: { ease: 'none' },
     scrollTrigger: {
       trigger: el, start: 'top top', end: el.dataset.pin || (preset === 'runtime' ? '+=280%' : '+=250%'),
-      pin: true, scrub: true, anticipatePin: 1,
-      snap: { snapTo: (v: number) => Math.round(v * (N - 1)) / (N - 1), duration: { min: 0.2, max: 0.6 }, ease: 'power1.inOut', delay: 0.08 },
+      pin: true, scrub: true, anticipatePin: 0,
+      snap: { snapTo: (v: number) => Math.round(v * (N - 1)) / (N - 1), duration: { min: 0.2, max: 0.6 }, ease: 'power1.inOut', delay: 0.08, inertia: false },
       onUpdate: (s) => go(Math.min(N - 1, Math.max(0, Math.round(s.progress * (N - 1))))),
       onToggle: (s) => { el.classList.toggle('is-pinned', s.isActive); sala(s.isActive); },
     },
@@ -108,6 +142,34 @@ export default function sequence(el: HTMLElement, env: Env) {
       if (d) tl.to(cams, { '--cam': d.cam, '--ox': d.ox, '--oy': d.oy, duration: 1 / (N - 1), ease: 'power1.inOut' }, (i - 1) / (N - 1));
     }
   }
-  const unskip = wireSkip(el, env, tl.scrollTrigger ?? null);
-  return () => { unskip(); sala(false); el.classList.remove('seq--pinned', 'is-pinned'); steps.forEach((s) => s.classList.remove('is-active')); };
+  const st = tl.scrollTrigger!;
+
+  // R11: foco de teclado o lector de pantalla en una estación → el scroll va a ella y su copia aparece al instante.
+  const onFocus = (e: FocusEvent) => {
+    const step = (e.target as Element).closest?.('.seq__step') as HTMLElement | null;
+    if (!step || !el.contains(step)) return;
+    const i = steps.indexOf(step);
+    if (i < 0) return;
+    const y = st.start + ((st.end - st.start) * i) / Math.max(1, N - 1);
+    if (Math.abs(scrollY - y) > 4 || i !== cur) scrollToY(y, env, true);
+    go(i, true);
+  };
+  el.addEventListener('focusin', onFocus);
+
+  const unskip = wireSkip(el, env, st);
+  return () => {
+    unskip(); offIO(); near.disconnect(); sala(false);
+    el.removeEventListener('focusin', onFocus);
+    // Interruptor "Reducir movimiento" a mitad de la escena: nada se queda oculto ni fuera de su estación.
+    live.forEach((a) => a.kill()); live.clear();
+    gsap.killTweensOf([...copies, ...layers, ...lights, ...letters, el, card].filter(Boolean) as Element[]);
+    gsap.set([...copies, ...layers, ...lights, ...letters].filter(Boolean), { clearProps: 'all' });
+    if (card && slots[0] && card.parentElement !== slots[0]) { slots[0].appendChild(card); gsap.set(card, { clearProps: 'all' }); }
+    if (leadN) leadN.textContent = '1';
+    if (leadStage) leadStage.textContent = data[0]?.title ?? '';
+    el.classList.remove('seq--pinned', 'is-pinned');
+    steps.forEach((s) => s.classList.remove('is-active'));
+    nodes.forEach((n) => n.classList.remove('is-on'));
+    el.style.removeProperty('--p'); el.style.removeProperty('--so'); el.style.removeProperty('--sx');
+  };
 }

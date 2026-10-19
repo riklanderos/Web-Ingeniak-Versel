@@ -15,3 +15,6 @@ materiales/discovery/*.png
 materiales/discovery/*.mp4
 .astro/
 dist/
+
+# capturas de QA (pesadas)
+materiales/v2/qa/*/

@@ -6,11 +6,14 @@
 //   about  → Nosotros (entidad + equipo + sub-marca)
 //   local  → NAP de /agentes-ia-guadalajara/
 //   case   → ficha del caso: rows=[{term, value}] (solo lo confirmado) + metricIds (cifras del caso)
+// rows (cualquier variante): el copy es la ÚNICA fuente (p. ej. home.sections.faq.entity). Los tokens ({{metric:…}},
+//   {{Price}}…) se resuelven con data-metric / data-allow-number; "Alianza" suma el sello de Kommo; "Contacto" enlaza el
+//   correo (mailto) y el WhatsApp; "Primer paso" enlaza la Discovery Session. Sin rows, la ficha sale de SITE + METRICS.
 import Metric from './Metric.astro';
 import KommoBadge from './KommoBadge.astro';
-import { SITE, waHref } from '../../lib/site';
+import { SITE, waHref, linkTarget } from '../../lib/site';
 import { PRICE_FROM_CAP, type MetricId } from '../../lib/metrics';
-import { COUNTRIES, VKTOR, DISCOVERY_MICRO } from './ui-data';
+import { COUNTRIES, VKTOR, DISCOVERY_MICRO, annotateFigures, esc } from './ui-data';
 
 interface Props {
   variant?: 'home' | 'footer' | 'case' | 'about' | 'local';
@@ -25,23 +28,49 @@ const wa = waHref('Hola Kain, quiero información sobre Ingeniak.');
 const heading = title === false ? null : title ?? ({ home: 'Ficha técnica · Ingeniak en datos', footer: 'Ficha de la entidad', case: 'Ficha del caso', about: 'Ficha · Ingeniak', local: 'Ingeniak en Guadalajara' } as const)[variant];
 const vktor = VKTOR.map((v) => v.name).join(' · ');
 const countries = COUNTRIES.map((c) => (c.sede ? `${c.name} (sede)` : c.name)).join(', ');
+/** Valor de una fila del copy → HTML seguro con tokens resueltos y los enlaces propios de su término. */
+const EMAIL = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
+function rowHtml(term: string, value: string, href?: string) {
+  let h = annotateFigures(value);
+  const t = term.toLowerCase();
+  if (href) return linkTarget(href) ? `<a href="${esc(href)}">${h}</a>` : h;
+  if (/contacto|correo|whatsapp|tel[eé]fono/.test(t) || EMAIL.test(value)) {
+    EMAIL.lastIndex = 0;
+    h = h.replace(EMAIL, (m) => `<a href="mailto:${m}">${m}</a>`);
+    h = h.replace(/(WhatsApp\s*)?(<span data-allow-number>\+52[^<]*<\/span>)/, (_m, w = '', num) => `<a href="${esc(wa)}" data-wa>${w}${num}</a>`);
+  }
+  if (/primer paso/.test(t)) h = h.replace(/Discovery Session/, `<a href="${SITE.discovery}">Discovery Session</a>`);
+  return h;
+}
+const copyRows = variant !== 'case' && rows.length > 0;
 ---
-<section class:list={['sheet', `sheet--${variant}`, cls]} id={id} aria-label={heading ?? 'Ficha'} data-ui-reveal>
+<div class:list={['sheet', `sheet--${variant}`, cls]} id={id} role="group" aria-label={heading ?? 'Ficha'} data-ui-reveal>
   {heading && <p class="t-label t-label--cyan sheet__h"><span class="node" aria-hidden="true"></span>{heading}</p>}
   <dl class="sheet__dl">
     {variant === 'case' && (
       <>
-        {rows.map((r) => <div class="sheet__row"><dt>{r.term}</dt><dd>{r.href ? <a href={r.href}>{r.value}</a> : r.value}</dd></div>)}
+        {rows.map((r) => <div class="sheet__row"><dt>{r.term}</dt><dd set:html={rowHtml(r.term, r.value, r.href)} /></div>)}
         {metricIds.map((m) => <div class="sheet__row sheet__row--metric"><dt>Cifra</dt><dd><Metric id={m} variant="inline" label /></dd></div>)}
       </>
     )}
 
-    {(variant === 'home' || variant === 'about') && (
+    {copyRows && rows.map((r) => (
+      <div class:list={['sheet__row', /alianza/i.test(r.term) && 'sheet__row--badge']}>
+        <dt>{r.term}</dt>
+        <dd data-allow-number={/oficina|direcci|contacto|tel/i.test(r.term) ? '' : undefined}>
+          {/alianza/i.test(r.term)
+            ? <><span set:html={annotateFigures(r.value)} /><KommoBadge size="sm" label={false} /></>
+            : <Fragment set:html={rowHtml(r.term, r.value, r.href)} />}
+        </dd>
+      </div>
+    ))}
+
+    {!copyRows && (variant === 'home' || variant === 'about') && (
       <>
         {variant === 'about' && <div class="sheet__row"><dt>Nombre</dt><dd>{SITE.name}</dd></div>}
         <div class="sheet__row"><dt>Sede</dt><dd>{SITE.city}</dd></div>
         <div class="sheet__row"><dt>Oficina</dt><dd data-allow-number>{addr}</dd></div>
-        <div class="sheet__row sheet__row--badge"><dt>Alianza</dt><dd><span>Partner oficial de Kommo en LATAM</span><KommoBadge size="sm" /></dd></div>
+        <div class="sheet__row sheet__row--badge"><dt>Alianza</dt><dd><span>Partner oficial de Kommo en LATAM</span><KommoBadge size="sm" label={false} /></dd></div>
         <div class="sheet__row"><dt>En producción</dt><dd><Metric id="sistemas" variant="inline" label /></dd></div>
         <div class="sheet__row"><dt>Países</dt><dd><Metric id="paises" variant="inline" label />: {countries}</dd></div>
         {variant === 'about' && <div class="sheet__row"><dt>Equipo</dt><dd>Seis personas que diseñan, construyen y operan tu sistema</dd></div>}
@@ -52,7 +81,7 @@ const countries = COUNTRIES.map((c) => (c.sede ? `${c.name} (sede)` : c.name)).j
       </>
     )}
 
-    {variant === 'footer' && (
+    {!copyRows && variant === 'footer' && (
       <>
         <div class="sheet__row"><dt>Entidad</dt><dd>{SITE.name} · {SITE.city}</dd></div>
         <div class="sheet__row"><dt>Oficina</dt><dd data-allow-number>{addr}</dd></div>
@@ -63,15 +92,15 @@ const countries = COUNTRIES.map((c) => (c.sede ? `${c.name} (sede)` : c.name)).j
       </>
     )}
 
-    {variant === 'local' && (
+    {!copyRows && variant === 'local' && (
       <>
         <div class="sheet__row"><dt>Nombre</dt><dd>{SITE.name}</dd></div>
         <div class="sheet__row"><dt>Dirección</dt><dd data-allow-number>{addr}, México</dd></div>
         <div class="sheet__row"><dt>Teléfono y WhatsApp</dt><dd data-allow-number><a href={tel}>{SITE.phone}</a> · <a href={wa} data-wa>Escríbele a Kain</a></dd></div>
         <div class="sheet__row"><dt>Correo</dt><dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
         <div class="sheet__row"><dt>Atendemos</dt><dd>Guadalajara y su zona metropolitana; México y Latinoamérica en remoto</dd></div>
-        <div class="sheet__row sheet__row--badge"><dt>Alianza</dt><dd><span>Partner oficial de Kommo en LATAM</span><KommoBadge size="sm" /></dd></div>
+        <div class="sheet__row sheet__row--badge"><dt>Alianza</dt><dd><span>Partner oficial de Kommo en LATAM</span><KommoBadge size="sm" label={false} /></dd></div>
       </>
     )}
   </dl>
-</section>
+</div>

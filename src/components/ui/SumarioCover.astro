@@ -9,11 +9,14 @@ import { SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 
 interface Props { ids: [MetricId, MetricId, MetricId] | MetricId[]; variant?: 'cover' | 'row'; place?: 'cover' | 'flow'; label?: string; class?: string }
 const { ids, variant = 'cover', place = 'cover', label = 'Sumario', class: cls } = Astro.props;
+// La portada es un <aside> (complementario); la fila de la sección 02 es solo un grupo: nunca dos landmarks con el mismo nombre.
+const Wrap = variant === 'row' ? 'div' : 'aside';
 ---
-<aside class:list={['sumario', `sumario--${variant}`, place === 'flow' && 'sumario--flow', cls]} aria-label={`${label}: resultados de casos reales`} data-ui-reveal>
+<Wrap class:list={['sumario', `sumario--${variant}`, place === 'flow' && 'sumario--flow', cls]} role={variant === 'row' ? 'group' : undefined}
+  aria-label={variant === 'row' ? 'Resultados de casos reales' : `${label}: resultados de casos reales`} data-ui-reveal>
   {variant === 'row' && <p class="t-label sumario__h"><span class="node" aria-hidden="true"></span>Resultados de casos reales</p>}
   <div class="sumario__lines">
     {ids.map((id) => <Metric id={id} variant="cover" link fn="1" class="sumario__line" />)}
   </div>
   <p class="t-micro sumario__note"><sup class="fn">1</sup>{' '}{SOURCE_NOTE}. Nombres de clientes anonimizados.</p>
-</aside>
+</Wrap>

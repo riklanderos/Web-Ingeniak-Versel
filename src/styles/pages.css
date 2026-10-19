@@ -1,5 +1,136 @@
 /* pages.css — estilos globales del área "pages" (ver CONVENCIONES.md). */
 
+/* ===== Plantillas · compartido (portadas R3 · móvil 'split') ===== */
+/* Toda portada de plantilla (.tpl-hero) usa mobile="split" (ESPEC §12.2 R3): arriba solo el intro (crumbs O etiqueta,
+   H1, lede ≤ 20 palabras y CTAs); la placa sigue en flujo y la cabeza del sujeto cae --hero-gap debajo del final
+   del intro (el CTA primario queda arriba de la cabeza); la parte vacía superior de la placa queda bajo el intro.
+   El resto del contenido vive en `more`, que nace dentro de la disolución inferior de la misma placa. */
+.tpl-nw{white-space:nowrap}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .tpl-mhide{display:none!important}
+  .tpl-hero.is[data-m="split"]{--hero-gap:30px}
+  .tpl-hero.is[data-m="split"] > .is__stagebox{margin-top:calc(var(--plate-h) * var(--subj-top-m) * -1 + var(--hero-gap))}
+  /* `more` nace en la disolución inferior, justo bajo los pies (no encima: el texto nunca pisa al sujeto) */
+  .tpl-hero.is[data-m="split"] > .is__more{margin-top:-20px}
+  .tpl-hero .is__text > :is(.t-lede,.t-deck){margin-top:var(--s-4)}
+  /* CTAs: primario a todo el ancho con su microcopia debajo; WhatsApp como botón de 48 px a la derecha de la microcopia
+     (el nombre accesible sigue siendo "Escríbele a Kain"). */
+  .tpl-hero .is__text > .ctas:has(> .cta-p){display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"p p" "m w";
+    column-gap:14px;row-gap:10px;align-items:center;width:100%;margin-top:var(--s-6)}
+  .tpl-hero .is__text > .ctas > .cta-p{display:contents}
+  .tpl-hero .is__text > .ctas > .cta-p > .btn{grid-area:p;width:100%}
+  .tpl-hero .is__text > .ctas > .cta-p > .btn-micro{grid-area:m;margin:0;white-space:normal;text-wrap:balance}
+  .tpl-hero .is__text > .ctas > .btn--wa{grid-area:w;width:48px;height:48px;padding:0;gap:0;justify-content:center;border-radius:50%}
+  .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:20px;height:20px}
+  /* El slot `more` de la portada: prueba y notas en una columna corta, a la altura de los pies del sujeto */
+  .tpl-hero > .is__more .is__text > :first-child{margin-top:0}
+  .tpl-hero .tpl-illus-m{align-self:flex-end;margin:0 0 var(--s-5);color:rgb(158 176 199 / .72)}
+}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .tpl-dhide{display:none!important}
+}
+/* Luz de base de las escenas sin placa (.tpl-glow): tres elipses muy tenues (pico ≈ .023 de luminancia, nunca detrás
+   del texto con fuerza: el contraste AA no cambia) que se funden a transparente. No es un fondo de sección (§3.11): no hay
+   caja ni borde, es la misma luz ambiental que las auras; evita las franjas de tinta plana de más de 40vh (§5). */
+.tpl-glow{position:relative}
+.tpl-glow::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 5%,#000 95%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 5%,#000 95%,transparent 100%);
+  /* colores claros a baja opacidad (no tinta navy opaca): la luz que llega de la escena anterior se sigue viendo a través,
+     sin un filo recto donde empieza esta sección */
+  --g0:rgb(60 170 255 / .24);--g5:rgb(60 170 255 / .17);
+  background:
+    radial-gradient(58% 30% at var(--g1x,22%) var(--g1y,16%),var(--g0),var(--g5) 50%,transparent 82%),
+    radial-gradient(62% 30% at var(--g2x,74%) var(--g2y,50%),var(--g0),var(--g5) 50%,transparent 82%),
+    radial-gradient(58% 30% at var(--g3x,32%) var(--g3y,84%),var(--g0),var(--g5) 50%,transparent 82%)}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .tpl-glow::before{background:
+    radial-gradient(120% 22% at 30% 12%,var(--g0),var(--g5) 50%,transparent 82%),
+    radial-gradient(120% 22% at 70% 37%,var(--g0),var(--g5) 50%,transparent 82%),
+    radial-gradient(120% 22% at 30% 62%,var(--g0),var(--g5) 50%,transparent 82%),
+    radial-gradient(120% 22% at 70% 87%,var(--g0),var(--g5) 50%,transparent 82%)}
+}
+/* En escenas con placa (.is, .seq, .dawn, .twin) la luz de base va DEBAJO de la placa (capa de medios z −6): solo asoma
+   donde la placa se disuelve (el intro de arriba en móvil, el pie de la escena). .tpl-glow-m = solo móvil. */
+:is(.is,.seq,.dawn,.twin).tpl-glow::before,.tpl-glow-m::before{z-index:-8}
+.tpl-glow-m{position:relative}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .tpl-glow-m::before{content:"";position:absolute;inset:0;pointer-events:none;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 8%,#000 92%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 8%,#000 92%,transparent 100%);
+    background:
+      radial-gradient(120% 26% at 30% 14%,rgb(60 170 255 / .24),rgb(60 170 255 / .17) 50%,transparent 82%),
+      radial-gradient(120% 26% at 70% 50%,rgb(60 170 255 / .24),rgb(60 170 255 / .17) 50%,transparent 82%),
+      radial-gradient(120% 26% at 30% 86%,rgb(60 170 255 / .24),rgb(60 170 255 / .17) 50%,transparent 82%)}
+}
+@media (forced-colors:active){.tpl-glow::before,.tpl-glow-m::before{display:none}}
+/* Móvil: luz bajo el intro de una escena con placa (el intro va arriba de la placa y el velo superior de la escena lo
+   oscurece): vive dentro de .is__copy, así queda sobre el velo y bajo el texto; translúcida (no tapa la placa). */
+.tpl-introglow{display:none}
+/* --d: también en escritorio (escena con placa cuyo borde superior es pared oscura: "Cómo funciona") */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .tpl-introglow--d{display:block;position:absolute;z-index:-1;left:calc((100% - 100vw) / 2);right:calc((100% - 100vw) / 2);top:-30%;bottom:-20%;pointer-events:none;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 20%,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 20%,#000 70%,transparent 100%);
+    background:radial-gradient(56% 60% at 30% 50%,rgb(60 170 255 / .22),rgb(60 170 255 / .16) 50%,transparent 84%)}
+}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .tpl-introglow{display:block;position:absolute;z-index:-1;left:calc((100% - 100vw) / 2);right:calc((100% - 100vw) / 2);top:-6%;bottom:-10%;pointer-events:none;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 76%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 16%,#000 76%,transparent 100%);
+    background:radial-gradient(110% 60% at 36% 50%,rgb(60 170 255 / .22),rgb(60 170 255 / .16) 50%,transparent 84%)}
+}
+
+/* Aura de plantilla (Aura.astro): luz ambiental detrás del texto, nunca una caja ni un fondo de sección */
+/* Las auras de Intertitle en las plantillas: el WebP de ondas es tenue (pico ≈ .09 de luminancia) → a plena opacidad */
+:is(body.hm,body.svc,body.ind,body.t-case,body.cv) .it__aura--ondas{opacity:1}
+:is(body.hm,body.svc,body.ind,body.t-case,body.cv) .it__aura--isotipo{opacity:.9}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  :is(body.hm,body.svc,body.ind,body.t-case,body.cv) .it__aura{width:max(130vw,520px)}
+  :is(body.hm,body.svc,body.ind,body.t-case,body.cv) .it__aura--ondas{width:max(200vw,780px)}
+}
+.tpl-aura{position:absolute;z-index:-1;left:var(--x,50%);top:var(--y,50%);width:var(--w,min(72vw,1080px));aspect-ratio:1;translate:-50% -50%;
+  opacity:var(--o,.7);pointer-events:none}
+.tpl-aura--ondas{--w0:min(120vw,1800px);width:var(--w,var(--w0));aspect-ratio:3 / 2}
+.tpl-aura img{display:block;width:100%;height:100%;object-fit:cover;-webkit-mask-image:radial-gradient(closest-side,#000 42%,transparent);mask-image:radial-gradient(closest-side,#000 42%,transparent)}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    html:not([data-motion="reduced"]) .tpl-aura img{animation:tpl-aura linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  }
+}
+@keyframes tpl-aura{from{rotate:-3deg;scale:1}to{rotate:5deg;scale:1.06}}
+/* Caja de recorte: 100vw de ancho y bordes superior/inferior disueltos (nunca un filo recto en la luz). Dentro de un
+   Intertitle su bloque es .it__frame: se extiende al alto completo de la escena (su relleno --beat). */
+.tpl-aura-box{position:absolute;z-index:-1;inset:0 calc((100% - 100vw) / 2);overflow:hidden;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%)}
+.it__frame .tpl-aura-box{inset:calc(var(--beat) * -1) calc((100% - 100vw) / 2)}
+.tpl-aura-box > .tpl-aura{z-index:auto}
+/* Móvil: la luz acompaña a las listas largas (pegajosa dentro de su sección, sin alto en el flujo) y nunca mide menos de 120vw */
+.tpl-aura-sticky{display:none}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .tpl-aura{width:var(--wm,max(130vw,520px))}
+  .tpl-aura--ondas{width:var(--wm,max(200vw,780px))}
+  .tpl-aura-sticky{display:block;position:sticky;top:30svh;height:0;z-index:-1;pointer-events:none}
+  .tpl-aura-sticky > .tpl-aura{top:0;left:var(--x,50%);translate:-50% 0}
+}
+@media (min-width:768px) and (min-aspect-ratio:5/6){.tpl-only-m{display:none!important}}
+@media (max-width:767px),(max-aspect-ratio:5/6){.tpl-only-d{display:none!important}}
+@media (forced-colors:active){.tpl-aura,.tpl-aura-sticky{display:none}}
+
+/* Montage (casos del inicio, del servicio y cifras de la industria): cada fila lleva su caso detrás, suave (≈ .2) y con
+   máscara radial, además de dentro de las letras: la escena nunca se queda en tinta plana (§5, "ninguna zona > 40vh sin luz").
+   La fila se reconoce por su cifra (data-metric); la placa es la portada del caso de metrics.ts (la misma que usa Montage). */
+.mt__row::after{content:"";position:absolute;z-index:-1;top:50%;left:var(--gx,18%);width:min(70vw,1040px);aspect-ratio:21 / 9;translate:-50% -50%;
+  pointer-events:none;background:var(--case-img,none) center 38% / cover no-repeat;opacity:.2;
+  -webkit-mask-image:radial-gradient(closest-side,#000 18%,rgb(0 0 0 / .45) 55%,transparent 100%);mask-image:radial-gradient(closest-side,#000 18%,rgb(0 0 0 / .45) 55%,transparent 100%)}
+.mt__row--r::after{--gx:82%}
+.mt__row:has([data-metric="dental-citas"],[data-metric="dental-respuesta"],[data-metric="salud-citas-mes"]){--case-img:url(/img/cine/caso-dental-hero-still-640.webp)}
+.mt__row:has([data-metric="retail-conversiones"]){--case-img:url(/img/cine/caso-retail-hero-still-640.webp)}
+.mt__row:has([data-metric="ecom-cpl"],[data-metric="ecom-tablero"]){--case-img:url(/img/cine/caso-ecommerce-hero-still-640.webp)}
+.mt__row:has([data-metric="horeca-roas"]){--case-img:url(/img/cine/caso-horeca-hero-still-640.webp)}
+.mt__row:has([data-metric="logistica-procesos"],[data-metric="tiempo-operativo"]){--case-img:url(/img/cine/caso-logistica-hero-still-640.webp)}
+@media (max-width:767px),(max-aspect-ratio:5/6){.mt__row::after{left:50%;width:150vw;opacity:.18}}
+@media (forced-colors:active){.mt__row::after{display:none}}
+
+/* ===== fin compartido ===== */
+
 /* ===== CaseTemplate ===== */
 /* T-CASE · ESPEC §5.4. Reportaje: portada a sangre → ficha → reto → cifra (pin) → implementación → resultado a sangre
    → VKTOR → replicar → siguiente reportaje → amanecer. Ninguna sección pinta fondo: la luz la dan placas, auras y nodos. */
@@ -9,10 +140,21 @@
 .case-head > .t-lede{margin-top:var(--s-5)}
 .case-glow{position:absolute;z-index:-1;pointer-events:none;border-radius:50%}
 .case-glow--amber{left:-14vw;top:8%;width:min(72vw,1080px);aspect-ratio:1;
-  background:radial-gradient(closest-side,rgb(255 181 71 / .085),rgb(255 181 71 / .03) 55%,transparent)}
+  background:radial-gradient(closest-side,rgb(255 181 71 / .2),rgb(255 181 71 / .07) 55%,transparent)}
 .case-glow--cyan{right:-18vw;top:18%;width:min(80vw,1200px);aspect-ratio:1.6;
   background:radial-gradient(closest-side,rgb(0 229 255 / .07),rgb(69 93 255 / .04) 50%,transparent)}
 .case-links{display:flex;flex-wrap:wrap;gap:var(--s-4) var(--s-6);margin-top:var(--s-6)}
+/* Auras (WebP ya desenfocado, sin filtro en vivo): luz detrás de la ficha y del punto de partida (§5: nada de 40vh de
+   tinta plana entre la portada y la implementación) */
+.case-aura{position:absolute;z-index:-1;pointer-events:none;translate:-50% -50%}
+.case-aura img{display:block;width:100%;height:100%;object-fit:cover;-webkit-mask-image:radial-gradient(closest-side,#000 42%,transparent);mask-image:radial-gradient(closest-side,#000 42%,transparent)}
+.case-aura--ficha{left:76%;top:58%;width:min(72vw,1080px);aspect-ratio:1;opacity:.85}
+.case-aura--reto{left:70%;top:62%;width:min(118vw,1800px);aspect-ratio:3 / 2;opacity:.55}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .case-aura--ficha{left:60%;top:70%;width:150vw;opacity:.7}
+  .case-aura--reto{left:55%;top:70%;width:220vw;opacity:.5}
+}
+@media (forced-colors:active){.case-aura{display:none}}
 /* Carril del riel: en casos el Quick Jump muestra sus etiquetas siempre (§4.7); el contenido le deja su carril a la derecha */
 @media (min-width:1280px){
   .t-case main{--rail-lane:max(0px, var(--frame) / 2 - 50vw + var(--action-x) + 160px)}
@@ -45,7 +187,16 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .case-hero .is__text > .case-hero__lede{margin-top:var(--s-5);max-width:40ch}
 .case-hero .is__text > .ctas{margin-top:var(--s-6)}
 .case-hero .is__aside{grid-column:9 / -1;grid-row:1;align-self:end;justify-self:end;text-align:right}
+@media (min-width:768px) and (min-aspect-ratio:5/6){.case-hero > .is__more{display:none}}   /* `more` = solo móvil (R3) */
 .case-illus{margin:0;opacity:.85}
+/* Escritorio: luz tenue en el piso de la portada (sobre su velo, bajo el texto), para que la disolución hacia la ficha no
+   sea una franja de tinta plana */
+.case-hero__floor{display:none}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .case-hero__floor{display:block;position:absolute;z-index:-1;left:calc((100% - 100vw) / 2);right:calc((100% - 100vw) / 2);bottom:-260px;height:520px;pointer-events:none;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 70%,transparent 100%);
+    background:radial-gradient(50% 50% at 30% 50%,rgb(60 170 255 / .22),rgb(60 170 255 / .16) 50%,transparent 84%)}
+}
 /* Escritorios bajos (1280 × 720, 1366 × 768, 1024 × 768): la portada cabe en un alto de pantalla con sus dos CTA */
 @media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){
   .is.case-hero{padding-top:calc(var(--hdr) + var(--s-6))}
@@ -62,7 +213,7 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 }
 
 /* 02 · Ficha: entradilla editorial + ficha técnica; la portada sigue ahí, desenfocada (rack horneado) */
-.case-ficha{padding-top:var(--s-9)}
+.case-ficha{padding-top:var(--s-9);--g1y:4%;--g1x:30%}   /* su luz de base arranca junto a la portada */
 .case-ficha__rack{position:absolute;z-index:-1;right:-8vw;top:-6%;width:min(78vw,1240px);aspect-ratio:16 / 9;opacity:.5;pointer-events:none;
   -webkit-mask-image:radial-gradient(closest-side,#000 25%,transparent);mask-image:radial-gradient(closest-side,#000 25%,transparent)}
 .case-ficha__rack img{display:block;width:100%;height:100%;object-fit:cover}
@@ -88,8 +239,13 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .case-reto .case-reto__prose .prose{max-width:62ch}
 .case-reto .case-reto__prose .prose > p:first-child::first-line{color:#fff}
 
-/* 04 · Cifra */
-.case-cifra .cf__head > .eyebrow{margin-bottom:var(--s-4)}
+/* 04 · Cifra: el aura de la escena pasa de ámbar (antes) a cian (con Kain), más fuerte que la de cine */
+.case-cifra .cf__aura{opacity:.9}
+.case-cifra::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(70% 22% at 40% 8%,rgb(60 170 255 / .2),rgb(60 170 255 / .14) 50%,transparent 82%),
+    radial-gradient(70% 20% at 60% 94%,rgb(60 170 255 / .2),rgb(60 170 255 / .14) 50%,transparent 82%),
+    radial-gradient(34% 46% at 26% 56%,rgb(255 181 71 / .2),rgb(255 140 40 / .06) 50%,transparent 74%),
+    radial-gradient(40% 52% at 70% 50%,rgb(0 229 255 / .2),rgb(69 93 255 / .08) 50%,transparent 74%)}
 .case-cifra__cap{margin-top:var(--s-5)}
 
 /* 05 · Implementación */
@@ -160,6 +316,11 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
   .case-specs{display:block;margin-top:var(--s-5);font:500 11px/1.7 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
   .case-specs .chip-spec{display:inline;padding:0;box-shadow:none;font:inherit;letter-spacing:inherit}
   .case-specs .chip-spec + .chip-spec::before{content:"";display:inline-block;width:4px;height:4px;margin:0 9px 2px;background:var(--cyan);border-radius:1px;box-shadow:0 0 6px rgb(0 229 255 / .8)}
+  /* R3: la fila de datos vive en `more` (bajo los pies del sujeto) en UNA línea; si no cabe, se desliza (con fundido) */
+  .case-specs--m{margin:0;white-space:nowrap;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;font-size:10.5px;letter-spacing:.08em;
+    -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent);
+    max-width:100%;align-self:stretch;padding-right:40px}
+  .case-specs--m::-webkit-scrollbar{display:none}
   .case-h1__fig{margin:.08em 0 .12em -.04em}
   .case-h1__text{max-width:none}
   .case-h1__fig .metric__v{font-size:min(32vw,19svh)}
@@ -196,34 +357,44 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .ind-proof-m:is(p){display:none}
 .ind-proof-m .metric--inline b{font:300 1.25rem/1 var(--f-display);color:var(--cyan);letter-spacing:-.02em;margin-right:2px}
 .ind-proof-m .node{translate:0 -2px}
-.ind-proof-m__ctx{font:500 10.5px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ind-proof-m__ctx{font:500 10.5px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+/* R3: `more` de la portada solo lleva contenido móvil (cola del lede, prueba, rótulo ilustrativo) */
+@media (min-width:768px) and (min-aspect-ratio:5/6){.ind-hero > .is__more{display:none}}
+.ind-hero__rest{margin:0 0 0;max-width:40ch}
 /* En proporciones estrechas el borde de la placa se recorta: el chip anclado se retira (su cifra vuelve en "Resultados") */
 @media (max-aspect-ratio:3/2){.ind-hero :is(.ind-proof,.ind-leader,.ind-leader-node){display:none}}
 
-/* 02 · Definición (Intertitle sobre la copia desenfocada de la portada) */
-.ind-def .defn{max-width:none}
+/* 02 · Definición (Intertitle sobre la copia desenfocada de la portada): durante el rack el sujeto sigue a la derecha
+   (x ≥ .54 de la placa) → ningún renglón de la definición ni del cuerpo lo cruza */
+.ind-def .defn,.ind-def .it__body > :not(.tpl-aura-box):not(.tpl-aura-sticky){max-width:min(100%,40rem)}
 .ind-def .defn__q{max-width:22ch}
-.ind-def__body{max-width:56ch}
+.ind-def__body{max-width:min(52ch,40rem)}
 
-/* 03 · La jornada: la toma desenfocada de la portada sube de .35 a .6 (ninguna zona de más de 40vh sin luz, §5) */
+/* 03 · La jornada: la toma desenfocada de la portada a plena luz (1) y más grande, con el viraje ámbar (dolor) → cian
+   (Kain) bien visible por tramo: la escena larga nunca se queda en tinta plana (§5) */
 .ind-day .dt__head > .t-label + *{margin-top:var(--s-4)}
 .ind-day__lede{margin-top:var(--s-5)}
-.ind-day .dt__tint img{opacity:.6}
+.ind-day .dt__tint img{opacity:1;left:66%;width:min(104vw,1560px)}
+.ind-day .dt__amber{background:radial-gradient(46% 56% at 68% 50%,rgb(255 181 71 / .3),rgb(255 140 40 / .1) 45%,transparent 72%)}
+.ind-day .dt__cyan{background:radial-gradient(46% 56% at 68% 50%,rgb(0 229 255 / .26),rgb(69 93 255 / .1) 45%,transparent 72%)}
+@media (max-width:767px),(max-aspect-ratio:5/6){.ind-day .dt__tint img{left:60%;width:170vw}}
 
-/* Auras de los intertítulos: centradas con margen (no con `translate`). intertitle.ts anima yPercent −10 → 10 y GSAP
-   pisa el translate −50 % vertical del CSS: el aura quedaba centrada en el borde INFERIOR de la sección y la escena se
-   veía negra (pedido a cine en peticiones.md). Con margen, el centro es el mismo con o sin JS y con movimiento reducido. */
-body.ind .it__aura{translate:none;margin:calc(min(68vw,1000px) / -2) 0 0 calc(min(68vw,1000px) / -2)}
-body.ind .it__aura--ondas{margin:calc(min(110vw,1700px) / -3) 0 0 calc(min(110vw,1700px) / -2)}
+/* Auras de los intertítulos: `top`/`left` son su centro con o sin movimiento (intertitle.ts deriva alrededor del centro,
+   xPercent/yPercent −50; se quitó la compensación con margen de IndustryTemplate #8). */
 
 /* 04 · Qué automatizamos: titular arriba, filas de guion a todo el ancho de la retícula */
 .ind-auto .it__body{grid-column:1 / -1}
 /* El aura llena el vacío a la derecha del titular (no detrás de las líneas en muted de las filas: contraste AA) */
-.ind-auto .it__aura{top:22%;opacity:.62}
+.ind-auto .it__aura{top:22%;opacity:.85}
+.ind-auto.it{overflow:clip}   /* el aura (arriba) no oscurece el final de la jornada */
 .ind-auto__head{display:flex;flex-direction:column;align-items:flex-start;max-width:min(100%,52rem)}
 .ind-auto__head > .t-label + *{margin-top:var(--s-4)}
 .ind-auto__head > .t-lede{margin-top:var(--s-5)}
 .ind-auto .it__body > .ind-auto__list{align-self:stretch;margin-top:var(--s-7)}
+/* La última fila no cierra con filete: la costura con "Kain en tu clínica" vive en la disolución de su placa */
+.ind-auto{padding-bottom:calc(var(--beat) + var(--s-8))}
+.ind-auto .ind-auto__list :is(.script__row:last-child,.script__list:last-child){border-bottom:0}
+.ind-auto .ind-auto__list .script__list{border-bottom:0}
 
 /* 05 · Kain en el sector: el texto empieza donde termina la zona segura (sujeto + panel ocupan el otro lado) */
 /* La placa trae su panel de cristal entre Kain y la penumbra: el texto arranca en la columna 9 (≥ 100 px de aire con el panel) */
@@ -242,19 +413,16 @@ body.ind .it__aura--ondas{margin:calc(min(110vw,1700px) / -3) 0 0 calc(min(110vw
 .ind-kain__note{margin-top:var(--s-4);max-width:50ch}
 .ind-kain__more{align-self:stretch;display:flex;flex-direction:column;align-items:flex-start}
 .ind-kain__chat{margin-bottom:var(--s-6);width:100%}
-/* Sin JS o con movimiento reducido el chat en línea muestra la conversación completa (no un recorte de 440 px) */
-.ind-kain__chat .chat--inline:not(.is-live) .chat__screen{height:auto}
 @media (max-width:767px), (max-aspect-ratio:5/6){
   .ind-panel:not([data-m="none"]){width:calc(var(--aw-m,var(--aw)) * 100%);height:calc(var(--ah-m,var(--ah)) * 100%)}
 }
 
 /* 06 · Cifras */
-.ind-cifras .mt__intro > .t-label + *{margin-top:var(--s-4)}
 .ind-cifras__lede{margin-top:var(--s-5)}
 .ind-cifras__enote{margin-top:var(--s-7)}
 
 /* 07 · Servicios recomendados (Still ×3, el texto vive dentro del fotograma) */
-.ind-sec{position:relative;z-index:1;isolation:isolate;padding:var(--beat) 0}
+.ind-sec{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0}
 .ind-sec__intro{grid-column:1 / span 7;display:flex;flex-direction:column;align-items:flex-start}
 .ind-sec__intro > .t-label + *{margin-top:var(--s-4)}
 .ind-svc__grid{margin-top:var(--s-7);row-gap:var(--gap)}
@@ -272,7 +440,7 @@ body.ind .it__aura--ondas{margin:calc(min(110vw,1700px) / -3) 0 0 calc(min(110vw
 .ind-rules__l{margin:0;font:400 1rem/1.55 var(--f-body);color:var(--text-2);max-width:52ch}
 .ind-datos__note{max-width:56ch}
 /* El aura ocupa el vacío bajo el titular fijo (escritorio), no detrás de las reglas */
-@media (min-width:1024px){.ind-datos .it__aura{top:72%;opacity:.7}}
+@media (min-width:1024px){.ind-datos .it__aura{top:62%;opacity:.9}}
 .ind-faq .faq{width:100%;align-self:stretch}
 .ind-faq__cta{margin-top:var(--s-6)}
 @media (min-width:1024px){
@@ -293,9 +461,6 @@ body.ind .it__aura--ondas{margin:calc(min(110vw,1700px) / -3) 0 0 calc(min(110vw
   .is.ind-kain[data-m="split"] .is__more{margin-top:0}
   .is.ind-kain[data-m="split"] .ind-kain__more{margin-top:calc(var(--plate-h) * (var(--sb,1) - 1) + var(--s-3))}
 }
-/* Cierre: la microcopia propia del copy ("Sin costo · Sin compromiso · 30 minutos por Google Meet") se parte en dos
-   líneas parejas; la regla de HomeTemplate (#cta-final … white-space:normal; 19rem) la cortaba en "30 / minutos". */
-body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 @media (max-width:767px){
   .ind-rules__item{grid-template-columns:2.25rem minmax(0,1fr)}
 }
@@ -310,6 +475,8 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 .cv-hero .cv-h1 .cv-h1__soft{margin-top:var(--s-3);font-size:clamp(1.375rem,.9rem + 1.5vw,2.375rem);max-width:none}
 .cv-hero .is__text > .cv-hero__lede{max-width:54ch}
 .cv-hero__foot{margin-top:var(--s-6);display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-4)}
+@media (min-width:768px) and (min-aspect-ratio:5/6){.cv-hero > .is__more{margin-top:0}}   /* `more` (R3) = la misma columna, bajo los CTA */
+.cv-hero__rest{margin:0 0 var(--s-5);max-width:40ch;font-size:1rem;line-height:1.5}
 .cv-remate{font:300 clamp(1.0625rem,.95rem + .4vw,1.25rem)/1.45 var(--f-display);letter-spacing:-.01em;color:var(--soft);
   max-width:46ch;padding-left:16px;box-shadow:inset 1px 0 0 var(--hair-cyan);text-wrap:pretty}
 .cv-remate--lg{font-size:clamp(1.25rem,1rem + .8vw,1.75rem);line-height:1.35;max-width:38ch;padding-left:20px;color:var(--text)}
@@ -332,7 +499,6 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
   .cv-hero .is__text > .cv-hero__chip{margin-bottom:var(--s-4);padding:8px 12px 8px 10px;font-size:10px;letter-spacing:.08em}
   .cv-hero .cv-h1 .cv-h1__soft{margin-top:var(--s-2)}
   .cv-hero .is__text > .cv-hero__lede{margin-top:var(--s-4);font-size:1rem;line-height:1.5}
-  .cv-hero .is__text > .ctas{margin-top:var(--s-6);gap:var(--s-3)}
   .cv-hero .cv-remate{font-size:.9375rem;line-height:1.45;padding-left:14px}
 }
 
@@ -410,8 +576,6 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 @media (min-width:768px) and (max-width:1023px) and (min-aspect-ratio:5/6){.is.cv-fit[data-layout] > .is__copy .is__text{grid-column:5 / span 4}}
 @media (min-width:1024px) and (min-aspect-ratio:5/6){.is.cv-fit[data-layout] > .is__copy .is__text{grid-column:8 / span 5}}
 .cv-fit__lists{width:100%}
-/* Las listas son largas: el parallax de salida de la escena (texto a .2) las apagaría mientras se leen */
-.cv-fit > .is__more{opacity:1!important;visibility:visible!important}
 /* Guion de casting: renglones editoriales (Lexend 300) para distinguirlo del "sí es / no es" de la escena anterior */
 .cv-fit .tcs__title{font-size:clamp(1.25rem,1rem + .6vw,1.5rem);padding-bottom:var(--s-4);margin-bottom:0;border-bottom:1px solid var(--hair-2)}
 .cv-fit .tcs__col.tone-cyan .tcs__title{border-bottom-color:var(--hair-cyan)}
@@ -440,8 +604,6 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
   max-width:40ch;padding-left:18px;box-shadow:inset 1px 0 0 var(--hair-cyan);text-wrap:pretty}
 .cv-dawn .t-h2{font-size:clamp(2.25rem,1rem + 3.4vw,4.75rem)}
 .cv-dawn .is__text > .cv-quote{margin-top:var(--s-6)}
-/* El velo del amanecer nace con la costura: sin borde recto sobre el aura de la sección anterior */
-.cv-dawn > .dawn__veil{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 calc(var(--seam) * 1.6));mask-image:linear-gradient(180deg,transparent 0,#000 calc(var(--seam) * 1.6))}
 /* La placa del cierre trae el ventanal hasta el borde superior: la disolución de arriba es más larga y con curva
    (no una banda lineal de 11 %) para que el vidrio encendido no dibuje un borde bajo la última pregunta */
 @media (min-width:768px) and (min-aspect-ratio:5/6){
@@ -450,14 +612,11 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 .cv-dawn .is__text > .ctas{margin-top:var(--s-7)}
 .cv-dawn .is__text > .cv-firma{margin-top:var(--s-6);display:inline-flex;align-items:center;gap:10px;line-height:1.5}
 .cv-dawn .cv-firma .node{width:4px;height:4px}
-/* Microcopia del cierre en una sola línea pegada al botón (la regla global de HomeTemplate "#cta-final … 19rem" la partía
-   en "30 / minutos"; aquí manda la de esta plantilla) */
-@media (min-width:768px) and (min-aspect-ratio:5/6){body.cv #cta-final .cta-p .cv-micro{white-space:nowrap;max-width:none}}
+/* Microcopia del cierre en móvil: dos líneas parejas si no cabe (en escritorio, una sola línea pegada al botón) */
 @media (max-width:767px),(max-aspect-ratio:5/6){body.cv #cta-final .cta-p .cv-micro{white-space:normal;max-width:none;text-wrap:balance}}
 
 /* ── Móvil (misma condición por proporción que las placas, §3.6) ─────────── */
 @media (max-width:767px),(max-aspect-ratio:5/6){
-  .cv-hero .ctas > .btn--ghost{width:100%;justify-content:center}
   .cv-hero__foot{margin-top:var(--s-5)}
   .cv-dawn .ctas{width:100%}
 }
@@ -470,6 +629,7 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 .e404 .script__name{font-size:clamp(1.25rem,1rem + .7vw,1.75rem)}
 .e404 .script__line{font-size:14px;line-height:1.45}
 .e404 .is__text > .ctas{margin-top:var(--s-6)}
+@media (min-width:768px) and (min-aspect-ratio:5/6){.e404 > .is__more{margin-top:var(--s-2)}}   /* rutas de rescate bajo los botones */
 .e404 .e404__kbd{margin-left:10px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:var(--muted);padding:5px 7px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--hair-2)}
 /* Respaldo (home-hero en espejo): su isotipo de cristal brilla justo detrás del titular → velo localizado (§3.10-2), solo escritorio */
 @media (min-width:768px) and (min-aspect-ratio:5/6){
@@ -478,7 +638,8 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 }
 @media (max-width:767px),(max-aspect-ratio:5/6){
   .e404 .script__link{grid-template-columns:36px minmax(0,1fr) 20px;padding:14px 0 15px}
-  .e404 .ctas > .btn{width:100%;justify-content:center}
+  .e404 .e404__ctas{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"s w";column-gap:14px;width:100%}
+  .e404 .e404__ctas > .btn:not(.btn--wa){grid-area:s;width:100%;justify-content:center}
   .e404 .e404__kbd{display:none}
 }
 /* ===== fin ConversionTemplate ===== */
@@ -488,16 +649,17 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
    #id de las secciones del inicio. Ninguna sección pinta fondo: la luz la dan placas, auras, nodos y ramas. */
 .hm-links{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-6);margin:0}
 
-/* 01 · Portada */
+/* 01 · Portada (la línea de confianza y el Fig. 01 en línea viven en `more`: en escritorio, justo bajo los CTA) */
 .hm-hero .is__text > .fig-inline{margin-top:var(--s-5)}
+@media (min-width:768px) and (min-aspect-ratio:5/6){.hm-hero > .is__more{margin-top:0}}
 /* Escritorio estrecho: el pie anclado chocaría con la fila de CTAs → baja al texto (y la rama no se dibuja) */
 @media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){
-  #hero :is(.caption,.leader,.leader-node){display:none}
-  #hero .fig-inline{display:block;max-width:44ch}
+  body.hm #hero :is(.caption,.leader,.leader-node){display:none}
+  body.hm #hero .fig-inline{display:block;max-width:44ch}
 }
 
 /* 02 · Con qué construimos: créditos en una franja (sin marquesina); el sumario en fila solo donde la portada no lo muestra */
-.hm-stack{position:relative;z-index:1;padding:var(--s-7) 0 var(--s-9)}
+.hm-stack{position:relative;z-index:1;overflow-x:clip;padding:var(--s-7) 0 var(--s-9)}
 .hm-stack__frame{row-gap:var(--s-7);align-items:start}
 .hm-stack__sumario{grid-column:1 / -1;display:none}
 .hm-stack__head{grid-column:1 / span 3;padding-top:var(--s-2)}
@@ -513,80 +675,124 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 @media (max-width:1279px){.hm-stack__head,.hm-stack__logos{grid-column:1 / -1}}
 
 /* 03 · El problema: la escena fijada cabe en una pantalla (de 1280 × 720 a 2560 × 1080) */
-#problema .t-h2{font-size:min(clamp(2rem,.9rem + 3vw,4.25rem),7.4svh)}
-#problema .pain{margin-top:var(--s-6);width:100%;max-width:34rem}
-#problema .pain__item{padding:14px 0 16px}
-#problema .pain__fix{margin-top:6px}
+body.hm #problema .t-h2{font-size:min(clamp(2rem,.9rem + 3vw,4.25rem),7.4svh)}
+body.hm #problema .pain{margin-top:var(--s-6);width:100%;max-width:34rem}
+body.hm #problema .pain__item{padding:14px 0 16px}
+body.hm #problema .pain__fix{margin-top:6px}
 .hm-remate{max-width:18em}
 @media (min-width:1024px) and (min-height:640px) and (hover:hover) and (pointer:fine){
-  #problema{padding-top:calc(var(--hdr) + var(--s-4));padding-bottom:var(--s-7)}
+  body.hm #problema{padding-top:calc(var(--hdr) + var(--s-4));padding-bottom:var(--s-7)}
 }
 @media (min-width:1024px) and (max-height:799px){
-  #problema .pain{margin-top:var(--s-5)}
-  #problema .pain__item{padding:10px 0 11px}
-  #problema .pain__pain{font-size:1.125rem}
-  #problema .pain__fix{font-size:.9375rem}
-  #problema .twin__end{margin-top:var(--s-5)}
-  #problema .hm-remate{font-size:1.375rem}
+  body.hm #problema .pain{margin-top:var(--s-5)}
+  body.hm #problema .pain__item{padding:10px 0 11px}
+  body.hm #problema .pain__pain{font-size:1.125rem}
+  body.hm #problema .pain__fix{font-size:.9375rem}
+  body.hm #problema .twin__end{margin-top:var(--s-5)}
+  body.hm #problema .hm-remate{font-size:1.375rem}
 }
 
 /* 04 · Manifiesto: palabra por palabra, definición citable (G01) y "Ingeniak en datos" a lo ancho de la retícula */
-#que-es .it__body{grid-column:1 / -1}
-/* El aura acompaña al manifiesto (a la derecha, a su altura). Se centra con margin-top y no con translate en Y:
-   la deriva de intertitle.ts reemplaza el translate -50% vertical (peticiones.md · HomeTemplate #10). */
-#que-es .it__aura{top:clamp(220px,20%,400px);translate:-50% 0;margin-top:calc(min(68vw,1000px) / -2)}
+body.hm #que-es .it__body{grid-column:1 / -1}
+/* La palabra fantasma SISTEMA sangra por la derecha ARRIBA, detrás del manifiesto (blanco sobre su relleno oscuro): lejos de
+   la fila "Ingeniak en datos", cuyas etiquetas en gris no deben cruzarse con su contorno */
+body.hm #que-es .it__ghost{bottom:auto;top:6%}
+/* El aura acompaña al manifiesto (a la derecha, a su altura): `top` es su centro (intertitle.ts ya deriva alrededor del
+   centro, xPercent/yPercent −50: se quitó la compensación con margin-top de HomeTemplate #10). */
+body.hm #que-es .it__aura{top:clamp(220px,20%,400px)}
+body.hm #que-es.it{overflow:clip}   /* su aura, arriba, no se asoma con su penumbra sobre el final de la escena 03 */
 .hm-manifesto{max-width:15em}
 .hm-quees__lede{max-width:46ch}
-#que-es .hm-quees__grid{align-self:stretch;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:var(--s-7);margin-top:var(--s-9)}
+body.hm #que-es .hm-quees__grid{align-self:stretch;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:var(--s-7);margin-top:var(--s-9)}
 .hm-quees__def{grid-column:1 / span 7}
 .hm-quees__body{grid-column:9 / span 4;align-self:end;padding-top:var(--s-5);border-top:1px solid var(--hair-2)}
 .hm-quees__body .t-body{color:var(--text-2);max-width:40ch}
 .hm-quees__body .t-body + .t-body{margin-top:1em}
-#que-es .hm-quees__row{align-self:stretch;margin-top:var(--s-9)}
-@media (max-width:1023px){.hm-quees__def,.hm-quees__body{grid-column:1 / -1}#que-es .hm-quees__grid{margin-top:var(--s-8)}}
+body.hm #que-es .hm-quees__row{align-self:stretch;margin-top:var(--s-9)}
+@media (max-width:1023px){.hm-quees__def,.hm-quees__body{grid-column:1 / -1}body.hm #que-es .hm-quees__grid{margin-top:var(--s-8)}}
 
 /* 05 · El sistema: el texto se queda en la penumbra de las 5 placas (x ≤ .42), lejos de la tarjeta de lead */
 @media (min-width:768px) and (min-aspect-ratio:5/6){
-  #sistema :is(.seq__head,.seq__body,.seq__foot-col){grid-column:1 / span 5}
-  #sistema .seq__line{max-width:36ch}
+  body.hm #sistema :is(.seq__head,.seq__body,.seq__foot-col){grid-column:1 / span 5}
+  body.hm #sistema .seq__line{max-width:36ch}
 }
 /* Fijada: la tarjeta de lead aterriza arriba de cada superficie (x ≈ .34 de la placa) → el titular termina antes.
    Tamaño medido para que "Creamos el tráfico," no la toque de 1280 × 720 a 2560 × 1080; max-width es el seguro (parte línea). */
-#sistema.seq--pinned .seq__head .t-h2{font-size:min(42px,2.9vw,5.2svh);max-width:calc(34vw - (100vw - var(--frame)) / 2 - 24px)}
-@media (min-width:2000px){#sistema.seq--pinned .seq__head .t-h2{max-width:370px}}   /* ultra ancho: la placa se limita y se centra */
+body.hm #sistema.seq--pinned .seq__head .t-h2{font-size:min(42px,2.9vw,5.2svh);max-width:calc(34vw - (100vw - var(--frame)) / 2 - 24px)}
+@media (min-width:2000px){body.hm #sistema.seq--pinned .seq__head .t-h2{max-width:370px}}   /* ultra ancho: la placa se limita y se centra */
+.hm-seq-glow{display:none;position:absolute;z-index:-2;left:calc((100% - 100vw) / 2);right:calc((100% - 100vw) / 2);top:-140px;height:min(1040px,125svh);pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 8%,#000 72%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 8%,#000 72%,transparent 100%);
+  background:radial-gradient(60% 46% at 26% 50%,rgb(60 170 255 / .24),rgb(60 170 255 / .17) 50%,transparent 82%)}
+html[data-motion="reduced"] .hm-seq-glow{display:block}
+@media (prefers-reduced-motion:reduce){.hm-seq-glow{display:block}}
+@media (max-width:767px),(max-aspect-ratio:5/6){.hm-seq-glow{display:block;height:70svh;background:radial-gradient(120% 50% at 40% 50%,rgb(60 170 255 / .24),rgb(60 170 255 / .17) 50%,transparent 82%)}}
+/* UI de cada estación (StationUI) sobre la parte LIBRE de su superficie de cristal: el sujeto nunca queda bajo un cristal
+   (§0.1-5) y la tarjeta de lead que viaja (PlateSequence, 22 % del alto de la caja) tiene su hueco. Fracciones de la caja
+   del ancla (--ax/--ay/--aw/--ah de plates.json): medidas sobre las placas home-sistema-1…5 a 1280–2560. */
+.hm-sui{z-index:2;pointer-events:none;border-radius:clamp(8px,1.2cqw,18px);overflow:hidden}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+.hm-sui--atraer{top:calc((var(--ay) + var(--ah) * .48) * 100%);height:calc(var(--ah) * 50%)}
+.hm-sui--atender{top:calc((var(--ay) + var(--ah) * .34) * 100%);height:calc(var(--ah) * 61%);left:calc((var(--ax) + var(--aw) * .05) * 100%);width:calc(var(--aw) * 82%)}
+.hm-sui--organizar{top:calc((var(--ay) + var(--ah) * .36) * 100%);height:calc(var(--ah) * 60%);width:calc(var(--aw) * 75%)}
+.hm-sui--automatizar{top:calc((var(--ay) + var(--ah) * .62) * 100%);height:calc(var(--ah) * 38%);width:calc(var(--aw) * 27%)}
+.hm-sui--medir{left:calc((var(--ax) + var(--aw) * .015) * 100%);top:calc((var(--ay) + var(--ah) * .35) * 100%);height:calc(var(--ah) * 60%);width:calc(var(--aw) * 29%)}
+}
+@media (max-width:767px),(max-aspect-ratio:5/6){.hm-sui--atender{border-radius:14%}}
+/* Móvil: mini demo bajo el copy de cada estación (la superficie de la placa vertical mide < 180 px) */
+.hm-demo{display:none}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .hm-demo{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:var(--s-4);padding:14px 14px 13px;border-radius:18px;
+    background:linear-gradient(160deg,rgb(14 22 48 / .72),rgb(6 10 24 / .6));box-shadow:inset 0 0 0 1px rgb(0 229 255 / .22),inset 0 1px 0 rgb(255 255 255 / .1),0 0 40px rgb(0 229 255 / .1);
+    -webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2)}
+  .hm-demo__vis{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .hm-demo__vis .chip-sim{margin-right:4px}
+  .hm-demo__pill,.hm-demo__run,.hm-demo__lane{display:inline-flex;align-items:center;gap:6px;min-height:26px;padding:0 10px;border-radius:999px;
+    font:500 10px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);box-shadow:inset 0 0 0 1px var(--hair-2)}
+  .hm-demo__run::before{content:"";width:6px;height:6px;border-radius:1.5px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+  .hm-demo__lane.is-hot{color:var(--cyan);background:rgb(0 229 255 / .1);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .5),0 0 18px rgb(0 229 255 / .2)}
+  .hm-demo__b{display:block;height:14px;border-radius:999px}
+  .hm-demo__b--c{width:58%;background:rgb(255 255 255 / .16)}
+  .hm-demo__b--k{width:64%;margin-left:auto;background:linear-gradient(90deg,rgb(0 229 255 / .55),rgb(69 93 255 / .45));box-shadow:0 0 12px rgb(0 229 255 / .4)}
+  .hm-demo--chat .hm-demo__vis{display:grid;grid-template-columns:1fr;gap:8px}
+  .hm-demo--chat .hm-demo__vis .chip-sim{justify-self:start}
+  .hm-demo__dot{display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan);opacity:.85}
+  .hm-demo__cap{display:block;font:400 .875rem/1.4 var(--f-body);color:var(--text)}
+}
 
-/* 06 · Conoce a Kain: Kain y el teléfono a la izquierda; el texto empieza donde termina el cristal */
+/* 06 · Conoce a Kain: Kain y el teléfono a la izquierda; el texto empieza donde termina el cristal. Escritorio: la escena
+   completa (viñetas en 2 columnas, pestañas con el límite como nota, CTAs) cabe en una pantalla (≤ 100svh). */
 @media (min-width:1024px) and (min-aspect-ratio:5/6){
-  #kain .is__text{grid-column:8 / span 5}
-  /* La placa se encuadra para una pantalla aunque el texto crezca: Kain y el teléfono no se agrandan hacia la columna de texto */
-  #kain .is__stagebox{bottom:auto;height:min(100%, calc(max(100svh, 680px) + 80px))}
+  body.hm #kain{padding-block:calc(var(--hdr) + var(--s-4)) var(--s-6);min-height:min(100svh,900px)}
+  body.hm #kain .is__text{grid-column:7 / span 6;padding-left:var(--s-4)}
+  body.hm #kain .is__more{margin-top:var(--s-5)}
+  /* La placa se encuadra para una pantalla: Kain y el teléfono no se agrandan hacia la columna de texto */
+  body.hm #kain .is__stagebox{bottom:auto;height:min(100%, max(100svh, 680px))}
+  body.hm #kain .is__text > .t-lede{margin-top:var(--s-4);max-width:46ch}
+  .hm-kain__list{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-6);row-gap:10px;max-width:none}
+  .hm-kain__list li{font-size:.9375rem;line-height:1.45}
 }
 @media (min-width:1024px) and (max-width:1279px) and (min-aspect-ratio:5/6){
-  #kain .is__stagebox{height:min(100%, max(100svh, 680px))}
-  #kain .is__text{padding-left:var(--s-5)}
+  body.hm #kain .is__text{grid-column:7 / span 6;padding-left:var(--s-5)}
 }
-@media (min-width:768px) and (max-width:1023px) and (min-aspect-ratio:5/6){#kain .is__text{grid-column:5 / span 4}}
-#kain .t-h2{font-size:clamp(2.25rem,1rem + 3.1vw,4.5rem)}
-#kain .is__more{margin-top:var(--s-6)}
+@media (min-width:768px) and (max-width:1023px) and (min-aspect-ratio:5/6){body.hm #kain .is__text{grid-column:5 / span 4}}
+body.hm #kain .t-h2{font-size:min(clamp(2.25rem,1rem + 2.4vw,3.75rem),6.4svh)}
+body.hm #kain .is__more{margin-top:var(--s-6)}
 .hm-kain__list{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-width:44ch}
 .hm-kain__list li{display:grid;grid-template-columns:2px minmax(0,1fr);column-gap:14px;font:400 1rem/1.5 var(--f-body);color:var(--text-2)}
 .hm-kain__bar{border-radius:2px;background:linear-gradient(180deg,var(--cyan),rgb(69 93 255 / .35));box-shadow:0 0 10px rgb(0 229 255 / .6)}
-.hm-kain__tabs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:var(--s-6)}
-.hm-kain__tabs .chip-sim{margin-right:8px}
-.hm-kain__tab{min-height:34px;padding:0 13px;border-radius:var(--r-pill);font:500 10.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted);box-shadow:inset 0 0 0 1px var(--hair-2);transition:color var(--d-ui) var(--ease-ui),background var(--d-ui) var(--ease-ui),box-shadow var(--d-ui) var(--ease-ui)}
-.hm-kain__tab:hover{color:#fff;box-shadow:inset 0 0 0 1px var(--hair-cyan)}
-.hm-kain__tab[aria-pressed="true"]{color:var(--cyan);background:rgb(0 229 255 / .1);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .55),0 0 22px rgb(0 229 255 / .18)}
-.hm-kain__slogan{margin-top:var(--s-6);max-width:20em}
-.hm-kain__ctas{margin-top:var(--s-6);align-items:center;gap:var(--s-4) var(--s-6)}
+/* Pestañas de sector (ChatTabs de ui, fuera del teléfono) + el límite de Kain como la nota de la simulación */
+.hm-kain__sim{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:var(--s-5);width:100%}
+.hm-kain__sim .chat-tabs{align-self:stretch;width:100%}
+.hm-kain__sim .hm-kain__limit{margin:0;max-width:60ch;color:var(--muted)}
+.hm-kain__slogan{margin-top:var(--s-5);max-width:22em;font-size:clamp(1.25rem,.9rem + 1vw,1.875rem)}
+.hm-kain__ctas{margin-top:var(--s-5);align-items:center;gap:var(--s-4) var(--s-6)}
 .hm-kain__ctas .lnk .kain-mark{font-size:1.06em}
-.hm-kain__limit{margin-top:var(--s-5);max-width:50ch}
+.hm-kain__limit{margin-top:var(--s-4);max-width:56ch}
 .hm-kain__inline{margin-top:var(--s-6)}
 /* Pantalla del teléfono de cristal: se "enciende" en oscuro para que el chat se lea sobre la superficie clara de la placa */
 .hm-phone{overflow:hidden;border-radius:1.6cqw;
   background:linear-gradient(180deg,rgb(6 10 24 / .9),rgb(6 10 24 / .8) 55%,rgb(6 10 24 / .9));
   box-shadow:inset 0 0 0 1px rgb(0 229 255 / .42),inset 0 1px 0 rgb(255 255 255 / .25),0 0 50px rgb(0 229 255 / .22)}
-.hm-phone .chat__tabs{display:none}              /* las pestañas viven bajo el copy (control proxy, §5.1 ESC 06) */
 .hm-phone .chat--registered .chat__bar{padding-top:.35em}
 
 /* 07 · Servicios: titular fijo a la izquierda mientras corren las filas de guion */
@@ -595,27 +801,37 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 .hm-serv__head .t-h2{font-size:clamp(2.25rem,1rem + 2.6vw,4rem)}
 .hm-serv__closing{margin-top:var(--s-6)}
 .hm-serv__head > .hm-links{margin-top:var(--s-5)}
-#servicios .script{width:100%;align-self:stretch}
-@media (min-width:1024px){#servicios .script__link{grid-template-columns:48px minmax(0,1fr) minmax(0,27ch) 24px}}
+body.hm #servicios .script{width:100%;align-self:stretch}
+/* Fotograma 21:9 bajo el H2: a sangre de la columna, sin caja (máscara a --ink por los cuatro lados) */
+.hm-serv__still{position:relative;align-self:stretch;margin:var(--s-6) 0 0;aspect-ratio:21 / 9;pointer-events:none;
+  -webkit-mask-image:radial-gradient(72% 78% at 50% 50%,#000 38%,rgb(0 0 0 / .55) 64%,transparent 100%);
+  mask-image:radial-gradient(72% 78% at 50% 50%,#000 38%,rgb(0 0 0 / .55) 64%,transparent 100%)}
+.hm-serv__still img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .16s var(--ease-ui)}
+.hm-serv__still.is-swap img{opacity:0}
+@media (min-width:1280px){.hm-serv__still{width:calc(100% + var(--s-7));margin-left:calc(var(--s-7) * -.5)}}
+/* El aura de ondas sostiene la lista (ninguna zona > 40vh de tinta plana): fuerte y a lo alto de la sección */
+body.hm #servicios .it__aura{opacity:.95}
+@media (min-width:1280px){body.hm #servicios .it__aura--ondas{width:min(130vw,2000px)}}
+@media (min-width:1024px){body.hm #servicios .script__link{grid-template-columns:48px minmax(0,1fr) minmax(0,27ch) 24px}}
 @media (min-width:1280px){
-  #servicios .it__head{grid-column:1 / span 4;position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}
-  #servicios .it__body{grid-column:6 / -1}
+  body.hm #servicios .it__head{grid-column:1 / span 4;position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}
+  body.hm #servicios .it__body{grid-column:6 / -1}
 }
-@media (max-width:1279px){#servicios :is(.it__head,.it__body){grid-column:1 / -1}#servicios .hm-serv__head{max-width:40rem}}
+@media (max-width:1279px){body.hm #servicios :is(.it__head,.it__body){grid-column:1 / -1}body.hm #servicios .hm-serv__head{max-width:40rem}}
 
 /* 08 · Casos */
-#casos .mt__intro > .eyebrow{margin-bottom:var(--s-4)}
 .hm-casos__lede{margin-top:var(--s-5)}
 
 /* 09 · VKTOR™: palabra gigante detrás del recorte de Kain; las 5 fases rotulan sus escalones */
-#vktor{--is-h:max(100svh,680px)}
+body.hm #vktor{--is-h:max(100svh,680px)}
 /* 4:3 y 3:2: la placa recorta más a lo ancho → el encuadre se abre a la izquierda para que se vea el primer escalón */
-@media (min-width:768px) and (max-aspect-ratio:3/2) and (min-aspect-ratio:5/6){#vktor{--fx-d:.5 !important}}
-/* El borde izquierdo de la palabra se fija aquí (translate x 0): la deriva xPercent de scene.ts no recentra la palabra */
-#vktor .ghost--reg{left:53%;top:25%;translate:0 -50%;font-size:12.5cqw}
-@media (min-width:1024px) and (min-aspect-ratio:5/6){#vktor .is__text{grid-column:1 / span 7}}
-#vktor .t-h2{font-size:min(clamp(2rem,1rem + 3vw,4.25rem),7.6svh);max-width:12.5em}
-#vktor .is__text > .t-lede{max-width:44ch}
+@media (min-width:768px) and (max-aspect-ratio:3/2) and (min-aspect-ratio:5/6){body.hm #vktor{--fx-d:.5 !important}}
+/* scene.ts ya deriva la palabra alrededor de su centro (xPercent −50 → −56): se centra en 73.5 % (su borde izquierdo
+   queda en ≈ 53 %, como antes; se quitó la compensación translate 0 de HomeTemplate #2) */
+body.hm #vktor .ghost--reg{left:73.5%;top:25%;font-size:12.5cqw}
+@media (min-width:1024px) and (min-aspect-ratio:5/6){body.hm #vktor .is__text{grid-column:1 / span 7}}
+body.hm #vktor .t-h2{font-size:min(clamp(2rem,1rem + 3vw,4.25rem),7.6svh);max-width:12.5em}
+body.hm #vktor .is__text > .t-lede{max-width:44ch}
 .hm-vktor__go{margin-top:var(--s-6)}
 .hm-steps{list-style:none;margin:0;padding:0}
 .hm-step{--lift:calc(3.2cqh + 12px);width:0;height:0}
@@ -633,51 +849,42 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
   font:400 1rem/1.4 var(--f-body);color:var(--text-2)}
 .hm-vktor__l{display:grid;place-items:center;width:26px;height:26px;border-radius:var(--r-node);font:600 13px/1 var(--f-display);color:var(--cyan);box-shadow:inset 0 0 0 1px var(--hair-cyan)}
 
-/* 13 · Cierre: la microcopia del copy (más larga) se parte bajo el botón para que el WhatsApp quepa en la fila */
-@media (min-width:768px) and (min-aspect-ratio:5/6){#cta-final .cta-p .btn-micro{white-space:normal;max-width:19rem}}
-@media (max-width:767px),(max-aspect-ratio:5/6){#cta-final .cta-p .btn-micro{white-space:normal}}
+/* 13 · Cierre: la microcopia del copy (más larga) se parte bajo el botón para que el WhatsApp quepa en la fila.
+   Solo en el inicio (body.hm): antes, sin ámbito, partía "30 / minutos" en el cierre de todas las plantillas. */
+@media (min-width:768px) and (min-aspect-ratio:5/6){body.hm #cta-final .cta-p .btn-micro{white-space:normal;max-width:19rem;text-wrap:balance}}
+@media (max-width:767px),(max-aspect-ratio:5/6){body.hm #cta-final .cta-p .btn-micro{white-space:normal;text-wrap:balance}}
 
 /* 10 · Industrias */
 .hm-ind__lede{margin-top:var(--s-5)}
 .hm-ind__foot{max-width:44ch;color:var(--text-2)}
 .hm-ind__all{font-size:14px}
-/* "Ver industria →" vive en la línea del nombre: solo el nombre le deja sitio; la micro-promesa y su cifra usan todo el ancho */
-@media (min-width:768px) and (min-aspect-ratio:5/6){
-  #industrias .loc__btn{padding-right:0}
-  #industrias .loc__name{padding-right:8.5rem}
-  #industrias .loc__line{display:block}            /* la cifra sigue a su micro-promesa en la misma línea (no en otra fila de la retícula) */
-  #industrias .loc__line .metric{white-space:nowrap}
-}
 
 /* 11 · El equipo: fotos reales en duotono sobre el aura (R6: sin collage generado) */
 .hm-team__head{display:flex;flex-direction:column;align-items:flex-start}
 .hm-team__head > .eyebrow{margin-bottom:var(--s-4)}
 .hm-team__head > .t-lede{margin-top:var(--s-5)}
 .hm-team__head > .hm-links{margin-top:var(--s-5)}
-.hm-team__credits{width:100%;align-self:stretch}
-/* Créditos: el cargo ocupa siempre dos líneas (pegado abajo) → los seis nombres comparten línea base por fila */
-#equipo .credits--lg .credit{grid-template-rows:auto minmax(calc(2 * 1.4 * 10.5px),auto) auto}
-#equipo .credits--lg .credit__role{align-self:end}
-#equipo .credits--lg .credit__name{font-size:clamp(1.25rem,.7rem + .85vw,1.375rem);text-wrap:balance}
-@media (min-width:1024px){#equipo .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}}
-/* El aura (isotipo, izquierda) se queda detrás del titular, centrada sin translate vertical (ver #que-es) */
-#equipo .it__aura{top:clamp(200px,32%,380px);translate:-50% 0;margin-top:calc(min(68vw,1000px) / -2)}
+.hm-team__credits{width:100%;align-self:stretch;margin-top:var(--s-8)}
+body.hm #equipo .it__body{grid-column:1 / -1}
+.hm-team__head{max-width:46rem}
+/* Una sola aura, centrada y más fuerte, detrás de los créditos (`top` = su centro, ver #que-es) */
+body.hm #equipo .it__aura{top:50%;opacity:.95}
 
 /* 12 · Ficha técnica + preguntas */
-#faq .hm-faq__h{margin-bottom:var(--s-3)}
-#faq .faq{width:100%;align-self:stretch}
+body.hm #faq .hm-faq__h{margin-bottom:var(--s-3)}
+body.hm #faq .faq{width:100%;align-self:stretch}
 .hm-faq__foot{max-width:52ch}
 .hm-faq__foot .lnk{display:inline;padding:0;font-size:inherit}
-@media (min-width:1024px){#faq .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}}
+@media (min-width:1024px){body.hm #faq .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}}
 
 /* Móvil y tableta vertical (placa propia: texto arriba, sujeto abajo) */
 @media (max-width:767px),(max-aspect-ratio:5/6){
   .hm-stack{padding:var(--s-6) 0 var(--s-8)}
-  #kain .is__more{margin-top:calc(var(--s-7) * -1)}
+  body.hm #kain .is__more{margin-top:calc(var(--s-7) * -1)}
   .hm-kain__inline .chat--inline{width:100%}
   /* VKTOR: en la placa vertical el haz de luz sube hasta y≈.40 → el texto termina antes; sin palabra gigante */
-  #vktor{padding-bottom:calc(var(--plate-h) * .6 + var(--s-6))}
-  #vktor .is__layer--ghost{display:none}
+  body.hm #vktor{padding-bottom:calc(var(--plate-h) * .6 + var(--s-6))}
+  body.hm #vktor .is__layer--ghost{display:none}
   .hm-step{--lift:calc(2.4cqh + 6px)}
   .hm-step__t{display:none}
   .hm-step__k{left:-11px}
@@ -692,7 +899,7 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
    Reglas: ninguna sección pinta fondo (§3.11); la luz viene de la placa, del aura o de la UI; todo visible sin JS. */
 
 /* Secciones propias entre escenas: mandan el orden del DOM y la costura (igual que .it/.mt de cine) */
-.svc-sec{position:relative;z-index:1;isolation:isolate;padding:var(--beat) 0}
+.svc-sec{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0}
 .svc-sec + .is{margin-top:calc(-.8 * var(--beat))}
 .svc-sec__head{grid-column:1 / -1;max-width:56rem;display:flex;flex-direction:column;align-items:flex-start;margin-bottom:var(--s-8)}
 .svc-sec__head > .eyebrow{margin-bottom:var(--s-4)}
@@ -700,7 +907,13 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 .svc-links{display:flex;flex-wrap:wrap;gap:var(--s-2) var(--s-6)}
 .svc-links .lnk .icon,.svc-sec .lnk .icon{width:16px;height:16px}
 
+/* Titulares: equilibrados antes del SplitText (y la plantilla ya pone espacio duro tras las palabras de 1–2 letras) */
+body.svc :is(h1,h2)[data-split]{text-wrap:balance}
+
 /* ── 01 · Portada: Kain trabajando + UI registrada en el teléfono de cristal ── */
+/* El borde de la columna llega a .465 de la placa (antes .44): los dos CTA caben en una fila con la microcopia bajo el
+   primario; el teléfono empieza en .48, así que el texto nunca lo toca */
+.svc-hero{--svc-safe-r:.465}
 .svc-hero .svc-h1{max-width:13ch}
 /* La columna de texto termina donde empieza la superficie de cristal (borde derecho de la penumbra, --svc-safe-r en
    fracción de la placa; .44 en la serie de estaciones). Se calcula con la misma caja "cover" del escenario registrado,
@@ -718,16 +931,20 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 .svc-ui{padding:.55cqw .45cqw;border-radius:2.2cqw}
 .svc-ui .chat--registered{font-size:clamp(11px,5.2cqi,14.5px)}
 .svc-ui .chat__screen{padding-bottom:.4em}
-.svc-ui-lit{display:none}
+/* Móvil: en el teléfono de la placa (< 180 px) ChatSim pinta su miniatura encendida (§3.7); la conversación (2 burbujas,
+   SIMULACIÓN, hora ilustrativa) va en línea en `more`, después de la placa (R4: data-m del ancla = versión en línea) */
+.svc-bubbles{display:flex;flex-direction:column;gap:10px;width:100%;max-width:26rem;margin-top:var(--s-5)}
+.svc-bubbles__top{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:0 0 2px}
+.svc-bubbles__time{color:var(--muted)}
+.svc-bubble{max-width:86%;margin:0;padding:.68em .95em .62em;border-radius:1.15em;font:400 .9375rem/1.45 var(--f-body);color:var(--text);text-wrap:pretty}
+.svc-bubble--cliente{align-self:flex-start;background:rgb(255 255 255 / .085);border-bottom-left-radius:.4em;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .06)}
+.svc-bubble--kain{align-self:flex-end;background:linear-gradient(160deg,rgb(0 229 255 / .17),rgb(69 93 255 / .14));border-bottom-right-radius:.4em;box-shadow:inset 0 0 0 1px rgb(0 229 255 / .28)}
+.svc-bubbles__status{display:inline-flex;align-items:center;gap:8px;align-self:flex-end;margin:0;color:var(--cyan)}
+.svc-bubbles__status .node{width:5px;height:5px}
+.svc-hero__proof{margin:0;max-width:36ch}
 @media (max-width:767px),(max-aspect-ratio:5/6){
   .svc-panel{width:calc(var(--aw-m,var(--aw)) * 100%);height:calc(var(--ah-m,var(--ah)) * 100%)}
-  .svc-hero .svc-ui{display:none}            /* §3.7: superficie < 180 px → la placa muestra solo la superficie encendida */
-  .svc-ui-lit{display:flex;flex-direction:column;justify-content:flex-end;gap:6%;padding:0 11% 22%;border-radius:14%;pointer-events:none;
-    background:radial-gradient(90% 55% at 50% 72%,rgb(0 229 255 / .16),rgb(69 93 255 / .06) 60%,transparent 80%)}
-  .svc-ui-lit i{display:block;height:7.5%;width:72%;border-radius:999px;background:rgb(255 255 255 / .16)}
-  .svc-ui-lit i:nth-child(2){align-self:flex-end;width:64%;background:linear-gradient(90deg,rgb(0 229 255 / .5),rgb(69 93 255 / .4));box-shadow:0 0 12px rgb(0 229 255 / .35)}
-  .svc-ui-lit i:nth-child(3){align-self:center;width:46%;height:5.5%;background:none;box-shadow:inset 0 0 0 1px rgb(0 229 255 / .55)}
-  .svc-ui-lit b{display:none}
+  .svc-hero .svc-ui{padding:0;border-radius:14%}
   .svc-hero .svc-h1{max-width:none}
 }
 /* Escritorios bajos (1280 × 720, 1366 × 768, 1024 × 768): el bloque completo (incluido el botón de WhatsApp) cabe en el
@@ -749,7 +966,7 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 .it__body > .svc-aura,.it__head > .svc-aura{margin:0}
 .svc-aura img{display:block;width:100%;height:100%;object-fit:cover;
   -webkit-mask-image:radial-gradient(closest-side,#000 42%,transparent);mask-image:radial-gradient(closest-side,#000 42%,transparent)}
-.svc-aura--ondas{width:min(110vw,1700px);aspect-ratio:3 / 2;opacity:.5}
+.svc-aura--ondas{width:min(120vw,1800px);aspect-ratio:3 / 2;opacity:.95}
 .svc-aura--right{--ax:80%;--ay:50%}
 .svc-aura--center{--ax:50%;--ay:60%}
 .svc-aura--cmp{--ax:60%;--ay:62%}
@@ -757,7 +974,17 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 .svc-aura--int{--ax:86%;--ay:22%;width:min(46vw,680px);opacity:.6}
 .svc-aura--price{--ax:40%;--ay:52%;width:min(58vw,820px);opacity:.6}
 .svc-aura--phone{--ax:50%;--ay:46%;width:250%;opacity:.9}
-@media (max-width:767px){.svc-aura--int{--ax:88%;--ay:4%;opacity:.42}}
+/* Ninguna zona > 40vh de tinta plana (§5): ondas detrás de "lo que sí / lo que no", del registro, de las industrias y de VKTOR */
+.svc-aura--two{--ax:62%;--ay:58%;opacity:1}
+.svc-aura--ledger{--ax:50%;--ay:55%;opacity:1}
+.svc-aura--ind{--ax:72%;--ay:55%;opacity:1}
+.svc-aura--vk{--ax:38%;--ay:58%;opacity:1}
+@media (max-width:767px){
+  .svc-aura--int{--ax:88%;--ay:4%;opacity:.42}
+  /* Móvil: auras de 120vw o más detrás de las listas largas */
+  .svc-aura{width:max(130vw,520px)}
+  .svc-aura--ondas{width:max(190vw,760px)}
+}
 @supports (animation-timeline: view()){
   @media (prefers-reduced-motion:no-preference){
     html:not([data-motion="reduced"]) .svc-aura{animation:svc-aura linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
@@ -778,25 +1005,45 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
 .svc-signals__line{margin:6px 0 0 21px;font:400 .9375rem/1.5 var(--f-body);color:var(--muted);max-width:46ch}
 .svc-signals .pain__fix{margin-top:12px}
 .svc-pain .is__more .pain{max-width:40rem}
+.svc-pain{--veil-a:.96}
+/* Escritorio: la escena cabe en una pantalla (la placa ya no se agranda a 2,047 px por el alto del texto): las 4 señales en
+   2 × 2 bajo el lede; la columna arranca en el borde de la zona segura de la placa (safe.d x ≥ .56, + 1 %), calculado con la
+   misma caja "cover" del escenario (también a ≥ 1800 px, donde la placa se limita y se centra); velo más denso. */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .svc-pain{--pain-w:min(100vw, var(--cap, 100vw));--pain-sw:max(var(--pain-w), 100svh * var(--ar-d));
+    --pain-x:calc((100vw - var(--pain-w)) / 2 + (var(--pain-w) - var(--pain-sw)) * var(--fx-d) + .57 * var(--pain-sw))}
+  .is.svc-pain[data-layout] > :is(.is__copy,.is__more) .is__text{grid-column:1 / -1;margin-left:calc(var(--pain-x) - (100vw - var(--frame)) / 2);
+    max-width:calc(var(--frame) - (var(--pain-x) - (100vw - var(--frame)) / 2))}
+  /* el bloque termina antes del piso (y ≈ .76): el pie "Fig. 02" anclado en (.58, .80) queda debajo, nunca encima */
+  .is.svc-pain{padding-top:calc(var(--hdr) + var(--s-4));padding-bottom:calc(100svh * .22)}
+  .svc-pain > .is__fx{background:
+    linear-gradient(270deg,rgb(3 4 11 / var(--veil-a)) 0%,rgb(3 4 11 / .8) 34%,rgb(3 4 11 / .35) 52%,rgb(3 4 11 / 0) 64%),
+    linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent calc(var(--fade-from) * 100% - 8%),var(--ink) 100%)}
+  .svc-pain > .is__more{margin-top:var(--s-5)}
+  .svc-pain .t-h2{font-size:min(clamp(2rem,1rem + 2.2vw,3.25rem),6svh)}
+  .svc-pain .is__text > .t-lede{max-width:44ch;margin-top:var(--s-4);font-size:1rem;line-height:1.5}
+  .svc-pain .is__more .pain{max-width:none;width:100%}
+  .svc-signals .pain__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-6);border-top:0}
+  .svc-signals .pain__item{padding:10px 0 12px}
+  .svc-signals .pain__pain{font-size:1rem;line-height:1.3}
+  .svc-signals__line{margin:4px 0 0 21px;font-size:.8125rem;line-height:1.42}
+  .svc-signals .pain__fix{margin-top:6px;font-size:.875rem;line-height:1.38}
+  .svc-pain .pain__remate{margin-top:var(--s-5)}
+}
+/* Escritorios bajos (≤ 820 px de alto): la lista llega al piso de la placa → el pie "Fig. 02" y su guía se retiran
+   (nunca cruzan una señal; contraste AA medido sobre el píxel más claro) */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){.svc-pain :is(.caption,.leader,.leader-node){display:none}}
 
 /* ── 04 · Capacidades: filas de guion + teléfono de cristal sobre el aura ── */
 .svc-cap .it__body{grid-column:1 / -1}
 .svc-cap__grid{width:100%;display:grid;grid-template-columns:minmax(0,1fr);column-gap:clamp(40px,6vw,112px);align-items:start}
 .svc-cap--chat .svc-cap__grid{grid-template-columns:minmax(0,1fr) min(384px,30vw)}
-.svc-cap__main{min-width:0;display:flex;flex-direction:column;align-items:flex-start;container:svc-cap / inline-size}
-/* Columna estrecha (1024–1279 px junto al teléfono): la línea de resultado baja bajo el nombre, como en móvil */
-@container svc-cap (max-width:680px){
-  .svc-cap__rows .script__link{grid-template-columns:56px minmax(0,1fr) 24px;row-gap:6px}
-  .svc-cap__rows .script__line{grid-column:2 / 3}
-  .svc-cap__rows .script__go{grid-row:1;grid-column:3}
-}
+.svc-cap__main{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
 .svc-cap__main > .eyebrow{margin-bottom:var(--s-4)}
 .svc-cap__main > .t-lede{margin-top:var(--s-5)}
 .svc-cap__rows{width:100%;margin-top:var(--s-7)}
 .svc-cap__main > .svc-body{margin-top:var(--s-6)}
 .svc-cap__main > .svc-links{margin-top:var(--s-5)}
-/* Sin JS o con movimiento reducido el guion se ve completo (§7.4: "conversación completa"), sin scroll interno */
-.svc-cap .chat--inline:not(.is-live) .chat__screen{height:auto}
 .svc-cap__aside{position:sticky;top:calc(var(--hdr) + var(--s-6));isolation:isolate;display:flex;justify-content:center;padding-top:var(--s-4)}
 @media (max-width:1023px){
   .svc-cap--chat .svc-cap__grid{grid-template-columns:minmax(0,1fr);row-gap:var(--s-8)}
@@ -824,15 +1071,16 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
   background:linear-gradient(180deg,rgb(0 229 255 / 0),rgb(0 229 255 / .85));box-shadow:0 0 8px rgb(0 229 255 / .5)}
 .svc-node__card{position:absolute;left:0;bottom:5.6cqh;width:14.5cqw;transform:translateX(-50%);pointer-events:auto;
   display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;opacity:calc(.32 + .68 * var(--on));transition:opacity .3s linear}
-.svc-node__top{display:flex;align-items:center;justify-content:center;gap:10px;min-height:22px;color:rgb(255 255 255 / .72)}
+.svc-node__top{display:flex;align-items:center;justify-content:center;gap:10px;height:24px;color:rgb(255 255 255 / .72)}   /* alto fijo: logos y número no mueven la tarjeta */
 .svc-node__top .logo-mask{width:19px;height:19px}
 .svc-node__top .logo-mask--wide{width:auto;height:14px!important}
 .svc-node__n{font:500 10.5px/1 var(--f-mono);letter-spacing:.14em;color:var(--cyan)}
 .svc-node__kain{font-size:19px;color:#fff}
 .svc-node__t{font:500 clamp(.9375rem,.8rem + .3vw,1.0625rem)/1.25 var(--f-display);letter-spacing:-.01em;color:var(--text);text-wrap:balance}
 .svc-node__l{font:400 .8125rem/1.45 var(--f-body);color:var(--text-2);max-width:24ch;text-wrap:pretty}
-.svc-bead{position:absolute;left:calc((var(--b0x) + (var(--b1x) - var(--b0x)) * var(--svc-p)) * 100%);top:calc(var(--b0y) * 100%);width:10cqw;height:2px;
-  translate:-100% -50%;border-radius:2px;pointer-events:none;opacity:0;
+/* El destello se desplaza con translate (composición, sin layout ni CLS); el escenario es contenedor: 100cqw = su ancho */
+.svc-bead{position:absolute;left:calc(var(--b0x) * 100%);top:calc(var(--b0y) * 100%);width:10cqw;height:2px;
+  translate:calc(-100% + (var(--b1x) - var(--b0x)) * var(--svc-p) * 100cqw) -50%;border-radius:2px;pointer-events:none;opacity:0;
   background:linear-gradient(90deg,transparent,rgb(168 243 255 / .85) 70%,#fff);box-shadow:0 0 14px 2px rgb(0 229 255 / .65)}
 @supports (animation-timeline: view()){
   @media (prefers-reduced-motion:no-preference){
@@ -850,8 +1098,8 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
   .svc-node__card{left:30px;bottom:auto;top:0;width:min(300px,calc(100vw - 110px));transform:translateY(-50%);align-items:flex-start;text-align:left;gap:5px}
   .svc-node__top{justify-content:flex-start;min-height:18px}
   .svc-node__l{max-width:none}
-  .svc-bead{left:calc(var(--b0xm) * 100%);top:calc((var(--b0ym) + (var(--b1ym) - var(--b0ym)) * var(--svc-p)) * 100%);width:2px;height:9cqh;
-    translate:-50% -100%;background:linear-gradient(180deg,transparent,rgb(168 243 255 / .85) 70%,#fff)}
+  .svc-bead{left:calc(var(--b0xm) * 100%);top:calc(var(--b0ym) * 100%);width:2px;height:9cqh;
+    translate:-50% calc(-100% + (var(--b1ym) - var(--b0ym)) * var(--svc-p) * 100cqh);background:linear-gradient(180deg,transparent,rgb(168 243 255 / .85) 70%,#fff)}
 }
 
 /* ── 06 · Agente vs. chatbot (tabla por criterio, sin bordes de tabla) ── */
@@ -884,18 +1132,58 @@ body.ind #cta-final .cta-p .btn-micro{text-wrap:balance}
   .svc-cmp__c.tone-amber .svc-cmp__mk{color:var(--amber)} .svc-cmp__c.tone-cyan .svc-cmp__mk{color:var(--cyan)}
 }
 
+/* ── 06 (regreso al set, R5) · la placa de la portada, ya empujada hacia el teléfono (--cam 1.35 → 1.6), con la tarjeta
+   de lead que llega a "Cita agendada" registrada en el cristal; la tabla nace en la disolución inferior de la placa ── */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .svc-back{--back-h:max(92svh,640px)}
+  .svc-back > .is__stagebox{bottom:auto;height:var(--back-h)}
+  .svc-back > .is__copy{min-height:calc(var(--back-h) - var(--hdr) - var(--s-9))}
+  .is.svc-back[data-layout] > .is__copy .is__text{grid-column:1 / span 5}
+  .is.svc-back[data-layout] > .is__more .is__text{grid-column:1 / -1}
+  .svc-back > .is__more{margin-top:0}
+}
+.svc-back .is__text > .t-lede{max-width:40ch}
+.svc-back__table{width:100%}
+.svc-back__table > .svc-links{margin-top:var(--s-6)}
+.svc-lead{display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:clamp(10px,1.6cqw,26px);pointer-events:none;
+  background:linear-gradient(180deg,rgb(6 10 24 / .86),rgb(6 10 24 / .74) 55%,rgb(6 10 24 / .88));
+  box-shadow:inset 0 0 0 1px rgb(0 229 255 / .4),inset 0 1px 0 rgb(255 255 255 / .22),0 0 60px rgb(0 229 255 / .2)}
+.svc-lead__card{width:84%;display:flex;flex-direction:column;gap:7cqi;font:400 clamp(10px,6cqi,15px)/1.35 var(--f-body);color:var(--text)}
+.svc-lead__top{margin:0}
+.svc-lead__top .chip-sim{font-size:max(8px,.72em)}
+.svc-lead__k{display:flex;align-items:center;gap:.6em;margin:0;font:500 .82em/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+.svc-lead__stages{list-style:none;margin:0;padding:0;display:grid;gap:4cqi}
+.svc-lead__st{display:flex;align-items:center;gap:.7em;padding:.7em .8em;border-radius:.8em;color:var(--muted);box-shadow:inset 0 0 0 1px var(--hair-2)}
+.svc-lead__st i{width:.6em;height:.6em;flex:none;border-radius:2px;box-shadow:inset 0 0 0 1px rgb(168 243 255 / .4)}
+.svc-lead__st.is-on{color:#fff;background:linear-gradient(160deg,rgb(0 229 255 / .2),rgb(69 93 255 / .16));box-shadow:inset 0 0 0 1px rgb(0 229 255 / .55),0 0 22px rgb(0 229 255 / .25)}
+.svc-lead__st.is-on i{background:var(--cyan);box-shadow:var(--glow-cyan)}
+.svc-lead__evt{display:flex;align-items:center;gap:.6em;margin:0;font:500 .78em/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+.svc-lead__ok{width:.9em;height:.9em;flex:none;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--cyan),0 0 10px rgb(0 229 255 / .5)}
+/* La etapa se enciende al entrar (sin JS o con movimiento reducido: encendida) */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    html:not([data-motion="reduced"]) .svc-lead{view-timeline-name:--lead}
+    html:not([data-motion="reduced"]) .svc-lead__st.is-on{animation:svc-lead-on linear both;animation-timeline:--lead;animation-range:entry 55% entry 85%}
+  }
+}
+@keyframes svc-lead-on{from{color:var(--muted);background:transparent;box-shadow:inset 0 0 0 1px var(--hair-2)}}
+.svc-lead__mini{display:none}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  /* teléfono de la placa vertical < 180 px: miniatura encendida de ChatSim en lugar de la tarjeta (la tabla dice el resto) */
+  .svc-back .svc-lead{border-radius:14%;background:none;box-shadow:none}
+  .svc-back .svc-lead__card{display:none}
+  .svc-back .svc-lead__mini{display:block}
+}
+
 /* ── 06b · Lo que sí / lo que no ── */
 .svc-two .it__body{grid-column:1 / -1}
 .svc-two .it__body > .svc-two__cols{width:100%;margin-top:var(--s-7)}
 
 /* ── 07 · Casos: cabecera del montaje (eyebrow · H2 · lede) y registro bajo el montaje ── */
-.svc-mt .mt__intro{display:flex;flex-direction:column;align-items:flex-start}
-.svc-mt .mt__intro > .eyebrow{margin-bottom:var(--s-4)}
-.svc-mt .mt__intro > .t-lede{margin-top:var(--s-5)}
-.svc-ledger{padding-top:0}
-.svc-ledger__body{grid-column:1 / -1}
-.svc-ledger__h{margin-bottom:var(--s-5)}
-.svc-ledger .svc-links{margin-top:var(--s-5)}
+/* El registro filtrado vive en el pie del montaje (dentro de #casos), a todo el ancho, después de la nota de fuente */
+.svc-mt--ledger .mt__links{grid-column:1 / -1;flex-direction:column;align-items:flex-start;justify-content:flex-start}
+.svc-ledger{position:relative;isolation:isolate;align-self:stretch;margin-top:var(--s-7)}
+.svc-ledger__h{margin:0 0 var(--s-5)}
 
 /* ── 08 · Integraciones (créditos por grupo) ── */
 .svc-int .it__body{grid-column:1 / -1}
@@ -915,10 +1203,25 @@ a.svc-int__logo:is(:hover,:focus-visible){color:#fff}
 @media (max-width:1023px){.svc-int__groups{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:767px){.svc-int__groups{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-6) var(--gap)}}
 
-/* ── 08b · Industrias (Still mini ×4) ── */
-.svc-ind__grid{grid-column:1 / -1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
-@media (max-width:1023px){.svc-ind__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:600px){.svc-ind__grid{grid-template-columns:1fr}.svc-ind .still--mini{aspect-ratio:16 / 8}}
+/* ── 08b · Industrias: filas de guion (sector · nombre · una línea · "Ver industria →" si existe), sin stills (R7) ── */
+.svc-ind__list{grid-column:1 / -1;margin:0;padding:0;list-style:none;border-bottom:1px solid var(--hair)}
+.svc-ind__row{border-top:1px solid var(--hair)}
+.svc-ind__link{display:grid;grid-template-columns:48px minmax(9rem,.7fr) minmax(0,1.2fr) minmax(0,1.6fr) auto;align-items:baseline;column-gap:var(--gap);
+  padding:20px 0 22px;color:inherit;text-decoration:none;transition:background var(--d-ui) var(--ease-ui)}
+a.svc-ind__link:is(:hover,:focus-visible){background:linear-gradient(90deg,rgb(0 229 255 / .05),transparent 70%)}
+.svc-ind__n{font:500 11px/1 var(--f-mono);letter-spacing:.14em;color:var(--cyan)}
+.svc-ind__sector{color:var(--text-2)}
+.svc-ind__t{margin:0;font:500 clamp(1.125rem,1rem + .4vw,1.375rem)/1.25 var(--f-display);letter-spacing:-.01em;color:var(--text)}
+.svc-ind__l{font:400 .9375rem/1.5 var(--f-body);color:var(--muted);text-wrap:pretty}
+.svc-ind__go{white-space:nowrap;color:var(--cyan)}
+.svc-ind__link--static .svc-ind__l{padding-right:0}
+@media (max-width:1023px){
+  .svc-ind__link{grid-template-columns:40px minmax(0,1fr) auto;row-gap:6px}
+  .svc-ind__sector{grid-column:2}
+  .svc-ind__t{grid-column:2}
+  .svc-ind__l{grid-column:2}
+  .svc-ind__go{grid-column:3;grid-row:1}
+}
 
 /* ── 09 · VKTOR™ ── */
 .svc-vk__rail{grid-column:1 / -1}
@@ -926,7 +1229,7 @@ a.svc-int__logo:is(:hover,:focus-visible){color:#fff}
 /* ── 10 · Inversión: una línea grande + 3 factores ── */
 .svc-price .it__body{grid-column:1 / -1}
 .svc-price__grid{width:100%;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:start}
-.svc-price__head{position:relative;grid-column:1 / span 6;display:flex;flex-direction:column;align-items:flex-start}
+.svc-price__head{grid-column:1 / span 6;display:flex;flex-direction:column;align-items:flex-start}   /* sin posición: el aura usa la escena completa */
 .svc-price__head > .eyebrow{margin-bottom:var(--s-4)}
 .svc-price__h{font-size:clamp(2.75rem,1rem + 5vw,7rem);max-width:9ch}
 .svc-price__body{grid-column:8 / span 5}
@@ -947,6 +1250,7 @@ a.svc-int__logo:is(:hover,:focus-visible){color:#fff}
 .svc-faq__foot{margin-top:var(--s-6);max-width:34ch;color:var(--text-2)}
 .svc-faq__foot a{color:var(--text);text-decoration:none;background:linear-gradient(var(--hair-cyan),var(--hair-cyan)) 0 100% / 100% 1px no-repeat}
 .svc-faq__cta{margin-top:var(--s-5)}
+.svc-faq .it__body > .faq{width:100%;align-self:stretch}   /* antes lo daba, por accidente, la regla #faq del inicio (sin ámbito) */
 @media (max-width:1023px){.svc-faq .it__head{position:relative;top:auto}}
 
 /* ── 12 · Sigue explorando (Still ×3) ── */

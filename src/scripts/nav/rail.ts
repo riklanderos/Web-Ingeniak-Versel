@@ -40,7 +40,9 @@ export function initRail() {
     const lenis = (window as any).__lenis;
     if (t && lenis?.scrollTo) {
       e.preventDefault();
-      lenis.scrollTo(t, { offset: 0, duration: 1.1 });
+      // El eyebrow de destino nunca queda bajo el encabezado de cristal (que vuelve al subir): alto del encabezado + 16 px.
+      const hdr = document.querySelector<HTMLElement>('header.hdr')?.offsetHeight ?? 72;
+      lenis.scrollTo(t, { offset: -(hdr + 16), duration: 1.1 });
       history.replaceState(null, '', `#${t.id}`);
       t.setAttribute('tabindex', '-1');
       setTimeout(() => t.focus({ preventScroll: true }), 1150);

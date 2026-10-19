@@ -1,0 +1,30 @@
+---
+// HomeStation · pieza de una estación del SystemRuntime del inicio (área páginas). Dos modos:
+//   panel → .anchor.anchor--panel sobre la parte libre de la superficie de cristal de la placa, con StationUI (ui) dentro.
+//   demo  → mini demo de móvil bajo el copy de la estación. Vive en el slot metric-<id> de PlateSequence, que está dentro
+//           de un <p>: solo elementos en línea (pedido a cine un slot demo-<id> fuera del <p> para usar <StationUI demo>).
+import StationUI from '../ui/StationUI.astro';
+import { anchorStyle } from '../cine/plate';
+
+// Móvil: el teléfono de Atender (< 180 px en la placa vertical) muestra la miniatura encendida de ChatSim (§3.7); las demás
+// superficies se apagan en la placa (su UI sería ilegible) y la demo va bajo el copy.
+interface Props { u: { id: string; kind: string; anchor: string; lead?: string; mobile?: boolean }; mode?: 'panel' | 'demo'; kanban?: string[] }
+const { u, mode = 'panel', kanban = ['Nuevo', 'Calificado', 'Cita agendada', 'Ganado'] } = Astro.props;
+---
+{mode === 'panel' ? (
+  <div class={`anchor anchor--panel hm-sui hm-sui--${u.id}`} data-anchor={u.anchor} data-m={u.kind === 'chat' && u.mobile ? undefined : 'none'} data-lock data-nosnippet style={anchorStyle(u.anchor)}>
+    <StationUI variant={u.id as any} anchor={false} chat="salud" />
+  </div>
+) : (
+  <span class={`hm-demo hm-demo--${u.kind} only-m`} data-nosnippet>
+    <span class="hm-demo__vis" aria-hidden="true">
+      <span class="chip-sim">SIMULACIÓN</span>
+      {u.kind === 'ads' && ['Meta', 'Google', 'TikTok'].map((n) => <span class="hm-demo__pill">{n}</span>)}
+      {u.kind === 'chat' && <><span class="hm-demo__b hm-demo__b--c"></span><span class="hm-demo__b hm-demo__b--k"></span></>}
+      {u.kind === 'kanban' && kanban.map((c, k) => <span class:list={['hm-demo__lane', k === 2 && 'is-hot']}>{c}</span>)}
+      {u.kind === 'flow' && ['Seguimiento', 'Recordatorio', 'Reporte'].map((t) => <span class="hm-demo__run">{t}</span>)}
+      {u.kind === 'dash' && [0, 1, 2, 3, 4, 5, 6].map(() => <span class="hm-demo__dot"></span>)}
+    </span>
+    {u.lead && <span class="hm-demo__cap">{u.lead}</span>}
+  </span>
+)}

@@ -137,7 +137,7 @@
   {
     "id": "G08",
     "q": "¿En cuánto tiempo veo resultados?",
-    "a": "Nuestros proyectos están planteados para dar resultados medibles en 60 a 90 días. Por ejemplo, una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días, y un e-commerce en la Ciudad de México logró {{metric:ecom-cpl}} en su costo por lead en 60 días. {{source}}.",
+    "a": "Nuestros proyectos están planteados para dar resultados medibles en 60 a 90 días. Por ejemplo, una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días, y un e-commerce en la Ciudad de México bajó su costo por lead ({{metric:ecom-cpl}}) en 60 días. {{source}}.",
     "short": "Los proyectos están planteados para dar resultados medibles en 60 a 90 días.",
     "pages": [
       "/",
@@ -194,7 +194,7 @@
   {
     "id": "G11",
     "q": "¿Cómo empiezo a trabajar con Ingeniak?",
-    "a": "Agenda una Discovery Session: una llamada 1:1 de 30 minutos por Google Meet, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden. Antes llenas un formulario de siete preguntas que toma dos minutos. Si hay sentido, después te enviamos una propuesta con alcance, tiempos y costo.",
+    "a": "Agenda una Discovery Session: una llamada 1:1 de 30 minutos por Google Meet, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden. Antes llenas un formulario de siete preguntas que toma dos minutos. Si tiene sentido para los dos, después te enviamos una propuesta con alcance, tiempos y costo.",
     "short": "Con una Discovery Session: llamada 1:1 de 30 minutos por Google Meet, gratuita y sin compromiso.",
     "pages": [
       "/",
@@ -253,7 +253,7 @@
   {
     "id": "G15",
     "q": "¿Qué resultados han logrado sus clientes?",
-    "a": "Algunos resultados confirmados: {{metric:dental-citas|full}} (clínica dental, Monterrey); tiempo de respuesta de {{metric:dental-respuesta}} (misma clínica); {{metric:ecom-cpl|full}} (e-commerce, CDMX); {{metric:retail-conversiones}} en conversiones con Kommo e IA (retail multimarca); {{metric:horeca-roas}} sostenido (HoReCa); {{metric:logistica-procesos|full}} (logística); {{metric:salud-citas-mes|full}} (salud), y {{metric:tiempo-operativo}} de tiempo operativo en los primeros 90 días. {{source}}.",
+    "a": "Algunos resultados confirmados: {{metric:dental-citas|full}} (clínica dental, Monterrey); tiempo de respuesta en WhatsApp: {{metric:dental-respuesta}} (misma clínica); {{metric:ecom-cpl|full}} (e-commerce, CDMX); {{metric:retail-conversiones}} en conversiones con Kommo e IA (retail multimarca); {{metric:horeca-roas}} sostenido (HoReCa); {{metric:logistica-procesos|full}} (logística); {{metric:salud-citas-mes|full}} (salud), y {{metric:tiempo-operativo}} de tiempo operativo en los primeros 90 días. {{source}}.",
     "short": "Más citas, respuestas en segundos, menor costo por lead y más conversiones, cada cifra con su sector y su plazo.",
     "pages": [
       "/preguntas-frecuentes/"
@@ -265,8 +265,8 @@
   {
     "id": "W01",
     "q": "¿Qué resultados ha dado un agente de IA en WhatsApp?",
-    "a": "En una clínica dental de Monterrey, el agente de IA bajó el tiempo de respuesta en WhatsApp de {{metric:dental-respuesta}} y la clínica logró {{metric:dental-citas}} más citas en 90 días. El agente califica a cada paciente, agenda su cita y le da seguimiento sin intervención humana, a cualquier hora del día. {{source}}.",
-    "short": "En una clínica dental de Monterrey: respuesta de {{metric:dental-respuesta}} y {{metric:dental-citas}} más citas en 90 días.",
+    "a": "Una clínica dental de Monterrey logró {{metric:dental-citas}} más citas en 90 días con un agente de IA en WhatsApp. Su tiempo de respuesta por WhatsApp: {{metric:dental-respuesta}}. El agente califica a cada paciente y agenda su cita; cuando hace falta, le pasa la conversación a una persona del equipo. {{source}}.",
+    "short": "Una clínica dental de Monterrey logró {{metric:dental-citas}} más citas en 90 días. Tiempo de respuesta: {{metric:dental-respuesta}}.",
     "pages": [
       "/servicios/agentes-ia-whatsapp/",
       "/industrias/salud/",
@@ -280,7 +280,7 @@
   {
     "id": "W02",
     "q": "¿El agente se conecta a mi CRM?",
-    "a": "Sí. Registra cada conversación y cada lead en Kommo o GoHighLevel, con su etapa, para que tu equipo vea todo en un solo lugar. También puede mover al prospecto de etapa, crear tareas y avisar a la persona indicada cuando hace falta intervenir. Ninguna conversación se queda en el chat sin registro.",
+    "a": "Sí. Registra cada conversación y cada lead en Kommo o GoHighLevel, con su etapa, para que tu equipo vea todo en un solo lugar. También puede mover al prospecto de etapa, crear tareas y avisar a la persona indicada cuando hace falta intervenir. Cada conversación queda registrada en tu CRM.",
     "short": "Sí. Registra cada conversación y cada lead en Kommo o GoHighLevel, con su etapa.",
     "pages": [
       "/servicios/agentes-ia-whatsapp/",
@@ -729,7 +729,8 @@
     "categoria": "Industrias",
     "validar": true,
     "editada": false,
-    "nueva": true
+    "nueva": true,
+    "_aprobacion": "Pregunta propia de salud (R2: al menos 4 por industria). Redacción nueva: hoy alimenta la definición de /industrias/salud/ (DefinitionBlock), pero no entra al FAQ ni al FAQPage hasta que una persona del cliente la apruebe; después el orquestador suma su id a sitemap.json → ind-salud.faq y aquí pasa a validar: false."
   },
   {
     "id": "S02",
@@ -742,7 +743,8 @@
     "categoria": "Industrias",
     "validar": true,
     "editada": false,
-    "nueva": true
+    "nueva": true,
+    "_aprobacion": "Pregunta propia de salud (R2: al menos 4 por industria). Redacción nueva: no se publica en el FAQ ni en el FAQPage hasta que una persona del cliente la apruebe; después el orquestador suma su id a sitemap.json → ind-salud.faq y aquí pasa a validar: false."
   },
   {
     "id": "S03",
@@ -755,7 +757,8 @@
     "categoria": "Industrias",
     "validar": true,
     "editada": false,
-    "nueva": true
+    "nueva": true,
+    "_aprobacion": "Pregunta propia de salud (R2: al menos 4 por industria). Redacción nueva: no se publica en el FAQ ni en el FAQPage hasta que una persona del cliente la apruebe; después el orquestador suma su id a sitemap.json → ind-salud.faq y aquí pasa a validar: false."
   },
   {
     "id": "S04",
@@ -768,6 +771,7 @@
     "categoria": "Industrias",
     "validar": true,
     "editada": false,
-    "nueva": true
+    "nueva": true,
+    "_aprobacion": "Pregunta propia de salud (R2: al menos 4 por industria). Redacción nueva: no se publica en el FAQ ni en el FAQPage hasta que una persona del cliente la apruebe; después el orquestador suma su id a sitemap.json → ind-salud.faq y aquí pasa a validar: false."
   }
 ]

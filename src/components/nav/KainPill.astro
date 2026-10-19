@@ -1,14 +1,45 @@
 ---
 // KainPill — píldora "Escríbele a Kain" en escritorio (≥ 768 px), abajo a la derecha (ESPEC §4.6, F21).
-// Visible desde el segundo viewport y SOLO mientras el encabezado está oculto (html[data-hdr="hidden"]).
-// Se oculta en secuencias fijadas (html[data-sala]) y con el cierre visible (html[data-dawn-visible]). Nunca azul.
-// Kain aparece de cuerpo completo (regla de marca), en miniatura.
+// Visible desde el segundo viewport y SOLO mientras el encabezado está oculto (html[data-hdr-state="hidden"]).
+// Se retira (CSS en nav.css + scripts/nav/kpill.ts y persist.ts):
+//   secuencias fijadas (html[data-sala]) · cierre o final del footer en pantalla · #kain, #casos o #cta-final a la vista
+//   (html[data-kpill-off]: ya ofrecen "Escríbele a Kain") · si su caja caería sobre texto o UI del contenido
+//   (html[data-kpill-cover]) · con foco de teclado en <main> · durante la firma (html.co). Nunca azul.
+// < 1600 px: variante de 48 px solo con el avatar (el texto queda en el nombre accesible).
+// Kain aparece de cuerpo completo (regla de marca), en miniatura (96 px de alto, ≤ 5 KB):
+//   1) /img/kain/kain-avatar-96.webp si el orquestador ya lo exportó (tarea 10);
+//   2) si no, se deriva al compilar del recorte de cuerpo completo (kain-presenta.webp, 560 × 996, 49 KB) con sharp
+//      → WebP de ≈ 3 KB en línea (data:), sin pedir el recorte grande al navegador.
+import fs from 'node:fs';
+import path from 'node:path';
 import { SITE } from '../../lib/site';
 interface Props { waHref?: string }
 const { waHref = SITE.waBase } = Astro.props;
+const AVATAR = '/img/kain/kain-avatar-96.webp';
+const SOURCE = '/img/kain/kain-presenta.webp';
+const pub = (u: string) => path.join(process.cwd(), 'public', u);
+const hasAvatar = (() => { try { return fs.existsSync(pub(AVATAR)); } catch { return false; } })();
+
+let src = AVATAR;
+let w = 48, h = 48;
+if (!hasAvatar) {
+  const g = globalThis as any;
+  g.__kpillAvatar ??= (async () => {
+    try {
+      const sharp = (await import('sharp')).default;
+      const { data, info } = await sharp(pub(SOURCE)).trim().resize({ height: 96 })
+        .webp({ quality: 78, alphaQuality: 80, effort: 6 }).toBuffer({ resolveWithObject: true });
+      return { src: `data:image/webp;base64,${data.toString('base64')}`, w: Math.round(info.width / 2), h: Math.round(info.height / 2) };
+    } catch { return null; }
+  })();
+  const a = await g.__kpillAvatar;
+  if (a) ({ src, w, h } = a);
+}
 ---
 <a class="kpill" href={waHref} target="_blank" rel="noopener" data-kpill>
-  <span class="kpill__kain" aria-hidden="true"><img src="/img/kain/kain-presenta.webp" alt="" width="560" height="996" loading="lazy" decoding="async" /></span>
+  <span class="kpill__kain" aria-hidden="true">
+    <img src={src} alt="" width={w} height={h} decoding="async" fetchpriority="low" loading={src.startsWith('data:') ? undefined : 'lazy'} />
+  </span>
   <span class="kpill__txt">
     <span class="kpill__t">Escríbele a Kain</span>
     <span class="kpill__s"><span class="dot-live" aria-hidden="true"></span>responde 24/7</span>

@@ -1,0 +1,20 @@
+{
+  "caso-retail-hero": {
+    "alt": "Directora comercial de una tienda multimarca en el piso de ventas de noche (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/caso-retail-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.69, "fy": 0.45, "fadeFrom": 0.9 },
+    "m": { "src": "/img/cine/caso-retail-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.52, "fy": 1, "subjTop": 0.44 },
+    "layout": "subject-right",
+    "safe": { "d": [[0.04, 0.06, 0.55, 0.36], [0.04, 0.36, 0.42, 0.78], [0.04, 0.78, 0.56, 0.97]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.59, 0.16, 0.80, 0.99], "m": [0.40, 0.43, 0.65, 0.99] },
+    "anchors": {
+      "rostro": { "d": [0.680, 0.290], "m": [0.506, 0.508] },
+      "mano": { "d": [0.622, 0.835], "m": [0.431, 0.816] },
+      "fig": { "d": [0.555, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.900], "m": [0.500, 0.920] }
+    },
+    "leak": { "d": [0.64, 0.26], "m": [0.45, 0.50] },
+    "grade": 0,
+    "creationIds": { "desktop": "SyDepcdUb8", "mobile": "N2mvhvt6D9", "mobileUpscale": "ksz83hA16B" }
+  }
+}

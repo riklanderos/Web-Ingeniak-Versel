@@ -1,0 +1,24 @@
+{
+  "home-sistema-4-automatizar": {
+    "alt": "Kain, el agente de IA de Ingeniak, toca un nodo de una red de luz que representa procesos automatizados",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/home-sistema-4-automatizar", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.72, "fy": 0.5, "fadeFrom": 0.94 },
+    "m": { "src": "/img/cine/home-sistema-4-automatizar-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.5, "fy": 1, "subjTop": 0.45 },
+    "layout": "subject-right",
+    "safe": { "d": [[0.04, 0.06, 0.46, 0.97], [0.46, 0.84, 0.66, 0.97]], "m": [[0.04, 0.03, 0.96, 0.43]] },
+    "subject": { "d": [0.64, 0.08, 0.92, 0.95], "m": [0.21, 0.44, 0.76, 0.90] },
+    "anchors": {
+      "pecho": { "d": [0.781, 0.456], "m": [0.513, 0.648], "scrW": 0.041 },
+      "mano": { "d": [0.672, 0.405], "m": [0.415, 0.625] },
+      "rostro": { "d": [0.780, 0.277], "m": [0.513, 0.553] },
+      "nodo": { "d": [0.665, 0.352], "m": [0.403, 0.595] },
+      "constelacion": { "d": [0.500, 0.130, 0.480, 0.530], "m": [0.221, 0.470, 0.523, 0.285] },
+      "fig": { "d": [0.680, 0.860], "m": null },
+      "piso": { "d": [0.500, 0.776], "m": [0.500, 0.855] },
+      "superficie": { "d": [0.480, 0.700, 0.170, 0.120], "m": null }
+    },
+    "leak": { "d": [0.84, 0.30] },
+    "grade": 0,
+    "creationIds": { "desktop": "s7TeTV9l8e", "mobile": "gOMoWTeSXO", "mobileUpscale": "vQyWS96a47" }
+  }
+}

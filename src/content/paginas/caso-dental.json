@@ -4,16 +4,20 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-18",
+  "actualizado": "2026-10-19",
   "pendientes": [
-    "publishGate (R2): ficha, punto de partida e implementación no están confirmados por escrito. Mientras tanto la página sale como 'caso breve' (noindex,follow) con solo lo confirmado; el texto ya está escrito para no necesitar esos datos.",
-    "CRM que usa la clínica (Kommo o GoHighLevel): sin confirmar. El nodo 'CRM' del diagrama va con confirmed=false y no se pinta.",
-    "Herramientas y plazo de implementación: sin confirmar; la ficha los omite.",
-    "Contra qué periodo se compara '3.2× más citas en 90 días' (antes/después y misma ventana): confirmar para poder explicarlo en el texto.",
-    "Situación inicial con números de la clínica (citas al mes antes, volumen de mensajes, tamaño del equipo): sin confirmar; el texto no los menciona.",
-    "Hitos reales del proyecto por fase de VKTOR™: sin confirmar; la sección muestra las fases genéricas aplicadas a una clínica y enlaza a /metodologia/.",
-    "Testimonio: no existe aprobación escrita; la sección no se renderiza.",
-    "Canales además de WhatsApp (Instagram, web): sin confirmar para este caso; el texto solo habla de WhatsApp."
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · publishGate (R2): ficha, punto de partida e implementación tienen que confirmarse por escrito. Mientras no lo estén, la página sale como 'caso breve' (noindex,follow) con solo lo confirmado, y el copy no lleva publishGate.ok. ¿Nos confirmas esos tres bloques o aceptas el caso breve?",
+    "CAMBIO DE AFIRMACIÓN · implementacion: se quitaron del H2 y del lede las dos frases que decían que el agente trabaja sin que intervenga nadie del equipo. No están confirmados y contradicen el paso a una persona. Ahora: H2 'Un agente que atiende, califica y agenda, a cualquier hora del día.' y lede '…que contesta en segundos, califica a cada paciente, le agenda su cita y le da seguimiento.' (respaldado por la cifra dental-respuesta). El brief de D sí lo decía: si la clínica de verdad opera sin nadie revisando, confírmalo por escrito y lo decimos con ese dato.",
+    "CAMBIO DE TEXTO · CTA primario de portada y cierre: 'Agenda tu Discovery Session' (§2.9 y regla de marca; antes 'Quiero un sistema así: agenda tu Discovery'). La idea queda en el eyebrow del cierre: 'Un sistema así para tu negocio'.",
+    "CAMBIO DE TEXTO · resultado.quote y ficha: la cifra dental-respuesta va como rótulo ('Su tiempo de respuesta: …'), sin flecha dentro de la frase. Cuando exista el token de prosa (ui #9 / orquestador #8) vuelve la oración de D: '…y bajó su tiempo de respuesta en WhatsApp de 8 minutos a 12 segundos.'",
+    "PREGUNTA AL CLIENTE · CRM que usa la clínica (Kommo o GoHighLevel): sin confirmar. El nodo 'CRM' del diagrama va con confirmed=false y no se pinta.",
+    "PREGUNTA AL CLIENTE · herramientas y plazo de implementación: sin confirmar; la ficha los omite.",
+    "PREGUNTA AL CLIENTE · ¿contra qué periodo se compara 'dental-citas' (más citas en 90 días: antes y después, misma ventana)? Hace falta para explicarlo en el texto.",
+    "PREGUNTA AL CLIENTE · situación inicial con números de la clínica (citas al mes antes, volumen de mensajes, tamaño del equipo): sin confirmar; el texto no los menciona.",
+    "PREGUNTA AL CLIENTE · hitos reales del proyecto por fase de VKTOR™: sin confirmar; la sección muestra las fases genéricas aplicadas a una clínica y enlaza a /metodologia/.",
+    "PREGUNTA AL CLIENTE · canales además de WhatsApp (Instagram, web) en este caso: sin confirmar; el texto solo habla de WhatsApp.",
+    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
   ],
   "sections": {
     "hero": {
@@ -26,7 +30,7 @@
       },
       "chips": ["Salud", "Monterrey, N.L.", "Agente de IA en WhatsApp", "90 días"],
       "lede": "Tiempo de respuesta en WhatsApp: {{metric:dental-respuesta}}, de día y de noche.",
-      "ctaPrimary": { "label": "Quiero un sistema así: agenda tu Discovery", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio."
@@ -44,7 +48,7 @@
         { "term": "Canal", "value": "WhatsApp" },
         { "term": "Horario de atención", "value": "24/7" },
         { "term": "Ventana de medición", "value": "90 días" },
-        { "term": "Cifras", "value": "{{metric:dental-citas|full}} · respuesta de {{metric:dental-respuesta}}" }
+        { "term": "Cifras", "value": "{{metric:dental-citas|full}} · tiempo de respuesta: {{metric:dental-respuesta}}" }
       ],
       "deck": "Una clínica dental de Monterrey tardaba ocho minutos en contestar un WhatsApp. Con un agente de IA atendiendo, calificando y agendando a cualquier hora, en 90 días tuvo {{metric:dental-citas}} más citas.",
       "byline": "Por el equipo de Ingeniak",
@@ -82,8 +86,8 @@
       "_componente": "SystemFlow (los nodos con confirmed=false no se publican)",
       "rail": "Solución",
       "eyebrow": "Qué implementamos",
-      "h2": { "text": "Un agente que atiende, califica y agenda", "soft": "sin intervención humana." },
-      "lede": "Un agente conversacional en el WhatsApp de la clínica que califica a cada paciente, le agenda su cita y le da seguimiento, sin que nadie del equipo tenga que intervenir.",
+      "h2": { "text": "Un agente que atiende, califica y agenda,", "soft": "a cualquier hora del día." },
+      "lede": "Un agente conversacional en el WhatsApp de la clínica que contesta en segundos, califica a cada paciente, le agenda su cita y le da seguimiento.",
       "nodes": [
         { "label": "WhatsApp de la clínica", "line": "El paciente escribe a cualquier hora.", "logos": ["whatsapp"], "confirmed": true },
         { "label": "Agente de IA (Kain)", "line": "Responde, califica y propone horarios.", "confirmed": true },
@@ -100,7 +104,7 @@
       "rail": "Resultado",
       "eyebrow": "Resultado",
       "h2": { "text": "El resultado,", "soft": "en una oración." },
-      "quote": "Una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días, y su tiempo de respuesta en WhatsApp pasó de {{metric:dental-respuesta}}.",
+      "quote": "Una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días con un agente de IA en WhatsApp. Su tiempo de respuesta: {{metric:dental-respuesta}}.",
       "sourceNote": true,
       "ui": {
         "_nota": "Casillas de agenda que se encienden una a una sobre el panel de cristal. Llevan SIMULACIÓN y data-nosnippet.",
@@ -159,15 +163,15 @@
     "cta-final": {
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
-      "eyebrow": "El primer paso no cuesta nada",
+      "eyebrow": "Un sistema así para tu negocio",
       "h2": { "text": "¿Cuántas citas más cabrían en tu agenda?", "soft": "Lo vemos en 30 minutos." },
       "lede": "En la Discovery Session revisamos cómo llega hoy un cliente a tu agenda y te decimos qué parte de este sistema aplica a tu negocio.",
-      "ctaPrimary": { "label": "Quiero un sistema así: agenda tu Discovery", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio."
       },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "micro": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet"
     }
   }
 }

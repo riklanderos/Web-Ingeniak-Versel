@@ -39,13 +39,13 @@ const cur = (h: string) => (h === current ? 'page' : undefined);
       <ul class="msheet__groups" role="list">
         {groups.map((g, gi) => (
           <li class="acc" data-acc style={`--i:${gi + 1}`}>
-            <h2 class="acc__h">
+            <p class="acc__h">
               <button class="acc__btn" type="button" aria-expanded="false" aria-controls={`acc-${g.key}`} id={`accb-${g.key}`}>
                 <span class="acc__label">{g.label}</span>
                 <span class="acc__count" aria-hidden="true">{String(g.key === 'servicios' ? g.count : g.items!.length).padStart(2, '0')}</span>
                 <span class="acc__icon" aria-hidden="true"></span>
               </button>
-            </h2>
+            </p>
             <div class="acc__panel" id={`acc-${g.key}`} role="region" aria-labelledby={`accb-${g.key}`}>
               <div class="acc__in">
                 {g.key === 'servicios' ? (

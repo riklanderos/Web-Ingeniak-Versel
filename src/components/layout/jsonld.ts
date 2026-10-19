@@ -95,6 +95,10 @@ function childrenOf(url: string) {
 
 export type GraphOptions = {
   faq?: FaqItem[];
+  /** Nodo FAQPage ya armado (faqPageLd de ui-data: mismo filtro y texto que el FAQAccordion visible). Manda sobre `faq`. */
+  faqNode?: Record<string, any> | null;
+  /** Article/BlogPosting → about (p. ej. el Service del caso, CaseTemplate). */
+  articleAbout?: Record<string, any> | Record<string, any>[];
   title: string;
   description: string;
   ogImage: string;
@@ -196,11 +200,13 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
       author: { '@id': ORG_ID },
       publisher: { '@id': ORG_ID },
     };
+    if (o.articleAbout) art.about = o.articleAbout;
     if (o.datePublished) art.datePublished = o.datePublished;
     if (o.dateModified ?? o.datePublished) art.dateModified = o.dateModified ?? o.datePublished;
     graph.push(art);
   }
-  if (o.faq?.length && (has('FAQPage') || o.faq.length)) graph.push(faqPage(o.faq, page.url));
+  if (o.faqNode) graph.push(o.faqNode);
+  else if (o.faq?.length) graph.push(faqPage(o.faq, page.url));
   if (o.extra?.length) graph.push(...o.extra);
   return graph;
 }

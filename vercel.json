@@ -1,0 +1,263 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/blog/7-errores-implementacion-ia-empresa-evitar",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/7-errores-implementacion-ia-empresa-evitar/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/como-elegir-consultora-ia-mexico-checklist",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/como-elegir-consultora-ia-mexico-checklist/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/aplicaciones-ia-empresas-2026",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/aplicaciones-ia-empresas-2026/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/servicios/agentes-ia",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "statusCode": 301
+    },
+    {
+      "source": "/servicios/agentes-ia/",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "statusCode": 301
+    },
+    {
+      "source": "/agentes-ia-whatsapp",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "statusCode": 301
+    },
+    {
+      "source": "/agentes-ia-whatsapp/",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "statusCode": 301
+    },
+    {
+      "source": "/servicios/crm-inteligente",
+      "destination": "/servicios/crm-con-ia/",
+      "statusCode": 301
+    },
+    {
+      "source": "/servicios/crm-inteligente/",
+      "destination": "/servicios/crm-con-ia/",
+      "statusCode": 301
+    },
+    {
+      "source": "/licenciaskommo",
+      "destination": "/kommo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/licenciaskommo/",
+      "destination": "/kommo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/n8n-empresas-automatizaciones-ahorrar-tiempo",
+      "destination": "/servicios/automatizacion-n8n/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/n8n-empresas-automatizaciones-ahorrar-tiempo/",
+      "destination": "/servicios/automatizacion-n8n/",
+      "statusCode": 301
+    },
+    {
+      "source": "/servicios/contenido",
+      "destination": "/servicios/branding/",
+      "statusCode": 301
+    },
+    {
+      "source": "/servicios/contenido/",
+      "destination": "/servicios/branding/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/agentes-ia-conversacional-casos-roi",
+      "destination": "/casos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/agentes-ia-conversacional-casos-roi/",
+      "destination": "/casos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/automatizar-ventas-b2b-ia-crm-caso-roi",
+      "destination": "/casos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/automatizar-ventas-b2b-ia-crm-caso-roi/",
+      "destination": "/casos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/metodologia-vktor-implementar-ia-roi-90-dias",
+      "destination": "/metodologia/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/metodologia-vktor-implementar-ia-roi-90-dias/",
+      "destination": "/metodologia/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/como-implementar-ia-empresa-guia-practica-2026",
+      "destination": "/metodologia/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/como-implementar-ia-empresa-guia-practica-2026/",
+      "destination": "/metodologia/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/roi-inteligencia-artificial-pyme-metricas-medir",
+      "destination": "/metodologia/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/roi-inteligencia-artificial-pyme-metricas-medir/",
+      "destination": "/metodologia/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/cuanto-cuesta-implementar-ia-empresa-mexico-2026",
+      "destination": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/cuanto-cuesta-implementar-ia-empresa-mexico-2026/",
+      "destination": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/kommo-vs-gohighlevel-vs-hubspot-comparativo-2026",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/kommo-vs-gohighlevel-vs-hubspot-comparativo-2026/",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/kommo-vs-hubspot-cual-elegir",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/kommo-vs-hubspot-cual-elegir/",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/agente-ia-vs-chatbot-tradicional-diferencias",
+      "destination": "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/agente-ia-vs-chatbot-tradicional-diferencias/",
+      "destination": "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/agentes-ia-whatsapp-business-guia-2026",
+      "destination": "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/agentes-ia-whatsapp-business-guia-2026/",
+      "destination": "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "statusCode": 301
+    },
+    {
+      "source": "/cotiza",
+      "destination": "/discovery/",
+      "statusCode": 301
+    },
+    {
+      "source": "/cotiza/",
+      "destination": "/discovery/",
+      "statusCode": 301
+    }
+  ],
+  "headers": [
+    {
+      "source": "/_astro/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/img/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/fx/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/((?!_astro/|img/|fonts/|fx/|video/).*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/dev/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
+  ]
+}

@@ -17,7 +17,8 @@ export const AURA_ONDAS = auraOndas.src;
 export type Layout = 'subject-right' | 'subject-left' | 'subject-center';
 export type Fallback = string | { plate: string; mirror?: boolean; note?: string } | null | undefined;
 type XY = [number, number];
-type Box = [number, number, number, number];
+type Box = [number, number, number, number];   // [x0, y0, x1, y1] (subject, safe)
+export type Box4 = [number, number, number, number];  // [x, y, w, h] (anclas de caja)
 
 export interface Resolved {
   requested: string;
@@ -29,7 +30,9 @@ export interface Resolved {
   alt: string;
   d: { src: string; w: number; h: number; ar: number; fx: number; fy: number; fadeFrom: number };
   m: { src: string; w: number; h: number; ar: number; fx: number; fy: number; subjTop: number };
-  anchors: Record<string, { d: XY | null; m: XY | null; scrW?: number }>;
+  /** d/m: punto del ancla (en las de caja, su esquina superior izquierda ya espejada); box: [x, y, w, h] de las anclas
+   *  de caja (pantalla, telefono, tableta, superficie…), espejada como 1 − x − w. */
+  anchors: Record<string, { d: XY | null; m: XY | null; box?: { d: Box4 | null; m: Box4 | null }; scrW?: number }>;
   subject: { d: Box | null; m: Box | null };
   leak: { d: XY; m: XY };
   grade: number;
@@ -100,10 +103,14 @@ export function resolvePlate(key: string, o: ResolveOpts = {}): Resolved {
 
   const anchors: Resolved['anchors'] = {};
   if (p?.anchors) {
+    const bx = (v: any): Box4 | null => (Array.isArray(v) && v.length >= 4 ? [mirror ? r4(1 - v[0] - v[2]) : v[0], v[1], v[2], v[3]] : null);
+    const pt = (v: any): XY | null => (Array.isArray(v) && v.length >= 2 ? (v.length >= 4 ? [bx(v)![0], v[1]] : [fx(v[0], mirror), v[1]]) : null);
     for (const [name, a] of Object.entries<any>(p.anchors)) {
+      const isBox = (a?.d?.length ?? 0) >= 4 || (a?.m?.length ?? 0) >= 4;
       anchors[name] = {
-        d: a?.d ? [fx(a.d[0], mirror), a.d[1]] : null,
-        m: a?.m ? [fx(a.m[0], mirror), a.m[1]] : null,
+        d: pt(a?.d),
+        m: pt(a?.m),
+        box: isBox ? { d: bx(a?.d), m: bx(a?.m) } : undefined,
         scrW: a?.scrW,
       };
     }
@@ -140,12 +147,17 @@ export function resolvePlate(key: string, o: ResolveOpts = {}): Resolved {
     if (a.d) anchorVars += `--A-${name}-x:${a.d[0]};--A-${name}-y:${a.d[1]};`;
     if (a.m) anchorVars += `--A-${name}-xm:${a.m[0]};--A-${name}-ym:${a.m[1]};`;
     else mnull.push(name);
+    if (a.box?.d) anchorVars += `--A-${name}-w:${a.box.d[2]};--A-${name}-h:${a.box.d[3]};`;
+    if (a.box?.m) anchorVars += `--A-${name}-wm:${a.box.m[2]};--A-${name}-hm:${a.box.m[3]};`;
   }
+  // Caja del sujeto (las máscaras laterales del ultra ancho nunca lo tocan, §3.5) y su franja en la placa vertical.
+  const sd = fbox(p?.subject?.d, mirror), sm = fbox(p?.subject?.m, mirror);
+  const subjVars = (sd ? `--sx0:${sd[0]};--sx1:${sd[2]};` : '') + (sm ? `--sx0-m:${sm[0]};--sx1-m:${sm[2]};--sy0-m:${sm[1]};--sy1-m:${sm[3]};` : '');
   const vars =
     `--ar-d:${d.ar};--fx-d:${d.fx};--fy-d:${d.fy};--ar-m:${m.ar};--fx-m:${m.fx};--fy-m:${m.fy};` +
     `--fade-from:${d.fadeFrom};--subj-top-m:${m.subjTop};--cx-d:${cxd[0]};--cy-d:${cxd[1]};--cx-m:${cxm[0]};--cy-m:${cxm[1]};` +
     `--lx-d:${r4(leakD[0])};--ly-d:${r4(leakD[1])};--lx-m:${r4(leakM[0])};--ly-m:${r4(leakM[1])};--grade:${p ? (p.grade ?? 0.28) : 0};` +
-    `--scr-w:${pecho.scrW ?? 0.03};` + anchorVars;
+    `--scr-w:${pecho.scrW ?? 0.03};` + subjVars + anchorVars;
 
   return {
     requested: key, id, aura, usedFallback, mirror, layout,
@@ -161,7 +173,15 @@ export function resolvePlate(key: string, o: ResolveOpts = {}): Resolved {
  *  Úsalo dentro del slot "anchors" de ImageSection: <div class="anchor" data-anchor="telefono" style={anchorStyle('telefono')}>
  *  Si el ancla es null en la placa vertical, la sección la oculta en móvil (R4) y su versión en línea va en el texto. */
 export function anchorStyle(name: string, extra = ''): string {
-  return `--ax:var(--A-${name}-x);--ay:var(--A-${name}-y);--ax-m:var(--A-${name}-xm,var(--A-${name}-x));--ay-m:var(--A-${name}-ym,var(--A-${name}-y));${extra}`;
+  return `--ax:var(--A-${name}-x);--ay:var(--A-${name}-y);--ax-m:var(--A-${name}-xm,var(--A-${name}-x));--ay-m:var(--A-${name}-ym,var(--A-${name}-y));` +
+    `--aw:var(--A-${name}-w);--ah:var(--A-${name}-h);--aw-m:var(--A-${name}-wm,var(--A-${name}-w));--ah-m:var(--A-${name}-hm,var(--A-${name}-h));${extra}`;
+}
+
+/** Punto interior de un ancla de caja (fracciones de la caja; por defecto el centro). Para anclas de punto, el punto. */
+export function boxPoint(a: Resolved['anchors'][string] | undefined, u = 0.5, v = 0.5): { d: XY | null; m: XY | null } {
+  if (!a) return { d: null, m: null };
+  const at = (b: Box4 | null | undefined, p: XY | null): XY | null => (b ? [r4(b[0] + b[2] * u), r4(b[1] + b[3] * v)] : p);
+  return { d: at(a.box?.d, a.d), m: at(a.box?.m, a.m) };
 }
 
 /** Valores de cifras para escenas que derivan una visual del número confirmado (CaseFigure). */

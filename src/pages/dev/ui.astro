@@ -8,6 +8,8 @@ import ScriptList from '../../components/ui/ScriptList.astro';
 import Still from '../../components/ui/Still.astro';
 import ResultsLedger from '../../components/ui/ResultsLedger.astro';
 import ChatSim from '../../components/ui/ChatSim.astro';
+import ChatTabs from '../../components/ui/ChatTabs.astro';
+import StationUI from '../../components/ui/StationUI.astro';
 import ProductWindow from '../../components/ui/ProductWindow.astro';
 import PainList from '../../components/ui/PainList.astro';
 import TwoColumnScript from '../../components/ui/TwoColumnScript.astro';
@@ -20,12 +22,13 @@ import Credits from '../../components/ui/Credits.astro';
 import KommoBadge from '../../components/ui/KommoBadge.astro';
 import EditorNote from '../../components/ui/EditorNote.astro';
 import Icon from '../../components/ui/Icon.astro';
+import Copy from '../../components/ui/Copy.astro';
 import Prose from '../../components/content/Prose.astro';
 import Figure from '../../components/content/Figure.astro';
 import Quote from '../../components/content/Quote.astro';
 import AuthorCard from '../../components/content/AuthorCard.astro';
 import VideoPoster from '../../components/content/VideoPoster.astro';
-import { nav, pages, waHref, SITE, getPage } from '../../lib/site';
+import { nav, pages, waHref, SITE, getPage, getCopy } from '../../lib/site';
 import { PRICE_FROM_CAP } from '../../lib/metrics';
 
 const heroPlate = (url: string) => (pages as any[]).find((p) => p.url === url.split('#')[0])?.sections?.[0]?.plate?.id;
@@ -38,7 +41,7 @@ const servicios = nav.megaMenu[0].columns.map((c: any) => ({
 const ICONS = ['menu', 'close', 'search', 'arrow', 'external', 'whatsapp', 'play', 'pause', 'chevron', 'check', 'plus', 'minus', 'calendar', 'phone', 'mail', 'location'];
 const GLYPHS = ['atraer', 'atender', 'organizar', 'automatizar', 'medir'];
 const wa = waHref('Hola Kain, vi la vitrina de componentes y quiero platicar.');
-const INDEX = ['Btn', 'Metric', 'SumarioCover', 'ScriptList', 'Still', 'ResultsLedger', 'ChatSim', 'ProductWindow', 'PainList', 'TwoColumnScript', 'VktorRail', 'SystemFlow', 'DefinitionBlock', 'FAQAccordion', 'EntitySheet', 'Credits', 'KommoBadge', 'EditorNote', 'Icon', 'Prose', 'AuthorCard', 'VideoPoster'];
+const INDEX = ['Btn', 'Metric', 'SumarioCover', 'ScriptList', 'Still', 'ResultsLedger', 'ChatSim', 'StationUI', 'ProductWindow', 'PainList', 'TwoColumnScript', 'VktorRail', 'SystemFlow', 'DefinitionBlock', 'FAQAccordion', 'EntitySheet', 'Credits', 'KommoBadge', 'EditorNote', 'Icon', 'Prose', 'AuthorCard', 'VideoPoster'];
 const sec = (n: string) => n.toLowerCase();
 const page = { ...getPage('/'), id: 'dev-ui', url: '/dev/ui/', canonical: 'https://ingeniak.mx/dev/ui/', indexable: false } as any;
 ---
@@ -92,6 +95,10 @@ const page = { ...getPage('/'), id: 'dev-ui', url: '/dev/ui/', canonical: 'https
       <div class="dv-col">
         <p class="t-label dv-k">inline</p>
         <p class="dv-sentence">En una clínica dental de Monterrey, la respuesta por WhatsApp pasó de <Metric id="dental-respuesta" variant="inline" link />, y la agenda creció <Metric id="dental-citas" variant="inline" label />.</p>
+        <p class="t-label dv-k dv-k--gap">inline · prose · label + ctx + fn · token <code>{"{{metric:ID|prose}}"}</code></p>
+        <p class="dv-sentence" data-dv-prose>Con Kain, el tiempo de respuesta por WhatsApp bajó <Metric id="dental-respuesta" variant="inline" prose />.</p>
+        <Copy as="p" class="dv-sentence" text="Desde el copy: la respuesta pasó {{metric:dental-respuesta|prose}} y hay {{metric:sistemas|full}}." />
+        <p class="dv-after"><Metric id="dental-citas" variant="inline" label ctx fn="1" /></p>
         <p class="t-label dv-k dv-k--gap">cover</p>
         <div class="dv-stack"><Metric id="ecom-cpl" variant="cover" link ctx /><Metric id="horeca-roas" variant="cover" link ctx /></div>
       </div>
@@ -182,6 +189,55 @@ const page = { ...getPage('/'), id: 'dev-ui', url: '/dev/ui/', canonical: 'https
         </div>
       </div>
     </div>
+    <!-- Modos nuevos: registrado estrecho, miniatura, control externo, pestañas fuera, notas -->
+    <div class="frame dv__body dv__body--1">
+      <div class="dv-modes">
+        <div class="dv-mode">
+          <p class="t-label dv-k">registered · panel de 200 px (barra compacta, pausa en la esquina)</p>
+          <div class="dv-plate"><img src="/img/cine/home-sistema-2-atender-1280.webp" alt="" width="1280" height="714" loading="lazy" />
+            <div class="dv-panel" style="width:200px;height:420px"><ChatSim mode="registered" tabs={['salud', 'belleza']} note={false} id="dv-reg-200" /></div></div>
+        </div>
+        <div class="dv-mode">
+          <p class="t-label dv-k">mini · superficie de 150 px (móvil &lt; 180 px)</p>
+          <div class="dv-plate"><img src="/img/cine/home-sistema-2-atender-m-640.webp" alt="" width="640" height="800" loading="lazy" />
+            <div class="dv-panel" style="width:150px;height:300px"><ChatSim mode="mini" /></div></div>
+        </div>
+        <div class="dv-mode">
+          <p class="t-label dv-k">control="external" · el guion lo avanza "cine:step"</p>
+          <div class="dv-plate"><img src="/img/cine/home-hero-1280.webp" alt="" width="1280" height="714" loading="lazy" />
+            <div class="dv-panel" style="width:240px;height:440px"><ChatSim mode="registered" control="external" script="salud" note={false} id="dv-ext" /></div></div>
+          <label class="dv-range t-micro">Progreso de la escena <input type="range" min="0" max="1" step="0.01" value="0" data-dv-step="dv-ext" /></label>
+        </div>
+      </div>
+    </div>
+    <div class="frame dv__body">
+      <div class="dv-col">
+        <p class="t-label dv-k">tabsOutside + &lt;ChatTabs for&gt; · pestañas bajo el copy (inicio ESC 06)</p>
+        <ChatTabs for="dv-out" tabs={['salud', 'belleza', 'inmobiliario', 'retail']} />
+        <p class="t-micro dv-after">noteClause=&#123;false&#125;: el pie no repite la cláusula médica.</p>
+      </div>
+      <div class="dv-col dv-center"><ChatSim mode="inline" tabsOutside tabs={['salud', 'belleza', 'inmobiliario', 'retail']} id="dv-out" noteClause={false} /></div>
+    </div>
+  </section>
+
+  <!-- 07b StationUI -->
+  <section class="dv" id="stationui">
+    <div class="frame dv__head"><p class="t-label">07b · StationUI</p><h2 class="t-h3">Las cinco estaciones del sistema. <span class="dv-soft">UI registrada en la superficie de cristal de cada placa; escala con cqi; SIMULACIÓN y data-nosnippet.</span></h2></div>
+    {(['atraer', 'atender', 'organizar', 'automatizar', 'medir'] as const).map((v, k) => (
+      <div class="frame dv__body dv__body--1">
+        <div class="dv-stations">
+          <p class="t-label dv-k dv-stations__k">{String(k + 1).padStart(2, '0')} · {v}</p>
+          {[180, 260, 400].map((w) => (
+            <div class="dv-st">
+              <div class="dv-plate dv-plate--st"><img src={`/img/cine/home-sistema-${k + 1}-${v}-1280.webp`} alt="" width="1280" height="714" loading="lazy" />
+                <div class:list={['dv-panel', `dv-panel--${v}`]} style={`width:${w}px`}><StationUI variant={v} anchor={false} /></div></div>
+              <p class="t-micro">{w} px</p>
+            </div>
+          ))}
+          <div class="dv-st dv-st--demo"><StationUI variant={v} demo /><p class="t-micro">demo (móvil, bajo el copy)</p></div>
+        </div>
+      </div>
+    ))}
   </section>
 
   <!-- 08 ProductWindow -->
@@ -309,7 +365,7 @@ const page = { ...getPage('/'), id: 'dev-ui', url: '/dev/ui/', canonical: 'https
   <section class="dv" id="entitysheet">
     <div class="frame dv__head"><p class="t-label">15 · EntitySheet</p><h2 class="t-h3">La ficha. <span class="dv-soft">Los mismos datos que el JSON-LD y llms.txt; la razón social no se imprime sin confirmar.</span></h2></div>
     <div class="frame dv__body">
-      <div class="dv-col"><EntitySheet variant="home" /></div>
+      <div class="dv-col"><EntitySheet variant="home" rows={getCopy('home')?.sections?.faq?.entity ?? []} title="Ficha técnica · desde el copy (home.faq.entity)" /></div>
       <div class="dv-col">
         <EntitySheet variant="case" rows={[{ term: 'Sector', value: 'Salud · clínica dental' }, { term: 'Ciudad', value: 'Monterrey, N.L.' }, { term: 'Servicio', value: 'Agente de IA en WhatsApp', href: '/servicios/agentes-ia-whatsapp/' }]} metricIds={['dental-citas', 'dental-respuesta']} />
         <div class="dv-gap"><EntitySheet variant="footer" /></div>
@@ -397,6 +453,13 @@ const page = { ...getPage('/'), id: 'dev-ui', url: '/dev/ui/', canonical: 'https
     </div>
   </section>
 
+  <script>
+  // Vitrina: la barra de rango simula los pasos de una escena fijada (cine:step) para el ChatSim con control externo.
+  document.querySelectorAll<HTMLInputElement>('[data-dv-step]').forEach((r) => {
+    const chat = document.getElementById(r.dataset.dvStep!);
+    r.addEventListener('input', () => chat?.dispatchEvent(new CustomEvent('cine:step', { bubbles: true, detail: { progress: Number(r.value), controlled: true } })));
+  });
+</script>
   <footer class="dv-foot frame"><p class="t-micro">Ingeniak v2 · área ui · {SITE.email}</p></footer>
 </div>
 
@@ -459,6 +522,21 @@ const page = { ...getPage('/'), id: 'dev-ui', url: '/dev/ui/', canonical: 'https
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent),linear-gradient(180deg,transparent,#000 16%,#000 84%,transparent);mask-composite:intersect}
   .dv-registered__screen{position:absolute;left:14%;top:8%;width:36%;height:84%;container-type:inline-size;border-radius:22px;
     background:linear-gradient(160deg,rgb(255 255 255 / .1),rgb(255 255 255 / .03));-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .16),var(--e-2)}
+  .dv-modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+  .dv-plate{position:relative;isolation:isolate;min-height:480px;display:grid;place-items:center;padding:24px;overflow:hidden}
+  .dv-plate > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%;z-index:-1;opacity:.75;
+    -webkit-mask-image:radial-gradient(70% 70% at 50% 50%,#000 40%,transparent);mask-image:radial-gradient(70% 70% at 50% 50%,#000 40%,transparent)}
+  .dv-panel{position:relative;container-type:inline-size;border-radius:18px;max-width:100%;
+    background:linear-gradient(160deg,rgb(255 255 255 / .1),rgb(255 255 255 / .03));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .16),var(--e-2)}
+  .dv-panel--atraer{aspect-ratio:1 / 1.9}.dv-panel--atender{aspect-ratio:1 / 2.1}.dv-panel--organizar{aspect-ratio:1 / 1.05}
+  .dv-panel--automatizar{aspect-ratio:1.6 / 1}.dv-panel--medir{aspect-ratio:1.6 / 1}
+  .dv-range{display:flex;align-items:center;gap:12px;margin-top:12px}
+  .dv-range input{flex:1}
+  .dv-stations{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--s-5) var(--gap)}
+  .dv-stations__k{flex:1 1 100%;color:var(--cyan)}
+  .dv-st{display:grid;gap:10px;justify-items:start;min-width:0}
+  .dv-plate--st{min-height:0;padding:28px;place-items:start}
+  .dv-st--demo{width:min(100%,380px)}
   .dv-kanban{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:18px}
   .dv-kanban__col{display:grid;align-content:start;gap:10px}
   .dv-kanban__col .t-label{padding-bottom:10px;border-bottom:1px solid var(--hair)}
@@ -489,6 +567,7 @@ const page = { ...getPage('/'), id: 'dev-ui', url: '/dev/ui/', canonical: 'https
     .dv-registered{aspect-ratio:4 / 5}
     .dv-registered__screen{left:8%;width:60%}
     .dv-minis{grid-template-columns:1fr}
+    .dv-modes{grid-template-columns:1fr}
   }
 </style>
 </BaseLayout>

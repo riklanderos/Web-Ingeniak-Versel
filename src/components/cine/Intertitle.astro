@@ -1,6 +1,7 @@
 ---
 // Intertitle · plano sin sujeto, sin fondo propio (§3.12, §7.4). Aura = WebP ya desenfocado (sin filter en vivo)
-// que gira 0 → 8° y deriva yPercent −10 → 10 con scrub. Palabra fantasma opcional que sangra por el borde.
+// que gira 0 → 8° y deriva yPercent −60 → −40 (alrededor de su centro) con scrub. Palabra fantasma opcional que sangra
+// por el borde. hud: etiqueta de acción arriba a la derecha (p. ej. "00:00").
 // Revelado palabra por palabra (.15 → 1, scrub) en el elemento marcado con [data-words] (p. ej. el manifiesto).
 // layout: 'asym' (bloque en columnas 1–9) · 'split' (slot "head" en 1–5, cuerpo en 7–12).
 // rack: va dentro de SharedTake sobre la copia desenfocada de la portada (sin aura propia).
@@ -14,10 +15,11 @@ interface Props {
   ghost?: { text: string; mode?: 'outline-fill' | 'bleed'; side?: 'left' | 'right' };
   rack?: boolean;
   auraSide?: 'left' | 'right' | 'center';
+  hud?: string;
   labelledby?: string;
   class?: string;
 }
-const { id, aura = 'isotipo', layout = 'asym', ghost, rack = false, auraSide = 'right', labelledby, class: cls } = Astro.props;
+const { id, aura = 'isotipo', layout = 'asym', ghost, rack = false, auraSide = 'right', hud, labelledby, class: cls } = Astro.props;
 const src = aura === 'ondas' ? AURA_ONDAS : aura === 'isotipo' ? AURA_ISOTIPO : null;
 const hasHead = Astro.slots.has('head');
 ---
@@ -33,6 +35,7 @@ const hasHead = Astro.slots.has('head');
       <img src={src} alt="" width="640" height="640" loading="lazy" decoding="async" />
     </div>
   )}
+  {hud && <div class="is__hud it__hud" aria-hidden="true"><p class="t-label hud hud--tr">{hud}</p></div>}
   {ghost && <GhostWord text={ghost.text} mode={ghost.mode ?? 'bleed'} side={ghost.side ?? 'right'} class="it__ghost" />}
   <div class="frame it__frame">
     {layout === 'split' || hasHead ? (

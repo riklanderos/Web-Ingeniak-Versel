@@ -1,0 +1,33 @@
+{
+  "pageId": "404",
+  "url": "/404",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): copy nuevo de la 404 (eyebrow, líneas de rescate y etiquetas). Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar estado a 'aprobado'.",
+    "DATO PENDIENTE · rutas de rescate: /servicios/, /casos/ y /blog/ todavía no están construidas. Mientras no existan, la plantilla no las pinta (solo enlaza rutas construidas) y completa la lista con páginas que sí existen, con su primera oración de portada; en cuanto se construyan, salen las cuatro filas de la ESPEC §5.13 con estas líneas."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (404-hero: Kain mirando una rama de luz cortada, subject-right; respaldo home-hero en espejo) + ScriptList de rescate + botón que abre ⌘K + .btn--ghost WhatsApp. noindex, sin JSON-LD (ESPEC §5.13).",
+      "rail": "Portada",
+      "eyebrow": "Error 404 · Ruta sin conexión",
+      "h1": { "text": "Esta ruta no está conectada" },
+      "lede": "Kain buscó por todos lados y esta página no existe (o se mudó).",
+      "rescueLabel": "Rutas que sí están conectadas",
+      "items": [
+        { "title": "Inicio", "line": "Qué hacemos y cómo se conecta el sistema, de punta a punta.", "href": "/" },
+        { "title": "Servicios", "line": "Agentes de IA, CRM, automatización, anuncios y web, ordenados por etapa.", "href": "/servicios/" },
+        { "title": "Casos", "line": "Sistemas reales, cada cifra con su sector y su fuente.", "href": "/casos/" },
+        { "title": "Blog", "line": "Guías sin humo para decidir qué automatizar primero.", "href": "/blog/" }
+      ],
+      "search": "Buscar en el sitio",
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, llegué a una página que no existe en ingeniak.mx y busco información."
+      }
+    }
+  }
+}

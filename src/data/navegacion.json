@@ -155,7 +155,7 @@
           "label": "Salud y clínicas",
           "href": "/industrias/salud/",
           "description": "Citas agendadas y confirmadas 24/7",
-          "metric": "3.2× más citas"
+          "metricId": "dental-citas"
         },
         {
           "label": "Belleza y estética",
@@ -181,19 +181,19 @@
           "label": "Industrial y logística",
           "href": "/industrias/industrial-logistica/",
           "description": "Operación que se mueve sola",
-          "metric": "27 procesos"
+          "metricId": "logistica-procesos"
         },
         {
           "label": "Retail y e-commerce",
           "href": "/industrias/retail-ecommerce/",
           "description": "Ventas por chat, medidas",
-          "metric": "+340%"
+          "metricId": "retail-conversiones"
         },
         {
           "label": "HoReCa",
           "href": "/industrias/horeca/",
           "description": "Reservas medidas por campaña",
-          "metric": "ROAS 4.8×"
+          "metricId": "horeca-roas"
         }
       ],
       "footerLinks": [
@@ -211,33 +211,37 @@
         {
           "label": "Clínica dental en Monterrey",
           "href": "/casos/clinica-dental-monterrey/",
-          "metric": "3.2× citas en 90 días"
+          "metricId": "dental-citas"
         },
         {
           "label": "Retail multimarca",
           "href": "/casos/retail-multimarca-kommo/",
-          "metric": "+340% conversiones"
+          "metricId": "retail-conversiones"
         },
         {
           "label": "E-commerce en CDMX",
           "href": "/casos/ecommerce-cdmx-costo-por-lead/",
-          "metric": "−58% costo por lead"
+          "metricId": "ecom-cpl"
         },
         {
           "label": "HoReCa",
           "href": "/casos/horeca-roas/",
-          "metric": "ROAS 4.8× sostenido"
+          "metricId": "horeca-roas"
         },
         {
           "label": "Logística",
           "href": "/casos/logistica-n8n/",
-          "metric": "27 procesos automatizados"
+          "metricId": "logistica-procesos"
         }
       ],
       "footerLinks": [
         {
           "label": "Todos los casos",
           "href": "/casos/"
+        },
+        {
+          "label": "Registro de resultados",
+          "href": "/casos/#registro"
         }
       ]
     },
@@ -432,5 +436,5 @@
     ],
     "rule": "Inicio › Hub › Página. El último elemento no lleva enlace. Kommo y GoHighLevel cuelgan de CRM con IA aunque su URL sea de primer nivel. El mismo arreglo alimenta el BreadcrumbList."
   },
-  "_revision": "r1 (18-oct-2026): Servicios por las 5 etapas de ESPEC §4.2; métricas por id de metrics.ts. Ver ESPEC §12."
+  "_revision": "r1 (18-oct-2026): Servicios por las 5 etapas de ESPEC §4.2; métricas por id de metrics.ts. Ver ESPEC §12. · r2 (18-oct-2026): metric → metricId en Industrias y Casos (las cifras salen de metrics.ts); ancla única del registro: /casos/#registro."
 }

@@ -11,7 +11,7 @@ const suggestions = ['¿Cuánto cuesta un agente de IA?', 'Kommo vs GoHighLevel'
 ---
 <dialog class="sd" id="sd" aria-labelledby="sd-title" data-sd data-wa-base={SITE.waBase} data-wa-page={waHref}>
   <div class="sd__panel glass-panel">
-    <h2 class="sr-only" id="sd-title">Busca o pregúntale a Kain</h2>
+    <p class="sr-only" id="sd-title">Busca o pregúntale a Kain</p>
     <div class="sd__bar">
       <svg class="ico sd__lupa" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.search} />
       <input id="sd-q" class="sd__input" type="text" inputmode="search" enterkeyhint="go" autocomplete="off" autocapitalize="off" spellcheck="false"
@@ -24,10 +24,10 @@ const suggestions = ['¿Cuánto cuesta un agente de IA?', 'Kommo vs GoHighLevel'
         <div class="sd-group" role="group" aria-labelledby="sd-g-sug">
           <p class="sd-group__h" id="sd-g-sug" role="presentation">Sugerencias</p>
           {suggestions.map((s, n) => (
-            <a class="sd-opt sd-opt--sug" role="option" id={`sd-s-${n}`} href="#" data-sd-fill={s} aria-selected="false">
+            <button type="button" class="sd-opt sd-opt--sug" role="option" id={`sd-s-${n}`} data-sd-fill={s} aria-selected="false" tabindex="-1">
               <svg class="ico sd-opt__ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.search} />
               <span class="sd-opt__t">{s}</span>
-            </a>
+            </button>
           ))}
         </div>
         <div class="sd-group" role="group" aria-labelledby="sd-g-act">

@@ -1,0 +1,23 @@
+{
+  "home-sistema-2-atender": {
+    "alt": "Kain, el agente de IA de Ingeniak, junto a un teléfono de cristal gigante con la pantalla en blanco",
+    "altBy": { "agentes-whatsapp": "Kain, el agente de IA de Ingeniak, junto a un teléfono con una conversación de WhatsApp" },
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/home-sistema-2-atender", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.72, "fy": 0.5, "fadeFrom": 0.94 },
+    "m": { "src": "/img/cine/home-sistema-2-atender-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.6, "fy": 1, "subjTop": 0.41 },
+    "layout": "subject-right",
+    "safe": { "d": [[0.04, 0.06, 0.44, 0.97]], "m": [[0.04, 0.03, 0.96, 0.39]] },
+    "subject": { "d": [0.63, 0.08, 0.92, 0.95], "m": [0.48, 0.40, 0.82, 0.87] },
+    "anchors": {
+      "pecho": { "d": [0.784, 0.452], "m": [0.666, 0.601], "scrW": 0.042 },
+      "mano": { "d": [0.658, 0.498], "m": [0.511, 0.627] },
+      "rostro": { "d": [0.783, 0.274], "m": [0.671, 0.509] },
+      "telefono": { "d": [0.480, 0.215, 0.174, 0.680], "m": [0.310, 0.469, 0.220, 0.370] },
+      "fig": { "d": [0.690, 0.860], "m": null },
+      "piso": { "d": [0.500, 0.779], "m": [0.500, 0.782] }
+    },
+    "leak": { "d": [0.84, 0.30] },
+    "grade": 0,
+    "creationIds": { "desktop": "p8jsC15ehw", "mobile": "u563lsWQLD", "mobileUpscale": "3zajXaKREY" }
+  }
+}

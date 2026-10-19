@@ -1,4 +1,5 @@
 ---
+import { linkTarget } from '../../lib/site';
 // AuthorCard · ESPEC §6 #44 + R8. Autor real del equipo (foto en duotono, cargo, enlace a /nosotros/).
 // Nunca un autor inventado: si no hay persona confirmada, firma "Equipo de Ingeniak" (la Organization).
 import { TEAM, type TeamMember } from '../ui/ui-data';
@@ -17,6 +18,6 @@ const p: TeamMember | undefined = typeof person === 'string' ? TEAM.find((t) => 
     <p class="author__name">{p ? p.name : 'Equipo de Ingeniak'}</p>
     <p class="author__role">{p ? `${p.role} · Ingeniak` : 'Estrategas, ingenieros y creativos de Ingeniak'}</p>
     {bio && <p class="author__bio">{bio}</p>}
-    <a class="lnk author__more" href="/nosotros/">Conoce al equipo</a>
+    {linkTarget('/nosotros/') && <a class="lnk author__more" href="/nosotros/">Conoce al equipo</a>}
   </div>
 </aside>

@@ -1,47 +1,87 @@
 ---
-// Still · ESPEC §2.11 + R7. Fotograma con el texto DENTRO de la penumbra de la imagen (nunca un bloque debajo).
-//   still → fotograma 21:9 (4:5 en móvil con la placa vertical si existe), etiqueta mono, título, cifra en cian
-//   plana → la imagen llena la pieza sin radio, filete superior, cifra o título en la penumbra (hub de casos, blog móvil)
-//   mini  → fotograma compacto 16:9 (industrias ×4, sectores ×8)
+// Still · ESPEC §2.11 + R7 ("la imagen nunca va en caja"). Fotograma a sangre con el texto DENTRO de su penumbra, abajo a la
+// izquierda, en todos los tamaños. Sin anillo ni radio: solo un filete superior y los bordes disueltos a --ink.
+//   still → 16:10 en escritorio, 4:3 en móvil. La placa de escritorio (16:9) se encuadra con su caja de sujeto
+//           (plates.json → subject.d): Kain completo, de la cabeza a los pies, con su centro al ≈78 % del ancho; si el sujeto
+//           está a la izquierda, la imagen se espeja. El copy ocupa como máximo el 55 % del ancho (nunca sobre el torso).
+//   plana → 16:9, misma regla (hub de casos, blog móvil)
+//   mini  → 16:10 compacto (industrias ×4, sectores ×8)
 //   next  → "Siguiente reportaje": asoma 45svh con la cifra mega; clic = corte por coincidencia (View Transition "plate")
-// Imagen: /img/cine/<placa>-still-640.(avif|webp). Si no existe todavía, aura del isotipo con la misma penumbra (aviso en dev).
+// Imagen: /img/cine/<placa>-1280|1920.(avif|webp) (la misma exportación que la escena; en móvil pide la de 1280).
+// Sin placa: aura de respaldo, nunca la misma dos veces seguidas en una página (3 variantes que rotan por petición).
+// Un still de Kommo (href o placa con "kommo") muestra el sello oficial de partner sobre su aura.
 // Gancho: <a data-still> → ui.ts le pone view-transition-name:plate a su imagen al hacer clic (§7.6).
 import Metric from './Metric.astro';
 import Icon from './Icon.astro';
-import { getPlate } from '../../lib/site';
+import KommoBadge from './KommoBadge.astro';
+import { getPlate, linkTarget } from '../../lib/site';
 import { stillOf, publicExists } from './ui-data';
 import type { MetricId } from '../../lib/metrics';
 
 interface Props {
   href: string; plate?: string; label?: string; title: string; line?: string; metricId?: MetricId;
-  variant?: 'still' | 'plana' | 'mini' | 'next'; fx?: number; headingLevel?: 2 | 3 | 4; class?: string;
+  variant?: 'still' | 'plana' | 'mini' | 'next'; fx?: number; kommo?: boolean; headingLevel?: 2 | 3 | 4; class?: string;
 }
-const { href, plate, label, title, line, metricId, variant = 'still', fx, headingLevel = 3, class: cls } = Astro.props;
+const { href, plate, label, title, line, metricId, variant = 'still', fx, kommo: kommoProp, headingLevel = 3, class: cls } = Astro.props;
 
 const p = plate ? getPlate(plate) : undefined;
-const still = stillOf(plate);
-const focusX = fx ?? p?.d?.fx ?? 0.7;
-const mobileSrc = plate && publicExists(`/img/cine/${plate}-m-640.webp`) ? `/img/cine/${plate}-m` : null;
-// "next" y "plana" ocupan más ancho: usan la placa de escritorio de 1280 si existe.
-const bigSrc = (variant === 'next' || variant === 'plana') && plate && publicExists(`/img/cine/${plate}-1280.webp`) ? `/img/cine/${plate}-1280` : null;
+const base = (p as any)?.d?.src ?? (plate ? `/img/cine/${plate}` : null);
+const has = (w: number, ext = 'webp') => !!base && publicExists(`${base}-${w}.${ext}`);
+const widths = [1280, 1920].filter((w) => has(w));
+const legacy = !widths.length ? stillOf(plate) : null;          // solo existe el still 21:9 (sin la placa completa)
+const iar = (p as any)?.d?.ar ?? (legacy ? 640 / 274 : 16 / 9);
+// Caja del sujeto [x1, y1, x2, y2] → centro; si el sujeto queda a la izquierda, se espeja para dejarlo a la derecha.
+const sb: number[] | undefined = (p as any)?.subject?.d;
+let sx = fx ?? (sb ? (sb[0] + sb[2]) / 2 : (p as any)?.d?.fx ?? 0.7);
+const sy = sb ? (sb[1] + sb[3]) / 2 : 0.5;
+const syt = sb ? sb[1] + (sb[3] - sb[1]) * 0.3 : 0.4;          // "next" (franja muy ancha): encuadre cargado a la cabeza
+const mirror = sx < 0.5;
+if (mirror) sx = 1 - sx;
+const hasImg = widths.length > 0 || !!legacy;
+if (!hasImg && plate && import.meta.env.DEV) console.warn(`[ui/Still] ${plate}: sin placa exportada, se usa el aura de respaldo`);
+
+// Respaldo: nunca la misma aura dos veces seguidas en la misma página (contador por petición).
+const AURAS = ['iso', 'ondas', 'iso-alt'] as const;
+const g = globalThis as any;
+g.__stillAura ??= new WeakMap<Request, number>();
+let aura: (typeof AURAS)[number] | null = null;
+if (!hasImg) { const n = g.__stillAura.get(Astro.request) ?? 0; g.__stillAura.set(Astro.request, n + 1); aura = AURAS[n % AURAS.length]; }
+const isKommo = kommoProp ?? (/kommo/i.test(href) || /kommo/i.test(plate ?? ''));
+
 const H = `h${headingLevel}` as any;
 const external = /^https?:\/\//.test(href);
+// Ruta todavía sin construir (orquestador · linkTarget): el fotograma se pinta igual, pero sin enlace ni flecha (nunca "#").
+const target = linkTarget(href);
+const Tag = target ? 'a' : 'div';
+const r4 = (n: number) => +n.toFixed(4);
+const style = `--sx:${r4(sx)};--sy:${r4(variant === 'next' ? syt : sy)};--iar:${r4(iar)};`;
+const srcset = (ext: string) => widths.map((w) => `${base}-${w}.${ext} ${w}w`).join(', ');
+const sizes = variant === 'next' || variant === 'plana' ? '100vw' : variant === 'mini' ? '(max-width: 767px) 100vw, 25vw' : '(max-width: 767px) 100vw, 34vw';
 ---
-<a class:list={['still', `still--${variant}`, !still && !bigSrc && 'still--aura', cls]} href={href} data-still={!external ? '' : undefined}
-   style={`--fx:${focusX}`} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+<Tag class:list={['still', `still--${variant}`, aura && `still--aura still--aura-${aura}`, isKommo && 'still--kommo', mirror && 'still--mirror', !target && 'still--static', cls]} href={target ?? undefined}
+   data-still={target && !external ? '' : undefined} style={style} target={target && external ? '_blank' : undefined} rel={target && external ? 'noopener' : undefined}>
   <span class="still__media" aria-hidden="true">
-    {(still || bigSrc) ? (
+    {widths.length > 0 ? (
       <picture>
-        {mobileSrc && variant !== 'mini' && <source media="(max-width: 767px)" type="image/avif" srcset={`${mobileSrc}-640.avif 640w`} sizes="100vw" />}
-        {mobileSrc && variant !== 'mini' && <source media="(max-width: 767px)" type="image/webp" srcset={`${mobileSrc}-640.webp 640w`} sizes="100vw" />}
-        {bigSrc ? <source type="image/avif" srcset={`${bigSrc}.avif 1280w`} sizes="100vw" /> : still!.avif && <source type="image/avif" srcset={still!.avif} sizes="(max-width: 767px) 100vw, 640px" />}
-        {!bigSrc && still!.webp && <source type="image/webp" srcset={still!.webp} sizes="(max-width: 767px) 100vw, 640px" />}
-        <img src={bigSrc ? `${bigSrc}.webp` : still!.src} alt="" width={bigSrc ? 1280 : 640} height={bigSrc ? 714 : 274} loading="lazy" decoding="async" />
+        {widths.every((w) => has(w, 'avif')) && <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />}
+        <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
+        <img src={`${base}-${widths[0]}.webp`} alt="" width={(p as any)?.d?.w ?? 1280} height={(p as any)?.d?.h ?? 714} loading="lazy" decoding="async" />
+      </picture>
+    ) : legacy ? (
+      <picture>
+        {legacy.avif && <source type="image/avif" srcset={legacy.avif} sizes={sizes} />}
+        {legacy.webp && <source type="image/webp" srcset={legacy.webp} sizes={sizes} />}
+        <img src={legacy.src} alt="" width="640" height="274" loading="lazy" decoding="async" />
       </picture>
     ) : (
-      <span class="still__aura"><img src="/img/marca/isotipo-cristal-640.webp" alt="" width="640" height="640" loading="lazy" decoding="async" /></span>
+      <span class="still__aura">
+        {aura === 'ondas'
+          ? <img src="/img/marca/fondo-ondas-800.webp" alt="" width="800" height="450" loading="lazy" decoding="async" />
+          : <img src={aura === 'iso-alt' ? '/img/marca/isotipo-cristal-1100.webp' : '/img/marca/isotipo-cristal-640.webp'} alt="" width={aura === 'iso-alt' ? 1100 : 640} height={aura === 'iso-alt' ? 1100 : 640} loading="lazy" decoding="async" />}
+      </span>
     )}
   </span>
+  {aura && isKommo && <span class="still__seal" aria-hidden="true"><KommoBadge link={false} label={false} /></span>}
   <span class="still__shade" aria-hidden="true"></span>
   <span class="still__copy">
     {variant === 'next' && <span class="t-label t-label--cyan still__kicker"><span class="node" aria-hidden="true"></span>Siguiente reportaje</span>}
@@ -51,8 +91,8 @@ const external = /^https?:\/\//.test(href);
         ? <Metric id={metricId} variant="mega" label={false} as="span" class="still__metric still__metric--mega" />
         : <Metric id={metricId} variant="inline" class="still__metric" />
     )}
-    <H class="still__title">{title}</H>
+    <H class="still__title">{title}{variant !== 'next' && target && <span class="still__arrow" aria-hidden="true">{'\u00a0'}<Icon name={external ? 'external' : 'arrow'} size={16} /></span>}</H>
     {line && <span class="still__line">{line}</span>}
   </span>
-  <span class="still__go" aria-hidden="true"><Icon name={external ? 'external' : 'arrow'} size={18} /></span>
-</a>
+  {variant === 'next' && target && <span class="still__go" aria-hidden="true"><Icon name={external ? 'external' : 'arrow'} size={18} /></span>}
+</Tag>

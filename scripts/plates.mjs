@@ -7,9 +7,11 @@
 //   <id>-{1280,1920,2560,2752}.{avif,webp}   (hasta srcsetMax de plates.json y sin ampliar)
 //   <id>-m-{640,828,1080,1536}.{avif,webp}
 //   <id>-cut-{1920,2560}.webp · <id>-still-{360,640}.{avif,webp} (21:9 centrado en el sujeto) · <id>-rack-320.webp (blur 40)
+// Registro: antes de exportar fusiona las fichas materiales/v2/placas/<id>.json en src/data/plates.json (la ficha manda) y
+//   después fija d/m.{w,h,ar} con las medidas reales de cada master (avisa si la ficha quedó con otras medidas).
 // Uso: node scripts/plates.mjs [id …]   (sin ids exporta todo lo que cambió)
 import sharp from 'sharp';
-import { readdirSync, existsSync, statSync, mkdirSync, readFileSync } from 'node:fs';
+import { readdirSync, existsSync, statSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, basename, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -17,7 +19,17 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const SRC = join(ROOT, 'src/assets/cine');
 const OUT = join(ROOT, 'public/img/cine');
 mkdirSync(OUT, { recursive: true });
-const plates = JSON.parse(readFileSync(join(ROOT, 'src/data/plates.json'), 'utf8'));
+const PLATES = join(ROOT, 'src/data/plates.json');
+const SHEETS = join(ROOT, 'materiales/v2/placas');
+const plates = JSON.parse(readFileSync(PLATES, 'utf8'));
+const platesBefore = JSON.stringify(plates);
+// 0) fichas de registro → plates.json (la ficha es la fuente; plates.json es la fusión que leen getPlate() y las guardas)
+const sheetOf = {};
+if (existsSync(SHEETS)) for (const f of readdirSync(SHEETS).filter((f) => f.endsWith('.json'))) {
+  let sheet;
+  try { sheet = JSON.parse(readFileSync(join(SHEETS, f), 'utf8')); } catch (e) { console.warn(`[plates] ficha inválida ${f}: ${e.message}`); continue; }
+  for (const [id, v] of Object.entries(sheet)) { plates[id] = v; sheetOf[id] = f; }
+}
 
 const DESK = [1280, 1920, 2560, 2752];
 const MOB = [640, 828, 1080, 1536];
@@ -64,6 +76,7 @@ for (const [id, m] of Object.entries(masters)) {
   }
   if (m.m) {
     const { width } = await sharp(m.m).metadata();
+    if (width < 1536) console.warn(`[plates] ${id}-m: master de ${width} px (§12.1 #2 pide 1536 × 1920; en teléfonos 3× se amplía)`);
     for (const w of MOB.filter((w) => w <= Math.max(width, 640))) {
       await emit(m.m, join(OUT, `${id}-m-${w}.avif`), (s) => s.resize({ width: w }).avif(AVIF));
       await emit(m.m, join(OUT, `${id}-m-${w}.webp`), (s) => s.resize({ width: w }).webp(WEBP));
@@ -73,4 +86,19 @@ for (const [id, m] of Object.entries(masters)) {
     for (const w of [1920, 2560]) await emit(m.cut, join(OUT, `${id}-cut-${w}.webp`), (s) => s.resize({ width: w }).webp({ quality: 78, alphaQuality: 90 }));
   }
 }
+// 1) medidas reales de los masters → plates.json (d/m.w, h, ar); la ficha solo se avisa (se edita a mano)
+const r4 = (x) => Math.round(x * 10000) / 10000;
+for (const [id, m] of Object.entries(masters)) {
+  const p = plates[id];
+  if (!p) { console.warn(`[plates] ${id}: hay master pero no ficha en materiales/v2/placas/`); continue; }
+  for (const [kind, key] of [['d', 'd'], ['m', 'm']]) {
+    if (!m[kind] || !p[key]) continue;
+    const { width, height } = await sharp(m[kind]).metadata();
+    if (p[key].w !== width || p[key].h !== height) {
+      console.warn(`[plates] ${id}.${key}: la ficha ${sheetOf[id] ?? '—'} dice ${p[key].w} × ${p[key].h}; el master mide ${width} × ${height} (plates.json corregido)`);
+      p[key].w = width; p[key].h = height; p[key].ar = r4(width / height);
+    }
+  }
+}
+if (JSON.stringify(plates) !== platesBefore) { writeFileSync(PLATES, JSON.stringify(plates, null, 2) + '\n'); console.log('[plates] src/data/plates.json actualizado desde las fichas'); }
 console.log(`[plates] ${Object.keys(masters).length} placas con master · ${n} archivos nuevos en public/img/cine/`);

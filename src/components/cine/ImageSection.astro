@@ -3,8 +3,9 @@
 // La imagen es el set: placa a sangre en un escenario registrado, sujeto de un lado, texto SIN caja del otro.
 // Slots: default (copy) · anchors (UI registrada: FigCaption, chips, UI sobre cristal) · aside (subject-center: CTAs abajo a la derecha)
 //        more (R3: resto del contenido; en móvil 'split' va después de la placa) · ghost (palabra gigante propia) · over (ColdOpen)
+//        stage (capa registrada SIN máscaras laterales, sobre la placa y bajo el recorte: p. ej. el filo del horizonte de Dawn)
 // Si la placa no existe: usa `fallbackPlate` (respaldo de lanzamiento) y si no, un aura del isotipo con la misma penumbra.
-import { resolvePlate, AURA_ISOTIPO, type Layout, type Fallback } from './plate';
+import { resolvePlate, boxPoint, AURA_ISOTIPO, type Layout, type Fallback } from './plate';
 import GhostWord from './GhostWord.astro';
 import PlatePicture from './PlatePicture.astro';
 
@@ -21,6 +22,8 @@ interface Props {
   cutout?: boolean;
   ghost?: { text: string; mode?: 'outline-fill' | 'bleed' };
   push?: { anchor: string; to?: number; camFrom?: number; camTo?: number };
+  pin?: string;            // escena fijada en escritorio (p. ej. '+=100%', §5.3 industria 05): --cam hacia el centro del ancla
+  skipLabel?: string;
   mirror?: boolean;
   hud?: { pos: 'tr' | 'bl' | 'br' | 'tl'; text: string }[];
   fallbackPlate?: Fallback;
@@ -37,7 +40,7 @@ interface Props {
 const {
   id, plate: key, layout, height = 'mid', align, tone = 'sol', mobile = 'top', priority = false, take = false,
   cutout = false, ghost, push, mirror = false, hud, fallbackPlate, srcsetMax, alt, wide = false, breathe = false,
-  encendido, shot = 'scene', labelledby, class: cls, ...rest
+  encendido, shot = 'scene', labelledby, pin, skipLabel = 'Saltar escena', class: cls, ...rest
 } = Astro.props;
 
 const r = resolvePlate(key, {
@@ -51,22 +54,27 @@ const hasOver = Astro.slots.has('over');
 const hasMore = Astro.slots.has('more');
 const hasAside = Astro.slots.has('aside');
 const hasGhostSlot = Astro.slots.has('ghost');
+const hasStage = Astro.slots.has('stage');
 const enc = (encendido ?? (priority && !hasOver)) && height === 'hero';
 
-// push (§3.2 / R5): el origen de la cámara viaja al ancla; con camFrom la escena entra ya empujada.
+// push (§3.2 / R5): el origen de la cámara viaja al ancla (centro de la caja en anclas de caja); con camFrom la escena
+// entra ya empujada. Con pin, por defecto llega a 1.6 (§5.3).
 let pushVars = '';
 let pushData: string | undefined;
-if (push) {
-  const a = r.anchors[push.anchor] ?? r.anchors.pecho;
-  const from = push.camFrom ?? 1;
-  const to = Math.min(push.camTo ?? push.to ?? 1.12, 1.6);
-  if (a?.d) pushVars += `--ox-d:${a.d[0]};--oy-d:${a.d[1]};`;
-  if (a?.m) pushVars += `--ox-m:${a.m[0]};--oy-m:${a.m[1]};`;
+if (push || pin) {
+  const name = push?.anchor ?? ['pantalla', 'telefono', 'tableta', 'superficie'].find((n) => r.anchors[n]) ?? 'pecho';
+  const a = boxPoint(r.anchors[name] ?? r.anchors.pecho);
+  const from = push?.camFrom ?? 1;
+  const to = Math.min(push?.camTo ?? push?.to ?? (pin ? 1.6 : 1.12), 1.6);
+  if (a.d) pushVars += `--ox-d:${a.d[0]};--oy-d:${a.d[1]};`;
+  if (a.m) pushVars += `--ox-m:${a.m[0]};--oy-m:${a.m[1]};`;
   pushVars += `--cam:${from};`;
   pushData = JSON.stringify({ from, to });
 }
 const style = r.vars + pushVars;
 const titleId = labelledby ?? `${id}-t`;
+// R9: el recorte con alfa es solo de escritorio; en móvil el <picture> pide un GIF transparente de 1 × 1 (sin descarga).
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 const decorative = r.alt === '';
 ---
 <section
@@ -79,6 +87,7 @@ const decorative = r.alt === '';
   data-priority={priority || undefined}
   data-take={take || undefined}
   data-push={pushData}
+  data-pin={pin || undefined}
   data-breathe={breathe || undefined}
   data-encendido={enc || undefined}
   data-aura={r.aura || undefined}
@@ -98,14 +107,7 @@ const decorative = r.alt === '';
       addEventListener('pagereveal',function(e){if(e.viewTransition){d.classList.remove('enc');d.dataset.vt='1';}},{once:true});}}catch(e){}})();
     </script>
   )}
-  {enc && (
-    <div class="is__layer co-layer co-layer--enc" aria-hidden="true">
-      <div class="stage">
-        <div class="co-optic co-iris"></div>
-        <div class="co-optic co-node"></div>
-      </div>
-    </div>
-  )}
+  {pin && <a class="skip-scene lnk--mono" href={`#${id}-fin`} data-skip>{skipLabel} <span aria-hidden="true">↓</span></a>}
   <slot name="over" />
   <div class="is__fx" aria-hidden="true"></div>
   {hud && (
@@ -118,6 +120,14 @@ const decorative = r.alt === '';
     {hasAside && <div class="is__aside"><slot name="aside" /></div>}
   </div>
   <div class="is__stagebox">
+    {enc && (
+      <div class="is__layer co-layer co-layer--enc" aria-hidden="true">
+        <div class="stage">
+          <div class="co-optic co-iris"></div>
+          <div class="co-optic co-node"></div>
+        </div>
+      </div>
+    )}
     <div class="is__layer is__layer--media" aria-hidden={decorative ? 'true' : undefined}>
       <div class="stage">
         <PlatePicture r={r} priority={priority} />
@@ -127,6 +137,11 @@ const decorative = r.alt === '';
         {take && <span class="is__rackveil" aria-hidden="true"></span>}
       </div>
     </div>
+    {hasStage && (
+      <div class="is__layer is__layer--over" aria-hidden="true">
+        <div class="stage"><slot name="stage" /></div>
+      </div>
+    )}
     {(ghost || hasGhostSlot) && (!cutout || r.cut) && (
       <div class="is__layer is__layer--ghost" aria-hidden="true">
         <div class="stage">
@@ -137,7 +152,7 @@ const decorative = r.alt === '';
     )}
     {cutout && r.cut && (
       <div class="is__layer is__layer--cutout" aria-hidden="true">
-        <div class="stage"><img class="is__cut" src={r.cut} alt="" width={r.d.w} height={r.d.h} decoding="async" loading="lazy" /></div>
+        <div class="stage"><picture><source media="(max-width: 767px), (max-aspect-ratio: 5/6)" srcset={BLANK} /><img class="is__cut" src={r.cut} alt="" width={r.d.w} height={r.d.h} decoding="async" loading="lazy" /></picture></div>
       </div>
     )}
     <div class="is__layer is__layer--anchors">
@@ -149,4 +164,5 @@ const decorative = r.alt === '';
       <div class="is__text"><slot name="more" /></div>
     </div>
   )}
+  {pin && <span id={`${id}-fin`} class="scene-end" tabindex="-1"></span>}
 </section>

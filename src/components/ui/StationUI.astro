@@ -1,0 +1,126 @@
+---
+// StationUI · ESPEC §5.1 ESC 05 (SystemRuntime), §3.7 y §5.1.1. La UI simulada de cada estación del sistema, registrada
+// sobre la superficie de cristal en blanco de su placa (home-sistema-1…5). Escala con cqi (de 180 a 760 px de ancho),
+// lleva la barra SIMULACIÓN y data-nosnippet. Ninguna cifra a mano: solo rótulos o <Metric>.
+//   atraer      → panel de resultados de anuncios (barras sin valores) + la cifra con <Metric id="ecom-cpl">
+//   atender     → ChatSim registrado con 3 burbujas del guion (src/data/chats/<chat>.json)
+//   organizar   → embudo genérico de 5 columnas (no es la interfaz de Kommo): el lead cae en "Cita agendada"
+//   automatizar → un disparador y tres ramas: Seguimiento · Recordatorio · Cobro
+//   medir       → tablero de 4 mosaicos (rótulos + <Metric id="ecom-tablero">) y 7 nodos de fuente sin nombre
+// Modos:
+//   (por defecto) panel → <div class="anchor anchor--panel"> con data-lock; coordenadas por `box` ([x, y, w, h] de la placa,
+//                         y `boxM` para la vertical; sin boxM lleva data-m="none") o por `style` (--ax/--ay/--aw/--ah).
+//                         anchor={false}: solo la pieza, llena el .anchor--panel que ponga la plantilla.
+//   demo                → mini-demo de móvil bajo el copy de cada estación (§5.1.1): .glass-panel en el flujo, se reproduce
+//                         al entrar (ui.ts → .is-on). Sin JS o con movimiento reducido: estado final.
+// En la escena fijada (seq--pinned), la demo de la estación activa se vuelve a reproducir cada vez que la estación entra.
+import ChatSim from './ChatSim.astro';
+import Metric from './Metric.astro';
+import { SIM } from './ui-data';
+
+type Variant = 'atraer' | 'atender' | 'organizar' | 'automatizar' | 'medir';
+type Box = [number, number, number, number];
+interface Props {
+  variant: Variant; demo?: boolean; anchor?: boolean; box?: Box | number[] | null; boxM?: Box | number[] | null;
+  style?: string; chat?: string; label?: string; class?: string; id?: string;
+}
+const { variant, demo = false, anchor = true, box, boxM, style, chat = 'default', label, class: cls, id } = Astro.props;
+
+const TITLES: Record<Variant, string> = {
+  atraer: 'Campaña activa', atender: 'Kain atiende', organizar: 'Embudo de ventas', automatizar: 'Flujos automáticos', medir: 'Todo en una vista',
+};
+const ARIA: Record<Variant, string> = {
+  atraer: 'Simulación: panel de resultados de una campaña de anuncios',
+  atender: 'Simulación: Kain responde un mensaje',
+  organizar: 'Simulación: el lead llega a la etapa Cita agendada del embudo',
+  automatizar: 'Simulación: un lead nuevo dispara seguimiento, recordatorio y cobro',
+  medir: 'Simulación: tablero con las fuentes del negocio en una vista',
+};
+const simLabel = String(SIM.label).toUpperCase() === 'SIMULACIÓN' ? 'Simulación' : SIM.label;
+const COLS = ['Nuevo', 'Calificado', 'Cita agendada', 'Ganado', 'Seguimiento'];
+const CARDS = [3, 2, 1, 2, 1];                       // tarjetas esqueleto por columna (sin datos)
+const BARS = [0.34, 0.42, 0.38, 0.56, 0.6, 0.74, 0.88];
+const ROWS: [string, number][] = [['Alcance', 0.94], ['Clics', 0.62], ['Leads', 0.4]];
+const NODES = ['Seguimiento', 'Recordatorio', 'Cobro'];
+const SPARK = 'M0,30 L14,26 L28,28 L42,19 L56,21 L70,12 L84,14 L100,5';
+const DOWN = 'M0,8 L16,11 L32,10 L48,17 L64,19 L80,25 L100,29';
+
+const n = (v: number) => +Number(v).toFixed(4);
+const posStyle = style ?? (box ? `--ax:${n(box[0])};--ay:${n(box[1])};--aw:${n(box[2])};--ah:${n(box[3])};` + (boxM ? `--ax-m:${n(boxM[0])};--ay-m:${n(boxM[1])};--aw-m:${n(boxM[2])};--ah-m:${n(boxM[3])};` : '') : undefined);
+const Wrap = demo || !anchor ? Fragment : 'div';
+const wrapProps = demo || !anchor ? {} : { class: 'anchor anchor--panel station-anchor', 'data-lock': '', 'data-m': box && !boxM ? 'none' : undefined, style: posStyle };
+const Tag = demo ? 'figure' : 'div';
+---
+<Wrap {...wrapProps}>
+  <Tag class:list={['station', `station--${variant}`, demo ? 'station--demo glass-panel' : 'station--panel', cls]} id={id}
+    data-station={variant} data-nosnippet role={demo ? undefined : 'presentation'}>
+    {variant === 'atender' ? (
+      <ChatSim mode="registered" script={chat} limit={3} prefill={2} note={false} title={TITLES.atender} class="station__chat" />
+    ) : (
+      <div class="station__ui" aria-hidden="true">
+        <div class="station__bar">
+          <span class="station__k"><span class="station__node"></span>{TITLES[variant]}</span>
+          <span class="chip-sim station__sim">{simLabel}</span>
+        </div>
+
+        {variant === 'atraer' && (
+          <div class="st-ads">
+            <div class="st-ads__chart">{BARS.map((h, i) => <i style={`--h:${h};--i:${i}`}></i>)}</div>
+            <ul class="st-ads__rows">
+              {ROWS.map(([t, w], i) => <li style={`--i:${i}`}><span>{t}</span><b style={`--w:${w}`}></b></li>)}
+            </ul>
+            <Metric id="ecom-cpl" variant="inline" label class="st-metric" />
+          </div>
+        )}
+
+        {variant === 'organizar' && (
+          <div class="st-kb">
+            {COLS.map((c, i) => (
+              <div class:list={['st-kb__col', i === 2 && 'is-target']} style={`--i:${i}`}>
+                <span class="st-kb__h">{c}</span>
+                {Array.from({ length: CARDS[i] }, (_, k) => <span class="st-kb__card" style={`--k:${k}`}><i></i><i></i></span>)}
+                {i === 2 && <span class="st-kb__lead"><span class="station__node"></span><span class="st-kb__lead-t">Lead nuevo</span><span class="st-kb__lead-s">Cita agendada</span></span>}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {variant === 'automatizar' && (
+          <div class="st-flow">
+            <span class="st-flow__src"><span class="station__node"></span>Lead nuevo</span>
+            <svg class="st-flow__wires" viewBox="0 0 100 100" preserveAspectRatio="none">
+              {[16.5, 50, 83.5].map((y, i) => (
+                <path d={`M0,50 H${y === 50 ? 100 : 30} ${y === 50 ? '' : `L${30 + Math.abs(y - 50) * 0.6},${y} H100`}`} pathLength="1" style={`--i:${i}`} vector-effect="non-scaling-stroke" />
+              ))}
+            </svg>
+            <ul class="st-flow__nodes">
+              {NODES.map((t, i) => <li style={`--i:${i}`}><span class="station__node"></span>{t}</li>)}
+            </ul>
+          </div>
+        )}
+
+        {variant === 'medir' && (
+          <div class="st-kpi">
+            <div class="st-kpi__t st-kpi__t--wide">
+              <span class="st-kpi__src">{Array.from({ length: 7 }, (_, i) => <i style={`--i:${i}`}></i>)}</span>
+              <Metric id="ecom-tablero" variant="inline" label class="st-metric" />
+            </div>
+            <div class="st-kpi__t" style="--i:1">
+              <span class="st-kpi__l">Leads por canal</span>
+              <svg class="st-kpi__spark" viewBox="0 0 100 34" preserveAspectRatio="none"><path d={SPARK} pathLength="1" vector-effect="non-scaling-stroke" /></svg>
+            </div>
+            <div class="st-kpi__t" style="--i:2">
+              <span class="st-kpi__l">Ventas atribuidas</span>
+              <span class="st-kpi__bars">{[0.4, 0.55, 0.5, 0.72, 0.9].map((h, i) => <i style={`--h:${h};--i:${i}`}></i>)}</span>
+            </div>
+            <div class="st-kpi__t" style="--i:3">
+              <span class="st-kpi__l">Costo por lead</span>
+              <svg class="st-kpi__spark st-kpi__spark--down" viewBox="0 0 100 34" preserveAspectRatio="none"><path d={DOWN} pathLength="1" vector-effect="non-scaling-stroke" /></svg>
+            </div>
+          </div>
+        )}
+      </div>
+    )}
+    {demo && <figcaption class="sr-only">{label ?? ARIA[variant]}</figcaption>}
+  </Tag>
+</Wrap>
