@@ -1,0 +1,25 @@
+{
+  "branding-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, posa en un set fotográfico junto a un tablero de identidad",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/branding-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.28, "fy": 0.5, "fadeFrom": 0.93 },
+    "m": { "src": "/img/cine/branding-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.48, "fy": 1, "subjTop": 0.44 },
+    "layout": "subject-left",
+    "pose": "posa con la mano en la cadera junto al tablero",
+    "safe": { "d": [[0.46, 0.06, 0.96, 0.94]], "m": [[0.04, 0.03, 0.96, 0.40]] },
+    "subject": { "d": [0.08, 0.20, 0.43, 0.85], "m": [0.27, 0.44, 0.78, 0.88] },
+    "anchors": {
+      "pecho": { "d": [0.190, 0.486], "m": [0.428, 0.636], "scrW": 0.036 },
+      "mano": { "d": [0.243, 0.642], "m": [0.506, 0.752] },
+      "rostro": { "d": [0.193, 0.339], "m": [0.432, 0.535] },
+      "superficie": { "d": [0.279, 0.345, 0.148, 0.219], "m": [0.559, 0.543, 0.214, 0.146] },
+      "fig": { "d": [0.444, 0.737], "m": null },
+      "piso": { "d": [0.500, 0.838], "m": [0.500, 0.875] }
+    },
+    "leak": { "d": [0.32, 0.28], "m": [0.60, 0.48] },
+    "grade": 0,
+    "creationIds": { "desktop": "nVH2eZ3YQD", "desktopDescartada": "s7TryWcl8e", "mobile": "dtsME3GXSL" },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado: 2K cuesta lo mismo que 1K). Primera toma (s7TryWcl8e) descartada: el set se abría hasta x ≈ 0.62 con un softbox encendido en la zona del texto. Reintento (nVH2eZ3YQD) con el set compacto a la izquierda; Kain quedó en x ≈ 0.31 → reencuadre sin IA: escena desplazada 10 % a la izquierda, penumbra derecha sintetizada desde el borde y los cuatro bordes caen a #03040B en el último 7 %. La cámara del trípode queda casi fuera de cuadro (solo patas y el borde de un softbox a la izquierda). Tablero de cristal esmerilado, frontal y vacío; su borde superior tiene una inclinación de ~0.005 del alto. QA 2026-10-19 (sin IA, 0 créditos): el tablero llegaba a x 0.509 y su halo a ≈ 0.55, bajo el H1 (la columna 7 de subject-left empieza en x ≈ 0.45 de la placa a 4:3, 0.48 a 16:10 y 0.50 a 16:9) → la escena se rehízo desde el original: escala 0.845 con x′ = −0.088 + 0.845·x₀ e y′ = 0.0775 + 0.845·y₀ (mismo encuadre que antes, cámara 15 % más atrás), arriba/abajo/derecha sintetizados desde el borde, bandera sobre el halo del tablero (exceso sobre la penumbra ×0.2 de x 0.429 a 0.485) y los cuatro bordes a #03040B en el último 7 %. Ahora el tablero va de x 0.279 a 0.426 y el halo queda a ≤ +6 de luminancia sobre la penumbra desde x 0.47 (≤ +14 desde 0.46); Kain de x 0.087 a 0.255, antenas y 0.207, pies y ≈ 0.83. Script en materiales/magnific/v2/branding-hero/reencuadre-escala.mjs (args 0.845 -0.088 0.0775 0.429 0.485 0.2); copia del master en desk-b-recomp2.jpg; la versión anterior es desk-b-recomp.jpg. Original en materiales/magnific/v2/branding-hero/desk-b-nVH2eZ3YQD.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la toma de escritorio elegida (nVH2eZ3YQD) como primera referencia; salió cerrado (antenas y ≈ 0.40, pies y ≈ 0.93) → reencuadre con scripts/reencuadre-movil.mjs (0.168 0.094 0.04 0.164 0.40) a 1536 × 1920. Niebla cian sobre el ciclorama entre y ≈ 0.33 y 0.40 (luminancia p95 ≈ 90/255), sin objetos ni luces en el 40 % superior. Original en materiales/magnific/v2/branding-hero/movil-a-dtsME3GXSL.png."
+  }
+}

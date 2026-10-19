@@ -1,0 +1,24 @@
+{
+  "guadalajara-hero": {
+    "alt": "Empresario de Guadalajara en la terraza de su oficina a la hora azul (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/guadalajara-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.72, "fy": 0.40, "fadeFrom": 0.90 },
+    "m": { "src": "/img/cine/guadalajara-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.52, "fy": 1, "subjTop": 0.44 },
+    "layout": "subject-right",
+    "pose": "manos en los bolsillos, mira hacia el texto",
+    "safe": { "d": [[0.04, 0.06, 0.56, 0.96]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.600, 0.115, 0.853, 0.990], "m": [0.372, 0.440, 0.730, 0.990] },
+    "anchors": {
+      "pecho": { "d": [0.700, 0.465], "m": [0.495, 0.685] },
+      "mano": { "d": [0.610, 0.862], "m": [0.385, 0.905] },
+      "rostro": { "d": [0.672, 0.268], "m": [0.473, 0.530] },
+      "fig": { "d": [0.585, 0.870], "m": null },
+      "piso": { "d": [0.500, 0.880], "m": [0.500, 0.950] }
+    },
+    "leak": { "d": [0.80, 0.26], "m": [0.62, 0.53] },
+    "grade": 0,
+    "creationIds": { "desktop": "BhgpfH8oQR", "mobile": "ovSeuyW829", "desktopR0": "SyDLPXDUb8" },
+    "deskNote": "Nano Banana Pro nativo 2K (2752×1536, sin upscale; mismo costo que 1K). La r0 (SyDLPXDUb8) se descartó: borde de ventanal en x≈0.39 y bokeh de ciudad dentro del lado del texto. Master = r1 con rampa horizontal real (sin IA, 0 créditos; materiales/magnific/v2/guadalajara-hero/rampa-texto.mjs): fondo de baja frecuencia sin discos, discos del bokeh desvanecidos de x 0.597 a 0.55 (borde ondulado solo hacia la derecha), neblina fría oscurecida hacia el navy del lado izquierdo, grano conservado; borde derecho cae a #03040B desde x 0.95. Sujeto idéntico píxel a píxel (x ≥ 0.597), anclas sin cambio. Medido: lum máx. (y 0.06–0.90) ≤ 51 hasta x 0.54 y 76 en x 0.54–0.56; p99.9 dentro de safe.d = 58, 0 % > 90. Master: materiales/magnific/v2/guadalajara-hero/desk-b-rampa.png (= placas/guadalajara-hero/guadalajara-hero-desk.png). Sustituye a desk-b-texto-limpio.png (atenuado local que dejaba discos grises). El celular sigue generado desde r1 (desk-b-BhgpfH8oQR.png).",
+    "mobileNote": "Generación 4:5 2K (1856×2304) con la placa de escritorio como única referencia; salió con la coronilla en 0.34. Se reencuadró sin IA con la lógica de scripts/reencuadre-movil.mjs (0.1806 0 0.0694 0.0694 0.40) a 1536×1920: coronilla en 0.44 y 41 % superior limpio. Original: materiales/v2/placas/guadalajara-hero/guadalajara-hero-movil.png."
+  }
+}

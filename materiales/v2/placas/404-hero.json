@@ -1,0 +1,26 @@
+{
+  "404-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, mira desconcertado una conexión de luz cortada",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/404-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.72, "fy": 0.5, "fadeFrom": 0.91 },
+    "m": { "src": "/img/cine/404-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.53, "fy": 1, "subjTop": 0.435 },
+    "layout": "subject-right",
+    "pose": "se rasca el casco con la cabeza ladeada, mirando la rama de luz cortada",
+    "safe": { "d": [[0.04, 0.06, 0.52, 0.94]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.548, 0.115, 0.848, 0.890], "m": [0.340, 0.435, 0.725, 0.885] },
+    "anchors": {
+      "pecho": { "d": [0.736, 0.466], "m": [0.582, 0.638], "scrW": 0.038 },
+      "mano": { "d": [0.658, 0.277], "m": [0.479, 0.533] },
+      "rostro": { "d": [0.718, 0.338], "m": [0.560, 0.562] },
+      "corte": { "d": [0.588, 0.494], "m": [0.398, 0.654] },
+      "rama": { "d": [0.555, 0.494, 0.051, 0.388], "m": [0.355, 0.653, 0.068, 0.226] },
+      "fig": { "d": [0.640, 0.840], "m": null },
+      "piso": { "d": [0.500, 0.877], "m": [0.500, 0.876] }
+    },
+    "leak": { "d": [0.68, 0.10], "m": [0.57, 0.45] },
+    "grade": 0,
+    "creationIds": { "desktop": "s7TrDONl8e", "mobile": "kszqTeA16B" },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1 imagen). Referencias: Kain recorte, escena Kain y hero de inicio aprobado. Retoque sin IA: la bolita de la antena derecha salía con halo cian → plateada sin brillo (halo llevado al color del fondo); alejamiento del 6 % anclado en el borde derecho (0.94×, relleno con la misma placa desenfocada y grano) para sacar la rama de luz del lado del texto (empezaba en x ≈ 0.528 → 0.555) y bajar los pies a y ≈ 0.88; los cuatro bordes caen a #03040B (lados y arriba 7 %, abajo 10 %). La rama sube del piso en x 0.555–0.606 y se corta en corte (0.588, 0.494); chispas tenues entre x 0.545–0.61, y 0.37–0.51 (incluidas en subject). Una estela azul muy tenue de las ondas del fondo entra hasta x ≈ 0.50 en y ≈ 0.58: por eso el texto seguro termina en x 0.52. La boca es una línea cian ondulada (gesto de duda), coherente con el concepto. mano = la que rasca el casco. Original en materiales/magnific/v2/404-hero/desk-a-s7TrDONl8e.png; procesada en desk-a-recomp.jpg.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio como primera referencia (+ Kain recorte, escena Kain, hero aprobado). Bolita de la antena derecha neutralizada igual que en escritorio (movil-a-antena.png). Reencuadre con la lógica de scripts/reencuadre-movil.mjs (0.06 0.02 0.0582 0 0.40) a 1536 × 1920, más caída lateral a #03040B en el último 7 % de cada lado y abajo en el último 6 %; JPEG q92. Antenas en y ≈ 0.435, 41 % superior limpio, pies en y ≈ 0.876. Kain quedó centrado en x ≈ 0.58 (el plan pedía 0.66) con la rama cortada a su izquierda (x 0.355–0.423). Original en materiales/magnific/v2/404-hero/movil-a-kszqTeA16B.png; intermedio movil-a-reencuadre.jpg."
+  }
+}

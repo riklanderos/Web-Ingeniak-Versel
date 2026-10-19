@@ -1,0 +1,27 @@
+{
+  "paginas-web-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, arma una página web de bloques de cristal",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/paginas-web-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.27, "fy": 0.5, "fadeFrom": 0.93 },
+    "m": { "src": "/img/cine/paginas-web-hero-m", "w": 1856, "h": 2304, "ar": 0.8056, "fx": 0.48, "fy": 1, "subjTop": 0.45 },
+    "layout": "subject-left",
+    "pose": "coloca el último bloque de cristal",
+    "safe": { "d": [[0.50, 0.06, 0.96, 0.94]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.098, 0.080, 0.446, 0.905], "m": [0.288, 0.452, 0.668, 0.875] },
+    "anchors": {
+      "pecho": { "d": [0.224, 0.466], "m": [0.426, 0.640], "scrW": 0.043 },
+      "mano": { "d": [0.341, 0.406], "m": [0.553, 0.613] },
+      "rostro": { "d": [0.238, 0.291], "m": [0.440, 0.555] },
+      "superficie": { "d": [0.288, 0.181, 0.158, 0.471], "m": [0.494, 0.500, 0.174, 0.232] },
+      "ventana": { "d": [0.288, 0.181, 0.158, 0.471], "m": [0.494, 0.500, 0.174, 0.232] },
+      "bloque": { "d": [0.288, 0.424, 0.088, 0.099], "m": [0.494, 0.621, 0.090, 0.048] },
+      "fig": { "d": [0.480, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.900], "m": [0.500, 0.870] }
+    },
+    "leak": { "d": [0.30, 0.12], "m": [0.48, 0.46] },
+    "grade": 0,
+    "creationIds": { "desktop": "4RIJcDx9Aa", "mobile": "vQyILXKa47", "desktopDiscarded": "3za9WYxREY", "layoutDesktop": "rgY5P1lxtc", "layoutMobile": "KLGH4Gpkqp" },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado). Primer render (3za9WYxREY) descartado: la ventana de cristal llegaba a x ≈ 0.65 y un haz de luz entraba en el lado del texto. Reintento con guía de composición hecha del propio render (Kain desplazado a x ≈ 0.19, ventana reducida a x 0.29–0.44, lado derecho limpio) como primera referencia. Sin IA en la exportación: los cuatro bordes caen a #03040B (arriba 8 %, lados y abajo 6 %). Original en materiales/magnific/v2/paginas-web-hero/desk-b-4RIJcDx9Aa.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio elegida como primera referencia y la guía vertical (guia-movil.jpg) como segunda; antenas en y ≈ 0.45 y suelas en y ≈ 0.87, sin reencuadre. Original en materiales/magnific/v2/paginas-web-hero/movil-a-vQyILXKa47.png."
+  }
+}

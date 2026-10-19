@@ -1,0 +1,26 @@
+{
+  "seo-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, iluminado por un haz de luz junto a una tarjeta de respuesta de cristal",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/seo-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.76, "fy": 0.5, "fadeFrom": 0.94 },
+    "m": { "src": "/img/cine/seo-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.58, "fy": 1, "subjTop": 0.52 },
+    "layout": "subject-right",
+    "pose": "levanta la tarjeta de cristal bajo el haz",
+    "safe": { "d": [[0.04, 0.06, 0.54, 0.94]], "m": [[0.04, 0.03, 0.96, 0.38]] },
+    "subject": { "d": [0.640, 0.093, 0.908, 0.935], "m": [0.469, 0.524, 0.725, 0.887] },
+    "anchors": {
+      "pecho": { "d": [0.781, 0.456], "m": [0.604, 0.679], "scrW": 0.043 },
+      "mano": { "d": [0.672, 0.445], "m": [0.502, 0.677] },
+      "rostro": { "d": [0.779, 0.276], "m": [0.601, 0.603] },
+      "tarjeta": { "d": [0.603, 0.301, 0.103, 0.127], "m": [0.432, 0.614, 0.097, 0.054] },
+      "superficie": { "d": [0.603, 0.301, 0.103, 0.127], "m": [0.432, 0.614, 0.097, 0.054] },
+      "fig": { "d": [0.690, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.920], "m": [0.500, 0.880] }
+    },
+    "leak": { "d": [0.665, 0.16], "m": [0.61, 0.46] },
+    "grade": 0,
+    "creationIds": { "desktop": "XmlDa4iBfo", "mobile": "lJVxNG3gv9" },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K). Sin reencuadre: solo caída suave de los cuatro bordes a #03040B (último 8 %, curva ^2.2; el haz entra por arriba y se funde). La tarjeta de cristal está ligeramente girada (~4°): `tarjeta`/`superficie` es su caja envolvente. Niebla tenue en la penumbra izquierda (luminancia máx. ≈ 90/255 dentro de safe). Original en materiales/magnific/v2/seo-hero/desk-a-XmlDa4iBfo.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio como primera referencia; Kain salía pequeño y centrado (antenas y ≈ 0.59, x ≈ 0.52) → recorte sin IA a 1536 × 1920 a resolución nativa (x 0–1536, y 345–2265) + penumbra limpia arriba (tinta .92 hasta y 0.20 → 0 en 0.50) + caída de bordes a #03040B. El haz asoma desde y ≈ 0.30 (luminancia ≤ 100/255 hasta y 0.39), por eso safe termina en 0.38. Original en materiales/magnific/v2/seo-hero/movil-a-lJVxNG3gv9.png."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "cta-equipo": {
+    "alt": "El equipo de Ingeniak frente a un horizonte que amanece",
+    "srcsetMax": 1920,
+    "d": { "src": "/img/cine/cta-equipo", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.75, "fy": 0.6, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/cta-equipo-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.50, "fy": 1, "subjTop": 0.55 },
+    "layout": "subject-right",
+    "pose": "seis bustos reales asoman detrás de la cresta del horizonte",
+    "safe": { "d": [[0.04, 0.06, 0.53, 0.70], [0.04, 0.88, 0.53, 0.97]], "m": [[0.04, 0.03, 0.96, 0.44], [0.04, 0.78, 0.96, 0.97]] },
+    "subject": { "d": [0.559, 0.593, 0.947, 0.839], "m": [0.120, 0.548, 0.871, 0.719] },
+    "anchors": {
+      "pecho": { "d": [0.734, 0.762], "m": [0.469, 0.676] },
+      "mano": { "d": [0.582, 0.680], "m": [0.180, 0.630] },
+      "rostro": { "d": [0.734, 0.698], "m": [0.469, 0.622] },
+      "grupo": { "d": [0.559, 0.593, 0.388, 0.246], "m": [0.120, 0.548, 0.751, 0.171] },
+      "fig": { "d": [0.585, 0.880], "m": null },
+      "piso": { "d": [0.500, 0.880], "m": [0.500, 0.870] },
+      "horizonte": { "d": [0.500, 0.766], "m": [0.500, 0.694] }
+    },
+    "personas": {
+      "rik-landeros": { "fila": "frente", "rostro": { "d": [0.632, 0.655], "m": [0.273, 0.606] } },
+      "richard-vela": { "fila": "atrás", "rostro": { "d": [0.684, 0.684], "m": [0.372, 0.615] } },
+      "alonso-vega": { "fila": "frente", "rostro": { "d": [0.734, 0.698], "m": [0.469, 0.622] } },
+      "andy-pizano": { "fila": "atrás", "rostro": { "d": [0.790, 0.693], "m": [0.575, 0.603] } },
+      "cesar-ovalle": { "fila": "frente", "rostro": { "d": [0.839, 0.706], "m": [0.668, 0.614] } },
+      "marcos-gonzalez": { "fila": "atrás", "rostro": { "d": [0.895, 0.715], "m": [0.774, 0.615] } }
+    },
+    "leak": { "d": [0.71, 0.14], "m": [0.47, 0.52] },
+    "grade": 0,
+    "creationIds": { "fondoDesktop": "yiowtFSPW9", "fondoMobile": "0eKnx3vTfW", "recortes": "w4el8Hv7EI", "recortesFuente": "vQyI6Q5a47", "base": { "desktop": "gOMo0LaSXO", "mobile": "ksz0MwA16B" } },
+    "notes": "Composición con fotos reales (sin generar personas ni filtros generativos sobre caras). Fondo = cta-amanecer sin Kain: Nano Banana Pro en edición a 2K nativo (2752×1536 y 1856×2304, sin upscale; 2K cuesta lo mismo que 1K) con la placa elegida de cta-amanecer como única referencia; mismo horizonte (ápice y ≈ 0.766 en d, 0.694 en m), mismo haz vertical (x ≈ 0.60–0.85) y piso. Recortes: los 6 retratos sin la X (lógica de scripts/retoque-equipo.mjs a resolución original), cortados justo arriba de la placa de nombre, en una sola cuadrícula → un solo remove_background; sin placas, cargos ni X. Composición local (sharp, materiales/magnific/v2/cta-equipo/componer.mjs + cfg-*.json): fila escalonada Rik (frente) · Richard (atrás) · Alonso (frente) · Andy (atrás) · César (frente) · Marcos (atrás); fila de atrás al 91 % de escala y −9 % de exposición; los cortes inferiores quedan siempre bajo la cresta (oculta todo lo que cae por debajo de la curva medida), el resplandor del horizonte pasa por delante. Duotono navy #0A163E → blanco lavanda #D7E2FC al 65 %, luz ambiental tomada del set (más clara dentro del haz), filo cian/azul solo en bordes superiores (≈ 32 %), halo exterior tenue y grano 2.2. Rik a la izquierda para que su mano levantada no tape a nadie. No se espeja nunca (personas reales). `rostro`/`pecho` = Alonso (frente, centro del grupo); `mano` = mano levantada de Rik; `grupo` = caja [x, y, w, h] de los seis; `personas` = centro de cada rostro. `piso` = plano del suelo frente a la cresta (mismo set que cta-amanecer). Lado del texto: luminancia p95 56 / máx. 109 en la caja alta de d (bruma violeta sobre la cresta, igual que cta-amanecer: 53/106) y p95 8 / máx. 16 en la baja; m: p95 16 / máx. 38 en el 40 % superior (p95 21 / máx. 48 en la caja safe alta). Los cuatro bordes caen a #03040B en d y m (máx. ≤ 8); el haz se desvanece antes del borde superior con la misma viñeta medida en cta-amanecer (fila 0 ≈ 4, ≈ 140 en y = 100). Vertical: render 1856×2304 recortado a 4:5 (6 px por lado) y reducido a 1536×1920. Plan r1: respaldo hasta la sesión de fotos real del equipo (ESPEC §12 R6). r2 (19 oct 2026, 0 créditos, solo componer.mjs): viñeta superior de cta-amanecer aplicada al fondo de d (la edición Nano Banana la había quitado); resplandor de la cresta con el tono del propio fondo (antes diferencia por canal → banda verde oliva detrás de los bustos); muesca del remove_background entre pelo y hombro de César cerrada y restos azules de la X limpiados (era la costura cian sobre el saco de Marcos); filo y halo se apagan donde un busto tapa a otro; trama regular de puntos del fondo (d y m) cambiada por grano aleatorio; piso bajo el haz atenuado hacia el negro de cta-amanecer. Bustos, escala y anclas sin cambios. Respaldo r1: materiales/magnific/v2/cta-equipo/*-r1.*"
+  }
+}

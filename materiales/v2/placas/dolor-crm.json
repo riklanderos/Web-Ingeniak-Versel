@@ -1,0 +1,26 @@
+{
+  "dolor-crm": {
+    "alt": "Gerente comercial agotada de noche frente a su laptop, rodeada de notas sin seguimiento (imagen ilustrativa)",
+    "srcsetMax": 1920,
+    "d": { "src": "/img/cine/dolor-crm", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.28, "fy": 0.5, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/dolor-crm-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.36, "fy": 1, "subjTop": 0.54 },
+    "layout": "subject-left",
+    "pose": "mano en la frente frente a la laptop",
+    "safe": { "d": [[0.47, 0.06, 0.96, 0.66], [0.60, 0.66, 0.96, 0.94]], "m": [[0.04, 0.03, 0.96, 0.38]] },
+    "subject": { "d": [0.045, 0.26, 0.44, 0.88], "m": [0.057, 0.543, 0.650, 0.905] },
+    "anchors": {
+      "pecho": { "d": [0.192, 0.612], "m": [0.315, 0.752] },
+      "mano": { "d": [0.221, 0.740], "m": [0.360, 0.830] },
+      "rostro": { "d": [0.223, 0.458], "m": [0.360, 0.660] },
+      "pantalla": { "d": [0.261, 0.548, 0.174, 0.259], "m": [0.409, 0.713, 0.241, 0.164] },
+      "notas": { "d": [0.048, 0.036, 0.270, 0.370], "m": [0.119, 0.400, 0.368, 0.228] },
+      "fig": { "d": [0.600, 0.820], "m": null },
+      "piso": { "d": [0.500, 0.880], "m": [0.500, 0.905] }
+    },
+    "leak": { "d": [0.27, 0.56], "m": [0.42, 0.72] },
+    "grade": 0,
+    "creationIds": { "desktop": "9ZtOdMlNYZ", "desktopDescartada": "UPpsYcbwny", "mobile": "bx2QiNK5Y2" },
+    "deskNote": "Persona ilustrativa (placa de dolor, sin Kain): Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; 2K cuesta lo mismo que 1K) y SIN referencias de imagen, como pide el plan. Primera toma (UPpsYcbwny) descartada: cuerpo y silla llegaban a x ≈ 0.62 y ella miraba hacia el borde izquierdo. Reintento (9ZtOdMlNYZ) con la escena compacta a la izquierda y el cuerpo orientado hacia el texto. Reencuadre sin IA: escena desplazada 4 % a la izquierda (derecha rellenada con la continuación del borde + grano), penumbra horizontal hacia #03040B de x 0.43 a 0.59 (fuerza 0.78) que apaga las carpetas y el marco del cristal, y caída de los cuatro bordes a #03040B en el último 7 %. Notas adhesivas en blanco (sin garabatos), laptop sin logotipo, teclado ilegible. Ámbar tenue: sale solo de la pantalla hacia rostro y manos. Las carpetas cerradas asoman atenuadas en x 0.41–0.59, y 0.70–0.80, por eso la caja segura baja empieza en x 0.60 (luminancia máx. 44/255 en la caja alta y 15/255 en la baja). `pantalla` es la tapa de la laptop (vista por detrás); `notas`, el muro de notas en blanco. Original en materiales/magnific/v2/dolor-crm/desk-b-9ZtOdMlNYZ.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la toma de escritorio elegida (9ZtOdMlNYZ) como única referencia: misma persona y mismo set. Reencuadre con la lógica de scripts/reencuadre-movil.mjs (0.00694 0 0 0 0.40) más caída lateral del 6 %, a 1536 × 1920. La coronilla quedó en y ≈ 0.54 (el plan pedía ≈ 0.44): no se recortó arriba porque el muro de notas (y ≥ 0.40) invadiría el 40 % superior. Persona en x ≈ 0.12–0.47, laptop hasta 0.65, carpetas hasta 0.87. Vacío superior con niebla tenue (luminancia p95 ≈ 42/255, máx. ≈ 79 dentro de safe). Original en materiales/magnific/v2/dolor-crm/movil-a-bx2QiNK5Y2.png."
+  }
+}

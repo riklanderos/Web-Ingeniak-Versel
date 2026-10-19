@@ -1,0 +1,29 @@
+{
+  "dolor-operacion": {
+    "alt": "Dueño de negocio de noche, con el teléfono en el oído y papeles en la mano: todo pasa por él (imagen ilustrativa)",
+    "srcsetMax": 1920,
+    "d": { "src": "/img/cine/dolor-operacion", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.30, "fy": 0.42, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/dolor-operacion-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.52, "fy": 1, "subjTop": 0.44 },
+    "layout": "subject-left",
+    "pose": "de pie en el escritorio, teléfono al oído, revisa los papeles",
+    "safe": { "d": [[0.50, 0.06, 0.96, 0.94]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.200, 0.130, 0.432, 0.960], "m": [0.364, 0.442, 0.673, 0.950] },
+    "anchors": {
+      "pecho": { "d": [0.310, 0.490], "m": [0.480, 0.660] },
+      "mano": { "d": [0.245, 0.775], "m": [0.430, 0.822] },
+      "rostro": { "d": [0.252, 0.305], "m": [0.425, 0.560] },
+      "llamada": { "d": [0.245, 0.365], "m": [0.414, 0.582] },
+      "telefono": { "d": [0.131, 0.858, 0.110, 0.047], "m": [0.265, 0.864, 0.150, 0.026] },
+      "pantalla": { "d": [0.126, 0.442, 0.124, 0.181], "m": [0.259, 0.640, 0.166, 0.109] },
+      "papeles": { "d": [0.073, 0.666, 0.207, 0.196], "m": [0.182, 0.769, 0.289, 0.097] },
+      "lampara": { "d": [0.070, 0.465], "m": [0.185, 0.645] },
+      "fig": { "d": [0.480, 0.820], "m": null },
+      "piso": { "d": [0.500, 0.925], "m": [0.500, 0.900] }
+    },
+    "leak": { "d": [0.10, 0.47], "m": [0.20, 0.65] },
+    "grade": 0,
+    "creationIds": { "desktop": "8aUdr60IrU", "mobile": "8aUdsdvIrU" },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K), sin referencias de imagen (persona ilustrativa, plan). Salió con el sujeto en x ≈ 0.28–0.535 y fondo hasta x ≈ 0.58 → reencuadre SIN IA (materiales/magnific/v2/dolor-operacion/post-dolor-operacion-desk.mjs): escena al 90 %, desplazada 5.5 % a la izquierda y anclada abajo; penumbra sintetizada arriba/derecha/abajo desde los bordes y los cuatro bordes caen a #03040B. Lado del texto (x ≥ 0.50) con luminancia máx. 25/255. Papeles y monitor sin texto legible (solo trazos borrosos). Original: materiales/magnific/v2/dolor-operacion/desk-a-8aUdr60IrU.png; master sin pérdida: desk-a-reencuadre.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la generación de escritorio como única referencia (misma persona). Salió con la coronilla en 0.395 → reencuadre sin IA con la lógica de scripts/reencuadre-movil.mjs (0.07 −0.02 0.0201 0.0201 0.40; copia con salida PNG en materiales/magnific/v2/dolor-operacion/reencuadre-movil-png.mjs) a 1536 × 1920 + caída lateral suave a #03040B (post-dolor-operacion-movil.mjs). Coronilla en 0.443; 41 % superior limpio (luminancia máx. 42/255). Original: materiales/magnific/v2/dolor-operacion/movil-a-8aUdsdvIrU.png; master sin pérdida: movil-a-final.png."
+  }
+}

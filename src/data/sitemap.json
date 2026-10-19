@@ -3922,7 +3922,7 @@
           "shared": true
         },
         "plate": {
-          "id": "cta-equipo",
+          "id": "cta-amanecer",
           "component": "Dawn",
           "layout": "subject-right",
           "mirror": false,
@@ -3930,7 +3930,8 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "note": "[2026-10-19: cta-equipo (recortes del equipo) no alcanza el nivel premium; se usa cta-amanecer hasta la sesión de fotos R6.]"
         }
       }
     ],
@@ -6181,7 +6182,7 @@
           "shared": true
         },
         "plate": {
-          "id": "cta-equipo",
+          "id": "cta-amanecer",
           "component": "Dawn",
           "layout": "subject-right",
           "mirror": false,
@@ -6189,7 +6190,8 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "note": "[2026-10-19: cta-equipo (recortes del equipo) no alcanza el nivel premium; se usa cta-amanecer hasta la sesión de fotos R6.]"
         }
       }
     ],
@@ -7306,7 +7308,7 @@
           "shared": true
         },
         "plate": {
-          "id": "cta-equipo",
+          "id": "cta-amanecer",
           "component": "Dawn",
           "layout": "subject-right",
           "mirror": false,
@@ -7314,7 +7316,8 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "note": "[2026-10-19: cta-equipo (recortes del equipo) no alcanza el nivel premium; se usa cta-amanecer hasta la sesión de fotos R6.]"
         }
       }
     ],
@@ -9810,7 +9813,7 @@
           "shared": true
         },
         "plate": {
-          "id": "cta-equipo",
+          "id": "cta-amanecer",
           "component": "Dawn",
           "layout": "subject-right",
           "mirror": false,
@@ -9818,7 +9821,8 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "note": "[2026-10-19: cta-equipo (recortes del equipo) no alcanza el nivel premium; se usa cta-amanecer hasta la sesión de fotos R6.]"
         }
       }
     ],

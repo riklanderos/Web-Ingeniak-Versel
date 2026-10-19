@@ -1,0 +1,27 @@
+{
+  "servicios-no-se": {
+    "alt": "Kain, el agente de IA de Ingeniak, señala el camino frente a tres opciones de cristal",
+    "srcsetMax": 1920,
+    "d": { "src": "/img/cine/servicios-no-se", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.26, "fy": 0.5, "fadeFrom": 0.93 },
+    "m": { "src": "/img/cine/servicios-no-se-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.52, "fy": 1, "subjTop": 0.42 },
+    "layout": "subject-left",
+    "pose": "señala con el brazo extendido hacia el texto",
+    "safe": { "d": [[0.48, 0.06, 0.96, 0.94]], "m": [[0.04, 0.03, 0.96, 0.40]] },
+    "subject": { "d": [0.146, 0.088, 0.445, 0.860], "m": [0.195, 0.419, 0.772, 0.875] },
+    "anchors": {
+      "pecho": { "d": [0.253, 0.447], "m": [0.523, 0.634], "scrW": 0.035 },
+      "mano": { "d": [0.419, 0.400], "m": [0.695, 0.530] },
+      "rostro": { "d": [0.266, 0.290], "m": [0.516, 0.536] },
+      "opcion1": { "d": [0.000, 0.111, 0.129, 0.570], "m": [0.195, 0.435, 0.160, 0.341] },
+      "opcion2": { "d": [0.146, 0.088, 0.180, 0.596], "m": [0.378, 0.419, 0.235, 0.366] },
+      "opcion3": { "d": [0.337, 0.174, 0.107, 0.467], "m": [0.628, 0.469, 0.143, 0.284] },
+      "fig": { "d": [0.460, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.845], "m": [0.500, 0.866] }
+    },
+    "leak": { "d": [0.36, 0.20], "m": [0.60, 0.47] },
+    "grade": 0,
+    "creationIds": { "desktop": "kszq6Eu16B", "mobile": "lJVx0irgv9" },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K). Toma única: Kain y los paneles salieron bien pero el panel derecho llegaba a x ≈ 0.527 y la punta del dedo a x ≈ 0.496 (dentro de la zona de texto) y los pies a y ≈ 0.92 → reencuadre sin IA: escala 0.90, desplazamiento −2.93 % en x y +2.56 % en y (se recortan 81 px a la izquierda; arriba, abajo y a la derecha se sintetiza penumbra desde el borde extendido y desenfocado, con grano) y caída de los cuatro bordes a #03040B en el último 7 % (smoothstep). Resultado: panel derecho termina en x ≈ 0.444, dedo en x ≈ 0.419, antenas y ≈ 0.128, pies y ≈ 0.833–0.853; zona x ≥ 0.48 limpia (luminancia p95 ≈ 45/255, máx ≈ 77, solo neblina índigo). mano = punta del índice (la mano completa ocupa x ≈ 0.37–0.42, y ≈ 0.37–0.45 y tapa el borde izquierdo de opcion3). Cajas opcion1–3 = los tres paneles de cristal vacíos [x, y, w, h], con perspectiva leve (borde superior de opcion2 baja de y ≈ 0.088 a 0.119 hacia la derecha); opcion1 queda medio dentro de la caída del borde izquierdo y opcion2 casi entera detrás de Kain, así que solo opcion3 sirve para registrar UI (recortando la mano). Ojos en media luna sonriente (pedido en el prompt); las antenas tienen una bolita mínima en la punta, sin brillo. Original en materiales/magnific/v2/servicios-no-se/desk-a-kszq6Eu16B.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la toma de escritorio (kszq6Eu16B) como primera referencia; salió cerrado (antenas y ≈ 0.388, pies y ≈ 0.933, panel central desde y ≈ 0.347) → reencuadre sin IA con la lógica de scripts/reencuadre-movil.mjs pero con relleno de borde extendido y desenfocado (evita la costura en las esquinas inferiores), pads 0.1953 0.1016 0.1159 0.1159 y penumbra limpia hasta 0.40, salida JPEG q92 a 1536 × 1920. Kain centrado (pecho x ≈ 0.52) señalando arriba a la derecha (punta del dedo en 0.695, 0.530); antenas y ≈ 0.45, pies y ≈ 0.862–0.871. 40 % superior vacío (luminancia p95 ≈ 31/255, máx ≈ 61); el borde superior del panel central asoma en y ≈ 0.419, por eso subjTop = 0.42. La mano tapa la esquina superior izquierda de opcion3. Original en materiales/magnific/v2/servicios-no-se/movil-a-lJVx0irgv9.png."
+  }
+}

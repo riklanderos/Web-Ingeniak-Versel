@@ -1,0 +1,23 @@
+{
+  "industrias-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, frente a una galería de puertas de luz que llevan a distintas industrias",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/industrias-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.72, "fy": 0.5, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/industrias-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.56, "fy": 1, "subjTop": 0.43 },
+    "layout": "subject-right",
+    "pose": "presenta con la mano abierta",
+    "safe": { "d": [[0.04, 0.06, 0.46, 0.94]], "m": [[0.04, 0.03, 0.96, 0.38]] },
+    "subject": { "d": [0.575, 0.15, 0.815, 0.885], "m": [0.425, 0.425, 0.745, 0.885] },
+    "anchors": {
+      "pecho": { "d": [0.707, 0.473], "m": [0.601, 0.625], "scrW": 0.036 },
+      "mano": { "d": [0.602, 0.532], "m": [0.454, 0.659] },
+      "rostro": { "d": [0.700, 0.316], "m": [0.593, 0.529] },
+      "galeria": { "d": [0.350, 0.035, 0.650, 0.710], "m": [0.120, 0.395, 0.720, 0.385] },
+      "fig": { "d": [0.560, 0.880], "m": null },
+      "piso": { "d": [0.500, 0.875], "m": [0.500, 0.875] }
+    },
+    "leak": { "d": [0.74, 0.26], "m": [0.64, 0.50] },
+    "grade": 0,
+    "creationIds": { "desktop": "MBrWWwpDCm", "mobile": "jUcKxyXLD0", "desktopDescartado": "s7T1KCsl8e" }
+  }
+}

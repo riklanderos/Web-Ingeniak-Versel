@@ -1,0 +1,30 @@
+{
+  "tecnologias-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, sentado en un cubo de cristal del que salen conexiones de luz",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/tecnologias-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.72, "fy": 0.5, "fadeFrom": 0.92 },
+    "m": { "src": "/img/cine/tecnologias-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.52, "fy": 1, "subjTop": 0.43 },
+    "layout": "subject-right",
+    "pose": "sentado en el cubo de cristal",
+    "safe": { "d": [[0.04, 0.06, 0.53, 0.94]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.545, 0.11, 0.94, 0.90], "m": [0.285, 0.425, 0.79, 0.875] },
+    "anchors": {
+      "pecho": { "d": [0.692, 0.445], "m": [0.470, 0.619], "scrW": 0.032 },
+      "mano": { "d": [0.790, 0.618], "m": [0.594, 0.718] },
+      "rostro": { "d": [0.686, 0.288], "m": [0.461, 0.530] },
+      "cubo": { "d": [0.636, 0.598, 0.212, 0.299], "m": [0.397, 0.709, 0.272, 0.162] },
+      "placa-1": { "d": [0.579, 0.260, 0.048, 0.071], "m": [0.326, 0.513, 0.061, 0.040] },
+      "placa-2": { "d": [0.549, 0.480, 0.047, 0.064], "m": [0.289, 0.638, 0.060, 0.040] },
+      "placa-3": { "d": [0.788, 0.113, 0.061, 0.083], "m": [0.593, 0.428, 0.076, 0.048] },
+      "placa-4": { "d": [0.847, 0.214, 0.065, 0.083], "m": [0.668, 0.486, 0.082, 0.049] },
+      "placa-5": { "d": [0.870, 0.470, 0.068, 0.077], "m": [0.699, 0.634, 0.085, 0.045] },
+      "fig": { "d": [0.625, 0.800], "m": null },
+      "piso": { "d": [0.500, 0.890], "m": [0.500, 0.870] }
+    },
+    "leak": { "d": [0.75, 0.37], "m": [0.55, 0.60] },
+    "grade": 0,
+    "creationIds": { "desktop": "WDbGmQYcXe", "mobile": "lJVxAuBgv9" },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1 imagen). Reencuadre sin IA: alejamiento del 6 % anclado en (0.955, 0.5) para sacar del lado del texto la placa inferior izquierda (empezaba en x ≈ 0.523 → 0.549), relleno con la misma placa desenfocada y los cuatro bordes caen a #03040B en el último 7 %. Salieron 5 placas de cristal vacías (el plan pedía 6): placa-1…5 van de izquierda a derecha y de arriba abajo, iguales en d y m. La mano registrada es la que descansa sobre el cubo; una línea guía fig → mano cruzaría los pies, así que con FigCaption conviene target=\"placa-2\". Original en materiales/magnific/v2/tecnologias-hero/desk-a-WDbGmQYcXe.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio como primera referencia; Kain quedaba grande (contenido desde y ≈ 0.37, base del cubo en y ≈ 0.95) → reencuadre con scripts/reencuadre-movil.mjs (0.188 0.101 0.08 0.1455 0.40; salida JPEG q92) a 1536 × 1920. Original en materiales/magnific/v2/tecnologias-hero/movil-a-lJVxAuBgv9.png."
+  }
+}

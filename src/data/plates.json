@@ -3940,5 +3940,3535 @@
       "desktop": "vQy4wzOa47",
       "mobile": "TdkLxOBVNR"
     }
+  },
+  "404-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, mira desconcertado una conexión de luz cortada",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/404-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.5,
+      "fadeFrom": 0.91
+    },
+    "m": {
+      "src": "/img/cine/404-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.53,
+      "fy": 1,
+      "subjTop": 0.435
+    },
+    "layout": "subject-right",
+    "pose": "se rasca el casco con la cabeza ladeada, mirando la rama de luz cortada",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.52,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.548,
+        0.115,
+        0.848,
+        0.89
+      ],
+      "m": [
+        0.34,
+        0.435,
+        0.725,
+        0.885
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.736,
+          0.466
+        ],
+        "m": [
+          0.582,
+          0.638
+        ],
+        "scrW": 0.038
+      },
+      "mano": {
+        "d": [
+          0.658,
+          0.277
+        ],
+        "m": [
+          0.479,
+          0.533
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.718,
+          0.338
+        ],
+        "m": [
+          0.56,
+          0.562
+        ]
+      },
+      "corte": {
+        "d": [
+          0.588,
+          0.494
+        ],
+        "m": [
+          0.398,
+          0.654
+        ]
+      },
+      "rama": {
+        "d": [
+          0.555,
+          0.494,
+          0.051,
+          0.388
+        ],
+        "m": [
+          0.355,
+          0.653,
+          0.068,
+          0.226
+        ]
+      },
+      "fig": {
+        "d": [
+          0.64,
+          0.84
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.877
+        ],
+        "m": [
+          0.5,
+          0.876
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.68,
+        0.1
+      ],
+      "m": [
+        0.57,
+        0.45
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "s7TrDONl8e",
+      "mobile": "kszqTeA16B"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1 imagen). Referencias: Kain recorte, escena Kain y hero de inicio aprobado. Retoque sin IA: la bolita de la antena derecha salía con halo cian → plateada sin brillo (halo llevado al color del fondo); alejamiento del 6 % anclado en el borde derecho (0.94×, relleno con la misma placa desenfocada y grano) para sacar la rama de luz del lado del texto (empezaba en x ≈ 0.528 → 0.555) y bajar los pies a y ≈ 0.88; los cuatro bordes caen a #03040B (lados y arriba 7 %, abajo 10 %). La rama sube del piso en x 0.555–0.606 y se corta en corte (0.588, 0.494); chispas tenues entre x 0.545–0.61, y 0.37–0.51 (incluidas en subject). Una estela azul muy tenue de las ondas del fondo entra hasta x ≈ 0.50 en y ≈ 0.58: por eso el texto seguro termina en x 0.52. La boca es una línea cian ondulada (gesto de duda), coherente con el concepto. mano = la que rasca el casco. Original en materiales/magnific/v2/404-hero/desk-a-s7TrDONl8e.png; procesada en desk-a-recomp.jpg.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio como primera referencia (+ Kain recorte, escena Kain, hero aprobado). Bolita de la antena derecha neutralizada igual que en escritorio (movil-a-antena.png). Reencuadre con la lógica de scripts/reencuadre-movil.mjs (0.06 0.02 0.0582 0 0.40) a 1536 × 1920, más caída lateral a #03040B en el último 7 % de cada lado y abajo en el último 6 %; JPEG q92. Antenas en y ≈ 0.435, 41 % superior limpio, pies en y ≈ 0.876. Kain quedó centrado en x ≈ 0.58 (el plan pedía 0.66) con la rama cortada a su izquierda (x 0.355–0.423). Original en materiales/magnific/v2/404-hero/movil-a-kszqTeA16B.png; intermedio movil-a-reencuadre.jpg."
+  },
+  "art-agente-chatbot-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, junto a una vieja terminal de menús apagada",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/art-agente-chatbot-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.74,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/art-agente-chatbot-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.5,
+      "fy": 1,
+      "subjTop": 0.445
+    },
+    "layout": "subject-right",
+    "pose": "mira de reojo la terminal vieja y apagada",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.53,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.42
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.555,
+        0.14,
+        0.915,
+        0.905
+      ],
+      "m": [
+        0.25,
+        0.445,
+        0.735,
+        0.91
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.81,
+          0.461
+        ],
+        "m": [
+          0.594,
+          0.637
+        ],
+        "scrW": 0.033
+      },
+      "mano": {
+        "d": [
+          0.776,
+          0.66
+        ],
+        "m": [
+          0.545,
+          0.75
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.796,
+          0.318
+        ],
+        "m": [
+          0.585,
+          0.553
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.603,
+          0.258,
+          0.103,
+          0.141
+        ],
+        "m": [
+          0.298,
+          0.511,
+          0.158,
+          0.092
+        ]
+      },
+      "terminal": {
+        "d": [
+          0.555,
+          0.231,
+          0.191,
+          0.621
+        ],
+        "m": [
+          0.252,
+          0.497,
+          0.256,
+          0.372
+        ]
+      },
+      "fig": {
+        "d": [
+          0.745,
+          0.87
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.86
+        ],
+        "m": [
+          0.5,
+          0.875
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.745,
+        0.4
+      ],
+      "m": [
+        0.52,
+        0.58
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "ovSewFE829",
+      "mobile": "fH4mRqNCDY"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K: 75 créditos). Referencias: s7TThool8e, 5jAAdVBKxe, jUccthULD0. Kain correcto, botones de la terminal lisos y su pantalla vacía. El render salió más cerrado que el plan (terminal desde x ≈ 0.50, antenas en y ≈ 0.10) → reencuadre sin IA: lienzo 3100 × 1730 con el original en (366, 90), recorte de 18 px a la derecha, relleno sintetizado desde los bordes (ya en tinta) y vuelta a 2752 × 1536 (escala 0.888). Terminal en sombra (−28 % de x 0.46 a 0.60, vuelve a 1 en 0.71) y caída de los cuatro bordes a #03040B (lados 7 %, arriba 8 %, abajo desde 0.90). Luminancia máx. en x < 0.55 ≤ 33/255. `pantalla` es la caja envolvente del monitor muerto de la terminal (inclinado); `terminal`, la de todo el gabinete con su base. Original en materiales/magnific/v2/art-agente-chatbot-hero/desk-a-ovSewFE829.png; procesada en desk-a-final.jpg.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con el render de escritorio (ovSewFE829) como primera referencia + s7TThool8e, 5jAAdVBKxe, jUccthULD0. Salió con Kain grande (antenas en y ≈ 0.36, suelas en 0.94) → reencuadre sin IA con scripts/reencuadre-movil.mjs (0.2305 0.1016 0.1115 0.1484 0.40) a 1536 × 1920, luego terminal en sombra (−25 % en x 0.28–0.45) y caída lateral a #03040B (izq. hasta 0.09–0.26, der. 0.755–0.875) para ocultar las costuras del relleno en la banda del piso. Antenas en 0.445, suelas en ≈ 0.88, 42 % superior limpio (luminancia ≤ 44/255). Original en materiales/magnific/v2/art-agente-chatbot-hero/movil-a-fH4mRqNCDY.png; intermedio movil-a-reencuadre.jpg; final movil-a-final.jpg."
+  },
+  "blog-hero": {
+    "alt": "Mujer leyendo en una tableta de noche junto a un ventanal (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/blog-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.7,
+      "fy": 0.42,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/blog-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.52,
+      "fy": 1,
+      "subjTop": 0.445
+    },
+    "layout": "subject-right",
+    "pose": "lee en la tableta, sentada en el sillón con las piernas recogidas",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.4,
+          0.9
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.405,
+        0.095,
+        0.907,
+        0.985
+      ],
+      "m": [
+        0.2,
+        0.445,
+        0.805,
+        0.965
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.727,
+          0.45
+        ],
+        "m": [
+          0.594,
+          0.655
+        ]
+      },
+      "mano": {
+        "d": [
+          0.558,
+          0.497
+        ],
+        "m": [
+          0.386,
+          0.68
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.697,
+          0.275
+        ],
+        "m": [
+          0.552,
+          0.552
+        ]
+      },
+      "tableta": {
+        "d": [
+          0.528,
+          0.313,
+          0.114,
+          0.252
+        ],
+        "m": [
+          0.348,
+          0.572,
+          0.135,
+          0.149
+        ]
+      },
+      "fig": {
+        "d": [
+          0.39,
+          0.86
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.875
+        ],
+        "m": [
+          0.5,
+          0.905
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.54,
+        0.13
+      ],
+      "m": [
+        0.43,
+        0.53
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "YMqAvUQWeC",
+      "mobile": "lJVxze2gv9",
+      "desktopR0": "yiowcwdPW9"
+    },
+    "deskNote": "Placa de persona (plan: sin referencias de imagen para no clonar rostros). Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K). La r0 (yiowcwdPW9) se descartó: logotipo de marca en el dorso de la tableta y marco del ventanal con bokeh dentro del lado del texto (x ≈ 0.25–0.55). Master = r1 sin IA: marco izquierdo del ventanal (x 0.43–0.50, y < 0.585) llevado a penumbra con el color de la pared de su fila, y caída de los bordes a #03040B (izq 7 %, der 10 %, arriba 8 %, abajo 16 %; smoothstep). La ventana sigue visible en x 0.43–0.84, y < 0.55 (atenuada a la izquierda), por eso el texto seguro termina en x 0.40. Banda de piso iluminada en y 0.85–0.93. Original en materiales/magnific/v2/blog-hero/desk-b-YMqAvUQWeC.png; procesada en desk-b-texto-limpio.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la r1 de escritorio como única referencia; salió con la coronilla en 0.355 y el sillón cortado abajo → reencuadre con la lógica de scripts/reencuadre-movil.mjs (0.19 0.03 0.085 0.085 0.42) a 1536 × 1920 y caída lateral a #03040B en el último 13 % de cada lado para ocultar la costura del relleno en la banda del piso. Coronilla en 0.445, 41 % superior limpio. Original en materiales/magnific/v2/blog-hero/movil-a-lJVxze2gv9.png; intermedios movil-a-reencuadre.png y movil-a-reencuadre-bordes.png."
+  },
+  "branding-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, posa en un set fotográfico junto a un tablero de identidad",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/branding-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.28,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/branding-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.48,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "posa con la mano en la cadera junto al tablero",
+    "safe": {
+      "d": [
+        [
+          0.46,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.4
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.08,
+        0.2,
+        0.43,
+        0.85
+      ],
+      "m": [
+        0.27,
+        0.44,
+        0.78,
+        0.88
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.19,
+          0.486
+        ],
+        "m": [
+          0.428,
+          0.636
+        ],
+        "scrW": 0.036
+      },
+      "mano": {
+        "d": [
+          0.243,
+          0.642
+        ],
+        "m": [
+          0.506,
+          0.752
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.193,
+          0.339
+        ],
+        "m": [
+          0.432,
+          0.535
+        ]
+      },
+      "superficie": {
+        "d": [
+          0.279,
+          0.345,
+          0.148,
+          0.219
+        ],
+        "m": [
+          0.559,
+          0.543,
+          0.214,
+          0.146
+        ]
+      },
+      "fig": {
+        "d": [
+          0.444,
+          0.737
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.838
+        ],
+        "m": [
+          0.5,
+          0.875
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.32,
+        0.28
+      ],
+      "m": [
+        0.6,
+        0.48
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "nVH2eZ3YQD",
+      "desktopDescartada": "s7TryWcl8e",
+      "mobile": "dtsME3GXSL"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado: 2K cuesta lo mismo que 1K). Primera toma (s7TryWcl8e) descartada: el set se abría hasta x ≈ 0.62 con un softbox encendido en la zona del texto. Reintento (nVH2eZ3YQD) con el set compacto a la izquierda; Kain quedó en x ≈ 0.31 → reencuadre sin IA: escena desplazada 10 % a la izquierda, penumbra derecha sintetizada desde el borde y los cuatro bordes caen a #03040B en el último 7 %. La cámara del trípode queda casi fuera de cuadro (solo patas y el borde de un softbox a la izquierda). Tablero de cristal esmerilado, frontal y vacío; su borde superior tiene una inclinación de ~0.005 del alto. QA 2026-10-19 (sin IA, 0 créditos): el tablero llegaba a x 0.509 y su halo a ≈ 0.55, bajo el H1 (la columna 7 de subject-left empieza en x ≈ 0.45 de la placa a 4:3, 0.48 a 16:10 y 0.50 a 16:9) → la escena se rehízo desde el original: escala 0.845 con x′ = −0.088 + 0.845·x₀ e y′ = 0.0775 + 0.845·y₀ (mismo encuadre que antes, cámara 15 % más atrás), arriba/abajo/derecha sintetizados desde el borde, bandera sobre el halo del tablero (exceso sobre la penumbra ×0.2 de x 0.429 a 0.485) y los cuatro bordes a #03040B en el último 7 %. Ahora el tablero va de x 0.279 a 0.426 y el halo queda a ≤ +6 de luminancia sobre la penumbra desde x 0.47 (≤ +14 desde 0.46); Kain de x 0.087 a 0.255, antenas y 0.207, pies y ≈ 0.83. Script en materiales/magnific/v2/branding-hero/reencuadre-escala.mjs (args 0.845 -0.088 0.0775 0.429 0.485 0.2); copia del master en desk-b-recomp2.jpg; la versión anterior es desk-b-recomp.jpg. Original en materiales/magnific/v2/branding-hero/desk-b-nVH2eZ3YQD.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la toma de escritorio elegida (nVH2eZ3YQD) como primera referencia; salió cerrado (antenas y ≈ 0.40, pies y ≈ 0.93) → reencuadre con scripts/reencuadre-movil.mjs (0.168 0.094 0.04 0.164 0.40) a 1536 × 1920. Niebla cian sobre el ciclorama entre y ≈ 0.33 y 0.40 (luminancia p95 ≈ 90/255), sin objetos ni luces en el 40 % superior. Original en materiales/magnific/v2/branding-hero/movil-a-dtsME3GXSL.png."
+  },
+  "casos-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, junto a tres columnas de luz que crecen",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/casos-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.27,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/casos-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.5,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "presenta con la palma abierta hacia el texto",
+    "safe": {
+      "d": [
+        [
+          0.48,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.42
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.09,
+        0.045,
+        0.435,
+        0.935
+      ],
+      "m": [
+        0.3,
+        0.44,
+        0.69,
+        0.895
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.274,
+          0.455
+        ],
+        "m": [
+          0.505,
+          0.638
+        ],
+        "scrW": 0.044
+      },
+      "mano": {
+        "d": [
+          0.4,
+          0.524
+        ],
+        "m": [
+          0.651,
+          0.672
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.277,
+          0.27
+        ],
+        "m": [
+          0.508,
+          0.535
+        ]
+      },
+      "columna1": {
+        "d": [
+          0.101,
+          0.356,
+          0.009,
+          0.436
+        ],
+        "m": [
+          0.303,
+          0.572,
+          0.011,
+          0.239
+        ]
+      },
+      "columna2": {
+        "d": [
+          0.244,
+          0.046,
+          0.01,
+          0.744
+        ],
+        "m": [
+          0.474,
+          0.743,
+          0.008,
+          0.068
+        ]
+      },
+      "columna3": {
+        "d": [
+          0.367,
+          0.141,
+          0.009,
+          0.642
+        ],
+        "m": [
+          0.648,
+          0.452,
+          0.01,
+          0.359
+        ]
+      },
+      "fig": {
+        "d": [
+          0.44,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.905
+        ],
+        "m": [
+          0.5,
+          0.89
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.25,
+        0.12
+      ],
+      "m": [
+        0.55,
+        0.47
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "6AhPAhBiJO",
+      "mobile": "vQyIquia47"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K). Sin reencuadre: solo caída de los cuatro bordes a #03040B en el último 7 % (smoothstep, sin IA). Columnas: columna1 corta (izquierda), columna2 alta (detrás de la cabeza de Kain; su base queda oculta por el cuerpo, se asume en y ≈ 0.79), columna3 media (derecha). Original en materiales/magnific/v2/casos-hero/desk-a-6AhPAhBiJO.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio como primera referencia; antenas en y ≈ 0.33 y pies en y ≈ 0.91 → reencuadre con la lógica de scripts/reencuadre-movil.mjs (0.2441 0.0515 0.095 0.136 0.40, salida JPEG q92) a 1536 × 1920. En la vertical la columna alta es la derecha (columna3) y la columna2 solo se ve entre las piernas (caja = tramo visible). Original en materiales/magnific/v2/casos-hero/movil-a-vQyIquia47.png."
+  },
+  "consultoria-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, con saco de consultor junto a una ruta de cinco pasos en cristal",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/consultoria-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/consultoria-hero-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.54,
+      "fy": 1,
+      "subjTop": 0.48
+    },
+    "layout": "subject-right",
+    "pose": "apoya la mano en el cristal y presenta la ruta",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.46,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.44
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.652,
+        0.1,
+        0.952,
+        0.94
+      ],
+      "m": [
+        0.478,
+        0.488,
+        0.786,
+        0.895
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.794,
+          0.457
+        ],
+        "m": [
+          0.63,
+          0.662
+        ],
+        "scrW": 0.037
+      },
+      "mano": {
+        "d": [
+          0.668,
+          0.465
+        ],
+        "m": [
+          0.495,
+          0.663
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.791,
+          0.28
+        ],
+        "m": [
+          0.63,
+          0.579
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.482,
+          0.118,
+          0.184,
+          0.74
+        ],
+        "m": [
+          0.284,
+          0.483,
+          0.212,
+          0.371
+        ]
+      },
+      "ruta": {
+        "d": [
+          0.494,
+          0.33,
+          0.157,
+          0.199
+        ],
+        "m": [
+          0.298,
+          0.593,
+          0.179,
+          0.1
+        ]
+      },
+      "nodo1": {
+        "d": [
+          0.5,
+          0.518
+        ],
+        "m": [
+          0.305,
+          0.687
+        ]
+      },
+      "nodo2": {
+        "d": [
+          0.536,
+          0.443
+        ],
+        "m": [
+          0.347,
+          0.649
+        ]
+      },
+      "nodo3": {
+        "d": [
+          0.57,
+          0.454
+        ],
+        "m": [
+          0.387,
+          0.655
+        ]
+      },
+      "nodo4": {
+        "d": [
+          0.605,
+          0.393
+        ],
+        "m": [
+          0.426,
+          0.625
+        ]
+      },
+      "nodo5": {
+        "d": [
+          0.645,
+          0.341
+        ],
+        "m": [
+          0.47,
+          0.599
+        ]
+      },
+      "fig": {
+        "d": [
+          0.7,
+          0.86
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.925
+        ],
+        "m": [
+          0.5,
+          0.88
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.73,
+        0.35
+      ],
+      "m": [
+        0.6,
+        0.46
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "aFPIoOKfSh",
+      "mobile": "ovSpp5n829"
+    }
+  },
+  "cta-duena-tranquila": {
+    "alt": "Dueña de un negocio, tranquila junto a la ventana de su oficina al amanecer, con su celular atendido sobre el escritorio (imagen ilustrativa)",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/cta-duena-tranquila",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.28,
+      "fy": 0.4,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/cta-duena-tranquila-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.5,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "sostiene el café junto a la ventana",
+    "safe": {
+      "d": [
+        [
+          0.45,
+          0.06,
+          0.95,
+          0.82
+        ],
+        [
+          0.56,
+          0.88,
+          0.95,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.4
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.155,
+        0.1,
+        0.405,
+        0.98
+      ],
+      "m": [
+        0.305,
+        0.44,
+        0.69,
+        0.93
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.29,
+          0.45
+        ],
+        "m": [
+          0.49,
+          0.65
+        ]
+      },
+      "mano": {
+        "d": [
+          0.245,
+          0.525
+        ],
+        "m": [
+          0.525,
+          0.72
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.25,
+          0.265
+        ],
+        "m": [
+          0.493,
+          0.533
+        ]
+      },
+      "telefono": {
+        "d": [
+          0.415,
+          0.892,
+          0.1,
+          0.047
+        ],
+        "m": null
+      },
+      "superficie": {
+        "d": [
+          0.29,
+          0.86,
+          0.6,
+          0.14
+        ],
+        "m": null
+      },
+      "fig": {
+        "d": [
+          0.47,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.86
+        ],
+        "m": [
+          0.5,
+          0.93
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.2,
+        0.3
+      ],
+      "m": [
+        0.58,
+        0.5
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "dtsMsAPXSL",
+      "mobile": "rgY5ccBxtc",
+      "desktopR1": "jUckWy3LD0"
+    },
+    "notes": "Escritorio nativo 2K (Nano Banana Pro, 2752×1536, sin upscale). R1 descartada: lado del texto sucio (pared lila iluminada, escritorio de madera) y barras negras laterales. Masters con caída suave de bordes a #03040B (6–7 %) hecha en local; la ventana con el amanecer queda en x < 0.10. Ella mira hacia la ventana (izquierda), no hacia el texto. Sin ancla horizonte en d (el amanecer solo se ve dentro de la ventana, y ≈ 0.40); en m el filo del horizonte está en y ≈ 0.685, a la altura de sus hombros. Vertical: render 1856×2304 recortado a 4:5 y reducido a 1536×1920."
+  },
+  "cta-equipo": {
+    "alt": "El equipo de Ingeniak frente a un horizonte que amanece",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/cta-equipo",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.75,
+      "fy": 0.6,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/cta-equipo-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.5,
+      "fy": 1,
+      "subjTop": 0.55
+    },
+    "layout": "subject-right",
+    "pose": "seis bustos reales asoman detrás de la cresta del horizonte",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.53,
+          0.7
+        ],
+        [
+          0.04,
+          0.88,
+          0.53,
+          0.97
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.44
+        ],
+        [
+          0.04,
+          0.78,
+          0.96,
+          0.97
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.559,
+        0.593,
+        0.947,
+        0.839
+      ],
+      "m": [
+        0.12,
+        0.548,
+        0.871,
+        0.719
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.734,
+          0.762
+        ],
+        "m": [
+          0.469,
+          0.676
+        ]
+      },
+      "mano": {
+        "d": [
+          0.582,
+          0.68
+        ],
+        "m": [
+          0.18,
+          0.63
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.734,
+          0.698
+        ],
+        "m": [
+          0.469,
+          0.622
+        ]
+      },
+      "grupo": {
+        "d": [
+          0.559,
+          0.593,
+          0.388,
+          0.246
+        ],
+        "m": [
+          0.12,
+          0.548,
+          0.751,
+          0.171
+        ]
+      },
+      "fig": {
+        "d": [
+          0.585,
+          0.88
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.88
+        ],
+        "m": [
+          0.5,
+          0.87
+        ]
+      },
+      "horizonte": {
+        "d": [
+          0.5,
+          0.766
+        ],
+        "m": [
+          0.5,
+          0.694
+        ]
+      }
+    },
+    "personas": {
+      "rik-landeros": {
+        "fila": "frente",
+        "rostro": {
+          "d": [
+            0.632,
+            0.655
+          ],
+          "m": [
+            0.273,
+            0.606
+          ]
+        }
+      },
+      "richard-vela": {
+        "fila": "atrás",
+        "rostro": {
+          "d": [
+            0.684,
+            0.684
+          ],
+          "m": [
+            0.372,
+            0.615
+          ]
+        }
+      },
+      "alonso-vega": {
+        "fila": "frente",
+        "rostro": {
+          "d": [
+            0.734,
+            0.698
+          ],
+          "m": [
+            0.469,
+            0.622
+          ]
+        }
+      },
+      "andy-pizano": {
+        "fila": "atrás",
+        "rostro": {
+          "d": [
+            0.79,
+            0.693
+          ],
+          "m": [
+            0.575,
+            0.603
+          ]
+        }
+      },
+      "cesar-ovalle": {
+        "fila": "frente",
+        "rostro": {
+          "d": [
+            0.839,
+            0.706
+          ],
+          "m": [
+            0.668,
+            0.614
+          ]
+        }
+      },
+      "marcos-gonzalez": {
+        "fila": "atrás",
+        "rostro": {
+          "d": [
+            0.895,
+            0.715
+          ],
+          "m": [
+            0.774,
+            0.615
+          ]
+        }
+      }
+    },
+    "leak": {
+      "d": [
+        0.71,
+        0.14
+      ],
+      "m": [
+        0.47,
+        0.52
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "fondoDesktop": "yiowtFSPW9",
+      "fondoMobile": "0eKnx3vTfW",
+      "recortes": "w4el8Hv7EI",
+      "recortesFuente": "vQyI6Q5a47",
+      "base": {
+        "desktop": "gOMo0LaSXO",
+        "mobile": "ksz0MwA16B"
+      }
+    },
+    "notes": "Composición con fotos reales (sin generar personas ni filtros generativos sobre caras). Fondo = cta-amanecer sin Kain: Nano Banana Pro en edición a 2K nativo (2752×1536 y 1856×2304, sin upscale; 2K cuesta lo mismo que 1K) con la placa elegida de cta-amanecer como única referencia; mismo horizonte (ápice y ≈ 0.766 en d, 0.694 en m), mismo haz vertical (x ≈ 0.60–0.85) y piso. Recortes: los 6 retratos sin la X (lógica de scripts/retoque-equipo.mjs a resolución original), cortados justo arriba de la placa de nombre, en una sola cuadrícula → un solo remove_background; sin placas, cargos ni X. Composición local (sharp, materiales/magnific/v2/cta-equipo/componer.mjs + cfg-*.json): fila escalonada Rik (frente) · Richard (atrás) · Alonso (frente) · Andy (atrás) · César (frente) · Marcos (atrás); fila de atrás al 91 % de escala y −9 % de exposición; los cortes inferiores quedan siempre bajo la cresta (oculta todo lo que cae por debajo de la curva medida), el resplandor del horizonte pasa por delante. Duotono navy #0A163E → blanco lavanda #D7E2FC al 65 %, luz ambiental tomada del set (más clara dentro del haz), filo cian/azul solo en bordes superiores (≈ 32 %), halo exterior tenue y grano 2.2. Rik a la izquierda para que su mano levantada no tape a nadie. No se espeja nunca (personas reales). `rostro`/`pecho` = Alonso (frente, centro del grupo); `mano` = mano levantada de Rik; `grupo` = caja [x, y, w, h] de los seis; `personas` = centro de cada rostro. `piso` = plano del suelo frente a la cresta (mismo set que cta-amanecer). Lado del texto: luminancia p95 56 / máx. 109 en la caja alta de d (bruma violeta sobre la cresta, igual que cta-amanecer: 53/106) y p95 8 / máx. 16 en la baja; m: p95 16 / máx. 38 en el 40 % superior (p95 21 / máx. 48 en la caja safe alta). Los cuatro bordes caen a #03040B en d y m (máx. ≤ 8); el haz se desvanece antes del borde superior con la misma viñeta medida en cta-amanecer (fila 0 ≈ 4, ≈ 140 en y = 100). Vertical: render 1856×2304 recortado a 4:5 (6 px por lado) y reducido a 1536×1920. Plan r1: respaldo hasta la sesión de fotos real del equipo (ESPEC §12 R6). r2 (19 oct 2026, 0 créditos, solo componer.mjs): viñeta superior de cta-amanecer aplicada al fondo de d (la edición Nano Banana la había quitado); resplandor de la cresta con el tono del propio fondo (antes diferencia por canal → banda verde oliva detrás de los bustos); muesca del remove_background entre pelo y hombro de César cerrada y restos azules de la X limpiados (era la costura cian sobre el saco de Marcos); filo y halo se apagan donde un busto tapa a otro; trama regular de puntos del fondo (d y m) cambiada por grano aleatorio; piso bajo el haz atenuado hacia el negro de cta-amanecer. Bustos, escala y anclas sin cambios. Respaldo r1: materiales/magnific/v2/cta-equipo/*-r1.*"
+  },
+  "dolor-crm": {
+    "alt": "Gerente comercial agotada de noche frente a su laptop, rodeada de notas sin seguimiento (imagen ilustrativa)",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/dolor-crm",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.28,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/dolor-crm-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.36,
+      "fy": 1,
+      "subjTop": 0.54
+    },
+    "layout": "subject-left",
+    "pose": "mano en la frente frente a la laptop",
+    "safe": {
+      "d": [
+        [
+          0.47,
+          0.06,
+          0.96,
+          0.66
+        ],
+        [
+          0.6,
+          0.66,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.38
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.045,
+        0.26,
+        0.44,
+        0.88
+      ],
+      "m": [
+        0.057,
+        0.543,
+        0.65,
+        0.905
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.192,
+          0.612
+        ],
+        "m": [
+          0.315,
+          0.752
+        ]
+      },
+      "mano": {
+        "d": [
+          0.221,
+          0.74
+        ],
+        "m": [
+          0.36,
+          0.83
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.223,
+          0.458
+        ],
+        "m": [
+          0.36,
+          0.66
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.261,
+          0.548,
+          0.174,
+          0.259
+        ],
+        "m": [
+          0.409,
+          0.713,
+          0.241,
+          0.164
+        ]
+      },
+      "notas": {
+        "d": [
+          0.048,
+          0.036,
+          0.27,
+          0.37
+        ],
+        "m": [
+          0.119,
+          0.4,
+          0.368,
+          0.228
+        ]
+      },
+      "fig": {
+        "d": [
+          0.6,
+          0.82
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.88
+        ],
+        "m": [
+          0.5,
+          0.905
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.27,
+        0.56
+      ],
+      "m": [
+        0.42,
+        0.72
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "9ZtOdMlNYZ",
+      "desktopDescartada": "UPpsYcbwny",
+      "mobile": "bx2QiNK5Y2"
+    },
+    "deskNote": "Persona ilustrativa (placa de dolor, sin Kain): Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; 2K cuesta lo mismo que 1K) y SIN referencias de imagen, como pide el plan. Primera toma (UPpsYcbwny) descartada: cuerpo y silla llegaban a x ≈ 0.62 y ella miraba hacia el borde izquierdo. Reintento (9ZtOdMlNYZ) con la escena compacta a la izquierda y el cuerpo orientado hacia el texto. Reencuadre sin IA: escena desplazada 4 % a la izquierda (derecha rellenada con la continuación del borde + grano), penumbra horizontal hacia #03040B de x 0.43 a 0.59 (fuerza 0.78) que apaga las carpetas y el marco del cristal, y caída de los cuatro bordes a #03040B en el último 7 %. Notas adhesivas en blanco (sin garabatos), laptop sin logotipo, teclado ilegible. Ámbar tenue: sale solo de la pantalla hacia rostro y manos. Las carpetas cerradas asoman atenuadas en x 0.41–0.59, y 0.70–0.80, por eso la caja segura baja empieza en x 0.60 (luminancia máx. 44/255 en la caja alta y 15/255 en la baja). `pantalla` es la tapa de la laptop (vista por detrás); `notas`, el muro de notas en blanco. Original en materiales/magnific/v2/dolor-crm/desk-b-9ZtOdMlNYZ.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la toma de escritorio elegida (9ZtOdMlNYZ) como única referencia: misma persona y mismo set. Reencuadre con la lógica de scripts/reencuadre-movil.mjs (0.00694 0 0 0 0.40) más caída lateral del 6 %, a 1536 × 1920. La coronilla quedó en y ≈ 0.54 (el plan pedía ≈ 0.44): no se recortó arriba porque el muro de notas (y ≥ 0.40) invadiría el 40 % superior. Persona en x ≈ 0.12–0.47, laptop hasta 0.65, carpetas hasta 0.87. Vacío superior con niebla tenue (luminancia p95 ≈ 42/255, máx. ≈ 79 dentro de safe). Original en materiales/magnific/v2/dolor-crm/movil-a-bx2QiNK5Y2.png."
+  },
+  "dolor-operacion": {
+    "alt": "Dueño de negocio de noche, con el teléfono en el oído y papeles en la mano: todo pasa por él (imagen ilustrativa)",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/dolor-operacion",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.3,
+      "fy": 0.42,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/dolor-operacion-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.52,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "de pie en el escritorio, teléfono al oído, revisa los papeles",
+    "safe": {
+      "d": [
+        [
+          0.5,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.2,
+        0.13,
+        0.432,
+        0.96
+      ],
+      "m": [
+        0.364,
+        0.442,
+        0.673,
+        0.95
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.31,
+          0.49
+        ],
+        "m": [
+          0.48,
+          0.66
+        ]
+      },
+      "mano": {
+        "d": [
+          0.245,
+          0.775
+        ],
+        "m": [
+          0.43,
+          0.822
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.252,
+          0.305
+        ],
+        "m": [
+          0.425,
+          0.56
+        ]
+      },
+      "llamada": {
+        "d": [
+          0.245,
+          0.365
+        ],
+        "m": [
+          0.414,
+          0.582
+        ]
+      },
+      "telefono": {
+        "d": [
+          0.131,
+          0.858,
+          0.11,
+          0.047
+        ],
+        "m": [
+          0.265,
+          0.864,
+          0.15,
+          0.026
+        ]
+      },
+      "pantalla": {
+        "d": [
+          0.126,
+          0.442,
+          0.124,
+          0.181
+        ],
+        "m": [
+          0.259,
+          0.64,
+          0.166,
+          0.109
+        ]
+      },
+      "papeles": {
+        "d": [
+          0.073,
+          0.666,
+          0.207,
+          0.196
+        ],
+        "m": [
+          0.182,
+          0.769,
+          0.289,
+          0.097
+        ]
+      },
+      "lampara": {
+        "d": [
+          0.07,
+          0.465
+        ],
+        "m": [
+          0.185,
+          0.645
+        ]
+      },
+      "fig": {
+        "d": [
+          0.48,
+          0.82
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.925
+        ],
+        "m": [
+          0.5,
+          0.9
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.1,
+        0.47
+      ],
+      "m": [
+        0.2,
+        0.65
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "8aUdr60IrU",
+      "mobile": "8aUdsdvIrU"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K), sin referencias de imagen (persona ilustrativa, plan). Salió con el sujeto en x ≈ 0.28–0.535 y fondo hasta x ≈ 0.58 → reencuadre SIN IA (materiales/magnific/v2/dolor-operacion/post-dolor-operacion-desk.mjs): escena al 90 %, desplazada 5.5 % a la izquierda y anclada abajo; penumbra sintetizada arriba/derecha/abajo desde los bordes y los cuatro bordes caen a #03040B. Lado del texto (x ≥ 0.50) con luminancia máx. 25/255. Papeles y monitor sin texto legible (solo trazos borrosos). Original: materiales/magnific/v2/dolor-operacion/desk-a-8aUdr60IrU.png; master sin pérdida: desk-a-reencuadre.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la generación de escritorio como única referencia (misma persona). Salió con la coronilla en 0.395 → reencuadre sin IA con la lógica de scripts/reencuadre-movil.mjs (0.07 −0.02 0.0201 0.0201 0.40; copia con salida PNG en materiales/magnific/v2/dolor-operacion/reencuadre-movil-png.mjs) a 1536 × 1920 + caída lateral suave a #03040B (post-dolor-operacion-movil.mjs). Coronilla en 0.443; 41 % superior limpio (luminancia máx. 42/255). Original: materiales/magnific/v2/dolor-operacion/movil-a-8aUdsdvIrU.png; master sin pérdida: movil-a-final.png."
+  },
+  "gohighlevel-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, confirma una cita en un calendario de cristal",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/gohighlevel-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.78,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/gohighlevel-hero-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.57,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "pose": "toca una casilla del calendario",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.53,
+          0.78
+        ],
+        [
+          0.04,
+          0.78,
+          0.5,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.665,
+        0.115,
+        0.915,
+        0.865
+      ],
+      "m": [
+        0.48,
+        0.435,
+        0.81,
+        0.89
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.802,
+          0.441
+        ],
+        "m": [
+          0.661,
+          0.629
+        ],
+        "scrW": 0.036
+      },
+      "mano": {
+        "d": [
+          0.688,
+          0.497
+        ],
+        "m": [
+          0.512,
+          0.666
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.8,
+          0.282
+        ],
+        "m": [
+          0.655,
+          0.534
+        ]
+      },
+      "superficie": {
+        "d": [
+          0.555,
+          0.27,
+          0.12,
+          0.35
+        ],
+        "m": [
+          0.329,
+          0.53,
+          0.161,
+          0.21
+        ]
+      },
+      "calendario": {
+        "d": [
+          0.563,
+          0.321,
+          0.104,
+          0.283
+        ],
+        "m": [
+          0.339,
+          0.56,
+          0.141,
+          0.171
+        ]
+      },
+      "casilla": {
+        "d": [
+          0.649,
+          0.466,
+          0.018,
+          0.03
+        ],
+        "m": [
+          0.455,
+          0.647,
+          0.024,
+          0.019
+        ]
+      },
+      "fig": {
+        "d": [
+          0.725,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.703
+        ],
+        "m": [
+          0.5,
+          0.788
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.9,
+        0.25
+      ],
+      "m": [
+        0.78,
+        0.5
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "4RI7OuD9Aa",
+      "mobile": "N2myiZO6D9",
+      "layoutDesktop": "O6BSUw2ynm",
+      "layoutMobile": "TdknT6XVNR"
+    }
+  },
+  "guadalajara-hero": {
+    "alt": "Empresario de Guadalajara en la terraza de su oficina a la hora azul (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/guadalajara-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.4,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/guadalajara-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.52,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-right",
+    "pose": "manos en los bolsillos, mira hacia el texto",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.56,
+          0.96
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.6,
+        0.115,
+        0.853,
+        0.99
+      ],
+      "m": [
+        0.372,
+        0.44,
+        0.73,
+        0.99
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.7,
+          0.465
+        ],
+        "m": [
+          0.495,
+          0.685
+        ]
+      },
+      "mano": {
+        "d": [
+          0.61,
+          0.862
+        ],
+        "m": [
+          0.385,
+          0.905
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.672,
+          0.268
+        ],
+        "m": [
+          0.473,
+          0.53
+        ]
+      },
+      "fig": {
+        "d": [
+          0.585,
+          0.87
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.88
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.8,
+        0.26
+      ],
+      "m": [
+        0.62,
+        0.53
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "BhgpfH8oQR",
+      "mobile": "ovSeuyW829",
+      "desktopR0": "SyDLPXDUb8"
+    },
+    "deskNote": "Nano Banana Pro nativo 2K (2752×1536, sin upscale; mismo costo que 1K). La r0 (SyDLPXDUb8) se descartó: borde de ventanal en x≈0.39 y bokeh de ciudad dentro del lado del texto. Master = r1 con rampa horizontal real (sin IA, 0 créditos; materiales/magnific/v2/guadalajara-hero/rampa-texto.mjs): fondo de baja frecuencia sin discos, discos del bokeh desvanecidos de x 0.597 a 0.55 (borde ondulado solo hacia la derecha), neblina fría oscurecida hacia el navy del lado izquierdo, grano conservado; borde derecho cae a #03040B desde x 0.95. Sujeto idéntico píxel a píxel (x ≥ 0.597), anclas sin cambio. Medido: lum máx. (y 0.06–0.90) ≤ 51 hasta x 0.54 y 76 en x 0.54–0.56; p99.9 dentro de safe.d = 58, 0 % > 90. Master: materiales/magnific/v2/guadalajara-hero/desk-b-rampa.png (= placas/guadalajara-hero/guadalajara-hero-desk.png). Sustituye a desk-b-texto-limpio.png (atenuado local que dejaba discos grises). El celular sigue generado desde r1 (desk-b-BhgpfH8oQR.png).",
+    "mobileNote": "Generación 4:5 2K (1856×2304) con la placa de escritorio como única referencia; salió con la coronilla en 0.34. Se reencuadró sin IA con la lógica de scripts/reencuadre-movil.mjs (0.1806 0 0.0694 0.0694 0.40) a 1536×1920: coronilla en 0.44 y 41 % superior limpio. Original: materiales/v2/placas/guadalajara-hero/guadalajara-hero-movil.png."
+  },
+  "industrias-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, frente a una galería de puertas de luz que llevan a distintas industrias",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/industrias-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/industrias-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.56,
+      "fy": 1,
+      "subjTop": 0.43
+    },
+    "layout": "subject-right",
+    "pose": "presenta con la mano abierta",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.46,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.38
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.575,
+        0.15,
+        0.815,
+        0.885
+      ],
+      "m": [
+        0.425,
+        0.425,
+        0.745,
+        0.885
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.707,
+          0.473
+        ],
+        "m": [
+          0.601,
+          0.625
+        ],
+        "scrW": 0.036
+      },
+      "mano": {
+        "d": [
+          0.602,
+          0.532
+        ],
+        "m": [
+          0.454,
+          0.659
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.7,
+          0.316
+        ],
+        "m": [
+          0.593,
+          0.529
+        ]
+      },
+      "galeria": {
+        "d": [
+          0.35,
+          0.035,
+          0.65,
+          0.71
+        ],
+        "m": [
+          0.12,
+          0.395,
+          0.72,
+          0.385
+        ]
+      },
+      "fig": {
+        "d": [
+          0.56,
+          0.88
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.875
+        ],
+        "m": [
+          0.5,
+          0.875
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.74,
+        0.26
+      ],
+      "m": [
+        0.64,
+        0.5
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "MBrWWwpDCm",
+      "mobile": "jUcKxyXLD0",
+      "desktopDescartado": "s7T1KCsl8e"
+    }
+  },
+  "kain-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, saluda de frente con un halo de luz cian detrás",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/kain-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.5,
+      "fy": 0.5,
+      "fadeFrom": 0.98
+    },
+    "m": {
+      "src": "/img/cine/kain-hero-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.49,
+      "fy": 1,
+      "subjTop": 0.45
+    },
+    "layout": "subject-center",
+    "pose": "saluda",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.7,
+          0.4,
+          0.96
+        ],
+        [
+          0.66,
+          0.7,
+          0.96,
+          0.96
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.39
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.345,
+        0.12,
+        0.615,
+        0.935
+      ],
+      "m": [
+        0.315,
+        0.45,
+        0.64,
+        0.895
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.49,
+          0.462
+        ],
+        "m": [
+          0.488,
+          0.638
+        ],
+        "scrW": 0.043
+      },
+      "mano": {
+        "d": [
+          0.378,
+          0.4
+        ],
+        "m": [
+          0.356,
+          0.603
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.5,
+          0.288
+        ],
+        "m": [
+          0.5,
+          0.542
+        ]
+      },
+      "halo": {
+        "d": [
+          0.3,
+          0.04,
+          0.4,
+          0.71
+        ],
+        "m": [
+          0.265,
+          0.405,
+          0.47,
+          0.38
+        ]
+      },
+      "fig": {
+        "d": [
+          0.405,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.92
+        ],
+        "m": [
+          0.5,
+          0.885
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.5,
+        0.14
+      ],
+      "m": [
+        0.5,
+        0.44
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "SyDjrswUb8",
+      "mobile": "vQy8IfYa47",
+      "mobileDescartada": "kszH5U216B"
+    }
+  },
+  "kain-si-no": {
+    "alt": "Kain, el agente de IA de Ingeniak, pensativo con una mano en la barbilla",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/kain-si-no",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.31,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/kain-si-no-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.47,
+      "fy": 1,
+      "subjTop": 0.45
+    },
+    "layout": "subject-left",
+    "pose": "pensativo: un brazo cruzado bajo la pantalla del pecho y la mano en la barbilla",
+    "safe": {
+      "d": [
+        [
+          0.5,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.163,
+        0.091,
+        0.469,
+        0.924
+      ],
+      "m": [
+        0.279,
+        0.45,
+        0.643,
+        0.896
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.323,
+          0.439
+        ],
+        "m": [
+          0.47,
+          0.636
+        ],
+        "scrW": 0.038
+      },
+      "mano": {
+        "d": [
+          0.336,
+          0.368
+        ],
+        "m": [
+          0.474,
+          0.597
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.331,
+          0.272
+        ],
+        "m": [
+          0.48,
+          0.549
+        ]
+      },
+      "superficie": {
+        "d": [
+          0.163,
+          0.833,
+          0.306,
+          0.091
+        ],
+        "m": [
+          0.279,
+          0.849,
+          0.364,
+          0.047
+        ]
+      },
+      "plataforma": {
+        "d": [
+          0.163,
+          0.833,
+          0.306,
+          0.091
+        ],
+        "m": [
+          0.279,
+          0.849,
+          0.364,
+          0.047
+        ]
+      },
+      "esferas": {
+        "d": [
+          0.084,
+          0.247,
+          0.377,
+          0.425
+        ],
+        "m": [
+          0.187,
+          0.534,
+          0.447,
+          0.229
+        ]
+      },
+      "fig": {
+        "d": [
+          0.5,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.876
+        ],
+        "m": [
+          0.5,
+          0.869
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.32,
+        0.14
+      ],
+      "m": [
+        0.47,
+        0.47
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "jUcknYeLD0",
+      "mobile": "JNXStiPOq4",
+      "poseRef": "UPpsTU0wny",
+      "deskRef": "XmlDwZLBfo",
+      "layoutMobile": "huO89cLvqL"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K) con referencias Kain recorte, pose brazos cruzados (subida), escena Kain y hero aprobado. Retoque sin IA: los ojos salieron como rendijas inclinadas (gesto de enojo) → se borraron por difusión sobre el visor y se repintaron como óvalos cian nivelados y algo entornados (pensativo); se quitó una esfera de luz suelta que caía en el lado del texto (x ≈ 0.49). Luego caída de bordes a #03040B (arriba 8 %, lados 6 %, abajo 7 %, curva ^2.2). La plataforma salió cuadrada, no redonda (aceptado). `superficie`/`plataforma` = caja de la plataforma de cristal; `esferas` = caja del grupo de esferas de luz (todas del lado del sujeto, borde derecho x ≈ 0.46). Luminancia máx. dentro de safe ≈ 77/255 (niebla junto al borde interior). Original en materiales/magnific/v2/kain-si-no/desk-a-jUcknYeLD0.png; retocado en desk-a-ojos.png / desk-a-final.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio ya retocada como primera referencia y una guía vertical hecha de ella (guia-movil.jpg: escritorio escalado 0.802 sobre #03040B) como segunda; antenas en y ≈ 0.45 y suelas en y ≈ 0.87, sin reencuadre. Retoque sin IA: el render dejó un escalón horizontal tenue en el vacío superior (y ≈ 0.31, el borde de la caja de la guía) → franja 0.19–0.43 fundida con un desenfoque gaussiano de sí misma + grano; luego caída de bordes a #03040B (arriba y abajo 8 %, lados 6 %). Todas las esferas bajo y ≈ 0.53; luminancia máx. dentro de safe ≈ 30/255. Original en materiales/magnific/v2/kain-si-no/movil-a-JNXStiPOq4.png; sin costura en movil-a-sincosturas.png."
+  },
+  "kommo-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, presenta un panel de cristal del que suben burbujas de conversación",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/kommo-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.26,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/kommo-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.47,
+      "fy": 1,
+      "subjTop": 0.44
+    },
+    "layout": "subject-left",
+    "pose": "presenta la superficie",
+    "safe": {
+      "d": [
+        [
+          0.51,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.06,
+        0.08,
+        0.48,
+        0.93
+      ],
+      "m": [
+        0.25,
+        0.43,
+        0.74,
+        0.89
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.19,
+          0.459
+        ],
+        "m": [
+          0.403,
+          0.634
+        ],
+        "scrW": 0.044
+      },
+      "mano": {
+        "d": [
+          0.321,
+          0.518
+        ],
+        "m": [
+          0.545,
+          0.666
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.195,
+          0.281
+        ],
+        "m": [
+          0.407,
+          0.54
+        ]
+      },
+      "superficie": {
+        "d": [
+          0.277,
+          0.2,
+          0.131,
+          0.502
+        ],
+        "m": [
+          0.502,
+          0.498,
+          0.152,
+          0.264
+        ]
+      },
+      "sello": {
+        "d": [
+          0.36,
+          0.79
+        ],
+        "m": null
+      },
+      "fig": {
+        "d": [
+          0.47,
+          0.79
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.875
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.2,
+        0.14
+      ],
+      "m": [
+        0.42,
+        0.47
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "p8j0W4kehw",
+      "mobile": "Lw0kr3eswO"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado). Reencuadre sin IA: escena desplazada 7 % a la izquierda (la columna de burbujas llegaba a x ≈ 0.55), penumbra derecha estirada para rellenar y los cuatro bordes caen a #03040B. Original en materiales/magnific/v2/kommo-hero/desk-a-p8j0W4kehw.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio como primera referencia; los pies quedaban en y ≈ 0.96 → reencuadre con scripts/reencuadre-movil.mjs (0.1285 0.1046 0.1233 0.0577 0.42) a 1536 × 1920. Original en materiales/magnific/v2/kommo-hero/movil-a-Lw0kr3eswO.png. 2026-10-19: rehecho sin IA con el script corregido (campo de borde continuo en las esquinas): desaparecen las muescas de las esquinas inferiores (x ≈ 192 / 1445, y ≥ 1607); escalón ≤ 0.7 niveles; anclas sin cambio."
+  },
+  "nosotros-manifiesto": {
+    "alt": "Kain, el agente de IA de Ingeniak, de noche en una terraza alta sobre las luces de la zona metropolitana de Guadalajara",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/nosotros-manifiesto",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.76,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/nosotros-manifiesto-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.58,
+      "fy": 1,
+      "subjTop": 0.43
+    },
+    "layout": "subject-right",
+    "pose": "de pie junto al barandal, de frente",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.62,
+          0.46
+        ],
+        [
+          0.04,
+          0.46,
+          0.4,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.7,
+        0.09,
+        0.905,
+        0.935
+      ],
+      "m": [
+        0.49,
+        0.429,
+        0.736,
+        0.89
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.784,
+          0.457
+        ],
+        "m": [
+          0.59,
+          0.629
+        ],
+        "scrW": 0.044
+      },
+      "mano": {
+        "d": [
+          0.716,
+          0.672
+        ],
+        "m": [
+          0.508,
+          0.75
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.781,
+          0.282
+        ],
+        "m": [
+          0.584,
+          0.533
+        ]
+      },
+      "fig": {
+        "d": [
+          0.69,
+          0.85
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.9
+        ]
+      },
+      "red": {
+        "d": [
+          0.8,
+          0.925
+        ],
+        "m": [
+          0.62,
+          0.885
+        ]
+      },
+      "ciudad": {
+        "d": [
+          0.3,
+          0.56,
+          0.7,
+          0.3
+        ],
+        "m": [
+          0,
+          0.66,
+          0.84,
+          0.19
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.86,
+        0.3
+      ],
+      "m": [
+        0.68,
+        0.52
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "3za9YkMREY",
+      "mobile": "lJVx41mgv9",
+      "desktopRejected": "SyDLyvtUb8"
+    },
+    "post": "Solo píxeles (materiales/magnific/v2/nosotros-manifiesto/post-nosotros-manifiesto.js): escritorio con caída a #03040B hacia la izquierda (x < 0.68) y bordes; móvil reencuadrado al 84 % (vacío superior +16 %, relleno derecho desenfocado y fundido)."
+  },
+  "paginas-web-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, arma una página web de bloques de cristal",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/paginas-web-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.27,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/paginas-web-hero-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.48,
+      "fy": 1,
+      "subjTop": 0.45
+    },
+    "layout": "subject-left",
+    "pose": "coloca el último bloque de cristal",
+    "safe": {
+      "d": [
+        [
+          0.5,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.098,
+        0.08,
+        0.446,
+        0.905
+      ],
+      "m": [
+        0.288,
+        0.452,
+        0.668,
+        0.875
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.224,
+          0.466
+        ],
+        "m": [
+          0.426,
+          0.64
+        ],
+        "scrW": 0.043
+      },
+      "mano": {
+        "d": [
+          0.341,
+          0.406
+        ],
+        "m": [
+          0.553,
+          0.613
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.238,
+          0.291
+        ],
+        "m": [
+          0.44,
+          0.555
+        ]
+      },
+      "superficie": {
+        "d": [
+          0.288,
+          0.181,
+          0.158,
+          0.471
+        ],
+        "m": [
+          0.494,
+          0.5,
+          0.174,
+          0.232
+        ]
+      },
+      "ventana": {
+        "d": [
+          0.288,
+          0.181,
+          0.158,
+          0.471
+        ],
+        "m": [
+          0.494,
+          0.5,
+          0.174,
+          0.232
+        ]
+      },
+      "bloque": {
+        "d": [
+          0.288,
+          0.424,
+          0.088,
+          0.099
+        ],
+        "m": [
+          0.494,
+          0.621,
+          0.09,
+          0.048
+        ]
+      },
+      "fig": {
+        "d": [
+          0.48,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.9
+        ],
+        "m": [
+          0.5,
+          0.87
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.3,
+        0.12
+      ],
+      "m": [
+        0.48,
+        0.46
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "4RIJcDx9Aa",
+      "mobile": "vQyILXKa47",
+      "desktopDiscarded": "3za9WYxREY",
+      "layoutDesktop": "rgY5P1lxtc",
+      "layoutMobile": "KLGH4Gpkqp"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado). Primer render (3za9WYxREY) descartado: la ventana de cristal llegaba a x ≈ 0.65 y un haz de luz entraba en el lado del texto. Reintento con guía de composición hecha del propio render (Kain desplazado a x ≈ 0.19, ventana reducida a x 0.29–0.44, lado derecho limpio) como primera referencia. Sin IA en la exportación: los cuatro bordes caen a #03040B (arriba 8 %, lados y abajo 6 %). Original en materiales/magnific/v2/paginas-web-hero/desk-b-4RIJcDx9Aa.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio elegida como primera referencia y la guía vertical (guia-movil.jpg) como segunda; antenas en y ≈ 0.45 y suelas en y ≈ 0.87, sin reencuadre. Original en materiales/magnific/v2/paginas-web-hero/movil-a-vQyILXKa47.png."
+  },
+  "seo-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, iluminado por un haz de luz junto a una tarjeta de respuesta de cristal",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/seo-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.76,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/seo-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.58,
+      "fy": 1,
+      "subjTop": 0.52
+    },
+    "layout": "subject-right",
+    "pose": "levanta la tarjeta de cristal bajo el haz",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.54,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.38
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.64,
+        0.093,
+        0.908,
+        0.935
+      ],
+      "m": [
+        0.469,
+        0.524,
+        0.725,
+        0.887
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.781,
+          0.456
+        ],
+        "m": [
+          0.604,
+          0.679
+        ],
+        "scrW": 0.043
+      },
+      "mano": {
+        "d": [
+          0.672,
+          0.445
+        ],
+        "m": [
+          0.502,
+          0.677
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.779,
+          0.276
+        ],
+        "m": [
+          0.601,
+          0.603
+        ]
+      },
+      "tarjeta": {
+        "d": [
+          0.603,
+          0.301,
+          0.103,
+          0.127
+        ],
+        "m": [
+          0.432,
+          0.614,
+          0.097,
+          0.054
+        ]
+      },
+      "superficie": {
+        "d": [
+          0.603,
+          0.301,
+          0.103,
+          0.127
+        ],
+        "m": [
+          0.432,
+          0.614,
+          0.097,
+          0.054
+        ]
+      },
+      "fig": {
+        "d": [
+          0.69,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.92
+        ],
+        "m": [
+          0.5,
+          0.88
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.665,
+        0.16
+      ],
+      "m": [
+        0.61,
+        0.46
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "XmlDa4iBfo",
+      "mobile": "lJVxNG3gv9"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K). Sin reencuadre: solo caída suave de los cuatro bordes a #03040B (último 8 %, curva ^2.2; el haz entra por arriba y se funde). La tarjeta de cristal está ligeramente girada (~4°): `tarjeta`/`superficie` es su caja envolvente. Niebla tenue en la penumbra izquierda (luminancia máx. ≈ 90/255 dentro de safe). Original en materiales/magnific/v2/seo-hero/desk-a-XmlDa4iBfo.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio como primera referencia; Kain salía pequeño y centrado (antenas y ≈ 0.59, x ≈ 0.52) → recorte sin IA a 1536 × 1920 a resolución nativa (x 0–1536, y 345–2265) + penumbra limpia arriba (tinta .92 hasta y 0.20 → 0 en 0.50) + caída de bordes a #03040B. El haz asoma desde y ≈ 0.30 (luminancia ≤ 100/255 hasta y 0.39), por eso safe termina en 0.38. Original en materiales/magnific/v2/seo-hero/movil-a-lJVxNG3gv9.png."
+  },
+  "servicios-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, al pie de una estructura de luz que conecta todos los servicios",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/servicios-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.76,
+      "fy": 0.5,
+      "fadeFrom": 0.94
+    },
+    "m": {
+      "src": "/img/cine/servicios-hero-m",
+      "w": 1856,
+      "h": 2304,
+      "ar": 0.8056,
+      "fx": 0.54,
+      "fy": 1,
+      "subjTop": 0.43
+    },
+    "layout": "subject-right",
+    "pose": "presenta con la palma abierta",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.46,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.633,
+        0.093,
+        0.906,
+        0.931
+      ],
+      "m": [
+        0.39,
+        0.448,
+        0.694,
+        0.874
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.784,
+          0.456
+        ],
+        "m": [
+          0.559,
+          0.632
+        ],
+        "scrW": 0.042
+      },
+      "mano": {
+        "d": [
+          0.652,
+          0.518
+        ],
+        "m": [
+          0.42,
+          0.668
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.778,
+          0.28
+        ],
+        "m": [
+          0.55,
+          0.544
+        ]
+      },
+      "arbol": {
+        "d": [
+          0.494,
+          0.057,
+          0.417,
+          0.773
+        ],
+        "m": [
+          0.234,
+          0.43,
+          0.468,
+          0.389
+        ]
+      },
+      "fig": {
+        "d": [
+          0.6,
+          0.85
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.826
+        ],
+        "m": [
+          0.5,
+          0.819
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.72,
+        0.28
+      ],
+      "m": [
+        0.48,
+        0.52
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "BhgDpcWoQR",
+      "mobile": "XmlMdhKBfo"
+    }
+  },
+  "servicios-no-se": {
+    "alt": "Kain, el agente de IA de Ingeniak, señala el camino frente a tres opciones de cristal",
+    "srcsetMax": 1920,
+    "d": {
+      "src": "/img/cine/servicios-no-se",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.26,
+      "fy": 0.5,
+      "fadeFrom": 0.93
+    },
+    "m": {
+      "src": "/img/cine/servicios-no-se-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.52,
+      "fy": 1,
+      "subjTop": 0.42
+    },
+    "layout": "subject-left",
+    "pose": "señala con el brazo extendido hacia el texto",
+    "safe": {
+      "d": [
+        [
+          0.48,
+          0.06,
+          0.96,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.4
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.146,
+        0.088,
+        0.445,
+        0.86
+      ],
+      "m": [
+        0.195,
+        0.419,
+        0.772,
+        0.875
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.253,
+          0.447
+        ],
+        "m": [
+          0.523,
+          0.634
+        ],
+        "scrW": 0.035
+      },
+      "mano": {
+        "d": [
+          0.419,
+          0.4
+        ],
+        "m": [
+          0.695,
+          0.53
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.266,
+          0.29
+        ],
+        "m": [
+          0.516,
+          0.536
+        ]
+      },
+      "opcion1": {
+        "d": [
+          0,
+          0.111,
+          0.129,
+          0.57
+        ],
+        "m": [
+          0.195,
+          0.435,
+          0.16,
+          0.341
+        ]
+      },
+      "opcion2": {
+        "d": [
+          0.146,
+          0.088,
+          0.18,
+          0.596
+        ],
+        "m": [
+          0.378,
+          0.419,
+          0.235,
+          0.366
+        ]
+      },
+      "opcion3": {
+        "d": [
+          0.337,
+          0.174,
+          0.107,
+          0.467
+        ],
+        "m": [
+          0.628,
+          0.469,
+          0.143,
+          0.284
+        ]
+      },
+      "fig": {
+        "d": [
+          0.46,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.845
+        ],
+        "m": [
+          0.5,
+          0.866
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.36,
+        0.2
+      ],
+      "m": [
+        0.6,
+        0.47
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "kszq6Eu16B",
+      "mobile": "lJVx0irgv9"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K). Toma única: Kain y los paneles salieron bien pero el panel derecho llegaba a x ≈ 0.527 y la punta del dedo a x ≈ 0.496 (dentro de la zona de texto) y los pies a y ≈ 0.92 → reencuadre sin IA: escala 0.90, desplazamiento −2.93 % en x y +2.56 % en y (se recortan 81 px a la izquierda; arriba, abajo y a la derecha se sintetiza penumbra desde el borde extendido y desenfocado, con grano) y caída de los cuatro bordes a #03040B en el último 7 % (smoothstep). Resultado: panel derecho termina en x ≈ 0.444, dedo en x ≈ 0.419, antenas y ≈ 0.128, pies y ≈ 0.833–0.853; zona x ≥ 0.48 limpia (luminancia p95 ≈ 45/255, máx ≈ 77, solo neblina índigo). mano = punta del índice (la mano completa ocupa x ≈ 0.37–0.42, y ≈ 0.37–0.45 y tapa el borde izquierdo de opcion3). Cajas opcion1–3 = los tres paneles de cristal vacíos [x, y, w, h], con perspectiva leve (borde superior de opcion2 baja de y ≈ 0.088 a 0.119 hacia la derecha); opcion1 queda medio dentro de la caída del borde izquierdo y opcion2 casi entera detrás de Kain, así que solo opcion3 sirve para registrar UI (recortando la mano). Ojos en media luna sonriente (pedido en el prompt); las antenas tienen una bolita mínima en la punta, sin brillo. Original en materiales/magnific/v2/servicios-no-se/desk-a-kszq6Eu16B.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la toma de escritorio (kszq6Eu16B) como primera referencia; salió cerrado (antenas y ≈ 0.388, pies y ≈ 0.933, panel central desde y ≈ 0.347) → reencuadre sin IA con la lógica de scripts/reencuadre-movil.mjs pero con relleno de borde extendido y desenfocado (evita la costura en las esquinas inferiores), pads 0.1953 0.1016 0.1159 0.1159 y penumbra limpia hasta 0.40, salida JPEG q92 a 1536 × 1920. Kain centrado (pecho x ≈ 0.52) señalando arriba a la derecha (punta del dedo en 0.695, 0.530); antenas y ≈ 0.45, pies y ≈ 0.862–0.871. 40 % superior vacío (luminancia p95 ≈ 31/255, máx ≈ 61); el borde superior del panel central asoma en y ≈ 0.419, por eso subjTop = 0.42. La mano tapa la esquina superior izquierda de opcion3. Original en materiales/magnific/v2/servicios-no-se/movil-a-lJVx0irgv9.png."
+  },
+  "tecnologias-hero": {
+    "alt": "Kain, el agente de IA de Ingeniak, sentado en un cubo de cristal del que salen conexiones de luz",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/tecnologias-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.5,
+      "fadeFrom": 0.92
+    },
+    "m": {
+      "src": "/img/cine/tecnologias-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.52,
+      "fy": 1,
+      "subjTop": 0.43
+    },
+    "layout": "subject-right",
+    "pose": "sentado en el cubo de cristal",
+    "safe": {
+      "d": [
+        [
+          0.04,
+          0.06,
+          0.53,
+          0.94
+        ]
+      ],
+      "m": [
+        [
+          0.04,
+          0.03,
+          0.96,
+          0.41
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.545,
+        0.11,
+        0.94,
+        0.9
+      ],
+      "m": [
+        0.285,
+        0.425,
+        0.79,
+        0.875
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.692,
+          0.445
+        ],
+        "m": [
+          0.47,
+          0.619
+        ],
+        "scrW": 0.032
+      },
+      "mano": {
+        "d": [
+          0.79,
+          0.618
+        ],
+        "m": [
+          0.594,
+          0.718
+        ]
+      },
+      "rostro": {
+        "d": [
+          0.686,
+          0.288
+        ],
+        "m": [
+          0.461,
+          0.53
+        ]
+      },
+      "cubo": {
+        "d": [
+          0.636,
+          0.598,
+          0.212,
+          0.299
+        ],
+        "m": [
+          0.397,
+          0.709,
+          0.272,
+          0.162
+        ]
+      },
+      "placa-1": {
+        "d": [
+          0.579,
+          0.26,
+          0.048,
+          0.071
+        ],
+        "m": [
+          0.326,
+          0.513,
+          0.061,
+          0.04
+        ]
+      },
+      "placa-2": {
+        "d": [
+          0.549,
+          0.48,
+          0.047,
+          0.064
+        ],
+        "m": [
+          0.289,
+          0.638,
+          0.06,
+          0.04
+        ]
+      },
+      "placa-3": {
+        "d": [
+          0.788,
+          0.113,
+          0.061,
+          0.083
+        ],
+        "m": [
+          0.593,
+          0.428,
+          0.076,
+          0.048
+        ]
+      },
+      "placa-4": {
+        "d": [
+          0.847,
+          0.214,
+          0.065,
+          0.083
+        ],
+        "m": [
+          0.668,
+          0.486,
+          0.082,
+          0.049
+        ]
+      },
+      "placa-5": {
+        "d": [
+          0.87,
+          0.47,
+          0.068,
+          0.077
+        ],
+        "m": [
+          0.699,
+          0.634,
+          0.085,
+          0.045
+        ]
+      },
+      "fig": {
+        "d": [
+          0.625,
+          0.8
+        ],
+        "m": null
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.89
+        ],
+        "m": [
+          0.5,
+          0.87
+        ]
+      }
+    },
+    "leak": {
+      "d": [
+        0.75,
+        0.37
+      ],
+      "m": [
+        0.55,
+        0.6
+      ]
+    },
+    "grade": 0,
+    "creationIds": {
+      "desktop": "WDbGmQYcXe",
+      "mobile": "lJVxAuBgv9"
+    },
+    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1 imagen). Reencuadre sin IA: alejamiento del 6 % anclado en (0.955, 0.5) para sacar del lado del texto la placa inferior izquierda (empezaba en x ≈ 0.523 → 0.549), relleno con la misma placa desenfocada y los cuatro bordes caen a #03040B en el último 7 %. Salieron 5 placas de cristal vacías (el plan pedía 6): placa-1…5 van de izquierda a derecha y de arriba abajo, iguales en d y m. La mano registrada es la que descansa sobre el cubo; una línea guía fig → mano cruzaría los pies, así que con FigCaption conviene target=\"placa-2\". Original en materiales/magnific/v2/tecnologias-hero/desk-a-WDbGmQYcXe.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio como primera referencia; Kain quedaba grande (contenido desde y ≈ 0.37, base del cubo en y ≈ 0.95) → reencuadre con scripts/reencuadre-movil.mjs (0.188 0.101 0.08 0.1455 0.40; salida JPEG q92) a 1536 × 1920. Original en materiales/magnific/v2/tecnologias-hero/movil-a-lJVxAuBgv9.png."
   }
 }

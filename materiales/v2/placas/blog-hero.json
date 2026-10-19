@@ -1,0 +1,25 @@
+{
+  "blog-hero": {
+    "alt": "Mujer leyendo en una tableta de noche junto a un ventanal (imagen ilustrativa)",
+    "srcsetMax": 2752,
+    "d": { "src": "/img/cine/blog-hero", "w": 2752, "h": 1536, "ar": 1.7917, "fx": 0.70, "fy": 0.42, "fadeFrom": 0.93 },
+    "m": { "src": "/img/cine/blog-hero-m", "w": 1536, "h": 1920, "ar": 0.8, "fx": 0.52, "fy": 1, "subjTop": 0.445 },
+    "layout": "subject-right",
+    "pose": "lee en la tableta, sentada en el sillón con las piernas recogidas",
+    "safe": { "d": [[0.04, 0.06, 0.40, 0.90]], "m": [[0.04, 0.03, 0.96, 0.41]] },
+    "subject": { "d": [0.405, 0.095, 0.907, 0.985], "m": [0.200, 0.445, 0.805, 0.965] },
+    "anchors": {
+      "pecho": { "d": [0.727, 0.450], "m": [0.594, 0.655] },
+      "mano": { "d": [0.558, 0.497], "m": [0.386, 0.680] },
+      "rostro": { "d": [0.697, 0.275], "m": [0.552, 0.552] },
+      "tableta": { "d": [0.528, 0.313, 0.114, 0.252], "m": [0.348, 0.572, 0.135, 0.149] },
+      "fig": { "d": [0.390, 0.860], "m": null },
+      "piso": { "d": [0.500, 0.875], "m": [0.500, 0.905] }
+    },
+    "leak": { "d": [0.54, 0.13], "m": [0.43, 0.53] },
+    "grade": 0,
+    "creationIds": { "desktop": "YMqAvUQWeC", "mobile": "lJVxze2gv9", "desktopR0": "yiowcwdPW9" },
+    "deskNote": "Placa de persona (plan: sin referencias de imagen para no clonar rostros). Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K). La r0 (yiowcwdPW9) se descartó: logotipo de marca en el dorso de la tableta y marco del ventanal con bokeh dentro del lado del texto (x ≈ 0.25–0.55). Master = r1 sin IA: marco izquierdo del ventanal (x 0.43–0.50, y < 0.585) llevado a penumbra con el color de la pared de su fila, y caída de los bordes a #03040B (izq 7 %, der 10 %, arriba 8 %, abajo 16 %; smoothstep). La ventana sigue visible en x 0.43–0.84, y < 0.55 (atenuada a la izquierda), por eso el texto seguro termina en x 0.40. Banda de piso iluminada en y 0.85–0.93. Original en materiales/magnific/v2/blog-hero/desk-b-YMqAvUQWeC.png; procesada en desk-b-texto-limpio.png.",
+    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la r1 de escritorio como única referencia; salió con la coronilla en 0.355 y el sillón cortado abajo → reencuadre con la lógica de scripts/reencuadre-movil.mjs (0.19 0.03 0.085 0.085 0.42) a 1536 × 1920 y caída lateral a #03040B en el último 13 % de cada lado para ocultar la costura del relleno en la banda del piso. Coronilla en 0.445, 41 % superior limpio. Original en materiales/magnific/v2/blog-hero/movil-a-lJVxze2gv9.png; intermedios movil-a-reencuadre.png y movil-a-reencuadre-bordes.png."
+  }
+}
