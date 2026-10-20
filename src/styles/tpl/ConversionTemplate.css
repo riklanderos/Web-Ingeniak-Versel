@@ -1,0 +1,347 @@
+/* ConversionTemplate.css · T-CONVERSION de las landings ocultas /discovery/ y /power-session/ (CAMBIO-COTIZAR §4, R17).
+   Área landings. Complementa el bloque "ConversionTemplate" de pages.css (portada, video, qué es, para quién, FAQ, cierre)
+   con las secciones nuevas: #agenda (reserva en la página), cuestionario, planos gemelos, escenas con lista, oferta,
+   garantía, host y enlaces del cierre. Solo clases .cv-*.
+   Reglas: ninguna sección pinta fondo (§3.11); sin cajas detrás del texto (filetes y nodos sí); el único cristal es el del
+   formulario de reserva, siempre con aura detrás; un azul por pantalla (solo el .btn del primario); ámbar solo para dolor.
+   Móvil = la misma condición por proporción que las placas (§3.6): (max-width:767px),(max-aspect-ratio:5/6). */
+
+/* ── Portada: el .lit en la segunda voz (Power: "arquitecto") ─────────────── */
+.cv-hero .cv-h1--litsoft .cv-h1__soft{color:var(--text-2)}
+.cv-hero .cv-h1--litsoft .cv-h1__soft .lit{font-weight:500}
+.cv-hero .cv-h1 .cv-h1__soft{text-wrap:balance}
+/* Escritorios bajos (1280 × 720, 1366 × 768, 1280 × 800): la portada cabe en 100svh. Si el texto la alarga, la placa en
+   "cover" crece con ella, la columna segura se angosta y el texto se alarga más (a 1280 × 720 medía 915 px: Kain cortado
+   en las rodillas y la microcopia con el precio bajo el pliegue). Aquí manda la altura: titular y lede escalados por svh
+   y la microcopia en una línea bajo la fila de CTA. Con la portada en 100svh el escenario mide 1290 × 720 y la columna
+   segura llega a ≈ 500 px: primario y "Escríbele a Kain" en una fila y Kain de cuerpo entero. */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){
+  body.cv .cv-hero .cv-h1 .t-display-2{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),7.4svh)}
+  body.cv .cv-hero .cv-h1 .cv-h1__soft{margin-top:var(--s-2);font-size:min(clamp(1.375rem,.9rem + 1.5vw,2.375rem),4.3svh)}
+  body.cv .cv-hero .is__text > .cv-hero__lede{margin-top:var(--s-4);font-size:min(1.125rem,2.5svh);line-height:1.5}
+  body.cv .cv-hero .is__text > .ctas{margin-top:var(--s-6)}
+}
+/* …y con proporción ≤ 16:10 (1280 × 800, 1024 × 768) el escenario en "cover" es más ancho que la ventana y la columna
+   segura más angosta (≈ 460 / 336 px): ahí también salen las migas (la etiqueta ya dice qué es; en móvil tampoco van). */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-aspect-ratio:8/5) and (max-height:820px){
+  body.cv .cv-hero .is__text > .crumbs{display:none}
+}
+
+/* ── Microcopia del primario (portada, cuestionario, oferta, cierre) ───────── */
+/* Los grupos (.tpl-nw) van en flex-wrap y el separador "·" es el ::before de CADA grupo: el del arranque de cada renglón
+   cae en la franja de --cvm-sep que la microcopia corre a la izquierda y que clip-path recorta. Nunca queda un "·" colgando
+   al final ("USD 297 · pago único ·" / "90 min…") ni al inicio de un renglón. El " · " de texto que trae el marcado
+   (HeroCtas / Primary) se queda para lectores y sin CSS; aquí mide 0 (font-size:0 en el contenedor). */
+body.cv :is(.tpl-hero,section) .cta-p > p.btn-micro.t-micro{--cvm-sep:22px;display:flex;flex-wrap:wrap;align-items:baseline;
+  font-size:0;line-height:0;margin-left:calc(-1 * var(--cvm-sep));clip-path:inset(-8px -24px -8px var(--cvm-sep))}
+body.cv :is(.tpl-hero,section) .cta-p > p.btn-micro.t-micro > .tpl-nw{font-size:.75rem;line-height:1.45;letter-spacing:.06em;white-space:nowrap}
+body.cv :is(.tpl-hero,section) .cta-p > p.btn-micro.t-micro > .tpl-nw::before{content:"·";content:"·" / "";display:inline-block;width:var(--cvm-sep);text-align:center}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.cv .tpl-hero .cta-p > p.btn-micro.t-micro > .tpl-nw{letter-spacing:.03em}
+}
+/* Sin botón al lado (cuestionario, oferta): la microcopia mide lo que su texto, no el ancho del botón. (Bajo el video el
+   primario va a la derecha: ahí la microcopia conserva el ancho del botón para empezar en su mismo borde.) */
+body.cv :is(.cv-quiz__cta,.cv-offer__ctas) .cta-p > p.btn-micro.t-micro{contain:none;align-self:stretch}
+/* Portada y cierre en escritorio: la microcopia ocupa la fila de CTA completa (primario + "Escríbele a Kain"), debajo de
+   los dos botones, en una línea; si el WhatsApp baja de renglón, la microcopia va al final. */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  body.cv :is(.cv-hero,.cv-dawn) .is__text > .ctas:has(> .cta-p > .btn-micro){display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-3) var(--s-4)}
+  body.cv :is(.cv-hero,.cv-dawn) .is__text > .ctas > .cta-p:has(> .btn-micro){display:contents}
+  body.cv :is(.cv-hero,.cv-dawn) .is__text > .ctas > :not(.cta-p){order:2}
+  /* corrida con left (no con margen negativo: el margen restaba del ancho intrínseco de la fila y el WhatsApp bajaba) */
+  body.cv :is(.cv-hero,.cv-dawn) .is__text > .ctas > .cta-p > p.btn-micro.t-micro{order:3;flex:0 0 calc(100% + var(--cvm-sep));
+    margin:0;position:relative;left:calc(-1 * var(--cvm-sep))}
+}
+
+/* ── Primario bajo el video (VideoScene) ─────────────────────────────────── */
+/* El bloque de texto vive en la franja segura de abajo a la izquierda (y .64–.96 de discovery-vsl-poster): en pantallas
+   bajas (1280 × 720) el titular se acota por la altura para que no suba sobre la placa encendida */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  body.cv .cv-video .is__text > .t-h2{font-size:min(clamp(2.25rem,1rem + 2.9vw,4.25rem),6.4svh)}
+  /* la columna de reproducir (con el primario debajo) es más alta que el titular: el texto se apoya abajo, no arriba */
+  body.cv .cv-video > .is__copy > .is__text{align-self:end}
+  /* Con el primario bajo "Reproducir", la columna derecha necesita ≈ 240 px de la banda segura (y .64–.96): el plano mide
+     al menos 800 px de alto (en 1280 × 720 se recorre un poco; en 1440 × 900 y más no cambia) y la columna se compacta. */
+  body.cv .is.cv-video{--is-h:max(100svh,800px)}
+  body.cv .cv-video .is__aside{gap:var(--s-4)}
+  body.cv .cv-video .is__aside > .cv-video__ctas{margin-top:0}
+}
+.cv-video .is__aside > .cv-video__ctas{margin-top:var(--s-2);display:flex;justify-content:flex-end}
+.cv-video .cv-video__ctas .cta-p{align-items:flex-end}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .cv-video .is__aside > .cv-video__ctas{justify-content:flex-start;width:100%}
+  .cv-video .cv-video__ctas .cta-p{align-items:stretch;width:100%}
+  .cv-video .cv-video__ctas .btn{width:100%;justify-content:space-between}
+}
+
+/* ── #agenda · Reserva en 3 pasos ────────────────────────────────────────── */
+.cv-agenda{padding-block:calc(var(--beat) * .85) var(--beat)}
+.cv-agenda .it__frame{align-items:start}
+.cv-agenda .it__head{align-self:start}
+.cv-agenda .it__body{align-items:stretch}
+.cv-agenda__col{display:flex;flex-direction:column;align-items:flex-start}
+.cv-agenda__col > .eyebrow{margin-bottom:var(--s-4)}
+.cv-agenda__h{margin:0;font-size:clamp(2.25rem,1rem + 3vw,4.5rem)}
+.cv-agenda__steps{list-style:none;margin:var(--s-7) 0 0;padding:0;width:100%;max-width:30rem}
+.cv-agenda__step{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:var(--s-3);padding:0 0 var(--s-5)}
+.cv-agenda__step:last-child{padding-bottom:0}
+.cv-agenda__rail{position:absolute;left:4px;top:10px;bottom:-2px;width:1px;background:linear-gradient(180deg,var(--cyan),rgb(0 229 255 / .2))}
+.cv-agenda__step:last-child .cv-agenda__rail{bottom:auto;height:calc(100% - 10px);background:linear-gradient(180deg,var(--cyan),transparent)}
+.cv-agenda__node{position:absolute;left:-4px;top:-6px;width:9px;height:9px;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+.cv-agenda__n{grid-column:2;margin:0 0 6px}
+.cv-agenda__st{grid-column:2;margin:0;font:500 clamp(1.125rem,1rem + .4vw,1.375rem)/1.2 var(--f-display);letter-spacing:-.015em;color:var(--text)}
+.cv-agenda__sl{grid-column:2;margin:6px 0 0;font:400 .9375rem/1.55 var(--f-body);color:var(--text-2);max-width:40ch;text-wrap:pretty}
+.cv-agenda__sales{margin-top:var(--s-7);padding-top:var(--s-5);border-top:1px solid var(--hair);width:100%;max-width:30rem}
+.cv-agenda__salesk{margin:0 0 var(--s-3);color:var(--cyan)}
+.cv-agenda__saleslist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.cv-agenda__saleslist li{position:relative;padding-left:22px;font:300 clamp(1rem,.95rem + .25vw,1.125rem)/1.45 var(--f-display);letter-spacing:-.006em;color:var(--text);text-wrap:pretty}
+.cv-agenda__saleslist li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;border-radius:1px;background:var(--cyan);box-shadow:0 0 10px rgb(0 229 255 / .6)}
+.cv-agenda__nota{margin:var(--s-6) 0 0;font:400 .875rem/1.55 var(--f-body);color:var(--text-2);max-width:30rem;text-wrap:pretty}
+.cv-agenda__form{width:100%;max-width:640px;justify-self:end;margin-inline-start:auto}
+/* Columna izquierda fija mientras se llena el formulario (escritorio ≥ 1024 px) */
+@media (min-width:1024px) and (min-aspect-ratio:5/6){
+  .cv-agenda .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6))}
+  .cv-agenda.it--split .it__head{grid-column:1 / span 5}
+  .cv-agenda.it--split .it__body{grid-column:7 / span 6}
+}
+/* La columna fija mide ≤ 100svh − su tope (hasta 1440 × 900): la nota de cupo y reagendado se ve junto al formulario */
+@media (min-width:1024px) and (min-aspect-ratio:5/6) and (max-height:940px){
+  .cv-agenda__steps{margin-top:var(--s-6)}
+  .cv-agenda__step{padding-bottom:var(--s-4)}
+  .cv-agenda__sales{margin-top:var(--s-5);padding-top:var(--s-4)}
+  .cv-agenda__nota{margin-top:var(--s-4)}
+}
+@media (max-width:1023px),(max-aspect-ratio:5/6){
+  .cv-agenda .it__frame{row-gap:var(--s-7)}
+  .cv-agenda__form{max-width:none;margin-inline-start:0}
+}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .cv-agenda{padding-block:var(--s-9) var(--s-10)}
+  .cv-agenda__steps{margin-top:var(--s-6)}
+  .cv-agenda__sales{margin-top:var(--s-6)}
+}
+/* Pantallas de una columna: el formulario sube justo después de los pasos ("Sales con" y la nota van debajo), para que
+   el clic en "Agendar" deje el formulario a la vista sin recorrer toda la columna informativa. Solo cambia el orden visual
+   de texto no interactivo (el orden de foco no cambia). */
+@media (max-width:1023px),(max-aspect-ratio:5/6){
+  .cv-agenda .it__frame{row-gap:0}
+  .cv-agenda .it__head,.cv-agenda__col{display:contents}
+  .cv-agenda__col > *,.cv-agenda .it__body{grid-column:1 / -1;min-width:0}
+  .cv-agenda__col > .eyebrow{order:1;justify-self:start}
+  .cv-agenda__h{order:2}
+  .cv-agenda__steps{order:3}
+  .cv-agenda .it__body{order:4;margin-top:var(--s-7)}
+  .cv-agenda__sales{order:5;margin-top:var(--s-7)}
+  .cv-agenda__nota{order:6}
+}
+
+/* Respaldo mientras no llega BookingFlow (área agenda): misma raíz [data-agenda], cristal con aura detrás */
+.cv-bkwait{position:relative;width:100%;padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-4)}
+.cv-bkwait__k{display:inline-flex;align-items:center;gap:10px;margin:0}
+.cv-bkwait__t{margin:0;max-width:22ch}
+.cv-bkwait__t:focus{outline:none}
+.cv-bkwait__p{margin:0;font:400 1rem/1.6 var(--f-body);color:var(--text-2);max-width:46ch}
+.cv-bkwait__ctas{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-6);margin-top:var(--s-3)}
+
+/* ── Diagnóstico rápido (cuestionario sobre la placa del dolor) ───────────── */
+.cv-quiz .is__text > .cv-quiz__lede{max-width:40ch}
+.cv-quiz__box{width:100%;max-width:40rem}
+.cv-quiz__set{border:0;margin:0;padding:0;min-width:0}
+.cv-quiz__list{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.cv-quiz__li{border-bottom:1px solid var(--hair);transition:border-color var(--d-ui) var(--ease-ui)}
+.cv-quiz__li.is-on{border-bottom-color:rgb(255 181 71 / .32)}
+.cv-quiz__item{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:16px;align-items:start;padding:15px 0 16px;cursor:pointer}
+/* La casilla nativa sigue siendo el control (foco, teclado, lector); se dibuja la marca encima */
+.cv-quiz__in{position:absolute;left:0;top:13px;width:28px;height:28px;margin:0;opacity:0;cursor:pointer}
+.cv-quiz__mark{grid-column:1;grid-row:1;width:24px;height:24px;margin-top:1px;border-radius:6px;display:grid;place-items:center;
+  box-shadow:inset 0 0 0 1px rgb(255 181 71 / .5);transition:background .3s var(--ease-ui),box-shadow .3s var(--ease-ui)}
+.cv-quiz__mark svg{width:14px;height:14px;overflow:visible;fill:none;stroke:#1c1204;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:16;stroke-dashoffset:16;transition:stroke-dashoffset .35s var(--ease-cine)}
+.cv-quiz__in:checked + .cv-quiz__mark{background:var(--amber);box-shadow:inset 0 0 0 1px var(--amber),0 0 18px rgb(255 181 71 / .35)}
+.cv-quiz__in:checked + .cv-quiz__mark svg{stroke-dashoffset:0}
+.cv-quiz__in:focus-visible + .cv-quiz__mark{outline:2px solid var(--cyan);outline-offset:3px}
+.cv-quiz__item:hover .cv-quiz__mark{box-shadow:inset 0 0 0 1px var(--amber)}
+.cv-quiz__txt{grid-column:2;grid-row:1;min-width:0}
+.cv-quiz__t{display:block;font:400 clamp(1.0625rem,.98rem + .3vw,1.25rem)/1.32 var(--f-display);letter-spacing:-.008em;color:var(--text);text-wrap:pretty}
+.cv-quiz__l{display:block;margin-top:5px;font:400 .9375rem/1.5 var(--f-body);color:var(--text-2);text-wrap:pretty}
+.cv-quiz__status{margin-top:var(--s-5);display:flex;flex-direction:column;gap:var(--s-4)}
+.cv-quiz__count{margin:0;display:flex;align-items:center;gap:14px;font:500 .75rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--text-2)}
+.cv-quiz__meter{display:inline-flex;gap:5px}
+.cv-quiz__pip{width:20px;height:3px;border-radius:2px;background:var(--hair-2);transition:background .3s var(--ease-ui),box-shadow .3s var(--ease-ui)}
+:is([data-score="1"] .cv-quiz__pip:nth-child(-n+1),[data-score="2"] .cv-quiz__pip:nth-child(-n+2),[data-score="3"] .cv-quiz__pip:nth-child(-n+3),
+  [data-score="4"] .cv-quiz__pip:nth-child(-n+4),[data-score="5"] .cv-quiz__pip:nth-child(-n+5)){background:var(--amber);box-shadow:0 0 8px rgb(255 181 71 / .5)}
+.cv-quiz__msg{margin:0;padding-left:18px;box-shadow:inset 1px 0 0 var(--cyan);max-width:40ch;
+  font:300 clamp(1.125rem,1rem + .45vw,1.375rem)/1.4 var(--f-display);letter-spacing:-.01em;color:var(--cyan-soft);text-wrap:pretty}
+.cv-quiz__cta{margin-top:var(--s-6)}
+.cv-quiz__cta.is-in{animation:cv-in .6s var(--ease-cine) both}
+[data-quiz-cta][hidden],[data-quiz-msg][hidden]{display:none !important}
+html.no-js .cv-quiz__status{display:none}
+/* La placa ocupa un plano (no crece con el cuestionario): si la columna es más larga, sigue sobre la disolución (como
+   #para-quien de Discovery). Así el texto nunca cae fuera de la zona segura por una placa ampliada. */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .cv-quiz{--cvq-h:max(100svh,680px)}
+  .cv-quiz > .is__stagebox{bottom:auto;height:var(--cvq-h)}
+  .cv-quiz > .is__more{margin-top:var(--s-6)}
+  /* La disolución de la sección (.is__fx) cae al final del cuestionario, no al pie de la placa: el filo frontal del
+     escritorio iluminado de dolor-operacion (y ≈ .93 de la placa) quedaba como un corte recto, con la lista siguiendo a la
+     derecha. La placa se disuelve ella misma con una curva larga que termina casi en negro antes de ese filo (manos y
+     papeles, y ≤ .85, siguen a la vista; el teléfono queda en penumbra). Sin borde de imagen. */
+  body.cv .cv-quiz > .is__stagebox > .is__layer--media{--mask-y:linear-gradient(180deg,transparent 0,#000 var(--fade-top,11%),
+    #000 calc((var(--fade-from) - .18) * 100%),rgb(0 0 0 / .8) calc((var(--fade-from) - .12) * 100%),rgb(0 0 0 / .45) calc((var(--fade-from) - .07) * 100%),
+    rgb(0 0 0 / .16) calc((var(--fade-from) - .03) * 100%),rgb(0 0 0 / .04) calc((var(--fade-from) + .005) * 100%),transparent calc((var(--fade-from) + .03) * 100%))}
+}
+@keyframes cv-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .cv-quiz__item{padding:13px 0 14px;column-gap:14px}
+  .cv-quiz__t{font-size:1.0625rem}
+  .cv-quiz__l{font-size:.875rem}
+  .cv-quiz__cta,.cv-quiz__cta .cta-p{width:100%}
+  .cv-quiz__cta .btn{width:100%;justify-content:space-between}
+}
+
+/* ── La verdad incómoda (planos gemelos) ─────────────────────────────────── */
+.cv-twin .cv-twin__h{font-size:clamp(1.875rem,1rem + 2.2vw,3.5rem);line-height:1.02;max-width:18ch}
+.cv-twin__remate{margin:0;color:var(--text);max-width:24em}
+.cv-twin__end,.cv-twin .twin__end > * + *{margin-top:var(--s-4)}
+
+/* línea / cita de kain (cian; la marca en minúsculas con su nodo) */
+.cv-kain{margin:0;display:flex;gap:12px;align-items:baseline;max-width:44ch;font:300 clamp(1rem,.95rem + .3vw,1.1875rem)/1.45 var(--f-display);color:var(--text-2);text-wrap:pretty}
+.cv-kain__k{flex:none;font-size:1rem;color:var(--cyan)}
+.cv-kain__q{min-width:0}
+
+/* ── Escena con lista (método · qué incluye) ─────────────────────────────── */
+.cv-scene__list{width:100%;max-width:40rem}
+.cv-scene .t-h2{font-size:min(clamp(2.25rem,1rem + 2.6vw,4rem),7svh)}
+/* Los 4 pasos van en columna junto al sujeto (la fila horizontal de StepRow no cabe en media pantalla) */
+.cv-scene .steps{grid-auto-flow:row;row-gap:28px}
+.cv-scene .steps__item{padding:0 0 0 32px}
+.cv-scene .steps__rail{left:4px;right:auto;top:6px;bottom:-28px;width:1px;height:auto;background:linear-gradient(180deg,var(--cyan),rgb(0 229 255 / .25))}
+.cv-scene .steps__item:last-child .steps__rail{bottom:0;background:linear-gradient(180deg,var(--cyan),transparent)}
+.cv-scene .steps__node{left:-4px;top:0}
+.cv-scene .steps__t{margin-top:10px;font-size:clamp(1.1875rem,1rem + .5vw,1.5rem)}
+.cv-scene .steps__line{color:var(--text-2);max-width:46ch;margin-top:8px;font-size:.9375rem}
+.cv-scene__remate{margin-top:var(--s-6)}
+.cv-scene__kain{margin-top:var(--s-5)}
+/* Escritorio: el método se lee en dos planos. Primero la placa completa (titular arriba a la izquierda; las losas llevan la
+   vista hasta Kain); debajo, sobre la disolución, los 4 pasos en fila unidos por la rama, el remate y la cita de kain.
+   Ninguna línea cae sobre las losas (zona segura de metodologia-hero: y ≤ .64). */
+@media (min-width:1024px) and (min-aspect-ratio:5/6){
+  .cv-scene--steps > .is__copy{min-height:calc(var(--cvsc-h) - var(--hdr) - var(--s-7))}
+  .cv-scene--steps > .is__more > .is__text{grid-column:1 / -1}
+  .cv-scene--steps .cv-scene__list{max-width:none}
+  .cv-scene--steps .steps{grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);column-gap:var(--gap)}
+  .cv-scene--steps .steps__item{padding:40px 24px 0 0}
+  .cv-scene--steps .steps__rail{left:0;right:calc(-1 * var(--gap));top:4px;bottom:auto;width:auto;height:1px;background:linear-gradient(90deg,var(--cyan),rgb(0 229 255 / .25))}
+  .cv-scene--steps .steps__item:last-child .steps__rail{right:0;bottom:auto;background:linear-gradient(90deg,var(--cyan),transparent)}
+  .cv-scene--steps .steps__node{left:0;top:-4px}
+  .cv-scene--steps .steps__t{margin-top:16px}
+  .cv-scene--steps .steps__line{max-width:34ch}
+  .cv-scene--steps .cv-scene__remate{margin-top:var(--s-8)}
+}
+/* Móvil (split): la lista del método no sube sobre el reflejo de las losas (el rótulo cian "Paso 01" quedaba en 3.4:1) */
+@media (max-width:767px),(max-aspect-ratio:5/6){body.cv .is.cv-scene--steps[data-m="split"] > .is__more{margin-top:var(--s-4)}}
+/* Móvil y tableta vertical: la columna del slot "more" ocupa todo el ancho. cine la alinea al inicio (justify-self:start)
+   y su ancho salía del contenido: la lista de filas (ScriptList rows, con container-type) aporta 0 px, así que en
+   #incluye la columna medía 0 y cada entregable se partía palabra por palabra. */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.cv .is:is(.cv-scene,.cv-fit,.cv-quiz) > .is__more > .is__text{justify-self:stretch;width:100%;min-width:0}
+}
+.cv-scene--rows .script{margin-top:0}
+.cv-scene--rows .script__name{font-weight:400}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .cv-scene{--cvsc-h:max(100svh,680px)}
+  .cv-scene > .is__stagebox{bottom:auto;height:var(--cvsc-h)}
+  .cv-scene > .is__more{margin-top:var(--s-6)}
+  /* safeCol (cine): con el sujeto a la izquierda la columna empieza en el borde de la zona segura; la lista de "more"
+     arranca en el mismo borde que el titular (nunca sobre la luz de la placa) */
+  .is.cv-scene[data-safe-col][data-layout="subject-left"] > .is__more > .is__text{padding-left:max(0px, calc(var(--sc-x) - 50vw - var(--gap) / 2 + 16px))}
+}
+
+/* ── Para quién (power: Kain a la derecha → texto a la izquierda) + remate ── */
+@media (min-width:768px) and (min-aspect-ratio:5/6){body.cv .is.cv-fit[data-layout="subject-right"] :is(.is__copy,.is__more) .is__text{grid-column:1 / span 6}}
+@media (min-width:1800px) and (min-aspect-ratio:5/6){body.cv .is.cv-fit[data-layout="subject-right"] :is(.is__copy,.is__more) .is__text{grid-column:1 / span 5}}
+.cv-fit__remate{margin-top:var(--s-6)}
+
+/* ── Oferta ──────────────────────────────────────────────────────────────── */
+.cv-offer .it__body{grid-column:1 / -1}
+.cv-offer__grid{width:100%;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:var(--s-8);align-items:end}
+.cv-offer__main{grid-column:1 / span 6;display:flex;flex-direction:column;align-items:flex-start}
+.cv-offer__main > .eyebrow{margin-bottom:var(--s-4)}
+.cv-offer__h{margin:0}
+.cv-offer__price{margin:var(--s-6) 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.cv-offer__amt{font:600 clamp(3.5rem,1.6rem + 6vw,8rem)/.9 var(--f-display);letter-spacing:-.05em;color:var(--text);
+  text-shadow:0 0 60px rgb(0 229 255 / .22)}
+.cv-offer__note{font:500 .75rem/1.3 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+.cv-offer__cupo{margin:var(--s-5) 0 0;display:flex;align-items:flex-start;gap:10px;font:400 .9375rem/1.5 var(--f-body);color:var(--text-2)}
+.cv-offer__cupo .node{flex:none;width:5px;height:5px;margin-top:calc(.75em - 2.5px)}
+.cv-offer__ctas{margin-top:var(--s-7)}
+.cv-offer__side{grid-column:8 / span 5;align-self:end}
+.cv-offer__k{margin:0 0 var(--s-4);color:var(--cyan)}
+.cv-offer__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--gap);border-top:1px solid var(--hair-cyan)}
+.cv-offer__li{display:flex;align-items:flex-start;gap:12px;padding:16px 0 17px;border-bottom:1px solid var(--hair);
+  font:400 clamp(1rem,.95rem + .25vw,1.1875rem)/1.35 var(--f-display);letter-spacing:-.008em;color:var(--text)}
+.cv-offer__chk{flex:none;width:18px;height:18px;margin-top:2px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--hair-cyan)}
+.cv-offer__chk svg{width:11px;height:11px;fill:none;stroke:var(--cyan);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:1023px){
+  .cv-offer__main,.cv-offer__side{grid-column:1 / -1}
+}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .cv-offer__grid{row-gap:var(--s-7)}
+  .cv-offer__ctas,.cv-offer__ctas .cta-p{width:100%}
+  .cv-offer__ctas .btn{width:100%;justify-content:space-between}
+  .cv-offer__li{padding:13px 0 14px;font-size:.9688rem}
+}
+@media (max-width:379px){.cv-offer__list{grid-template-columns:minmax(0,1fr)}}
+
+/* ── Garantía + Por qué ahora ────────────────────────────────────────────── */
+.cv-guar .it__head{align-self:start}
+.cv-guar .it__head > .eyebrow{margin-bottom:var(--s-4)}
+.cv-guar__h{margin:0;font-size:clamp(2rem,1rem + 2.6vw,4rem)}
+.cv-guar__text{margin:0;font:400 clamp(1.0625rem,1rem + .2vw,1.1875rem)/1.6 var(--f-body);color:var(--text-2);max-width:48ch;text-wrap:pretty}
+.cv-guar__text--lead{margin-top:var(--s-5);padding-left:18px;box-shadow:inset 1px 0 0 var(--hair-cyan);color:var(--text)}
+.cv-guar__block{display:flex;flex-direction:column;align-items:flex-start;padding-top:var(--s-5);border-top:1px solid var(--hair)}
+.cv-guar__block > .eyebrow{margin-bottom:var(--s-4)}
+.cv-guar__bt{margin:0 0 var(--s-4);max-width:20ch}
+@media (min-width:1024px){.cv-guar .it__body{padding-top:calc(var(--s-4) + 11px)}}
+
+/* ── Quién te atiende (persona del equipo: avatar duotono de 72 px, nunca foto rectangular) ── */
+.cv-host .it__head{align-self:start}
+.cv-host .it__head > .eyebrow{margin-bottom:var(--s-5)}
+.cv-host__id{display:flex;align-items:center;gap:var(--s-5)}
+.cv-host__ph{position:relative;flex:none;width:72px;height:72px;border-radius:50%;overflow:hidden;isolation:isolate;container-type:size;background:#8AF0FF;
+  outline:1px solid var(--hair-cyan);outline-offset:3px;box-shadow:0 0 40px rgb(0 229 255 / .18)}
+.cv-host__ph img{--k:calc(.5 / var(--hw));position:absolute;max-width:none;width:calc(100cqw * var(--k));height:calc(100cqw * var(--k));
+  left:calc(50cqw - var(--fx) * 100cqw * var(--k));top:calc(44cqh - var(--ey) * 100cqw * var(--k));
+  filter:grayscale(1) contrast(1.25) brightness(1.1);mix-blend-mode:multiply}
+.cv-host__ph::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 70% at 50% 40%,rgb(10 31 76 / .85),rgb(6 10 24) 85%);mix-blend-mode:lighten;pointer-events:none}
+.cv-host__h{margin:0;font-size:clamp(2rem,1rem + 2.4vw,3.75rem)}
+.cv-host__h .soft{display:block;margin-top:8px;font-size:clamp(1.0625rem,.95rem + .5vw,1.5rem);letter-spacing:-.015em;line-height:1.2}
+.cv-host__body{margin:0}
+.cv-host__facts{list-style:none;margin:var(--s-6) 0 0;padding:0;width:100%;border-top:1px solid var(--hair)}
+.cv-host__fact{display:flex;align-items:center;gap:14px;min-width:0;padding:16px 0 17px;border-bottom:1px solid var(--hair);font:400 .9375rem/1.5 var(--f-body);color:var(--text-2)}
+.cv-host__fact > .node{flex:none}
+.cv-host__fact .cv-letter{margin-top:0}
+.cv-host__fact--kommo{color:var(--text)}
+.cv-host__fact--kommo .kommo-badge{flex:none}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .cv-host__id{gap:var(--s-4)}
+  .cv-host__ph{width:64px;height:64px}
+  .cv-host__fact{align-items:center;gap:12px}
+  .cv-host__fact > span:last-child{min-width:0}
+}
+
+/* ── Cierre: enlaces de texto bajo los CTA (la cotización es ruta secundaria, nunca azul) ── */
+/* El enlace va en línea (no el inline-flex de .lnk): si se parte en dos renglones, el filete cian sigue al texto de cada
+   renglón (box-decoration-break:clone) en vez de correr a todo el ancho de la columna. El renglón lo reparte el <li>
+   (text-wrap:pretty, sin el balance que lo cortaba a ≈ 340 px en una columna de 600). */
+.cv-dawn .is__text > .cv-links{margin:var(--s-6) 0 0;padding:0;list-style:none;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.cv-links > li{max-width:100%;font-size:.9375rem;line-height:1.6;text-wrap:pretty}
+.cv-links__a.lnk{display:inline;padding:0 0 2px;font-size:inherit;line-height:inherit;color:var(--text-2);text-align:left;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
+.cv-links__c{white-space:nowrap}
+.cv-links__a:hover,.cv-links__a:focus-visible{color:var(--text)}
+.cv-dawn .is__text > .cv-dawn__kain{margin-top:var(--s-6)}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .cv-links > li{font-size:.875rem}
+  .cv-dawn .is__text > .cv-links{gap:12px}
+}

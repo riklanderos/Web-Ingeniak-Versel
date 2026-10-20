@@ -1,20 +1,28 @@
 ---
-// MobileCTABar — barra inferior móvil (< 768 px), desde el segundo viewport (ESPEC §4.6).
-// Se oculta (CSS sobre atributos de <html> que ponen scripts/nav/*.ts):
-//   [data-primary-visible] (F15) · [data-dawn-visible] (cierre Dawn en pantalla) · [data-end-visible] · [data-menu-state] (hoja abierta)
-//   · [data-sala] (pin) · [data-overlay]
-// Etiqueta completa de la marca ("Agenda tu Discovery Session"); WhatsApp es un control de 48 px solo con icono (aria-label).
-// Props: waHref (secondaryCta.href de la página). No se pinta en /discovery/ (BaseLayout nav="reduced").
+// MobileCTABar — barra inferior móvil (< 768 px), desde el segundo viewport (ESPEC §4.6, r2: CAMBIO-COTIZAR §1.4).
+// Pública: «Cotizar proyecto» (2/3, abre el modal: data-cotizar data-section="barra"; sin JS → /contacto/#cotizar) +
+//   WhatsApp de cristal (1/3, mensaje de la página).
+// Landings ocultas (BaseLayout con page.hidden, salvo /agendar/confirmado/): el CTA de la landing (page.primaryCta → '#agenda',
+//   sin data-cotizar) y aparece pasado el 85 % del primer viewport (html[data-fold85], scripts/nav/header.ts).
+// Se oculta (CSS sobre atributos de <html> que ponen scripts/nav/*.ts y ui.ts):
+//   [data-primary-visible] (F15) · [data-agenda-visible] (componente de reserva a la vista) · [data-dawn-visible] (cierre)
+//   · [data-end-visible] · [data-menu-state] (hoja abierta) · [data-sala] (pin) · [data-overlay] (capas: hoja, ⌘K, modal)
+// Props: waHref (secondaryCta.href de la página) · label/href (por defecto «Cotizar proyecto» → SITE.quote.href) ·
+//   cotizar (true por defecto; false en las landings) · mode 'public' | 'agenda'.
 import { ICONS } from './icons';
 import { SITE } from '../../lib/site';
-interface Props { waHref?: string }
-const { waHref = SITE.waBase } = Astro.props;
+import { QUOTE, quoteAttrs, quoteHref } from '../layout/cta';
+interface Props { waHref?: string; label?: string; href?: string; cotizar?: boolean; mode?: 'public' | 'agenda'; current?: string }
+const { waHref = SITE.waBase, mode = 'public', cotizar = mode !== 'agenda', current } = Astro.props;
+const label = Astro.props.label ?? QUOTE.label;
+const href = Astro.props.href ?? (cotizar ? quoteHref(current) : '#agenda');
+const attrs = cotizar ? quoteAttrs('barra') : { 'data-section': 'barra' };
 ---
-<div class="mbar" data-mbar>
-  <a class="btn mbar__cta" href={SITE.discovery}><span class="mbar__l">Agenda tu Discovery Session</span>
+<div class="mbar" data-mbar data-mode={mode}>
+  <a class="btn mbar__cta" href={href} {...attrs}><span class="mbar__l">{label}</span>
     <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span>
   </a>
-  <a class="mbar__wa" href={waHref} target="_blank" rel="noopener" aria-label="Escríbele a Kain por WhatsApp">
-    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} />
+  <a class="mbar__wa" href={waHref} target="_blank" rel="noopener" aria-label="Escríbele a Kain por WhatsApp" data-wa>
+    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} /><span class="mbar__wa-t" aria-hidden="true">WhatsApp</span>
   </a>
 </div>

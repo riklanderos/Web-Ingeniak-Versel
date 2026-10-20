@@ -1,0 +1,121 @@
+---
+// /agendar/confirmado/ · página oculta a la que Stripe regresa después de pagar la Power Session (CAMBIO-COTIZAR §5.6;
+// flujo-agenda.md §4.8). Estática: confirma por fetch (POST /api/agenda/confirmar/, idempotente) desde
+// src/scripts/agenda/confirmado.ts. noindex,follow (+ X-Robots-Tag en vercel.json), encabezado reducido sin CTA, footer mínimo.
+// Una sola sección `estado`: ImageSection hero con gohighlevel-hero (Kain confirma una cita en un calendario de cristal,
+// sujeto a la derecha; móvil split). Región aria-live con los estados cargando · ok · pending · error.
+// R3 (móvil split): arriba solo el intro (etiqueta, H1 y la entrada corta, que solo se ve mientras se confirma o en
+// "pending"); la placa con Kain de cuerpo completo sigue en flujo y el estado + "ten a la mano" van en `more`, bajo sus pies.
+// Escritorio: safeCol (la columna termina en la zona segura de la placa) y `more` en la misma columna, sin salto.
+// Copy: src/content/paginas/agendar-confirmado.json (borrador). El único azul de la pantalla es "Abrir enlace de Meet"
+// (sin data-primary: no compite con ningún CTA del encabezado, que aquí no existe).
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ImageSection from '../../../components/cine/ImageSection.astro';
+import Icon from '../../../components/ui/Icon.astro';
+import { plateReady } from '../../../components/cine/plate';
+import { getPage, getCopy, section, waHref, SITE } from '../../../lib/site';
+import { CONTACT, LANDING } from '../../../../shared/agenda.js';
+import '../../../styles/agenda.css';
+
+// Entrada de sitemap.json (la crea el orquestador: id agendar-confirmado, folio 603). Mientras no exista, respaldo local
+// con los mismos datos para que la página se pinte igual (oculta, no indexable, sin CTA en el encabezado).
+let page: any;
+try {
+  page = getPage('/agendar/confirmado/');
+} catch {
+  page = {
+    id: 'agendar-confirmado', url: '/agendar/confirmado/', canonical: `${SITE.url}/agendar/confirmado/`, folio: '603',
+    group: 'Conversión', template: 'T-CONFIRM', indexable: false, hidden: true, primaryCta: null,
+    title: 'Confirmación de tu Power Session | Ingeniak',
+    metaDescription: 'Confirmación del pago y de la cita de tu Power Session con Ingeniak.',
+    h1: 'Confirmación de tu Power Session',
+    breadcrumbs: [{ name: 'Inicio', url: '/' }, { name: 'Confirmación de tu Power Session', url: '/agendar/confirmado/' }],
+    sections: [{ order: 1, id: 'estado', name: 'Confirmación', plate: { id: 'gohighlevel-hero', layout: 'subject-right', height: 'hero', mobile: 'split', srcsetMax: 2752 } }],
+    secondaryCta: { label: 'Escríbele a Kain', waMessage: 'Hola, acabo de pagar mi Power Session y quiero confirmar algo.' },
+  };
+}
+const c = getCopy('agendar-confirmado').sections.estado;
+const E = c.estados;
+const sec = section(page, 'estado') ?? {};
+const pl = sec.plate ?? { id: 'gohighlevel-hero', srcsetMax: 2752 };
+const fallback = pl.launchFallback ?? { plate: 'home-sistema-5-medir', mirror: false };
+const fbId = typeof fallback === 'string' ? fallback : fallback.plate;
+const lcpPlate = plateReady(pl.id) ? pl.id : plateReady(fbId) ? fbId : undefined;
+const wa = waHref(c.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage ?? 'Hola, acabo de pagar mi Power Session y quiero confirmar algo.');
+const mail = `mailto:${CONTACT.email}`;
+const split = (s: string) => s.split('{email}');
+const [h1a, h1b] = c.h1.text.split(c.h1.lit);
+const [mov1, mov2] = split(c.mover);
+const [pen1, pen2] = split(E.pending.text);
+const [err1, err2] = split(E.error.text);
+---
+<BaseLayout page={page} nav="reduced" lcpPlate={lcpPlate} lcpSrcsetMax={pl.srcsetMax ?? 2752} rail={false} noindex waHref={wa} bodyClass="cfm-page">
+  <ImageSection id="estado" plate={pl.id} fallbackPlate={fallback} layout={pl.layout ?? 'subject-right'} height="hero" mobile="split" priority
+    safeCol srcsetMax={pl.srcsetMax} class="cfm-hero tpl-hero">
+    <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>
+    <h1 id="estado-t" class="t-display-2 cfm__h1">{h1a}<span class="lit">{c.h1.lit}</span>{h1b}</h1>
+    <p class="t-lede t-lede--2 cfm__lede" data-cf-lede>{c.lede}</p>
+
+    <div slot="more" class="cfm" data-confirmado aria-live="polite" aria-busy="true" data-power={LANDING.power} data-email={CONTACT.email}>
+      {/* Cargando (estado inicial; con JS desactivado se cambia por "error" con las rutas directas) */}
+      <div class="cfm__s" data-cf="cargando">
+        <p class="cfm__loading"><span class="cfm__spin" aria-hidden="true"></span>{E.cargando.text}</p>
+        <p class="t-small">{E.cargando.nota}</p>
+      </div>
+
+      {/* Pago confirmado */}
+      <div class="cfm__s" data-cf="ok" hidden>
+        <p class="t-label t-label--cyan cfm__k"><span class="node" aria-hidden="true"></span>{E.ok.kicker}</p>
+        <p class="cfm__state"><span class="cfm__check" aria-hidden="true"><Icon name="check" size={22} stroke={2} /></span>{E.ok.titulo}</p>
+        <p class="cfm__when"><span data-cf-when></span><span class="cfm__local" data-cf-local hidden></span></p>
+        <p class="cfm__p" data-cf-inv data-tpl={E.ok.invitacion} data-tpl-sin={E.ok.invitacionSinCorreo}>{E.ok.invitacionSinCorreo}</p>
+        <div class="cfm__brief" data-cf-brief hidden>
+          <p class="t-label">{E.ok.brief.kicker}</p>
+          <p class="cfm__p">{E.ok.brief.text}</p>
+          <p><a class="lnk" data-cf-brief-a target="_blank" rel="noopener">{E.ok.brief.label}<Icon name="external" size={14} /></a></p>
+        </div>
+        <div class="ctas">
+          <a class="btn" target="_blank" rel="noopener" data-cf-meet hidden>
+            <span class="btn__t">{E.ok.meet}</span>
+            <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1"/><path class="r" d="M8 8h6M11 5l3 3-3 3"/></svg></span>
+          </a>
+          <a class="btn btn--ghost" href={wa} target="_blank" rel="noopener" data-wa><Icon name="whatsapp" size={18} /><span class="btn__t">{c.ctaSecondary.label}</span></a>
+        </div>
+        <p><a class="lnk" href="/">{E.ok.inicio}</a></p>
+      </div>
+
+      {/* Pago en proceso */}
+      <div class="cfm__s" data-cf="pending" hidden>
+        <p class="t-label t-label--cyan cfm__k"><span class="node" aria-hidden="true"></span>{E.pending.kicker}</p>
+        <p class="cfm__state">{E.pending.titulo}</p>
+        <p class="cfm__p">{pen1}<a href={mail}>{CONTACT.email}</a>{pen2}</p>
+        <div class="ctas">
+          <a class="btn btn--ghost" href={wa} target="_blank" rel="noopener" data-wa><Icon name="whatsapp" size={18} /><span class="btn__t">{c.ctaSecondary.label}</span></a>
+          <button type="button" class="lnk" data-cf-retry>{E.pending.reintentar}</button>
+        </div>
+      </div>
+
+      {/* No se pudo confirmar */}
+      <div class="cfm__s" data-cf="error" hidden>
+        <p class="t-label cfm__k"><span class="node" aria-hidden="true"></span>{E.error.kicker}</p>
+        <p class="cfm__state">{E.error.titulo}</p>
+        <p class="cfm__p">{err1}<a href={mail}>{CONTACT.email}</a>{err2}</p>
+        <div class="ctas">
+          <a class="btn btn--ghost" href={wa} target="_blank" rel="noopener" data-wa><Icon name="whatsapp" size={18} /><span class="btn__t">{c.ctaSecondary.label}</span></a>
+          <a class="lnk" href={`${LANDING.power}#agenda`}>{E.error.volver}</a>
+        </div>
+      </div>
+    </div>
+    <div slot="more" class="cfm__prep">
+      <p class="t-label">{c.prep.title}</p>
+      <ul>{c.prep.items.map((it: string) => <li><span class="node" aria-hidden="true"></span><span>{it}</span></li>)}</ul>
+      <p class="t-small">{mov1}<a href={mail}>{CONTACT.email}</a>{mov2}</p>
+    </div>
+  </ImageSection>
+
+  <script>
+    import { initConfirmado } from '../../../scripts/agenda/confirmado';
+    initConfirmado();
+  </script>
+</BaseLayout>
+

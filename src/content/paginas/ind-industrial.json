@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE PREGUNTAS · R2 pide al menos cuatro preguntas propias por industria y el banco no tiene ninguna de industria y logística. Propuesta en materiales/v2/build/peticiones.md (Construcción · industrias · copy): P01 '¿Tengo que cambiar de ERP para automatizar?', P02 '¿El agente puede decirle a un cliente el estatus de su pedido?', P03 '¿Qué procesos conviene automatizar primero en una operación logística?', P04 '¿Dónde quedan los datos de mi operación?' (ids P: I01–I04 ya los propuso inmobiliario). Al aprobarse, entran a faq.json y a faq.faqIds de esta página, delante de las compartidas.",
@@ -16,7 +16,8 @@
     "PREGUNTA AL CLIENTE · En el caso de logística, ¿el agente contesta estatus de pedidos a clientes por WhatsApp, o los procesos del caso son flujos internos? La conversación de #kain-sector es ilustrativa y se presenta como capacidad general, no como parte del caso.",
     "PREGUNTA AL CLIENTE · ¿Ofrecen hoy cotizaciones asistidas por IA y lectura de documentos (por ejemplo, datos de una orden de compra en PDF)? Aparecen en 'Qué automatizamos' (filas 05 y 06) como capacidades; si no las ofrecen, se cambian.",
     "PREGUNTA AL CLIENTE · tiempo-operativo ('Promedio, primeros 90 días' en metrics.ts): la página lo presenta como 'la reducción promedio de tiempo operativo de nuestros clientes en sus primeros 90 días', sin sector. Confirma que ese es el universo del promedio.",
-    "PREGUNTA AL CLIENTE · ¿Atienden también manufactura (plantas de producción) o solo logística y distribución? El H1 de D dice 'empresas industriales y de logística'; la jornada usa ejemplos de almacén y embarques para no inventar procesos de planta."
+    "PREGUNTA AL CLIENTE · ¿Atienden también manufactura (plantas de producción) o solo logística y distribución? El H1 de D dice 'empresas industriales y de logística'; la jornada usa ejemplos de almacén y embarques para no inventar procesos de planta.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Sigamos un pedido juntos.'; lede sin la Discovery Session."
   ],
   "sections": {
     "hero": {
@@ -25,7 +26,7 @@
       "eyebrow": "Industria · Industrial y logística",
       "h1": { "text": "Automatización con IA", "soft": "para empresas industriales y de logística", "lit": "IA" },
       "lede": "Menos captura manual y menos «¿cómo va mi pedido?». Conectamos tu ERP, tu CRM y tu WhatsApp con flujos en n8n y agentes de IA: cada dato se captura una vez y tu equipo se queda con las decisiones.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo una empresa industrial o de logística y quiero automatizar procesos."
@@ -141,14 +142,13 @@
       "_componente": "Dawn (cta-duena-tranquila, espejo)",
       "rail": "Cierre",
       "eyebrow": "Antes del próximo cierre de mes",
-      "h2": { "text": "¿Cuántas horas se van en capturar datos a mano?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session seguimos un pedido de tu operación, desde que entra hasta que se entrega y se factura, y te decimos qué conviene conectar primero.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "h2": { "text": "¿Cuántas horas se van en capturar datos a mano?", "soft": "Sigamos un pedido juntos." },
+      "lede": "Al cotizar, cuéntanos cómo avanza un pedido de tu operación, desde que entra hasta que se entrega y se factura. Te contactamos para ver qué conviene conectar primero.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo una empresa industrial o de logística y quiero automatizar procesos."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

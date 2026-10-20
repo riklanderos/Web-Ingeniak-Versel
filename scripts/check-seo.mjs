@@ -4,6 +4,9 @@
 // ruta no está en sitemap.json; WARN si está planeada pero sin construir; fatal con --release) · anclas #id existentes.
 // Del sitio: páginas noindex fuera de sitemap.xml, llms.txt y llms-full.txt · conteos = indexables sin puerta pendiente ·
 // llms.txt con la expansión de VKTOR™ y solo PRICE_FROM · robots.txt con el Sitemap.
+// Cambio 2026-10-20 (CAMBIO-COTIZAR §6.1, ESPEC §12.6 R17): (a) ninguna página pública enlaza (en cualquier parte del HTML) a
+// una landing oculta (hidden: true) → FALLA; (b) /indice.json sin rutas ocultas ni preguntas cuyas pages sean solo ocultas;
+// (c) el destino de una redirección se compara sin #… (/contacto/#cotizar → /contacto/).
 // Uso: node scripts/check-seo.mjs [--url http://127.0.0.1:4321] [--release]
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -11,7 +14,7 @@ import { pathToFileURL } from 'node:url';
 import {
   ROOT, SITE_URL, SITEMAP, SITEMAP_URLS, BUILT, parseArgs, reporter, loadPages, loadText, loadMetrics, parseHTML, find, findAll,
   closest, isEl, hasClass, textOf, norm, loose, metaContent, jsonLd, graphNodes, normRoute, copyOf, gatePending, indexablePages, sectionIdOf,
-  onlyRoutes,
+  onlyRoutes, HIDDEN, isHiddenPage,
 } from './_html.mjs';
 import { isNoindex } from '../src/lib/indexacion.mjs';
 
@@ -107,6 +110,14 @@ export async function run(opts) {
       else if (v.a !== q.a) R.fail(route, `FAQPage: la respuesta de "${q.q.slice(0, 50)}" no es idéntica al texto visible`);
     }
     for (const v of vis) if (ld.length && !ld.some((q) => q.q === v.q)) R.fail(route, `pregunta visible fuera del FAQPage: "${v.q.slice(0, 70)}"`);
+    // (a) R17: una página pública nunca enlaza a una landing oculta (cualquier elemento con href: a, link, area)
+    if (!isHiddenPage(page)) {
+      const bad = new Set();
+      for (const el of findAll(root, (x) => x.attrs.href != null)) {
+        const r = normRoute(el.attrs.href);
+        if (r && (HIDDEN.has(r) || r.startsWith('/agendar/')) && !bad.has(r)) { bad.add(r); R.fail(route, `página pública enlaza a la landing oculta ${el.attrs.href} (<${el.tag}>${sectionIdOf(el) ? ` en #${sectionIdOf(el)}` : ''}) · R17`); }
+      }
+    }
     // Enlaces internos
     const ids = idsByRoute.get(route);
     const seen = new Set();
@@ -251,6 +262,26 @@ export async function run(opts) {
     for (const u of urls) if (!expected.includes(u)) R.fail('/llms-full.txt', `incluye ${u}, que no es indexable/construida`);
     if (/\{\{[^}]+\}\}/.test(full)) R.fail('/llms-full.txt', 'quedan tokens {{…}} sin resolver');
   }
+  // (b) /indice.json (⌘K): sin landings ocultas ni preguntas que solo viven en ellas (R17)
+  const indice = await loadText(opts, '/indice.json');
+  if (!indice) R.fail(null, 'falta /indice.json');
+  else {
+    try {
+      const j = JSON.parse(indice);
+      const hid = (u) => { const r = normRoute(u); return !!r && (HIDDEN.has(r) || r.startsWith('/agendar/')); };
+      for (const p of j.pages ?? []) if (hid(p.u)) R.fail('/indice.json', `incluye la landing oculta ${p.u}`);
+      const faqFile = join(ROOT, 'src/data/faq.json');
+      const bankRaw = existsSync(faqFile) ? JSON.parse(readFileSync(faqFile, 'utf8')) : [];
+      const bank = new Map((Array.isArray(bankRaw) ? bankRaw : bankRaw.items ?? []).map((f) => [f.id, f]));
+      for (const f of j.faq ?? []) {
+        if (hid(f.u)) { R.fail('/indice.json', `la pregunta ${f.id} lleva a una landing oculta (${f.u})`); continue; }
+        const pg = bank.get(f.id)?.pages ?? [];
+        if (pg.length && pg.every((u) => hid(u))) R.fail('/indice.json', `la pregunta ${f.id} solo vive en landings ocultas (${pg.join(' ')})`);
+      }
+      if (/agenda\.ingeniak\.tech/i.test(indice)) R.fail('/indice.json', 'menciona agenda.ingeniak.tech');
+      R.info(`/indice.json: ${(j.pages ?? []).length} página(s) · ${(j.faq ?? []).length} pregunta(s)`);
+    } catch (e) { R.fail('/indice.json', `JSON inválido: ${e.message}`); }
+  }
   const robots = await loadText(opts, '/robots.txt');
   if (!robots) R.fail(null, 'falta /robots.txt');
   else {
@@ -267,11 +298,13 @@ export async function run(opts) {
     const src = new Set((v.redirects ?? []).map((r) => r.source));
     const unbuiltDest = new Set();
     for (const r of v.redirects ?? []) {
+      // (c) el destino se compara sin el ancla (/cotiza → /contacto/#cotizar se valida como /contacto/)
+      const dest = String(r.destination).replace(/#.*$/, '');
       if (/[*:()]/.test(r.source)) R.fail('vercel.json', `redirección con comodín: ${r.source}`);
       if (r.statusCode !== 301 && r.permanent !== true) R.fail('vercel.json', `redirección no permanente: ${r.source}`);
-      if (!SITEMAP_URLS.has(r.destination)) R.fail('vercel.json', `destino fuera de sitemap.json: ${r.source} → ${r.destination}`);
-      else if (!BUILT.has(r.destination)) unbuiltDest.add(r.destination);
-      if (src.has(r.destination) || src.has(r.destination.replace(/\/$/, ''))) R.fail('vercel.json', `cadena de redirecciones: ${r.source} → ${r.destination}`);
+      if (!SITEMAP_URLS.has(dest)) R.fail('vercel.json', `destino fuera de sitemap.json: ${r.source} → ${r.destination}`);
+      else if (!BUILT.has(dest)) unbuiltDest.add(dest);
+      if (src.has(dest) || src.has(dest.replace(/\/$/, ''))) R.fail('vercel.json', `cadena de redirecciones: ${r.source} → ${r.destination}`);
     }
     if (unbuiltDest.size) R.warn('vercel.json', `${unbuiltDest.size} destino(s) de redirección sin construir (404 hoy): ${[...unbuiltDest].join(' ')}`);
     for (const p of SITEMAP) if (src.has(p.url) || src.has(p.url.replace(/\/$/, ''))) R.fail('vercel.json', `una página vigente se redirige: ${p.url}`);

@@ -5,14 +5,15 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "PREGUNTA AL CLIENTE · lista de herramientas: la página muestra las del brief de D y del sitio actual (OpenAI, Claude, Gemini, Kommo, GoHighLevel, HubSpot, n8n, Make, Zapier, WhatsApp Business, Instagram, Facebook Messenger, Meta Ads, Google Ads, TikTok Ads, Google Analytics, Supabase, Stripe, Notion, ElevenLabs y HeyGen). ¿Sobra alguna o falta alguna que sí usen hoy (por ejemplo, Pinterest o LinkedIn Ads, que el sitio actual menciona en paid media)?",
     "PREGUNTA AL CLIENTE · HubSpot: el brief dice 'integramos'. ¿Lo integran cuando el cliente ya lo usa (así lo dice la página) o también lo implementan desde cero?",
     "PREGUNTA AL CLIENTE · Notion, ElevenLabs y HeyGen: ¿se usan en proyectos de clientes (contenido, voces, video) o solo dentro de Ingeniak? Hoy la página los pone en 'Datos, pagos y contenido' con su función general, sin decir en qué proyectos.",
     "FAQ PENDIENTE · H04 (¿Ingeniak es partner de GoHighLevel?) está en validar: true en faq.json; mientras no se apruebe no sale en el acordeón ni en el FAQPage. El aviso de marcas ya dice lo mismo en una línea.",
-    "CAMBIO DE TEXTO · las funciones de cada herramienta (tools[].role) describen para qué sirve la herramienta dentro del sistema, sin decir 'certificado', 'oficial' ni 'partner' (salvo Kommo) y sin atribuir a ningún modelo de IA un uso fijo: la regla confirmada es la de G09 (elegimos el modelo según la calidad de sus respuestas, su velocidad y su costo de uso)."
+    "CAMBIO DE TEXTO · las funciones de cada herramienta (tools[].role) describen para qué sirve la herramienta dentro del sistema, sin decir 'certificado', 'oficial' ni 'partner' (salvo Kommo) y sin atribuir a ningún modelo de IA un uso fijo: la regla confirmada es la de G09 (elegimos el modelo según la calidad de sus respuestas, su velocidad y su costo de uso).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Lede del cierre sin la Discovery Session."
   ],
   "sections": {
     "hero": {
@@ -22,7 +23,7 @@
       "h1": { "text": "Tecnologías", "soft": "con las que construimos tu sistema", "lit": "Tecnologías" },
       "lede": "Elegimos la herramienta según el proceso, no al revés. Conectamos lo que ya usas y sumamos solo lo que falta.",
       "badge": "Partner oficial de Kommo en Latinoamérica",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de tecnologías y quiero conectar las herramientas que ya uso."
@@ -145,13 +146,12 @@
       "rail": "Cierre",
       "eyebrow": "Conecta lo que ya tienes",
       "h2": { "text": "¿Ya usas alguna de estas herramientas?", "soft": "Conectémoslas." },
-      "lede": "En la Discovery Session revisamos qué usas hoy, qué se queda, qué se conecta y qué falta, antes de recomendarte nada.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "lede": "Cuéntanos al cotizar qué usas hoy: revisamos qué se queda, qué se conecta y qué falta, antes de recomendarte nada.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de tecnologías y quiero conectar las herramientas que ya uso."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

@@ -8,7 +8,8 @@
 //   case   → ficha del caso: rows=[{term, value}] (solo lo confirmado) + metricIds (cifras del caso)
 // rows (cualquier variante): el copy es la ÚNICA fuente (p. ej. home.sections.faq.entity). Los tokens ({{metric:…}},
 //   {{Price}}…) se resuelven con data-metric / data-allow-number; "Alianza" suma el sello de Kommo; "Contacto" enlaza el
-//   correo (mailto) y el WhatsApp; "Primer paso" enlaza la Discovery Session. Sin rows, la ficha sale de SITE + METRICS.
+//   correo (mailto) y el WhatsApp; "Primer paso" enlaza «Cotizar proyecto» al modal de cotización (data-cotizar
+//   data-section="ficha", href SITE.quote.href; CAMBIO-COTIZAR §1.4). Sin rows, la ficha sale de SITE + METRICS.
 // waHref: el enlace de WhatsApp de la página (mensaje único por página, R10/check-seo) para las filas de contacto, teléfono y
 //   WhatsApp; sin él, un mensaje genérico. Filas con href: WhatsApp lleva data-wa (medición); un sitio externo abre en otra
 //   pestaña (target _blank, rel noopener) con la marca visual ↗ fuera del texto accesible.
@@ -16,7 +17,8 @@ import Metric from './Metric.astro';
 import KommoBadge from './KommoBadge.astro';
 import { SITE, waHref, linkTarget } from '../../lib/site';
 import { PRICE_FROM_CAP, type MetricId } from '../../lib/metrics';
-import { COUNTRIES, VKTOR, DISCOVERY_MICRO, annotateFigures, esc } from './ui-data';
+import { COUNTRIES, VKTOR, annotateFigures, esc } from './ui-data';
+import { QUOTE, quoteAttrs, quoteHref, isHiddenHref } from '../layout/cta';
 
 interface Props {
   variant?: 'home' | 'footer' | 'case' | 'about' | 'local';
@@ -31,11 +33,25 @@ const wa = waPage || waHref('Hola Kain, quiero información sobre Ingeniak.');
 const heading = title === false ? null : title ?? ({ home: 'Ficha técnica · Ingeniak en datos', footer: 'Ficha de la entidad', case: 'Ficha del caso', about: 'Ficha · Ingeniak', local: 'Ingeniak en Guadalajara' } as const)[variant];
 const vktor = VKTOR.map((v) => v.name).join(' · ');
 const countries = COUNTRIES.map((c) => (c.sede ? `${c.name} (sede)` : c.name)).join(', ');
+// "Primer paso": enlace «Cotizar proyecto» al modal. Si el copy todavía trae el texto heredado de la Discovery, la fila usa
+// el texto de la cotización (etiqueta + "te contactamos por WhatsApp y correo"), nunca un enlace a una landing oculta.
+const qHref = quoteHref(Astro.url?.pathname);
+const qAttrs = Object.entries(quoteAttrs('ficha')).map(([k, v]) => (v === '' ? k : `${k}="${esc(v)}"`)).join(' ');
+const qLink = (label: string) => `<a href="${esc(qHref)}" ${qAttrs}>${esc(label)}</a>`;
+const firstStepText = QUOTE.primerPaso;   // _comun.cta.primerPaso
+function firstStepHtml(value: string): string {
+  const v = /discovery|google\s?meet|\b30\s?min/i.test(value) ? firstStepText : value;
+  const h = annotateFigures(v);
+  const k = esc(QUOTE.label);
+  return h.includes(k) ? h.replace(k, qLink(QUOTE.label)) : `${qLink(QUOTE.label)} · ${h}`;
+}
 /** Valor de una fila del copy → HTML seguro con tokens resueltos y los enlaces propios de su término. */
 const EMAIL = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
 function rowHtml(term: string, value: string, href?: string) {
   let h = annotateFigures(value);
   const t = term.toLowerCase();
+  if (/primer paso/.test(t)) return firstStepHtml(value);
+  if (href && isHiddenHref(href)) return h;
   if (href) {
     const to = linkTarget(href);
     if (!to) return h;
@@ -48,7 +64,6 @@ function rowHtml(term: string, value: string, href?: string) {
     h = h.replace(EMAIL, (m) => `<a href="mailto:${m}">${m}</a>`);
     h = h.replace(/(WhatsApp\s*)?(<span data-allow-number>\+52[^<]*<\/span>)/, (_m, w = '', num) => `<a href="${esc(wa)}" data-wa>${w}${num}</a>`);
   }
-  if (/primer paso/.test(t)) h = h.replace(/Discovery Session/, `<a href="${SITE.discovery}">Discovery Session</a>`);
   return h;
 }
 const copyRows = variant !== 'case' && rows.length > 0;
@@ -86,7 +101,7 @@ const copyRows = variant !== 'case' && rows.length > 0;
         <div class="sheet__row"><dt>Metodología</dt><dd>VKTOR™ = {vktor}</dd></div>
         {variant === 'about' && <div class="sheet__row"><dt>Sub-marca</dt><dd><span class="kain-mark">kain</span> · <a href={SITE.kainApp} target="_blank" rel="noopener">app.kain.mx ↗</a></dd></div>}
         <div class="sheet__row"><dt>Inversión</dt><dd data-allow-number>{PRICE_FROM_CAP}</dd></div>
-        <div class="sheet__row"><dt>Primer paso</dt><dd data-allow-number><a href={SITE.discovery}>Discovery Session</a>: {DISCOVERY_MICRO}</dd></div>
+        <div class="sheet__row"><dt>Primer paso</dt><dd set:html={firstStepHtml(firstStepText)} /></div>
       </>
     )}
 

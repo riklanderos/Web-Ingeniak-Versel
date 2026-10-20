@@ -4,14 +4,15 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): copy nuevo de la 404 (eyebrow, líneas de rescate y etiquetas). Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar estado a 'aprobado'.",
-    "DATO PENDIENTE · rutas de rescate: /servicios/, /casos/ y /blog/ todavía no están construidas. Mientras no existan, la plantilla no las pinta (solo enlaza rutas construidas) y completa la lista con páginas que sí existen, con su primera oración de portada; en cuanto se construyan, salen las cuatro filas de la ESPEC §5.13 con estas líneas."
+    "DATO PENDIENTE · rutas de rescate: /servicios/, /casos/ y /blog/ todavía no están construidas. Mientras no existan, la plantilla no las pinta (solo enlaza rutas construidas) y completa la lista con páginas que sí existen, con su primera oración de portada; en cuanto se construyan, salen las cuatro filas de la ESPEC §5.13 con estas líneas.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: la portada suma hero.ctaPrimary 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización con data-section=\"404\"; sin JS lleva a /contacto/#cotizar), en fila con 'Escríbele a Kain' (WhatsApp); 'Buscar en el sitio' (⌘K) se queda como botón de contorno. La microcopia sale de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
-      "_componente": "ImageSection hero (404-hero: Kain mirando una rama de luz cortada, subject-right; respaldo home-hero en espejo) + ScriptList de rescate + botón que abre ⌘K + .btn--ghost WhatsApp. noindex, sin JSON-LD (ESPEC §5.13).",
+      "_componente": "ImageSection hero (404-hero: Kain mirando una rama de luz cortada, subject-right; respaldo home-hero en espejo) + ScriptList de rescate + fila de CTA: .btn «Cotizar proyecto» (abre el modal de cotización, data-section=\"404\") + .btn--ghost WhatsApp; el botón que abre ⌘K sigue como contorno junto al rescate. noindex, sin JSON-LD (ESPEC §5.13; CAMBIO-COTIZAR §1.4).",
       "rail": "Portada",
       "eyebrow": "Error 404 · Ruta sin conexión",
       "h1": { "text": "Esta ruta no está conectada" },
@@ -24,6 +25,7 @@
         { "title": "Blog", "line": "Guías sin humo para decidir qué automatizar primero.", "href": "/blog/" }
       ],
       "search": "Buscar en el sitio",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, llegué a una página que no existe en ingeniak.mx y busco información."

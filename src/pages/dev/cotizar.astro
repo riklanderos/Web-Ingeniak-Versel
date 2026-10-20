@@ -1,0 +1,136 @@
+---
+// /dev/cotizar/ — vitrina del modal "Cotizar proyecto" (área modal · CAMBIO-COTIZAR §2.1). noindex; no sale en producción.
+// Monta su propio <QuoteModal> (BaseLayout recibe quoteModal={false}: cta-codigo lo respeta cuando monte el modal global).
+// ?estado=exito|simulacion|falla|muchos|enviando|invalido simula la respuesta de POST /api/cotizar/ SOLO en esta página
+// (envuelve window.fetch antes de que cargue quote.ts). Sin ?estado, el envío va a la API real (en dev: simulación dryRun).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import QuoteModal from '../../components/cotizar/QuoteModal.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { getPage, waHref } from '../../lib/site';
+
+const page = { ...getPage('/'), id: 'dev-cotizar', url: '/dev/cotizar/', canonical: 'https://ingeniak.mx/dev/cotizar/', indexable: false } as any;
+const wa = waHref('Hola Kain, vi la vitrina del formulario de cotización y quiero platicar.');
+const ESTADOS = [
+  ['', 'API real (dev = simulación)'],
+  ['simulacion', 'Simulación (dryRun)'],
+  ['exito', 'Éxito (Kommo)'],
+  ['falla', 'Falla (502)'],
+  ['muchos', 'Demasiados (429)'],
+  ['invalido', 'Inválido (422)'],
+  ['enviando', 'Enviando (sin respuesta: falla a los 20 s)'],
+] as const;
+const estado = Astro.url.searchParams.get('estado') ?? '';
+const arrow = '<rect class="n" x="5" y="5" width="6" height="6" rx="1"/><path class="r" d="M8 8h6M11 5l3 3-3 3"/>';
+const quote = { href: '/contacto/#cotizar', 'data-cotizar': '', 'aria-haspopup': 'dialog', 'aria-controls': 'cotizar' };
+---
+<BaseLayout page={page} noindex title="Dev · cotizar · Ingeniak" rail={false} coldOpen={false} waHref={wa} {...({ quoteModal: false } as any)}>
+  <script is:inline slot="head">
+    // Simulador de respuestas de /api/cotizar/ (solo /dev/cotizar/?estado=…).
+    (function () {
+      var e = new URLSearchParams(location.search).get('estado');
+      if (!e) return;
+      var of = window.fetch.bind(window);
+      window.fetch = function (u, o) {
+        var url = typeof u === 'string' ? u : (u && u.url) || '';
+        if (url.indexOf('/api/cotizar') === -1) return of(u, o);
+        var b = {};
+        try { b = JSON.parse((o && o.body) || '{}'); } catch (_) {}
+        window.__ultimoEnvio = b;
+        var folio = 'IK-' + String(b.submission_id || '').replace(/-/g, '').slice(0, 6).toUpperCase();
+        // Respeta la señal de quote.ts (tiempo límite de 20 s): mientras dice "Enviando…" el modal no se cierra.
+        var sig = o && o.signal;
+        var abortable = function (p) {
+          return new Promise(function (res, rej) {
+            if (sig) sig.addEventListener('abort', function () { rej(new DOMException('Tiempo agotado', 'AbortError')); }, { once: true });
+            p.then(res, rej);
+          });
+        };
+        var r = function (status, j) {
+          return abortable(new Promise(function (res) {
+            setTimeout(function () { res(new Response(JSON.stringify(j), { status: status, headers: { 'content-type': 'application/json' } })); }, 900);
+          }));
+        };
+        if (e === 'enviando') return abortable(new Promise(function () {}));
+        if (e === 'exito') return r(200, { ok: true, folio: folio, delivered: 'kommo' });
+        if (e === 'simulacion') return r(200, { ok: true, folio: folio, dryRun: true, preview: {} });
+        if (e === 'invalido') return r(422, { ok: false, error: 'Revisa los campos marcados.', errors: { telefono: 'Escribe los 10 dígitos de tu WhatsApp (ej. 33 1234 5678).', email: 'Revisa tu correo.' } });
+        if (e === 'muchos') return r(429, { ok: false, error: 'Demasiados envíos.', retryAfter: 600 });
+        return r(502, { ok: false, error: 'No pudimos registrar tu solicitud.' });
+      };
+    })();
+  </script>
+
+  <section class="dvc">
+    <div class="frame">
+      <div class="dvc__text">
+        <p class="t-label t-label--cyan dvc__eyebrow"><span class="node" aria-hidden="true"></span>Ingeniak v2 · Área modal · /dev/cotizar/</p>
+        <h1 class="t-display-2">Cotizar proyecto <span class="soft">en tres pasos.</span></h1>
+        <p class="t-lede">Modal de cotización con borrador, validación en línea, envío a Kommo por <code>POST /api/cotizar/</code>, éxito con folio y falla con WhatsApp y correo.</p>
+
+        <div class="ctas dvc__ctas">
+          <div class="cta-p">
+            <a class="btn" {...quote} data-primary data-section="hero">
+              <span class="btn__t">Cotizar proyecto</span>
+              <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16" set:html={arrow} /></span>
+            </a>
+            <p class="t-micro btn-micro">Sin compromiso · Te contactamos por WhatsApp y correo</p>
+          </div>
+          <a class="btn btn--ghost" {...quote} data-section="dev-servicio" data-cotizar-servicio="agentes-ia">
+            <span class="btn__t">Con servicio: Agentes de IA</span>
+          </a>
+        </div>
+
+        <ul class="dvc__list">
+          <li data-cotizar-industria="salud">
+            <span class="t-label">Industria por ancestro</span>
+            <a class="lnk" {...quote} data-section="dev-industria">Cotizar con industria Salud</a>
+          </li>
+          <li>
+            <span class="t-label">Exclusivo</span>
+            <a class="lnk" {...quote} data-section="no-se" data-cotizar-servicio="no-seguro">No estoy seguro de qué necesito</a>
+          </li>
+          <li>
+            <span class="t-label">API</span>
+            <button type="button" class="lnk" onclick="window.ingeniakCotizar && window.ingeniakCotizar.open({ servicio: 'crm-ia seo', industria: 'retail-ecommerce', section: 'dev-api' })">ingeniakCotizar.open({'{'} servicio: 'crm-ia seo', industria: 'retail-ecommerce' {'}'})</button>
+          </li>
+          <li>
+            <span class="t-label">Hash</span>
+            <a class="lnk" href="#cotizar">Abrir con #cotizar</a>
+          </li>
+        </ul>
+
+        <nav class="dvc__estados" aria-label="Simular respuesta del servidor">
+          <p class="t-label">Respuesta simulada {estado ? <span class="chip-sim">{estado}</span> : <span class="chip-sim">ninguna</span>}</p>
+          <ul>
+            {ESTADOS.map(([k, label]) => (
+              <li><a class="lnk lnk--mono" href={k ? `/dev/cotizar/?estado=${k}#cotizar` : '/dev/cotizar/#cotizar'} aria-current={k === estado ? 'true' : undefined}>{label}</a></li>
+            ))}
+          </ul>
+        </nav>
+
+        <p class="t-small dvc__note"><Icon name="check" size={16} /> Teclado: Tab recorre los campos; Enter pasa al siguiente campo y, en el último, avanza el paso; Esc cierra (salvo mientras dice "Enviando…") y devuelve el foco al botón.</p>
+      </div>
+    </div>
+  </section>
+
+  <QuoteModal waHref={wa} page={page} />
+</BaseLayout>
+
+<style>
+  .dvc{position:relative;padding:calc(var(--hdr) + var(--s-9)) 0 var(--s-10)}
+  .dvc__text{grid-column:1 / span 8;display:grid;gap:var(--s-6)}
+  @media (max-width:1023px){.dvc__text{grid-column:1 / -1}}
+  .dvc__eyebrow{display:inline-flex;align-items:center;gap:10px}
+  .dvc__ctas{margin-top:var(--s-2)}
+  .dvc__list{display:grid;gap:0;max-width:640px;border-top:1px solid var(--hair)}
+  .dvc__list li{display:grid;grid-template-columns:180px minmax(0,1fr);align-items:center;gap:16px;padding:10px 0;border-bottom:1px solid var(--hair)}
+  @media (max-width:767px){.dvc__list li{grid-template-columns:minmax(0,1fr);gap:4px}}
+  .dvc__list .lnk{justify-self:start;text-align:left;line-height:1.3}
+  .dvc__estados{display:grid;gap:12px}
+  .dvc__estados .t-label{display:flex;align-items:center;gap:10px}
+  .dvc__estados ul{display:flex;flex-wrap:wrap;gap:4px 20px}
+  .dvc__estados a[aria-current]{color:var(--text);text-decoration:underline;text-underline-offset:4px}
+  .dvc__note{display:flex;align-items:center;gap:8px;color:var(--muted)}
+  .dvc__note .icon{color:var(--cyan)}
+  code{font:400 .9em var(--f-mono);color:var(--cyan-soft)}
+</style>

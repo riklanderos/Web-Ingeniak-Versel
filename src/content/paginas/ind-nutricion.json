@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE TONO · #kain-sector: la escena ya muestra su propio guion (src/data/chats/nutricion.json, SIMULACIÓN): reagendar una consulta de seguimiento; Kain no da recomendaciones de alimentación y deja la duda para la nutrióloga. Falta que apruebes el tono.",
@@ -13,7 +13,8 @@
     "FAQ · N11 sigue en validar: true en el banco; mientras no se apruebe, el acordeón muestra N01, G02 y G07 (las tres aprobadas de D).",
     "CAMBIO DE TEXTO · automatizamos: D pedía 5 tarjetas; R2 pide 6 tareas por industria. Se suma 'Primera consulta' separada de 'Consultas de seguimiento'.",
     "VALIDACIÓN LEGAL · sección 'Tus datos': revisar con el asesor legal del cliente antes de publicar. Presenta reglas que se definen con cada consultorio antes de encender a Kain; la única afirmación de comportamiento es la de N01 (aprobada): no da consejo médico. La frase 'los datos de salud son datos personales sensibles' sigue la sección ya escrita para /industrias/salud/.",
-    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dos cifras de salud con su origen; enlaza al caso dental y a /industrias/salud/."
+    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dos cifras de salud con su origen; enlaza al caso dental y a /industrias/salud/.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Revisémoslo con tu consulta.'; el lede ya no describe una sesión ('Te vas con una idea clara…'). datos.note sin la Discovery Session."
   ],
   "sections": {
     "hero": {
@@ -22,7 +23,7 @@
       "eyebrow": "Industria · Nutrición",
       "h1": { "text": "Agentes de IA", "soft": "para nutriólogos y clínicas de nutrición", "lit": "IA" },
       "lede": "Tus pacientes agendan y confirman solos; tú te concentras en la consulta. Kain aparta la primera cita y las de seguimiento, recuerda cada una y retoma a quien dejó de venir.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, soy nutriólogo y quiero que mis pacientes agenden y confirmen por WhatsApp."
@@ -142,7 +143,7 @@
         { "title": "Sin consejo médico ni nutricional", "line": "Kain agenda, recuerda y da seguimiento. Las indicaciones las das tú en consulta." },
         { "title": "Tu aviso, tus reglas", "line": "La redacción de tu aviso y la responsabilidad sobre los datos son de tu consultorio y de tu asesor legal. Nosotros llevamos esas reglas a la configuración de Kain." }
       ],
-      "note": "Si tu consultorio tiene requisitos propios de privacidad, los revisamos juntos en la Discovery Session. No mostramos sellos ni certificaciones que no tenemos."
+      "note": "Si tu consultorio tiene requisitos propios de privacidad, cuéntanoslos al cotizar tu proyecto y los revisamos juntos. No mostramos sellos ni certificaciones que no tenemos."
     },
     "faq": {
       "_componente": "FAQAccordion",
@@ -157,14 +158,13 @@
       "_componente": "Dawn (cta-duena-tranquila en espejo)",
       "rail": "Cierre",
       "eyebrow": "Tu siguiente paso",
-      "h2": { "text": "¿Cuántos pacientes dejan su seguimiento?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "Revisamos juntos cómo agenda hoy un paciente nuevo, cómo vuelve a su seguimiento y en qué punto se pierde. Te vas con una idea clara de qué conviene automatizar primero.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "h2": { "text": "¿Cuántos pacientes dejan su seguimiento?", "soft": "Revisémoslo con tu consulta." },
+      "lede": "Cuéntanos al cotizar cómo agenda hoy un paciente nuevo, cómo vuelve a su seguimiento y en qué punto se pierde. Te contactamos para definir qué automatizar primero.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, soy nutriólogo y quiero que mis pacientes agenden y confirmen por WhatsApp."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

@@ -16,6 +16,7 @@ import ImageSection from './ImageSection.astro';
 import Btn from '../ui/Btn.astro';
 import { resolvePlate, isPersonPlate, type Fallback, type Layout } from './plate';
 import { getPlate } from '../../lib/site';
+import { QUOTE, primaryLabel } from '../layout/cta';
 
 interface CtaCopy {
   eyebrow?: string;
@@ -53,6 +54,9 @@ const art = (r.id ? getPlate(r.id)?.dawn : null) ?? {};
 const showArc: boolean = arc ?? art.arc ?? (baked || !person);
 const showBeam: boolean = beam ?? art.beam ?? !person;
 const hudList = typeof hud === 'string' ? [{ pos: 'tr' as const, text: hud }] : hud;
+// Respaldo del CTA (prop copy, CAMBIO-COTIZAR §1.4): «Cotizar proyecto» → modal (data-cotizar) con _comun.cta.micro.
+// Solo en las landings ocultas un primario con href '#agenda' reserva en la propia página (sin data-cotizar).
+const toAgenda = /^#agenda\b/.test(copy?.primary?.href ?? '');
 ---
 <ImageSection
   id={id}
@@ -79,7 +83,9 @@ const hudList = typeof hud === 'string' ? [{ pos: 'tr' as const, text: hud }] : 
       <h2 id={`${id}-t`} class="t-h2" data-split>{copy.title}{copy.soft && <> <span class="soft">{copy.soft}</span></>}</h2>
       {copy.lede && <p class="t-lede t-lede--2">{copy.lede}</p>}
       <div class="ctas">
-        <Btn variant="primary" href={copy.primary?.href ?? '/discovery/'} micro label={copy.primary?.label ?? 'Agenda tu Discovery Session'} />
+        {toAgenda
+          ? <Btn variant="primary" href={copy.primary!.href} data-section={id} label={copy.primary?.label ?? QUOTE.label} />
+          : <Btn variant="primary" cotizar data-section={id} micro label={primaryLabel({ ctaPrimary: copy.primary })} />}
         {copy.secondary && <Btn variant="ghost" href={copy.secondary.href} label={copy.secondary.label ?? 'Escríbele a Kain'} />}
       </div>
       {copy.note && <p class="t-micro dawn__note">{copy.note}</p>}

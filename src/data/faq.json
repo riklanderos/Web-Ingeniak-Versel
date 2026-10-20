@@ -103,8 +103,8 @@
   {
     "id": "G07",
     "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-    "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
-    "short": "Nuestros proyectos empiezan {{price}}; el alcance exacto se define en una Discovery Session gratuita.",
+    "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
+    "short": "Nuestros proyectos empiezan {{price}}; para una cifra de tu caso, cotiza tu proyecto.",
     "pages": [
       "/",
       "/servicios/",
@@ -136,7 +136,7 @@
   {
     "id": "G08",
     "q": "¿En cuánto tiempo veo resultados?",
-    "a": "Implementar un sistema toma de 7 a 30 días, según el alcance. Cuándo se notan los resultados depende de qué se implemente y de tu operación; lo vemos contigo en la propuesta que sigue a la Discovery Session. Como referencia, una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días, y un e-commerce en la Ciudad de México redujo su costo por lead en 60 días: {{metric:ecom-cpl}}. {{source}}.",
+    "a": "Implementar un sistema toma de 7 a 30 días, según el alcance. Cuándo se notan los resultados depende de qué se implemente y de tu operación; lo vemos contigo en la propuesta que sigue a tu solicitud de cotización. Como referencia, una clínica dental en Monterrey logró {{metric:dental-citas}} más citas en 90 días, y un e-commerce en la Ciudad de México redujo su costo por lead en 60 días: {{metric:ecom-cpl}}. {{source}}.",
     "short": "La implementación toma de 7 a 30 días, según el alcance; los resultados dependen de qué se implemente y de tu operación.",
     "pages": [
       "/",
@@ -178,7 +178,7 @@
   {
     "id": "G10",
     "q": "¿Solo trabajan con empresas de Guadalajara?",
-    "a": "No. Nuestra sede está en Guadalajara, Jalisco, con oficina en Tlajomulco de Zúñiga, pero trabajamos con empresas de {{metric:paises}} países: México, Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador. Tenemos casos en Monterrey y en la Ciudad de México, entre otros, y el primer paso, la Discovery Session, es por Google Meet.",
+    "a": "No. Nuestra sede está en Guadalajara, Jalisco, con oficina en Tlajomulco de Zúñiga, pero trabajamos con empresas de {{metric:paises}} países: México, Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador. Tenemos casos en Monterrey y en la Ciudad de México, entre otros, y trabajamos a distancia por Google Meet, WhatsApp y correo: para cotizar tu proyecto no necesitas venir.",
     "short": "No. Trabajamos con empresas de {{metric:paises}} países: México, Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador.",
     "pages": [
       "/industrias/",
@@ -193,8 +193,8 @@
   {
     "id": "G11",
     "q": "¿Cómo empiezo a trabajar con Ingeniak?",
-    "a": "Agenda una Discovery Session: una llamada 1:1 de 30 minutos por Google Meet, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden. Antes llenas un formulario de siete preguntas que toma dos minutos. Si tiene sentido para los dos, después te enviamos una propuesta con alcance, tiempos y costo.",
-    "short": "Con una Discovery Session: llamada 1:1 de 30 minutos por Google Meet, gratuita y sin compromiso.",
+    "a": "Con «Cotizar proyecto»: un formulario de tres pasos en el que nos cuentas qué necesitas, cómo es tu negocio y cómo prefieres que te contactemos. Con eso te contactamos por WhatsApp y correo para conocer los detalles. Si tiene sentido para los dos, te enviamos una propuesta con alcance, tiempos y costo. Si prefieres empezar por mensaje, escríbele a Kain por WhatsApp.",
+    "short": "Con «Cotizar proyecto»: un formulario de tres pasos; te contactamos por WhatsApp y correo.",
     "pages": [
       "/",
       "/industrias/",
@@ -202,7 +202,7 @@
       "/agentes-ia-guadalajara/",
       "/preguntas-frecuentes/"
     ],
-    "categoria": "Discovery Session",
+    "categoria": "Empezar",
     "validar": false,
     "editada": true
   },
@@ -296,7 +296,7 @@
   {
     "id": "W03",
     "q": "¿Cuánto cuesta un agente de IA para WhatsApp?",
-    "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos. Lo que más mueve el precio son los canales que atiende el agente, sus integraciones y el volumen de conversaciones.",
+    "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. Lo que más mueve el precio son los canales que atiende el agente, sus integraciones y el volumen de conversaciones.",
     "short": "{{Price}}; canales, integraciones y volumen definen el alcance.",
     "pages": [
       "/servicios/agentes-ia-whatsapp/",
@@ -350,7 +350,7 @@
   {
     "id": "K04",
     "q": "¿Cuánto cuesta implementar Kommo con Ingeniak?",
-    "a": "Nuestros proyectos empiezan {{price}}. El alcance exacto y las licencias de Kommo que necesitas los definimos después de una Discovery Session gratuita de 30 minutos. El costo de las licencias depende del plan de Kommo y de cuántas personas de tu equipo lo usarán; te lo explicamos por separado, sin sorpresas.",
+    "a": "Nuestros proyectos empiezan {{price}}. El alcance exacto y las licencias de Kommo que necesitas los definimos contigo cuando cotizas tu proyecto. El costo de las licencias depende del plan de Kommo y de cuántas personas de tu equipo lo usarán; te lo explicamos por separado, sin sorpresas.",
     "short": "Nuestros proyectos empiezan {{price}}; las licencias de Kommo se cotizan según plan y usuarios.",
     "pages": [
       "/kommo/",
@@ -420,7 +420,7 @@
   {
     "id": "L01",
     "q": "¿Dónde está la oficina de Ingeniak?",
-    "a": "Nuestra oficina está en Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, en la zona metropolitana de Guadalajara. Desde ahí trabajamos con empresas de {{metric:paises}} países. Para empezar no necesitas venir: la Discovery Session es una llamada de 30 minutos por Google Meet, gratuita y sin compromiso.",
+    "a": "Nuestra oficina está en Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, en la zona metropolitana de Guadalajara. Desde ahí trabajamos con empresas de {{metric:paises}} países. Para empezar no necesitas venir: cotiza tu proyecto desde el sitio y te contactamos por WhatsApp y correo.",
     "short": "En Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, zona metropolitana de Guadalajara.",
     "pages": [
       "/nosotros/",
@@ -528,14 +528,14 @@
   {
     "id": "N07",
     "q": "¿Trabajan con pymes?",
-    "a": "Sí. La Discovery Session está pensada para dueños de pymes de 3 a 40 empleados, de cualquier sector: el tamaño en el que el negocio todavía depende de su dueño para operar y un sistema le devuelve más tiempo. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
-    "short": "Sí. La Discovery Session está pensada para pymes de 3 a 40 empleados, de cualquier sector.",
+    "a": "Sí. Trabajamos con pymes de 3 a 40 empleados, de cualquier sector: el tamaño en el que el negocio todavía depende de su dueño para operar y un sistema le devuelve más tiempo. Si estás fuera de ese rango, cuéntanoslo al cotizar tu proyecto y te orientamos a la opción correcta.",
+    "short": "Sí. Trabajamos con pymes de 3 a 40 empleados, de cualquier sector.",
     "pages": [
       "/servicios/",
       "/servicios/consultoria-ia-empresas/",
       "/preguntas-frecuentes/"
     ],
-    "categoria": "Discovery Session",
+    "categoria": "Empezar",
     "validar": false,
     "editada": true
   },
@@ -579,7 +579,7 @@
   {
     "id": "N11",
     "q": "¿Pueden ayudarme aunque no tengan un caso publicado de mi sector?",
-    "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. El sistema es el mismo: cambian el guion del agente, las etapas del CRM y lo que conviene automatizar primero. En la Discovery Session revisamos tu operación y te decimos por dónde empezar, con ejemplos de casos cercanos a tu sector.",
+    "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. El sistema es el mismo: cambian el guion del agente, las etapas del CRM y lo que conviene automatizar primero. Cuéntanos cómo opera tu negocio al cotizar tu proyecto y te decimos por dónde empezar, con ejemplos de casos cercanos a tu sector.",
     "short": "Sí. El sistema es el mismo; cambian el guion del agente, las etapas del CRM y qué se automatiza primero.",
     "pages": [
       "/industrias/",
@@ -609,7 +609,7 @@
   {
     "id": "N13",
     "q": "¿Qué es app.kain.mx?",
-    "a": "app.kain.mx es la plataforma de kain, la sub-marca de agentes de IA de Ingeniak, donde las empresas tienen a sus agentes trabajando. Si quieres un agente para tu empresa, el primer paso es una Discovery Session gratuita de 30 minutos, en la que revisamos qué debería atender y con qué sistemas se conecta.",
+    "a": "app.kain.mx es la plataforma de kain, la sub-marca de agentes de IA de Ingeniak, donde las empresas tienen a sus agentes trabajando. Si quieres un agente para tu empresa, el primer paso es cotizar tu proyecto: nos cuentas qué debería atender y con qué sistemas se conecta, y te contactamos por WhatsApp y correo.",
     "short": "La plataforma de kain, la sub-marca de agentes de IA de Ingeniak.",
     "pages": [
       "/kain/"
@@ -648,7 +648,6 @@
     "a": "Sí. Los 30 minutos no cuestan nada y no pedimos tarjeta. La llamada existe porque diagnosticar antes de cotizar es la única forma seria de trabajar: no tiene sentido proponerte un sistema sin haber visto cómo vendes, atiendes y operas hoy. Si después decides implementar, eso sí se cotiza aparte.",
     "short": "Sí. Los 30 minutos no cuestan nada y no pedimos tarjeta.",
     "pages": [
-      "/preguntas-frecuentes/",
       "/discovery/"
     ],
     "categoria": "Discovery Session",
@@ -661,7 +660,6 @@
     "a": "La llamada es de descubrimiento: mapeamos tu operación y te decimos qué vemos. Al final, si hay sentido, te compartimos una propuesta de implementación. Si no lo hay, también te lo decimos. No hay presentación de ventas disfrazada de diagnóstico ni compromiso de compra: tú decides si avanzas.",
     "short": "No. Es de descubrimiento: mapeamos tu operación y te decimos qué vemos.",
     "pages": [
-      "/preguntas-frecuentes/",
       "/discovery/"
     ],
     "categoria": "Discovery Session",
@@ -710,7 +708,6 @@
     "a": "Trabajamos con pymes de 3 a 40 empleados de cualquier sector. Si estás fuera de ese rango, la llamada lo aclara en los primeros minutos y te orientamos a la opción correcta. Lo que más pesa no es el tamaño, sino que el negocio dependa de ti para operar y quieras sistematizarlo.",
     "short": "Trabajamos con pymes de 3 a 40 empleados; si estás fuera del rango, te orientamos.",
     "pages": [
-      "/preguntas-frecuentes/",
       "/discovery/"
     ],
     "categoria": "Discovery Session",
@@ -786,5 +783,89 @@
     "editada": false,
     "nueva": true,
     "_aprobacion": "Pregunta propia de salud (R2: al menos 4 por industria), nueva en la QA ronda 2. El 2026-10-19 (cliente en chat, respuesta 14) se confirmó que en la clínica de Monterrey el agente avisa al doctor en tiempo real cuando hay una urgencia; se sumó a la respuesta, pero la pregunta completa sigue sin aprobar. No se publica en el FAQ ni en el FAQPage hasta que una persona del cliente la apruebe; después el orquestador suma su id a sitemap.json → ind-salud.faq y aquí pasa a validar: false."
+  },
+  {
+    "id": "P01",
+    "q": "¿Esto es una llamada de ventas disfrazada?",
+    "a": "No. Es una sesión de trabajo pagada: sales con tu mapa de operación y tu plan, los implementes con nosotros o por tu cuenta.",
+    "short": "No. Es una sesión de trabajo pagada: sales con tu mapa y tu plan.",
+    "pages": [
+      "/power-session/"
+    ],
+    "categoria": "Power Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "P02",
+    "q": "¿Sirve si mi negocio no es de tecnología?",
+    "a": "Sí. La sesión no revisa qué tecnología usas, sino cómo vendes, atiendes y operas. El cuello de botella del dueño aparece en cualquier giro.",
+    "short": "Sí: revisamos cómo vendes, atiendes y operas.",
+    "pages": [
+      "/power-session/"
+    ],
+    "categoria": "Power Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "P03",
+    "q": "¿Qué necesito traer?",
+    "a": "Tus números reales: facturación mensual, tamaño del equipo y una idea de en qué se te van las horas. Nada presentable: los datos, tal cual.",
+    "short": "Tus números reales, tal cual.",
+    "pages": [
+      "/power-session/"
+    ],
+    "categoria": "Power Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "P04",
+    "q": "¿Es por videollamada?",
+    "a": "Sí, por Google Meet. La invitación con el enlace te llega al correo que registraste cuando se confirma tu pago, y la sesión queda grabada.",
+    "short": "Sí, por Google Meet, y queda grabada.",
+    "pages": [
+      "/power-session/"
+    ],
+    "categoria": "Power Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "P05",
+    "q": "¿Y si tengo menos de 3 empleados?",
+    "a": "Funciona igual, y muchas veces mejor: es el momento de construir el sistema antes de contratar.",
+    "short": "Funciona igual, y muchas veces mejor.",
+    "pages": [
+      "/power-session/"
+    ],
+    "categoria": "Power Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "P06",
+    "q": "¿Puedo reagendar?",
+    "a": "Sí, con al menos 24 horas de anticipación. Escríbenos por WhatsApp al 33 2101 7799 o a contacto@ingeniak.mx y la movemos.",
+    "short": "Sí, con al menos 24 horas de anticipación.",
+    "pages": [
+      "/power-session/"
+    ],
+    "categoria": "Power Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "P07",
+    "q": "¿Cómo aplica la garantía?",
+    "a": "Garantía: {{offer:power-guarantee}}. Para pedirla, escríbenos a contacto@ingeniak.mx dentro de las 48 horas siguientes a tu sesión.",
+    "short": "Te devolvemos tu pago si no encontramos al menos 3 fugas relevantes.",
+    "pages": [
+      "/power-session/"
+    ],
+    "categoria": "Power Session",
+    "validar": false,
+    "editada": true
   }
 ]

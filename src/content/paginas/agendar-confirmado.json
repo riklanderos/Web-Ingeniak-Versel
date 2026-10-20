@@ -1,0 +1,74 @@
+{
+  "pageId": "agendar-confirmado",
+  "url": "/agendar/confirmado/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-20",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "CAMBIO DE TEXTO: es la página a la que Stripe regresa después de pagar la Power Session (antes en riklanderos.tech/agendar/confirmado, en primera persona de Rik). Pasa a la voz de Ingeniak ('Te enviamos…', 'escríbenos'), con contacto@ingeniak.mx y WhatsApp.",
+    "CAMBIO DE AFIRMACIÓN: se quitaron los plazos del original ('Si en una hora no la tienes…', 'se confirma sola en unos minutos'). La invitación y el recibo llegan cuando el sistema confirma el pago; aquí se dice sin plazo.",
+    "CAMBIO DE TEXTO (QA 2026-10-20): la entrada se acortó a una frase y solo se ve mientras se confirma o con el pago en proceso; la frase de la invitación pasó a la nota de 'Confirmando tu pago…' (antes se repetía arriba de 'Tu Power Session quedó confirmada').",
+    "PREGUNTA AL CLIENTE: la tarjeta 'Siguiente paso · llena tu brief' solo aparece si se comparte el Supabase de riklanderos.tech (opción A1). El enlace lleva a riklanderos.tech/brief/<token>. ¿Se mantiene así o se omite (A2)?",
+    "PREGUNTA AL CLIENTE: lista 'Para aprovechar los 90 minutos' (facturación de los últimos 3 meses, leads al mes, quién hace qué). Confirmar que es lo que Rik pide traer a la sesión.",
+    "PREGUNTA AL CLIENTE: grabación de la sesión (se menciona en la landing de Power, no aquí). Si cambia, revisar la FAQ P04."
+  ],
+  "sections": {
+    "estado": {
+      "_componente": "ImageSection hero · gohighlevel-hero (Kain confirma una cita en un calendario de cristal; sujeto a la derecha; móvil split) + región aria-live con los estados de flujo-agenda §4.8",
+      "eyebrow": "Power Session · reserva",
+      "h1": {
+        "text": "Confirmación de tu Power Session",
+        "lit": "Confirmación"
+      },
+      "lede": "Aquí confirmamos tu pago con Stripe y tu lugar en la agenda.",
+      "estados": {
+        "cargando": {
+          "text": "Confirmando tu pago…",
+          "nota": "En cuanto se confirma, te llega la invitación de Google Calendar con el enlace de Google Meet al correo que registraste. No cierres esta página."
+        },
+        "ok": {
+          "kicker": "Pago recibido",
+          "titulo": "Tu Power Session quedó confirmada.",
+          "cuando": "{when} (hora del centro de México)",
+          "local": "{hora} en tu zona horaria",
+          "invitacion": "Te enviamos la invitación de Google Calendar a {email} con el enlace de Google Meet; Stripe te manda el recibo por separado.",
+          "invitacionSinCorreo": "Te enviamos la invitación de Google Calendar con el enlace de Google Meet; Stripe te manda el recibo por separado.",
+          "brief": {
+            "kicker": "Siguiente paso · antes de la sesión",
+            "text": "Llena tu brief para que lleguemos con tu operación ya leída. Puedes contestar con audio y subir capturas de tus reportes. El enlace también va en tu invitación.",
+            "label": "Llenar mi brief"
+          },
+          "meet": "Abrir enlace de Meet",
+          "inicio": "Ir al inicio"
+        },
+        "pending": {
+          "kicker": "Pago en proceso",
+          "titulo": "Tu pago todavía se está procesando.",
+          "text": "En cuanto Stripe lo confirme, te llega la invitación con el enlace de Meet a tu correo. Si tienes dudas, escríbenos por WhatsApp o a {email}.",
+          "reintentar": "Revisar de nuevo"
+        },
+        "error": {
+          "kicker": "Sin confirmar",
+          "titulo": "No pudimos confirmar tu sesión desde aquí.",
+          "text": "Si ya pagaste, tu cita se confirma sola y te llega la invitación por correo. Si tienes dudas, escríbenos por WhatsApp o a {email}.",
+          "volver": "Volver a la agenda"
+        }
+      },
+      "prep": {
+        "title": "Para aprovechar los 90 minutos, ten a la mano",
+        "items": [
+          "Tu facturación de los últimos tres meses.",
+          "El número aproximado de leads que recibes al mes.",
+          "Quién hace qué en tu equipo."
+        ]
+      },
+      "mover": "¿Necesitas mover la sesión? Escríbenos por WhatsApp o a {email}.",
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, acabo de pagar mi Power Session y quiero confirmar algo."
+      }
+    }
+  }
+}

@@ -1,29 +1,42 @@
 ---
 // HeroCtas · fila de CTA de las portadas de plantilla (área páginas). Mismo marcado que <Btn micro> (.ctas > .cta-p > .btn +
 // .btn-micro) más el WhatsApp ghost, con la microcopia partida en grupos que no se cortan por dentro
-// ("30 min · 1:1 · / Google Meet · sin costo", nunca "Google / Meet"). En móvil (pages.css · compartido) el primario
-// va a todo el ancho y el WhatsApp queda como botón redondo de 48 px junto a la microcopia (nombre accesible completo).
+// ("Sin compromiso · / Te contactamos por WhatsApp y correo"). Cada grupo pasa por annotateFigures (tokens {{metric:…}},
+// {{offer:…}} → data-metric / data-offer). En móvil (pages.css · compartido) el primario va a todo el ancho y el WhatsApp
+// queda como botón redondo de 48 px junto a la microcopia (nombre accesible completo).
+// CAMBIO-COTIZAR §1: por defecto el primario es «Cotizar proyecto» → disparador del modal (data-cotizar + data-section,
+// href de respaldo SITE.quote.href) con la microcopia _comun.cta.micro. Si href empieza con '#agenda' (landings ocultas) NO
+// lleva data-cotizar: reserva en la propia página.
 import Btn from '../ui/Btn.astro';
-import { DISCOVERY_MICRO } from '../ui/ui-data';
+import { annotateFigures } from '../ui/ui-data';
+import { QUOTE } from '../layout/cta';
 
 interface Props {
-  href: string;
-  label: string;
+  href?: string;
+  label?: string;
   waHref?: string | null;
   waLabel?: string;
   micro?: string;
+  /** data-section del disparador (atribución): 'hero' por defecto. */
+  section?: string;
+  /** Prefill del modal en el propio disparador (si no, manda el de <body>). */
+  servicio?: string;
+  industria?: string;
   primaryAttrs?: Record<string, any>;
   waClass?: string;
   class?: string;
 }
-const { href, label, waHref, waLabel = 'Escríbele a Kain', micro = DISCOVERY_MICRO, primaryAttrs = {}, waClass, class: cls } = Astro.props;
+const { href = QUOTE.href, label = QUOTE.label, waHref, waLabel = 'Escríbele a Kain', micro = QUOTE.micro, section = 'hero', servicio, industria, primaryAttrs = {}, waClass, class: cls } = Astro.props;
+const agenda = /^#agenda\b/.test(href);
+const cotizar = agenda ? undefined : { ...(servicio ? { servicio } : {}), ...(industria ? { industria } : {}) };
 const groups = String(micro ?? '').split(/\s+·\s+/).filter(Boolean);
+const hasNum = groups.some((g) => /\d/.test(g));
 ---
 <div class:list={['ctas', cls]}>
   <div class="cta-p">
-    <Btn variant="primary" href={href} label={label} {...primaryAttrs} />
+    <Btn variant="primary" href={href} label={label} cotizar={cotizar} data-section={section} {...primaryAttrs} />
     {groups.length > 0 && (
-      <p class="t-micro btn-micro" data-allow-number>{groups.map((g, i) => <>{i > 0 && ' · '}<span class="tpl-nw">{g}</span></>)}</p>
+      <p class="t-micro btn-micro" data-allow-number={hasNum ? '' : undefined}>{groups.map((g, i) => <>{i > 0 && ' · '}<span class="tpl-nw" set:html={annotateFigures(g)} /></>)}</p>
     )}
   </div>
   {waHref && <Btn variant="ghost" href={waHref} label={waLabel} class={waClass} />}

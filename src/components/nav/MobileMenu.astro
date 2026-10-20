@@ -2,12 +2,15 @@
 // MobileMenu — hoja de cristal a pantalla completa (ESPEC §4.5), para < 1180 px.
 // <dialog> modal (foco atrapado y Esc nativos); scripts/nav/sheet.ts anima la entrada y pausa Lenis (window.__lenis).
 // Orden: buscador → acordeones Servicios (5 etapas) · Industrias · Casos · Empresa · Recursos → Kain → CTAs fijos al pie.
-// Props: waHref (mensaje de WhatsApp de la página).
+// Props: waHref (mensaje de WhatsApp de la página), current (URL actual).
+// Pie: «Cotizar proyecto» + microcopia _comun.cta.micro + «Escríbele a Kain» (CAMBIO-COTIZAR §1.4). El primario abre el
+// modal (data-cotizar data-section="menu"); el binder del modal cierra antes la hoja con 'ingeniak:overlays-close'.
 import Logo from './Logo.astro';
 import { ICONS, GLYPH_LABEL } from './icons';
 import { METRICS } from '../../lib/metrics';
 import { MEGA, STAGES, metricFor, type NavLink } from '../layout/navData';
 import { SITE } from '../../lib/site';
+import { QUOTE, quoteAttrs, quoteHref, isHiddenHref } from '../layout/cta';
 
 interface Props { waHref?: string; current?: string }
 const { waHref = SITE.waBase, current = '' } = Astro.props;
@@ -18,7 +21,7 @@ const groups = [
   { key: 'empresa', label: 'Empresa', items: (MEGA.empresa?.items ?? []) as NavLink[], foot: [] },
   { key: 'recursos', label: 'Recursos', items: (MEGA.recursos?.items ?? []) as NavLink[], foot: [] },
 ];
-const svcFoot = (MEGA.servicios?.footerLinks ?? []).filter((l: any) => !l.priceFrom);
+const svcFoot = (MEGA.servicios?.footerLinks ?? []).filter((l: any) => !l.priceFrom && !isHiddenHref(l.href));
 const cur = (h: string) => (h === current ? 'page' : undefined);
 ---
 <dialog class="msheet" id="msheet" aria-label="Menú principal" data-msheet>
@@ -114,10 +117,10 @@ const cur = (h: string) => (h === current ? 'page' : undefined);
 
     <div class="msheet__foot">
       <div class="cta-p">
-        <a class="btn" href={SITE.discovery}>Agenda tu Discovery Session
+        <a class="btn" href={quoteHref(current)} {...quoteAttrs('menu')}><span class="btn__t">{QUOTE.label}</span>
           <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span>
         </a>
-        <p class="t-micro btn-micro" data-allow-number>30 min · 1:1 · Google Meet · sin costo</p>
+        <p class="t-micro btn-micro">{QUOTE.micro}</p>
       </div>
       <a class="btn btn--ghost msheet__wa" href={waHref} target="_blank" rel="noopener">
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} />Escríbele a Kain

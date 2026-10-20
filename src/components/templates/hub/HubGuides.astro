@@ -16,6 +16,7 @@ import Aura from '../Aura.astro';
 import { pages, linkTarget, isBuilt, getPlate, copyOrNull } from '../../../lib/site';
 import { publicExists } from '../../ui/ui-data';
 import { head, HUB_FALLBACK } from './hubKit';
+import { quoteLink } from '../../layout/cta';
 
 interface Props { cats: any; g: any; idCats: string; idGrid: string }
 const { cats, g, idCats, idGrid } = Astro.props;
@@ -71,7 +72,8 @@ const frameVars = (fr: { ox: string; mx: string; my: string }) => `--ox:${fr.ox}
 const usedCats = ((cats?.chips ?? []) as any[]).filter((c) => items.some((it) => it.category === c.slug));
 const L = g?.labels ?? {};
 const status = (n: number) => String(cats?.status ?? '{n} guías').replace('{n}', String(n));
-const builtLinks = ((g?.links ?? []) as any[]).filter((l) => l?.href && isBuilt(l.href));
+// "cotizar": true (o una landing oculta) → disparador del modal (CAMBIO-COTIZAR §1.2)
+const builtLinks = ((g?.links ?? []) as any[]).map((l) => quoteLink(l)).filter((l) => l?.href && isBuilt(l.href));
 ---
 <section id={idCats} class="hub-sec hub-cats tpl-glow" aria-labelledby={`${idGrid}-t`} data-hub-filter="guides">
   <Aura kind="isotipo" x="86%" y="40%" o={0.7} only="d" />
@@ -146,7 +148,7 @@ const builtLinks = ((g?.links ?? []) as any[]).filter((l) => l?.href && isBuilt(
       <EditorNote label={g.noteLabel ?? 'Nota del editor'} class="hub-guides__note"><Copy as="p" text={g.note} /></EditorNote>
     )}
     {builtLinks.length > 0 && (
-      <p class="hub-links" data-reveal>{builtLinks.map((l: any) => <a class="lnk" href={l.href}>{l.label} <Icon name="arrow" size={16} /></a>)}</p>
+      <p class="hub-links" data-reveal>{builtLinks.map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label} <Icon name="arrow" size={16} /></a>)}</p>
     )}
   </div>
 </section>

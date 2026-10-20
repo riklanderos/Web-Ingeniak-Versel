@@ -28,6 +28,7 @@ import EditorNote from '../ui/EditorNote.astro';
 import KommoBadge from '../ui/KommoBadge.astro';
 import { annotateFigures, esc, tokensToText, publicExists, logoUrl, logoWide, TOOLS } from '../ui/ui-data';
 import HeroCtas from './HeroCtas.astro';
+import { primaryLabel, quoteLink } from '../layout/cta';
 import Aura from './Aura.astro';
 import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
 import { SITE, waHref, linkTarget, type Page } from '../../lib/site';
@@ -103,7 +104,8 @@ const groups = HUB_IDS.filter((id) => order.includes(id) && cp(id)).map((id) => 
     if (dev && !logo && !t.partner) console.warn(`[StackTemplate] ${t.slug}: sin logo en public/img/logos → se pinta solo el nombre`);
     return { ...t, logo, word: !!word, link: t.href ? linkTarget(t.href) : null };
   });
-  const links = (g.links ?? []).map((l: any) => ({ ...l, href: linkTarget(l.href) })).filter((l: any) => l.href);
+  // "cotizar": true (o una landing oculta) → disparador del modal (CAMBIO-COTIZAR §1.2)
+  const links = (g.links ?? []).map((l: any) => quoteLink(l, undefined, P.url)).map((l: any) => ({ ...l, href: linkTarget(l.href) })).filter((l: any) => l.href);
   return { id, ...g, tools, links };
 });
 const hubIntro = groups.find((g) => g.intro)?.intro ?? cp('modelos')?.intro ?? null;
@@ -157,7 +159,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           {hero.lede && (
             <p class="t-lede t-lede--2 stk-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
           )}
-          <HeroCtas href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+          <HeroCtas label={primaryLabel(hero)} section="hero"
             waHref={wa} waLabel={waLabel(hero)} />
           {/* Sello de Kommo en línea bajo los CTA: siempre sin ancla `fig`; con ancla, solo donde el sello anclado no cabe
               junto a los CTA (escritorios de menos de 1360 px o proporción ≤ 3:2) */}
@@ -271,7 +273,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                     ))}
                   </ul>
                   {g.links.length > 0 && (
-                    <p class="stk-g__links">{g.links.map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+                    <p class="stk-g__links">{g.links.map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
                   )}
                 </section>
               ))}
@@ -326,14 +328,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
           {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
           <div class="ctas">
-            {cta.micro ? (
-              <div class="cta-p">
-                <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
-                <Copy as="p" class="t-micro btn-micro" text={cta.micro} data-allow-number />
-              </div>
-            ) : (
-              <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
-            )}
+            <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(cta)} micro />
             <Btn variant="ghost" href={wa} label={waLabel(cta)} />
           </div>
         </Dawn>

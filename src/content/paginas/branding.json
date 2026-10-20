@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "FAQ DISTINTA DE D · N10: agrega 'Lo hace el mismo equipo que construye la parte técnica, así el anuncio, la página y la conversación con Kain dicen lo mismo.' Sigue en validar: true, así que no sale en el acordeón ni en el FAQPage hasta que se apruebe. La página no repite 'el mismo equipo' en el cuerpo: dice que la marca se trabaja junto con la web, las campañas y los agentes.",
@@ -15,7 +15,8 @@
     "PREGUNTA AL CLIENTE · 'branding sistémico' como nombre del enfoque (#definicion, del brief de D). ¿Lo quieren usar como término propio?",
     "CAMBIO DE TEXTO · cta-final: D pedía la variante del equipo real (cta-equipo); sitemap.json usa cta-amanecer hasta la sesión de fotos (R6). El texto no menciona al equipo, así sirve con cualquiera de las dos placas. Sin 'micro' (repetiría la microcopia del botón primario).",
     "CAMBIO DE TEXTO · hero.ui (tablero de identidad: isotipo, paleta, tipografía, voz; ESPEC §5.2.1) y kain-ejemplo.ui (canales donde aparece el personaje): textos de la UI registrada con VISTA DEMO. La plantilla de servicio todavía no los pinta; no cuentan para las palabras mínimas.",
-    "DATO PENDIENTE · senales usa la placa de respaldo dolor-operacion mientras no exista dolor-anuncios; el pie de foto funciona con las dos."
+    "DATO PENDIENTE · senales usa la placa de respaldo dolor-operacion mientras no exista dolor-anuncios; el pie de foto funciona con las dos.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: hero.ctaPrimary y cta-final.ctaPrimary pasan a 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización; sin JS lleva a /contacto/#cotizar) con la microcopia compartida de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Claves reescritas porque nombraban la Discovery Session o prometían la llamada de 30 minutos: inversion.remate ('…en tu Discovery Session…' → '…al cotizar…'); cta-final.lede ('Lo vemos en la Discovery Session: revisamos tu marca…' → 'Compártenos tu marca, tus redes y tu web: te decimos qué sostiene tu precio y qué lo está bajando.'). Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
@@ -24,7 +25,7 @@
       "eyebrow": "Servicio · Atraer",
       "h1": { "text": "Branding y contenido", "soft": "con estrategia", "lit": "Branding" },
       "lede": "Identidad y contenido que posicionan tu marca como la opción premium. Y que se usan igual en tus anuncios, tu web y la voz de tu agente de IA.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de branding y contenido y quiero posicionar mi marca como premium."
@@ -158,7 +159,7 @@
         { "title": "Integraciones", "line": "Con qué se conecta tu marca: tu web, tus campañas, tu CRM y la voz de tu agente de IA." },
         { "title": "Volumen", "line": "Cuántas piezas al mes, cuánto video y si partimos de una identidad nueva o de la que ya tienes." }
       ],
-      "remate": "El alcance lo definimos contigo en tu Discovery Session, a partir de tu marca actual y de lo que ya funciona."
+      "remate": "El alcance lo definimos contigo al cotizar, a partir de tu marca actual y de lo que ya funciona."
     },
     "faq": {
       "_componente": "FAQAccordion (N10 sale cuando se apruebe)",
@@ -184,8 +185,8 @@
       "rail": "Cierre",
       "eyebrow": "Una segunda mirada",
       "h2": { "text": "¿Tu marca se ve", "soft": "como la opción premium?" },
-      "lede": "Lo vemos en la Discovery Session: revisamos tu marca, tus redes y tu web, y te decimos qué sostiene tu precio y qué lo está bajando.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "lede": "Compártenos tu marca, tus redes y tu web: te decimos qué sostiene tu precio y qué lo está bajando.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de branding y contenido y quiero posicionar mi marca como premium."

@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "PREGUNTA AL CLIENTE · subsectores (D lo marcaba '[VALIDAR subsectores que atiende Ingeniak]'): la página habla a financieras de crédito, aseguradoras y despachos contables o fiscales como público, igual que el title y la meta de D, sin afirmar que sean clientes. Confirma si son los subsectores que quieres atender o si alguno sobra (p. ej. despachos fiscales, cajas de ahorro, Sofomes).",
@@ -14,7 +14,8 @@
     "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas F01–F04 (preguntas de calificación, documentos por WhatsApp, aprobaciones y tasas, subsectores) con su texto en peticiones.md. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-finanzas.faq.",
     "FAQ DISTINTA DE D · faq.faqIds suma G05 (aprobada, '¿Me conviene Kommo o GoHighLevel?') al final: N11 y N14 siguen en validar: true y, sin G05, el acordeón quedaría con dos preguntas (W02 y G07). Al aprobarse N14 y las propias F01–F04, se puede quitar G05. Pedido: sumar /industrias/finanzas/ a G05.pages en faq.json.",
     "CAMBIO DE TEXTO · automatizamos: D pedía 5 tarjetas; R2 pide 6 tareas por industria. Se suma 'Respuestas aprobadas' (requisitos y pasos del trámite con texto validado por tu empresa).",
-    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dental-respuesta (con enlace al caso) y tiempo-operativo (promedio, primeros 90 días), cada una con su origen."
+    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dental-respuesta (con enlace al caso) y tiempo-operativo (promedio, primeros 90 días), cada una con su origen.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Ordenemos tu embudo.'; el lede ya no promete una sesión ('Sales con un orden claro…'). datos.note: 'los revisamos en la llamada' → 'cuéntanoslos al cotizar y los revisamos contigo'."
   ],
   "sections": {
     "hero": {
@@ -23,7 +24,7 @@
       "eyebrow": "Industria · Finanzas",
       "h1": { "text": "Agentes de IA y automatización", "soft": "para el sector financiero", "lit": "IA" },
       "lede": "Cada prospecto calificado y en su etapa antes de que tu asesor tome el teléfono. Kain responde con información aprobada, pide los documentos y agenda la llamada.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, trabajo en el sector financiero y quiero calificar prospectos automáticamente."
@@ -142,7 +143,7 @@
         { "title": "Sin asesoría financiera ni legal", "line": "Kain informa, califica y agenda. Tasas, montos, coberturas y decisiones las da tu asesor." },
         { "title": "Tu aviso, tus reglas", "line": "Tu aviso de privacidad y las obligaciones de tu sector las define tu empresa con su asesor legal; Kain se configura con esas reglas." }
       ],
-      "note": "Si tu empresa responde ante un regulador y tiene requisitos propios de seguridad, los revisamos en la llamada. No ponemos sellos ni certificaciones que no tenemos."
+      "note": "Si tu empresa responde ante un regulador y tiene requisitos propios de seguridad, cuéntanoslos al cotizar y los revisamos contigo. No ponemos sellos ni certificaciones que no tenemos."
     },
     "faq": {
       "_componente": "FAQAccordion",
@@ -157,14 +158,13 @@
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
       "eyebrow": "Tu siguiente paso",
-      "h2": { "text": "¿Cuántos prospectos llegan sin calificar a tu asesor?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "Revisamos tu embudo de punta a punta: de dónde llegan los prospectos, qué preguntas les haces y cuánto tarda alguien en contestarles. Sales con un orden claro de qué automatizar.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "h2": { "text": "¿Cuántos prospectos llegan sin calificar a tu asesor?", "soft": "Ordenemos tu embudo." },
+      "lede": "Cotiza tu proyecto con tu embudo de punta a punta: de dónde llegan los prospectos, qué preguntas les haces y quién les contesta. Con eso definimos qué automatizar.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, trabajo en el sector financiero y quiero calificar prospectos automáticamente."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

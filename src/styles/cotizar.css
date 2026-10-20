@@ -1,0 +1,197 @@
+/* =====================================================================
+   Ingeniak v2 · modal "Cotizar proyecto" (.qm) · CAMBIO-COTIZAR §2.6–2.7 (dueño "modal")
+   - Cristal nivel 2 (.glass-panel) con aura del isotipo DENTRO del panel (siempre hay luz detrás del cristal).
+   - Escritorio ≥ 768 px: centrado, 720 px, encabezado y pie fijos, cuerpo con scroll interno.
+   - Móvil < 768 px: hoja a pantalla completa (100dvh), encabezado y pie fijos con safe-area.
+   - Un solo azul visible: el botón del paso (o "Reintentar" en la falla). Selección de opciones en cian (forms.css).
+   - Transición de paso 0.35 s (--ease-cine); quieta con movimiento reducido.
+   ===================================================================== */
+
+.qm [hidden]{display:none!important}
+/* Los títulos reciben el foco por programa (tabindex=-1) para anunciar el paso; no son controles: sin anillo. */
+.qm :is(.qm__title,.qm__step-h,.qm__view-h,.qm__summary):focus,.qm :is(.qm__title,.qm__step-h,.qm__view-h,.qm__summary):focus-visible{outline:none}
+
+/* ---------- Diálogo y fondo ---------- */
+dialog.qm{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:24px;border:0;
+  background:transparent;color:var(--text);overflow:hidden;overscroll-behavior:contain}
+dialog.qm[open]{display:flex;align-items:center;justify-content:center}
+dialog.qm::backdrop{background:rgb(3 4 11 / .72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+dialog.qm[open]::backdrop{animation:qm-fade .35s var(--ease-ui) both}
+dialog.qm[data-closing]::backdrop{animation:qm-fade-out .2s var(--ease-in) both}
+/* Un azul por pantalla: con el modal abierto, los primarios de la página (bajo el velo) pierden el color. */
+html[data-overlay~="cotizar"] .btn:not(.btn--ghost):not(.qm__next):not(.qm__retry){filter:grayscale(1) brightness(.7)}
+
+/* ---------- Panel ---------- */
+.qm .qm__panel{isolation:isolate;display:flex;flex-direction:column;width:min(720px,100vw - 48px);max-height:min(860px,92dvh);overflow:hidden;
+  background:linear-gradient(180deg,rgb(10 31 76 / .62) 0,rgb(7 12 30 / .9) 210px,rgb(6 10 24 / .95) 100%)}
+dialog.qm[open] .qm__panel{animation:qm-pop .45s var(--ease-cine) both}
+dialog.qm[data-closing] .qm__panel{animation:qm-out .2s var(--ease-in) both}
+.qm .qm__aura{position:absolute;z-index:-1;top:-210px;right:-190px;width:560px;aspect-ratio:1;pointer-events:none;opacity:.55}
+.qm .qm__aura img{display:block;width:100%;height:100%;object-fit:cover;
+  -webkit-mask-image:radial-gradient(closest-side,#000 38%,transparent);mask-image:radial-gradient(closest-side,#000 38%,transparent)}
+
+/* ---------- Encabezado ---------- */
+.qm .qm__head{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;column-gap:16px;
+  padding:26px 32px 20px;border-bottom:1px solid var(--hair)}
+.qm .qm__kicker{grid-column:1;grid-row:1;display:inline-flex;align-items:center;gap:10px;align-self:center}
+.qm .qm__close{grid-column:2;grid-row:1 / span 2;width:44px;height:44px;margin:-4px -10px 0 0;color:var(--text-2);background:rgb(6 10 24 / .35)}
+.qm .qm__close .icon{width:18px;height:18px}
+.qm .qm__title{grid-column:1;grid-row:2;margin-top:12px;font:600 clamp(1.375rem,1rem + 1.1vw,2rem)/1.1 var(--f-display);letter-spacing:-.02em;color:var(--text);text-wrap:balance}
+.qm .qm__desc{grid-column:1 / -1;grid-row:3;margin-top:8px;max-width:52ch;font:400 .9375rem/1.5 var(--f-body);color:var(--text-2)}
+
+/* Progreso: tres segmentos; el activo se llena de luz cian */
+.qm .qm__prog{grid-column:1 / -1;grid-row:4;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}
+.qm .qm__prog-i{display:grid;gap:10px;min-width:0}
+.qm .qm__prog-bar{position:relative;height:3px;border-radius:2px;background:var(--hair-2);overflow:hidden}
+.qm .qm__prog-bar::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,var(--cyan-soft),var(--cyan));
+  transform:scaleX(0);transform-origin:left center;transition:transform .5s var(--ease-cine)}
+.qm .qm__prog-i[aria-current] .qm__prog-bar::after,.qm .qm__prog-i[data-done] .qm__prog-bar::after{transform:scaleX(1)}
+.qm .qm__prog-i[aria-current] .qm__prog-bar{box-shadow:0 0 14px rgb(0 229 255 / .55)}
+.qm .qm__prog-i[data-done]:not([aria-current]) .qm__prog-bar::after{background:rgb(168 243 255 / .55)}
+.qm .qm__prog-t{display:flex;align-items:center;gap:8px;min-width:0;font:500 .6875rem/1.2 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qm .qm__prog-n{display:inline-grid;place-items:center;flex:none;width:18px;height:18px;border-radius:5px;box-shadow:inset 0 0 0 1px var(--hair-2);
+  font-size:.625rem;letter-spacing:0;color:var(--text-2)}
+.qm .qm__prog-i[aria-current] .qm__prog-t{color:var(--cyan)}
+.qm .qm__prog-i[aria-current] .qm__prog-n{box-shadow:inset 0 0 0 1px rgb(0 229 255 / .7);color:var(--cyan)}
+.qm .qm__prog-i[data-done]:not([aria-current]) .qm__prog-t{color:var(--text-2)}
+
+/* Vistas de éxito y falla: encabezado compacto (kicker + cerrar) */
+.qm[data-state="done"] :is(.qm__title,.qm__desc,.qm__prog),
+.qm[data-state="fail"] :is(.qm__title,.qm__desc,.qm__prog){display:none}
+.qm[data-state="done"] .qm__head,.qm[data-state="fail"] .qm__head{padding-bottom:18px;border-bottom-color:transparent}
+
+/* ---------- Cuerpo ---------- */
+.qm .qm__form{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}
+.qm .qm__body{position:relative;flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:24px 32px 28px;
+  scrollbar-width:thin;scrollbar-color:rgb(158 176 199 / .35) transparent;-webkit-overflow-scrolling:touch}
+.qm .qm__body::-webkit-scrollbar{width:8px}
+.qm .qm__body::-webkit-scrollbar-thumb{background:rgb(158 176 199 / .3);border-radius:8px;border:2px solid transparent;background-clip:padding-box}
+.qm .qm__summary{margin-bottom:24px}
+.qm .qm__step{display:grid;gap:30px;min-width:0}
+dialog.qm[open] .qm__step:not([hidden]){animation:qm-step .35s var(--ease-cine) both}
+.qm .qm__step-head{display:grid;gap:10px}
+.qm .qm__step-k{color:var(--muted)}
+.qm .qm__step-h{font:500 1.25rem/1.25 var(--f-display);letter-spacing:-.01em;color:var(--text)}
+.qm .qm__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px;align-items:start}
+.qm .qm__radios .chip-opt{min-height:48px}
+.qm .qm__atajo{margin-top:-6px}
+.qm .qm__atajo .lnk{color:var(--text-2);font-size:.9375rem;gap:10px}
+/* Objetivos ≥ 44 × 44 px (§2.7) en los enlaces secundarios sin cambiar su aspecto: la caja crece a 44 px y el subrayado
+   de .lnk (fondo de 1 px al pie) sube lo mismo, así queda a la distancia de siempre del texto.
+   --uy = (44 − alto original) / 2 · --ux = relleno lateral (el subrayado no lo cubre). */
+.qm :is(.qm__atajo .lnk,.qm__fail-alt .lnk:not(.lnk--mono),.qm__listo){min-height:44px;padding-inline:var(--ux,0px);
+  background-size:calc(100% - 2 * var(--ux,0px)) 1px;background-position:calc(100% - var(--ux,0px)) calc(100% - var(--uy,5px))}
+.qm :is(.qm__atajo .lnk,.qm__fail-alt .lnk:not(.lnk--mono),.qm__listo):is(:hover,:focus-visible){background-size:0 1px;
+  background-position:var(--ux,0px) calc(100% - var(--uy,5px))}
+.qm .qm__atajo-ico{color:var(--cyan);flex:none}
+.qm .qm__draft{display:flex;align-items:center;gap:10px;margin-top:28px;color:var(--muted)}
+.qm .qm__draft .node{width:5px;height:5px;box-shadow:none;opacity:.8}
+
+/* ---------- Pie (botonera) ---------- */
+.qm .qm__foot{position:relative;display:flex;align-items:center;gap:12px;padding:14px 32px;border-top:1px solid var(--hair);background:rgb(6 10 24 / .72)}
+.qm .qm__foot .btn{height:52px}
+.qm .qm__back{padding:0 22px 0 16px;gap:10px}
+.qm .qm__back-ico{flex:none;rotate:180deg;color:var(--cyan)}
+.qm .qm__count{flex:1;text-align:right;color:var(--muted)}
+.qm .qm__back:not([hidden]) + .qm__count{text-align:center}
+.qm .qm__next{flex:none}
+.qm .qm__next[aria-busy="true"],.qm .qm__retry[aria-busy="true"]{cursor:progress}
+.qm .qm__foot .btn:is(:disabled,[aria-disabled="true"]),.qm .qm__retry:is(:disabled,[aria-disabled="true"]){opacity:.82}
+/* Enviando: el diálogo no se cierra (quote.ts); la X lo dice con su estado. */
+dialog.qm[data-busy] .qm__close{opacity:.45;cursor:progress}
+.qm .qm__spin{display:none;width:16px;height:16px;border-radius:50%;border:2px solid rgb(255 255 255 / .35);border-top-color:#fff;animation:qm-spin .8s linear infinite}
+[aria-busy="true"] > .btn__node svg{display:none}
+[aria-busy="true"] > .btn__node .qm__spin{display:block}
+
+/* ---------- Éxito y falla ---------- */
+.qm .qm__view{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:grid;align-content:start;gap:14px;padding:8px 32px 32px}
+dialog.qm[open] .qm__view:not([hidden]){animation:qm-step .45s var(--ease-cine) both}
+.qm .qm__mark{display:grid;place-items:center;width:56px;height:56px;margin-bottom:6px;border-radius:16px;color:var(--cyan);
+  background:rgb(0 229 255 / .06);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .55),inset 0 0 30px rgb(0 229 255 / .16),0 0 50px rgb(0 229 255 / .22)}
+.qm .qm__mark .icon{width:26px;height:26px;filter:drop-shadow(0 0 6px rgb(0 229 255 / .7))}
+.qm .qm__mark--fail{background:rgb(255 181 71 / .05);box-shadow:inset 0 0 0 1px rgb(255 181 71 / .5),inset 0 0 26px rgb(255 181 71 / .1)}
+.qm .qm__mark--fail .node{width:10px;height:10px;border-radius:2px}
+.qm .qm__view-h{font:600 clamp(1.5rem,1.1rem + 1.2vw,2.125rem)/1.08 var(--f-display);letter-spacing:-.025em;color:var(--text);text-wrap:balance}
+.qm .qm__hola{font:300 clamp(1.125rem,1rem + .5vw,1.375rem)/1.35 var(--f-display);color:var(--soft)}
+.qm .qm__meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.qm .qm__folio{color:var(--text-2);letter-spacing:.1em}
+.qm .qm__sigue{display:grid;gap:14px;margin-top:10px;padding-top:20px;border-top:1px solid var(--hair)}
+.qm .qm__sigue-l{display:grid;gap:0;counter-reset:none}
+.qm .qm__sigue-l li{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px;padding:10px 0;color:var(--text-2);font:400 .9875rem/1.5 var(--f-body)}
+.qm .qm__sigue-l li + li{border-top:1px solid var(--hair)}
+.qm .qm__sigue-n{font:500 .75rem/1.9 var(--f-mono);letter-spacing:.08em;color:var(--cyan)}
+.qm .qm__actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:14px}
+.qm .qm__listo{--ux:5px;--uy:6.5px;min-width:44px;justify-content:center;font-size:15px}
+.qm .qm__fail-p{max-width:52ch;color:var(--text-2);font:400 1rem/1.55 var(--f-body)}
+.qm .qm__fail-alt{display:flex;flex-wrap:wrap;align-items:center;gap:8px 28px;margin-top:4px}
+.qm .qm__fail-alt .lnk .icon{color:var(--cyan)}
+.qm .qm__review{min-height:44px;padding:12px 0}
+
+/* ---------- Escritorio ---------- */
+@media (min-width:768px){
+  .qm .qm__body{scrollbar-gutter:stable}
+}
+
+/* ---------- Móvil: hoja a pantalla completa ---------- */
+@media (max-width:767px){
+  dialog.qm{padding:0}
+  dialog.qm[open]{align-items:stretch;justify-content:stretch}
+  .qm .qm__panel{width:100%;height:100%;height:100dvh;max-height:none;border-radius:0}
+  dialog.qm[open] .qm__panel{animation:qm-sheet .35s var(--ease-cine) both}
+  dialog.qm[data-closing] .qm__panel{animation:qm-sheet-out .2s var(--ease-in) both}
+  .qm .qm__aura{top:-230px;right:-230px;width:480px}
+  .qm .qm__head{padding:calc(12px + env(safe-area-inset-top)) 16px 14px}
+  .qm .qm__close{margin:-6px -6px 0 0}
+  .qm .qm__title{margin-top:8px;font-size:1.375rem}
+  .qm .qm__desc{font-size:.875rem;margin-top:6px}
+  .qm[data-step="2"] .qm__desc,.qm[data-step="3"] .qm__desc{display:none}
+  .qm .qm__prog{margin-top:14px;gap:6px}
+  .qm .qm__prog-t{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .qm .qm__body{padding:20px 16px 24px}
+  .qm .qm__step{gap:26px}
+  .qm .qm__grid{grid-template-columns:minmax(0,1fr);gap:24px}
+  .qm .qm__foot{padding:10px 16px calc(10px + env(safe-area-inset-bottom));gap:10px}
+  .qm .qm__foot .btn{height:52px}
+  .qm .qm__back{padding:0 16px 0 12px}
+  .qm .qm__count{display:none}
+  .qm .qm__next{flex:1;justify-content:space-between}
+  .qm .qm__view{padding:4px 16px calc(24px + env(safe-area-inset-bottom))}
+  .qm .qm__actions .btn{width:100%;justify-content:center}
+  .qm .qm__actions .qm__retry{justify-content:space-between}
+  .qm .qm__actions .qm__listo{margin-inline:auto}
+}
+@media (max-width:767px) and (max-height:640px){
+  .qm .qm__desc{display:none}
+}
+
+/* ---------- Movimiento ---------- */
+@keyframes qm-fade{from{opacity:0}}
+@keyframes qm-fade-out{to{opacity:0}}
+@keyframes qm-pop{from{opacity:0;transform:translateY(16px) scale(.985)}}
+@keyframes qm-out{to{opacity:0;transform:translateY(8px) scale(.99)}}
+@keyframes qm-sheet{from{opacity:0;transform:translateY(4%)}}
+@keyframes qm-sheet-out{to{opacity:0;transform:translateY(3%)}}
+@keyframes qm-step{from{opacity:0;transform:translateY(12px)}}
+@keyframes qm-spin{to{rotate:360deg}}
+@media (prefers-reduced-motion:reduce){
+  dialog.qm[open]::backdrop,dialog.qm[data-closing]::backdrop,dialog.qm[open] .qm__panel,dialog.qm[data-closing] .qm__panel,
+  dialog.qm[open] .qm__step:not([hidden]),dialog.qm[open] .qm__view:not([hidden]){animation:none}
+  .qm .qm__prog-bar::after{transition:none}
+  .qm .qm__spin{animation-duration:2.4s!important;animation-iteration-count:infinite!important}
+}
+html[data-motion="reduced"] :is(dialog.qm[open],dialog.qm[data-closing])::backdrop,
+html[data-motion="reduced"] dialog.qm :is(.qm__panel,.qm__step,.qm__view){animation:none}
+html[data-motion="reduced"] .qm__prog-bar::after{transition:none}
+html[data-motion="reduced"] .qm__spin{animation-duration:2.4s!important;animation-iteration-count:infinite!important}
+
+/* ---------- Alto contraste ---------- */
+@media (forced-colors:active){
+  .qm .qm__panel{border:1px solid CanvasText}
+  .qm .qm__aura{display:none}
+  .qm .qm__prog-bar{background:GrayText}
+  .qm .qm__prog-bar::after{background:Highlight}
+  .qm .qm__prog-i[aria-current] .qm__prog-t{color:Highlight}
+  .qm .qm__mark,.qm .qm__mark--fail{border:1px solid CanvasText}
+  .qm .qm__head,.qm .qm__foot{border-color:CanvasText}
+}

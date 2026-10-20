@@ -70,5 +70,17 @@ export function initSheet(): SheetApi | undefined {
   }
 
   matchMedia('(min-width: 1180px)').addEventListener('change', (m) => { if (m.matches) close(); });
+
+  // Otra capa (modal de cotización, CAMBIO-COTIZAR §2.5) pide cerrar todo: la hoja se cierra YA (sin la salida animada)
+  // y libera su lock antes de que el modal haga showModal() y tome el suyo. El foco no vuelve al botón "Menú".
+  document.addEventListener('ingeniak:overlays-close', () => {
+    clearTimeout(closing);
+    if (!dlg.open && !html.dataset.menuState) return;
+    dlg.classList.remove('is-open');
+    delete html.dataset.menuState;
+    openers.forEach((b) => b.setAttribute('aria-expanded', 'false'));
+    if (dlg.open) dlg.close();
+    unlock('menu');
+  });
   return { open, close };
 }

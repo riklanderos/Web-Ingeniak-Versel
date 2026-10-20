@@ -5,14 +5,15 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "CAMBIO DE TEXTO · grid: D pedía 8 tarjetas grandes con imagen; la ESPEC §5.5 y R7 piden el mismo LocationSwitcher del inicio (lista de 8 sectores y la escena del sector activo a sangre, sin tarjetas). Las líneas y las conversaciones de ejemplo son distintas a las del inicio para no duplicar texto.",
     "CAMBIO DE TEXTO · cifras: D pedía una tabla por sector; la ESPEC §5.5 pide EditorNote + Montage. Los cuatro sectores con caso (salud, retail, HoReCa y logística) llevan su cifra; belleza, nutrición, finanzas e inmobiliario se nombran en la nota del editor, sin cifra.",
     "PREGUNTA AL CLIENTE · grid.sectors[].bubbles: conversaciones de ejemplo (SIMULACIÓN) escritas para esta página. Revisa que el tono y los ejemplos (urgencia en salud, documentos en finanzas, entrega en logística) sean los que quieres mostrar.",
     "PREGUNTA AL CLIENTE · grid.sectors[industrial].line ('conectados a tu ERP'): sale de la meta de /industrias/industrial-logistica/ (D). Confirma que la integración con ERP se puede prometer en general.",
-    "FAQ · N11 sigue en validar: true en el banco; no se publica en esta página hasta que la apruebes (la página muestra G10, G08 y G11)."
+    "FAQ · N11 sigue en validar: true en el banco; no se publica en esta página hasta que la apruebes (la página muestra G10, G08 y G11).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. grid.footer y lede del cierre sin la Discovery Session; H2 'Igual lo vemos en 30 minutos.' → 'Igual lo revisamos contigo.'. La FAQ G11 (en #faq) se reescribió en el banco: ahora describe 'Cotizar proyecto'."
   ],
   "sections": {
     "hero": {
@@ -26,8 +27,7 @@
       },
       "lede": "Cada sector vende distinto. El sistema se adapta a tu operación, no al revés.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -211,7 +211,7 @@
           ]
         }
       ],
-      "footer": "¿Tu sector no aparece? Si vendes por conversación, lo revisamos contigo en la Discovery Session.",
+      "footer": "¿Tu sector no aparece? Si vendes por conversación, cuéntanoslo al cotizar tu proyecto y lo revisamos contigo.",
       "links": [
         {
           "label": "Ver todos los casos",
@@ -282,18 +282,16 @@
       "eyebrow": "Tu sector, tu guion",
       "h2": {
         "text": "¿Tu sector no está en la lista?",
-        "soft": "Igual lo vemos en 30 minutos."
+        "soft": "Igual lo revisamos contigo."
       },
-      "lede": "En la Discovery Session revisamos cómo vendes hoy y te decimos qué pieza del sistema conviene encender primero en tu negocio.",
+      "lede": "Cotiza tu proyecto, cuéntanos cómo vendes hoy y te decimos qué pieza del sistema conviene encender primero en tu negocio.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de industrias de Ingeniak y quiero saber cómo aplicaría la IA en mi sector."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

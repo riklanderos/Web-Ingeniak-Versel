@@ -1,8 +1,11 @@
 // /indice.json — índice estático del buscador ⌘K (ESPEC §4.3). Se genera en el build desde sitemap.json
 // (título corto, H1, keyword, URL, grupo, folio interno, meta) + el banco de FAQ (src/data/faq.json si existe;
 // si no, las preguntas "aprobada" de cada página de sitemap.json). Los folios no se muestran: solo sirven de búsqueda.
+// Las landings ocultas (sitemap.json → hidden: true; ESPEC §12.6 R17) no entran, ni las preguntas que solo viven en ellas
+// (D01–D06 de /discovery/, P01–P07 de /power-session/): ⌘K nunca lleva a una página oculta (check-seo lo vigila).
 import type { APIRoute } from 'astro';
-import { pages, isBuilt } from '../lib/site';
+import { pages, isBuilt, isHiddenRoute } from '../lib/site';
+import { isHidden } from '../lib/indexacion.mjs';
 import { copyText, faqBank } from '../components/layout/copyText';
 
 export const prerender = true;
@@ -32,7 +35,7 @@ const hasFaqSection = (url: string) => (pages as any[]).find((p) => p.url === ur
 export const GET: APIRoute = () => {
   const list = (pages as any[])
     // Solo páginas que existen hoy (QA r2 · decisión 3): un resultado de ⌘K nunca lleva a un 404. Las demás entran solas al construirse.
-    .filter((p) => p.template !== 'T-404' && isBuilt(p.url))
+    .filter((p) => p.template !== 'T-404' && !isHidden(p) && isBuilt(p.url))
     .map((p) => ({
       u: p.url,
       t: shortName(p),
@@ -48,8 +51,11 @@ export const GET: APIRoute = () => {
   // peticiones · faq-contacto-legal #3). Sin esa página: la primera página construida que la tiene (#faq). Sin ninguna, no se indexa.
   const faqHome = isBuilt('/preguntas-frecuentes/');
   const faq = bank().flatMap((f) => {
+    // solo preguntas con al menos una página pública (una pregunta que vive solo en landings ocultas no se indexa)
+    const pub = (f.pages ?? []).filter((u) => !isHiddenRoute(u));
+    if ((f.pages ?? []).length && !pub.length) return [];
     if (faqHome) return [{ id: f.id, q: f.q, a: f.a, u: `/preguntas-frecuentes/#${f.id}` }];
-    const built = (f.pages ?? []).filter((u) => isBuilt(u));
+    const built = pub.filter((u) => isBuilt(u));
     if (!built.length) return [];
     const target = built[0];
     return [{ id: f.id, q: f.q, a: f.a, u: hasFaqSection(target) ? `${target}#faq` : target }];

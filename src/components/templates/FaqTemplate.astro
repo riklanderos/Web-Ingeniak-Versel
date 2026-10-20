@@ -30,6 +30,7 @@ import FAQAccordion from '../ui/FAQAccordion.astro';
 import { annotateFigures, esc, getFaqBank, publicExists, logoUrl, TOOLS } from '../ui/ui-data';
 import Aura from './Aura.astro';
 import { ledeParts, builtCrumbs } from './heroKit';
+import { primaryLabel, quoteLink, isHiddenHref } from '../layout/cta';
 import { waHref, linkTarget, type Page } from '../../lib/site';
 import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 import '../../styles/tpl/FaqTemplate.css';
@@ -67,10 +68,13 @@ const TOPIC_IDS = ['ingeniak', 'agentes', 'crm', 'automatizacion', 'precio', 'em
 // Categoría del banco (faq.json → categoria) → tema de la página (red de seguridad: ninguna pregunta aprobada se queda fuera)
 const CAT_TO_TOPIC: Record<string, string> = {
   Ingeniak: 'ingeniak', 'Agentes de IA': 'agentes', Kain: 'agentes', Industrias: 'agentes', Kommo: 'crm', GoHighLevel: 'crm',
-  'Automatización': 'automatizacion', Servicios: 'automatizacion', Precios: 'precio', 'Discovery Session': 'empezar',
+  'Automatización': 'automatizacion', Servicios: 'automatizacion', Precios: 'precio', Empezar: 'empezar', 'Discovery Session': 'empezar',
 };
+// R17 (CAMBIO-COTIZAR §4.1): una pregunta cuyas páginas son todas landings ocultas (D01–D06 de /discovery/, P01–P07 de
+// /power-session/) no entra en /preguntas-frecuentes/ ni en su FAQPage, aunque el copy la liste en un tema.
+const onlyHidden = (f: { pages?: string[] }) => Array.isArray(f.pages) && f.pages.length > 0 && f.pages.every((u) => isHiddenHref(u));
 const order: string[] = (P.sections as any[]).filter((s) => s.status !== 'conditional').map((s) => s.id);
-const bank = getFaqBank();                              // solo publicables (sin "validar"), el mismo filtro del FAQPage
+const bank = getFaqBank().filter((f) => !onlyHidden(f)); // publicables (sin "validar") y no exclusivas de una landing oculta
 const okIds = new Set(bank.map((f) => f.id));
 const topicIds = TOPIC_IDS.filter((id) => order.includes(id) && cp(id));
 const lists: Record<string, string[]> = Object.fromEntries(topicIds.map((id) => [id, (cp(id).faqIds ?? []) as string[]]));
@@ -110,7 +114,8 @@ const toolsOf = (slugs?: string[]) => (slugs ?? [])
   .map((s) => ({ slug: s, url: TOOLS[s] ? logoUrl(s) : `/img/logos/${s}.svg` }))
   .filter((t) => t.url && publicExists(t.url))
   .map((t) => t.slug);
-const linksOf = (links?: any[]) => (links ?? []).map((l) => ({ ...l, href: l?.href ? linkTarget(l.href) : null })).filter((l) => l.href);
+// "cotizar": true (o una landing oculta) → disparador del modal: <a href={l.href} {...l.attrs}> (CAMBIO-COTIZAR §1.2).
+const linksOf = (links?: any[], sec?: string) => (links ?? []).map((l) => quoteLink(l, sec, P.url)).map((l) => ({ ...l, href: l?.href ? linkTarget(l.href) : null })).filter((l) => l.href);
 // Luz por tema (alternada; ninguna zona > 40vh sin luz y nunca la misma escena dos veces seguidas). El isotipo va siempre
 // del lado del acordeón (x ≥ 60 %): la cabeza es pegajosa y recorre todo el alto de su sección, así que un isotipo bajo
 // ella dejaba el lede y la línea del precio bajo AA (auditoría: 1.7–2.6:1 en crm y precio a 1280–1920).
@@ -218,7 +223,7 @@ if (dev) {
     if (t) {
       const c = t.c;
       const light = LIGHT[id] ?? LIGHT.agentes;
-      const links = linksOf(c.links);
+      const links = linksOf(c.links, id);
       const proof = metricIds(c.proof);
       const tools = toolsOf(c.tools);
       return (
@@ -294,7 +299,7 @@ if (dev) {
               <ul class="faq-more__list" role="list">
                 {links.map((l: any) => (
                   <li>
-                    <a class="faq-more__a" href={l.href}>
+                    <a class="faq-more__a" href={l.href} {...l.attrs}>
                       <span class="faq-more__t">{l.label}</span>
                       {l.line && <span class="faq-more__l">{l.line}</span>}
                       <span class="faq-more__go" aria-hidden="true">→</span>
@@ -326,10 +331,7 @@ if (dev) {
         <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
         {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
         <div class="ctas">
-          <div class="cta-p">
-            <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
-            <Copy as="p" class="t-micro btn-micro" text={cta.micro ?? '30 min · 1:1 · Google Meet · sin costo'} data-allow-number />
-          </div>
+          <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(cta)} micro />
           <Btn variant="ghost" href={wa} label={waLabel(cta)} />
         </div>
       </Dawn>

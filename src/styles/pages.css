@@ -656,15 +656,16 @@ body.ind #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max
   .cv-hero .cv-h1 .cv-h1__soft{margin-top:var(--s-2)}
   .cv-hero .is__text > .cv-hero__lede{margin-top:var(--s-4);font-size:1rem;line-height:1.5}
   .cv-hero .cv-remate{font-size:.9375rem;line-height:1.45;padding-left:14px}
-  /* CTAs (QA #87 · decisión 5): primario a todo el ancho, la microcopia sola en UNA línea bajo él y "Escríbele a Kain"
-     con su texto en su propia fila (nunca un círculo sin etiqueta). Gana a la regla compartida del círculo de 48 px. */
+  /* CTAs (QA #87 · decisión 5): primario a todo el ancho, la microcopia sola bajo él y "Escríbele a Kain" con su texto en
+     su propia fila (nunca un círculo sin etiqueta). Gana a la regla compartida del círculo de 48 px. La microcopia va en UNA
+     línea cuando cabe (Discovery: "30 min · 1:1 · Google Meet · sin costo"); si no cabe (Power Session por debajo de ~390 px:
+     "USD 297 · pago único · 90 min por Google Meet") se parte entre sus grupos .tpl-nw, equilibrada, nunca contra el borde. */
   body.cv .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
-  body.cv .tpl-hero .is__text > .ctas > .cta-p > .btn-micro{white-space:nowrap;letter-spacing:.03em}
+  body.cv .tpl-hero .is__text > .ctas > .cta-p > .btn-micro{white-space:normal;text-wrap:balance;letter-spacing:.03em}
   body.cv .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px;gap:12px;justify-content:center;border-radius:var(--r-pill);margin-top:2px}
   body.cv .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
   body.cv .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
 }
-@media (max-width:339px){body.cv .tpl-hero .is__text > .ctas > .cta-p > .btn-micro{white-space:normal}}
 /* Tableta vertical: la fila de CTAs no se estira como un teléfono ampliado (≤ 420 px) */
 @media (min-width:600px) and (max-width:767px),(min-width:600px) and (max-aspect-ratio:5/6){
   body.cv .tpl-hero .is__text > .ctas:has(> .cta-p){width:min(100%,420px)}
@@ -838,6 +839,9 @@ body.cv .it__aura--ondas{top:max(50%, calc(min(110vw,1700px) / 1.5 * .6 + 24px))
 .e404 .script__name{font-size:clamp(1.25rem,1rem + .7vw,1.75rem)}
 .e404 .script__line{font-size:14px;line-height:1.45}
 .e404 .is__text > .ctas{margin-top:var(--s-6)}
+/* «Buscar en el sitio ⌘K» (contorno) va junto a las rutas de rescate, bajo la fila Cotizar proyecto + Escríbele a Kain */
+.e404 .e404__find{margin-top:var(--s-5)}
+.e404 .e404__find + .script{margin-top:var(--s-5)}
 @media (min-width:768px) and (min-aspect-ratio:5/6){.e404 > .is__more{margin-top:var(--s-2)}}   /* rutas de rescate bajo los botones */
 .e404 .e404__kbd{margin-left:10px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:var(--muted);padding:5px 7px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--hair-2)}
 /* Respaldo (home-hero en espejo): su isotipo de cristal brilla justo detrás del titular → velo localizado (§3.10-2), solo escritorio */
@@ -850,16 +854,16 @@ body.cv .it__aura--ondas{top:max(50%, calc(min(110vw,1700px) / 1.5 * .6 + 24px))
      (container inline-size, ancho intrínseco 0) medía 0 px → las rutas salían a una palabra por renglón. */
   .e404 > .is__more .is__text{justify-self:stretch}
   .e404 .script__link{padding:14px 0 15px}
-  /* Buscar y "Escríbele a Kain" (con su texto, nunca un círculo sin etiqueta) en filas propias, a todo el ancho */
-  .e404.tpl-hero .is__text > .e404__ctas{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"s" "w";row-gap:12px;width:100%}
-  .e404.tpl-hero .is__text > .e404__ctas > .btn{width:100%;height:52px;justify-content:center}
-  .e404.tpl-hero .is__text > .e404__ctas > .btn:not(.btn--wa){grid-area:s}
-  .e404.tpl-hero .is__text > .e404__ctas > .btn--wa{grid-area:w;padding:0 24px;gap:12px;border-radius:var(--r-pill)}
+  /* «Cotizar proyecto» a todo el ancho con su microcopia y "Escríbele a Kain" (con su texto, nunca un círculo sin etiqueta)
+     en su fila; "Buscar en el sitio" a todo el ancho junto al rescate */
+  .e404.tpl-hero .is__text > .e404__ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px;width:100%}
+  .e404.tpl-hero .is__text > .e404__ctas > .btn--wa{grid-area:w;width:100%;height:52px;padding:0 24px;gap:12px;justify-content:center;border-radius:var(--r-pill);margin-top:2px}
+  .e404 .e404__find > .btn{width:100%;height:52px;justify-content:center}
   .e404.tpl-hero .is__text > .e404__ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
   .e404.tpl-hero .is__text > .e404__ctas > .btn--wa .btn__ico{width:18px;height:18px}
   .e404 .e404__kbd{display:none}
 }
-@media (min-width:600px) and (max-width:767px),(min-width:600px) and (max-aspect-ratio:5/6){.e404.tpl-hero .is__text > .e404__ctas{width:min(100%,420px)}}
+@media (min-width:600px) and (max-width:767px),(min-width:600px) and (max-aspect-ratio:5/6){.e404.tpl-hero .is__text > .e404__ctas:has(> .cta-p),.e404 .e404__find{width:min(100%,420px)}}
 /* ===== fin ConversionTemplate ===== */
 
 /* ===== HomeTemplate ===== */
@@ -870,11 +874,12 @@ body.cv .it__aura--ondas{top:max(50%, calc(min(110vw,1700px) / 1.5 * .6 + 24px))
 /* 01 · Portada (la línea de confianza y el Fig. 01 en línea viven en `more`: en escritorio, justo bajo los CTA) */
 .hm-hero .is__text > .fig-inline{margin-top:var(--s-5)}
 @media (min-width:768px) and (min-aspect-ratio:5/6){.hm-hero > .is__more{margin-top:0}}
-/* Móvil y tableta vertical (QA #10): primario a todo el ancho, la microcopia sola en UNA línea y "Escríbele a Kain" con
-   su texto en su propia fila (como el cierre Dawn móvil), nunca un círculo sin etiqueta. Gana a la regla compartida. */
+/* Móvil y tableta vertical (QA #10): primario a todo el ancho, la microcopia debajo y "Escríbele a Kain" con su texto en
+   su propia fila (como el cierre Dawn móvil), nunca un círculo sin etiqueta. Gana a la regla compartida.
+   r2 (CAMBIO-COTIZAR D2): la microcopia de «Cotizar proyecto» no cabe en una línea a 390 px → se parte por sus grupos. */
 @media (max-width:767px),(max-aspect-ratio:5/6){
   body.hm .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
-  body.hm .tpl-hero .is__text > .ctas > .cta-p > .btn-micro{white-space:nowrap;letter-spacing:.03em}
+  body.hm .tpl-hero .is__text > .ctas > .cta-p > .btn-micro{white-space:normal;text-wrap:balance;letter-spacing:.03em}
   body.hm .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px;gap:12px;justify-content:center;border-radius:var(--r-pill);margin-top:2px}
   body.hm .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
   body.hm .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
@@ -1263,26 +1268,34 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
   .svc-hero .is__text > .crumbs ~ .eyebrow{display:none}
 }
 /* QA #29 · móvil y tableta vertical: "Escríbele a Kain" se lee (botón fantasma a todo el ancho bajo la microcopia, como en el
-   cierre), nunca un círculo sin texto. Va por plantilla (servicio, industria y caso) sobre la regla compartida de portadas. */
+   cierre), nunca un círculo sin texto. Va por plantilla (servicio, industria, caso, metodología y tecnologías) sobre la regla
+   compartida de portadas: la microcopia "Sin compromiso · Te contactamos por WhatsApp y correo" no cabe junto al círculo de
+   48 px en teléfonos (se metía bajo él a 360–375 px). */
 @media (max-width:767px),(max-aspect-ratio:5/6){
-  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
-  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px 0 20px;gap:12px;justify-content:center;
+  :is(body.svc,body.ind,body.t-case,body.mth,body.stk) .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
+  :is(body.svc,body.ind,body.t-case,body.mth,body.stk) .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px 0 20px;gap:12px;justify-content:center;
     border-radius:var(--r-pill);margin-top:2px}
-  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
-  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
+  :is(body.svc,body.ind,body.t-case,body.mth,body.stk) .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+  :is(body.svc,body.ind,body.t-case,body.mth,body.stk) .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
 }
 /* Teléfonos bajos (360 × 740): con el fantasma rotulado el intro crece ~64 px → menos aire entre piezas para que la cabeza
    del sujeto siga en el primer pantallazo (≤ .8 del alto, R3) */
 @media (max-width:767px) and (max-height:780px){
-  :is(body.svc,body.ind,body.t-case) .tpl-hero.is[data-m="split"]{--hero-gap:16px}
-  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas:has(> .cta-p){margin-top:var(--s-5);row-gap:8px}
-  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas > .cta-p > .btn{height:48px}
-  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas > .btn--wa{height:44px;margin-top:0}
+  :is(body.svc,body.ind,body.t-case,body.stk) .tpl-hero.is[data-m="split"]{--hero-gap:16px}
+  :is(body.svc,body.ind,body.t-case,body.mth,body.stk) .tpl-hero .is__text > .ctas:has(> .cta-p){margin-top:var(--s-5);row-gap:8px}
+  :is(body.svc,body.ind,body.t-case,body.mth,body.stk) .tpl-hero .is__text > .ctas > .cta-p > .btn{height:48px}
+  :is(body.svc,body.ind,body.t-case,body.mth,body.stk) .tpl-hero .is__text > .ctas > .btn--wa{height:44px;margin-top:0}
   body.t-case .case-hero .case-h1__fig .metric__v{font-size:min(30vw,16.5svh)}
+}
+/* Teléfonos muy bajos (375 × 667): en metodología y tecnologías el bloque de CTA sube un paso más para que la cabeza del
+   sujeto siga ≤ .8 del alto con el fantasma rotulado. Metodología conserva su --hero-gap de 30 px: con 16 px el haz de luz de
+   su placa vertical sube hasta la microcopia (4.2:1, bajo AA a 360 × 740). */
+@media (max-width:767px) and (max-height:700px){
+  :is(body.mth,body.stk) .tpl-hero .is__text > .ctas:has(> .cta-p){margin-top:var(--s-4)}
 }
 /* Tableta vertical: los CTA no se estiran a 672 px (QA #68); el bloque se queda en un ancho de teléfono */
 @media (min-width:600px) and (max-aspect-ratio:5/6){
-  :is(body.svc,body.ind,body.t-case) .tpl-hero .is__text > .ctas:has(> .cta-p){max-width:26.25rem}
+  :is(body.svc,body.ind,body.t-case,body.mth,body.stk) .tpl-hero .is__text > .ctas:has(> .cta-p){max-width:26.25rem}
 }
 
 /* ── Auras propias (WebP ya desenfocado; deriva por scroll en CSS, fija con movimiento reducido) ── */

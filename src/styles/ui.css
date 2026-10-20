@@ -38,7 +38,12 @@ html.ui-motion :is([data-ui-reveal],[data-pain="draw"]).is-now,html.ui-motion .i
 .btn__ext{flex:none;margin-left:-6px;color:var(--muted)}
 .btn[data-magnetic]{will-change:auto}
 .btn-icon .icon{width:18px;height:18px}
-/* Teléfonos de 320–359 px: "Agenda tu Discovery Session" + nodo medían 300 px en una columna de 280 (el nodo salía de la
+/* r2 · CAMBIO-COTIZAR D2: la microcopia de «Cotizar proyecto» ("Sin compromiso · Te contactamos por WhatsApp y correo") es
+   más larga que el botón. No ensancha la columna del primario (el WhatsApp queda pegado al botón, como con la microcopia
+   anterior): toma el ancho del botón y se parte por sus grupos (.tpl-nw), en dos renglones; el grupo largo puede correr
+   bajo el botón de WhatsApp (nunca lo toca: va debajo de la fila de botones). En móvil ocupa el ancho del primario. */
+.cta-p .btn-micro{contain:inline-size;align-self:stretch;white-space:normal}
+/* Teléfonos de 320–359 px: la etiqueta del primario + nodo medían 300 px en una columna de 280 (el nodo salía de la
    píldora y en el Dawn el botón tocaba el borde). Se compacta el contenido (≈264 px) para que quepa con su medianil. */
 @media (max-width:359px){
   .btn:not(.btn--sm):has(> .btn__node){padding-left:18px;gap:10px;font-size:14px;letter-spacing:-.012em}

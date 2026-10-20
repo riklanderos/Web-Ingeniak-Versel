@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "articulo": {
     "categoria": "CRM",
     "about": [
@@ -32,7 +32,7 @@
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
     "PREGUNTA AL CLIENTE · URGENTE · ficha de Ingeniak en el directorio de Kommo: el 2026-10-19 Ingeniak NO aparece en el directorio público, ni en la versión en español (236 fichas) ni en la versión en inglés (458 fichas); tampoco con otro nombre que reconozcamos. D pide enlazar la ficha real antes de publicar, y este artículo le dice al lector que busque ahí primero. Kommo pide para listarse: una sección de Kommo en el sitio (ya está: /kommo/), el sello en el sitio con enlace a kommo.com (ya está: KommoBadge), un logo de buena calidad y la solicitud en el Portal de partners (Resources → Get listed), que revisa su equipo. ¿Tienen ficha con otro nombre o razón social? Si no, recomendamos solicitarla ya. Mientras tanto, la sección 7 se llama 'Cómo verificar a Ingeniak' (D: 'Ingeniak en el directorio de Kommo') y no dice que estemos en el directorio.",
-    "PREGUNTA AL CLIENTE · certificado: la sección 7 invita a pedir nuestro certificado de partner en la Discovery Session (Kommo lo entrega al aprobar el examen). ¿Lo tienen y se puede mostrar? Si no, se quita ese renglón.",
+    "PREGUNTA AL CLIENTE · certificado: la sección 7 invita a pedir nuestro certificado de partner por WhatsApp o por correo (antes, en la Discovery Session; Kommo lo entrega al aprobar el examen). ¿Lo tienen y se puede mostrar? Si no, se quita ese renglón.",
     "PREGUNTA AL CLIENTE · cuentas de Kommo: la guía recomienda que la cuenta quede a nombre y con el correo del cliente (así lo describe el portal de partners). No lo afirmamos de Ingeniak: ¿así crean las cuentas? Si sí, se suma a la sección 7.",
     "PREGUNTA AL CLIENTE · ¿Ingeniak revende las licencias de Kommo en pesos? Kommo dice que algunos partners oficiales revenden en moneda local; no lo afirmamos de Ingeniak hasta confirmarlo.",
     "PREGUNTA AL CLIENTE · ¿la propuesta de Ingeniak separa el monto de las licencias de Kommo y el de la implementación? La guía pone como señal de alerta un partner que no los separa, así que no lo afirmamos de Ingeniak sin confirmarlo (misma pregunta abierta en art-costo). Mientras tanto, el renglón 'Qué incluye' de la sección 7 usa la redacción de la respuesta aprobada K01 ('te ayudamos a contratar las licencias… y también implementamos el CRM'). Si la propuesta sí las separa, se puede decir ahí.",
@@ -41,7 +41,8 @@
     "CAMBIO DE TEXTO · cierre: D pedía 'Verifícanos y luego platiquemos: 30 minutos, gratis.' Mientras Ingeniak no tenga ficha en el directorio, un 'verifícanos' manda al lector a un paso que hoy no encuentra. Queda 'Haznos las mismas preguntas. Te respondemos en 30 minutos.' Al publicarse la ficha, se puede volver al texto de D y enlazarla en la sección 7.",
     "DATO DE TERCEROS · reglas del programa de partners (examen de certificación y certificado, cuentas y órdenes desde el portal, usuario técnico opcional, precios estándar, requisitos y revisión del directorio, independencia de los partners, servicios que ofrecen) y condiciones de cobro de Kommo, consultadas el 2026-10-19 en páginas oficiales (fuentes 1 a 6). Revisar cada trimestre y actualizar 'actualizado'.",
     "CIFRAS · retail-conversiones aparece una vez (escena del paso 4, Retail multimarca · Kommo + IA; la descripción del sistema viene de la respuesta K03 aprobada). La escena enlaza al caso retail (/casos/retail-multimarca-kommo/, ya construido) y a /kommo/.",
-    "PLACA · la portada usa kommo-hero, como pide sitemap.json (D pedía 'art-partner-kommo-hero', un gerente con lupa; no está en el plan de placas). Sin figura registrada: kommo-hero no tiene teléfono ni pantalla. Su ancla 'sello' (donde /kommo/ pinta el KommoBadge) no la usa ArticleTemplate: pedido en peticiones.md. Escena del cuerpo: caso-retail-hero (persona a la derecha); cierre: cta-amanecer (Kain a la derecha), como pide sitemap.json. Fotogramas de Sigue explorando: /kommo/ con home-kain y /servicios/crm-con-ia/ con home-sistema-3-organizar (sin esa pista la plantilla elegía dolor-crm, una placa de dolor, para un servicio). La columna de texto de la portada empieza a 0.48 de la placa y la zona segura de kommo-hero a 0.51: check-escenas lo avisa a 1440 × 900, aunque en la captura el texto no toca el panel ni las burbujas (pedido en peticiones.md)."
+    "PLACA · la portada usa kommo-hero, como pide sitemap.json (D pedía 'art-partner-kommo-hero', un gerente con lupa; no está en el plan de placas). Sin figura registrada: kommo-hero no tiene teléfono ni pantalla. Su ancla 'sello' (donde /kommo/ pinta el KommoBadge) no la usa ArticleTemplate: pedido en peticiones.md. Escena del cuerpo: caso-retail-hero (persona a la derecha); cierre: cta-amanecer (Kain a la derecha), como pide sitemap.json. Fotogramas de Sigue explorando: /kommo/ con home-kain y /servicios/crm-con-ia/ con home-sistema-3-organizar (sin esa pista la plantilla elegía dolor-crm, una placa de dolor, para un servicio). La columna de texto de la portada empieza a 0.48 de la placa y la zona segura de kommo-hero a 0.51: check-escenas lo avisa a 1440 × 900, aunque en la captura el texto no toca el panel ni las burbujas (pedido en peticiones.md).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: cta-medio y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. 'Pídenos nuestro certificado de partner en la Discovery Session' → 'por WhatsApp o por correo'. Cierre: 'Te respondemos en 30 minutos.' → 'Te respondemos por WhatsApp y correo.' (sin plazo)."
   ],
   "sections": {
     "hero": {
@@ -134,7 +135,7 @@
         "Somos partner oficial y distribuidor de Kommo en Latinoamérica. Esta guía también aplica para nosotros, así que te decimos cómo comprobarlo:",
         { "variant": "ul", "items": [
           "**El sello.** El sello de partner de [nuestra página de Kommo](/kommo/) enlaza a kommo.com.",
-          "**El certificado.** Pídenos nuestro certificado de partner en la Discovery Session.",
+          "**El certificado.** Pídenos nuestro certificado de partner por WhatsApp o por correo.",
           "**Qué incluye.** Te ayudamos a contratar las licencias de Kommo que necesitas, que dependen del plan y de cuántas personas de tu equipo lo usarán, y también implementamos el CRM: embudos, conexión de WhatsApp, automatizaciones y agentes de IA. Lo detallamos en [CRM con IA](/servicios/crm-con-ia/).",
           "**Los casos.** Te mostramos casos con cifra, sector, herramienta y fuente, como el del retail multimarca que viste arriba."
         ] },
@@ -146,7 +147,7 @@
       "label": "Siguiente paso",
       "text": "¿Ya tienes una propuesta de Kommo y no sabes qué incluye? Revisa cómo trabajamos Kommo o escríbele a Kain y cuéntale qué te ofrecieron.",
       "link": { "label": "Kommo con Ingeniak", "href": "/kommo/" },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola, leí cómo verificar un partner oficial de Kommo y quiero cotizar licencias con Ingeniak." }
     },
     "faq": {
@@ -185,10 +186,9 @@
     "cta-final": {
       "_componente": "Dawn (cta-amanecer, Kain a la derecha, texto a la izquierda)",
       "eyebrow": "Tu caso",
-      "h2": { "text": "Haznos las mismas preguntas.", "soft": "Te respondemos en 30 minutos." },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola, leí cómo verificar un partner oficial de Kommo y quiero cotizar licencias con Ingeniak." },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "h2": { "text": "Haznos las mismas preguntas.", "soft": "Te respondemos por WhatsApp y correo." },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola, leí cómo verificar un partner oficial de Kommo y quiero cotizar licencias con Ingeniak." }
     }
   }
 }

@@ -1,6 +1,7 @@
 /* ContactTemplate.css · T-CONTACT (/contacto/) · ESPEC-v2 §5.12. Solo clases .ct-* (y el body.ctc).
    Portada "Escríbele a Kain" (tres rutas + chat simulado en el teléfono de cristal de la placa) → tabla de rutas →
-   oficina (faro de luz + ficha + países) → redes → amanecer. Ninguna sección pinta fondo (§3.11). */
+   #cotizar (qué sigue en 3 pasos + rutas directas) → oficina (faro de luz + ficha + países) → redes → amanecer.
+   Ninguna sección pinta fondo (§3.11). */
 
 /* ── 01 · Portada ─────────────────────────────────────────────────────────── */
 .ct-hero h1.ct-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),9.6svh);max-width:11ch}
@@ -72,8 +73,8 @@
 .ct-route__go:hover,.ct-route__go:focus-visible{background:rgb(0 229 255 / .1);box-shadow:inset 0 0 0 1px var(--cyan)}
 .ct-route__go:hover .ct-route__arr{translate:3px 0}
 /* La ruta recomendada lleva el nodo del isotipo encendido a la izquierda de su fila */
-.ct-route--discovery .ct-route__n{color:#fff;text-shadow:none}
-.ct-route--discovery::before{content:"";position:absolute;left:-18px;top:calc(var(--s-6) + .7em);width:7px;height:7px;border-radius:1.5px;
+.ct-route--cotizar .ct-route__n{color:#fff;text-shadow:none}
+.ct-route--cotizar::before{content:"";position:absolute;left:-18px;top:calc(var(--s-6) + .7em);width:7px;height:7px;border-radius:1.5px;
   background:var(--cyan);box-shadow:var(--glow-cyan)}
 @media (max-width:1023px){
   .ct-routes,.ct-routes tbody,.ct-route,.ct-route > *{display:block;width:100%}
@@ -88,6 +89,32 @@
   .ct-route__when::before,.ct-route__then::before{content:attr(data-label);display:block;margin-bottom:4px;
     font:500 .625rem/1.4 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
   .ct-route__act{white-space:normal}
+}
+
+/* ── 03 · Cotizar: destino de «Cotizar proyecto» (CAMBIO-COTIZAR §1.4). Pasos en filas de filete (sin tarjetas) y, abajo,
+   las rutas directas que funcionan sin JS. El único azul es el primario de la cabeza. ── */
+.ct-cot__lede{margin-top:var(--s-5);max-width:40ch}
+.ct-cot__ctas{margin-top:var(--s-6)}
+.ct-cot .it__body > * + *{margin-top:var(--s-7)}
+.ct-steps{width:100%;margin:0;padding:0;list-style:none;border-top:1px solid var(--hair-2)}
+.ct-step{position:relative;display:grid;grid-template-columns:3.2em minmax(0,1fr);column-gap:var(--s-4);row-gap:6px;
+  padding:var(--s-5) 0;border-bottom:1px solid var(--hair)}
+.ct-step__n{grid-row:1 / span 2;font:500 .75rem/1.9 var(--f-mono);letter-spacing:.12em;color:var(--cyan)}
+.ct-step__t{font:500 clamp(1.25rem,1rem + .8vw,1.75rem)/1.15 var(--f-display);letter-spacing:-.02em;color:#fff}
+.ct-step__l{font:400 1rem/1.55 var(--f-body);color:var(--text-2);max-width:44ch}
+.ct-step:first-child .ct-step__n::before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:1.5px;
+  background:var(--cyan);box-shadow:var(--glow-cyan);translate:0 -1px}
+.ct-direct{display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-4)}
+.ct-direct__h{display:inline-flex;align-items:center;gap:10px;color:var(--soft)}
+.ct-direct__row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-6)}
+.ct-direct__mail{display:inline-flex;align-items:center;gap:8px;min-height:44px}
+.ct-direct__mail .ico{color:var(--cyan)}
+@media (max-width:767px){
+  .ct-cot .ctas .cta-p{width:100%}
+  .ct-cot .ctas .cta-p > .btn{width:100%;justify-content:space-between}
+  .ct-cot .cta-p .btn-micro{white-space:normal;text-wrap:balance}
+  .ct-direct__row{flex-direction:column;align-items:stretch}
+  .ct-direct__row > .btn{width:100%;justify-content:center}
 }
 
 /* ── 04 · Oficina: dirección en grande sobre un faro (esquema tipográfico, sin mapa) ── */

@@ -39,6 +39,7 @@ import { builtCrumbs, builtRelated, ledeParts, sentences } from './heroKit';
 import { getCopy, getPlate, plateAlt, waHref, linkTarget, copyOrNull, pages, SITE, type Page } from '../../lib/site';
 import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 import { annotateFigures, tokensToText, esc, getFaqItems } from '../ui/ui-data';
+import { primaryLabel, quoteLink, isHiddenHref } from '../layout/cta';
 
 interface Props { page: Page }
 const page = Astro.props.page as any;
@@ -105,13 +106,15 @@ function inl(s?: string | null): string {
     } else if (m[2]) {
       const href = m[3];
       const external = /^https?:\/\//.test(href) && !/^https?:\/\/(www\.)?ingeniak\.mx/.test(href);
-      const target = external ? href : linkTarget(href);
+      // Una landing oculta nunca se enlaza (R17): queda como texto. /contacto/#cotizar abre el modal (CAMBIO-COTIZAR §1.2).
+      const target = external ? href : isHiddenHref(href) ? null : linkTarget(href);
       const label = annotateFigures(m[2]);
+      const quote = !external && /^(?:\/contacto\/)?#cotizar$/.test(href) ? ' data-cotizar data-section="enlace" aria-haspopup="dialog" aria-controls="cotizar"' : '';
       out += !target
         ? `<span class="art-nolink">${label}</span>`
         : external
           ? `<a href="${esc(target)}" target="_blank" rel="noopener">${label}<span class="art-ext" aria-hidden="true">↗</span></a>`
-          : `<a href="${esc(target)}">${label}</a>`;
+          : `<a href="${esc(target)}"${quote}>${label}</a>`;
     } else if (m[4]) {
       out += `<strong>${inl(m[4])}</strong>`;
     }
@@ -214,15 +217,18 @@ const toc = [
 
 /* ── 05 · CTA intermedio ── */
 const mid = C['cta-medio'] ?? {};
-const midLink = mid.link?.href ? linkTarget(mid.link.href) : null;
+// "cotizar": true (o una landing oculta) → disparador del modal (CAMBIO-COTIZAR §1.2)
+const midL = mid.link?.href ? quoteLink(mid.link, 'cta-medio', page.url) : null;
+const midLink = midL ? linkTarget(midL.href) : null;
 
 /* ── 09 · Sigue explorando: rutas construidas; si faltan, las que ya enlaza el artículo y luego el resto ── */
 const relC = C.relacionados ?? {};
 const bodyHrefs = blocks.flatMap((b) => (typeof b === 'string' ? [b] : [b?.text ?? '', ...(b?.items ?? []).map((i: any) => (typeof i === 'string' ? i : i?.text ?? ''))]))
   .flatMap((t: string) => [...String(t).matchAll(/\]\((\/[^)\s]*)\)/g)].map((m) => m[1]));
 const sceneHrefs = segs.flatMap((s) => (s.kind === 'scene' ? (s.b.links ?? []).map((l: any) => l.href) : []));
-const prefer = [...new Set([...sceneHrefs, ...bodyHrefs, ...(page.internalLinks ?? [])])].filter((h) => h && h !== page.url && h !== '/discovery/');
-const relRaw = has('relacionados') ? builtRelated(relC.items, { self: page.url, want: 3, prefer: [...prefer, '/discovery/'] }) : [];
+// Nunca una landing oculta (/discovery/, /power-session/…): builtRelated ya las excluye (R17).
+const prefer = [...new Set([...sceneHrefs, ...bodyHrefs, ...(page.internalLinks ?? [])])].filter((h) => h && h !== page.url && !isHiddenHref(h));
+const relRaw = has('relacionados') ? builtRelated(relC.items, { self: page.url, want: 3, prefer }) : [];
 const NEUTRAL = ['home-kain', 'ind-salud-kain-sector', 'home-sistema-5-medir', 'home-sistema-4-automatizar', 'home-problema-b', 'home-hero'];
 const stillTaken = new Set<string>();
 function stillPlate(it: any): string | undefined {
@@ -241,7 +247,7 @@ function stillPlate(it: any): string | undefined {
   if (pick) stillTaken.add(pick);
   return pick;
 }
-const groupLabel: Record<string, string> = { Recursos: 'Blog', Servicios: 'Servicio', Industrias: 'Industria', Casos: 'Caso de estudio', 'Conversión': 'Discovery Session' };
+const groupLabel: Record<string, string> = { Recursos: 'Blog', Servicios: 'Servicio', Industrias: 'Industria', Casos: 'Caso de estudio', 'Conversión': 'Contacto' };
 const relItems = relRaw.map((it: any) => {
   const url = String(it.href).split('#')[0];
   const target: any = (pages as any[]).find((p) => p.url === url);
@@ -380,7 +386,7 @@ const H = (h: any) => h ?? { text: '' };
         if (seg.kind === 'scene') {
           const b = seg.b;
           const sc = scenes.get(b)!;
-          const links = (b.links ?? []).map((l: any) => ({ ...l, to: linkTarget(l.href) })).filter((l: any) => l.to);
+          const links = (b.links ?? []).map((l: any) => quoteLink(l, 'enlace', page.url)).map((l: any) => ({ ...l, to: linkTarget(l.href) })).filter((l: any) => l.to);
           return (
             <ImageSection
               id={b.id}
@@ -407,7 +413,7 @@ const H = (h: any) => h ?? { text: '' };
                 {b.text && <p class="t-lede t-lede--2 art-scene__txt" set:html={inl(b.text)} />}
                 <p class="t-micro art-scene__src"><span class="node" aria-hidden="true"></span>{SOURCE_NOTE}.</p>
                 {links.length > 0 && (
-                  <p class="art-scene__links">{links.map((l: any) => <a class="lnk" href={l.to}>{l.label}<Icon name="arrow" size={16} /></a>)}</p>
+                  <p class="art-scene__links">{links.map((l: any) => <a class="lnk" href={l.to} {...l.attrs}>{l.label}<Icon name="arrow" size={16} /></a>)}</p>
                 )}
                 {/* Rótulo de imagen con personas generadas: en la columna de texto (nunca sobre el sujeto, §3.10) */}
                 {b.illus && <p class="chip-illus art-illus">{b.illus}</p>}
@@ -496,10 +502,10 @@ const H = (h: any) => h ?? { text: '' };
                       <p class="enote__label t-label"><span class="node" aria-hidden="true"></span>{mid.label ?? 'Siguiente paso'}</p>
                       <div class="enote__body">
                         <p set:html={inl(mid.text)} />
-                        {midLink && <a class="lnk art-cta__link" href={midLink}>{mid.link.label}<Icon name="arrow" size={16} /></a>}
+                        {midLink && <a class="lnk art-cta__link" href={midLink} {...midL?.attrs}>{mid.link.label}<Icon name="arrow" size={16} /></a>}
                       </div>
                       <div class="ctas art-cta__btns">
-                        <Btn variant="primary" micro href={mid.ctaPrimary?.href ?? SITE.discovery} label={mid.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+                        <Btn variant="primary" micro cotizar data-section="cta-medio" label={primaryLabel(mid)} />
                         <Btn variant="ghost" href={wa(mid.ctaSecondary?.waMessage)} label={mid.ctaSecondary?.label ?? 'Escríbele a Kain'} />
                       </div>
                     </aside>
@@ -516,9 +522,9 @@ const H = (h: any) => h ?? { text: '' };
           <div class="prose art-prose">
             <aside id="cta-medio" class="enote enote--cta art-cta" aria-label={mid.label ?? 'Siguiente paso'}>
               <p class="enote__label t-label"><span class="node" aria-hidden="true"></span>{mid.label ?? 'Siguiente paso'}</p>
-              <div class="enote__body"><p set:html={inl(mid.text)} />{midLink && <a class="lnk art-cta__link" href={midLink}>{mid.link.label}<Icon name="arrow" size={16} /></a>}</div>
+              <div class="enote__body"><p set:html={inl(mid.text)} />{midLink && <a class="lnk art-cta__link" href={midLink} {...midL?.attrs}>{mid.link.label}<Icon name="arrow" size={16} /></a>}</div>
               <div class="ctas art-cta__btns">
-                <Btn variant="primary" micro href={mid.ctaPrimary?.href ?? SITE.discovery} label={mid.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+                <Btn variant="primary" micro cotizar data-section="cta-medio" label={primaryLabel(mid)} />
                 <Btn variant="ghost" href={wa(mid.ctaSecondary?.waMessage)} label={mid.ctaSecondary?.label ?? 'Escríbele a Kain'} />
               </div>
             </aside>
@@ -611,14 +617,7 @@ const H = (h: any) => h ?? { text: '' };
       <h2 id="cta-final-t" class="t-h2" data-split set:html={annotateFigures(H(cta.h2).text) + (cta.h2?.soft ? ` <span class="soft">${annotateFigures(cta.h2.soft)}</span>` : '')} />
       {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
       <div class="ctas">
-        {cta.micro ? (
-          <div class="cta-p">
-            <Btn variant="primary" href={cta.ctaPrimary?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
-            <p class="t-micro btn-micro" set:html={annotateFigures(cta.micro)} />
-          </div>
-        ) : (
-          <Btn variant="primary" micro href={cta.ctaPrimary?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
-        )}
+        <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(cta)} micro />
         <Btn variant="ghost" href={wa(cta.ctaSecondary?.waMessage)} label={cta.ctaSecondary?.label ?? 'Escríbele a Kain'} />
       </div>
     </Dawn>

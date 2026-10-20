@@ -5,7 +5,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "CAMBIO DE TEXTO · datos: D pedía las 10 cifras en oraciones; la ESPEC §5.5 pide una fila de datos (sistemas, países, tiempo operativo). Va una definición citable con las cifras de los casos y la fila de la ESPEC.",
@@ -14,7 +14,8 @@
     "PREGUNTA AL CLIENTE · grid.items[retail].services: el caso retail se filtra solo como CRM (Kommo con calificación de leads por IA). Si también usa un agente de IA en WhatsApp, se suma al filtro 'Agentes de IA'.",
     "PREGUNTA AL CLIENTE · testimonios: la sección no se publica hasta tener un testimonio aprobado por escrito (frase, nombre, cargo y empresa).",
     "RESUELTO 2026-10-19 · cliente en chat · (3) los cinco sistemas siguen activos: lede de la portada 'Sistemas reales, operando hoy mismo.' y metodo.items[nombres].",
-    "RESUELTO 2026-10-19 · cliente en chat · (14, 15) caso dental: agente que contesta, agenda, confirma y avisa al doctor cuando hay una urgencia, con GoHighLevel como CRM (grid.items[dental])."
+    "RESUELTO 2026-10-19 · cliente en chat · (14, 15) caso dental: agente que contesta, agenda, confirma y avisa al doctor cuando hay una urgencia, con GoHighLevel como CRM (grid.items[dental]).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia 'Sin costo · Sin compromiso · 30 minutos por Google Meet' (la del botón la pone la plantilla). El resto del cierre no cambia."
   ],
   "sections": {
     "hero": {
@@ -28,8 +29,7 @@
       },
       "lede": "Sistemas reales, operando hoy mismo. Cada cifra trae su sector y su fuente; los nombres de los clientes van anonimizados.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -212,14 +212,12 @@
       },
       "lede": "Revisamos cómo atiendes y das seguimiento hoy, y te decimos qué conviene implementar primero.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vi los casos de éxito de Ingeniak y quiero resultados así en mi empresa."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

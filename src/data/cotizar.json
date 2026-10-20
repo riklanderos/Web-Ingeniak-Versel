@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "titulo": "Cotizar proyecto",
+  "h": "Cuéntanos qué necesitas",
+  "desc": "Tres pasos cortos. Te contactamos por WhatsApp y correo.",
+  "pasos": [
+    { "n": 1, "id": "necesidad", "titulo": "Qué necesitas", "h": "¿Qué quieres resolver?" },
+    { "n": 2, "id": "negocio", "titulo": "Tu negocio", "h": "Cuéntanos de tu negocio" },
+    { "n": 3, "id": "contacto", "titulo": "Contacto", "h": "¿Cómo te contactamos?" }
+  ],
+  "servicios": [
+    { "slug": "agentes-ia", "label": "Agentes de IA para WhatsApp", "glyph": "atender" },
+    { "slug": "crm-ia", "label": "CRM con IA (Kommo o GoHighLevel)", "glyph": "organizar" },
+    { "slug": "automatizacion", "label": "Automatización de procesos", "glyph": "automatizar" },
+    { "slug": "consultoria-ia", "label": "Consultoría en IA", "glyph": "medir" },
+    { "slug": "paid-media", "label": "Paid media (anuncios)", "glyph": "atraer" },
+    { "slug": "web-design", "label": "Página web", "glyph": "atraer" },
+    { "slug": "seo", "label": "SEO y visibilidad en buscadores de IA", "glyph": "atraer" },
+    { "slug": "branding", "label": "Branding y contenido", "glyph": "atraer" },
+    { "slug": "software", "label": "Software a la medida", "glyph": "automatizar" },
+    { "slug": "no-seguro", "label": "No estoy seguro", "glyph": null, "exclusive": true }
+  ],
+  "objetivos": [
+    { "slug": "prospectos", "label": "Conseguir más prospectos", "glyph": "atraer" },
+    { "slug": "respuesta", "label": "Responder rápido a cada cliente", "glyph": "atender" },
+    { "slug": "orden", "label": "Ordenar ventas y seguimiento", "glyph": "organizar" },
+    { "slug": "tiempo", "label": "Quitarle trabajo repetitivo al equipo", "glyph": "automatizar" },
+    { "slug": "medir", "label": "Saber qué funciona y qué no", "glyph": "medir" },
+    { "slug": "marca", "label": "Lanzar o renovar mi marca o mi sitio", "glyph": "atraer" },
+    { "slug": "otro", "label": "Otro", "glyph": null }
+  ],
+  "industrias": [
+    { "slug": "salud", "label": "Salud" },
+    { "slug": "belleza", "label": "Belleza y estética" },
+    { "slug": "nutricion", "label": "Nutrición" },
+    { "slug": "finanzas", "label": "Finanzas" },
+    { "slug": "inmobiliario", "label": "Inmobiliario" },
+    { "slug": "industrial-logistica", "label": "Industrial y logística" },
+    { "slug": "retail-ecommerce", "label": "Retail y e-commerce" },
+    { "slug": "horeca", "label": "Restaurantes y hoteles" },
+    { "slug": "otra", "label": "Otra" }
+  ],
+  "tamanos": [
+    { "slug": "1-10", "label": "1–10" },
+    { "slug": "11-50", "label": "11–50" },
+    { "slug": "51-200", "label": "51–200" },
+    { "slug": "200+", "label": "Más de 200" }
+  ],
+  "presupuestos": [
+    { "slug": "lt-1k", "label": "Menos de USD 1,000" },
+    { "slug": "1k-3k", "label": "USD 1,000 a 3,000" },
+    { "slug": "3k-5k", "label": "USD 3,000 a 5,000" },
+    { "slug": "5k-10k", "label": "USD 5,000 a 10,000" },
+    { "slug": "10k-20k", "label": "USD 10,000 a 20,000" },
+    { "slug": "20k-50k", "label": "USD 20,000 a 50,000" },
+    { "slug": "gt-50k", "label": "Más de USD 50,000" },
+    { "slug": "no-se", "label": "Aún no lo sé" }
+  ],
+  "plazos": [
+    { "slug": "asap", "label": "Lo antes posible" },
+    { "slug": "1-3m", "label": "En 1 a 3 meses" },
+    { "slug": "3-6m", "label": "En 3 a 6 meses" },
+    { "slug": "explorando", "label": "Solo estoy explorando" }
+  ],
+  "canales": [
+    { "slug": "whatsapp", "label": "WhatsApp" },
+    { "slug": "instagram", "label": "Instagram" },
+    { "slug": "facebook", "label": "Facebook" },
+    { "slug": "web", "label": "Sitio web" },
+    { "slug": "correo", "label": "Correo" },
+    { "slug": "telefono", "label": "Teléfono" },
+    { "slug": "mostrador", "label": "Tienda o mostrador" }
+  ],
+  "crms": [
+    { "slug": "kommo", "label": "Kommo" },
+    { "slug": "gohighlevel", "label": "GoHighLevel" },
+    { "slug": "hubspot", "label": "HubSpot" },
+    { "slug": "otro", "label": "Otro CRM" },
+    { "slug": "ninguno", "label": "Ninguno (Excel, libreta o solo WhatsApp)" }
+  ],
+  "canalesPreferidos": [
+    { "slug": "whatsapp", "label": "WhatsApp" },
+    { "slug": "correo", "label": "Correo" },
+    { "slug": "llamada", "label": "Llamada" }
+  ],
+  "paises": [
+    { "iso": "mx", "lada": "+52", "label": "México", "digitos": [10] },
+    { "iso": "us", "lada": "+1", "label": "Estados Unidos", "digitos": [10] },
+    { "iso": "co", "lada": "+57", "label": "Colombia", "digitos": [10] },
+    { "iso": "ar", "lada": "+54", "label": "Argentina", "digitos": [10, 11] },
+    { "iso": "es", "lada": "+34", "label": "España", "digitos": [9] },
+    { "iso": "cr", "lada": "+506", "label": "Costa Rica", "digitos": [8] },
+    { "iso": "ec", "lada": "+593", "label": "Ecuador", "digitos": [9] },
+    { "iso": "cl", "lada": "+56", "label": "Chile", "digitos": [9] },
+    { "iso": "pe", "lada": "+51", "label": "Perú", "digitos": [9] },
+    { "iso": "gt", "lada": "+502", "label": "Guatemala", "digitos": [8] },
+    { "iso": "otro", "lada": null, "label": "Otro país", "digitos": [6, 14] }
+  ],
+  "limites": { "nombre": [3, 120], "empresa": [2, 160], "email": 200, "sitio": 200, "vision": 1000 },
+  "textos": {
+    "kicker": "Cotizar proyecto",
+    "continuar": "Continuar",
+    "atras": "Atrás",
+    "enviar": "Solicitar cotización",
+    "enviando": "Enviando…",
+    "cerrar": "Cerrar",
+    "pasoDe": "Paso {n} de 3",
+    "atajoWa": "¿Prefieres escribirnos? Escríbele a Kain",
+    "consentimiento": "Acepto que Ingeniak me contacte por WhatsApp y correo sobre esta solicitud. Leí el {aviso}.",
+    "aviso": "aviso de privacidad",
+    "resumenErrores": "Revisa {n} campos antes de continuar:",
+    "resumenErroresUno": "Revisa 1 campo antes de continuar:",
+    "borrador": "Guardamos tus respuestas mientras sigas en esta página.",
+    "telefonoAyuda": {
+      "mx": "10 dígitos con la lada de tu ciudad, sin el +52. Ahí te escribimos.",
+      "pais": "{digitos} dígitos, sin el {lada}. Ahí te escribimos.",
+      "otro": "Escribe la lada de tu país y luego tu número. Ahí te escribimos."
+    },
+    "exito": {
+      "h": "Recibimos tu solicitud",
+      "hola": "Gracias, {nombre}.",
+      "folio": "Folio {folio}",
+      "queSigue": "Qué sigue",
+      "pasos": [
+        "Revisamos tu solicitud con el equipo de Ingeniak.",
+        "{canal} para conocer los detalles de tu proyecto.",
+        "Si tiene sentido para los dos, preparamos tu cotización con alcance, tiempos y costo."
+      ],
+      "canal": {
+        "whatsapp": "Te contactamos por WhatsApp y por correo",
+        "correo": "Te contactamos por correo",
+        "llamada": "Te llamamos al número que registraste y te escribimos por correo"
+      },
+      "wa": "Escríbele a Kain ahora",
+      "listo": "Listo",
+      "simulacion": "Modo de prueba · no se envió a Kommo"
+    },
+    "falla": {
+      "h": "No pudimos enviar tu solicitud",
+      "p": "Tus respuestas siguen aquí. Inténtalo de nuevo o mándanoslas directo:",
+      "reintentar": "Reintentar",
+      "wa": "Escríbele a Kain",
+      "correo": "Enviar por correo",
+      "muchos": "Recibimos varios envíos seguidos. Espera unos minutos o escríbenos por WhatsApp."
+    },
+    "waExito": "Hola Kain, acabo de pedir una cotización en ingeniak.mx (folio {folio}). Me interesa: {servicios}. ¿Seguimos por aquí?",
+    "waFalla": "Hola Kain, quise pedir una cotización en ingeniak.mx y no se envió. Empresa: {empresa}. Me interesa: {servicios}. Presupuesto: {presupuesto}. Plazo: {plazo}.",
+    "mailAsunto": "Cotización web · {empresa}"
+  },
+  "errores": {
+    "servicios": "Elige al menos un servicio.",
+    "objetivo": "Elige qué quieres lograr primero.",
+    "industria": "Elige tu industria.",
+    "tamano": "Elige el tamaño de tu equipo.",
+    "presupuesto": "Elige un rango, aunque sea aproximado.",
+    "plazo": "Elige para cuándo lo necesitas.",
+    "nombre": "Escribe tu nombre completo.",
+    "empresa": "Escribe el nombre de tu empresa.",
+    "telefono": "Escribe los 10 dígitos de tu WhatsApp (ej. 33 1234 5678).",
+    "telefonoPais": "Escribe los {digitos} dígitos de tu WhatsApp, sin el {lada}.",
+    "telefonoOtro": "Escribe tu número de WhatsApp sin la lada del país.",
+    "telefonoLada": "Escribe la lada de tu país (por ejemplo, +52).",
+    "email": "Revisa tu correo.",
+    "canal_preferido": "Elige cómo prefieres que te contactemos.",
+    "sitio": "El sitio o la red social es demasiado largo.",
+    "vision": "El texto es demasiado largo (máximo 1000 caracteres).",
+    "consentimiento": "Necesitamos tu autorización para contactarte."
+  },
+  "prefill": {
+    "consultoria": { "servicio": "consultoria-ia" },
+    "agentes-whatsapp": { "servicio": "agentes-ia" },
+    "kain": { "servicio": "agentes-ia" },
+    "guadalajara": { "servicio": "agentes-ia" },
+    "art-costo": { "servicio": "agentes-ia" },
+    "art-agente-chatbot": { "servicio": "agentes-ia" },
+    "crm-ia": { "servicio": "crm-ia" },
+    "kommo": { "servicio": "crm-ia" },
+    "gohighlevel": { "servicio": "crm-ia" },
+    "art-kommo-ghl": { "servicio": "crm-ia" },
+    "art-partner-kommo": { "servicio": "crm-ia" },
+    "art-ghl-espanol": { "servicio": "crm-ia" },
+    "n8n": { "servicio": "automatizacion" },
+    "art-n8n": { "servicio": "automatizacion" },
+    "paid-media": { "servicio": "paid-media" },
+    "paginas-web": { "servicio": "web-design" },
+    "software": { "servicio": "software" },
+    "seo": { "servicio": "seo" },
+    "branding": { "servicio": "branding" },
+    "ind-salud": { "industria": "salud" },
+    "ind-belleza": { "industria": "belleza" },
+    "ind-nutricion": { "industria": "nutricion" },
+    "ind-finanzas": { "industria": "finanzas" },
+    "ind-inmobiliario": { "industria": "inmobiliario" },
+    "ind-industrial": { "industria": "industrial-logistica" },
+    "ind-retail": { "industria": "retail-ecommerce" },
+    "ind-horeca": { "industria": "horeca" },
+    "caso-dental": { "servicio": "agentes-ia", "industria": "salud" },
+    "caso-retail": { "servicio": "crm-ia", "industria": "retail-ecommerce" },
+    "caso-ecommerce": { "servicio": "paid-media", "industria": "retail-ecommerce" },
+    "caso-horeca": { "servicio": "paid-media", "industria": "horeca" },
+    "caso-logistica": { "servicio": "automatizacion", "industria": "industrial-logistica" }
+  }
+}

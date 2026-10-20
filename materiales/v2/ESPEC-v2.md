@@ -1,6 +1,6 @@
 # ESPEC v2 · Ingeniak — especificación definitiva
 
-> **Fuente única de verdad para construir ingeniak.mx v2.** Fecha: 18 de octubre de 2026 · Versión 1.1 (revisión crítica r1, ver §12) · Estado: lista para construcción, con las puertas de contenido de §12.3.
+> **Fuente única de verdad para construir ingeniak.mx v2.** Fecha: 18 de octubre de 2026 · Versión 1.2 (revisión crítica r1, ver §12; cambio r2 del 20 de octubre de 2026 "Cotizar proyecto" y landings ocultas, ver §12.6) · Estado: lista para construcción, con las puertas de contenido de §12.3.
 > Stack fijo: Astro (SSG, MPA puro, sin ClientRouter) · GSAP 3.13 (ScrollTrigger, SplitText, Flip) · Lenis 1.3.11 · Vercel. Imágenes: Magnific (Nano Banana Pro con referencias de Kain). Video: Remotion / HyperFrames.
 > Base: concepto ganador **"Plano secuencia — el turno de noche de Kain"** (`concepto-cinematic.md`), con injertos de **FOLIO** (`concepto-authority.md`) y **SISTEMA VIVO** (`concepto-system.md`) votados por los 3 jueces.
 > Insumos: `A-sitio-actual.md`, `B-referencias.md`, `C-benchmark.md`, `D-arquitectura.md`, `D-sitemap.json`, `D-navegacion.json`, `D-redirects.json`, `materiales/magnific/v2/RECETA.md`.
@@ -25,7 +25,7 @@
 - [9. Producción de imágenes](#9-producción-de-imágenes)
 - [10. Criterios de aceptación (QA)](#10-criterios-de-aceptación-qa)
 - [11. Pendientes con el cliente](#11-pendientes-con-el-cliente)
-- [12. Revisión crítica](#12-revisión-crítica) (r1: manda sobre §0–§11 donde las contradiga)
+- [12. Revisión crítica](#12-revisión-crítica) (r1: manda sobre §0–§11 donde las contradiga; r2 en §12.6, cambio del 20 de octubre de 2026)
 
 ---
 
@@ -36,7 +36,7 @@
 1. Todo el texto en el HTML inicial (Astro SSG). H1 real y único por página. Nada de texto horneado en imágenes.
 2. **Solo las 11 cifras confirmadas** (§2.10, `metrics.ts`), siempre con sector, ciudad si se conoce, plazo y la nota "Datos internos de Ingeniak, octubre de 2026". Nada de testimonios, clientes, premios ni precios inventados.
 3. Precio: solo **"desde USD 997 al mes"** (constante `PRICE_FROM`). Sin tablas de paquetes ni página de precios.
-4. **Un solo CTA primario en todo el sitio:** "Agenda tu Discovery Session" → `/discovery/` (solo dentro de `/discovery/` va directo a `https://agenda.ingeniak.tech/discovery/agendar`). Secundario: WhatsApp +52 33 2101 7799, "Escríbele a Kain", con el mensaje propio de cada página (`secondaryCta` de D).
+4. **Un solo CTA primario en todo el sitio:** "Agenda tu Discovery Session" → `/discovery/` (solo dentro de `/discovery/` va directo a `https://agenda.ingeniak.tech/discovery/agendar`). Secundario: WhatsApp +52 33 2101 7799, "Escríbele a Kain", con el mensaje propio de cada página (`secondaryCta` de D). **(r2 → §12.6: el primario público es "Cotizar proyecto", que abre el modal de cotización (R15, R16); `/discovery/` y `/power-session/` son landings ocultas que reservan en su propia página (R17))**
 5. KAIN: robot **blanco** brillante, ojos ovalados cian, dos antenas delgadas, auriculares cromados, pantalla cuadrada oscura en el pecho con asterisco cian. **Siempre de cuerpo completo.** El logotipo de la sub-marca es **kain**, siempre en minúsculas.
 6. Paleta: fondo `#03040B`; `#0055FF` solo para acciones; `#00E5FF` para luz de IA, líneas y estados activos; ámbar `#FFB547` **solo** para dolores y problemas.
 7. Equipo de 6 (sin Victor Ocampo). Español de México, tuteo, sin humo, datos antes que adjetivos.
@@ -166,7 +166,7 @@ Archivo único de tokens: `src/styles/tokens.css`. Ningún componente usa un col
 | `--ink-2` | `#060A18` | Penumbra de placas generadas (zona de texto) y fondo de `<dialog>`. |
 | `--paper` | `#070B18` | Superficie sólida (`.solid`) cuando no hay imagen ni luz detrás. Nunca se llama cristal. |
 | `--navy` | `#0A1F4C` | Atmósfera de placas, gradado de imagen, palabra fantasma. Nunca texto. |
-| `--blue` | `#0055FF` | **Solo** el botón primario "Agenda tu Discovery Session". Un azul por pantalla. |
+| `--blue` | `#0055FF` | **Solo** el botón primario "Agenda tu Discovery Session". Un azul por pantalla. **(r2 → §12.6: solo el primario "Cotizar proyecto" —o el de reserva en las landings ocultas— y el botón de avance de un formulario; un azul por pantalla sin cambios (R15))** |
 | `--blue-hi` | `#1A66FF` | Hover y foco del primario. |
 | `--indigo` | `#455DFF` | Solo como paso intermedio de degradados (luz de relleno, `.lit`). Nunca color plano de UI. |
 | `--cyan` | `#00E5FF` | Luz de IA: líneas, ramas, nodos, estados activos, foco, eyebrows. Salida "solución". |
@@ -380,7 +380,7 @@ Reglas duras: (1) **nunca** un cristal detrás del bloque de texto de una escena
 
 | Variante | Clase | Uso | Especificación |
 |---|---|---|---|
-| Primario | `.btn` | **Solo** "Agenda tu Discovery Session" (y "Agendar mi Discovery Session" en `/discovery/`) | Pill azul de 56 px (52 px y ancho completo en la portada móvil), Lexend 500 15 px, con el **nodo del isotipo** a la derecha que "echa rama" en hover. Siempre con microcopia debajo: `30 min · 1:1 · Google Meet · sin costo`. Magnético ±6 px solo con `pointer: fine`. |
+| Primario | `.btn` | **Solo** "Agenda tu Discovery Session" (y "Agendar mi Discovery Session" en `/discovery/`) **(r2 → §12.6: "Cotizar proyecto" con `data-cotizar` en las páginas públicas; "Agendar mi Discovery Session" / "Agendar mi Power Session" → `#agenda` en las landings ocultas)** | Pill azul de 56 px (52 px y ancho completo en la portada móvil), Lexend 500 15 px, con el **nodo del isotipo** a la derecha que "echa rama" en hover. Siempre con microcopia debajo: `30 min · 1:1 · Google Meet · sin costo` **(r2 → §12.6: microcopia "Sin compromiso · Te contactamos por WhatsApp y correo"; la de 30 min queda solo en `/discovery/`)**. Magnético ±6 px solo con `pointer: fine`. |
 | Contorno | `.btn--ghost` | "Escríbele a Kain" (WhatsApp) y el CTA del encabezado cuando hay otro azul visible (F15) | Fondo `rgb(255 255 255 / .04)`, borde interior 1 px `--hair-cyan`, icono de WhatsApp de línea a la izquierda. |
 | Pequeño | `.btn--sm` | Encabezado | 40 px de alto, 13 px. |
 | Icono | `.btn-icon` | WhatsApp circular del encabezado, buscar, menú, pausa | 40 × 40, círculo, borde `--hair-2`, `aria-label` obligatorio. |
@@ -833,7 +833,7 @@ Fuente de datos: `src/data/navegacion.json` (copia de `D-navegacion.json` con lo
 
 | Rango | Contenido |
 |---|---|
-| ≥ 1180 px | Logo (isotipo + "ingeniak") · **Servicios ▾ · Industrias ▾ · Casos ▾ · Kain · Empresa ▾ · Recursos ▾** · botón Buscar (`⌘K`) · WhatsApp circular (`aria-label="Escríbele a Kain por WhatsApp"`) · `.btn--sm` "Agenda tu Discovery Session" |
+| ≥ 1180 px | Logo (isotipo + "ingeniak") · **Servicios ▾ · Industrias ▾ · Casos ▾ · Kain · Empresa ▾ · Recursos ▾** · botón Buscar (`⌘K`) · WhatsApp circular (`aria-label="Escríbele a Kain por WhatsApp"`) · `.btn--sm` "Agenda tu Discovery Session" **(r2 → §12.6: `.btn--sm` "Cotizar proyecto" / corto "Cotizar" con `data-cotizar`; en las landings ocultas, el CTA de la página → `#agenda`)** |
 | 768–1179 px (compacto) | Logo · Buscar · WhatsApp · `.btn--sm` · botón "Menú" (abre la hoja de §4.5) |
 | < 768 px | Logo · Buscar · "Menú" (texto + icono, nunca hamburguesa sola). El CTA vive en la barra inferior (§4.6). |
 
@@ -891,12 +891,12 @@ Fuente de datos: `src/data/navegacion.json` (copia de `D-navegacion.json` con lo
 ### 4.5 Menú móvil y compacto (`MobileMenu`)
 
 - Hoja a pantalla completa `.glass-panel` sobre la escena actual (que se ve desenfocada detrás). `role="dialog"`, `aria-modal="true"`, foco atrapado, Esc cierra, Lenis en pausa mientras está abierta.
-- Orden: buscador (abre ⌘K en la misma hoja) → acordeones **Servicios (por las 5 etapas) · Industrias · Casos · Empresa · Recursos** (cada enlace con su línea de resultado, sin imágenes) → enlace directo **Kain** → fijos al pie: `.btn` "Agenda tu Discovery Session" + `.btn--ghost` WhatsApp.
+- Orden: buscador (abre ⌘K en la misma hoja) → acordeones **Servicios (por las 5 etapas) · Industrias · Casos · Empresa · Recursos** (cada enlace con su línea de resultado, sin imágenes) → enlace directo **Kain** → fijos al pie: `.btn` "Agenda tu Discovery Session" + `.btn--ghost` WhatsApp. **(r2 → §12.6: `.btn` "Cotizar proyecto" + microcopia R15 + `.btn--ghost` WhatsApp; al pulsar, cierra la hoja y abre el modal)**
 - Entrada: hoja `y: 4% → 0` y opacidad en 0.35 s (`--ease-cine`); los grupos con stagger de 0.04 s.
 
 ### 4.6 CTA persistente
 
-- **Barra inferior móvil (`MobileCTABar`):** desde el segundo viewport. `[Agenda tu Discovery]` azul (2/3 del ancho) + `[WhatsApp]` cristal (1/3). Alto 56 px + `env(safe-area-inset-bottom)`. Se oculta: mientras un `[data-primary]` del contenido está visible (F15), cuando el cierre `Dawn` está en pantalla, con el menú abierto y en `/discovery/`.
+- **Barra inferior móvil (`MobileCTABar`):** desde el segundo viewport. `[Agenda tu Discovery]` azul (2/3 del ancho) + `[WhatsApp]` cristal (1/3). **(r2 → §12.6: `[Cotizar proyecto]` con `data-cotizar`; en las landings ocultas, barra propia con el CTA de la página → `#agenda`, pasado el 85 % del primer viewport (R17))** Alto 56 px + `env(safe-area-inset-bottom)`. Se oculta: mientras un `[data-primary]` del contenido está visible (F15), cuando el cierre `Dawn` está en pantalla, con el menú abierto y en `/discovery/`.
 - **Escritorio:** el CTA del encabezado (regla de un azul) + la **píldora "Escríbele a Kain" (`KainPill`)** abajo a la derecha (avatar de Kain de 24 px, texto y nodo cian "responde 24/7"), desde el segundo viewport y **solo mientras el encabezado está oculto**. Se oculta en secuencias fijadas y cuando el cierre está visible. Abre el `secondaryCta.href` de la página. Nunca es azul.
 
 ### 4.7 Riel de escenas (`SceneRail`)
@@ -1098,9 +1098,13 @@ HUD y jornada por sector: Belleza `SALÓN · 20:30` · Nutrición `CONSULTORIO �
 
 ### 5.11 Discovery `/discovery/` (T-CONVERSION)
 
+> **r2 → §12.6:** landing oculta (R17), reconstruida con reserva en la propia página: portada → VSL → `#agenda` "Reserva en 3 pasos" → que-es → para-quien → después → FAQ → cierre; sin `pasos` ni enlaces a `agenda.ingeniak.tech`. Hermana nueva: `/power-session/` (+ `/agendar/confirmado/`). Detalle: `materiales/v2/CAMBIO-COTIZAR.md` §4.
+
 Encabezado reducido (logo + "Agendar mi Discovery Session" → agenda). `hero` `ImageSection` hero (dueño junto a su silla vacía, subject-right) con `.chip-spec` `LLAMADA 1:1 · 30 MINUTOS · SIN COSTO`, H1 de D, texto de v1 y `.btn` directo a `https://agenda.ingeniak.tech/discovery/agendar` → `video` **`VideoScene`** (r1: `ImageSection` mid `subject-center` con la placa `discovery-vsl-poster` a sangre; H2 abajo a la izquierda, botón de reproducir abajo a la derecha; al hacer clic el VSL "la silla vacía" se abre a pantalla completa en `<dialog>`, con subtítulos VTT; nunca un reproductor en una caja con radio) + "Si reconociste tu negocio en este video, esta llamada es tu siguiente paso." → `pasos` `StepRow` (3 pasos de v1: formulario de 7 preguntas en 2 min · eliges horario (hora de CDMX, L–V) · Google Meet) → `que-es` `TwoColumnScript` ("Lo que sí es" en cian / "Lo que no es" en ámbar) → `para-quien` `ImageSection` mid subject-left (móvil `below`) con "Es para ti si… / No es para ti si…" → `despues` `Intertitle` + `.btn` → `faq` (D01–D06) → `cta-final` `Dawn` (placa propia: Kain sentado en la silla del dueño). Sin mega menú, sin riel, sin `KainPill`, sin barra inferior móvil (D).
 
 ### 5.12 Contacto `/contacto/` (T-CONTACT)
+
+> **r2 → §12.6:** la ruta recomendada es "Cotizar proyecto" (abre el modal; `href="#cotizar"`); `formulario` pasa a la sección publicada `cotizar` ("Cotiza tu proyecto": qué sigue en 3 pasos + WhatsApp y correo, que sirven sin JS); `/cotiza` → `/contacto/#cotizar`; sin promesa de tiempos de respuesta.
 
 `hero` `ImageSection` hero subject-left (r1: `home-kain`, Kain saludando junto al teléfono = "Escríbele a Kain"; se descarta la asesora generada porque sugiere una empleada que no existe) con breadcrumb, H1 "Habla con Ingeniak" y 3 rutas: `.btn` Discovery (recomendada) + `.glass-chip` WhatsApp con Kain + `.glass-chip` correo → `rutas` tabla de 3 rutas con tiempo de respuesta `[VALIDAR]` → `formulario` `[POR DECIDIR]` webform de Kommo (nombre, empresa, WhatsApp, mensaje, casilla de aviso de privacidad); si no se aprueba, no existe → `oficina` dirección + horario `[VALIDAR L–V 09:00–18:00]` + mapa estático exportado en el build (imagen, sin embed de terceros al cargar) con enlace a Google Maps → `redes` → `cta-final` `Dawn`.
 
@@ -1726,7 +1730,7 @@ Secciones que nacen en `split`: inicio 06 (Kain), servicios `senales`, `/kain/#s
 - Carga: `LocationSwitcher` descarga solo la placa activa y la siguiente (las demás con intención: hover, foco o flecha); `SystemRuntime` precarga las estaciones 2–5 cuando la sección está a 1.5 pantallas y hace `decode()` antes del pin; stills del mega menú al primer uso; recortes con alfa solo en escritorio.
 - Presupuesto (AVIF, recorrido completo, densidad 2×): **inicio ≤ 3.8 MB en escritorio y ≤ 2.2 MB en móvil**; páginas internas ≤ 2.0 MB y ≤ 1.2 MB; primer pantallazo de cualquier página ≤ 450 KB (placa LCP + Lexend). `check-pesos.mjs` suma por página el candidato más grande de cada `<img>` y falla si se pasa.
 
-**R10 · Medición, atribución y consentimiento.**
+**R10 · Medición, atribución y consentimiento.** **(r2 → §12.6: la lista de eventos y la atribución las sustituye R20; consentimiento y píxeles siguen igual)**
 - Desde el día 1, sin cookies: Vercel Web Analytics + Speed Insights.
 - Eventos (nombre · parámetros): `cta_discovery_click` (página, sección, `folio`) · `whatsapp_click` (página, sección) · `agenda_click` (en `/discovery/`) · `search_open` · `search_submit` (solo longitud y grupo, nunca el texto) · `video_play` / `video_50` / `video_complete` · `faq_open` (id) · `chat_sim_tab` (sector).
 - Atribución: el botón de `/discovery/` a `agenda.ingeniak.tech` conserva los `utm_*` de llegada y agrega `src=<folio>-<sección>` de la página donde la persona hizo clic primero (guardado en `sessionStorage` con `try/catch`). Medición entre dominios configurada en ambos sitios. Nada de datos personales en la URL.
@@ -1781,5 +1785,21 @@ Secciones que nacen en `split`: inicio 06 (Kain), servicios `senales`, `/kain/#s
 6. **Medición:** cuentas de GA4, Meta, Google Ads y TikTok que se instalan tras el consentimiento, y acceso para configurar la medición entre dominios en `agenda.ingeniak.tech`.
 7. **Autores** de los 6 artículos (si no se confirman, firma "Equipo de Ingeniak").
 8. **Hoja de ruta de contenido** (R12): aprobar los 6 temas siguientes y el glosario.
+
+### 12.6 Cambio del 20 de octubre de 2026 · "Cotizar proyecto" y landings ocultas (r2)
+
+**Precedencia:** esta sección sustituye §0.1-4, el rol de `--blue` en §2.1, la fila del primario en §2.9, las etiquetas de CTA de §4.1, §4.5 y §4.6, §5.11, §5.12 y la atribución de R10. Detalle de construcción: `materiales/v2/CAMBIO-COTIZAR.md`.
+
+**R15 · Un primario: "Cotizar proyecto".** En todas las páginas públicas el único CTA primario es el botón azul `.btn` "Cotizar proyecto" (`data-cotizar`), que abre el modal de cotización sin navegar; sin JS lleva a `/contacto/#cotizar`. Microcopia: "Sin compromiso · Te contactamos por WhatsApp y correo" (sin cifras ni promesa de tiempo). El secundario sigue siendo "Escríbele a Kain" (WhatsApp, `.btn--ghost`, mensaje propio de la página). `--blue` = solo el primario y el botón de avance de un formulario. Un azul por pantalla (F15) sin cambios.
+
+**R16 · Modal de cotización.** `<dialog id="cotizar">` montado una vez por página; 3 pasos (Qué necesitas · Tu negocio · Contacto); consentimiento obligatorio de contacto por WhatsApp y correo con enlace al aviso de privacidad; los datos van a Kommo por `POST /api/cotizar/`. Éxito con "qué sigue" y WhatsApp; falla con WhatsApp y correo. Nunca promete tiempos de respuesta. Ningún dato personal en URLs de atribución; el mensaje de WhatsApp prellenado lleva el folio y el resumen del pedido, no datos de contacto.
+
+**R17 · Landings ocultas.** `/discovery/` y `/power-session/` (y `/agendar/confirmado/`) llevan `hidden: true` e `indexable: false`: `noindex,follow`, fuera de `sitemap.xml`, `llms.txt`, `llms-full.txt`, ⌘K, menús, footer, "Sigue explorando" y de todo enlace desde páginas públicas. Encabezado reducido con el CTA de la landing, barra móvil propia y footer mínimo. Su primario reserva directo en la propia página (`#agenda`, flujo portado de riklanderos.tech); la cotización es ruta secundaria (`.lnk`).
+
+**R18 · Ofertas de landing.** Los precios y garantías de las landings viven en `OFFERS` de `metrics.ts` y solo se imprimen con `{{offer:ID}}` dentro de `[data-offer]` en `OFFER_ROUTES`. "Desde USD 997 al mes" (`{{price}}`) sigue siendo el único precio del sitio público. Los rangos de presupuesto del formulario y de facturación de la reserva solo se pintan bajo `[data-form-options]`.
+
+**R19 · Reserva.** La reserva de Discovery y Power replica el flujo de riklanderos.tech (Google Calendar en vivo, Meet, Stripe solo para Power, `/agendar/confirmado/`, cron de limpieza) y además registra cada reserva en Kommo. Kommo nunca bloquea una reserva; Google Calendar es la fuente de verdad.
+
+**R20 · Medición (sustituye la lista de R10).** `cta_cotizar_click`, `cotizar_open`, `cotizar_step`, `cotizar_submit`, `cotizar_success`, `cotizar_error`, `cotizar_close`, `cta_agenda_click`, `booking_view`, `booking_step`, `booking_submit`, `booking_checkout_start`, `booking_confirmed`, `booking_slot_taken`, `booking_error`, `ps_diagnostico`, `whatsapp_click`, `search_open`, `search_submit`, `video_play`/`video_50`/`video_complete`, `faq_open`, `chat_sim_tab`. Atribución en `sessionStorage`: `ingeniak-utm`, `ingeniak-clid`, `ingeniak-landing`, `ingeniak-src`, `ingeniak-agenda-desde`. Nunca texto escrito por la persona.
 
 *Fin de la especificación. Cualquier cambio a este documento se registra con fecha y versión en su encabezado; la versión vigente es la única que el equipo de construcción usa.*

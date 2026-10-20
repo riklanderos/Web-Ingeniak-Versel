@@ -5,7 +5,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "PREGUNTA AL CLIENTE · URL de la ficha de Ingeniak en el directorio de partners de Kommo (D la pide en #licencias, '[VALIDAR URL]'). Mientras no la tengamos, #licencias no enlaza al directorio: solo el sello, que enlaza a kommo.com como pide el programa de partners.",
@@ -22,7 +22,8 @@
     "CAMBIO DE TEXTO · que-hacemos #06: v1 'Un tablero con prospectos, citas, ventas y costo por cliente en tiempo real' pasa a 'Reportes claros' con datos del propio CRM (sin 'tiempo real' ni 'costo por cliente', que dependen de cada implementación).",
     "RESUELTO 2026-10-19 · cliente en chat · (16) plazo de implementación general de Ingeniak: de 7 a 30 días según el alcance. Va en inversion.remate, nunca como plazo de un caso.",
     "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (#que-hacemos, #como-funciona, #inversion).",
-    "RESUELTO 2026-10-19 · cliente en chat · (1) retail-conversiones sin periodo: la cifra sale tal como está en metrics.ts."
+    "RESUELTO 2026-10-19 · cliente en chat · (1) retail-conversiones sin periodo: la cifra sale tal como está en metrics.ts.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: hero.ctaPrimary y cta-final.ctaPrimary pasan a 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización; sin JS lleva a /contacto/#cotizar) con la microcopia compartida de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Claves reescritas porque nombraban la Discovery Session o prometían la llamada de 30 minutos: licencias.credential 'Atención' ('En español, desde Guadalajara (Discovery Session por Google Meet)' → 'En español, desde Guadalajara, por WhatsApp y correo'); inversion.remate ('El alcance exacto lo definimos en tu Discovery Session;' → 'El alcance exacto queda en la cotización de tu proyecto;'); cta-final.h2.soft ('Lo vemos en 30 minutos.' → 'Cuéntanos cómo vendes.'); cta-final.lede (sin 'En la Discovery Session revisamos…': 'Con lo que nos digas de tu equipo y tus canales vemos si Kommo encaja, qué licencias necesitas y qué conviene automatizar primero.'). Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
@@ -31,7 +32,7 @@
       "eyebrow": "Plataforma · Organizar",
       "h1": { "text": "Partner oficial de Kommo", "soft": "en México y LATAM", "lit": "oficial" },
       "lede": "Licencias, implementación y automatización de Kommo con agentes de IA en WhatsApp. Conectamos tus chats, tu embudo y tu seguimiento en un solo CRM que atiende y da seguimiento 24/7.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola, vengo de la página de Kommo de Ingeniak y quiero información sobre licencias e implementación de Kommo."
@@ -161,7 +162,7 @@
       "credential": [
         { "term": "Alianza", "value": "Partner oficial y distribuidor de Kommo en Latinoamérica" },
         { "term": "Incluye", "value": "Licencias, implementación, agentes de IA y capacitación" },
-        { "term": "Atención", "value": "En español, desde Guadalajara (Discovery Session por Google Meet)" }
+        { "term": "Atención", "value": "En español, desde Guadalajara, por WhatsApp y correo" }
       ],
       "credentialNote": "Verifica el sello: enlaza al sitio oficial de Kommo.",
       "items": [
@@ -265,7 +266,7 @@
         { "title": "Integraciones", "line": "Lo que vive alrededor del CRM: el agente de IA, tu calendario y tus otros sistemas con n8n." },
         { "title": "Volumen", "line": "Cuántas conversaciones entran y cuántas personas de tu equipo trabajan en Kommo." }
       ],
-      "remate": "Las licencias de Kommo se cotizan aparte, según plan y usuarios. El alcance exacto lo definimos en tu Discovery Session; según lo que incluya, la implementación toma de 7 a 30 días."
+      "remate": "Las licencias de Kommo se cotizan aparte, según plan y usuarios. El alcance exacto queda en la cotización de tu proyecto; según lo que incluya, la implementación toma de 7 a 30 días."
     },
     "faq": {
       "_componente": "FAQAccordion",
@@ -291,9 +292,9 @@
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
       "eyebrow": "Tu siguiente paso",
-      "h2": { "text": "¿Kommo es para tu operación?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session revisamos cómo vendes y operas hoy, y te decimos si Kommo encaja, qué licencias necesitas y qué conviene automatizar primero.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "h2": { "text": "¿Kommo es para tu operación?", "soft": "Cuéntanos cómo vendes." },
+      "lede": "Con lo que nos digas de tu equipo y tus canales vemos si Kommo encaja, qué licencias necesitas y qué conviene automatizar primero.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola, vengo de la página de Kommo de Ingeniak y quiero información sobre licencias e implementación de Kommo."

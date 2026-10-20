@@ -55,7 +55,7 @@ const page = { ...getPage('/'), id: 'dev-ui', url: '/dev/ui/', canonical: 'https
         <h1 class="t-display-2">Piezas que dicen la verdad <span class="soft">dentro de la escena.</span></h1>
         <p class="t-lede">Botones, cifras, guiones, fotogramas, simuladores y fichas. Cada cifra sale de <code>metrics.ts</code>, cada demo dice SIMULACIÓN y nada vive en una caja.</p>
         <div class="ctas dv-ctas">
-          <Btn variant="primary" href="/discovery/" label="Agenda tu Discovery Session" micro />
+          <Btn variant="primary" cotizar data-section="hero" micro />
           <Btn variant="ghost" href={wa} label="Escríbele a Kain" wa />
         </div>
       </div>
@@ -70,14 +70,14 @@ const page = { ...getPage('/'), id: 'dev-ui', url: '/dev/ui/', canonical: 'https
     <div class="frame dv__head"><p class="t-label">01 · Btn</p><h2 class="t-h3">Un solo azul. <span class="dv-soft">Contorno para WhatsApp, pequeño para el encabezado, icono para lo funcional.</span></h2></div>
     <div class="frame dv__body">
       <div class="dv-col">
-        <p class="t-label dv-k">primary + micro · ghost + wa</p>
-        <div class="ctas"><Btn variant="primary" href="/discovery/" label="Agenda tu Discovery Session" micro /><Btn variant="ghost" href={wa} label="Escríbele a Kain" wa /></div>
+        <p class="t-label dv-k">primary cotizar + micro · ghost + wa</p>
+        <div class="ctas"><Btn variant="primary" cotizar={{ servicio: 'agentes-ia' }} data-section="dev-ui" micro /><Btn variant="ghost" href={wa} label="Escríbele a Kain" wa /></div>
       </div>
       <div class="dv-col">
         <p class="t-label dv-k">sm · sm ghost · icon</p>
         <div class="dv-row">
-          <Btn variant="sm" href="/discovery/" label="Agenda tu Discovery Session" />
-          <Btn variant="sm" ghost href="/discovery/" label="Agenda tu Discovery Session" />
+          <Btn variant="sm" cotizar data-section="dev-ui" />
+          <Btn variant="sm" ghost cotizar data-section="dev-ui" />
           <Btn variant="icon" href={wa} label="Escríbele a Kain por WhatsApp" icon="whatsapp" />
           <Btn variant="icon" label="Buscar" icon="search" />
           <Btn variant="icon" label="Menú" icon="menu" />

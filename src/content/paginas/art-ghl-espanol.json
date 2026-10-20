@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "articulo": {
     "categoria": "CRM",
     "about": [
@@ -45,7 +45,8 @@
     "DATO DE TERCEROS · funciones, planes, idioma de la plataforma, snapshots, WhatsApp (conexión y cobro) y Conversation AI de HighLevel consultados el 2026-10-19 en su sitio y su centro de ayuda oficiales (fuentes 1 a 8). No se copian precios (check-cifras y la regla de D: 'enlace oficial'). Revisar cada trimestre y actualizar 'actualizado'.",
     "CAMBIO DE TEXTO · el brief de D no pedía 'La respuesta corta' dentro del cuerpo; la respuesta es la caja AnswerBox y encabeza el índice. Las siete secciones del cuerpo de D están completas y en orden. Se suman una escena a sangre con el caso dental (CRM GoHighLevel confirmado el 2026-10-19, RESPUESTAS-CLIENTE #14 y #15) y una nota final sobre la relación con HighLevel (nunca 'partner').",
     "CIFRAS · la escena usa dental-citas (cifra grande) y dental-respuesta (|prose), una vez cada una. Nada más del artículo lleva cifras de Ingeniak; el precio solo como {{price}} y el plazo confirmado de 7 a 30 días, según el alcance.",
-    "PLACA · portada gohighlevel-hero (la misma de /gohighlevel/, corte por coincidencia), escena ind-salud-kain-sector en espejo (Kain en la recepción de una clínica agendando citas; caso-dental-hero queda solo en art-costo para no repetir la misma escena en el clúster del blog) y cierre cta-duena-tranquila, como pide sitemap.json. hero.ui queda escrito, pero la plantilla solo pinta la figura sobre una superficie telefono/pantalla/tableta y esta placa registra 'calendario' (pedido en peticiones.md · Construcción · artículos)."
+    "PLACA · portada gohighlevel-hero (la misma de /gohighlevel/, corte por coincidencia), escena ind-salud-kain-sector en espejo (Kain en la recepción de una clínica agendando citas; caso-dental-hero queda solo en art-costo para no repetir la misma escena en el clúster del blog) y cierre cta-duena-tranquila, como pide sitemap.json. hero.ui queda escrito, pero la plantilla solo pinta la figura sobre una superficie telefono/pantalla/tableta y esta placa registra 'calendario' (pedido en peticiones.md · Construcción · artículos).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: cta-medio y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cuerpo (bloque 38): '…en una Discovery Session de 30 minutos, sin costo' → '…a partir de tu solicitud de cotización'. Cierre: 'Lo vemos en 30 minutos.' → 'Cuéntanos cómo trabaja tu equipo.'."
   ],
   "sections": {
     "hero": {
@@ -328,7 +329,7 @@
           "note": "Condiciones de HighLevel consultadas el 19 de octubre de 2026 en sus páginas oficiales (fuentes 1 y 5)."
         },
         "Dos detalles antes de decidir. HighLevel no pide contrato de largo plazo: se paga mes a mes, se puede cambiar de plan o cancelar desde el tablero, y ofrece una prueba gratis de 14 días.[^1] Y una agencia puede revender el uso de WhatsApp con su propio margen, así que pregunta a quien te implemente si ese uso se cobra a costo o con margen.[^5]",
-        "En Ingeniak los proyectos empiezan {{price}}, e implementar un sistema toma de 7 a 30 días, según el alcance. Qué piezas configuramos, qué canales conectamos y qué hará el agente lo definimos contigo en una Discovery Session de 30 minutos, sin costo.",
+        "En Ingeniak los proyectos empiezan {{price}}, e implementar un sistema toma de 7 a 30 días, según el alcance. Qué piezas configuramos, qué canales conectamos y qué hará el agente lo definimos contigo a partir de tu solicitud de cotización.",
         {
           "variant": "note",
           "label": "Para que quede claro",
@@ -345,8 +346,7 @@
         "href": "/gohighlevel/"
       },
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -467,17 +467,15 @@
       "eyebrow": "Tu caso",
       "h2": {
         "text": "¿Quieres GoHighLevel en español, listo para tu equipo?",
-        "soft": "Lo vemos en 30 minutos."
+        "soft": "Cuéntanos cómo trabaja tu equipo."
       },
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, leí la guía de GoHighLevel en español y quiero implementarlo en mi empresa."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

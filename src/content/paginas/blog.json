@@ -5,18 +5,19 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "RESUELTO 2026-10-19 · las seis guías ya tienen página (cada una en borrador hasta su aprobación, R1): su fila enlaza a la guía con su fecha real ('Actualizado', el campo actualizado del artículo) y la primera se destaca en la portada. El lede de #grid ya no dice que se están escribiendo.",
     "PREGUNTA AL CLIENTE · autores de las seis guías (R8): mientras no se confirme quién firma, el crédito visible es 'Equipo de Ingeniak'. Los autores sugeridos en D (Rik Landeros, Alonso Vega, Marcos González) no se publican sin tu confirmación.",
     "PREGUNTA AL CLIENTE · suscripcion: el formulario de correo conectado a Kommo sigue sin decidir (herramienta y doble opt-in). La sección no se publica.",
     "CAMBIO DE TEXTO · grid: D pedía 6 tarjetas con imagen, autor, fecha 'Actualizado: …' y tiempo de lectura. Las guías van como índice editorial (sin tarjetas, R7) con su autor y su fecha 'Actualizado' (la del artículo); el tiempo de lectura no se publica porque no está medido. Cada fila toma su título y su resumen de sitemap.json.",
-    "RESUELTO 2026-10-19 · /preguntas-frecuentes/ ya existe: el enlace del pie de #grid se muestra."
+    "RESUELTO 2026-10-19 · /preguntas-frecuentes/ ya existe: el enlace del pie de #grid se muestra.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. CAMBIO DE AFIRMACIÓN · cierre: '30 minutos, gratis.' → 'Cuéntanos tu proyecto.' y el lede ya no promete una llamada."
   ],
   "sections": {
     "hero": {
-      "_componente": "ImageSection hero (blog-hero; respaldo: discovery-para-quien en espejo) + Breadcrumbs (+ destacado si hay una guía publicada)",
+      "_componente": "ImageSection hero (blog-hero; respaldo: la placa «para quién» de la landing oculta, en espejo; ver hubKit.ts) + Breadcrumbs (+ destacado si hay una guía publicada)",
       "rail": "Portada",
       "eyebrow": "Blog · Guías",
       "h1": {
@@ -26,8 +27,7 @@
       },
       "lede": "Guías sin humo para decidir mejor: cuánto cuesta, qué herramienta elegir y qué automatizar primero.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -167,18 +167,16 @@
       "eyebrow": "Con tu caso",
       "h2": {
         "text": "¿Prefieres que lo veamos con tu caso?",
-        "soft": "30 minutos, gratis."
+        "soft": "Cuéntanos tu proyecto."
       },
-      "lede": "Una guía responde lo general. En la llamada vemos qué aplica en tu negocio y por dónde empezar.",
+      "lede": "Una guía responde lo general. Con tu solicitud de cotización vemos qué aplica en tu negocio y por dónde empezar.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, estoy leyendo el blog de Ingeniak y quiero aplicar esto en mi empresa."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

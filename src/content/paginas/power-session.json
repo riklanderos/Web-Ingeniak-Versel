@@ -1,0 +1,401 @@
+{
+  "pageId": "power-session",
+  "url": "/power-session/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-20",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'. Landing oculta de campañas (CAMBIO-COTIZAR §4.3): noindex,follow, fuera de menús, sitemap.xml, llms y de todo enlace desde páginas públicas.",
+    "PREGUNTA AL CLIENTE · precio: la sesión cuesta USD 297, pago único (sale de OFFERS['power-price'] con el token {{offer:power-price}}; nunca a mano). ¿Sigue vigente?",
+    "PREGUNTA AL CLIENTE · garantía: \"si en la sesión no identificamos al menos 3 fugas por más de $10,000 MXN al mes, te devolvemos los USD 297 completos\" (OFFERS['power-guarantee']) y el reclamo por correo dentro de las 48 horas siguientes (P07). Se porta porque ya se publica en agenda.ingeniak.tech/powersession; confirmar antes del lanzamiento.",
+    "PREGUNTA AL CLIENTE · cupo: \"Abrimos 4 sesiones por semana, por orden de pago.\" (#agenda y #oferta; el código de reserva lo aplica). ¿Sigue siendo 4?",
+    "PREGUNTA AL CLIENTE · grabación y mapa como entregables: \"Grabación y mapa al cerrar\" (#incluye), \"Grabación y mapa\" (#oferta) y \"la sesión queda grabada\" (P04). ¿Se siguen entregando?",
+    "PREGUNTA AL CLIENTE · precio introductorio: \"{{offer:power-price}} es precio introductorio.\" (#garantia, bloque Por qué ahora). ¿Hasta cuándo? Si ya no aplica, la frase sale.",
+    "PREGUNTA AL CLIENTE · \"Las 4 A del empresario libre\" (Auditar, Agrupar, Agentizar, Automatizar; #metodo) conviven con VKTOR™ (Verify · Koncept · Transform · Operate · Rise; #quien). ¿Se quedan las dos o la sesión se explica solo con VKTOR (fase Verify)?",
+    "PREGUNTA AL CLIENTE · cargo de Rik: la fuente dice \"fundador y director de ingeniak\"; el sitio usa el cargo del equipo (TEAM: \"Director de Estrategia Comercial\"). #quien imprime el de TEAM hasta que confirmes cuál va.",
+    "DATO PENDIENTE · VSL de la Power Session: la escena #video queda con _omitir hasta tener /video/powersession-vsl-720.mp4 recodificado (720p, faststart, ≤ 12 MB, subtítulos .vtt). Autoriza la descarga de powersession-vsl.mp4 (agenda.ingeniak.tech, 29.3 MB).",
+    "DATO PENDIENTE · caso \"De 13 horas al día a un sistema\" (servicios profesionales, Monterrey: 13→8 h, $180K→$340K MXN, $65K, $480K, 7.4x…): no está en metrics.ts ni entre los casos del sitio. No se publica sin confirmación, autorización del cliente y alta como métricas.",
+    "DATO PENDIENTE · franja de clientes (ARGI, NUTRIBALANCE, VISAS SOS, DEPORT DEV, KROMA ODONTOLOGÍA): el sitio no publica nombres de clientes sin autorización de cada uno. Omitida.",
+    "DATO PENDIENTE · \"El costo de seguir igual\" (~40 HRS al mes, 27 procesos en tu cabeza) y \"+5 a 15 HRS por semana, por paso\" / \"27 PROCESOS promedio\" del método: estadísticas sin fuente (y el 27 de metrics.ts es otro dato: logística). Omitidas; las líneas del método van sin cifras.",
+    "DATO PENDIENTE · \"Equipo propio de 8 especialistas\" (#quien): RESPUESTAS-CLIENTE 2026-10-19 #7 pide no mencionar el número de personas. Omitido.",
+    "DATO PENDIENTE · lista de giros de la FAQ 2 de la fuente (\"clínicas, despachos, retail, e-commerce, restaurantes, constructoras y servicios profesionales\"): despachos y constructoras sin respaldo. P02 responde sin lista.",
+    "DATO PENDIENTE · ProofBar de riklanderos.tech (franja de prueba social): sin datos confirmados para Ingeniak. Omitida.",
+    "CAMBIO DE TEXTO · voz: la fuente está en primera persona de Rik (\"La sesión la doy yo\", \"Tomo 4 sesiones\"); aquí va en plural de Ingeniak y en tercera persona para Rik (\"La sesión la da Rik, no un vendedor\", \"Abrimos 4 sesiones por semana\"), con tuteo.",
+    "CAMBIO DE TEXTO · apartado de horario: 30 minutos (la fuente decía 15; Stripe exige al menos 30).",
+    "CAMBIO DE TEXTO · pasos: salen \"Cuatro preguntas cortas… Dos minutos\" (el formulario real es más largo) y toda promesa de tiempo (\"te enviamos el enlace en unos minutos\"): la invitación de Google Meet llega al confirmarse el pago, sin plazo.",
+    "CAMBIO DE TEXTO · diagnóstico: números en palabras (\"tres días\", \"cinco procesos\", \"las 10 de la noche\") para que no se lean como cifras comerciales; los mensajes por puntaje son los de la fuente. Con 3 o más marcas aparece el botón de reserva (en la fuente, ámbar con 5/5; aquí siempre el azul único del sitio).",
+    "CAMBIO DE TEXTO · para quién: remate de la fuente \"Si estás del lado izquierdo, los $297 son lo más barato que vas a pagar este año.\" → \"Si te reconociste en la primera lista, esta sesión es para ti.\" (en pantalla las dos listas van una debajo de la otra, por eso \"lista\" y no \"columna\") (sin precio fuera del token ni comparación sin respaldo). \"No estás dispuesto a compartir tus números reales\" → \"No quieres compartir tus números reales.\"",
+    "CAMBIO DE TEXTO · verdad incómoda: \"3 cosas explotan\" → \"tres cosas explotan\"; cada \"si…\" lleva su salida con el sistema (escena de planos gemelos). Cita de kain sin \"Ninguno de los dos trabaja menos.\"",
+    "CAMBIO DE TEXTO · método: lede \"Cuatro pasos y noventa días para un negocio que ya no depende de ti.\"; Agentizar: \"No es software suelto: es capacidad operativa que trabaja a toda hora.\" (la fuente decía \"24/7\").",
+    "CAMBIO DE TEXTO · cierre: la cita de kain termina en \"Trae tus números: los de verdad.\" (sale \"no los que le dices a tu compadre\"). Debajo, dos enlaces de texto: la Discovery Session (llamada de 30 minutos sin costo) y \"Cotizar proyecto\" (abre el formulario de cotización).",
+    "PREGUNTA AL CLIENTE · inasistencias y Términos: los términos de agenda.ingeniak.tech/terminos dicen \"Las inasistencias sin aviso no son reembolsables\" y la fuente enlaza Términos desde el pie y el flujo. Se porta esa frase en la nota de #agenda (junto al formulario de reserva y su paso de pago): \"Puedes reagendar con al menos 24 horas de anticipación; las inasistencias sin aviso no son reembolsables.\" ¿Sigue vigente? ¿Hace falta una página corta de Términos de la Power Session (servicio, apartado, reagendado, inasistencias, garantía) enlazada desde la nota del paso 3 del formulario? El sitio hoy no tiene /terminos/. Pendiente para el área de FAQ: sumar la cláusula de inasistencias a P06; para el área agenda: repetirla bajo el botón de pago.",
+    "CAMBIO DE TEXTO · portada: lede \"90 minutos para auditar tu operación completa, ubicar tus cuellos de botella y definir el orden exacto de lo que se automatiza primero.\" (22 palabras) → \"90 minutos para auditar tu operación, ubicar tus cuellos de botella y ordenar qué se automatiza primero.\" (17): en móvil es la oración del primer pantallazo (hero.ledeOrder \"first\"; \"Con tus números, no con teoría.\" baja bajo la placa). En escritorio el lede va completo.",
+    "CAMBIO DE TEXTO · WhatsApp de la página: \"Hola, vengo de la página de la Power Session y tengo una duda antes de reservar.\" Correo siempre contacto@ingeniak.mx."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (consultoria-hero: Kain apoya la mano en el cristal y presenta una ruta; subject-right, móvil split, priority) + .chip-spec + .btn a la reserva de la página (#agenda). Encabezado reducido.",
+      "rail": "Portada",
+      "eyebrow": "Sesión 1:1 · 90 minutos · Google Meet",
+      "h1": {
+        "text": "Deja de ser el héroe de tu negocio",
+        "soft": "y conviértete en el arquitecto de tu sistema",
+        "litSoft": "arquitecto"
+      },
+      "lede": "90 minutos para auditar tu operación, ubicar tus cuellos de botella y ordenar qué se automatiza primero. Con tus números, no con teoría.",
+      "ledeOrder": "first",
+      "_fig": {
+        "_omitir": true,
+        "_nota": "Sin pie de foto (Fig. 01): en consultoria-hero el ancla fig cae sobre el piso iluminado y el rótulo quedaba en 3.4:1 (< AA). El cosido sujeto-texto lo hace Kain, que presenta la ruta hacia el titular (ESPEC §3.11-7).",
+        "label": "La ruta",
+        "text": "El orden de lo que se automatiza primero, con tus números."
+      },
+      "ctaPrimary": {
+        "label": "Agendar mi Power Session",
+        "href": "#agenda"
+      },
+      "micro": "{{offer:power-price}} · pago único · 90 min por Google Meet",
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, vengo de la página de la Power Session y tengo una duda antes de reservar."
+      }
+    },
+    "video": {
+      "_componente": "VideoScene = ImageSection mid (home-sistema-5-medir) + VSL en <dialog> + primario a #agenda",
+      "rail": "El video",
+      "eyebrow": "Antes de reservar",
+      "h2": {
+        "text": "Mira esto",
+        "soft": "antes de agendar."
+      },
+      "play": "Reproducir el video",
+      "close": "Cerrar el video",
+      "after": "Si reconociste tu operación en este video, esta sesión es tu siguiente paso.",
+      "ctaPrimary": {
+        "label": "Agendar mi Power Session",
+        "href": "#agenda"
+      }
+    },
+    "agenda": {
+      "_kind": "agenda",
+      "_componente": "Intertitle split (aura) · columna izquierda fija en escritorio (eyebrow, H2, pasos, Sales con, nota) + BookingFlow tipo=power a la derecha (área agenda)",
+      "rail": "Reservar",
+      "eyebrow": "Reserva en 3 pasos",
+      "h2": {
+        "text": "Aparta tu lugar",
+        "soft": "en minutos."
+      },
+      "steps": [
+        {
+          "n": "01",
+          "title": "Tu diagnóstico",
+          "line": "Preguntas sobre tu negocio y tu operación. Sin ensayo."
+        },
+        {
+          "n": "02",
+          "title": "Horario",
+          "line": "Próximos 5 días hábiles, en hora del centro de México. Tu horario queda apartado 30 minutos mientras pagas."
+        },
+        {
+          "n": "03",
+          "title": "Pago",
+          "line": "Pagas {{offer:power-price}} con tarjeta en Stripe y te llega la invitación con el enlace de Google Meet."
+        }
+      ],
+      "salesCon": {
+        "title": "Sales con",
+        "items": [
+          "Tu mapa de operación y tus cuellos de botella.",
+          "Un plan de implementación a 90 días.",
+          "El stack recomendado, con precios reales."
+        ]
+      },
+      "nota": "Abrimos 4 sesiones por semana, por orden de pago. Puedes reagendar con al menos 24 horas de anticipación; las inasistencias sin aviso no son reembolsables."
+    },
+    "diagnostico": {
+      "_kind": "quiz",
+      "_componente": "ImageSection mid (dolor-operacion, subject-left, tone dolor, móvil split) + cuestionario de 5 casillas (contador aria-live, mensaje por puntaje en cian, primario a #agenda visible con 3 o más)",
+      "rail": "Diagnóstico",
+      "eyebrow": "Diagnóstico rápido",
+      "h2": {
+        "text": "¿Eres el cuello de botella",
+        "soft": "de tu propio negocio?"
+      },
+      "lede": "Responde con honestidad: el diagnóstico no mejora por cortesía.",
+      "items": [
+        {
+          "title": "Contestas el WhatsApp del negocio después de las 10 de la noche",
+          "line": "Al menos tres veces por semana. Y lo justificas con un “es rapidito”."
+        },
+        {
+          "title": "Si te vas tres días sin señal, la operación se traba",
+          "line": "O alguien termina llamándote de emergencia a media carretera."
+        },
+        {
+          "title": "Hay al menos cinco procesos que “solo tú sabes hacer bien”",
+          "line": "Y en el fondo te gusta un poco que así sea."
+        },
+        {
+          "title": "Tu equipo te pregunta cosas que ya les explicaste",
+          "line": "Porque no existe un manual ni un sistema donde puedan consultarlo sin preguntarte a ti."
+        },
+        {
+          "title": "Te preguntan “¿cómo va el negocio?” y contestas con emoción",
+          "line": "“Bien”, “pesado”, “ahí la llevamos”: antes que con un número."
+        }
+      ],
+      "contador": "{n} de 5",
+      "umbral": 3,
+      "resultados": [
+        {
+          "min": 0,
+          "max": 2,
+          "text": "Menos de tres señales. La sesión sirve para ordenar lo que ya funciona antes de escalarlo."
+        },
+        {
+          "min": 3,
+          "max": 4,
+          "text": "Tres señales o más: tú eres el cuello de botella. La sesión existe exactamente para ese caso."
+        },
+        {
+          "min": 5,
+          "max": 5,
+          "text": "Cinco de cinco. Tu operación no sobrevive un día sin ti. Esto no se arregla leyendo."
+        }
+      ],
+      "ctaPrimary": {
+        "label": "Agendar mi Power Session",
+        "href": "#agenda"
+      }
+    },
+    "para-quien": {
+      "_componente": "ImageSection mid (kain-si-no en espejo: Kain a la derecha, pensativo; móvil split) + TwoColumnScript variant=fit + remate",
+      "rail": "Para quién",
+      "eyebrow": "Encaje",
+      "h2": {
+        "text": "Para quién es",
+        "soft": "esta sesión."
+      },
+      "left": {
+        "title": "Es para ti si…",
+        "tone": "cian",
+        "items": [
+          "Tu negocio ya factura y ya opera: no estás empezando de cero.",
+          "Eres tú quien aprueba, revisa o resuelve casi todo.",
+          "Tienes entre 2 y 50 personas en el equipo, de cualquier giro.",
+          "Quieres un plan que puedas ejecutar, no una charla motivacional."
+        ]
+      },
+      "right": {
+        "title": "No es para ti si…",
+        "tone": "ambar",
+        "items": [
+          "Todavía no vendes nada y buscas validar una idea.",
+          "Buscas que alguien implemente por ti en esos 90 minutos.",
+          "Quieres una herramienta que trabaje sola sin mover un solo proceso.",
+          "No quieres compartir tus números reales."
+        ]
+      },
+      "remate": "Si te reconociste en la primera lista, esta sesión es para ti."
+    },
+    "verdad": {
+      "_kind": "twin",
+      "_componente": "TwinScene (home-problema-a / home-problema-b, subject-left; fijada en escritorio): dolor en ámbar → su salida en cian, remate y línea de kain",
+      "rail": "La verdad incómoda",
+      "eyebrow": "La verdad incómoda",
+      "frase": "El poder que crees tener es exactamente lo que te está atando.",
+      "rows": [
+        {
+          "pain": "Si tú te enfermas, el negocio se enferma.",
+          "fix": "Con un sistema, la operación sigue aunque no estés."
+        },
+        {
+          "pain": "Si te vas de vacaciones, las ventas bajan.",
+          "fix": "Las ventas siguen su proceso, contigo o sin ti."
+        },
+        {
+          "pain": "Si te distraes una semana, tres cosas explotan.",
+          "fix": "Cada pendiente tiene dueño, registro y seguimiento."
+        }
+      ],
+      "remate": "Eso no es un negocio: es un empleo con más horas, más riesgo y sin aguinaldo.",
+      "kain": "Uno trabaja en el negocio; el otro, sobre el negocio."
+    },
+    "metodo": {
+      "_componente": "ImageSection mid (metodologia-hero: Kain en la última de cinco losas; subject-right, móvil split) + ScriptList variant=steps (vertical) + remate + cita de kain",
+      "rail": "El método",
+      "eyebrow": "El método",
+      "h2": {
+        "text": "Las 4 A",
+        "soft": "del empresario libre."
+      },
+      "lede": "Cuatro pasos y noventa días para un negocio que ya no depende de ti.",
+      "items": [
+        {
+          "n": "01",
+          "title": "Auditar · semanas 1–2",
+          "line": "Documentar los procesos que sostienen el negocio y hoy viven en tu cabeza."
+        },
+        {
+          "n": "02",
+          "title": "Agrupar · semanas 1–2",
+          "line": "Clasificar esos procesos en tres cajas: repetitivos, decisiones y relacionales. Sin esta separación, automatizas lo que no debías y sigues atado a lo mismo."
+        },
+        {
+          "n": "03",
+          "title": "Agentizar · semanas 3–6",
+          "line": "Entregar los repetitivos a agentes de IA que reciben, deciden, ejecutan y reportan. No es software suelto: es capacidad operativa que trabaja a toda hora."
+        },
+        {
+          "n": "04",
+          "title": "Automatizar · semanas 7–12",
+          "line": "Lo que no se agentiza se sistematiza: procedimientos claros que cualquiera de tu equipo puede seguir sin preguntarte a ti."
+        }
+      ],
+      "remate": "La Power Session ejecuta los pasos 1 y 2, en 90 minutos.",
+      "kain": "El error más caro es empezar por el paso 3: comprar herramientas antes de auditar es caos más rápido."
+    },
+    "incluye": {
+      "_componente": "ImageSection mid (home-sistema-3-organizar en espejo: Kain a la izquierda con una tarjeta de cristal; móvil split) + ScriptList (6 filas)",
+      "rail": "Qué incluye",
+      "eyebrow": "Qué incluye",
+      "h2": {
+        "text": "Qué pasa",
+        "soft": "en los 90 minutos."
+      },
+      "lede": "Nada de teoría: trabajo sobre tu operación, en vivo.",
+      "items": [
+        {
+          "title": "Auditoría 1:1 de tu operación completa"
+        },
+        {
+          "title": "Diagnóstico de tus cuellos de botella reales"
+        },
+        {
+          "title": "Plan de implementación a 90 días"
+        },
+        {
+          "title": "Stack recomendado, con precios reales"
+        },
+        {
+          "title": "ROI proyectado con tus números"
+        },
+        {
+          "title": "Grabación y mapa al cerrar"
+        }
+      ]
+    },
+    "oferta": {
+      "_kind": "offer",
+      "_componente": "Intertitle (aura isotipo) · precio grande con data-offer, nota, cupo, 6 entregables en 2 columnas, primario a #agenda + micro",
+      "rail": "Oferta",
+      "eyebrow": "90 minutos, uno a uno",
+      "h2": {
+        "text": "Agenda tu Power Session."
+      },
+      "precio": "{{offer:power-price}}",
+      "precioNota": "pago único · sin suscripción",
+      "cupo": "Abrimos 4 sesiones por semana, por orden de pago.",
+      "items": [
+        "Auditoría operativa",
+        "Cuellos de botella",
+        "Plan a 90 días",
+        "Stack recomendado",
+        "ROI con tus números",
+        "Grabación y mapa"
+      ],
+      "ctaPrimary": {
+        "label": "Agendar mi Power Session",
+        "href": "#agenda"
+      },
+      "micro": "Pago seguro con Stripe · Sin suscripción"
+    },
+    "garantia": {
+      "_kind": "guarantee",
+      "_componente": "Intertitle split (aura ondas): bloque Garantía (H2) a la izquierda, bloque Por qué ahora (H3) a la derecha",
+      "rail": "Garantía",
+      "blocks": [
+        {
+          "label": "Garantía",
+          "title": "El riesgo lo asumimos nosotros.",
+          "text": "Garantía: {{offer:power-guarantee}}."
+        },
+        {
+          "label": "Por qué ahora",
+          "tone": "ambar",
+          "title": "El costo de esperar también se acumula.",
+          "text": "Cada semana sin sistema son leads que se enfrían y horas que no recuperas. {{offer:power-price}} es precio introductorio."
+        }
+      ]
+    },
+    "quien": {
+      "_kind": "host",
+      "_componente": "Intertitle split: Rik (TEAM de ui-data) con avatar en duotono de 72 px, KommoBadge y línea VKTOR™",
+      "rail": "Quién te atiende",
+      "eyebrow": "Quién te atiende",
+      "member": "rik-landeros",
+      "body": [
+        "La sesión la da Rik, no un vendedor. Aplica la metodología VKTOR™ con el equipo de Ingeniak en empresas de {{metric:paises|full}}."
+      ],
+      "facts": [
+        "Partner oficial de Kommo en LATAM",
+        "Metodología VKTOR™: Verify · Koncept · Transform · Operate · Rise"
+      ]
+    },
+    "faq": {
+      "_componente": "FAQAccordion (P01–P07; FAQPage con las mismas ids)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas",
+      "h2": {
+        "text": "Lo que todos",
+        "soft": "nos preguntan."
+      },
+      "faqIds": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07"
+      ],
+      "footer": "¿Otra duda? Escríbele a Kain por WhatsApp.",
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, vengo de la página de la Power Session y tengo una duda antes de reservar."
+      }
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila: la dueña tranquila al amanecer; subject-left) · primario a #agenda + Escríbele a Kain + enlaces de texto",
+      "rail": "Cierre",
+      "eyebrow": "Tu siguiente paso",
+      "h2": {
+        "text": "Un gran sistema",
+        "soft": "es la máxima responsabilidad."
+      },
+      "lede": "Hacerlo todo tú te hace héroe por un rato. Construir un sistema te libera para siempre.",
+      "quote": "Nos vemos del otro lado. Trae tus números: los de verdad.",
+      "quoteBy": "kain",
+      "ctaPrimary": {
+        "label": "Agendar mi Power Session",
+        "href": "#agenda"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, vengo de la página de la Power Session y tengo una duda antes de reservar."
+      },
+      "links": [
+        {
+          "label": "¿Prefieres empezar con una llamada de 30 minutos sin costo? Conoce la Discovery Session",
+          "href": "/discovery/"
+        },
+        {
+          "label": "¿Ya sabes lo que necesitas? Cotizar proyecto",
+          "href": "/contacto/#cotizar",
+          "cotizar": true
+        }
+      ]
+    }
+  }
+}

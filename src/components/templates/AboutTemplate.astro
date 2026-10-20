@@ -35,6 +35,7 @@ import FAQAccordion from '../ui/FAQAccordion.astro';
 import Icon from '../ui/Icon.astro';
 import { annotateFigures, esc, TEAM } from '../ui/ui-data';
 import HeroCtas from './HeroCtas.astro';
+import { primaryLabel, quoteLink } from '../layout/cta';
 import Aura from './Aura.astro';
 import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
 import { waHref, linkTarget, isBuilt, getPlate, SITE, type Page } from '../../lib/site';
@@ -65,7 +66,8 @@ function headHtml(h: any, lit?: string | null): string {
 const wa = P.secondaryCta?.href ?? waHref(C.hero?.ctaSecondary?.waMessage ?? 'Hola Kain');
 const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
 /** Enlaces del copy que ya llevan a una página construida (R12: nunca un enlace a una ruta sin construir). */
-const builtLinks = (list?: any[]) => (list ?? []).filter((l) => l?.href && isBuilt(l.href));
+// "cotizar": true (o una landing oculta) → disparador del modal: <a href={l.href} {...l.attrs}> (CAMBIO-COTIZAR §1.2).
+const builtLinks = (list?: any[]) => (list ?? []).map((l) => quoteLink(l, undefined, P.url)).filter((l) => l?.href && isBuilt(l.href));
 const firstReady = (...ids: (string | null | undefined)[]) => ids.find((id) => !!id && plateReady(id)) ?? null;
 
 /* ── 01 · portada (R6) ──────────────────────────────────────────────────── */
@@ -160,7 +162,7 @@ const personLd = cast.map((p) => ({
           {hero.lede && (
             <p class="t-lede t-lede--2 ab-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
           )}
-          <HeroCtas href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+          <HeroCtas label={primaryLabel(hero)} section="hero"
             waHref={wa} waLabel={waLabel(hero)} />
           {/* R3 · móvil: después de la placa (misma sección) va la cola del lede */}
           {heroLede.rest && (
@@ -304,7 +306,7 @@ const personLd = cast.map((p) => ({
                 <h3 id="ali-kommo-t" class="ab-ally__t">{ali.kommo.title}</h3>
                 <Copy as="p" class="ab-ally__b" text={ali.kommo.body} />
                 {builtLinks(ali.kommo.links).length > 0 && (
-                  <p class="ab-ally__links">{builtLinks(ali.kommo.links).map((l: any) => <a class="lnk" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>)}</p>
+                  <p class="ab-ally__links">{builtLinks(ali.kommo.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>)}</p>
                 )}
               </article>
             )}
@@ -315,7 +317,7 @@ const personLd = cast.map((p) => ({
                 <h3 id="ali-kain-t" class="ab-ally__t"><span class="sr-only">kain: </span>{ali.kain.title}</h3>
                 <Copy as="p" class="ab-ally__b" text={ali.kain.body} />
                 {builtLinks(ali.kain.links).length > 0 && (
-                  <p class="ab-ally__links">{builtLinks(ali.kain.links).map((l: any) => <a class="lnk" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>)}</p>
+                  <p class="ab-ally__links">{builtLinks(ali.kain.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>)}</p>
                 )}
               </article>
             )}
@@ -331,7 +333,7 @@ const personLd = cast.map((p) => ({
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{faq.eyebrow}</p>
           <h2 id="faq-t" class="t-h2" data-split set:html={headHtml(faq.h2)} />
           {faq.footer && <Copy as="p" class="t-lede t-lede--2 ab-faq__foot" text={faq.footer} data-reveal />}
-          {faq.footer && <div class="ab-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} />{builtLinks(faq.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name="arrow" size={16} /></a>)}</div>}
+          {faq.footer && <div class="ab-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} />{builtLinks(faq.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name="arrow" size={16} /></a>)}</div>}
         </Fragment>
         <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
         <FAQAccordion ids={faq.faqIds} glass id="faq-list" label={faq.eyebrow} />
@@ -345,14 +347,7 @@ const personLd = cast.map((p) => ({
         <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
         {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
         <div class="ctas">
-          {cta.micro ? (
-            <div class="cta-p">
-              <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
-              <Copy as="p" class="t-micro btn-micro" text={cta.micro} data-allow-number />
-            </div>
-          ) : (
-            <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
-          )}
+          <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(cta)} micro />
           <Btn variant="ghost" href={wa} label={waLabel(cta)} />
         </div>
       </Dawn>

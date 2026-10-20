@@ -3,6 +3,7 @@
 // palabras y CTAs); el resto va al slot `more`, después de la placa y dentro de la misma <section>.
 // En escritorio el intro no cambia: el lede completo sigue en su sitio (la cola solo se repite en `more` para móvil).
 import { isBuilt, builtRoutes, pages, copyOrNull } from '../../lib/site';
+import { isHiddenHref } from '../layout/cta';
 
 const words = (t: string) => t.replace(/\{\{[^}]+\}\}/g, 'X').split(/\s+/).filter(Boolean).length;
 /** Oraciones de un texto del copy (los tokens {{…}} quedan intactos). */
@@ -53,11 +54,12 @@ export function builtCrumbs(list?: { name: string; url?: string }[] | null): { n
 }
 
 /* ── Enlaces del cuerpo a rutas construidas (R12 / QA · enlaces) ───────────────────────────────────────────────────── */
-const GROUP_LABEL: Record<string, string> = { Servicios: 'Servicio', Industrias: 'Industria', Casos: 'Caso de estudio', 'Conversión': 'Discovery Session', 'Núcleo': 'Ingeniak' };
+// 'Conversión' (/contacto/) = 'Contacto'. Las landings ocultas (/discovery/, /power-session/, /agendar/…) nunca se sugieren (R17).
+const GROUP_LABEL: Record<string, string> = { Servicios: 'Servicio', Industrias: 'Industria', Casos: 'Caso de estudio', 'Conversión': 'Contacto', 'Núcleo': 'Ingeniak' };
 /** Fila de una página construida con texto de su propio copy: título (su breadcrumb), etiqueta (su grupo) y la primera
  *  oración de su portada sin cifras ni tokens. null si la página no existe o no está construida. */
 export function builtRow(url: string): { href: string; label: string; title: string; line: string } | null {
-  if (!url || !isBuilt(url)) return null;
+  if (!url || !isBuilt(url) || isHiddenHref(url)) return null;
   const pg = (pages as any[]).find((p) => p.url === url);
   if (!pg) return null;
   const cp = copyOrNull(pg.id);
@@ -68,16 +70,16 @@ export function builtRow(url: string): { href: string; label: string; title: str
 /**
  * "Sigue explorando" sin enlaces rotos: los destinos del copy que ya están construidos (con su texto del copy) y, si
  * faltan para llegar a `want`, páginas construidas: primero las que la página ya enlaza en su copy (`prefer`), luego el
- * resto. Nunca la página actual, el inicio ni el 404.
+ * resto. Nunca la página actual, el inicio, el 404 ni una landing oculta (isHidden).
  */
 export function builtRelated(items: any[] | undefined, opts: { self: string; want?: number; prefer?: string[] }) {
   const want = opts.want ?? 3;
-  const out: any[] = (items ?? []).filter((it) => it?.href && isBuilt(it.href) && it.href !== opts.self);
+  const out: any[] = (items ?? []).filter((it) => it?.href && isBuilt(it.href) && !isHiddenHref(it.href) && it.href !== opts.self);
   const have = new Set(out.map((x) => x.href.split('#')[0]));
   const pool = [...(opts.prefer ?? []), ...builtRoutes].map((u) => u.split('#')[0]);
   for (const u of pool) {
     if (out.length >= want) break;
-    if (have.has(u) || u === opts.self || u === '/' || u === '/404') continue;
+    if (have.has(u) || u === opts.self || u === '/' || u === '/404' || isHiddenHref(u)) continue;
     const row = builtRow(u);
     if (row) { out.push(row); have.add(u); }
   }

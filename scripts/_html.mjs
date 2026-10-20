@@ -5,7 +5,7 @@
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { isNoindex, gatePending as gatePendingRule } from '../src/lib/indexacion.mjs';
+import { isNoindex, isHidden as isHiddenPageRule, gatePending as gatePendingRule } from '../src/lib/indexacion.mjs';
 
 export const ROOT = fileURLToPath(new URL('..', import.meta.url));
 export const DIST = join(ROOT, 'dist');
@@ -69,13 +69,15 @@ export function reporter(name, opts) {
 const readJSON = (p) => JSON.parse(readFileSync(p, 'utf8'));
 /** sitemap.json tal cual (con tokens {{metric:…}} en title/metaDescription): lo usa check-cifras para vigilar la fuente. */
 export const SITEMAP_RAW = readJSON(join(ROOT, 'src/data/sitemap.json'));
-/** Tokens de cifra en los textos de sitemap.json (misma sintaxis que el copy y src/lib/site.ts → resolveTokens). */
-export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|price|Price|source)\}\}/g;
+/** Tokens de cifra en los textos de sitemap.json (misma sintaxis que el copy y src/lib/site.ts → resolveTokens).
+ *  {{offer:ID}} = oferta de una landing oculta (OFFERS de metrics.ts, ESPEC §12.6 R18). */
+export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price|Price|source)\}\}/g;
 let metricsCache = null;
 export function resolveTokens(s) {
   if (typeof s !== 'string' || !s.includes('{{')) return s;
   const M = (metricsCache ??= loadMetrics());
-  return s.replace(new RegExp(TOKEN_RX.source, 'g'), (all, k, id, mod) => {
+  return s.replace(new RegExp(TOKEN_RX.source, 'g'), (all, k, id, mod, offer) => {
+    if (offer) { const o = M.OFFERS[offer]; if (!o) throw new Error(`[check] sitemap.json: oferta desconocida ${all}`); return o; }
     if (k === 'price') return M.PRICE_FROM; if (k === 'Price') return M.PRICE_FROM_CAP; if (k === 'source') return M.SOURCE_NOTE;
     const m = M.metrics[id];
     if (!m) throw new Error(`[check] sitemap.json: cifra desconocida ${all}`);
@@ -106,7 +108,13 @@ export function loadMetrics() {
   const price = src.match(/PRICE_FROM\s*=\s*'([^']+)'/)?.[1];
   const priceCap = src.match(/PRICE_FROM_CAP\s*=\s*'([^']+)'/)?.[1];
   const source = src.match(/SOURCE_NOTE\s*=\s*'([^']+)'/)?.[1];
-  return { metrics: out, PRICE_FROM: price, PRICE_FROM_CAP: priceCap, SOURCE_NOTE: source };
+  // Ofertas de las landings ocultas (OFFERS y OFFER_ROUTES, CAMBIO-COTIZAR §4.4)
+  const OFFERS = {};
+  const ob = src.match(/export const OFFERS\s*=\s*\{([\s\S]*?)\}\s*as const/);
+  if (ob) for (const m of ob[1].matchAll(/'([a-z0-9-]+)':\s*'([^']*)'/g)) OFFERS[m[1]] = m[2];
+  const or = src.match(/export const OFFER_ROUTES\s*=\s*\[([^\]]*)\]/);
+  const OFFER_ROUTES = or ? [...or[1].matchAll(/'([^']+)'/g)].map((m) => m[1]) : [];
+  return { metrics: out, PRICE_FROM: price, PRICE_FROM_CAP: priceCap, SOURCE_NOTE: source, OFFERS, OFFER_ROUTES };
 }
 /** Caso breve (R2): sitemap trae publishGate y el copy no lo marca confirmado. */
 export function gatePending(page) {
@@ -135,6 +143,19 @@ export function isBuiltPage(page) {
 }
 export const BUILT = new Set(SITEMAP.filter(isBuiltPage).map((p) => p.url));
 export const SITEMAP_URLS = new Set(SITEMAP.map((p) => p.url));
+/** Landings ocultas (sitemap.json → hidden: true; ESPEC §12.6 R17): /discovery/, /power-session/, /agendar/confirmado/. */
+export const HIDDEN = new Set(SITEMAP.filter((p) => isHiddenPageRule(p)).map((p) => p.url));
+/** ¿El href (ruta, URL de ingeniak.mx, con hash o query) lleva a una landing oculta, a /agendar/… o a la agenda externa de v1? */
+export function isHiddenHref(href) {
+  if (!href) return false;
+  if (/agenda\.ingeniak\.tech/i.test(href)) return true;
+  const r = normRoute(href);
+  return !!r && (HIDDEN.has(r) || r.startsWith('/agendar/'));
+}
+/** Página pública: está en sitemap.json y no es oculta (el 404 cuenta como pública). */
+export const isPublicPage = (page) => !!page && !isHiddenPageRule(page);
+/** ¿La entrada de sitemap.json es una landing oculta? (el isHidden de abajo es otro: nodo oculto del DOM) */
+export const isHiddenPage = (page) => isHiddenPageRule(page);
 /** Páginas que deben estar en sitemap.xml / llms.txt / llms-full.txt (R8): indexables, construidas y sin puerta pendiente. */
 export function indexablePages({ builtOnly = true } = {}) {
   return SITEMAP.filter((p) => !isNoindex(p, copyOf(p.id)) && (!builtOnly || BUILT.has(p.url)));

@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'. Nadie del equipo de construcción cambia ese campo.",
     "FAQ DISTINTA DE D · G01: agrega 'conectados en un solo sistema' y 'Somos partner oficial de Kommo en Latinoamérica'; las cifras van como token (sistemas, paises).",
@@ -32,7 +32,8 @@
     "RESUELTO 2026-10-19 · cliente en chat · (10) selector de industrias sin cifra donde no la hay: aprobado. metrics.ts no tiene cifras reales de belleza, nutrición, finanzas ni inmobiliario, así que esos cuatro sectores siguen sin cifra (no se inventa ninguna).",
     "RESUELTO 2026-10-19 · cliente en chat · (11) turno de noche (HUD de 23:47 a 06:00): validado; se queda igual.",
     "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (sistema.steps[atender].line, kain.lede, servicios › Agentes de IA para WhatsApp).",
-    "RESUELTO 2026-10-19 · cliente en chat · (20) firma 'Construimos empresarios libres, no héroes cansados.': aprobada (vive en _comun y en /discovery/)."
+    "RESUELTO 2026-10-19 · cliente en chat · (20) firma 'Construimos empresarios libres, no héroes cansados.': aprobada (vive en _comun y en /discovery/).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: hero.ctaPrimary y cta-final.ctaPrimary pasan a 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización; sin JS lleva a /contacto/#cotizar) con la microcopia compartida de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Claves reescritas porque nombraban la Discovery Session o prometían la llamada de 30 minutos: servicios.closing ('…lo definimos en tu Discovery Session.' → '…lo definimos contigo al cotizar tu proyecto.'); vktor.lede ('La Discovery Session es la fase V…' → 'Todo empieza en la fase V…'); industrias.footer ('…lo revisamos en tu Discovery Session.' → '…cotiza tu proyecto y lo revisamos contigo.'); faq.entity 'Primer paso' ('Discovery Session: 30 minutos, 1:1, por Google Meet, sin costo' → 'Cotizar proyecto · te contactamos por WhatsApp y correo'; EntitySheet enlaza 'Cotizar proyecto' al modal). cta-final pierde su 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet'): la pinta _comun.cta.micro. Sustituye lo dicho en el RESUELTO (8) ('El CTA sigue siendo la Discovery Session de 30 minutos'): la Discovery Session y la Power Session quedan como landings ocultas y esta página no las nombra. Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
@@ -44,7 +45,7 @@
         "lit": "empresas.",
         "soft": "Agentes de IA, CRM y automatización en un solo sistema."
       },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de inicio de ingeniak.mx y quiero ver cómo un agente de IA atendería mi negocio."
@@ -292,7 +293,7 @@
           ]
         }
       ],
-      "closing": "Planes {{price}}. El alcance lo definimos en tu Discovery Session.",
+      "closing": "Planes {{price}}. El alcance lo definimos contigo al cotizar tu proyecto.",
       "links": [{ "label": "Ver todos los servicios", "href": "/servicios/" }]
     },
     "casos": {
@@ -328,7 +329,7 @@
         "text": "Tu crecimiento tiene un protocolo.",
         "soft": "Nosotros lo activamos."
       },
-      "lede": "La Discovery Session es la fase V: antes de proponerte nada, verificamos cómo opera tu negocio hoy.",
+      "lede": "Todo empieza en la fase V: antes de proponerte nada, verificamos cómo opera tu negocio hoy.",
       "phases": [
         { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Revisamos con números cómo vendes, atiendes y operas hoy." },
         { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Qué se automatiza, con qué herramientas y en qué orden." },
@@ -408,7 +409,7 @@
         }
       ],
       "rowLink": "Ver industria",
-      "footer": "¿No ves tu sector? Si vendes por conversación, lo revisamos en tu Discovery Session.",
+      "footer": "¿No ves tu sector? Si vendes por conversación, cotiza tu proyecto y lo revisamos contigo.",
       "links": [{ "label": "Ver todas las industrias", "href": "/industrias/" }],
       "hud": [{ "pos": "tr", "text": "05:00 · Locación 1/8" }]
     },
@@ -443,7 +444,7 @@
         { "term": "Países", "value": "{{metric:paises}}: México (sede), Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador" },
         { "term": "Metodología", "value": "VKTOR™: Verify · Koncept · Transform · Operate · Rise" },
         { "term": "Inversión", "value": "{{Price}}" },
-        { "term": "Primer paso", "value": "Discovery Session: 30 minutos, 1:1, por Google Meet, sin costo" },
+        { "term": "Primer paso", "value": "Cotizar proyecto · te contactamos por WhatsApp y correo" },
         { "term": "Contacto", "value": "contacto@ingeniak.mx · WhatsApp +52 33 2101 7799" }
       ],
       "h2": { "text": "Lo que nos preguntan", "soft": "antes de empezar." },
@@ -458,12 +459,11 @@
         "text": "Tú dormiste.",
         "soft": "Tu negocio amaneció al día."
       },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de inicio de ingeniak.mx y quiero ver cómo un agente de IA atendería mi negocio."
       },
-      "micro": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet",
       "hud": [{ "pos": "tr", "text": "13 / 13 — 06:00" }]
     }
   }

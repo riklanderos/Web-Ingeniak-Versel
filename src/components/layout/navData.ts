@@ -27,7 +27,6 @@ export function shortName(href: string): string {
     '/industrias/': 'Todas las industrias',
     '/casos/': 'Todos los casos',
     '/blog/': 'Blog',
-    '/discovery/': 'Discovery Session',
     '/kain/': 'Kain',
     'https://app.kain.mx/': 'app.kain.mx',
   };

@@ -4,9 +4,18 @@
 // PRICE_FROM. Revisa además <title>, meta description, og:* / twitter:* y los strings del JSON-LD: ahí una cifra solo
 // pasa si es literalmente una de metrics.ts (valor, "valor etiqueta" o prose) o el precio oficial. Y revisa la fuente:
 // title/metaDescription/h1 de sitemap.json con cifras solo como token (src/lib/site.ts → resolveTokens).
+// Cambio 2026-10-20 (CAMBIO-COTIZAR §6.1, ESPEC §12.6 R18):
+//   (a) data-offer="<id>": una cifra o importe cuyos dígitos caen todos bajo [data-offer] pasa solo en OFFER_ROUTES y si el
+//       texto del nodo es exactamente OFFERS[id]; en otra ruta → "oferta fuera de su landing".
+//   (b) data-form-options: los importes bajo [data-form-options] pasan si están dentro de una etiqueta de opción de
+//       src/data/cotizar.json → presupuestos[].label o de REVENUES de shared/agenda.js (rangos del formulario, no precios).
+//   (c) En OFFER_ROUTES, atributos, <head> y JSON-LD aceptan cadenas que contengan un valor de OFFERS.
+//   (d) MICRO_29 se queda (solo la usa /discovery/). (e) Cualquier otro USD o $ en páginas públicas sigue fallando.
 // Uso: node scripts/check-cifras.mjs [--url http://127.0.0.1:4321] [--release]
+import { readFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { parseArgs, reporter, loadPages, loadMetrics, parseHTML, walk, isEl, find, findAll, jsonLd, jsonStrings, norm, sectionIdOf, SITEMAP_RAW, TOKEN_RX, BUILT } from './_html.mjs';
+import { ROOT, parseArgs, reporter, loadPages, loadMetrics, parseHTML, walk, isEl, find, findAll, jsonLd, jsonStrings, norm, textOf, sectionIdOf, SITEMAP_RAW, TOKEN_RX, BUILT } from './_html.mjs';
 
 // (?<![\d:]) evita horas ("16:00 Citas de mañana"); "citas/procesos/min" en minúsculas (una oración que empieza con "Citas" no es cifra)
 const FIG_RX = /(?<![\d:.,])\d+(?:[.,]\d+)?\s?(?:%|×|[xX]\b)|(?<![\d:.,])\d+\s+(?:citas|procesos)\b|(?<![\d:.,])\d+\s?min\b|USD\s?\d[\d.,]*/g;
@@ -52,6 +61,15 @@ function priceOk(text, a, b, M) {
   }
   return false;
 }
+/** Etiquetas de opción con importes permitidas bajo [data-form-options] (presupuesto de la cotización, facturación de la reserva). */
+async function formOptionLabels() {
+  const out = [];
+  const cj = join(ROOT, 'src/data/cotizar.json');
+  if (existsSync(cj)) { try { for (const o of JSON.parse(readFileSync(cj, 'utf8')).presupuestos ?? []) if (o?.label) out.push(String(o.label)); } catch {} }
+  const ag = join(ROOT, 'shared/agenda.js');
+  if (existsSync(ag)) { try { const m = await import(pathToFileURL(ag).href); for (const r of m.REVENUES ?? []) out.push(String(typeof r === 'string' ? r : r?.label ?? '')); } catch {} }
+  return out.filter(Boolean).sort((a, b) => b.length - a.length);
+}
 const ctx = (s, a, b) => `…${s.slice(Math.max(0, a - 32), a)}[${s.slice(a, b)}]${s.slice(b, b + 32)}…`.replace(/\s+/g, ' ');
 
 /** Flujo de texto visible del <body> con el permiso de cada carácter (metric | allow | null). */
@@ -72,6 +90,8 @@ function textStream(root) {
     if (['script', 'style', 'template'].includes(n.tag)) return;
     let p = cur;
     if ('data-metric' in n.attrs) p = { k: 'metric', id: n.attrs['data-metric'], el: n };
+    else if ('data-offer' in n.attrs) p = { k: 'offer', id: n.attrs['data-offer'], el: n };
+    else if ('data-form-options' in n.attrs) p = { k: 'form', el: n };
     else if ('data-allow-number' in n.attrs) p = { k: 'allow', el: n };
     const block = BLOCK.test(n.tag);
     if (block) { s += ' '; perm.push(cur); owner.push(n); }
@@ -86,11 +106,35 @@ export async function run(opts) {
   const R = reporter('check-cifras', opts);
   const M = loadMetrics();
   const MS = metricStrings(M);
+  const OFFER_VALUES = Object.values(M.OFFERS ?? {}).sort((a, b) => b.length - a.length);
+  const FORM_LABELS = await formOptionLabels();
   const pages = await loadPages(opts);
   let scanned = 0;
   for (const pg of pages) {
     const root = parseHTML(pg.html);
     scanned++;
+    // las páginas de demostración (/dev/*, solo con --dev; no salen en producción) pueden mostrar los componentes de las
+    // landings (reserva, Stripe simulado) con su oferta
+    const offerRoute = (M.OFFER_ROUTES ?? []).includes(pg.route) || pg.dev === true;
+    // (a) cada [data-offer] de la página: id conocido, texto idéntico a OFFERS[id] y solo en su landing
+    for (const el of findAll(root, (x) => 'data-offer' in x.attrs)) {
+      const id = el.attrs['data-offer'];
+      const where = sectionIdOf(el) ? `#${sectionIdOf(el)}` : 'sin sección';
+      if (!M.OFFERS?.[id]) { R.fail(pg.route, `data-offer="${id}" no existe en OFFERS de metrics.ts (${where})`); continue; }
+      if (!offerRoute) { R.fail(pg.route, `oferta fuera de su landing: data-offer="${id}" (${where}); OFFER_ROUTES = ${M.OFFER_ROUTES.join(' ')}`); continue; }
+      const t = norm(textOf(el));
+      if (t !== M.OFFERS[id]) R.fail(pg.route, `data-offer="${id}" con texto distinto de OFFERS['${id}'] (${where}): "${t.slice(0, 80)}"`);
+    }
+    /** Permiso de una coincidencia [a,b) del flujo: 'offer' (todos los dígitos bajo un data-offer válido), 'form' (bajo
+     *  data-form-options y dentro de una etiqueta de opción permitida) o null. */
+    const special = (s, perm, a, b) => {
+      const digits = [];
+      for (let i = a; i < b; i++) if (/\d/.test(s[i])) digits.push(perm[i]);
+      if (!digits.length) return null;
+      if (digits.every((p) => p?.k === 'offer')) return offerRoute && digits.every((p) => M.OFFERS?.[p.id]) ? 'offer' : 'offer-out';
+      if (digits.every((p) => p?.k === 'form')) return covered(s, a, b, FORM_LABELS) ? 'form' : 'form-bad';
+      return null;
+    };
     // 1) Texto visible
     const { s, perm, owner } = textStream(root);
     FIG_RX.lastIndex = 0;
@@ -101,6 +145,10 @@ export async function run(opts) {
       for (let i = a; i < b; i++) if (/\d/.test(s[i])) digits.push(i);
       const perms = digits.map((i) => perm[i]);
       const where = sectionIdOf(owner[a]) ? `#${sectionIdOf(owner[a])}` : 'sin sección';
+      const sp = special(s, perm, a, b);
+      if (sp === 'offer' || sp === 'form') continue;
+      if (sp === 'offer-out') { R.fail(pg.route, `oferta fuera de su landing en ${where}: ${ctx(s, a, b)}`); continue; }
+      if (sp === 'form-bad') { R.fail(pg.route, `importe bajo data-form-options que no es una opción de cotizar.json → presupuestos ni de REVENUES (${where}): ${ctx(s, a, b)}`); continue; }
       const isPrice = /^USD/i.test(m[0]);
       if (isPrice) { if (!priceOk(s, a, b, M)) R.fail(pg.route, `precio distinto de PRICE_FROM ("${M.PRICE_FROM}") en ${where}: ${ctx(s, a, b)}`); continue; }
       if (perms.some((p) => !p) && inMicro(s, a, b)) continue;
@@ -114,7 +162,9 @@ export async function run(opts) {
     PRICE_RX.lastIndex = 0;
     while ((m = PRICE_RX.exec(s))) {
       if (/^USD/i.test(m[0])) continue;
-      R.fail(pg.route, `importe fuera de PRICE_FROM: ${ctx(s, m.index, m.index + m[0].length)}`);
+      const sp = special(s, perm, m.index, m.index + m[0].length);
+      if (sp === 'offer' || sp === 'form') continue;
+      R.fail(pg.route, `${sp === 'offer-out' ? 'oferta fuera de su landing' : sp === 'form-bad' ? 'importe bajo data-form-options que no es una opción permitida' : 'importe fuera de PRICE_FROM'}: ${ctx(s, m.index, m.index + m[0].length)}`);
     }
     // 2) Atributos legibles (alt, aria-label, title, placeholder): mismas cifras prohibidas salvo bajo data-metric
     for (const el of walk(root)) {
@@ -123,12 +173,21 @@ export async function run(opts) {
         const v = el.attrs[at];
         if (!v || el.tag === 'title') continue;
         const okAnc = (() => { let x = el; while (x) { if (isEl(x) && ('data-metric' in x.attrs || 'data-allow-number' in x.attrs)) return true; x = x.parent; } return false; })();
+        const formAnc = (() => { let x = el; while (x) { if (isEl(x) && 'data-form-options' in x.attrs) return true; x = x.parent; } return false; })();
+        // (b) y (c): rangos del formulario bajo data-form-options; ofertas solo en OFFER_ROUTES
+        const attrOk = (a, b) => (formAnc && covered(v, a, b, FORM_LABELS)) || (offerRoute && covered(v, a, b, OFFER_VALUES));
         FIG_RX.lastIndex = 0;
         while ((m = FIG_RX.exec(v))) {
           const a = m.index, b = a + m[0].length;
+          if (attrOk(a, b)) continue;
           if (/^USD/i.test(m[0])) { if (!priceOk(v, a, b, M)) R.fail(pg.route, `precio distinto de PRICE_FROM en ${at}: ${ctx(v, a, b)}`); continue; }
           if (okAnc || covered(v, a, b, MS)) continue;
           R.fail(pg.route, `cifra escrita a mano en ${at} de <${el.tag}>: ${ctx(v, a, b)}`);
+        }
+        PRICE_RX.lastIndex = 0;
+        while ((m = PRICE_RX.exec(v))) {
+          if (/^USD/i.test(m[0]) || attrOk(m.index, m.index + m[0].length)) continue;
+          R.fail(pg.route, `importe fuera de PRICE_FROM en ${at} de <${el.tag}>: ${ctx(v, m.index, m.index + m[0].length)}`);
         }
       }
     }
@@ -150,11 +209,12 @@ export async function run(opts) {
       FIG_RX.lastIndex = 0;
       while ((m = FIG_RX.exec(v))) {
         const a = m.index, b = a + m[0].length;
+        if (offerRoute && covered(v, a, b, OFFER_VALUES)) continue; // (c) Offer del JSON-LD, meta de la landing
         if (/^USD/i.test(m[0])) { if (!priceOk(v, a, b, M)) R.fail(pg.route, `precio distinto de PRICE_FROM en ${k}: ${ctx(v, a, b)}`); continue; }
         if (!covered(v, a, b, MS)) R.fail(pg.route, `cifra que no sale de metrics.ts en ${k}: ${ctx(v, a, b)}`);
       }
       PRICE_RX.lastIndex = 0;
-      while ((m = PRICE_RX.exec(v))) if (!/^USD/i.test(m[0])) R.fail(pg.route, `importe fuera de PRICE_FROM en ${k}: ${ctx(v, m.index, m.index + m[0].length)}`);
+      while ((m = PRICE_RX.exec(v))) if (!/^USD/i.test(m[0]) && !(offerRoute && covered(v, m.index, m.index + m[0].length, OFFER_VALUES))) R.fail(pg.route, `importe fuera de PRICE_FROM en ${k}: ${ctx(v, m.index, m.index + m[0].length)}`);
     }
   }
   // 5) Fuente: title, metaDescription y h1 de sitemap.json llevan las cifras como token ({{metric:ID}}…), nunca escritas a

@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE PREGUNTA · N03 sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. La definición de #definicion usa el mismo texto de N03 con sujeto explícito ('Un CRM con IA es un CRM que…') como definition.text; al aprobarse N03 conviene dejarlos idénticos.",
@@ -14,7 +14,8 @@
     "PREGUNTA AL CLIENTE · licencias: ¿las licencias de Kommo o la suscripción de GoHighLevel van incluidas en {{price}} o se pagan aparte? El texto (#inversion.remate) solo dice que dependen del plan y de los usuarios y que se explican por separado, como en /kommo/.",
     "PREGUNTA AL CLIENTE · ¿implementan sobre una cuenta de Kommo o GoHighLevel que el cliente ya tiene (revisión y reconfiguración)? Mientras no se confirme por escrito, la página no lo dice (QA servicios r3): salió #como-funciona.note ('Si ya tienes Kommo o GoHighLevel, partimos de tu cuenta'), #implementamos.body ya no empieza con 'Si ya tienes un CRM' y #cta-final.lede ya no ofrece 'ajustar el CRM que ya tienes'. Con la confirmación, vuelven. No se promete migración de contactos desde otro CRM.",
     "PREGUNTA AL CLIENTE · el sello de partner de Kommo (brief de la portada) no se pinta: ServiceTemplate no tiene sello en la portada y esta página no tiene sección de integraciones. Va en _badge (sin pintar) y como pedido a plantillas en peticiones.md.",
-    "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet'): repetía la microcopia que ya trae el botón primario. hero.h1.lit pasa de 'inteligencia artificial' a 'artificial' (una sola palabra con degradado por página, F6)."
+    "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet'): repetía la microcopia que ya trae el botón primario. hero.h1.lit pasa de 'inteligencia artificial' a 'artificial' (una sola palabra con degradado por página, F6).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: hero.ctaPrimary y cta-final.ctaPrimary pasan a 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización; sin JS lleva a /contacto/#cotizar) con la microcopia compartida de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Claves reescritas porque nombraban la Discovery Session o prometían la llamada de 30 minutos: inversion.remate ('El resto lo definimos en tu Discovery Session…' → 'El resto va en la cotización de tu proyecto…'); cta-final.h2.soft ('Lo vemos en 30 minutos.' → 'Cuéntanos cómo trabajas.'; el H2 de cierre no es el H1 y no lo compara check-seo); cta-final.lede ('En la Discovery Session revisamos por dónde te llegan los clientes…' → 'Dinos por dónde te llegan los clientes y cómo les das seguimiento: con eso te decimos si te conviene Kommo o GoHighLevel y qué incluiría tu cotización.'). Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
@@ -28,8 +29,7 @@
       },
       "lede": "Kommo o GoHighLevel con pipelines, automatizaciones y seguimiento sin capturas a mano. Un agente de IA registra y califica a cada lead; tu equipo se dedica a cerrar.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -378,7 +378,7 @@
           "line": "Cuántos leads entran cada mes y cuánto seguimiento se automatiza."
         }
       ],
-      "remate": "Las licencias dependen del plan y de los usuarios; te las explicamos por separado, sin letra chica. El resto lo definimos en tu Discovery Session, y dejar el CRM operando toma de 7 a 30 días, según el alcance."
+      "remate": "Las licencias dependen del plan y de los usuarios; te las explicamos por separado, sin letra chica. El resto va en la cotización de tu proyecto, y dejar el CRM operando toma de 7 a 30 días, según el alcance."
     },
     "faq": {
       "_componente": "FAQAccordion",
@@ -432,12 +432,11 @@
       "eyebrow": "Antes de elegir CRM",
       "h2": {
         "text": "¿Qué CRM encaja con cómo vendes?",
-        "soft": "Lo vemos en 30 minutos."
+        "soft": "Cuéntanos cómo trabajas."
       },
-      "lede": "En la Discovery Session revisamos por dónde te llegan los clientes y cómo les das seguimiento, y te decimos si te conviene Kommo o GoHighLevel.",
+      "lede": "Dinos por dónde te llegan los clientes y cómo les das seguimiento: con eso te decimos si te conviene Kommo o GoHighLevel y qué incluiría tu cotización.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",

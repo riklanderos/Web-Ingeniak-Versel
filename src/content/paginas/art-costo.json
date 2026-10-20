@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "articulo": {
     "categoria": "Precios y decisiones",
     "about": [
@@ -37,7 +37,8 @@
     "CAMBIO DE TEXTO · el brief de D pedía una sección 'La respuesta corta' dentro del cuerpo; es la caja de respuesta corta (AnswerBox) y encabeza el índice. Las otras siete secciones de D están completas y en orden.",
     "FAQ · W03 y G07 abren con la misma oración (banco aprobado); se dejan las dos porque así lo pide D. Si se prefiere variar, la opción es quitar G07 de esta página.",
     "PLACA · la portada usa home-sistema-2-atender (como pide sitemap.json, mismo encuadre que el servicio de agentes para el corte por coincidencia). El cierre pide cta-duena-tranquila; mientras no esté exportada, sale cta-amanecer en espejo (respaldo local de la plantilla).",
-    "CALCULADORA · no guarda ni envía datos; no imprime cifras en el HTML (todo se calcula en el navegador con los números de quien lee)."
+    "CALCULADORA · no guarda ni envía datos; no imprime cifras en el HTML (todo se calcula en el navegador con los números de quien lee).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: cta-medio y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. CAMBIO DE AFIRMACIÓN · respuesta.text: 'el alcance exacto se define en una Discovery Session gratuita' → 'para una cifra de tu caso, cotiza tu proyecto'. Paso 1 de 'Cuánto cuesta con Ingeniak': 'Discovery Session (llamada de 30 minutos, 1:1 por Google Meet y sin costo)' → 'Cotización' (formulario + contacto por WhatsApp y correo). Cierre: 'Lo calculamos en 30 minutos.' → 'Te lo cotizamos con tus números.'."
   ],
   "sections": {
     "hero": {
@@ -57,7 +58,7 @@
       "_componente": "Intertitle (rack sobre la portada desenfocada) + DefinitionBlock variant=answer",
       "label": "Respuesta corta",
       "heading": "Depende de cinco cosas, no de un paquete",
-      "text": "Un agente de IA para WhatsApp no tiene un precio único: depende de los canales que atiende, del volumen de conversaciones, de sus integraciones con tu CRM y tu agenda, de los procesos que automatiza y del modelo de IA. En Ingeniak los proyectos empiezan {{price}}; el alcance exacto se define en una Discovery Session gratuita."
+      "text": "Un agente de IA para WhatsApp no tiene un precio único: depende de los canales que atiende, del volumen de conversaciones, de sus integraciones con tu CRM y tu agenda, de los procesos que automatiza y del modelo de IA. En Ingeniak los proyectos empiezan {{price}}; para una cifra de tu caso, cotiza tu proyecto."
     },
     "indice": {
       "label": "En este artículo"
@@ -154,7 +155,7 @@
         { "variant": "h2", "id": "cuanto-cuesta-con-ingeniak", "text": "Cuánto cuesta con Ingeniak", "rail": "Con Ingeniak" },
         "En Ingeniak los proyectos empiezan {{price}}. No publicamos paquetes cerrados porque el precio sale de las cinco variables de arriba, y cada negocio las combina distinto. Así llegamos al alcance:",
         { "variant": "ol", "items": [
-          "**Discovery Session.** Una llamada de 30 minutos, 1:1 por Google Meet y sin costo, para entender cómo te llegan los clientes, qué pasa con cada conversación y dónde se pierden.",
+          "**Cotización.** Llenas el formulario de «Cotizar proyecto» con lo que necesitas y cómo es tu negocio, y te contactamos por WhatsApp y correo para entender cómo te llegan los clientes, qué pasa con cada conversación y dónde se pierden.",
           "**Propuesta.** Con lo que vimos, te proponemos el alcance: canales, integraciones, procesos y lo que vamos a medir. Ahí defines con nosotros la inversión mensual.",
           "**Implementación.** Implementar un sistema toma de 7 a 30 días, según el alcance. Configuramos el agente con la información de tu negocio, lo conectamos a tu CRM y lo probamos con tu equipo.",
           "**Operación.** Operamos el sistema junto con tu equipo: lo medimos, lo ajustamos y te contamos cómo va, con datos y sin humo."
@@ -167,7 +168,7 @@
       "label": "Siguiente paso",
       "text": "¿Quieres saber cuánto costaría en tu caso? Mira cómo trabaja un agente de IA en WhatsApp o escríbele a Kain y cuéntale cómo te llegan tus clientes.",
       "link": { "label": "Agentes de IA para WhatsApp", "href": "/servicios/agentes-ia-whatsapp/" },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí cuánto cuesta un agente de IA para WhatsApp y quiero saber cuánto costaría en mi caso." }
     },
     "faq": {
@@ -204,10 +205,9 @@
     "cta-final": {
       "_componente": "Dawn (cta-duena-tranquila; respaldo cta-amanecer en espejo)",
       "eyebrow": "Tu caso",
-      "h2": { "text": "¿Cuánto costaría en tu caso?", "soft": "Lo calculamos en 30 minutos." },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí cuánto cuesta un agente de IA para WhatsApp y quiero saber cuánto costaría en mi caso." },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "h2": { "text": "¿Cuánto costaría en tu caso?", "soft": "Te lo cotizamos con tus números." },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí cuánto cuesta un agente de IA para WhatsApp y quiero saber cuánto costaría en mi caso." }
     }
   }
 }

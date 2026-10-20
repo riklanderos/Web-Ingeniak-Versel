@@ -4,6 +4,14 @@
 // FAQPage solo con las preguntas visibles que la página pasa (texto idéntico); autor = Organization mientras no se confirme (R8).
 import { pages, SITE, isBuilt, type Page } from '../../lib/site';
 import { PRICE_FROM_CAP } from '../../lib/metrics';
+import { OFFERS } from '../ui/ui-data';
+
+/** Precio de la Power Session para el Offer del JSON-LD ("297"), derivado de OFFERS['power-price'] ("USD 297") de metrics.ts
+ *  (CAMBIO-COTIZAR §4.4): nunca escrito a mano aquí. */
+function offerAmount(id: string): { price: string; priceCurrency: string } | null {
+  const m = String(OFFERS[id] ?? '').match(/([A-Z]{3})\s?([\d.,]+)/);
+  return m ? { price: m[2].replace(/,/g, ''), priceCurrency: m[1] } : null;
+}
 
 export const ORG_ID = `${SITE.url}/#organization`;
 export const LOCAL_ID = `${SITE.url}/#localbusiness`;
@@ -175,9 +183,10 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
 
   if (has('Service')) {
     const r = raw('Service');
-    // Nombre de la ENTIDAD, no la frase del H1 (QA r2): en la conversión (oferta de 0) el H1 es una oración
-    // ("30 minutos para ver tu operación…"); el servicio se llama como su último breadcrumb ("Discovery Session").
-    const entityName = /price 0/i.test(r) ? ((crumbs[crumbs.length - 1]?.name as string) || 'Discovery Session') : page.h1;
+    // Nombre de la ENTIDAD, no la frase del H1 (QA r2): en las landings (Offer de 0 de /discovery/, Offer power de
+    // /power-session/) el H1 es una oración; el servicio se llama como su último breadcrumb ("Discovery Session", "Power Session").
+    const offerPower = /offer\s+power/i.test(r);
+    const entityName = /price 0/i.test(r) || offerPower ? ((crumbs[crumbs.length - 1]?.name as string) || page.h1) : page.h1;
     const svc: Record<string, any> = {
       '@type': 'Service',
       '@id': `${url}#service`,
@@ -193,6 +202,10 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
       svc.audience = { '@type': 'BusinessAudience', audienceType: sector };
     }
     if (/price 0/i.test(r)) svc.offers = { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'Discovery Session gratuita de 30 minutos', url };
+    if (offerPower) {
+      const amt = offerAmount('power-price');
+      if (amt) svc.offers = { '@type': 'Offer', ...amt, description: 'Power Session · sesión 1:1 de 90 minutos, pago único', url };
+    }
     graph.push(svc);
   }
   if (has('ItemList')) {

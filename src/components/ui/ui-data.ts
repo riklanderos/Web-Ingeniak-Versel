@@ -5,8 +5,27 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sitemap from '../../data/sitemap.json';
 import { METRICS, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import * as metricsMod from '../../lib/metrics';
 
+/** Microcopia de la Discovery Session: solo la usa la landing oculta /discovery/ (CAMBIO-COTIZAR §4.2, MICRO_29).
+ *  Fuera de /discovery/ la microcopia del primario es _comun.cta.micro (src/components/layout/cta.ts → QUOTE.micro). */
 export const DISCOVERY_MICRO = '30 min · 1:1 · Google Meet · sin costo';
+
+/* ───────────────────────── Ofertas de las landings ocultas (CAMBIO-COTIZAR §4.4) ─────────────────────────
+ * OFFERS vive en src/lib/metrics.ts (orquestador). Se lee por espacio de nombres para que el build no se caiga mientras
+ * llega; el respaldo es el texto exacto de §4.4 (y se avisa en dev). Solo se imprime con {{offer:ID}} → <span data-offer>.
+ * Un id que no está en OFFERS es error de build. */
+const OFFERS_FALLBACK: Record<string, string> = {
+  'power-price': 'USD 297',
+  'power-guarantee': 'si en la sesión no identificamos al menos 3 fugas por más de $10,000 MXN al mes, te devolvemos los USD 297 completos',
+};
+export const OFFERS: Record<string, string> = ((metricsMod as any).OFFERS as Record<string, string> | undefined) ?? OFFERS_FALLBACK;
+if (!(metricsMod as any).OFFERS && import.meta.env?.DEV) console.warn('[ui/copy] metrics.ts todavía no exporta OFFERS: {{offer:…}} usa el respaldo de CAMBIO-COTIZAR §4.4');
+const offerOf = (id: string): string => {
+  const v = Object.prototype.hasOwnProperty.call(OFFERS, id) ? OFFERS[id] : undefined;
+  if (typeof v !== 'string' || !v) throw new Error(`[ui/copy] oferta desconocida en el texto: {{offer:${id}}} (src/lib/metrics.ts → OFFERS)`);
+  return v;
+};
 
 /* ───────────────────────── Escape + anotación de cifras ───────────────────────── */
 export const esc = (s: string) =>
@@ -38,8 +57,9 @@ const ALLOW_PATTERNS: RegExp[] = [
 
 /** Tokens del copy (src/content/paginas/_ESQUEMA.md §5): {{metric:ID}}, {{metric:ID|full}} (valor + rótulo),
  *  {{metric:ID|prose}} (la cifra redactada para una oración: METRICS[id].prose, p. ej. "de 8 minutos a 12 segundos"),
- *  {{price}}, {{Price}}, {{source}}. Grupos: 1 = token, 2 = id de la cifra, 3 = modificador (full | prose). */
-export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|price|Price|source)\}\}/g;
+ *  {{offer:ID}} (oferta de una landing oculta: OFFERS[id] de metrics.ts, CAMBIO-COTIZAR §4.4), {{price}}, {{Price}}, {{source}}.
+ *  Grupos: 1 = token, 2 = id de la cifra, 3 = modificador (full | prose), 4 = id de la oferta. */
+export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price|Price|source)\}\}/g;
 const metricOf = (id: string) => {
   const m = (METRICS as any)[id];
   if (!m) throw new Error(`[ui/copy] cifra desconocida en el texto: {{metric:${id}}}`);
@@ -57,8 +77,9 @@ const metricText = (id: string, mod?: string) => {
 };
 /** Texto plano con los tokens resueltos (JSON-LD FAQPage, ⌘K, meta, aria-label). */
 export function tokensToText(s: string): string {
-  return String(s ?? '').replace(TOKEN_RX, (_, k, id, mod) => {
+  return String(s ?? '').replace(TOKEN_RX, (_, k, id, mod, offer) => {
     if (k === 'price') return PRICE_FROM; if (k === 'Price') return PRICE_FROM_CAP; if (k === 'source') return SOURCE_NOTE;
+    if (offer) return offerOf(offer);
     return metricText(id, mod);
   });
 }
@@ -70,7 +91,8 @@ function legacyFigures(text: string): string {
   for (const re of ALLOW_PATTERNS) html = html.replace(re, (m) => stash(`<span data-allow-number>${m}</span>`));
   return html.replace(/\u0000(\d+)\u0000/g, (_, i) => marks[+i]);
 }
-/** HTML seguro de un texto del copy: tokens → nodos data-metric / data-allow-number (igual que <Metric variant="inline">);
+/** HTML seguro de un texto del copy: tokens → nodos data-metric / data-allow-number (igual que <Metric variant="inline">)
+ *  y {{offer:ID}} → <span data-offer="ID"> (check-cifras lo acepta solo en OFFER_ROUTES);
  *  además, cifras redactadas a mano en textos heredados (sitemap) se envuelven en data-metric. El texto visible no cambia. */
 export function annotateFigures(text: string): string {
   const src = String(text ?? '');
@@ -78,8 +100,9 @@ export function annotateFigures(text: string): string {
   const rx = new RegExp(TOKEN_RX.source, 'g');
   while ((m = rx.exec(src))) {
     out += legacyFigures(src.slice(last, m.index));
-    const [, k, id, mod] = m;
-    if (k === 'price' || k === 'Price') out += `<span data-allow-number>${esc(k === 'price' ? PRICE_FROM : PRICE_FROM_CAP)}</span>`;
+    const [, k, id, mod, offer] = m;
+    if (offer) out += `<span data-offer="${esc(offer)}">${esc(offerOf(offer))}</span>`;
+    else if (k === 'price' || k === 'Price') out += `<span data-allow-number>${esc(k === 'price' ? PRICE_FROM : PRICE_FROM_CAP)}</span>`;
     else if (k === 'source') out += esc(SOURCE_NOTE);
     else if (mod === 'prose') out += `<span class="metric metric--prose" data-metric="${id}">${esc(metricText(id, 'prose'))}</span>`;
     else { const x = metricOf(id); out += `<span class="metric metric--inline" data-metric="${id}"><b>${esc(x.value)}</b>${mod === 'full' ? ' ' + esc(x.label) : ''}</span>`; }

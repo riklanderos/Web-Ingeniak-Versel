@@ -46,6 +46,7 @@ import KommoBadge from '../ui/KommoBadge.astro';
 import Icon from '../ui/Icon.astro';
 import { annotateFigures, esc, logoUrl, logoWide, TOOLS, VKTOR, SIM } from '../ui/ui-data';
 import HeroCtas from './HeroCtas.astro';
+import { primaryLabel, quoteLink, QUOTE } from '../layout/cta';
 import Aura from './Aura.astro';
 import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs, builtRelated } from './heroKit';
 import { getPlate, pages, waHref, SITE, linkTarget, isBuilt, plateAlt, type Page } from '../../lib/site';
@@ -136,7 +137,8 @@ const toneOf = (t?: string) => (t === 'ambar' || t === 'amber' ? 'amber' : t ===
 const wa = (c: any) => (c?.ctaSecondary?.waMessage ? waHref(c.ctaSecondary.waMessage) : P.secondaryCta?.href ?? waHref('Hola Kain'));
 const ext = (href = '') => /^https?:\/\//.test(href);
 /** Enlaces del cuerpo (R12 · QA enlaces): solo rutas construidas; una planeada se omite o se pinta como texto (nunca '#'). */
-const built = (list?: any[]) => (list ?? []).filter((l) => l?.href && isBuilt(l.href));
+//   "cotizar": true (o una landing oculta) → disparador del modal: <a href={l.href} {...l.attrs}> (CAMBIO-COTIZAR §1.2).
+const built = (list?: any[]) => (list ?? []).map((l) => quoteLink(l, undefined, P.url)).filter((l) => l?.href && isBuilt(l.href));
 const hrefOr = (h?: string) => (h ? linkTarget(h) ?? undefined : undefined);
 
 /* ── Placas de la página (para no repetir encuadre en los fotogramas) ── */
@@ -727,7 +729,7 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
           {c.lede && (
             <p class="t-lede t-lede--2 svc-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
           )}
-          <HeroCtas href={c.ctaPrimary?.href ?? SITE.discovery} label={c.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+          <HeroCtas label={primaryLabel(c)} section="hero"
             waHref={wa(c)} waLabel={c.ctaSecondary?.label ?? 'Escríbele a Kain'} />
           {/* Sello de Kommo (único partner) cuando el copy lo pide en la portada (hero.badge) */}
           {c.badge && <div class="svc-hero__badge"><KommoBadge size="sm" text={/latam/i.test(String(c.badge))} /></div>}
@@ -863,7 +865,7 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
               <ScriptList rows={groups ? [] : rows} groups={groups} label={c.eyebrow} class="svc-cap__rows" />
               {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="svc-body" data-reveal />)}
               {built(c.links).length > 0 && (
-                <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>)}</p>
+                <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>)}</p>
               )}
             </div>
             {tabs && (
@@ -958,7 +960,7 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
           </table>
       );
       const cmpLinks = built(c.links).length > 0 && (
-        <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
+        <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
       );
       /* Escena con placa propia (QA #16/#18/#19): Kain de cuerpo completo con la tarjeta del lead; la tarjeta de lead
          (SIMULACIÓN) va registrada en la parte libre de la superficie de cristal y la tabla nace en la disolución inferior de
@@ -1026,7 +1028,7 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
           <Aura kind="ondas" x="50%" o={1} only="m" sticky />
           <TwoColumnScript variant={variant} left={side(c.left, 'cyan')} right={side(c.right, 'amber')} slogan={c.slogan} class="svc-two__cols" />
           {built(c.links).length > 0 && (
-            <p class="svc-links svc-two__links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
+            <p class="svc-links svc-two__links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
           )}
           <Fragment set:html={aura('ondas', 'two')} />
         </Intertitle>
@@ -1256,12 +1258,12 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
         <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
         {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
         <div class="ctas">
-          <Btn variant="primary" href={c.ctaPrimary?.href ?? SITE.discovery} label={c.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+          <Btn variant="primary" cotizar data-section={s.id} label={primaryLabel(c)} micro />
           <Btn variant="ghost" href={wa(c.ctaSecondary ? c : C.hero)} label={c.ctaSecondary?.label ?? 'Escríbele a Kain'} />
         </div>
-        {/* c.micro ("Sin costo · Sin compromiso · 30 minutos…") repetiría la microcopia del primario y el lede:
-            solo se imprime si el lede no dice ya lo mismo */}
-        {c.micro && !/sin compromiso/i.test(c.lede ?? '') && <p class="t-micro dawn__note" data-allow-number>{c.micro}</p>}
+        {/* c.micro repetiría la microcopia del primario (_comun.cta.micro) o el lede: solo se imprime si dice otra cosa
+            (y nunca la microcopia heredada de la Discovery: «30 minutos por Google Meet»). */}
+        {c.micro && c.micro !== QUOTE.micro && !/sin compromiso|google meet|\b30\s?min/i.test(`${c.micro} ${c.lede ?? ''}`) && <p class="t-micro dawn__note" data-allow-number>{c.micro}</p>}
       </Dawn>
     );
 
@@ -1300,7 +1302,7 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
               {hk && <div class={`${hudCls}${hudInl} svc-hud--inline${g.hb ? ' tpl-dhide' : ''}`} role="img" aria-label={c.ui?.aria ?? HUD_ARIA[hk]} data-nosnippet>{hud(hk, c.ui)}</div>}
               {c.items?.length > 0 && <ul class="svc-bullets">{c.items.map((t: any) => <li><span class="node" aria-hidden="true"></span><span set:html={annotateFigures(typeof t === 'string' ? t : t.title ?? '')} /></li>)}</ul>}
               {c.slogan && <Copy text={c.slogan} as="p" class="t-deck svc-slogan" />}
-              {links.length > 0 && <p class="svc-links">{links.map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
+              {links.length > 0 && <p class="svc-links">{links.map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
               {c.chat && !pan && <ChatSim mode="inline" tabs={c.chat.tabs ?? c.chat.scripts ?? [c.chat.script ?? 'default']} />}
               {illus && <p class="chip-illus svc-illus-m tpl-dhide">{illus}</p>}
             </Fragment>
@@ -1324,7 +1326,7 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
         {c.items?.length > 0 && (
           <ScriptList rows={c.items.map((it: any, i: number) => (typeof it === 'string' ? { n: String(i + 1).padStart(2, '0'), title: it } : { n: it.n, title: it.title, line: it.line, href: hrefOr(it.href) }))} />
         )}
-        {built(c.links).length > 0 && <p class="svc-links">{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
+        {built(c.links).length > 0 && <p class="svc-links">{built(c.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
       </Intertitle>
     );
   })}

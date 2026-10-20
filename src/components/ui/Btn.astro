@@ -1,27 +1,41 @@
 ---
-// Btn · ESPEC §2.9. Un solo primario azul en el sitio: "Agenda tu Discovery Session".
+// Btn · ESPEC §2.9 (r2: CAMBIO-COTIZAR §1). Un solo primario azul en el sitio público: «Cotizar proyecto», que abre el
+// modal de cotización (<dialog id="cotizar">) sin navegar; sin JS lleva a /contacto/#cotizar. En las landings ocultas
+// (/discovery/, /power-session/) el primario reserva en la propia página (#agenda) y la cotización es ruta secundaria (.lnk).
 //   primary → .btn + data-primary (regla de un azul, F15) + data-magnetic (±6 px, pointer:fine) + nodo del isotipo
-//             micro=true → envuelve en .cta-p con la microcopia "30 min · 1:1 · Google Meet · sin costo" pegada al botón
+//             cotizar=true | {servicio?, industria?} → disparador del modal (§1.2): href por defecto SITE.quote.href,
+//               data-cotizar, aria-haspopup="dialog", aria-controls="cotizar", data-cotizar-servicio / -industria (prefill).
+//               data-section="hero|cta-final|…" se pasa como atributo.
+//             micro=true → envuelve en .cta-p con la microcopia _comun.cta.micro ("Sin compromiso · Te contactamos por
+//               WhatsApp y correo"); micro="texto" → ese texto (admite tokens del copy: {{metric:…}}, {{offer:…}}).
 //   ghost   → .btn.btn--ghost (WhatsApp "Escríbele a Kain": wa=true pone el icono de línea a la izquierda)
 //   sm      → .btn.btn--sm (encabezado; ghost=true lo vuelve contorno)
 //   icon    → .btn-icon circular de 40 px (aria-label obligatorio: prop label)
 import Icon from './Icon.astro';
-import { DISCOVERY_MICRO } from './ui-data';
+import { annotateFigures } from './ui-data';
+import { QUOTE, quoteAttrs, isHiddenHref } from '../layout/cta';
 
 interface Props {
   variant?: 'primary' | 'ghost' | 'sm' | 'icon';
-  href?: string; label?: string; micro?: boolean; wa?: boolean; ghost?: boolean;
+  href?: string; label?: string; micro?: boolean | string; wa?: boolean; ghost?: boolean;
+  cotizar?: boolean | { servicio?: string; industria?: string };
   icon?: string; external?: boolean; node?: boolean; type?: 'button' | 'submit';
   class?: string; id?: string; [key: string]: any;
 }
-const { variant = 'primary', href, label, micro = false, wa = false, ghost = false, icon, external, node, type = 'button', class: cls, id, ...rest } = Astro.props;
+const { variant = 'primary', href: hrefProp, label, micro = false, wa = false, ghost = false, cotizar, icon, external, node, type = 'button', class: cls, id, ...rest } = Astro.props;
 
+const isQuote = !!cotizar;
+// Un disparador nunca lleva a una landing oculta (§1.1-6): sin href o con uno oculto → respaldo /contacto/#cotizar.
+const href = isQuote && (!hrefProp || isHiddenHref(hrefProp)) ? QUOTE.href : hrefProp;
 const isExternal = external ?? (!!href && /^https?:\/\//.test(href));
 const isWa = wa || (!!href && /wa\.me\//.test(href));
 const hasSlot = Astro.slots.has('default');
-const text = label;
+const text = label ?? (isQuote ? QUOTE.label : undefined);
 if (variant === 'icon' && !label) throw new Error('[ui/Btn] variant="icon" necesita label (aria-label)');
 const showNode = node ?? (variant === 'primary' || (variant === 'sm' && !ghost));
+const microText = micro === true ? QUOTE.micro : typeof micro === 'string' ? micro : '';
+// Grupos que no se parten por dentro ("Sin compromiso · / Te contactamos por WhatsApp y correo"); cada uno con sus tokens.
+const microHtml = microText.split(/\s+·\s+/).filter(Boolean).map((g) => `<span class="tpl-nw">${annotateFigures(g)}</span>`).join(' · ');
 const classes = [
   variant === 'icon' ? 'btn-icon' : 'btn',
   variant === 'ghost' && 'btn--ghost',
@@ -30,8 +44,10 @@ const classes = [
   isWa && variant !== 'icon' && 'btn--wa',
   cls,
 ];
+const quote = isQuote ? quoteAttrs(rest['data-section'], typeof cotizar === 'object' ? cotizar : {}) : {};
 const attrs: Record<string, any> = {
   ...rest,
+  ...quote,
   id,
   'data-primary': variant === 'primary' ? '' : undefined,
   'data-magnetic': variant === 'primary' ? '' : undefined,
@@ -42,13 +58,13 @@ const attrs: Record<string, any> = {
 };
 const Tag = href ? 'a' : 'button';
 ---
-{variant === 'primary' && micro ? (
+{variant === 'primary' && microText ? (
   <div class="cta-p">
     <Tag class:list={classes} href={href} type={href ? undefined : type} {...attrs}>
       <span class="btn__t">{hasSlot ? <slot /> : text}</span>
       <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span>
     </Tag>
-    <p class="t-micro btn-micro" data-allow-number>{DISCOVERY_MICRO}</p>
+    <p class="t-micro btn-micro" data-allow-number={/\d/.test(microText) ? '' : undefined} set:html={microHtml} />
   </div>
 ) : variant === 'icon' ? (
   <Tag class:list={classes} href={href} type={href ? undefined : type} {...attrs}>

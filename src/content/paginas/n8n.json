@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE PREGUNTA · N05 sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. La definición de #definicion usa un texto propio (definition.text) con la primera oración de N05 y lo que ya dicen G06 y G09 (CRM, WhatsApp, formularios, hojas de cálculo y sistemas internos sin capturas a mano; agentes de IA).",
@@ -15,7 +15,8 @@
     "PREGUNTA AL CLIENTE · #que-automatizamos lista siete flujos del brief (CRM ↔ WhatsApp, formularios, recordatorios, reportes, ERP, alertas y agentes de IA). 'Cobros' (recordatorios de pago y registro del cobro) salió de la lista y de las líneas de recordatorios y del disparador hasta que confirmes que lo ofrecen (QA servicios r3). ¿Hay alguno de los siete que hoy no hagan?",
     "DATO PENDIENTE · el brief de #definicion pide el logo oficial de n8n según su guía (wordmark, mínimo 100 px): es tarea de plantillas/ui, no de copy.",
     "CAMBIO DE TEXTO · #caso: la cifra va en el lede y no en el H2 (con el token |full dentro del titular, SplitText recortaba \"automatizados\" en escritorio).",
-    "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet'): repetía la microcopia que ya trae el botón primario (igual que en /servicios/agentes-ia-whatsapp/)."
+    "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet'): repetía la microcopia que ya trae el botón primario (igual que en /servicios/agentes-ia-whatsapp/).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: hero.ctaPrimary y cta-final.ctaPrimary pasan a 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización; sin JS lleva a /contacto/#cotizar) con la microcopia compartida de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Claves reescritas porque nombraban la Discovery Session o prometían la llamada de 30 minutos: inversion.remate ('…y en tu Discovery Session lo identificamos.' → '…lo describes al cotizar y lo identificamos juntos.'); cta-final.lede ('En la Discovery Session revisamos qué tareas repite tu equipo…' → 'Anota en el formulario las tareas que tu equipo repite cada semana. Con esa lista vemos cuál conviene automatizar primero y cuánto trabajo implica.'). Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
@@ -29,8 +30,7 @@
       },
       "lede": "Flujos con n8n y Make que conectan tus sistemas y eliminan el trabajo repetitivo. En una empresa de logística ya suman {{metric:logistica-procesos|full}}.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -373,7 +373,7 @@
           "line": "Cuántas veces se ejecutan los flujos al mes y cuántos datos mueven."
         }
       ],
-      "remate": "Empezamos por el proceso que más horas le come a tu equipo, y en tu Discovery Session lo identificamos. Según el alcance, la implementación toma de 7 a 30 días."
+      "remate": "Empezamos por el proceso que más horas le come a tu equipo: lo describes al cotizar y lo identificamos juntos. Según el alcance, la implementación toma de 7 a 30 días."
     },
     "faq": {
       "_componente": "FAQAccordion",
@@ -428,10 +428,9 @@
         "text": "¿Qué proceso te come más horas?",
         "soft": "Empecemos por ese."
       },
-      "lede": "En la Discovery Session revisamos qué tareas repite tu equipo cada semana y te decimos cuál conviene automatizar primero.",
+      "lede": "Anota en el formulario las tareas que tu equipo repite cada semana. Con esa lista vemos cuál conviene automatizar primero y cuánto trabajo implica.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",

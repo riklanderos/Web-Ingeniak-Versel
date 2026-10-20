@@ -26,6 +26,15 @@ export const SOURCE_NOTE = 'Datos internos de Ingeniak, octubre de 2026';
 export const PRICE_FROM = 'desde USD 997 al mes';
 export const PRICE_FROM_CAP = 'Desde USD 997 al mes';
 
+/** Ofertas de las landings ocultas (cambio 2026-10-20). Solo se imprimen en OFFER_ROUTES, siempre dentro de [data-offer];
+ *  check-cifras las acepta solo ahí. Nunca con {{price}} (esa es la inversión mensual "desde USD 997 al mes"). */
+export const OFFERS = {
+  'power-price': 'USD 297',
+  'power-guarantee': 'si en la sesión no identificamos al menos 3 fugas por más de $10,000 MXN al mes, te devolvemos los USD 297 completos',
+} as const;
+export type OfferId = keyof typeof OFFERS;
+export const OFFER_ROUTES = ['/discovery/', '/power-session/', '/agendar/confirmado/'] as const;
+
 export function metric(id: MetricId) {
   const m = METRICS[id];
   if (!m) throw new Error(`[metrics] cifra desconocida: ${id}`);

@@ -7,6 +7,7 @@ import { METRICS, PRICE_FROM, type MetricId } from '../../lib/metrics';
 import { MEGA, STAGES, metricFor, screenOf, screenFrame, plateFromStill, SCREEN_DEFAULT_PLATE, type NavLink, type ScreenFrame } from '../layout/navData';
 import { ICONS, GLYPH_LABEL } from './icons';
 import { SITE } from '../../lib/site';
+import { quoteAttrs, quoteHref, isHiddenHref } from '../layout/cta';
 
 interface Props { panel: 'servicios' | 'industrias' | 'casos' | 'empresa' | 'recursos'; current?: string }
 const { panel, current = '' } = Astro.props;
@@ -38,7 +39,10 @@ let i = 0; // índice de escalonado (stagger 20 ms)
 const metricLine = (id?: MetricId) => (id ? METRICS[id] : undefined);
 const caseCtx = (id?: MetricId) => (id ? METRICS[id].ctx : '');
 const VKTOR = [['V', 'Verify'], ['K', 'Koncept'], ['T', 'Transform'], ['O', 'Operate'], ['R', 'Rise']];
-const footLinks = (data?.footerLinks ?? []).filter((l: any) => !l.priceFrom && !(panel === 'servicios' && l.href === '/metodologia/'));
+// Nunca una landing oculta (R17). "Planes desde USD 997 al mes" (priceFrom) abre el modal de cotización: bandera
+// cotizar: true de navegacion.json (o, mientras llega, un destino oculto) → data-cotizar data-section="mega-planes".
+const footLinks = (data?.footerLinks ?? []).filter((l: any) => !l.priceFrom && !isHiddenHref(l.href) && !(panel === 'servicios' && l.href === '/metodologia/'));
+const priceLink = (l: any) => (l.cotizar || isHiddenHref(l.href) ? { href: quoteHref(current), ...quoteAttrs('mega-planes') } : { href: l.href });
 const hasFoot = footLinks.length > 0 || ['industrias', 'casos', 'empresa', 'recursos'].includes(panel) || (data?.footerLinks ?? []).some((l: any) => l.priceFrom);
 ---
 <div class="mm-panel" id={`mm-${panel}`} role="region" aria-label={label} data-mm-panel={panel} data-layout={panel === 'servicios' ? 'stages' : 'list'}>
@@ -196,7 +200,7 @@ const hasFoot = footLinks.length > 0 || ['industrias', 'casos', 'empresa', 'recu
         )}
       </ul>
       {(data?.footerLinks ?? []).filter((l: any) => l.priceFrom).map((l: any) => (
-        <a class="mm-price" href={l.href} data-allow-number><span class="mm-price__node" aria-hidden="true"></span>Planes {PRICE_FROM}</a>
+        <a class="mm-price" {...priceLink(l)} data-allow-number><span class="mm-price__node" aria-hidden="true"></span>Planes {PRICE_FROM}</a>
       ))}
     </div>}
   </div>

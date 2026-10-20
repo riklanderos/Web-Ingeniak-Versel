@@ -19,3 +19,9 @@ dist/
 # capturas de QA (pesadas)
 materiales/v2/qa/*/
 materiales/v2/presentacion/*.png
+
+# variables locales y vínculo de Vercel (nunca al repositorio)
+.env
+.env.*
+!.env.example
+.vercel/

@@ -14,10 +14,11 @@
 //   [data-magnetic]                       botón primario magnético ±6 px (pointer:fine)
 //   [data-primary]                        regla de un azul (F15): html[data-primary-visible] solo si el primario SE VE (intersecta,
 //                                         sin [inert]/[data-primary-hidden], visibility visible, opacidad efectiva ≥ .5)
-//                                         + atribución R10 (sessionStorage ingeniak-src / ingeniak-utm, evento cta_discovery_click)
+//                                         + atribución R20 (sessionStorage ingeniak-utm / -clid / -landing / -src / -agenda-desde;
+//                                           eventos cta_cotizar_click y cta_agenda_click · CAMBIO-COTIZAR §1.5)
 //   a[data-still]                         corte por coincidencia: view-transition-name:plate en su imagen (§7.6)
 //   [data-vrail] · [data-flow] · [data-pain] · [data-count] · [data-toc]
-// Medición (R10): document dispatch "ingeniak:track" {name, …} — cta_discovery_click, faq_open, chat_sim_tab, video_play/50/complete.
+// Medición (R20): document dispatch "ingeniak:track" {name, …} — cta_cotizar_click, cta_agenda_click, faq_open, chat_sim_tab, video_play/50/complete.
 
 type GSAP = typeof import('gsap').gsap;
 const root = document.documentElement;
@@ -524,10 +525,16 @@ function initPrimaryRule() {
   addEventListener('load', () => { scan(); kick(); }, { once: true });
 }
 
-/* ───────────── Atribución R10 ───────────── */
-// Primer clic en un primario (o el CTA del encabezado/barra) hacia /discovery/: sessionStorage['ingeniak-src'] = `${folio}-${sección}` + evento cta_discovery_click.
-// Llegada con utm_*: sessionStorage['ingeniak-utm'] = JSON. Nada personal en la URL; todo almacenamiento dentro de try/catch.
+/* ───────────── Atribución (R20 · CAMBIO-COTIZAR §1.5) ───────────── */
+// sessionStorage (todo dentro de try/catch; nunca datos personales ni texto escrito por la persona):
+//   ingeniak-utm          JSON {utm_*} de la llegada (primer toque de la sesión)
+//   ingeniak-clid         JSON {gclid, fbclid, gbraid, wbraid} de la llegada (≤ 200 caracteres c/u)
+//   ingeniak-landing      JSON {path, referrer?, t}: primera ruta de la sesión; referrer solo si es de otro origen (origen + ruta)
+//   ingeniak-src          `${folio}-${sección}` del PRIMER clic en un [data-cotizar] o en un a[data-primary][href="#agenda"]
+//   ingeniak-agenda-desde data-section del ÚLTIMO clic en un a[href="#agenda"] (landings ocultas)
+// Eventos (ingeniak:track): cta_cotizar_click {section, folio, src} · cta_agenda_click {section, folio}.
 const UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+const CLID = ['gclid', 'fbclid', 'gbraid', 'wbraid'];
 const ssGet = (k: string): string | null => { try { return sessionStorage.getItem(k); } catch { return null; } };
 const ssSet = (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch { /* bloqueado: sin atribución */ } };
 function initAttribution() {
@@ -535,18 +542,38 @@ function initAttribution() {
     const q = new URLSearchParams(location.search);
     const utm = UTM.filter((k) => q.get(k)).map((k) => [k, q.get(k)!.slice(0, 120)]);
     if (utm.length && !ssGet('ingeniak-utm')) ssSet('ingeniak-utm', JSON.stringify(Object.fromEntries(utm)));
+    const clid = CLID.filter((k) => q.get(k)).map((k) => [k, q.get(k)!.slice(0, 200)]);
+    if (clid.length && !ssGet('ingeniak-clid')) ssSet('ingeniak-clid', JSON.stringify(Object.fromEntries(clid)));
   } catch { /* URL sin parámetros legibles */ }
+  if (!ssGet('ingeniak-landing')) {
+    let referrer = '';
+    try {
+      if (document.referrer) { const r = new URL(document.referrer); if (r.origin !== location.origin) referrer = `${r.origin}${r.pathname}`.slice(0, 200); }
+    } catch { /* referrer ilegible */ }
+    ssSet('ingeniak-landing', JSON.stringify({ path: location.pathname, ...(referrer ? { referrer } : {}), t: new Date().toISOString() }));
+  }
   const folio = () => document.body.dataset.folio ?? document.querySelector<HTMLElement>('[data-folio]')?.dataset.folio ?? document.body.dataset.page ?? 'web';
+  const sectionOf = (el: HTMLElement) =>
+    el.dataset.section ?? el.closest<HTMLElement>('[data-section]')?.dataset.section ?? el.closest('section[id],[data-section-id]')?.id
+    ?? (el.closest(HEADER_SEL) ? 'header' : el.closest('[data-mbar],[data-cta-bar],.mcta') ? 'barra' : 'page');
   document.addEventListener('click', (e) => {
-    const a = (e.target as Element | null)?.closest?.('a[data-primary],a.btn') as HTMLAnchorElement | null;
-    if (!a) return;
-    let path = '';
-    try { path = new URL(a.href, location.href).pathname; } catch { return; }
-    if (!/^\/discovery\/?$/.test(path)) return;
-    const section = a.dataset.section ?? a.closest('section[id],[data-section-id]')?.id ?? (a.closest(HEADER_SEL) ? 'header' : a.closest('[data-cta-bar],.mcta') ? 'barra' : 'page');
+    const t = e.target as Element | null;
+    const quote = t?.closest?.('[data-cotizar]') as HTMLElement | null;
+    const agenda = quote ? null : (t?.closest?.('a[href="#agenda"]') as HTMLAnchorElement | null);
+    if (!quote && !agenda) return;
+    const el = (quote ?? agenda)!;
+    const section = sectionOf(el);
     const src = `${folio()}-${section}`;
-    if (!ssGet('ingeniak-src')) ssSet('ingeniak-src', src);
-    track('cta_discovery_click', { section, folio: folio(), src });
+    if (quote) {
+      if (!ssGet('ingeniak-src')) ssSet('ingeniak-src', src);
+      track('cta_cotizar_click', { section, folio: folio(), src });
+      return;
+    }
+    ssSet('ingeniak-agenda-desde', section);
+    if (agenda!.hasAttribute('data-primary')) {
+      if (!ssGet('ingeniak-src')) ssSet('ingeniak-src', src);
+      track('cta_agenda_click', { section, folio: folio() });
+    }
   }, true);
 }
 

@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE PREGUNTA · N06 sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. La definición de #definicion usa un texto propio de la página (definition.text, 48 palabras) armado con lo que ya dicen N06, la meta de D y la metodología: detectar dónde la IA ahorra tiempo o trae ventas, diseñar, poner en producción con métricas; diagnóstico, roadmap, casos de uso, implementación y seguimiento mensual con VKTOR™.",
@@ -15,7 +15,8 @@
     "PREGUNTA AL CLIENTE · ¿los 'casos de uso por área' (#casos-uso) se pueden presentar como ejemplos que suelen aparecer en un diagnóstico? Son ejemplos generales armados con los servicios de Ingeniak, no proyectos concretos; el lede lo aclara ('Tu lista sale de tu operación, no de esta página').",
     "PREGUNTA AL CLIENTE · #fit, 'No es para ti si…': la última línea ('Tu operación ya está sistematizada y medida…') adapta la de /discovery/. ¿Se queda?",
     "CAMBIO DE TEXTO · #fit usa la firma aprobada (RESPUESTAS-CLIENTE 2026-10-19 #20) como eslogan: 'Construimos empresarios libres, no héroes cansados.'",
-    "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet'): repetía la microcopia que ya trae el botón primario. hero.h1.lit pasa de 'inteligencia artificial' a 'artificial' (una sola palabra con degradado por página, F6)."
+    "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet'): repetía la microcopia que ya trae el botón primario. hero.h1.lit pasa de 'inteligencia artificial' a 'artificial' (una sola palabra con degradado por página, F6).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: hero.ctaPrimary y cta-final.ctaPrimary pasan a 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización; sin JS lleva a /contacto/#cotizar) con la microcopia compartida de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Claves reescritas porque nombraban la Discovery Session o prometían la llamada de 30 minutos: como-funciona.lede ('El diagnóstico arranca en la Discovery Session, sin costo.' → 'Todo arranca cuando cotizas tu proyecto.'); inversion.remate ('La Discovery Session no cuesta y ahí empieza el diagnóstico.' → 'Cotizar no te compromete a nada.'; el resto igual); cta-final.lede (ya no dice 'En la Discovery Session revisamos…': 'Cuéntanos cómo vendes, atiendes y operas. Vemos qué conviene resolver primero con IA y qué todavía no; si tiene sentido para los dos, preparamos tu cotización.'); entregables.body.0 y su _nota (sección omitida) sin la sesión de 30 minutos por Google Meet. Se quitó 'sin costo': no está confirmado para la cotización. Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
@@ -29,8 +30,7 @@
       },
       "lede": "Detectamos dónde la IA te ahorra horas o te trae ventas, y la ponemos a operar con tu equipo. Diagnóstico, roadmap, implementación y métricas, con {{metric:sistemas|full}} en {{metric:paises}} países.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -153,10 +153,10 @@
         }
       ],
       "body": [
-        "El diagnóstico arranca en la Discovery Session: 30 minutos por Google Meet, sin costo. Si hay sentido, recibes la propuesta con alcance, tiempos y costo antes de que se implemente nada."
+        "El diagnóstico arranca cuando cotizas tu proyecto: nos cuentas qué necesitas y te contactamos por WhatsApp y correo. Si hay sentido, recibes la propuesta con alcance, tiempos y costo antes de que se implemente nada."
       ],
       "_omitir": true,
-      "_nota": "Fundida en #como-funciona (QA servicios r3): contaba la misma secuencia que el riel y que #vktor-cine. Los seis entregables quedan en los cinco nodos del riel (implementación y operación van juntas en \"Sistema en producción\") y el párrafo de la Discovery Session pasa a como-funciona.note."
+      "_nota": "Fundida en #como-funciona (QA servicios r3): contaba la misma secuencia que el riel y que #vktor-cine. Los seis entregables quedan en los cinco nodos del riel (implementación y operación van juntas en \"Sistema en producción\") y el párrafo del primer paso (cotizar el proyecto) pasa a como-funciona.lede."
     },
     "como-funciona": {
       "_componente": "riel-servicios a sangre con 5 nodos registrados: cada nodo es un entregable (absorbe a #entregables)",
@@ -193,7 +193,7 @@
           "confirmed": true
         }
       ],
-      "lede": "El diagnóstico arranca en la Discovery Session, sin costo. Cada entregable lo revisas y lo apruebas antes de pasar al siguiente."
+      "lede": "Todo arranca cuando cotizas tu proyecto. Cada entregable lo revisas y lo apruebas antes de pasar al siguiente."
     },
     "casos-uso": {
       "_componente": "ScriptList agrupada por área (Ventas · Atención · Operación · Marketing · Datos), un ejemplo por área con enlace al servicio",
@@ -371,7 +371,7 @@
           "line": "Cuántas conversaciones, leads o tareas pasan cada mes por el sistema."
         }
       ],
-      "remate": "La Discovery Session no cuesta y ahí empieza el diagnóstico. Si avanzamos, la propuesta trae alcance, tiempos y costo por escrito, y la implementación toma de 7 a 30 días, según lo que incluya."
+      "remate": "Cotizar no te compromete a nada. Si avanzamos, la propuesta trae alcance, tiempos y costo por escrito, y la implementación toma de 7 a 30 días, según lo que incluya."
     },
     "faq": {
       "_componente": "FAQAccordion",
@@ -427,10 +427,9 @@
         "text": "Antes de invertir en IA,",
         "soft": "mira tu operación con números."
       },
-      "lede": "En la Discovery Session revisamos cómo vendes, atiendes y operas, y te decimos qué conviene resolver primero con IA y qué todavía no.",
+      "lede": "Cuéntanos cómo vendes, atiendes y operas. Vemos qué conviene resolver primero con IA y qué todavía no; si tiene sentido para los dos, preparamos tu cotización.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",

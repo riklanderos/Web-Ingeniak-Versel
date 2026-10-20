@@ -195,12 +195,22 @@
     },
     {
       "source": "/cotiza",
-      "destination": "/discovery/",
+      "destination": "/contacto/#cotizar",
       "statusCode": 301
     },
     {
       "source": "/cotiza/",
-      "destination": "/discovery/",
+      "destination": "/contacto/#cotizar",
+      "statusCode": 301
+    },
+    {
+      "source": "/powersession",
+      "destination": "/power-session/",
+      "statusCode": 301
+    },
+    {
+      "source": "/powersession/",
+      "destination": "/power-session/",
       "statusCode": 301
     }
   ],
@@ -242,7 +252,7 @@
       ]
     },
     {
-      "source": "/((?!_astro/|img/|fonts/|fx/|video/).*)",
+      "source": "/((?!_astro/|img/|fonts/|fx/|video/|api/).*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -267,6 +277,42 @@
           "value": "noindex"
         }
       ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    },
+    {
+      "source": "/agendar/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     }
-  ]
+  ],
+  "crons": [
+    {
+      "path": "/api/agenda/limpiar/",
+      "schedule": "5-59/10 * * * *"
+    }
+  ],
+  "functions": {
+    "api/cotizar.js": {
+      "maxDuration": 15
+    },
+    "api/agenda/*.js": {
+      "maxDuration": 30
+    }
+  }
 }

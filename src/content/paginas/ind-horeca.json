@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE PREGUNTAS · R2 pide al menos cuatro preguntas propias por industria y el banco no tiene ninguna de HoReCa. Propuesta en materiales/v2/build/peticiones.md (Construcción · industrias · copy): R01 '¿El agente puede tomar reservas?', R02 '¿Cómo sé cuántas reservas trajo una campaña?', R03 '¿Sirve para hoteles y para restaurantes?', R04 '¿Pueden ayudarme a que mis clientes regresen?'. Al aprobarse, entran a faq.json y a faq.faqIds de esta página, delante de las compartidas.",
@@ -16,7 +16,8 @@
     "PREGUNTA AL CLIENTE · ¿Con qué sistemas de reservas se integra Kain (OpenTable, SevenRooms, el motor de reservas o el PMS de un hotel) o se usa el calendario del CRM? Hoy la página dice 'tu sistema de reservas' sin marcas, y en hoteles Kain deja la solicitud para que recepción la confirme.",
     "PREGUNTA AL CLIENTE · El cliente del caso HoReCa, ¿es restaurante, hotel o ambos? metrics.ts dice 'HoReCa' y la ficha del caso, 'hoteles y restaurantes'; la página usa esa última forma.",
     "PREGUNTA AL CLIENTE · En el caso, ¿las campañas fueron solo en Meta Ads (lo confirmado en la ficha) o también en Google o TikTok? La página nombra Meta, Google y TikTok solo como servicio general (G14), nunca como parte del caso.",
-    "PREGUNTA AL CLIENTE · ¿Hacen campañas de reactivación a la base de clientes (fechas especiales, temporada, menú nuevo)? Aparecen en la jornada (10:00) y en la fila 05 como capacidad; si no las ofrecen, se cambian."
+    "PREGUNTA AL CLIENTE · ¿Hacen campañas de reactivación a la base de clientes (fechas especiales, temporada, menú nuevo)? Aparecen en la jornada (10:00) y en la fila 05 como capacidad; si no las ofrecen, se cambian.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Pongámosle número.'; lede sin la Discovery Session."
   ],
   "sections": {
     "hero": {
@@ -25,7 +26,7 @@
       "eyebrow": "Industria · HoReCa",
       "h1": { "text": "IA, paid media", "soft": "y automatización para restaurantes y hoteles", "lit": "IA" },
       "lede": "Campañas que se miden en reservas, no en alcance. Kain contesta y reserva por WhatsApp en plena hora pico, y cada reserva queda en tu CRM con su origen.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo un restaurante u hotel y quiero más reservas medidas por campaña."
@@ -141,14 +142,13 @@
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
       "eyebrow": "Antes del próximo fin de semana",
-      "h2": { "text": "¿Cuántas reservas trae cada peso de tu pauta?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session revisamos tus campañas, tus canales de reserva y tu base de clientes, y te decimos qué medir y qué automatizar primero.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "h2": { "text": "¿Cuántas reservas trae cada peso de tu pauta?", "soft": "Pongámosle número." },
+      "lede": "Cotiza tu proyecto con lo que tienes hoy: tus campañas, tus canales de reserva y tu base de clientes. Con eso definimos qué medir y qué automatizar primero.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo un restaurante u hotel y quiero más reservas medidas por campaña."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

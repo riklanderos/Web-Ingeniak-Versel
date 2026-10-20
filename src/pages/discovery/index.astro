@@ -1,7 +1,8 @@
 ---
-// /discovery/ · T-CONVERSION (ESPEC-v2 §5.11). Encabezado reducido; todo CTA primario va directo a la agenda.
+// /discovery/ · T-CONVERSION, landing oculta de campañas (CAMBIO-COTIZAR §4.2, R17). noindex,follow; encabezado reducido;
+// el primario reserva en la propia página (#agenda, BookingFlow tipo="discovery"); la cotización es ruta secundaria.
 import ConversionTemplate from '../../components/templates/ConversionTemplate.astro';
-import { getPage } from '../../lib/site';
-const page = getPage('/discovery/');
+import { landingPage } from '../../scripts/landing/pagina';
+const page = landingPage('/discovery/');
 ---
-<ConversionTemplate page={page} />
+<ConversionTemplate page={page} tipo="discovery" vsl={{ src: '/video/discovery-vsl-720.mp4', fallbackPoster: '/img/discovery-vsl-poster.webp' }} />

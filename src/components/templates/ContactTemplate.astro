@@ -2,11 +2,14 @@
 // ContactTemplate · T-CONTACT (ESPEC-v2 §5.12, §8.5; §12.2 R3/R4/R11) · /contacto/
 // Data-driven: recorre page.sections (src/data/sitemap.json) en su orden; el texto sale de src/content/paginas/<page.id>.json.
 //   hero        ImageSection hero (home-kain: Kain saluda junto a un teléfono de cristal; texto a la derecha) · H1 · 3 rutas:
-//               .btn Discovery (recomendada) · .btn--ghost WhatsApp con Kain · correo · ChatSim registrado en la pantalla del
+//               .btn «Cotizar proyecto» (href="#cotizar", abre el modal) · .btn--ghost WhatsApp con Kain · correo · ChatSim en el
 //               teléfono (SIMULACIÓN; en móvil la pantalla mide < 180 px → miniatura encendida, §3.7). Móvil `split` (R3).
 //   rutas       Intertitle + <table> semántica de 3 rutas (filas con filete y barrido cian, sin tarjetas; bloques en móvil).
 //               Sin tiempos de respuesta hasta confirmarlos (pendientes del copy).
-//   formulario  condicional: no existe hasta que el cliente apruebe el webform de Kommo (copy con _omitir).
+//               Ruta «Cotizar proyecto» (id "cotizar", cotizar: true) → disparador del modal (data-cotizar, href="#cotizar").
+//   cotizar     (antes "formulario") Intertitle split: eyebrow, H2, lede, "qué sigue" en 3 pasos, primario .btn[data-cotizar]
+//               href="#cotizar" data-section="cotizar" + microcopia, y las rutas directas (WhatsApp con el mensaje de la
+//               página y mailto) que sirven sin JS. Es el destino sin JS de todo «Cotizar proyecto» (/contacto/#cotizar).
 //   oficina     Intertitle split · dirección en grande sobre un faro de luz (esquema tipográfico: sin mapa con pines y sin
 //               terceros al cargar) + Google Maps + ficha NAP (EntitySheet) + países (CountryList).
 //   redes       Intertitle split · tres filas tipográficas (logo en máscara currentColor + nombre + usuario).
@@ -31,6 +34,7 @@ import Aura from './Aura.astro';
 import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
 import { SITE, waHref, linkTarget, type Page } from '../../lib/site';
 import { LOCAL_ID } from '../layout/jsonld';
+import { QUOTE, QUOTE_HREF_LOCAL, primaryLabel, quoteAttrs } from '../layout/cta';
 import '../../styles/tpl/ContactTemplate.css';
 
 interface Props { page: Page; copy: any }
@@ -87,10 +91,17 @@ const chatLines = (hero?.chat?.lines ?? []).filter((l: any) => l?.text);
 
 /* ── 02 · rutas ─────────────────────────────────────────────────────────── */
 const rutas = cp('rutas');
-const routeHref = (id: string): { href: string; ext?: boolean; wa?: boolean } =>
-  id === 'discovery' ? { href: linkTarget('/discovery/') ?? SITE.agenda, ext: !linkTarget('/discovery/') }
-  : id === 'whatsapp' ? { href: wa, ext: true, wa: true }
+// «Cotizar proyecto» (id "cotizar" o bandera cotizar: true) abre el modal; una ruta heredada a la Discovery también
+// (ninguna página pública enlaza a una landing oculta, R17).
+const routeHref = (r: any): { href: string; ext?: boolean; wa?: boolean; quote?: boolean } =>
+  r?.cotizar || r?.id === 'cotizar' || r?.id === 'discovery' ? { href: QUOTE_HREF_LOCAL, quote: true }
+  : r?.id === 'whatsapp' ? { href: wa, ext: true, wa: true }
   : { href: mailto };
+
+/* ── 03 · cotizar (destino sin JS de todo «Cotizar proyecto») ──────────────── */
+const cot = cp('cotizar') ?? cp('formulario');
+const cotSteps = ((cot?.steps ?? []) as any[]).filter((st) => st?.title || st?.line).slice(0, 3);
+const cotDirect = cot?.directo ?? {};
 
 /* ── 04 · oficina ───────────────────────────────────────────────────────── */
 const of = cp('oficina');
@@ -106,9 +117,12 @@ const socialItems = (redes?.items ?? [])
 const cta = cp('cta-final');
 const ctaPlate = plateOf('cta-final');
 
-const order: string[] = (P.sections as any[]).filter((s) => s.status !== 'conditional').map((s) => s.id);
+// "formulario" (condicional) pasa a ser la sección #cotizar (sitemap.json la renombra; mientras tanto se pinta igual).
+const order: string[] = [...new Set((P.sections as any[])
+  .filter((s) => s.status !== 'conditional' || s.id === 'formulario' || s.id === 'cotizar')
+  .map((s) => (s.id === 'formulario' ? 'cotizar' : s.id)))];
 if (dev) {
-  const known = new Set(['hero', 'rutas', 'formulario', 'oficina', 'redes', 'cta-final']);
+  const known = new Set(['hero', 'rutas', 'cotizar', 'oficina', 'redes', 'cta-final']);
   for (const id of order) {
     if (!known.has(id)) console.warn(`[ContactTemplate] ${P.id}: sección "${id}" sin componente en la plantilla`);
     else if (!C[id]) console.warn(`[ContactTemplate] ${P.id}: falta el copy de la sección "${id}"`);
@@ -128,7 +142,7 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
         {hero.lede && (
           <p class="t-lede t-lede--2 ct-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
         )}
-        <HeroCtas href={linkTarget(hero.ctaPrimary?.href ?? '/discovery/') ?? SITE.agenda} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+        <HeroCtas href={QUOTE_HREF_LOCAL} label={primaryLabel(hero)} section="hero"
           waHref={wa} waLabel={waLabel(hero)} />
         {hero.mail && (
           <p class="ct-mail tpl-mhide">
@@ -180,9 +194,9 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
           </thead>
           <tbody>
             {(rutas.routes ?? []).map((r: any, i: number) => {
-              const go = routeHref(r.id);
+              const go = routeHref(r);
               return (
-                <tr class:list={['ct-route', `ct-route--${r.id}`]}>
+                <tr class:list={['ct-route', `ct-route--${go.quote ? 'cotizar' : r.id}`]}>
                   <th scope="row" class="ct-route__head">
                     <span class="ct-route__n" aria-hidden="true">{pad(i + 1)}</span>
                     <span class="ct-route__name">{r.name}</span>
@@ -192,7 +206,7 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
                   <td class="ct-route__when" data-label={rutas.cols?.when ?? 'Úsala si…'}><Copy text={r.when} /></td>
                   <td class="ct-route__then" data-label={rutas.cols?.then ?? 'Qué pasa después'}><Copy text={r.then} /></td>
                   <td class="ct-route__act">
-                    <a class="ct-route__go" href={go.href} target={go.ext && !go.wa ? '_blank' : undefined} rel={go.ext ? 'noopener' : undefined} data-wa={go.wa ? '' : undefined}>
+                    <a class="ct-route__go" href={go.href} target={go.ext && !go.wa ? '_blank' : undefined} rel={go.ext ? 'noopener' : undefined} data-wa={go.wa ? '' : undefined} {...(go.quote ? quoteAttrs('rutas') : {})}>
                       <span>{r.action}</span><span class="sr-only">: {r.name}</span>
                       <span class="ct-route__arr" aria-hidden="true">{go.wa ? <Icon name="whatsapp" size={16} /> : r.id === 'correo' ? <Icon name="mail" size={16} /> : '→'}</span>
                     </a>
@@ -209,6 +223,40 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
             <a class="ct-in" href={linkTarget(rutas.privacy.href ?? '/aviso-privacidad/')}>{rutas.privacy.label}</a>
           </p>
         )}
+      </Intertitle>
+    );
+
+    /* ── 03 · cotizar: destino de «Cotizar proyecto» (con JS abre el modal; sin JS, WhatsApp y correo directos) ── */
+    if (id === 'cotizar' && cot) return (
+      <Intertitle id="cotizar" aura="none" layout="split" class="ct-cot tpl-glow">
+        <Aura kind="isotipo" x="78%" y="46%" w="min(48vw,720px)" o={0.7} only="d" />
+        <Fragment slot="head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cot.eyebrow ?? QUOTE.label}</p>
+          <h2 id="cotizar-t" class="t-h2" data-split set:html={headHtml(cot.h2)} />
+          {cot.lede && <Copy as="p" class="t-lede t-lede--2 ct-cot__lede" text={cot.lede} data-reveal />}
+          <div class="ctas ct-cot__ctas" data-reveal>
+            <Btn variant="primary" cotizar href={QUOTE_HREF_LOCAL} data-section="cotizar" label={primaryLabel(cot)} micro />
+          </div>
+        </Fragment>
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        {cotSteps.length > 0 && (
+          <ol class="ct-steps" role="list" data-reveal="stagger">
+            {cotSteps.map((st: any, i: number) => (
+              <li class="ct-step">
+                <span class="ct-step__n" aria-hidden="true">{st.n ?? pad(i + 1)}</span>
+                <span class="ct-step__t">{st.title}</span>
+                {st.line && <Copy as="span" class="ct-step__l" text={st.line} />}
+              </li>
+            ))}
+          </ol>
+        )}
+        <div class="ct-direct" data-reveal>
+          {cotDirect.line && <p class="t-label ct-direct__h"><span class="node" aria-hidden="true"></span>{cotDirect.line}</p>}
+          <div class="ct-direct__row">
+            <Btn variant="ghost" href={wa} label={cotDirect.wa ?? waLabel(cot)} />
+            <a class="lnk ct-direct__mail" href={mailto}><Icon name="mail" size={16} />{cotDirect.email ?? SITE.email}</a>
+          </div>
+        </div>
       </Intertitle>
     );
 
@@ -271,10 +319,7 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
         <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
         {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
         <div class="ctas">
-          <div class="cta-p">
-            <Btn variant="primary" href={linkTarget(cta.ctaPrimary?.href ?? '/discovery/') ?? SITE.agenda} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
-            <Copy as="p" class="t-micro btn-micro" text={cta.micro ?? '30 min · 1:1 · Google Meet · sin costo'} data-allow-number />
-          </div>
+          <Btn variant="primary" cotizar href={QUOTE_HREF_LOCAL} data-section="cta-final" label={primaryLabel(cta)} micro />
           <Btn variant="ghost" href={wa} label={waLabel(cta)} />
         </div>
       </Dawn>

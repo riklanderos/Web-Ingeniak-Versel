@@ -5,7 +5,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "PREGUNTA AL CLIENTE · #plataforma: capturas reales de app.kain.mx (una cuenta demo) para la ventana de producto, marcadas VISTA DEMO (ESPEC §5.6, R7). Mientras no lleguen, la ventana es una simulación en HTML con la etiqueta SIMULACIÓN y la nota 'No es una captura de app.kain.mx'.",
@@ -20,7 +20,8 @@
     "FAQ · G13, N12, N13, N01 y W02 salen del banco tal cual (src/data/faq.json). G13 es también la definición de #que-es (DefinitionBlock), igual que G02 en la página de agentes para WhatsApp.",
     "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (hero.channels, donde.channels).",
     "RESUELTO 2026-10-19 · cliente en chat · (12) calendarios: 'el calendario de tu CRM o el que ya usa tu equipo' (hago, donde).",
-    "RESUELTO 2026-10-19 · cliente en chat · (16) la implementación toma de 7 a 30 días según el alcance (rango general de Ingeniak): no se menciona en esta página."
+    "RESUELTO 2026-10-19 · cliente en chat · (16) la implementación toma de 7 a 30 días según el alcance (rango general de Ingeniak): no se menciona en esta página.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto'. que-es (faceta 'La plataforma'), sectores.footer, plataforma.body y lede del cierre sin la Discovery Session ni los 30 minutos."
   ],
   "sections": {
     "hero": {
@@ -33,7 +34,7 @@
         "label": "Atiendo en",
         "items": ["WhatsApp", "Instagram", "Facebook Messenger", "Chat web", "Correo"]
       },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de tu página en ingeniak.mx y quiero ver una demo de cómo atiendes a mis clientes."
@@ -47,7 +48,7 @@
       "definition": { "heading": "¿Qué es kain?", "faqId": "G13" },
       "facets": [
         { "term": "La sub-marca", "line": "La línea de agentes de IA de Ingeniak. Cada agente se configura con la información de tu negocio y con las reglas que defines con nosotros." },
-        { "term": "La plataforma", "line": "app.kain.mx. Es donde trabaja tu agente, conectado a tus canales y a tu CRM. El primer paso para tener el tuyo es una Discovery Session." },
+        { "term": "La plataforma", "line": "app.kain.mx. Es donde trabaja tu agente, conectado a tus canales y a tu CRM. El primer paso para tener el tuyo es cotizar tu proyecto." },
         { "term": "El personaje", "line": "El robot blanco que ves aquí. Le pone cara a esos agentes y en esta página habla por ellos." }
       ],
       "body": [
@@ -164,7 +165,7 @@
         { "slug": "horeca", "name": "HoReCa", "line": "Tu restaurante trabajando, sin depender más de ti.", "href": "/industrias/horeca/",
           "bubbles": [{ "who": "cliente", "text": "¿Puedo reservar para un cumpleaños de ocho personas?" }, { "who": "kain", "text": "Claro. ¿Para qué día y a qué hora? Te confirmo la mesa por aquí." }] }
       ],
-      "footer": "¿Tu sector no está en la lista? El sistema es el mismo: lo adaptamos contigo en la Discovery Session.",
+      "footer": "¿Tu sector no está en la lista? El sistema es el mismo: cuéntanoslo al cotizar tu proyecto y lo adaptamos contigo.",
       "links": [{ "label": "Ver todas las industrias", "href": "/industrias/" }]
     },
     "plataforma": {
@@ -174,7 +175,7 @@
       "h2": { "text": "Trabajo desde app.kain.mx.", "soft": "Ahí vive el agente de tu empresa." },
       "lede": "Desde ahí atiendo todos tus canales al mismo tiempo, y tu equipo encuentra cada conversación en el CRM, lista para retomarla donde se quedó.",
       "body": [
-        "Los proyectos con agentes de IA empiezan {{price}}; el alcance exacto lo definimos contigo en la Discovery Session."
+        "Los proyectos con agentes de IA empiezan {{price}}; para una cifra de tu caso, cotiza tu proyecto."
       ],
       "window": {
         "title": "Conversaciones de hoy",
@@ -214,8 +215,8 @@
       "rail": "Cierre",
       "eyebrow": "Tu siguiente paso",
       "h2": { "text": "Escríbeme y te muestro", "soft": "cómo atendería a tus clientes." },
-      "lede": "O agenda tu Discovery Session: en 30 minutos revisamos qué debería atender tu agente, en qué canales y con qué sistemas se conecta.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "lede": "O cotiza tu proyecto: cuéntanos qué debería atender tu agente, en qué canales y con qué sistemas se conecta, y te contactamos por WhatsApp y correo.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de tu página en ingeniak.mx y quiero ver una demo de cómo atiendes a mis clientes."

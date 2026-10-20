@@ -46,6 +46,7 @@ import ResultsLedger from '../ui/ResultsLedger.astro';
 import EditorNote from '../ui/EditorNote.astro';
 import SumarioCover from '../ui/SumarioCover.astro';
 import HeroCtas from './HeroCtas.astro';
+import { primaryLabel, quoteLink } from '../layout/cta';
 import Aura from './Aura.astro';
 import HubMap from './hub/HubMap.astro';
 import HubFlow from './hub/HubFlow.astro';
@@ -71,7 +72,8 @@ const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
 const plateOf = (id: string) => sec(id)?.plate ?? null;
 const wa = (c?: any) => (c?.ctaSecondary?.waMessage ? waHref(c.ctaSecondary.waMessage) : P.secondaryCta?.href ?? waHref('Hola Kain'));
 const waLabel = (c?: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
-const built = (l?: any[]) => (l ?? []).filter((x) => x?.href && isBuilt(x.href));
+// "cotizar": true (o una landing oculta) → disparador del modal: <a href={l.href} {...l.attrs}> (CAMBIO-COTIZAR §1.2).
+const built = (l?: any[]) => (l ?? []).map((x) => quoteLink(x, undefined, P.url)).filter((x) => x?.href && isBuilt(x.href));
 const lay = (p: any) => (p?.layout && p.layout !== 'sin sujeto' ? p.layout : undefined);
 /** Borde de texto seguro de una escena como clase (.hub-e38 … .hub-e62 en HubTemplate.css): la columna de texto se acota
  *  a la penumbra de la placa REALMENTE pintada (también con el respaldo). ImageSection no recibe style propio (sus
@@ -187,7 +189,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           {hero.lede && (
             <p class="t-lede t-lede--2 hub-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
           )}
-          <HeroCtas href={hero.ctaPrimary?.href ?? SITE.discovery} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+          <HeroCtas label={primaryLabel(hero)} section="hero"
             waHref={wa(hero)} waLabel={waLabel(hero)} />
           {/* Guía destacada (D: "artículo destacado sobre la imagen"): solo si alguna guía ya existe. R3: en móvil baja a `more` */}
           {featured && (
@@ -279,7 +281,8 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
             <Aura kind="ondas" x="50%" o={1} only="m" sticky />
             {items.length > 0 && <PainList items={items} mode="draw" label={noSe.eyebrow ?? 'Señales y por dónde empezar'} class="hub-nose__list" />}
             <div class="ctas hub-nose__ctas">
-              <Btn variant="primary" href={noSe.ctaPrimary?.href ?? SITE.discovery} label={noSe.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+              {/* /servicios/#no-se: el modal abre con «No estoy seguro» marcado (§1.3) */}
+              <Btn variant="primary" cotizar={{ servicio: 'no-seguro' }} data-section="no-se" label={primaryLabel(noSe)} micro />
             </div>
           </Fragment>
         </ImageSection>
@@ -318,7 +321,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           {g.lede && <Copy as="p" class="t-lede t-lede--2 hub-loc__lede" text={g.lede} />}
           <Fragment slot="foot">
             {g.footer && <Copy as="p" class="t-micro hub-loc__foot" text={g.footer} />}
-            {built(g.links).map((l: any) => <a class="lnk hub-loc__all" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+            {built(g.links).map((l: any) => <a class="lnk hub-loc__all" href={l.href} {...l.attrs}>{l.label} <span aria-hidden="true">→</span></a>)}
           </Fragment>
         </LocationSwitcher>
       );
@@ -343,7 +346,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           {cif.lede && <Copy as="p" class="t-lede t-lede--2 hub-cifras__lede" text={cif.lede} data-reveal />}
           {cif.note && <EditorNote label={cif.noteLabel ?? 'Nota del editor'} class="hub-cifras__note"><Copy as="p" text={cif.note} /></EditorNote>}
           <Fragment slot="foot">
-            {built(cif.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+            {built(cif.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label} <span aria-hidden="true">→</span></a>)}
           </Fragment>
         </Montage>
       );
@@ -423,15 +426,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(cta.h2)} />
           {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
           <div class="ctas">
-            {cta.micro ? (
-              <div class="cta-p">
-                <Btn variant="primary" href={cta.ctaPrimary?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
-                {/* Grupos que no se parten por dentro ("Sin costo · Sin compromiso · / 30 minutos por Google Meet"): dos renglones */}
-                <p class="t-micro btn-micro" data-allow-number>{String(cta.micro).split(/\s+·\s+/).map((g: string, i: number) => <>{i > 0 && ' · '}<span class="tpl-nw">{g}</span></>)}</p>
-              </div>
-            ) : (
-              <Btn variant="primary" href={cta.ctaPrimary?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
-            )}
+            <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(cta)} micro />
             <Btn variant="ghost" href={wa(cta.ctaSecondary ? cta : hero)} label={waLabel(cta)} />
           </div>
         </Dawn>

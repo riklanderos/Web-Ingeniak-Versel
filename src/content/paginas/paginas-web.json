@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "FAQ DISTINTA DE D · N09: agrega 'Así sabes qué página, qué anuncio y qué formulario te traen clientes, y no solo visitas.' Sigue en validar: true en faq.json, así que no sale en el acordeón ni en el FAQPage hasta que se apruebe.",
@@ -17,7 +17,8 @@
     "PREGUNTA AL CLIENTE · inversion.remate usa el rango general confirmado (de 7 a 30 días, según el alcance). ¿Aplica también a un sitio web completo con textos nuevos, o el plazo de un sitio se dice distinto?",
     "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet' del brief): repetiría la microcopia que ya trae el botón primario (igual que en /servicios/agentes-ia-whatsapp/).",
     "CAMBIO DE TEXTO · hero.ui (wireframe que se arma, ESPEC §5.2.1) y este-sitio.ui (capas de este sitio): son los textos de la UI registrada sobre la superficie de cristal de la placa, con VISTA DEMO. La plantilla de servicio todavía no los pinta; no cuentan para las palabras mínimas.",
-    "DATO PENDIENTE · senales usa la placa de respaldo dolor-operacion mientras no exista dolor-anuncios; el pie de foto ('Anoche entraron a tu web. Nadie escribió.') funciona con las dos."
+    "DATO PENDIENTE · senales usa la placa de respaldo dolor-operacion mientras no exista dolor-anuncios; el pie de foto ('Anoche entraron a tu web. Nadie escribió.') funciona con las dos.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: hero.ctaPrimary y cta-final.ctaPrimary pasan a 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización; sin JS lleva a /contacto/#cotizar) con la microcopia compartida de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Claves reescritas porque nombraban la Discovery Session o prometían la llamada de 30 minutos: inversion.remate ('…después de tu Discovery Session.' → '…en tu cotización.'); cta-final.lede ('Lo vemos en 30 minutos: revisamos tu sitio…' → 'Comparte tu sitio actual en el formulario y cuéntanos de dónde llegan tus visitas: revisamos dónde se pierden y te decimos qué conviene cambiar primero.'; el formulario tiene el campo 'Sitio web o redes'). Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
@@ -26,7 +27,7 @@
       "eyebrow": "Servicio · Atraer",
       "h1": { "text": "Páginas web de alta conversión,", "soft": "conectadas a tu CRM y WhatsApp", "lit": "conversión" },
       "lede": "Sitios rápidos y claros, conectados a tu CRM y a WhatsApp desde el primer día. Cada botón termina en una conversación o en un lead que puedes medir.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de páginas web y quiero una web que convierta visitas en clientes."
@@ -164,7 +165,7 @@
         { "title": "Integraciones", "line": "Tu CRM, tu calendario, tu analítica y cualquier sistema que deba recibir cada contacto." },
         { "title": "Volumen", "line": "Cuántas páginas, servicios o sucursales necesita tu sitio y cuánto texto hay que escribir desde cero." }
       ],
-      "remate": "El alcance exacto lo dejamos por escrito después de tu Discovery Session. Según lo que incluya, la implementación toma de 7 a 30 días."
+      "remate": "El alcance exacto lo dejamos por escrito en tu cotización. Según lo que incluya, la implementación toma de 7 a 30 días."
     },
     "faq": {
       "_componente": "FAQAccordion (N09 sale cuando se apruebe)",
@@ -190,8 +191,8 @@
       "rail": "Cierre",
       "eyebrow": "Antes de rediseñar",
       "h2": { "text": "¿Tu web trae citas", "soft": "o solo visitas?" },
-      "lede": "Lo vemos en 30 minutos: revisamos tu sitio, de dónde llegan tus visitas y dónde se pierden, y te decimos qué conviene cambiar primero.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "lede": "Comparte tu sitio actual en el formulario y cuéntanos de dónde llegan tus visitas: revisamos dónde se pierden y te decimos qué conviene cambiar primero.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de páginas web y quiero una web que convierta visitas en clientes."

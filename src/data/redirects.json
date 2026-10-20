@@ -193,12 +193,22 @@
     },
     {
       "source": "/cotiza",
-      "destination": "/discovery/",
+      "destination": "/contacto/#cotizar",
       "permanent": true
     },
     {
       "source": "/cotiza/",
-      "destination": "/discovery/",
+      "destination": "/contacto/#cotizar",
+      "permanent": true
+    },
+    {
+      "source": "/powersession",
+      "destination": "/power-session/",
+      "permanent": true
+    },
+    {
+      "source": "/powersession/",
+      "destination": "/power-session/",
       "permanent": true
     }
   ]

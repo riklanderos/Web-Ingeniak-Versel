@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "articulo": {
     "categoria": "CRM",
     "about": [
@@ -37,7 +37,8 @@
     "DATO DE TERCEROS · funciones, planes, idioma y modelos de cobro de Kommo, HighLevel y HubSpot consultados el 2026-10-19 (fuentes 1 a 5). No se copian precios (check-cifras y la regla de precios de D: 'enlace a precios oficiales vigentes'). Revisar cada trimestre y actualizar 'actualizado'.",
     "CAMBIO DE TEXTO · el brief de D pedía una sección 'La respuesta corta' dentro del cuerpo; es la caja de respuesta corta (AnswerBox) y encabeza el índice. Las otras seis secciones de D están completas y en orden.",
     "CASOS · la escena del cuerpo usa dos cifras confirmadas de metrics.ts: retail-conversiones (Retail multimarca · Kommo + IA; la descripción 'calificación de leads por IA' viene de la respuesta K03 aprobada) y dental-citas (la clínica usa GoHighLevel, confirmado el 2026-10-19). El caso retail no tiene página construida: su nombre se pinta sin enlace.",
-    "PLACA · la portada pide servicios-no-se en espejo; mientras no esté exportada, sale home-sistema-3-organizar (Kain con la tarjeta del lead frente a los carriles del embudo; respaldo local de la plantilla). Escena del cuerpo: ind-retail-kain-sector en espejo (Kain en el aparador de una tienda atendiendo pedidos; al fondo una clienta generada, por eso lleva el rótulo de imagen ilustrativa); caso-retail-hero queda solo en art-partner-kommo para no repetir la misma escena en el clúster del blog."
+    "PLACA · la portada pide servicios-no-se en espejo; mientras no esté exportada, sale home-sistema-3-organizar (Kain con la tarjeta del lead frente a los carriles del embudo; respaldo local de la plantilla). Escena del cuerpo: ind-retail-kain-sector en espejo (Kain en el aparador de una tienda atendiendo pedidos; al fondo una clienta generada, por eso lleva el rótulo de imagen ilustrativa); caso-retail-hero queda solo en art-partner-kommo para no repetir la misma escena en el clúster del blog.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: cta-medio y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cuerpo (bloque 35): 'En la Discovery Session revisamos…' → 'Cuando cotizas tu proyecto, revisamos…'. Cierre: 'Lo decidimos en 30 minutos.' → 'Lo decidimos con tu proceso real.'."
   ],
   "sections": {
     "hero": {
@@ -132,7 +133,7 @@
           "**Kommo:** somos partner oficial de Kommo en Latinoamérica. Te ayudamos a contratar las licencias que necesitas, implementamos el CRM, conectamos WhatsApp y ponemos agentes de IA que responden, califican y agendan.",
           "**GoHighLevel:** lo implementamos completo en español: configuración de la cuenta, embudos, calendarios, mensajes, automatizaciones, agente de IA y capacitación de tu equipo. Es una herramienta que implementamos; nuestra única alianza oficial es con Kommo."
         ] },
-        "En la Discovery Session revisamos cómo vendes hoy y te decimos cuál conviene, con qué plan y qué costos de terceros considerar. Nuestros proyectos empiezan {{price}}, y implementar un sistema toma de 7 a 30 días, según el alcance."
+        "Cuando cotizas tu proyecto, revisamos cómo vendes hoy y te decimos cuál conviene, con qué plan y qué costos de terceros considerar. Nuestros proyectos empiezan {{price}}, y implementar un sistema toma de 7 a 30 días, según el alcance."
       ]
     },
     "cta-medio": {
@@ -140,7 +141,7 @@
       "label": "Siguiente paso",
       "text": "¿Todavía no sabes cuál te conviene? Lo vemos con tu proceso real, o escríbele a Kain y cuéntale cómo vendes hoy.",
       "link": { "label": "CRM con IA", "href": "/servicios/crm-con-ia/" },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí la comparativa Kommo vs GoHighLevel y quiero ayuda para elegir." }
     },
     "faq": {
@@ -178,10 +179,9 @@
     "cta-final": {
       "_componente": "Dawn (cta-amanecer en espejo)",
       "eyebrow": "Tu caso",
-      "h2": { "text": "¿Kommo o GoHighLevel en tu caso?", "soft": "Lo decidimos en 30 minutos." },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí la comparativa Kommo vs GoHighLevel y quiero ayuda para elegir." },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "h2": { "text": "¿Kommo o GoHighLevel en tu caso?", "soft": "Lo decidimos con tu proceso real." },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí la comparativa Kommo vs GoHighLevel y quiero ayuda para elegir." }
     }
   }
 }

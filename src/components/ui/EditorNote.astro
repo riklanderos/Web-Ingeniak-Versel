@@ -2,16 +2,17 @@
 // EditorNote · ESPEC §2.11 "Recuadro de nota" + InlineCTA (variant="cta").
 // Filete de 1 px --hair-2 en los 4 lados, sin fondo, con la etiqueta mono incrustada en el filete superior.
 //   note → "NOTA DEL EDITOR", "NOTA DE MÉTODO"… (slot = texto)
-//   cta  → InlineCTA de artículos: una línea (slot) + botón primario (cta: {label, href}) con su microcopia
+//   cta  → InlineCTA de artículos: una línea (slot) + primario «Cotizar proyecto» (abre el modal, data-cotizar; CAMBIO-COTIZAR §1)
+//          con la microcopia _comun.cta.micro. cta.label cambia la etiqueta; cta.section, la atribución (por defecto 'cta-medio').
 import Btn from './Btn.astro';
-import { SITE } from '../../lib/site';
-interface Props { label: string; variant?: 'note' | 'cta'; cta?: { label?: string; href?: string }; class?: string }
+import { primaryLabel } from '../layout/cta';
+interface Props { label: string; variant?: 'note' | 'cta'; cta?: { label?: string; href?: string; section?: string }; class?: string }
 const { label, variant = 'note', cta, class: cls } = Astro.props;
 ---
 <aside class:list={['enote', `enote--${variant}`, cls]} aria-label={label} data-ui-reveal>
   <p class="enote__label t-label"><span class="node" aria-hidden="true"></span>{label}</p>
   <div class="enote__body"><slot /></div>
   {variant === 'cta' && (
-    <div class="enote__cta"><Btn variant="primary" href={cta?.href ?? SITE.discovery} label={cta?.label ?? 'Agenda tu Discovery Session'} micro /></div>
+    <div class="enote__cta"><Btn variant="primary" cotizar data-section={cta?.section ?? 'cta-medio'} label={primaryLabel({ ctaPrimary: cta })} micro /></div>
   )}
 </aside>

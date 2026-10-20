@@ -26,6 +26,7 @@ import { resolvePlate, AURA_ISOTIPO, AURA_ONDAS, type Resolved } from '../cine/p
 import Breadcrumbs from '../nav/Breadcrumbs.astro';
 import Btn from '../ui/Btn.astro';
 import HeroCtas from './HeroCtas.astro';
+import { primaryLabel as quoteLabel, quoteLink } from '../layout/cta';
 import Aura from './Aura.astro';
 import { builtCrumbs } from './heroKit';
 import Copy from '../ui/Copy.astro';
@@ -70,9 +71,9 @@ const BREVE = ['hero', 'ficha', 'cifra', 'replicar', 'relacionados', 'cta-final'
 const order: string[] = sitemapSecs.filter(shows).map((s) => s.id).filter((id) => !breve || BREVE.includes(id));
 
 // ── Utilidades ───────────────────────────────────────────────────────────────
-// Etiqueta del primario: la del copy (o la compartida de _comun), nunca la variante de sitemap.json (regla de un azul, §0.1)
-const comun = (() => { try { return getCopy('_comun'); } catch { return null; } })();
-const primaryLabel = (c: any): string => c?.ctaPrimary?.label ?? comun?.cta?.discovery ?? 'Agenda tu Discovery Session';
+// Etiqueta del primario «Cotizar proyecto» (CAMBIO-COTIZAR §1): copy → _comun.cta.cotizar, nunca la variante de sitemap.json
+// ni la heredada de la Discovery (regla de un azul, §0.1). El destino siempre es el modal (data-cotizar).
+const primaryLabel = (c: any): string => quoteLabel(c);
 // El mensaje de WhatsApp acepta los mismos tokens que el copy ({{metric:ID}}, |full, |prose): una cifra del mensaje sale de
 // metrics.ts, nunca escrita a mano (§0.1-2)
 const wa = (msg?: string) => (msg ? waHref(resolveTokens(msg)) : page.secondaryCta?.href ?? waHref('Hola Kain, quiero información.'));
@@ -273,7 +274,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
           </p>
         )}
         {ledeM && <p class="t-lede t-lede--2 case-hero__lede tpl-dhide"><Copy text={ledeM} />{ledeMFig && <sup class="case-fn" aria-hidden="true">1</sup>}</p>}
-        <HeroCtas href={hero.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={primaryLabel(hero)}
+        <HeroCtas label={primaryLabel(hero)} section="hero"
           waHref={wa(hero.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} waLabel={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
         {/* QA #63 · §0.1-2: toda cifra lleva su nota de fuente, también en la portada */}
         {h1.metricId && <p class="t-micro case-hero__src tpl-mhide"><sup class="case-fn" aria-hidden="true">1</sup> {SOURCE_NOTE}.</p>}
@@ -459,7 +460,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
           <div class="case-rep__list">
             <ScriptList rows={(rep.items ?? []).map((r: any) => ({ n: r.n, title: r.title, line: r.line, href: hrefOr(r.href) }))} label={H2(rep.h2).text} />
             {(rep.links ?? []).some((l: any) => hrefOr(l.href)) && (
-              <p class="case-links">{(rep.links as any[]).filter((l) => hrefOr(l.href)).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name="arrow" size={18} /></a>)}</p>
+              <p class="case-links">{(rep.links as any[]).map((l) => quoteLink(l, 'replica', page.url)).filter((l) => hrefOr(l.href)).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name="arrow" size={18} /></a>)}</p>
             )}
           </div>
         </div>
@@ -503,8 +504,8 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
     );
 
     /* ───────────── 11 · Cierre (Dawn) ─────────────
-       Contenido por slot (no por `copy`): la microcopia del copy sustituye a la del botón (una sola línea bajo el
-       primario, como en el inicio). Las duraciones de la Discovery ("30 minutos") no son cifras comerciales. */
+       Contenido por slot (no por `copy`): primario «Cotizar proyecto» con la microcopia compartida (_comun.cta.micro).
+       Una duración en el titular ("30 minutos") no es cifra comercial (allowDur). */
     if (id === 'cta-final') return (
       <Dawn
         plate={ctaPlate?.id ?? 'cta-amanecer'}
@@ -519,14 +520,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
         </h2>
         {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
         <div class="ctas">
-          {cta.micro ? (
-            <div class="cta-p">
-              <Btn variant="primary" href={cta.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={primaryLabel(cta)} />
-              <p class="t-micro btn-micro" data-allow-number>{cta.micro}</p>
-            </div>
-          ) : (
-            <Btn variant="primary" micro href={cta.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={primaryLabel(cta)} />
-          )}
+          <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(cta)} micro />
           <Btn variant="ghost" href={wa(cta.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} label={cta.ctaSecondary?.label ?? 'Escríbele a Kain'} />
         </div>
       </Dawn>

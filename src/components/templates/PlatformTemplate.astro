@@ -48,6 +48,7 @@ import KommoBadge from '../ui/KommoBadge.astro';
 import Icon from '../ui/Icon.astro';
 import { annotateFigures, tokensToText, esc, logoUrl, logoWide, TOOLS, VKTOR } from '../ui/ui-data';
 import HeroCtas from './HeroCtas.astro';
+import { primaryLabel, quoteLink, QUOTE } from '../layout/cta';
 import Aura from './Aura.astro';
 import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs, builtRelated } from './heroKit';
 import { getPlate, pages, waHref, SITE, linkTarget, isBuilt, plateAlt, type Page } from '../../lib/site';
@@ -129,7 +130,8 @@ const toneOf = (t?: string) => (t === 'ambar' || t === 'amber' ? 'amber' : t ===
 const wa = (c: any) => (c?.ctaSecondary?.waMessage ? waHref(c.ctaSecondary.waMessage) : P.secondaryCta?.href ?? waHref('Hola Kain'));
 const ext = (href = '') => /^https?:\/\//.test(href);
 /** Enlaces del cuerpo (R12): solo rutas construidas; una planeada se omite (nunca '#'). */
-const built = (l?: any[]) => (l ?? []).filter((x) => x?.href && isBuilt(x.href));
+// "cotizar": true (o una landing oculta) → disparador del modal: <a href={l.href} {...l.attrs}> (CAMBIO-COTIZAR §1.2).
+const built = (l?: any[]) => (l ?? []).map((x) => quoteLink(x, undefined, P.url)).filter((x) => x?.href && isBuilt(x.href));
 const hrefOr = (h?: string) => (h ? linkTarget(h) ?? undefined : undefined);
 const lay = (p: any) => (p?.layout && p.layout !== 'sin sujeto' ? p.layout : undefined);
 const f4 = (n: number) => +(+n).toFixed(4);
@@ -390,7 +392,7 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
           {c.lede && (
             <p class="t-lede t-lede--2 plt-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
           )}
-          <HeroCtas href={c.ctaPrimary?.href ?? SITE.discovery} label={c.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+          <HeroCtas label={primaryLabel(c)} section="hero"
             waHref={wa(c)} waLabel={c.ctaSecondary?.label ?? 'Escríbele a Kain'} />
           {c.legal && <p class="t-micro plt-legal tpl-mhide">{c.legal}</p>}
           {heroHasUi && <LightBranch from="mano" via={heroUiSel} />}
@@ -601,7 +603,7 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
               <ScriptList rows={groups ? [] : rows} groups={groups} label={c.eyebrow} class="svc-cap__rows plt-cap__rows" />
               {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="svc-body" data-reveal />)}
               {built(c.links).length > 0 && (
-                <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
+                <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
               )}
             </div>
             {tabs && (
@@ -704,7 +706,7 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
             <div class="plt-lic__foot">
               {c.note && <Copy text={c.note} as="p" class="t-small plt-lic__note" data-reveal />}
               {built(c.links).length > 0 && (
-                <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name="arrow" size={16} /></a>)}</p>
+                <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name="arrow" size={16} /></a>)}</p>
               )}
             </div>
           </div>
@@ -773,7 +775,7 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
               </ol>
             )}
             {c.proof && <Copy text={c.proof} as="p" class="plt-proof" />}
-            {built(c.links).length > 0 && <p class="svc-links plt-scene__links">{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
+            {built(c.links).length > 0 && <p class="svc-links plt-scene__links">{built(c.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
             {lines && !pan?.m && (
               <div class="plt-scene__chat tpl-dhide">
                 <Fragment set:html={aura('isotipo', 'phone')} />
@@ -822,7 +824,7 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
           <Aura kind="ondas" x="50%" o={1} only="m" sticky />
           <TwoColumnScript variant={variant} left={side(c.left, 'cyan')} right={side(c.right, 'amber')} slogan={c.slogan} class="svc-two__cols" />
           {built(c.links).length > 0 && (
-            <p class="svc-links plt-two__links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
+            <p class="svc-links plt-two__links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
           )}
           <Fragment set:html={aura('ondas', 'two')} />
         </Intertitle>
@@ -945,10 +947,11 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
         <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
         {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
         <div class="ctas">
-          <Btn variant="primary" href={c.ctaPrimary?.href ?? SITE.discovery} label={c.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+          <Btn variant="primary" cotizar data-section={s.id} label={primaryLabel(c)} micro />
           <Btn variant="ghost" href={wa(c.ctaSecondary ? c : C.hero)} label={c.ctaSecondary?.label ?? 'Escríbele a Kain'} />
         </div>
-        {c.micro && !/sin compromiso/i.test(c.lede ?? '') && <p class="t-micro dawn__note" data-allow-number>{c.micro}</p>}
+        {/* c.micro: solo si no repite la microcopia del primario ni el lede (nunca la heredada de la Discovery) */}
+        {c.micro && c.micro !== QUOTE.micro && !/sin compromiso|google meet|\b30\s?min/i.test(`${c.micro} ${c.lede ?? ''}`) && <p class="t-micro dawn__note" data-allow-number>{c.micro}</p>}
       </Dawn>
     );
 
@@ -962,7 +965,7 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
         {c.items?.length > 0 && (
           <ScriptList rows={c.items.map((it: any, i: number) => (typeof it === 'string' ? { n: String(i + 1).padStart(2, '0'), title: it } : { n: it.n, title: it.title, line: it.line, href: hrefOr(it.href) }))} />
         )}
-        {built(c.links).length > 0 && <p class="svc-links">{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
+        {built(c.links).length > 0 && <p class="svc-links">{built(c.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
       </Intertitle>
     );
   })}

@@ -85,6 +85,10 @@ html.js:not([data-motion="reduced"]) .mth-slab{animation:mth-slab .7s cubic-bezi
   .mth-hero__rest{margin:0 0 var(--s-5);max-width:40ch}
   /* El botón redondo de WhatsApp queda sobre el haz de luz de la placa vertical: fondo propio oscuro (AA del rótulo) */
   .mth-hero .is__text > .ctas > .btn--wa{background:rgb(3 4 11 / .62)}
+  /* La microcopia del CTA ("Sin compromiso · Te contactamos por WhatsApp y correo") va en dos renglones también en tableta
+     vertical (como en teléfono): en un solo renglón su final caía sobre el haz de luz de la placa (2.9:1, bajo AA a 600 px).
+     El tope cabe el grupo largo (36 signos, .tpl-nw) y nunca la frase entera. */
+  .mth-hero .is__text > .ctas > .cta-p > .btn-micro{max-width:calc(38 * (1ch + .06em))}
   .mth-hero__phases{list-style:none;margin:0;padding:0;display:grid;gap:12px;width:100%}
   .mth-hero__phases li{display:grid;grid-template-columns:32px 1fr;align-items:center;gap:12px;padding-top:12px;border-top:1px solid var(--hair);
     font:400 .9375rem/1.35 var(--f-body);color:var(--text-2)}

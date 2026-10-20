@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE PREGUNTAS · R2 pide al menos cuatro preguntas propias por industria y el banco no tiene ninguna de retail y e-commerce (K03 es de Kommo). Propuesta en materiales/v2/build/peticiones.md (Construcción · industrias · copy): T01 '¿El agente sabe qué tengo en existencia?', T02 '¿Funciona en Instagram además de WhatsApp?', T03 '¿Cómo sé qué campaña generó cada venta?', T04 '¿Sirve para tienda física y tienda en línea al mismo tiempo?'. Al aprobarse, entran a faq.json y a faq.faqIds de esta página, delante de las compartidas.",
@@ -15,7 +15,8 @@
     "PREGUNTA AL CLIENTE · ¿El tablero '1 vista · 7 fuentes' es del mismo e-commerce de la Ciudad de México del costo por lead? La página no lo afirma: los presenta como dos cifras de e-commerce y la fila del tablero dice solo 'E-commerce'.",
     "PREGUNTA AL CLIENTE · ¿Con qué tiendas en línea o puntos de venta se integran (Shopify, WooCommerce, Tiendanube, Mercado Libre u otros)? Hoy la página dice 'tu tienda en línea' y 'tu catálogo', sin marcas.",
     "PREGUNTA AL CLIENTE · ¿Kain consulta existencias en tiempo real o responde con un catálogo que se actualiza cada cierto tiempo? La página solo dice 'con tu catálogo' y que no inventa existencias.",
-    "PREGUNTA AL CLIENTE · ¿Las alertas automáticas (fila 06) existen hoy como servicio? Vienen de la descripción del tablero en el sitio actual ('alertas por IA'); si no, se cambia la fila."
+    "PREGUNTA AL CLIENTE · ¿Las alertas automáticas (fila 06) existen hoy como servicio? Vienen de la descripción del tablero en el sitio actual ('alertas por IA'); si no, se cambia la fila.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Sigamos el camino de tu cliente.'; lede sin la Discovery Session."
   ],
   "sections": {
     "hero": {
@@ -24,7 +25,7 @@
       "eyebrow": "Industria · Retail y e-commerce",
       "h1": { "text": "IA y CRM", "soft": "para retail y e-commerce", "lit": "IA" },
       "lede": "Que cada chat de Instagram y WhatsApp tenga respuesta y seguimiento hasta la venta. Kain contesta con tu catálogo, Kommo ordena a cada cliente por etapa y tus campañas se miden en ventas, no en clics.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo un retail o e-commerce y quiero vender más por chat."
@@ -144,14 +145,13 @@
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
       "eyebrow": "Antes de tu próxima campaña",
-      "h2": { "text": "¿Cuántas ventas se quedan en el chat?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session seguimos el camino que hoy recorre un cliente de tu tienda, del anuncio o el chat hasta la venta, y te decimos qué conectar primero para que ninguna conversación se quede sin seguimiento.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "h2": { "text": "¿Cuántas ventas se quedan en el chat?", "soft": "Sigamos el camino de tu cliente." },
+      "lede": "Cotiza tu proyecto y cuéntanos el camino que hoy recorre un cliente de tu tienda, del anuncio o el chat hasta la venta. Vemos qué conectar primero para que ninguna conversación se quede sin seguimiento.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo un retail o e-commerce y quiero vender más por chat."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

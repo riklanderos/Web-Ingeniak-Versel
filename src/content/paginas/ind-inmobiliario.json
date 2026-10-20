@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "PREGUNTA AL CLIENTE · portales: la página dice que Kain contesta a los leads 'de tus anuncios y portales' cuando escriben por WhatsApp, Instagram, Facebook Messenger, tu web o el correo (canales confirmados el 2026-10-19). No nombra portales ni afirma una integración directa con alguno. Confirma si hay portales que conectemos directo (y cuáles) para decirlo.",
@@ -12,7 +12,8 @@
     "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas I01–I04 (portales, fichas y precios, asignación de asesor, montos de crédito) con su texto en materiales/v2/build/peticiones.md → 'Construcción · industrias (copy)'. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-inmobiliario.faq.",
     "FAQ · N11 sigue en validar: true en el banco; mientras no se apruebe, el acordeón muestra G02, G05 y G07 (las tres aprobadas de D).",
     "CAMBIO DE TEXTO · kain-sector: el brief de D pedía 'departamento de dos recámaras; Kain califica presupuesto'. La página usa el guion ya existente de src/data/chats/inmobiliario.json (departamento del anuncio, para vivir, crédito Infonavit, visita el sábado, Kain no da montos de crédito) y el lede lo describe tal cual.",
-    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dental-respuesta (con enlace al caso dental) y retail-conversiones (Retail multimarca · Kommo + IA). La fila y el enlace del caso retail se activan solos cuando /casos/retail-multimarca-kommo/ esté construida (hoy salen sin enlace)."
+    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dental-respuesta (con enlace al caso dental) y retail-conversiones (Retail multimarca · Kommo + IA). La fila y el enlace del caso retail se activan solos cuando /casos/retail-multimarca-kommo/ esté construida (hoy salen sin enlace).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cierre: H2 'Lo medimos en 30 minutos.' → 'Midámoslo con tus canales.'; el lede ya no promete un entregable de sesión ('Te llevas una lista clara…')."
   ],
   "sections": {
     "hero": {
@@ -21,7 +22,7 @@
       "eyebrow": "Industria · Inmobiliario",
       "h1": { "text": "Agentes de IA", "soft": "para inmobiliarias y desarrolladoras", "lit": "IA" },
       "lede": "El lead que contestas primero es el que visita. Kain responde en segundos a cada lead de tus anuncios y portales, lo califica por zona y presupuesto, y agenda la visita antes de que se enfríe.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo una inmobiliaria y quiero responder y calificar leads al instante."
@@ -141,14 +142,13 @@
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
       "eyebrow": "Tu siguiente paso",
-      "h2": { "text": "¿Cuánto tarda tu equipo en contestar un lead?", "soft": "Lo medimos en 30 minutos." },
-      "lede": "Revisamos tus canales, tus anuncios y tu CRM, y te mostramos en qué paso se enfrían los leads. Te llevas una lista clara de qué automatizar primero para que cada lead llegue a visita.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "h2": { "text": "¿Cuánto tarda tu equipo en contestar un lead?", "soft": "Midámoslo con tus canales." },
+      "lede": "Al cotizar, cuéntanos tus canales, tus anuncios y tu CRM. Vemos contigo en qué paso se enfrían los leads y qué automatizar primero para que cada lead llegue a visita.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo una inmobiliaria y quiero responder y calificar leads al instante."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

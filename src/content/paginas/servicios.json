@@ -5,14 +5,15 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "CAMBIO DE TEXTO · mapa: D pedía 3 columnas con 11 tarjetas (Atraer · Atender y vender · Operar y escalar). Se usan las 5 etapas del mega menú y de la ESPEC §5.5 (Atraer · Atender · Organizar · Automatizar · Medir), en filas de guion sin tarjetas.",
     "CAMBIO DE TEXTO · conexion: D describía 6 tramos (anuncio → web → agente → CRM → automatización → tablero). Quedan 5 (anuncio y web van juntos en Atraer) para coincidir con los 5 nodos de la placa riel-servicios y con las 5 etapas.",
     "PREGUNTA AL CLIENTE · conexion.nodes[0].logos: Meta, Google Ads y TikTok como plataformas de pauta en el tramo Atraer (las mismas del servicio de paid media en D). ¿Se quedan las tres?",
     "PREGUNTA AL CLIENTE · no-se.items: las tres señales ('te escriben más de lo que alcanzas a contestar', 'tus leads viven en chats y hojas de cálculo', 'pagas pauta y no sabes qué campaña vende') son las más comunes en las Discovery Sessions según el brief; confirma que describen bien a tus clientes.",
-    "RESUELTO 2026-10-19 · /metodologia/ ya existe: vktor.links enlaza al protocolo completo."
+    "RESUELTO 2026-10-19 · /metodologia/ ya existe: vktor.links enlaza al protocolo completo.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada, #no-se y cierre pasan a 'Cotizar proyecto' (en #no-se el formulario abre con 'No estoy seguro' marcado; lo pone la plantilla) y sale la microcopia de 30 minutos. mapa.closing y no-se.h2 sin la Discovery Session; no-se.lede ya no promete 'Treinta minutos para ver tu operación completa'; cierre: H2 'Lo vemos en 30 minutos.' → 'Lo vemos con tu operación.'."
   ],
   "sections": {
     "hero": {
@@ -26,8 +27,7 @@
       },
       "lede": "No vendemos servicios sueltos: conectamos atracción, atención, CRM, automatización y datos para que cada lead llegue, se atienda y se mida.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -164,7 +164,7 @@
           ]
         }
       ],
-      "closing": "Planes {{price}}. El alcance de cada pieza lo definimos en tu Discovery Session."
+      "closing": "Planes {{price}}. El alcance de cada pieza lo definimos contigo cuando cotizas tu proyecto."
     },
     "conexion": {
       "_componente": "ImageSection (riel-servicios, sin sujeto) con 5 nodos registrados sobre los nodos de la placa; respaldo: SystemFlow sobre aura",
@@ -275,9 +275,9 @@
       "eyebrow": "¿Por dónde empiezo?",
       "h2": {
         "text": "¿No sabes por dónde empezar?",
-        "soft": "Para eso existe la Discovery Session."
+        "soft": "Cuéntanos y lo vemos contigo."
       },
-      "lede": "Treinta minutos para ver tu operación completa y decidir qué conviene automatizar primero. Estas son las tres señales que más vemos:",
+      "lede": "Cuéntanos en el formulario cómo atiendes, vendes y das seguimiento hoy, y vemos contigo qué conviene automatizar primero. Estas son las tres señales que más vemos:",
       "items": [
         {
           "pain": "Te escriben más de lo que alcanzas a contestar.",
@@ -293,8 +293,7 @@
         }
       ],
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       }
     },
     "vktor": {
@@ -368,18 +367,16 @@
       "eyebrow": "Tu siguiente paso",
       "h2": {
         "text": "¿Qué pieza del sistema te falta?",
-        "soft": "Lo vemos en 30 minutos."
+        "soft": "Lo vemos con tu operación."
       },
-      "lede": "Revisamos cómo atraes, atiendes y das seguimiento hoy, y te decimos por cuál servicio empezar.",
+      "lede": "Cuéntanos al cotizar cómo atraes, atiendes y das seguimiento hoy, y te decimos por cuál servicio empezar.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de servicios de Ingeniak y quiero saber qué servicio me conviene primero."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

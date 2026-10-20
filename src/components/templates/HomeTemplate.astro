@@ -34,6 +34,7 @@ import EntitySheet from '../ui/EntitySheet.astro';
 import FAQAccordion from '../ui/FAQAccordion.astro';
 import { annotateFigures, esc, TEAM } from '../ui/ui-data';
 import { heroPlateOf } from '../layout/navData';
+import { primaryLabel, quoteLink } from '../layout/cta';
 import { section, getPlate, waHref, SITE, linkTarget, isBuilt, type Page } from '../../lib/site';
 import { METRICS, type MetricId } from '../../lib/metrics';
 
@@ -51,7 +52,7 @@ const plateIds = (id: string): string[] => {
   return Array.isArray(p) ? p : p ? [p] : [];
 };
 const wa = (msg?: string) => (msg ? waHref(msg) : P.secondaryCta?.href ?? SITE.waBase);
-const primary = P.primaryCta ?? { label: 'Agenda tu Discovery Session', href: SITE.discovery };
+// Primario (CAMBIO-COTIZAR §1): «Cotizar proyecto» → modal (data-cotizar); la etiqueta sale del copy o de _comun.cta.cotizar.
 
 /** Titular de dos voces: text (Lexend 600) + soft (Lexend 300). La .lit solo se aplica donde se permite (H1). */
 const voice = (t?: string, lit?: string) => {
@@ -93,7 +94,9 @@ const prob = S('problema');
 const [twinA, twinB] = plateIds('problema');
 
 /* Enlaces del cuerpo (R12 · QA enlaces): solo rutas construidas; una planeada se omite (nunca '#'). */
-const built = <T extends { href?: string }>(list?: T[]): T[] => (list ?? []).filter((l) => !!l?.href && isBuilt(l.href));
+//   Un enlace con "cotizar": true (o a una landing oculta) se vuelve disparador del modal: <a href={l.href} {...l.attrs}>.
+const built = <T extends { href?: string; cotizar?: boolean }>(list?: T[], sec?: string) =>
+  (list ?? []).map((l) => quoteLink(l, sec, P.url)).filter((l) => !!l?.href && isBuilt(l.href));
 /** ¿Todas las cifras de una fila enlazan a una ruta construida? (MetricRow enlaza todas o ninguna) */
 const allBuilt = (ids: MetricId[] = []) => ids.every((id) => !METRICS[id]?.href || isBuilt(METRICS[id].href as string));
 
@@ -247,7 +250,7 @@ const railGroups = [3, 6, 4];
     {sumarioIds.length === 3 && <SumarioCover slot="over" ids={sumarioIds} />}
     {hero.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(hero.eyebrow)} /></p>}
     <h1 id="hero-t" data-split><span class="t-display" set:html={voice(hero.h1?.text, hero.h1?.lit)} />{hero.h1?.soft && <> <span class="t-deck" set:html={annotateFigures(hero.h1.soft)} /></>}</h1>
-    <HeroCtas href={hero.ctaPrimary?.href ?? primary.href} label={hero.ctaPrimary?.label ?? primary.label}
+    <HeroCtas label={primaryLabel(hero)} section="hero"
       waHref={wa(hero.ctaSecondary?.waMessage)} waLabel={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
     <LightBranch from="mano" />
     {hero.fig && <FigCaption slot="anchors" n={1} title={(hero.fig.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '')} anchor="fig" target="mano"><Copy text={hero.fig.text} /></FigCaption>}
@@ -386,8 +389,8 @@ const railGroups = [3, 6, 4];
         <div class="ctas hm-kain__ctas">
           <Btn variant="ghost" href={wa(kain.ctaSecondary?.waMessage)} label={kain.ctaSecondary?.label ?? 'Escríbele a Kain'} />
           {built(kain.links).map((l: any) => l.external
-            ? <a class="lnk" href={l.href} target="_blank" rel="noopener">{l.label} <span aria-hidden="true">↗</span></a>
-            : <a class="lnk" href={l.href} set:html={`${esc(l.label).replace(/\bKain\b/, '<span class="kain-mark">kain</span>')} <span aria-hidden="true">→</span>`} />)}
+            ? <a class="lnk" href={l.href} {...l.attrs} target="_blank" rel="noopener">{l.label} <span aria-hidden="true">↗</span></a>
+            : <a class="lnk" href={l.href} {...l.attrs} set:html={`${esc(l.label).replace(/\bKain\b/, '<span class="kain-mark">kain</span>')} <span aria-hidden="true">→</span>`} />)}
         </div>
       </Fragment>
 
@@ -412,7 +415,7 @@ const railGroups = [3, 6, 4];
           </figure>
           {serv.closing && <Copy as="p" class="t-lede t-lede--2 hm-serv__closing" text={serv.closing} data-reveal />}
           {built(serv.links).length > 0 && (
-            <p class="hm-links" data-reveal>{built(serv.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+            <p class="hm-links" data-reveal>{built(serv.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
           )}
         </div>
       </Fragment>
@@ -429,7 +432,7 @@ const railGroups = [3, 6, 4];
       {casos.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(casos.eyebrow)} /></p>}
       <h2 id="casos-t" class="t-h2" data-split set:html={headline(casos.h2)} />
       {casos.lede && <Copy as="p" class="t-lede t-lede--2 hm-casos__lede" text={casos.lede} data-reveal />}
-      <Fragment slot="foot">{built(casos.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</Fragment>
+      <Fragment slot="foot">{built(casos.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label} <span aria-hidden="true">→</span></a>)}</Fragment>
     </Montage>
   )}
 
@@ -462,7 +465,7 @@ const railGroups = [3, 6, 4];
         </ol>
       )}
       {built(vk.links).length > 0 && (
-        <p class="hm-links hm-vktor__go">{built(vk.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+        <p class="hm-links hm-vktor__go">{built(vk.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
       )}
       <Fragment slot="anchors">
         {(vk.phases ?? []).length > 0 && (
@@ -488,7 +491,7 @@ const railGroups = [3, 6, 4];
       {ind.lede && <Copy as="p" class="t-lede t-lede--2 hm-ind__lede" text={ind.lede} />}
       <Fragment slot="foot">
         {ind.footer && <Copy as="p" class="t-micro hm-ind__foot" text={ind.footer} />}
-        {built(ind.links).map((l: any) => <a class="lnk hm-ind__all" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+        {built(ind.links).map((l: any) => <a class="lnk hm-ind__all" href={l.href} {...l.attrs}>{l.label} <span aria-hidden="true">→</span></a>)}
       </Fragment>
     </LocationSwitcher>
   )}
@@ -502,7 +505,7 @@ const railGroups = [3, 6, 4];
           <h2 id="equipo-t" class="t-h2" data-split set:html={headline(eq.h2)} />
           {eq.lede && <Copy as="p" class="t-lede t-lede--2" text={eq.lede} data-reveal />}
           {built(eq.links).length > 0 && (
-            <p class="hm-links" data-reveal>{built(eq.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+            <p class="hm-links" data-reveal>{built(eq.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
           )}
         </div>
       <Credits variant="team" size="lg" items={team} class="hm-team__credits" />
@@ -534,14 +537,7 @@ const railGroups = [3, 6, 4];
       <h2 id="cta-final-t" class="t-h2" data-split set:html={headline(fin.h2)} />
       {fin.lede && <Copy as="p" class="t-lede t-lede--2" text={fin.lede} />}
       <div class="ctas">
-        {fin.micro ? (
-          <div class="cta-p">
-            <Btn variant="primary" href={fin.ctaPrimary?.href ?? primary.href} label={fin.ctaPrimary?.label ?? primary.label} />
-            <Copy as="p" class="t-micro btn-micro" text={fin.micro} data-allow-number />
-          </div>
-        ) : (
-          <Btn variant="primary" href={fin.ctaPrimary?.href ?? primary.href} micro label={fin.ctaPrimary?.label ?? primary.label} />
-        )}
+        <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(fin)} micro />
         <Btn variant="ghost" href={wa(fin.ctaSecondary?.waMessage)} label={fin.ctaSecondary?.label ?? 'Escríbele a Kain'} />
       </div>
     </Dawn>

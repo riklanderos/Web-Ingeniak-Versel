@@ -1,0 +1,321 @@
+---
+// QuoteModal · "Cotizar proyecto" (CAMBIO-COTIZAR §2, dueño "modal"). Se monta UNA vez por página (BaseLayout).
+// Props: waHref (WhatsApp de la página: es el único wa.me del HTML, en el atajo del paso 1) · page (entrada de sitemap.json).
+// Contrato (§1.2): cualquier [data-cotizar] lo abre (clic delegado en captura, preventDefault); también #cotizar en la URL
+// y window.ingeniakCotizar.open({ servicio, industria, section }). La lógica (pasos, validación, borrador, envío a
+// POST /api/cotizar/, éxito y falla) vive en scripts/cotizar/quote.ts y se carga con import() en el primer uso o en
+// requestIdleCallback. Sin data-primary ni data-magnetic: el azul del paso no cuenta para la regla de un azul de la página.
+import '../../styles/forms.css';
+import '../../styles/cotizar.css';
+import cat from '../../data/cotizar.json';
+import Icon from '../ui/Icon.astro';
+import PhoneField from '../forms/PhoneField.astro';
+import { AURA_ISOTIPO } from '../cine/plate';
+
+interface Props { waHref?: string; page?: { id?: string; url?: string } | null }
+const { waHref = 'https://wa.me/523321017799', page } = Astro.props;
+const T = cat.textos;
+const [aviso1, aviso2] = T.consentimiento.split('{aviso}');
+const node = '<rect class="n" x="5" y="5" width="6" height="6" rx="1"/><path class="r" d="M8 8h6M11 5l3 3-3 3"/>';
+const S = cat.pasos;
+---
+<dialog id="cotizar" class="qm" data-cotizar-dialog aria-labelledby="qm-title" aria-describedby="qm-desc" data-page={page?.id} data-lenis-prevent>
+  <div class="qm__panel glass-panel">
+    <span class="qm__aura" aria-hidden="true"><img src={AURA_ISOTIPO} alt="" width="400" height="400" loading="lazy" decoding="async" /></span>
+
+    <header class="qm__head">
+      <p class="t-label t-label--cyan qm__kicker"><span class="node" aria-hidden="true"></span>{T.kicker}</p>
+      <button type="button" class="btn-icon qm__close" data-qm-close aria-label={T.cerrar}><Icon name="close" size={18} /></button>
+      <h2 class="qm__title" id="qm-title" tabindex="-1">{cat.h}</h2>
+      <p class="qm__desc" id="qm-desc">{cat.desc}</p>
+      <ol class="qm__prog" aria-label="Progreso" data-qm-prog>
+        {S.map((p) => (
+          <li class="qm__prog-i" data-n={p.n} aria-current={p.n === 1 ? 'step' : undefined}>
+            <span class="qm__prog-bar" aria-hidden="true"></span>
+            <span class="qm__prog-t"><span class="qm__prog-n">{p.n}</span> {p.titulo}</span>
+          </li>
+        ))}
+      </ol>
+    </header>
+
+    <form class="qm__form" data-qm-form novalidate>
+      <div class="qm__body" data-qm-body data-lenis-prevent>
+        <div class="form-summary qm__summary" data-qm-summary role="alert" tabindex="-1" hidden></div>
+
+        {/* ── Paso 1 · Qué necesitas ── */}
+        <section class="qm__step" data-qm-step="1" aria-labelledby="qm-s1-h">
+          <div class="qm__step-head">
+            <p class="t-label qm__step-k" aria-hidden="true">{T.pasoDe.replace('{n}', '1')} · {S[0].titulo}</p>
+            <h3 class="qm__step-h" id="qm-s1-h" tabindex="-1">{S[0].h}</h3>
+          </div>
+          <fieldset class="fld" data-field="servicios" id="qm-servicios">
+            <legend class="fld__label">Servicios que te interesan <span class="fld__opt">Uno o varios</span></legend>
+            <div class="chips chips--2">
+              {cat.servicios.map((s: any) => (
+                <label class="chip-opt">
+                  <input type="checkbox" name="servicios" value={s.slug} data-exclusive={s.exclusive ? '' : undefined} />
+                  {s.glyph ? <Icon name={s.glyph} size={20} class="chip-opt__g" /> : <span class="chip-opt__dot" aria-hidden="true"></span>}
+                  <span class="chip-opt__t">{s.label}</span>
+                  <Icon name="check" size={16} class="chip-opt__check" />
+                </label>
+              ))}
+            </div>
+            <p class="fld__error" id="qm-servicios-error" hidden></p>
+          </fieldset>
+          <fieldset class="fld" data-field="objetivo" id="qm-objetivo">
+            <legend class="fld__label">¿Qué quieres lograr primero?</legend>
+            <div class="chips chips--2">
+              {cat.objetivos.map((o: any) => (
+                <label class="chip-opt">
+                  <input type="radio" name="objetivo" value={o.slug} />
+                  {o.glyph ? <Icon name={o.glyph} size={20} class="chip-opt__g" /> : <span class="chip-opt__dot" aria-hidden="true"></span>}
+                  <span class="chip-opt__t">{o.label}</span>
+                  <Icon name="check" size={16} class="chip-opt__check" />
+                </label>
+              ))}
+            </div>
+            <p class="fld__error" id="qm-objetivo-error" hidden></p>
+          </fieldset>
+          <p class="qm__atajo">
+            <a class="lnk" href={waHref} data-wa data-qm-atajo target="_blank" rel="noopener"><Icon name="whatsapp" size={18} class="qm__atajo-ico" />{T.atajoWa}</a>
+          </p>
+        </section>
+
+        {/* ── Paso 2 · Tu negocio ── */}
+        <section class="qm__step" data-qm-step="2" aria-labelledby="qm-s2-h" hidden>
+          <div class="qm__step-head">
+            <p class="t-label qm__step-k" aria-hidden="true">{T.pasoDe.replace('{n}', '2')} · {S[1].titulo}</p>
+            <h3 class="qm__step-h" id="qm-s2-h" tabindex="-1">{S[1].h}</h3>
+          </div>
+          <div class="qm__grid">
+            <div class="fld" data-field="industria">
+              <label class="fld__label" for="qm-industria">Industria</label>
+              <select class="fld__select" id="qm-industria" name="industria" required>
+                <option value="">Elige una opción</option>
+                {cat.industrias.map((i) => <option value={i.slug}>{i.label}</option>)}
+              </select>
+              <p class="fld__error" id="qm-industria-error" hidden></p>
+            </div>
+            <fieldset class="fld" data-field="tamano" id="qm-tamano">
+              <legend class="fld__label">Personas en tu equipo</legend>
+              <div class="seg">
+                {cat.tamanos.map((t) => (
+                  <label class="seg__opt"><input type="radio" name="tamano" value={t.slug} /><span>{t.label}</span></label>
+                ))}
+              </div>
+              <p class="fld__error" id="qm-tamano-error" hidden></p>
+            </fieldset>
+          </div>
+          <fieldset class="fld" data-field="presupuesto" id="qm-presupuesto" data-form-options="presupuesto" aria-describedby="qm-presupuesto-help">
+            <legend class="fld__label">Presupuesto estimado</legend>
+            <p class="fld__help" id="qm-presupuesto-help">Monto aproximado del proyecto. Nos ayuda a proponerte el alcance correcto.</p>
+            <div class="chips chips--2 qm__radios">
+              {cat.presupuestos.map((p) => (
+                <label class="chip-opt">
+                  <input type="radio" name="presupuesto" value={p.slug} />
+                  <span class="chip-opt__dot" aria-hidden="true"></span>
+                  <span class="chip-opt__t">{p.label}</span>
+                  <Icon name="check" size={16} class="chip-opt__check" />
+                </label>
+              ))}
+            </div>
+            <p class="fld__error" id="qm-presupuesto-error" hidden></p>
+          </fieldset>
+          <fieldset class="fld" data-field="plazo" id="qm-plazo">
+            <legend class="fld__label">¿Para cuándo lo necesitas?</legend>
+            <div class="chips chips--2 qm__radios">
+              {cat.plazos.map((p) => (
+                <label class="chip-opt">
+                  <input type="radio" name="plazo" value={p.slug} />
+                  <span class="chip-opt__dot" aria-hidden="true"></span>
+                  <span class="chip-opt__t">{p.label}</span>
+                  <Icon name="check" size={16} class="chip-opt__check" />
+                </label>
+              ))}
+            </div>
+            <p class="fld__error" id="qm-plazo-error" hidden></p>
+          </fieldset>
+          <fieldset class="fld" data-field="canales" id="qm-canales">
+            <legend class="fld__label">¿Por dónde te escriben hoy tus clientes? <span class="fld__opt">Opcional</span></legend>
+            <div class="chips">
+              {cat.canales.map((c) => (
+                <label class="chip-opt">
+                  <input type="checkbox" name="canales" value={c.slug} />
+                  <span class="chip-opt__t">{c.label}</span>
+                  <Icon name="check" size={16} class="chip-opt__check" />
+                </label>
+              ))}
+            </div>
+            <p class="fld__error" id="qm-canales-error" hidden></p>
+          </fieldset>
+          <fieldset class="fld" data-field="crm" id="qm-crm" data-deselect>
+            <legend class="fld__label">¿Usan algún CRM? <span class="fld__opt">Opcional</span></legend>
+            <div class="chips">
+              {cat.crms.map((c) => (
+                <label class="chip-opt">
+                  <input type="radio" name="crm" value={c.slug} />
+                  <span class="chip-opt__t">{c.label}</span>
+                  <Icon name="check" size={16} class="chip-opt__check" />
+                </label>
+              ))}
+            </div>
+            <p class="fld__error" id="qm-crm-error" hidden></p>
+          </fieldset>
+        </section>
+
+        {/* ── Paso 3 · Contacto ── */}
+        <section class="qm__step" data-qm-step="3" aria-labelledby="qm-s3-h" hidden>
+          <div class="qm__step-head">
+            <p class="t-label qm__step-k" aria-hidden="true">{T.pasoDe.replace('{n}', '3')} · {S[2].titulo}</p>
+            <h3 class="qm__step-h" id="qm-s3-h" tabindex="-1">{S[2].h}</h3>
+          </div>
+          <div class="qm__grid">
+            <div class="fld" data-field="nombre">
+              <label class="fld__label" for="qm-nombre">Nombre completo</label>
+              <input class="fld__input" id="qm-nombre" name="nombre" type="text" autocomplete="name" autocapitalize="words" maxlength="120" required enterkeyhint="next" />
+              <p class="fld__error" id="qm-nombre-error" hidden></p>
+            </div>
+            <div class="fld" data-field="empresa">
+              <label class="fld__label" for="qm-empresa">Empresa</label>
+              <input class="fld__input" id="qm-empresa" name="empresa" type="text" autocomplete="organization" maxlength="160" required enterkeyhint="next" />
+              <p class="fld__error" id="qm-empresa-error" hidden></p>
+            </div>
+            <PhoneField id="qm-telefono" name="telefono" label="WhatsApp" />
+            <div class="fld" data-field="email">
+              <label class="fld__label" for="qm-email">Correo</label>
+              <input class="fld__input" id="qm-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="200" required enterkeyhint="next" />
+              <p class="fld__error" id="qm-email-error" hidden></p>
+            </div>
+          </div>
+          <fieldset class="fld" data-field="canal_preferido" id="qm-canal_preferido">
+            <legend class="fld__label">¿Cómo prefieres que te contactemos?</legend>
+            <div class="seg">
+              {cat.canalesPreferidos.map((c) => (
+                <label class="seg__opt">
+                  <input type="radio" name="canal_preferido" value={c.slug} checked={c.slug === 'whatsapp'} />
+                  <Icon name={c.slug === 'whatsapp' ? 'whatsapp' : c.slug === 'correo' ? 'mail' : 'phone'} size={16} />
+                  <span>{c.label}</span>
+                </label>
+              ))}
+            </div>
+            <p class="fld__error" id="qm-canal_preferido-error" hidden></p>
+          </fieldset>
+          <div class="fld" data-field="sitio">
+            <label class="fld__label" for="qm-sitio">Sitio web o redes <span class="fld__opt">Opcional</span></label>
+            <input class="fld__input" id="qm-sitio" name="sitio" type="text" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" maxlength="200" enterkeyhint="next" />
+            <p class="fld__error" id="qm-sitio-error" hidden></p>
+          </div>
+          <div class="fld" data-field="vision">
+            <label class="fld__label" for="qm-vision">Cuéntanos tu proyecto <span class="fld__opt">Opcional</span></label>
+            <textarea class="fld__textarea" id="qm-vision" name="vision" rows="4" maxlength={cat.limites.vision}
+              placeholder="Ej. Nos escriben 80 personas al día por WhatsApp y no alcanzamos a responder." aria-describedby="qm-vision-count"></textarea>
+            <p class="fld__count" id="qm-vision-count" data-qm-count-for="vision">0 / {cat.limites.vision}</p>
+            <p class="fld__error" id="qm-vision-error" hidden></p>
+          </div>
+          <div class="fld" data-field="consentimiento">
+            <label class="check" for="qm-consentimiento">
+              <input type="checkbox" id="qm-consentimiento" name="consentimiento" value="si" required />
+              <span class="check__box" aria-hidden="true"><Icon name="check" size={16} /></span>
+              <span>{aviso1}<a href="/aviso-privacidad/" target="_blank" rel="noopener">{T.aviso}<span class="sr-only"> (se abre en una pestaña nueva)</span></a>{aviso2}</span>
+            </label>
+            <p class="fld__error" id="qm-consentimiento-error" hidden></p>
+          </div>
+        </section>
+
+        <div class="hp" aria-hidden="true">
+          <label for="qm-website-url">Sitio web</label>
+          <input id="qm-website-url" name="website_url" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+        <p class="t-micro qm__draft"><span class="node" aria-hidden="true"></span>{T.borrador}</p>
+      </div>
+
+      <footer class="qm__foot">
+        <button type="button" class="btn btn--ghost qm__back" data-qm-back hidden>
+          <Icon name="arrow" size={16} class="qm__back-ico" /><span class="btn__t">{T.atras}</span>
+        </button>
+        <p class="t-micro qm__count" data-qm-count aria-hidden="true">{T.pasoDe.replace('{n}', '1')}</p>
+        <button type="submit" class="btn qm__next" data-qm-next>
+          <span class="btn__t" data-qm-next-t>{T.continuar}</span>
+          <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16" set:html={node} /><span class="qm__spin"></span></span>
+        </button>
+      </footer>
+    </form>
+
+    {/* ── Éxito ── */}
+    <section class="qm__view qm__done" data-qm-done aria-labelledby="qm-done-h" hidden>
+      <span class="qm__mark" aria-hidden="true"><Icon name="check" size={24} stroke={2} /></span>
+      <h3 class="qm__view-h" id="qm-done-h" tabindex="-1">{T.exito.h}</h3>
+      <p class="qm__hola" data-qm-hola>{T.exito.hola.replace(', {nombre}', '')}</p>
+      <div class="qm__meta">
+        <p class="t-micro qm__folio" data-qm-folio></p>
+        <p class="chip-sim" data-qm-sim hidden>{T.exito.simulacion}</p>
+      </div>
+      <div class="qm__sigue">
+        <p class="t-label t-label--cyan">{T.exito.queSigue}</p>
+        <ol class="qm__sigue-l">
+          {T.exito.pasos.map((p, i) => (
+            <li><span class="qm__sigue-n" aria-hidden="true">0{i + 1}</span><span data-qm-sigue={i}>{p.replace('{canal}', T.exito.canal.whatsapp)}</span></li>
+          ))}
+        </ol>
+      </div>
+      <div class="qm__actions">
+        <a class="btn btn--ghost btn--wa" data-wa data-qm-wa="exito" target="_blank" rel="noopener"><Icon name="whatsapp" size={18} class="btn__ico" /><span class="btn__t">{T.exito.wa}</span></a>
+        <button type="button" class="lnk qm__listo" data-qm-close>{T.exito.listo}</button>
+      </div>
+    </section>
+
+    {/* ── Falla ── */}
+    <section class="qm__view qm__fail" data-qm-fail aria-labelledby="qm-fail-h" hidden>
+      <span class="qm__mark qm__mark--fail" aria-hidden="true"><span class="node node--amber"></span></span>
+      <h3 class="qm__view-h" id="qm-fail-h" tabindex="-1">{T.falla.h}</h3>
+      <p class="qm__fail-p" data-qm-fail-p>{T.falla.p}</p>
+      <div class="qm__actions">
+        <button type="button" class="btn qm__retry" data-qm-retry>
+          <span class="btn__t" data-qm-retry-t>{T.falla.reintentar}</span>
+          <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16" set:html={node} /><span class="qm__spin"></span></span>
+        </button>
+        <a class="btn btn--ghost btn--wa" data-wa data-qm-wa="falla" target="_blank" rel="noopener"><Icon name="whatsapp" size={18} class="btn__ico" /><span class="btn__t">{T.falla.wa}</span></a>
+      </div>
+      <p class="qm__fail-alt">
+        <a class="lnk" data-qm-mail><Icon name="mail" size={18} />{T.falla.correo}</a>
+        <button type="button" class="lnk lnk--mono qm__review" data-qm-review>Revisar mis respuestas</button>
+      </p>
+    </section>
+
+    <p class="sr-only" data-qm-live aria-live="polite"></p>
+  </div>
+</dialog>
+
+<script>
+  // Binder del modal (≤ 2 KB): delega [data-cotizar], abre con #cotizar y expone window.ingeniakCotizar.
+  const d = document, w = window as any;
+  let m: Promise<typeof import('../../scripts/cotizar/quote')> | undefined;
+  const load = () => (m ??= import('../../scripts/cotizar/quote'));
+  const go = (o: any) => load().then((q) => q.open(o)).catch(() => {
+    m = undefined;
+    const h = (o.trigger as HTMLAnchorElement | undefined)?.href;
+    if (h && !h.endsWith(location.pathname + '#cotizar')) location.href = h;
+  });
+  const trig = (e: Event) => (e.target as Element | null)?.closest?.('[data-cotizar]') as HTMLElement | null;
+  d.addEventListener('click', (e) => {
+    const t = trig(e), k = e as MouseEvent;
+    if (!t || k.button || k.metaKey || k.ctrlKey || k.shiftKey || k.altKey) return;
+    e.preventDefault();
+    go({ trigger: t, origen: 'cta' });
+  }, true);
+  d.addEventListener('keydown', (e) => {
+    const t = e.key === ' ' ? trig(e) : null;
+    if (!t || t.localName === 'button') return;
+    e.preventDefault();
+    go({ trigger: t, origen: 'cta' });
+  }, true);
+  const hash = () => { if (location.hash === '#cotizar') go({ origen: 'hash' }); };
+  w.ingeniakCotizar = { open: (o: any = {}) => go({ ...o, origen: 'api' }) };
+  addEventListener('hashchange', hash);
+  const start = () => {
+    d.querySelectorAll('a[data-cotizar]:not([role])').forEach((a) => a.setAttribute('role', 'button'));
+    hash();
+    (w.requestIdleCallback ?? ((f: () => void) => setTimeout(f, 2000)))(() => load().catch(() => (m = undefined)), { timeout: 5000 });
+  };
+  d.readyState === 'loading' ? d.addEventListener('DOMContentLoaded', start, { once: true }) : start();
+</script>

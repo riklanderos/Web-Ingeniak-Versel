@@ -10,7 +10,13 @@
 //   ✗ R4 (móvil): una pieza anclada sin coordenadas de la placa vertical (data-mnull) se pinta sin data-m="none";
 //   ✗ R4: una pieza anclada visible no cubre su punto (±8 px);
 //   ✗ el <section class="is"> pinta fondo propio (§3.11).
-// Uso: node scripts/check-escenas.mjs [--url http://127.0.0.1:4321] [--only /,/discovery/] [--vp 1440x900,390x844]
+// Modal de cotización abierto (CAMBIO-COTIZAR §2.6, §6.1): /#cotizar y /servicios/agentes-ia-whatsapp/#cotizar a 1440×900 y
+//   390×844, en sus 3 pasos y en las vistas de éxito y falla:
+//   ✗ el diálogo no abre con #cotizar, se sale de la pantalla o desborda a lo ancho; ✗ encabezado o botonera fuera de la vista;
+//   ✗ cerrar u opciones (chips, segmentado) bajo 44 px; ✗ más de un azul (--blue) a la vista; ✗ sin prefill de agentes-ia en
+//   /servicios/agentes-ia-whatsapp/; ! en móvil no es hoja a pantalla completa; ! en escritorio pasa de 720 × min(860, 92dvh).
+//   Las landings nuevas (/power-session/, /agendar/confirmado/) entran solas con sus escenas (rutas construidas de sitemap.json).
+// Uso: node scripts/check-escenas.mjs [--url http://127.0.0.1:4321] [--only /,/discovery/] [--vp 1440x900,390x844] [--sin-modal]
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -65,6 +71,96 @@ const COLLECT = `(() => {
   }
   return { mob, vh: innerHeight, scenes: out };
 })()`;
+
+/** Rutas con el modal abierto por hash (§6.1) y sus tamaños. */
+export const MODAL_ROUTES = ['/#cotizar', '/servicios/agentes-ia-whatsapp/#cotizar'];
+export const MODAL_VP = ['1440x900', '390x844'];
+/** Muestra un paso del modal (1–3) o una vista ('done' | 'fail') sin llenar el formulario (solo para medir). */
+export const MODAL_SHOW = (v) => `(() => {
+  const d = document.querySelector('dialog[data-cotizar-dialog]'); if (!d) return false;
+  const form = d.querySelector('[data-qm-form]'), done = d.querySelector('[data-qm-done]'), fail = d.querySelector('[data-qm-fail]');
+  const v = ${JSON.stringify(v)};
+  if (typeof v === 'number') {
+    if (form) form.hidden = false; if (done) done.hidden = true; if (fail) fail.hidden = true;
+    for (const st of d.querySelectorAll('[data-qm-step]')) st.hidden = String(st.dataset.qmStep) !== String(v);
+    const back = d.querySelector('[data-qm-back]'); if (back) back.hidden = v === 1;
+  } else {
+    if (form) form.hidden = true; if (done) done.hidden = v !== 'done'; if (fail) fail.hidden = v !== 'fail';
+  }
+  const body = d.querySelector('[data-qm-body]'); if (body) body.scrollTop = 0;
+  return true;
+})()`;
+/** Abre la ruta con #cotizar y espera a que el binder abra el diálogo. */
+export async function openModal(br, url, vp) {
+  // el servidor de desarrollo compartido a veces tarda en compilar el binder: dos intentos de carga, hasta ~8 s cada uno
+  for (let k = 0; k < 2; k++) {
+    await br.open(url, { w: vp.w, h: vp.h, mobile: !!vp.mobile, reduced: true, wait: 2200 });
+    for (let i = 0; i < 30; i++) {
+      if (await br.evaluate(`!!document.querySelector('dialog[data-cotizar-dialog]')?.open`)) { await br.sleep(500); return true; }
+      await br.sleep(200);
+    }
+  }
+  return false;
+}
+const MODAL_COLLECT = `(() => {
+  const d = document.querySelector('dialog[data-cotizar-dialog]');
+  if (!d) return { exists: false };
+  const vis = (el) => !!el && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden' && (!el.checkVisibility || el.checkVisibility({ opacityProperty: true, visibilityProperty: true }));
+  const R = (el) => { const b = el.getBoundingClientRect(); return { x: b.left, y: b.top, w: b.width, h: b.height, r: b.right, b: b.bottom }; };
+  const blues = ['rgb(0, 85, 255)', 'rgb(26, 102, 255)'];
+  const blue = [...d.querySelectorAll('*')].filter((e) => vis(e) && blues.includes(getComputedStyle(e).backgroundColor)).filter((e) => { const b = e.getBoundingClientRect(); return b.bottom > 0 && b.top < innerHeight && b.width > 8 && b.height > 8; });
+  const body = d.querySelector('[data-qm-body]');
+  const panelEl = d.querySelector('.qm__panel') || d;
+  const small = [];
+  for (const el of d.querySelectorAll('.chip-opt, .seg__opt, [data-qm-close], .qm__foot .btn, [data-qm-done] .btn, [data-qm-fail] .btn')) {
+    if (!vis(el)) continue;
+    const b = el.getBoundingClientRect();
+    if (b.height < 43.5 || (el.matches('.qm__close, .btn-icon') && b.width < 43.5)) small.push({ t: (el.textContent || el.getAttribute('aria-label') || '').trim().slice(0, 30), w: Math.round(b.width), h: Math.round(b.height) });
+  }
+  const title = d.querySelector('#qm-title'), next = [...d.querySelectorAll('[data-qm-next], [data-qm-done] .btn, [data-qm-fail] .btn')].find(vis);
+  const close = [...d.querySelectorAll('[data-qm-close]')].find(vis);
+  return {
+    // el <dialog> cubre la pantalla (centra el panel con flex); lo que se mide es el panel de cristal (.qm__panel)
+    exists: true, open: d.open, modal: d.matches(':modal'), vw: innerWidth, vh: innerHeight, panel: R(d.querySelector('.qm__panel') || d),
+    // desborde que la persona puede desplazar (los contenedores con overflow hidden/clip, como el aura del panel, no cuentan)
+    overX: Math.max(0, ...[d, panelEl, body].filter((e) => e && !/hidden|clip/.test(getComputedStyle(e).overflowX)).map((e) => e.scrollWidth - e.clientWidth)),
+    title: title && vis(title) ? R(title) : null, next: next ? R(next) : null, close: close ? R(close) : null,
+    blue: blue.map((e) => (e.textContent || e.className || e.tagName).toString().trim().slice(0, 30)), small,
+    prefill: [...d.querySelectorAll('input[name="servicios"]:checked')].map((i) => i.value),
+  };
+})()`;
+async function modalPass(br, base, R) {
+  let n = 0;
+  for (const vp of pickViewports(MODAL_VP, MODAL_VP)) {
+    for (const route of MODAL_ROUTES) {
+      const at0 = `${route} @${vp.name}`;
+      if (!(await openModal(br, base + route, vp))) { R.fail(at0, 'el modal no abre con #cotizar (dialog[data-cotizar-dialog] sin open)'); continue; }
+      for (const view of [1, 2, 3, 'done', 'fail']) {
+        await br.evaluate(MODAL_SHOW(view));
+        await br.sleep(450);
+        const m = await br.evaluate(MODAL_COLLECT);
+        const at = `${route} @${vp.name} · ${typeof view === 'number' ? `paso ${view}` : view === 'done' ? 'éxito' : 'falla'}`;
+        n++;
+        if (!m.exists) { R.fail(at, 'no existe dialog[data-cotizar-dialog]'); break; }
+        if (view === 1 && (!m.open || !m.modal)) R.fail(at, 'el diálogo no está abierto como modal (showModal)');
+        const p = m.panel;
+        if (p.x < -1 || p.y < -1 || p.r > m.vw + 1 || p.b > m.vh + 1) R.fail(at, `el panel se sale de la pantalla: ${[p.x, p.y, p.w, p.h].map(Math.round).join(' × ')} en ${m.vw} × ${m.vh}`);
+        if (m.overX > 1) R.fail(at, `desborde horizontal dentro del modal (${m.overX} px)`);
+        if (typeof view === 'number' && !m.title) R.fail(at, 'el encabezado (#qm-title) no se ve');
+        if (m.title && (m.title.y < -1 || m.title.b > m.vh + 1)) R.fail(at, 'el encabezado queda fuera de la pantalla');
+        if (!m.next) R.fail(at, 'sin botón de acción visible (Continuar / Solicitar cotización / Listo / Reintentar)');
+        else if (m.next.y < -1 || m.next.b > m.vh + 1) R.fail(at, `el botón de acción queda fuera de la pantalla (y ${Math.round(m.next.y)}–${Math.round(m.next.b)} de ${m.vh})`);
+        if (!m.close) R.fail(at, 'sin botón cerrar visible');
+        for (const sm of m.small) R.fail(at, `objetivo táctil bajo 44 px: "${sm.t}" ${sm.w} × ${sm.h}`);
+        if (m.blue.length > 1) R.fail(at, `${m.blue.length} azules a la vista (F15/R15: uno por pantalla): ${m.blue.join(' · ')}`);
+        if (vp.mobile && (p.w < m.vw - 1 || p.h < m.vh - 2)) R.warn(at, `en móvil el modal no es hoja a pantalla completa (${Math.round(p.w)} × ${Math.round(p.h)})`);
+        if (!vp.mobile && (p.w > Math.min(720, m.vw - 48) + 1 || p.h > Math.min(860, m.vh * 0.92) + 1)) R.warn(at, `en escritorio el panel mide ${Math.round(p.w)} × ${Math.round(p.h)} (máx. 720 × min(860, 92dvh))`);
+        if (view === 1 && route.startsWith('/servicios/agentes-ia-whatsapp/') && !m.prefill.includes('agentes-ia')) R.fail(at, `sin prefill: "agentes-ia" no está marcado (marcados: ${m.prefill.join(', ') || 'ninguno'})`);
+      }
+    }
+  }
+  return n;
+}
 
 const inside = (p, r, tol = 0) => p[0] >= r.x - tol && p[0] <= r.x + r.w + tol && p[1] >= r.y - tol && p[1] <= r.y + r.h + tol;
 const project = (stage, b) => ({ x: stage.x + b[0] * stage.w, y: stage.y + b[1] * stage.h, w: (b[2] - b[0]) * stage.w, h: (b[3] - b[1]) * stage.h });
@@ -144,6 +240,11 @@ export async function run(opts) {
           }
         }
       }
+    }
+    // ── modal de cotización abierto (§6.1)
+    if (!process.argv.includes('--sin-modal') && opts.modal !== false && (!opts.only || opts.only.some((u) => MODAL_ROUTES.some((m) => m.startsWith(u))))) {
+      const views = await modalPass(br, base, R);
+      R.info(`modal de cotización: ${MODAL_ROUTES.length} ruta(s) × ${MODAL_VP.length} tamaño(s) · ${views} vista(s) medidas`);
     }
   } finally { await br.close(); }
   if (br.errors.length) R.warn(null, `errores de JavaScript durante la revisión: ${[...new Set(br.errors)].slice(0, 3).join(' · ')}`);

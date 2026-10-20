@@ -5,11 +5,15 @@
 // desenfoque de 3 × 3 para que el grano y el antialias no cuenten). Falla si la relación con el color real del texto
 // queda bajo 4.5:1 (cuerpo) o 3:1 (≥ 24 px, o ≥ 18.7 px en 600+). Botones, chips y cristales cuentan con su propio fondo
 // (solo se oculta el texto). Texto con degradado (color transparente) se mide como cian (#00E5FF).
-// Uso: node scripts/check-contraste.mjs [--url http://127.0.0.1:4321] [--only /,/discovery/] [--vp 390x844,1440x900]
+// Cambio 2026-10-20 (CAMBIO-COTIZAR §6.1): /power-session/ y /agendar/confirmado/ entran solas (rutas construidas) y se mide
+// además el modal de cotización abierto (/#cotizar y /servicios/agentes-ia-whatsapp/#cotizar a 1440×900 y 390×844) en sus 3
+// pasos, éxito y falla: todo texto del panel (con el cuerpo desplazado de arriba abajo) contra lo que tiene detrás.
+// Uso: node scripts/check-contraste.mjs [--url http://127.0.0.1:4321] [--only /,/discovery/] [--vp 390x844,1440x900] [--sin-modal]
 import { pathToFileURL } from 'node:url';
 import sharp from 'sharp';
 import { BUILT, parseArgs, reporter } from './_html.mjs';
 import { launch, pickViewports } from './_cdp.mjs';
+import { MODAL_ROUTES, MODAL_VP, MODAL_SHOW, openModal } from './check-escenas.mjs';
 
 const DEF_VP = ['390x844', '1024x1366', '1440x900', '1920x1080'];
 const lin = (c) => { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
@@ -18,8 +22,10 @@ const ratio = (a, b) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 
 const SECTIONS = `[...document.querySelectorAll('section.is')].map((s) => { const b = s.getBoundingClientRect(); return { id: s.id || '', y: b.top + scrollY, h: b.height }; })`;
 /** Líneas visibles dentro de la pantalla actual (coordenadas de la ventana). */
-const LINES = (secId) => `(() => {
-  const s = document.getElementById(${JSON.stringify(secId)}); if (!s) return [];
+const LINES = (secId) => LINES_IN(`document.getElementById(${JSON.stringify(secId)})`);
+/** Líneas visibles dentro de la pantalla actual bajo la raíz que da la expresión rootExpr (una sección, el panel del modal). */
+const LINES_IN = (rootExpr) => `(() => {
+  const s = ${rootExpr}; if (!s) return [];
   const parse = (c) => { const m = c.match(/rgba?\\(([^)]+)\\)/); if (!m) return null; const p = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return [p[0], p[1], p[2], p[3] ?? 1]; };
   const out = [];
   // algo fijo o pegajoso de fuera de la sección (barra móvil, encabezado) sobre el borde de arriba o de abajo del renglón
@@ -59,6 +65,7 @@ const LINES = (secId) => `(() => {
   return out;
 })()`;
 const HIDE = `(() => { const st = document.createElement('style'); st.id = '__hide_text'; st.textContent = 'section.is, section.is *, section.is *::before, section.is *::after { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; } section.is svg text { fill: transparent !important; } [data-hide-clip], [data-hide-clip] * { background: none !important; }'; document.head.appendChild(st); for (const e of document.querySelectorAll('section.is *')) { const c = getComputedStyle(e); if (/\\btext\\b/.test(c.webkitBackgroundClip || '') || /\\btext\\b/.test(c.backgroundClip || '')) e.setAttribute('data-hide-clip', ''); } for (const e of document.querySelectorAll('[data-hide-clip]')) { e.dataset.prevStyle = e.getAttribute('style') ?? ''; e.style.setProperty('background', 'none', 'important'); e.style.setProperty('-webkit-text-fill-color', 'transparent', 'important'); } return true; })()`;
+const HIDE_MODAL = `(() => { const st = document.createElement('style'); st.id = '__hide_text'; st.textContent = 'dialog[data-cotizar-dialog] *, dialog[data-cotizar-dialog] *::before, dialog[data-cotizar-dialog] *::after { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; } dialog[data-cotizar-dialog] svg text { fill: transparent !important; } [data-hide-clip], [data-hide-clip] * { background: none !important; }'; document.head.appendChild(st); return true; })()`;
 const SHOW = `(() => { document.getElementById('__hide_text')?.remove(); for (const e of document.querySelectorAll('[data-hide-clip]')) { if (e.dataset.prevStyle) e.setAttribute('style', e.dataset.prevStyle); else e.removeAttribute('style'); delete e.dataset.prevStyle; } return true; })()`;
 const IMGS_READY = `new Promise((res) => { const t0 = performance.now(); const tick = () => { const imgs = [...document.images].filter((i) => { const b = i.getBoundingClientRect(); return b.bottom > 0 && b.top < innerHeight && b.width > 0; }); if (imgs.every((i) => i.complete) || performance.now() - t0 > 2500) res(true); else setTimeout(tick, 80); }; tick(); })`;
 
@@ -122,6 +129,60 @@ export async function run(opts) {
         }
         for (const [k, w] of worst) R.fail(`${route}#${k} @${vp.name}`, `${w.n} línea(s) bajo AA; peor ${w.cr.toFixed(2)}:1 (necesita ${w.l.large ? 3 : 4.5}:1, fondo L ${w.bg.toFixed(3)}): "${w.l.t}"`);
       }
+    }
+    // ── modal de cotización abierto (§6.1)
+    if (!process.argv.includes('--sin-modal') && (!opts.only || opts.only.some((u) => MODAL_ROUTES.some((m) => m.startsWith(u))))) {
+      let views = 0;
+      for (const vp of pickViewports(MODAL_VP, MODAL_VP)) {
+        for (const route of MODAL_ROUTES) {
+          if (!(await openModal(br, base + route, vp))) { R.fail(`${route} @${vp.name}`, 'el modal no abre con #cotizar'); continue; }
+          for (const view of [1, 2, 3, 'done', 'fail']) {
+            await br.evaluate(MODAL_SHOW(view));
+            await br.sleep(500);
+            views++;
+            const tag = `${route} @${vp.name} · ${typeof view === 'number' ? `paso ${view}` : view === 'done' ? 'éxito' : 'falla'}`;
+            const worst = { n: 0, cr: 99, l: null, bg: 0 };
+            const seen = new Set();
+            // el cuerpo del panel tiene scroll propio: se mide pantalla por pantalla
+            const H = await br.evaluate(`(() => { const b = document.querySelector('dialog[data-cotizar-dialog] [data-qm-body]'); return b && !b.closest('[hidden]') ? { sh: b.scrollHeight, ch: b.clientHeight } : { sh: 0, ch: 1 }; })()`);
+            for (let y = 0; y === 0 || y < H.sh - H.ch + 1; y += Math.max(120, H.ch - 60)) {
+              await br.evaluate(`(() => { const b = document.querySelector('dialog[data-cotizar-dialog] [data-qm-body]'); if (b) b.scrollTop = ${y}; return true; })()`);
+              await br.sleep(120);
+              const lines = (await br.evaluate(LINES_IN("document.querySelector('dialog[data-cotizar-dialog] .qm__panel') || document.querySelector('dialog[data-cotizar-dialog]')")))
+                .filter((l) => { const k = `${l.t}|${Math.round(l.y)}|${Math.round(l.x)}|${y}`; if (seen.has(k)) return false; seen.add(k); return true; });
+              if (!lines.length) { if (H.sh <= H.ch) break; continue; }
+              await br.evaluate(HIDE_MODAL);
+              await br.sleep(60);
+              const png = await br.screenshot();
+              await br.evaluate(SHOW);
+              const { data, info } = await sharp(png).removeAlpha().blur(0.8).raw().toBuffer({ resolveWithObject: true });
+              for (const l of lines) {
+                const x0 = Math.max(0, Math.floor(l.x + 1)), x1 = Math.min(info.width - 1, Math.ceil(l.x + l.w - 1));
+                const y0 = Math.max(0, Math.floor(l.y + 1)), y1 = Math.min(info.height - 1, Math.ceil(l.y + l.h - 1));
+                let maxL = 0, minL = 1, sum = 0, cnt = 0, brightest = [0, 0, 0];
+                for (let yy = y0; yy <= y1; yy++) for (let xx = x0; xx <= x1; xx++) {
+                  const i = (yy * info.width + xx) * info.channels;
+                  const L = lum(data[i], data[i + 1], data[i + 2]);
+                  if (L > maxL) { maxL = L; brightest = [data[i], data[i + 1], data[i + 2]]; }
+                  if (L < minL) minL = L; sum += L; cnt++;
+                }
+                if (!cnt) continue;
+                measured++;
+                const [r, g, b] = l.col; const a = Math.max(0, Math.min(1, l.a));
+                const eff = [r * a + brightest[0] * (1 - a), g * a + brightest[1] * (1 - a), b * a + brightest[2] * (1 - a)];
+                const Lt = lum(...eff);
+                const light = Lt >= sum / cnt;
+                const cr = light ? ratio(Lt, maxL) : ratio(Lt, minL);
+                const need = l.large ? 3 : 4.5;
+                if (cr < need) { worst.n++; if (cr < worst.cr) Object.assign(worst, { cr, l, bg: light ? maxL : minL }); }
+              }
+              if (H.sh <= H.ch) break;
+            }
+            if (worst.n) R.fail(tag, `${worst.n} línea(s) del modal bajo AA; peor ${worst.cr.toFixed(2)}:1 (necesita ${worst.l.large ? 3 : 4.5}:1, fondo L ${worst.bg.toFixed(3)}): "${worst.l.t}"`);
+          }
+        }
+      }
+      R.info(`modal de cotización: ${MODAL_ROUTES.length} ruta(s) × ${MODAL_VP.length} tamaño(s) · ${views} vista(s)`);
     }
   } finally { await br.close(); }
   R.info(`${routes.length} página(s) × ${vps.length} tamaño(s) · ${measured} línea(s) medidas`);

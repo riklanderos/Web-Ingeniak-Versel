@@ -1,0 +1,56 @@
+---
+// /dev/agenda/ — demo del área "agenda" (noindex; se borra de dist/ en Verificar). Los dos BookingFlow (Discovery y Power)
+// dentro de un Intertitle split como en las landings (§4.2–§4.3: columna izquierda con los pasos, derecha el componente).
+// En `astro dev` la API corre en simulación (server/agenda/mock.js): el 2.º horario de cada día está ocupado; la Power
+// lleva a /dev/agenda-checkout/ ("Stripe simulado"). Atajos: ?pago=cancelado&apartado=<id> (regreso de Stripe).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Intertitle from '../../components/cine/Intertitle.astro';
+import BookingFlow from '../../components/agenda/BookingFlow.astro';
+import { getPage, waHref } from '../../lib/site';
+
+const base = getPage('/') as any;
+const page = { ...base, id: 'dev-agenda', url: '/dev/agenda/', canonical: 'https://ingeniak.mx/dev/agenda/', indexable: false, hidden: true, primaryCta: null, sections: [] } as any;
+const waD = waHref('Hola, vengo de la página de la Discovery Session y tengo una duda antes de agendar.');
+const waP = waHref('Hola, vengo de la página de la Power Session y tengo una duda antes de reservar.');
+const pasosD = [
+  ['01', 'Tus datos', 'Unas preguntas sobre ti y tu negocio. Sin ensayo.'],
+  ['02', 'Horario', 'Próximos 5 días hábiles, en hora del centro de México.'],
+  ['03', 'Confirmas', 'Te llega la invitación de Google Calendar con el enlace de Meet.'],
+];
+const pasosP = [
+  ['01', 'Tu diagnóstico', 'Preguntas sobre tu negocio y tu operación. Sin ensayo.'],
+  ['02', 'Horario', 'Próximos 5 días hábiles, en hora del centro de México. Tu horario queda apartado 30 minutos mientras pagas.'],
+  ['03', 'Pago', 'Pagas con tarjeta en Stripe y te llega la invitación con el enlace de Google Meet.'],
+];
+---
+<BaseLayout page={page} nav="reduced" noindex title="Dev · agenda · Ingeniak" rail={false} coldOpen={false} footer={false} waHref={waD}>
+  <Intertitle id="agenda" layout="split" aura="isotipo" auraSide="right">
+    <Fragment slot="head">
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>Discovery Session · Reserva en 3 pasos</p>
+      <h2 id="agenda-t" class="t-h2">Aparta tu lugar <span class="soft">en minutos.</span></h2>
+      <ol class="dv-ag-steps">
+        {pasosD.map(([n, t, l]) => <li><span class="t-label t-label--cyan">{n}</span><b>{t}</b><span>{l}</span></li>)}
+      </ol>
+      <p class="t-small">Demo del área agenda · simulación local, nada sale a Google, Stripe ni Kommo.</p>
+    </Fragment>
+    <BookingFlow tipo="discovery" waHref={waD} headingLevel={3} />
+  </Intertitle>
+
+  <Intertitle id="agenda-power" layout="split" aura="ondas" auraSide="left">
+    <Fragment slot="head">
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>Power Session · Reserva en 3 pasos</p>
+      <h2 id="agenda-power-t" class="t-h2">Aparta tu lugar <span class="soft">en minutos.</span></h2>
+      <ol class="dv-ag-steps">
+        {pasosP.map(([n, t, l]) => <li><span class="t-label t-label--cyan">{n}</span><b>{t}</b><span>{l}</span></li>)}
+      </ol>
+    </Fragment>
+    <BookingFlow tipo="power" waHref={waP} headingLevel={3} />
+  </Intertitle>
+</BaseLayout>
+
+<style>
+  .dv-ag-steps{display:grid;gap:18px;margin-top:var(--s-6)}
+  .dv-ag-steps li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 12px;color:var(--text-2);font:400 .9375rem/1.5 var(--f-body)}
+  .dv-ag-steps b{font:500 1.0625rem/1.3 var(--f-display);color:var(--text)}
+  .dv-ag-steps li > span:last-child{grid-column:2}
+</style>

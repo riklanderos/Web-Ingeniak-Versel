@@ -1,0 +1,9 @@
+---
+// /power-session/ · T-CONVERSION, landing oculta de campañas (CAMBIO-COTIZAR §4.3, R17). noindex,follow; encabezado reducido;
+// el primario reserva y paga en la propia página (#agenda, BookingFlow tipo="power"). La escena del VSL no se pinta hasta
+// que exista /video/powersession-vsl-720.mp4 (§9-4).
+import ConversionTemplate from '../../components/templates/ConversionTemplate.astro';
+import { landingPage } from '../../scripts/landing/pagina';
+const page = landingPage('/power-session/');
+---
+<ConversionTemplate page={page} tipo="power" vsl={{ src: '/video/powersession-vsl-720.mp4' }} />

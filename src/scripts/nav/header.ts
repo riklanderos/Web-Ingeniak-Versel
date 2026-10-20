@@ -3,6 +3,8 @@
 //   (es un atributo de <html>, distinto del gancho del elemento: el encabezado se toma SIEMPRE como header.hdr)
 // html[data-hdr-scrim]: en "top" con y > 0 → velo protector de 96 px bajo el encabezado.
 // html[data-fold]: pasado el primer viewport (barra móvil y píldora de Kain).
+// html[data-fold85]: pasado el 85 % del primer viewport (barra móvil de las landings ocultas, CAMBIO-COTIZAR §4.1).
+// html[data-agenda-visible]: el componente de reserva ([data-agenda]) está a la vista → la barra de la landing se retira.
 // Umbral de "top": max(48, min(80 % de la portada, primer texto − alto del encabezado − 16)) — el encabezado deja de
 //   ser transparente ANTES de que el primer texto de la portada (breadcrumbs, H1, sumario o columna de texto) pase por debajo.
 //   En vertical (< 768 px o proporción ≤ 5/6) sale de "top" en cuanto y > 8.
@@ -77,6 +79,7 @@ export function initHeader() {
       acc += Math.abs(dy);
     }
     html.toggleAttribute('data-fold', y > window.innerHeight * 0.9);
+    html.toggleAttribute('data-fold85', y > window.innerHeight * 0.85);
     html.toggleAttribute('data-hdr-scrim', y > 0);
     if (html.hasAttribute('data-mm-open') || html.classList.contains('is-locked')) return;
 
@@ -90,6 +93,16 @@ export function initHeader() {
   };
 
   const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  // Landings: mientras el componente de reserva se vea (aunque sea en parte), la barra móvil no lo tapa.
+  const agendas = document.querySelectorAll<HTMLElement>('[data-agenda]');
+  if (agendas.length && 'IntersectionObserver' in window) {
+    const seen = new Set<Element>();
+    const io = new IntersectionObserver((es) => {
+      for (const e of es) e.isIntersecting ? seen.add(e.target) : seen.delete(e.target);
+      html.toggleAttribute('data-agenda-visible', seen.size > 0);
+    }, { threshold: 0 });
+    agendas.forEach((a) => io.observe(a));
+  }
   measure();
   update();
   window.addEventListener('scroll', onScroll, { passive: true });

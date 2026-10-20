@@ -29,6 +29,7 @@ import FAQAccordion from '../ui/FAQAccordion.astro';
 import EditorNote from '../ui/EditorNote.astro';
 import { annotateFigures, esc, getFaqItems } from '../ui/ui-data';
 import HeroCtas from './HeroCtas.astro';
+import { primaryLabel } from '../layout/cta';
 import Aura from './Aura.astro';
 import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
 import { waHref, linkTarget, type Page } from '../../lib/site';
@@ -160,7 +161,7 @@ if (dev) {
           </h1>
           {hero.deck && <Copy as="p" class="t-deck mth-deck" text={hero.deck} />}
           {hero.lede && <Copy as="p" class="t-lede t-lede--2 mth-hero__lede tpl-dhide" text={heroLede.intro} />}
-          <HeroCtas href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+          <HeroCtas label={primaryLabel(hero)} section="hero"
             waHref={wa} waLabel={waLabel(hero)} />
           {ghostLetters.length > 0 && (
             <p slot="ghost" class="mth-ghost" aria-hidden="true">{ghostLetters.map((l, i) => <span class="mth-ghost__l" style={`--i:${i}`}>{l}</span>)}</p>
@@ -359,14 +360,7 @@ if (dev) {
           <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
           {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
           <div class="ctas">
-            {cta.micro ? (
-              <div class="cta-p">
-                <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
-                <Copy as="p" class="t-micro btn-micro" text={cta.micro} data-allow-number />
-              </div>
-            ) : (
-              <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
-            )}
+            <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(cta)} micro />
             <Btn variant="ghost" href={wa} label={waLabel(cta)} />
           </div>
         </Dawn>

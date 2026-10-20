@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos de belleza, spa o salón que podamos mencionar por tipo de negocio (sin nombre)? La página no afirma que los haya: solo dice que el promedio de salud incluye medicina estética (confirmado el 2026-10-19). Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
@@ -13,7 +13,8 @@
     "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas E01–E04 (Instagram, agenda por profesional o cabina, tratamientos, faltas a la cita) con su texto en materiales/v2/build/peticiones.md → 'Construcción · industrias (copy)'. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-belleza.faq.",
     "FAQ · N11 sigue en validar: true en el banco; mientras no se apruebe, el acordeón muestra G02, N12 y G07 (las tres aprobadas de D).",
     "CAMBIO DE TEXTO · automatizamos.items[5] ('Campañas a tus clientas'): D decía 'campañas a clientas registradas en el CRM'; se acota a quienes aceptaron recibir mensajes (política de mensajes de WhatsApp Business y aviso de privacidad).",
-    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dos cifras de salud con su origen; el promedio de citas se presenta como el más cercano porque incluye clínicas de medicina estética. Enlaza al caso dental y a /industrias/salud/."
+    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dos cifras de salud con su origen; el promedio de citas se presenta como el más cercano porque incluye clínicas de medicina estética. Enlaza al caso dental y a /industrias/salud/.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Empecemos por tu agenda real.'; el lede ya no promete una llamada ('En la llamada revisamos… Sales sabiendo…')."
   ],
   "sections": {
     "hero": {
@@ -22,7 +23,7 @@
       "eyebrow": "Industria · Belleza y estética",
       "h1": { "text": "Agentes de IA", "soft": "para estéticas, spas y salones de belleza", "lit": "IA" },
       "lede": "Responde, agenda y confirma en WhatsApp e Instagram mientras tú atiendes a tus clientas. Kain contesta con tu lista de precios y aparta el lugar con la profesional o la cabina que toca.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo una estética o spa y quiero que me ayudes a llenar la agenda por WhatsApp."
@@ -142,14 +143,13 @@
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
       "eyebrow": "Tu siguiente paso",
-      "h2": { "text": "¿Cuántas clientas preguntan y no reservan?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la llamada revisamos tu agenda real: por dónde te escriben, quién contesta y en qué punto se cae la reserva. Sales sabiendo qué conviene automatizar primero.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "h2": { "text": "¿Cuántas clientas preguntan y no reservan?", "soft": "Empecemos por tu agenda real." },
+      "lede": "Cotiza tu proyecto y cuéntanos por dónde te escriben, quién contesta y en qué punto se cae la reserva. Con eso vemos qué automatizar primero.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo una estética o spa y quiero que me ayudes a llenar la agenda por WhatsApp."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

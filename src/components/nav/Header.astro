@@ -1,8 +1,12 @@
 ---
-// Header (ESPEC §4.1). Props:
-//   variant  'full' (por defecto) | 'reduced' (/discovery/: solo logo + "Agendar mi Discovery Session" directo a la agenda)
+// Header (ESPEC §4.1, r2: CAMBIO-COTIZAR §1.4). Props:
+//   variant  'full' (por defecto) | 'reduced' (landings ocultas /discovery/, /power-session/, /agendar/confirmado/: logo + CTA de
+//            la landing, sin navegación, ⌘K ni WhatsApp)
 //   current  URL de la página actual (marca la entrada activa con un nodo cian)
 //   waHref   enlace de WhatsApp con el mensaje de la página (secondaryCta.href)
+//   cta      solo nav reducida: page.primaryCta {label, short?, href} (reserva en la propia página, '#agenda'); null = sin CTA
+//            (confirmación). En nav completa el CTA es «Cotizar proyecto» (corto «Cotizar» < 1100 px): abre el modal
+//            (data-cotizar data-section="header"), sin JS lleva a /contacto/#cotizar.
 // Estados (scripts/nav/header.ts → html[data-hdr-state]): top (transparente) · hidden · glass. Los scripts toman el
 // elemento como header.hdr (el atributo data-hdr de abajo es solo un gancho; el estado vive en <html>).
 // Regla de un azul (F15): con html[data-primary-visible] (o sin JS) el CTA del encabezado pasa a contorno.
@@ -12,13 +16,20 @@ import MegaMenu from './MegaMenu.astro';
 import { ICONS } from './icons';
 import { NAV_ENTRIES, currentEntry } from '../layout/navData';
 import { SITE } from '../../lib/site';
+import { QUOTE, quoteAttrs, quoteHref } from '../layout/cta';
 
-interface Props { variant?: 'full' | 'reduced'; current?: string; waHref?: string }
-const { variant = 'full', current = '', waHref = SITE.waBase } = Astro.props;
+type Cta = { label?: string; short?: string; href?: string } | null;
+interface Props { variant?: 'full' | 'reduced'; current?: string; waHref?: string; cta?: Cta }
+const { variant = 'full', current = '', waHref = SITE.waBase, cta } = Astro.props;
 const full = variant === 'full';
 const cur = currentEntry(current);
-const ctaHref = full ? SITE.discovery : SITE.agenda;
-const ctaLabel = full ? 'Agenda tu Discovery Session' : 'Agendar mi Discovery Session';
+// Reducida: el CTA de la landing siempre reserva en la página (#agenda); nunca la agenda externa (R17, check-cta).
+const landingHref = (h?: string) => (h && h.startsWith('#') ? h : '#agenda');
+const showCta = full || !!cta?.label;
+const ctaHref = full ? quoteHref(current) : landingHref(cta?.href);
+const ctaLabel = full ? QUOTE.label : cta?.label ?? '';
+const ctaShort = full ? QUOTE.short : cta?.short ?? cta?.label ?? '';
+const ctaAttrs = full ? quoteAttrs('header') : { 'data-section': 'header' };
 ---
 <header class="hdr" data-hdr data-variant={variant}>
   <span class="hdr__glass" aria-hidden="true"></span>
@@ -61,10 +72,12 @@ const ctaLabel = full ? 'Agenda tu Discovery Session' : 'Agendar mi Discovery Se
           <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} />
         </a>
       )}
-      <a class="btn btn--sm hdr__cta" href={ctaHref} data-hdr-cta>
-        <span class="hdr__cta-l">{ctaLabel}</span><span class="hdr__cta-s" aria-hidden="true">{full ? 'Agenda tu Discovery' : 'Agendar'}</span>
-        <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span>
-      </a>
+      {showCta && (
+        <a class="btn btn--sm hdr__cta" href={ctaHref} data-hdr-cta {...ctaAttrs}>
+          <span class="hdr__cta-l">{ctaLabel}</span><span class="hdr__cta-s" aria-hidden="true">{ctaShort}</span>
+          <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span>
+        </a>
+      )}
       {full && (
         <a class="hdr__menu" href="#mapa-del-sitio" data-menu-open>
           <span>Menú</span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.menu} />

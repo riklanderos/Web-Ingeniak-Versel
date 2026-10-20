@@ -5,7 +5,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN · FAQ H04 '¿Ingeniak es partner de GoHighLevel?' está en 'validar' en el banco: no se publica (ni en el acordeón ni en el FAQPage) hasta que la apruebes. Hoy la página muestra cinco preguntas.",
@@ -18,7 +18,8 @@
     "CAMBIO DE TEXTO · QA plataformas 2026-10-19: hero.legal 'en Ingeniak la implementamos' decía que se implementa la marca → 'en Ingeniak implementamos la plataforma.'; senales.fig.label 'Cinco herramientas, ningún seguimiento' no cabía en un renglón del pie de foto → 'Herramientas sueltas'.",
     "RESUELTO 2026-10-19 · cliente en chat · (15) CRM de la clínica dental de Monterrey: GoHighLevel. Habilita la prueba de #calendario y el enlace al caso.",
     "RESUELTO 2026-10-19 · cliente en chat · (16) plazo de implementación general: de 7 a 30 días según el alcance (inversion.remate).",
-    "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (#inversion y FAQ H02/H03 del banco)."
+    "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (#inversion y FAQ H02/H03 del banco).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: hero.ctaPrimary y cta-final.ctaPrimary pasan a 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización; sin JS lleva a /contacto/#cotizar) con la microcopia compartida de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Claves reescritas porque nombraban la Discovery Session o prometían la llamada de 30 minutos: inversion.remate ('…en tu Discovery Session, por Google Meet.' → 'El alcance exacto se define al cotizar, con lo que nos cuentes por WhatsApp y correo.'); cta-final.h2.soft ('Lo vemos en 30 minutos.' → 'Cuéntanos qué necesitas.'); cta-final.lede ('En la Discovery Session revisamos cómo vendes y agendas hoy…' → 'Dinos cómo vendes y agendas hoy: con eso vemos si GoHighLevel encaja, qué conviene automatizar primero y qué entraría en tu cotización.'). Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
@@ -27,7 +28,7 @@
       "eyebrow": "Plataforma · Organizar",
       "h1": { "text": "Implementación de GoHighLevel", "soft": "en español", "lit": "Implementación" },
       "lede": "Configuramos GoHighLevel en español: CRM, embudos, calendarios y automatizaciones con IA para que tu equipo venda más sin perseguir leads. En una clínica dental de Monterrey que trabaja con GoHighLevel, el sistema con agente de IA logró {{metric:dental-citas}} más citas en 90 días.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola, vengo de la página de GoHighLevel de Ingeniak y quiero implementar GoHighLevel en mi empresa."
@@ -227,7 +228,7 @@
         { "title": "Integraciones", "line": "Embudos, calendarios, campañas y los sistemas que deben hablar con GoHighLevel." },
         { "title": "Volumen", "line": "Cuántos leads, citas y personas de tu equipo pasan por la plataforma." }
       ],
-      "remate": "El alcance exacto lo definimos en tu Discovery Session, por Google Meet. Según lo que incluya, la implementación toma de 7 a 30 días."
+      "remate": "El alcance exacto se define al cotizar, con lo que nos cuentes por WhatsApp y correo. Según lo que incluya, la implementación toma de 7 a 30 días."
     },
     "faq": {
       "_componente": "FAQAccordion (H04 en 'validar': no se publica)",
@@ -253,9 +254,9 @@
       "_componente": "Dawn (cta-amanecer en espejo: Kain a la izquierda)",
       "rail": "Cierre",
       "eyebrow": "Tu siguiente paso",
-      "h2": { "text": "¿GoHighLevel es para tu operación?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session revisamos cómo vendes y agendas hoy, y te decimos si GoHighLevel encaja y qué conviene automatizar primero.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "h2": { "text": "¿GoHighLevel es para tu operación?", "soft": "Cuéntanos qué necesitas." },
+      "lede": "Dinos cómo vendes y agendas hoy: con eso vemos si GoHighLevel encaja, qué conviene automatizar primero y qué entraría en tu cotización.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola, vengo de la página de GoHighLevel de Ingeniak y quiero implementar GoHighLevel en mi empresa."

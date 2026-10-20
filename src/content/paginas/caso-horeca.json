@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "publishGate": {
     "ok": false,
     "fuente": null,
@@ -28,7 +28,8 @@
     "CAMBIO DE TEXTO · hero.ledeM (QA casos): versión corta del lede para el primer pantallazo en móvil (R3: el sujeto de la portada entra en pantalla); en escritorio sigue el lede completo. Mismo contenido, sin datos nuevos.",
     "CAMBIO DE TEXTO · mensaje de WhatsApp de portada y cierre (QA casos): la cifra va como token ({{metric:horeca-roas}}), sale de metrics.ts y no escrita a mano (§0.1-2).",
     "CAMBIO DE TEXTO · relacionados (QA casos): la línea de paid media decía 'El servicio de este caso: Meta, Google y TikTok Ads…'; solo Meta Ads está confirmado en este caso. Ahora: 'El servicio de este caso: campañas medidas por ventas, no por clics.'",
-    "CAMBIO DE TEXTO · H1: \"paid media\" va con espacio duro (no se parte en dos líneas). El texto del H1 no cambia."
+    "CAMBIO DE TEXTO · H1: \"paid media\" va con espacio duro (no se parte en dos líneas). El texto del H1 no cambia.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' (sustituye la línea anterior sobre 'Agenda tu Discovery Session') y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Conectemos tu pauta con tus reservas.'; lede sin la Discovery Session ni 'Sales con sugerencias concretas'."
   ],
   "sections": {
     "hero": {
@@ -38,7 +39,7 @@
       "chips": ["Hoteles y restaurantes", "Meta Ads", "En operación"],
       "lede": "Campañas en Meta Ads para un cliente de hoteles y restaurantes, medidas por lo que regresan en ventas y no por los clics. El retorno se sostuvo: no fue el pico de una sola campaña.",
       "ledeM": "Campañas en Meta Ads medidas por ventas, no por clics.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso HoReCa con {{metric:horeca-roas}} y quiero campañas así para mi negocio." },
       "illus": "Imagen ilustrativa del sector"
     },
@@ -169,11 +170,10 @@
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
       "eyebrow": "Campañas que se miden en ventas",
-      "h2": { "text": "¿Tus campañas se miden en ventas?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session revisamos qué mides hoy de tus anuncios, si una reserva puede llegar a la campaña que la trajo y qué conviene cambiar primero en tu restaurante o tu hotel. Sales con sugerencias concretas.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso HoReCa con {{metric:horeca-roas}} y quiero campañas así para mi negocio." },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "h2": { "text": "¿Tus campañas se miden en ventas?", "soft": "Conectemos tu pauta con tus reservas." },
+      "lede": "Cotiza tu proyecto con lo que mides hoy de tus anuncios y cómo llegan tus reservas. Revisamos si cada reserva puede llegar a la campaña que la trajo y qué conviene cambiar primero en tu restaurante o tu hotel.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso HoReCa con {{metric:horeca-roas}} y quiero campañas así para mi negocio." }
     }
   }
 }

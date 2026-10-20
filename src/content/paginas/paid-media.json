@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE PREGUNTA · N02 ('¿La inversión en pauta está incluida?') sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. El dato que la sostiene viene del sitio actual ('inversión en pauta siempre por separado') y se dice en #inversion.remate.",
@@ -15,7 +15,8 @@
     "PREGUNTA AL CLIENTE · el sitio actual también menciona Pinterest y LinkedIn Ads. Esta página solo nombra Meta, Google y TikTok (brief de D). ¿Se agregan?",
     "PREGUNTA AL CLIENTE · ¿las campañas corren en la cuenta publicitaria del cliente (los datos y los activos son suyos) o en una cuenta de Ingeniak? No se afirma nada; si es la del cliente, conviene decirlo en #inversion o #que-hacemos.",
     "CAMBIO DE TEXTO · #caso: la cifra va en el lede y no en el H2 (el token |full dentro de un titular con SplitText se recorta en escritorio).",
-    "CAMBIO DE TEXTO · QA servicios r3: la portada ya no abre repitiendo 'Meta, Google y TikTok Ads' del H1 (dice cómo se mide); #como-funciona se titula por la atribución ('Cada venta regresa a la campaña que la trajo') para no repetir 'Del anuncio a la venta' de #que-hacemos; #canales sale de la página (su contenido pasa al nodo 01 de #como-funciona); #como-funciona.note ('Si ya tienes página o CRM, partimos de lo tuyo') sale hasta que se confirme, igual que en /servicios/crm-con-ia/; cta-final sin 'micro' (repetía la microcopia del botón primario)."
+    "CAMBIO DE TEXTO · QA servicios r3: la portada ya no abre repitiendo 'Meta, Google y TikTok Ads' del H1 (dice cómo se mide); #como-funciona se titula por la atribución ('Cada venta regresa a la campaña que la trajo') para no repetir 'Del anuncio a la venta' de #que-hacemos; #canales sale de la página (su contenido pasa al nodo 01 de #como-funciona); #como-funciona.note ('Si ya tienes página o CRM, partimos de lo tuyo') sale hasta que se confirme, igual que en /servicios/crm-con-ia/; cta-final sin 'micro' (repetía la microcopia del botón primario).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: hero.ctaPrimary y cta-final.ctaPrimary pasan a 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización; sin JS lleva a /contacto/#cotizar) con la microcopia compartida de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Claves reescritas porque nombraban la Discovery Session o prometían la llamada de 30 minutos: inversion.remate ('El alcance lo definimos en tu Discovery Session…' → 'El alcance lo definimos al cotizar tu proyecto…'); cta-final.h2.soft ('Lo vemos en 30 minutos.' → 'Revisémoslo juntos.'); cta-final.lede ('En la Discovery Session revisamos tus campañas…' → 'Cuéntanos dónde corren tus campañas y qué pasa con cada lead después del clic: con eso ubicamos dónde se está yendo el dinero.'). Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
@@ -29,8 +30,7 @@
       },
       "lede": "Cada campaña se mide por las ventas que registra tu CRM, no por los clics. Para un cliente de hoteles y restaurantes, las campañas en Meta Ads lograron un {{metric:horeca-roas|full}}.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -331,7 +331,7 @@
           "line": "Cuántas campañas, creativos y leads se manejan cada mes."
         }
       ],
-      "remate": "La inversión publicitaria va aparte: se paga directo a cada plataforma. El alcance lo definimos en tu Discovery Session, y dejar todo conectado toma de 7 a 30 días, según lo que incluya."
+      "remate": "La inversión publicitaria va aparte: se paga directo a cada plataforma. El alcance lo definimos al cotizar tu proyecto, y dejar todo conectado toma de 7 a 30 días, según lo que incluya."
     },
     "faq": {
       "_componente": "FAQAccordion",
@@ -384,12 +384,11 @@
       "eyebrow": "Antes de subir el presupuesto",
       "h2": {
         "text": "¿Cuánto de tu inversión termina en ventas?",
-        "soft": "Lo vemos en 30 minutos."
+        "soft": "Revisémoslo juntos."
       },
-      "lede": "En la Discovery Session revisamos tus campañas y qué pasa con cada lead después del clic, y te decimos dónde se está yendo el dinero.",
+      "lede": "Cuéntanos dónde corren tus campañas y qué pasa con cada lead después del clic: con eso ubicamos dónde se está yendo el dinero.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",

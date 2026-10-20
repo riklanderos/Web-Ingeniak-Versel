@@ -5,20 +5,26 @@
 // 3) Redes reales (SITE.social) · 4) Reprise de la firma: el isotipo se dibuja una vez en cian · legal ·
 //    interruptor "Reducir movimiento" (localStorage 'ingeniak-motion' → html[data-motion="reduced"]).
 // Props: waHref (WhatsApp con el mensaje ÚNICO de la página: secondaryCta, igual que encabezado, píldora y barra; R10),
-//        folio? (si no hay waHref, el mensaje genérico lleva el folio de la página), compact?: true omite el mapa.
-// El mapa lleva id="mapa-del-sitio": sin JS, "Menú" del encabezado es un enlace a él.
+//        folio? (si no hay waHref, el mensaje genérico lleva el folio de la página), compact?: true omite el mapa,
+//        current? (URL de la página), variant? 'full' | 'minimal', anchors? (minimal: page.footerAnchors [{label, href|id}]).
+// El mapa lleva id="mapa-del-sitio": sin JS, "Menú" del encabezado es un enlace a él. El mapa nunca lista landings ocultas
+// (R17). En la ficha de contacto, «Cotizar proyecto» (.lnk[data-cotizar] data-section="footer") abre el modal.
+// variant="minimal" (landings ocultas, CAMBIO-COTIZAR §1.4): logo + firma, anclas de la página, WhatsApp (mensaje de la
+//        página), correo, enlace a /, .lnk[data-cotizar] "¿Tienes un proyecto en mente? Cotizar proyecto", aviso de privacidad, ©.
 import { SITE, pages } from '../../lib/site';
 import { SOURCE_NOTE } from '../../lib/metrics';
 import Metric from '../ui/Metric.astro';
 import { FOOTER, shortName } from '../layout/navData';
 import { ISOTIPO_PATH, ISOTIPO_VIEWBOX } from './brand';
 import { ICONS } from './icons';
+import Logo from './Logo.astro';
+import { QUOTE, quoteAttrs, quoteHref, isHiddenHref } from '../layout/cta';
 
 // Sello de Kommo: si el área ui ya publicó KommoBadge, se usa; si no, el sello oficial en imagen.
 const badgeMods = import.meta.glob('../ui/KommoBadge.astro', { eager: true }) as Record<string, any>;
 const KommoBadge = Object.values(badgeMods)[0]?.default;
 
-const indexable = new Set(pages.filter((p) => p.indexable).map((p) => p.url));
+const indexable = new Set(pages.filter((p) => p.indexable && !isHiddenHref(p.url)).map((p) => p.url));
 const cols = FOOTER.columns.map((c) => ({
   title: c.title,
   links: c.links
@@ -31,9 +37,50 @@ const social = [
   { href: SITE.social.linkedin, label: 'LinkedIn', logo: '/img/logos/linkedin.svg' },
 ];
 const year = 2026;
-const { compact = false, waHref, folio } = Astro.props as { compact?: boolean; waHref?: string; folio?: string };
+type Anchor = { label?: string; href?: string; id?: string };
+const { compact = false, waHref, folio, current, variant = 'full', anchors = [] } = Astro.props as {
+  compact?: boolean; waHref?: string; folio?: string; current?: string; variant?: 'full' | 'minimal'; anchors?: Anchor[];
+};
+const minimal = variant === 'minimal';
+const qHref = quoteHref(current);
+const qAttrs = quoteAttrs('footer');
+// "¿Tienes un proyecto en mente? Cotizar proyecto" (_comun.cta.cotizarLnk): la pregunta es texto, la acción es el enlace.
+const qParts = (() => { const i = QUOTE.lnk.lastIndexOf('?'); return i > 0 ? [QUOTE.lnk.slice(0, i + 1), QUOTE.lnk.slice(i + 1).trim() || QUOTE.label] : ['', QUOTE.lnk]; })();
+const minAnchors = (anchors ?? []).map((a) => ({ label: a.label ?? '', href: a.href ?? (a.id ? `#${a.id}` : '') }))
+  .filter((a) => a.label && a.href && !isHiddenHref(a.href.startsWith('#') ? '' : a.href));
 const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain, vengo del pie de página de ingeniak.mx${folio ? ` (${folio})` : ''} y quiero información.`)}`;
 ---
+{minimal ? (
+<footer class="ftr ftr--minimal" data-ftr>
+  <span class="ftr__horizon" aria-hidden="true"></span>
+  <div class="ftr__frame ftr__min">
+    <div class="ftr__min-brand">
+      <Logo class="ftr__min-logo" />
+      <p class="ftr__min-firma">{FOOTER.firma}</p>
+    </div>
+    {minAnchors.length > 0 && (
+      <nav class="ftr__min-nav" aria-label="En esta página">
+        <ul class="ftr__min-ul" role="list">
+          {minAnchors.map((a) => <li><a class="ftr__a" href={a.href}>{a.label}</a></li>)}
+        </ul>
+      </nav>
+    )}
+    <dl class="ftr__min-contact">
+      <div class="ftr__row"><dt>WhatsApp</dt><dd><a class="ftr__a ftr__a--inline" href={waFooter} target="_blank" rel="noopener" data-wa data-allow-number>{SITE.phone}</a></dd></div>
+      <div class="ftr__row"><dt>Correo</dt><dd><a class="ftr__a ftr__a--inline" href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
+    </dl>
+    <p class="ftr__min-quote">{qParts[0] && <span>{qParts[0]} </span>}<a class="lnk" href={qHref} {...qAttrs}>{qParts[1]}</a></p>
+  </div>
+  <div class="ftr__frame ftr__legal" data-ftr-end>
+    <p class="ftr__copy">© {year} Ingeniak</p>
+    <a class="ftr__a ftr__a--legal" href="/">ingeniak.mx</a>
+    <a class="ftr__a ftr__a--legal" href="/aviso-privacidad/">Aviso de privacidad</a>
+    <button class="ftr__motion" type="button" role="switch" aria-checked="false" data-motion-toggle>
+      <span class="ftr__switch" aria-hidden="true"><span></span></span>Reducir movimiento
+    </button>
+  </div>
+</footer>
+) : (
 <footer class="ftr" data-ftr>
   <span class="ftr__horizon" aria-hidden="true"></span>
 
@@ -63,9 +110,10 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain,
     <dl class="ftr__sheet">
       <div class="ftr__row"><dt>Entidad</dt><dd>Ingeniak · consultoría de IA</dd></div>
       <div class="ftr__row"><dt>Sede</dt><dd>{SITE.city}</dd></div>
-      <div class="ftr__row"><dt>Oficina</dt><dd data-allow-number>{SITE.address.street}, {SITE.address.locality}, {SITE.address.region} {SITE.address.postal}</dd></div>
+      <div class="ftr__row"><dt>Oficina</dt><dd data-allow-number>{`${SITE.address.street}, ${SITE.address.locality}, ${SITE.address.region} ${SITE.address.postal}`}</dd></div>
       <div class="ftr__row"><dt>Correo</dt><dd><a class="ftr__a ftr__a--inline" href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
       <div class="ftr__row"><dt>WhatsApp</dt><dd><a class="ftr__a ftr__a--inline" href={waFooter} target="_blank" rel="noopener" data-allow-number>{SITE.phone}</a></dd></div>
+      <div class="ftr__row"><dt>Proyectos</dt><dd><a class="lnk ftr__quote" href={qHref} {...qAttrs}>{QUOTE.label}</a></dd></div>
       {/* Cifras solo con <Metric> y con su nota de fuente visible (§0.1.2, QA r2) */}
       <div class="ftr__row"><dt>En producción</dt><dd><Metric id="sistemas" label /> · <Metric id="paises" label /><small class="ftr__src">{SOURCE_NOTE}.</small></dd></div>
     </dl>
@@ -105,3 +153,4 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain,
     </button>
   </div>
 </footer>
+)}

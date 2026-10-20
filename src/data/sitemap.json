@@ -318,8 +318,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -338,8 +339,7 @@
       "/kain/",
       "/metodologia/",
       "/nosotros/",
-      "/preguntas-frecuentes/",
-      "/discovery/"
+      "/preguntas-frecuentes/"
     ],
     "jsonLd": [
       "Organization",
@@ -370,7 +370,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       },
       {
@@ -382,7 +382,7 @@
       {
         "id": "G11",
         "q": "¿Cómo empiezo a trabajar con Ingeniak?",
-        "a": "Agenda una Discovery Session: una llamada 1:1 de 30 minutos, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden.",
+        "a": "Con «Cotizar proyecto»: un formulario de tres pasos en el que nos cuentas qué necesitas, cómo es tu negocio y cómo prefieres que te contactemos. Con eso te contactamos por WhatsApp y correo para conocer los detalles. Si tiene sentido para los dos, te enviamos una propuesta con alcance, tiempos y costo. Si prefieres empezar por mensaje, escríbele a Kain por WhatsApp.",
         "estado": "aprobada"
       }
     ],
@@ -577,8 +577,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -616,7 +617,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       },
       {
@@ -634,7 +635,7 @@
       {
         "id": "N07",
         "q": "¿Trabajan con pymes?",
-        "a": "Sí. La Discovery Session está pensada para dueños de pymes de 3 a 40 empleados, de cualquier sector. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
+        "a": "Sí. Trabajamos con pymes de 3 a 40 empleados, de cualquier sector: el tamaño en el que el negocio todavía depende de su dueño para operar y un sistema le devuelve más tiempo. Si estás fuera de ese rango, cuéntanoslo al cotizar tu proyecto y te orientamos a la opción correcta.",
         "estado": "aprobada"
       }
     ],
@@ -891,8 +892,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -905,8 +907,7 @@
       "/servicios/agentes-ia-whatsapp/",
       "/servicios/crm-con-ia/",
       "/casos/logistica-n8n/",
-      "/industrias/",
-      "/discovery/"
+      "/industrias/"
     ],
     "jsonLd": [
       "WebPage",
@@ -924,7 +925,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       },
       {
@@ -936,7 +937,7 @@
       {
         "id": "N07",
         "q": "¿Trabajan con pymes?",
-        "a": "Sí. La Discovery Session está pensada para dueños de pymes de 3 a 40 empleados, de cualquier sector. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
+        "a": "Sí. Trabajamos con pymes de 3 a 40 empleados, de cualquier sector: el tamaño en el que el negocio todavía depende de su dueño para operar y un sistema le devuelve más tiempo. Si estás fuera de ese rango, cuéntanoslo al cotizar tu proyecto y te orientamos a la opción correcta.",
         "estado": "aprobada"
       },
       {
@@ -1214,8 +1215,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -1232,8 +1234,7 @@
       "/casos/retail-multimarca-kommo/",
       "/industrias/salud/",
       "/blog/agente-ia-whatsapp-vs-chatbot/",
-      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
-      "/discovery/"
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/"
     ],
     "jsonLd": [
       "WebPage",
@@ -1275,7 +1276,7 @@
       {
         "id": "W03",
         "q": "¿Cuánto cuesta un agente de IA para WhatsApp?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. Lo que más mueve el precio son los canales que atiende el agente, sus integraciones y el volumen de conversaciones.",
         "estado": "aprobada"
       }
     ],
@@ -1533,8 +1534,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -1547,8 +1549,7 @@
       "/blog/kommo-vs-gohighlevel/",
       "/servicios/agentes-ia-whatsapp/",
       "/servicios/automatizacion-n8n/",
-      "/casos/retail-multimarca-kommo/",
-      "/discovery/"
+      "/casos/retail-multimarca-kommo/"
     ],
     "jsonLd": [
       "WebPage",
@@ -1584,7 +1585,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -1622,8 +1623,8 @@
     ],
     "title": "Partner oficial de Kommo en México y LATAM | Ingeniak",
     "titleLength": 53,
-    "metaDescription": "Licencias, implementación y automatización de Kommo con agentes de IA en WhatsApp. Somos partner oficial de Kommo en LATAM. Agenda tu diagnóstico.",
-    "metaLength": 146,
+    "metaDescription": "Licencias, implementación y automatización de Kommo con agentes de IA en WhatsApp. Somos partner oficial de Kommo en LATAM. Cotiza tu proyecto.",
+    "metaLength": 143,
     "h1": "Partner oficial de Kommo en México y LATAM",
     "breadcrumbs": [
       {
@@ -1859,8 +1860,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -1875,8 +1877,7 @@
       "/casos/clinica-dental-monterrey/",
       "/blog/como-verificar-partner-oficial-kommo/",
       "/blog/kommo-vs-gohighlevel/",
-      "/agentes-ia-guadalajara/",
-      "/discovery/"
+      "/agentes-ia-guadalajara/"
     ],
     "jsonLd": [
       "WebPage",
@@ -1918,7 +1919,7 @@
       {
         "id": "K04",
         "q": "¿Cuánto cuesta implementar Kommo con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance exacto y las licencias de Kommo que necesitas los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance exacto y las licencias de Kommo que necesitas los definimos contigo cuando cotizas tu proyecto. El costo de las licencias depende del plan de Kommo y de cuántas personas de tu equipo lo usarán; te lo explicamos por separado, sin sorpresas.",
         "estado": "aprobada"
       }
     ],
@@ -2178,8 +2179,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -2192,8 +2194,7 @@
       "/blog/gohighlevel-en-espanol/",
       "/blog/kommo-vs-gohighlevel/",
       "/servicios/agentes-ia-whatsapp/",
-      "/servicios/paginas-web/",
-      "/discovery/"
+      "/servicios/paginas-web/"
     ],
     "jsonLd": [
       "WebPage",
@@ -2235,7 +2236,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -2486,8 +2487,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -2500,8 +2502,7 @@
       "/servicios/desarrollo-software/",
       "/servicios/crm-con-ia/",
       "/blog/n8n-vs-zapier-vs-make/",
-      "/tecnologias/",
-      "/discovery/"
+      "/tecnologias/"
     ],
     "jsonLd": [
       "WebPage",
@@ -2531,7 +2532,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -2781,8 +2782,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -2794,8 +2796,7 @@
       "/casos/ecommerce-cdmx-costo-por-lead/",
       "/industrias/horeca/",
       "/servicios/paginas-web/",
-      "/servicios/crm-con-ia/",
-      "/discovery/"
+      "/servicios/crm-con-ia/"
     ],
     "jsonLd": [
       "WebPage",
@@ -2825,7 +2826,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -3072,8 +3073,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -3084,8 +3086,7 @@
       "/servicios/seo/",
       "/servicios/paid-media/",
       "/servicios/branding/",
-      "/servicios/crm-con-ia/",
-      "/discovery/"
+      "/servicios/crm-con-ia/"
     ],
     "jsonLd": [
       "WebPage",
@@ -3115,7 +3116,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -3357,8 +3358,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -3369,8 +3371,7 @@
       "/servicios/automatizacion-n8n/",
       "/tecnologias/",
       "/industrias/retail-ecommerce/",
-      "/servicios/consultoria-ia-empresas/",
-      "/discovery/"
+      "/servicios/consultoria-ia-empresas/"
     ],
     "jsonLd": [
       "WebPage",
@@ -3400,7 +3401,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -3648,8 +3649,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -3660,8 +3662,7 @@
       "/servicios/paginas-web/",
       "/servicios/branding/",
       "/blog/",
-      "/agentes-ia-guadalajara/",
-      "/discovery/"
+      "/agentes-ia-guadalajara/"
     ],
     "jsonLd": [
       "WebPage",
@@ -3691,7 +3692,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -3939,8 +3940,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -3952,8 +3954,7 @@
       "/servicios/paid-media/",
       "/servicios/seo/",
       "/kain/",
-      "/blog/",
-      "/discovery/"
+      "/blog/"
     ],
     "jsonLd": [
       "WebPage",
@@ -3977,7 +3978,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -4152,8 +4153,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -4181,7 +4183,7 @@
       {
         "id": "N11",
         "q": "¿Pueden ayudarme aunque no tengan un caso publicado de mi sector?",
-        "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. En la Discovery Session revisamos tu operación y te decimos qué conviene automatizar primero.",
+        "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. El sistema es el mismo: cambian el guion del agente, las etapas del CRM y lo que conviene automatizar primero. Cuéntanos cómo opera tu negocio al cotizar tu proyecto y te decimos por dónde empezar, con ejemplos de casos cercanos a tu sector.",
         "estado": "validar"
       },
       {
@@ -4199,7 +4201,7 @@
       {
         "id": "G11",
         "q": "¿Cómo empiezo a trabajar con Ingeniak?",
-        "a": "Agenda una Discovery Session: una llamada 1:1 de 30 minutos, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden.",
+        "a": "Con «Cotizar proyecto»: un formulario de tres pasos en el que nos cuentas qué necesitas, cómo es tu negocio y cómo prefieres que te contactemos. Con eso te contactamos por WhatsApp y correo para conocer los detalles. Si tiene sentido para los dos, te enviamos una propuesta con alcance, tiempos y costo. Si prefieres empezar por mensaje, escríbele a Kain por WhatsApp.",
         "estado": "aprobada"
       }
     ],
@@ -4392,8 +4394,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -4406,8 +4409,7 @@
       "/kommo/",
       "/gohighlevel/",
       "/industrias/belleza-estetica/",
-      "/industrias/nutricion/",
-      "/discovery/"
+      "/industrias/nutricion/"
     ],
     "jsonLd": [
       "WebPage",
@@ -4437,7 +4439,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -4622,8 +4624,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -4635,8 +4638,7 @@
       "/kommo/",
       "/servicios/paid-media/",
       "/industrias/salud/",
-      "/casos/clinica-dental-monterrey/",
-      "/discovery/"
+      "/casos/clinica-dental-monterrey/"
     ],
     "jsonLd": [
       "WebPage",
@@ -4648,7 +4650,7 @@
       {
         "id": "N11",
         "q": "¿Pueden ayudarme aunque no tengan un caso publicado de mi sector?",
-        "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. En la Discovery Session revisamos tu operación y te decimos qué conviene automatizar primero.",
+        "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. El sistema es el mismo: cambian el guion del agente, las etapas del CRM y lo que conviene automatizar primero. Cuéntanos cómo opera tu negocio al cotizar tu proyecto y te decimos por dónde empezar, con ejemplos de casos cercanos a tu sector.",
         "estado": "validar"
       },
       {
@@ -4666,7 +4668,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -4859,8 +4861,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -4871,8 +4874,7 @@
       "/servicios/agentes-ia-whatsapp/",
       "/gohighlevel/",
       "/industrias/salud/",
-      "/casos/clinica-dental-monterrey/",
-      "/discovery/"
+      "/casos/clinica-dental-monterrey/"
     ],
     "jsonLd": [
       "WebPage",
@@ -4884,7 +4886,7 @@
       {
         "id": "N11",
         "q": "¿Pueden ayudarme aunque no tengan un caso publicado de mi sector?",
-        "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. En la Discovery Session revisamos tu operación y te decimos qué conviene automatizar primero.",
+        "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. El sistema es el mismo: cambian el guion del agente, las etapas del CRM y lo que conviene automatizar primero. Cuéntanos cómo opera tu negocio al cotizar tu proyecto y te decimos por dónde empezar, con ejemplos de casos cercanos a tu sector.",
         "estado": "validar"
       },
       {
@@ -4902,7 +4904,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -5096,8 +5098,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -5108,8 +5111,7 @@
       "/servicios/crm-con-ia/",
       "/servicios/agentes-ia-whatsapp/",
       "/servicios/automatizacion-n8n/",
-      "/kommo/",
-      "/discovery/"
+      "/kommo/"
     ],
     "jsonLd": [
       "WebPage",
@@ -5121,7 +5123,7 @@
       {
         "id": "N11",
         "q": "¿Pueden ayudarme aunque no tengan un caso publicado de mi sector?",
-        "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. En la Discovery Session revisamos tu operación y te decimos qué conviene automatizar primero.",
+        "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. El sistema es el mismo: cambian el guion del agente, las etapas del CRM y lo que conviene automatizar primero. Cuéntanos cómo opera tu negocio al cotizar tu proyecto y te decimos por dónde empezar, con ejemplos de casos cercanos a tu sector.",
         "estado": "validar"
       },
       {
@@ -5139,7 +5141,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -5325,8 +5327,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -5337,8 +5340,7 @@
       "/servicios/agentes-ia-whatsapp/",
       "/kommo/",
       "/servicios/paid-media/",
-      "/servicios/crm-con-ia/",
-      "/discovery/"
+      "/servicios/crm-con-ia/"
     ],
     "jsonLd": [
       "WebPage",
@@ -5350,7 +5352,7 @@
       {
         "id": "N11",
         "q": "¿Pueden ayudarme aunque no tengan un caso publicado de mi sector?",
-        "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. En la Discovery Session revisamos tu operación y te decimos qué conviene automatizar primero.",
+        "a": "Sí. Trabajamos con empresas de salud, belleza, nutrición, finanzas, inmobiliario e industria, entre otros sectores. El sistema es el mismo: cambian el guion del agente, las etapas del CRM y lo que conviene automatizar primero. Cuéntanos cómo opera tu negocio al cotizar tu proyecto y te decimos por dónde empezar, con ejemplos de casos cercanos a tu sector.",
         "estado": "validar"
       },
       {
@@ -5368,7 +5370,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -5553,8 +5555,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -5565,8 +5568,7 @@
       "/casos/logistica-n8n/",
       "/servicios/automatizacion-n8n/",
       "/servicios/desarrollo-software/",
-      "/servicios/consultoria-ia-empresas/",
-      "/discovery/"
+      "/servicios/consultoria-ia-empresas/"
     ],
     "jsonLd": [
       "WebPage",
@@ -5596,7 +5598,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -5782,8 +5784,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -5795,8 +5798,7 @@
       "/casos/ecommerce-cdmx-costo-por-lead/",
       "/kommo/",
       "/servicios/paid-media/",
-      "/servicios/desarrollo-software/",
-      "/discovery/"
+      "/servicios/desarrollo-software/"
     ],
     "jsonLd": [
       "WebPage",
@@ -5826,7 +5828,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -6012,8 +6014,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -6024,8 +6027,7 @@
       "/casos/horeca-roas/",
       "/servicios/paid-media/",
       "/servicios/agentes-ia-whatsapp/",
-      "/servicios/crm-con-ia/",
-      "/discovery/"
+      "/servicios/crm-con-ia/"
     ],
     "jsonLd": [
       "WebPage",
@@ -6055,7 +6057,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -6209,8 +6211,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -6432,8 +6435,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Quiero un sistema así: agenda tu Discovery",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -6444,8 +6448,7 @@
       "/servicios/agentes-ia-whatsapp/",
       "/industrias/salud/",
       "/kain/",
-      "/casos/",
-      "/discovery/"
+      "/casos/"
     ],
     "jsonLd": [
       "Article",
@@ -6660,8 +6663,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Quiero un sistema así: agenda tu Discovery",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -6672,8 +6676,7 @@
       "/kommo/",
       "/servicios/crm-con-ia/",
       "/industrias/retail-ecommerce/",
-      "/casos/",
-      "/discovery/"
+      "/casos/"
     ],
     "jsonLd": [
       "Article",
@@ -6881,8 +6884,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Quiero un sistema así: agenda tu Discovery",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -6893,8 +6897,7 @@
       "/servicios/paid-media/",
       "/servicios/desarrollo-software/",
       "/industrias/retail-ecommerce/",
-      "/casos/",
-      "/discovery/"
+      "/casos/"
     ],
     "jsonLd": [
       "Article",
@@ -7109,8 +7112,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Quiero un sistema así: agenda tu Discovery",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -7120,8 +7124,7 @@
     "internalLinks": [
       "/servicios/paid-media/",
       "/industrias/horeca/",
-      "/casos/",
-      "/discovery/"
+      "/casos/"
     ],
     "jsonLd": [
       "Article",
@@ -7336,8 +7339,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Quiero un sistema así: agenda tu Discovery",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -7348,8 +7352,7 @@
       "/servicios/automatizacion-n8n/",
       "/industrias/industrial-logistica/",
       "/servicios/desarrollo-software/",
-      "/casos/",
-      "/discovery/"
+      "/casos/"
     ],
     "jsonLd": [
       "Article",
@@ -7548,8 +7551,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -7562,8 +7566,7 @@
       "/casos/clinica-dental-monterrey/",
       "/kommo/",
       "/gohighlevel/",
-      "https://app.kain.mx/",
-      "/discovery/"
+      "https://app.kain.mx/"
     ],
     "jsonLd": [
       "WebPage",
@@ -7770,8 +7773,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -7782,8 +7786,7 @@
       "/servicios/consultoria-ia-empresas/",
       "/casos/",
       "/servicios/",
-      "/nosotros/",
-      "/discovery/"
+      "/nosotros/"
     ],
     "jsonLd": [
       "WebPage",
@@ -7807,7 +7810,7 @@
       {
         "id": "G11",
         "q": "¿Cómo empiezo a trabajar con Ingeniak?",
-        "a": "Agenda una Discovery Session: una llamada 1:1 de 30 minutos, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden.",
+        "a": "Con «Cotizar proyecto»: un formulario de tres pasos en el que nos cuentas qué necesitas, cómo es tu negocio y cómo prefieres que te contactemos. Con eso te contactamos por WhatsApp y correo para conocer los detalles. Si tiene sentido para los dos, te enviamos una propuesta con alcance, tiempos y costo. Si prefieres empezar por mensaje, escríbele a Kain por WhatsApp.",
         "estado": "aprobada"
       }
     ],
@@ -7980,8 +7983,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -7994,8 +7998,7 @@
       "/servicios/automatizacion-n8n/",
       "/servicios/paid-media/",
       "/servicios/desarrollo-software/",
-      "/blog/n8n-vs-zapier-vs-make/",
-      "/discovery/"
+      "/blog/n8n-vs-zapier-vs-make/"
     ],
     "jsonLd": [
       "WebPage",
@@ -8207,8 +8210,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -8221,8 +8225,7 @@
       "/kommo/",
       "/casos/",
       "/agentes-ia-guadalajara/",
-      "/contacto/",
-      "/discovery/"
+      "/contacto/"
     ],
     "jsonLd": [
       "AboutPage",
@@ -8451,8 +8454,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -8465,8 +8469,7 @@
       "/gohighlevel/",
       "/servicios/automatizacion-n8n/",
       "/nosotros/",
-      "/contacto/",
-      "/discovery/"
+      "/contacto/"
     ],
     "jsonLd": [
       "WebPage",
@@ -8503,13 +8506,13 @@
       {
         "id": "G11",
         "q": "¿Cómo empiezo a trabajar con Ingeniak?",
-        "a": "Agenda una Discovery Session: una llamada 1:1 de 30 minutos, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden.",
+        "a": "Con «Cotizar proyecto»: un formulario de tres pasos en el que nos cuentas qué necesitas, cómo es tu negocio y cómo prefieres que te contactemos. Con eso te contactamos por WhatsApp y correo para conocer los detalles. Si tiene sentido para los dos, te enviamos una propuesta con alcance, tiempos y costo. Si prefieres empezar por mensaje, escríbele a Kain por WhatsApp.",
         "estado": "aprobada"
       },
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       }
     ],
@@ -8662,8 +8665,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -8676,8 +8680,7 @@
       "/gohighlevel/",
       "/servicios/automatizacion-n8n/",
       "/metodologia/",
-      "/kain/",
-      "/discovery/"
+      "/kain/"
     ],
     "jsonLd": [
       "FAQPage",
@@ -8711,7 +8714,7 @@
       {
         "id": "N07",
         "q": "¿Trabajan con pymes?",
-        "a": "Sí. La Discovery Session está pensada para dueños de pymes de 3 a 40 empleados, de cualquier sector. Si estás fuera de ese rango, en la llamada te orientamos a la opción correcta.",
+        "a": "Sí. Trabajamos con pymes de 3 a 40 empleados, de cualquier sector: el tamaño en el que el negocio todavía depende de su dueño para operar y un sistema le devuelve más tiempo. Si estás fuera de ese rango, cuéntanoslo al cotizar tu proyecto y te orientamos a la opción correcta.",
         "estado": "aprobada"
       },
       {
@@ -8837,7 +8840,7 @@
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       },
       {
@@ -8849,31 +8852,13 @@
       {
         "id": "G11",
         "q": "¿Cómo empiezo a trabajar con Ingeniak?",
-        "a": "Agenda una Discovery Session: una llamada 1:1 de 30 minutos, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden.",
+        "a": "Con «Cotizar proyecto»: un formulario de tres pasos en el que nos cuentas qué necesitas, cómo es tu negocio y cómo prefieres que te contactemos. Con eso te contactamos por WhatsApp y correo para conocer los detalles. Si tiene sentido para los dos, te enviamos una propuesta con alcance, tiempos y costo. Si prefieres empezar por mensaje, escríbele a Kain por WhatsApp.",
         "estado": "aprobada"
       },
       {
         "id": "G12",
         "q": "¿Qué es la metodología VKTOR™?",
         "a": "VKTOR™ es el método de Ingeniak para implementar IA en cinco fases: Verify (verificamos tu operación), Koncept (diseñamos el concepto), Transform (transformamos), Operate (operamos junto con tu equipo) y Rise (hacemos crecer los resultados). Ordena cada proyecto desde el diagnóstico hasta la operación en producción, con métricas definidas desde el inicio.",
-        "estado": "aprobada"
-      },
-      {
-        "id": "D01",
-        "q": "¿De verdad es gratuita?",
-        "a": "Sí. Los 30 minutos no cuestan nada y no pedimos tarjeta. La llamada existe porque diagnosticar antes de cotizar es la única forma seria de trabajar.",
-        "estado": "aprobada"
-      },
-      {
-        "id": "D02",
-        "q": "¿Me van a vender durante la llamada?",
-        "a": "La llamada es de descubrimiento: mapeamos tu operación y te decimos qué vemos. Al final, si hay sentido, te compartimos una propuesta de implementación. Si no lo hay, también te lo decimos.",
-        "estado": "aprobada"
-      },
-      {
-        "id": "D06",
-        "q": "¿Y si mi negocio es muy pequeño o muy grande?",
-        "a": "Trabajamos con pymes de 3 a 40 empleados de cualquier sector. Si estás fuera de ese rango, la llamada lo aclara en los primeros minutos y te orientamos a la opción correcta.",
         "estado": "aprobada"
       }
     ],
@@ -9007,8 +8992,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -9200,8 +9186,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -9212,8 +9199,7 @@
       "/servicios/agentes-ia-whatsapp/",
       "/kain/",
       "/blog/agente-ia-whatsapp-vs-chatbot/",
-      "/casos/clinica-dental-monterrey/",
-      "/discovery/"
+      "/casos/clinica-dental-monterrey/"
     ],
     "jsonLd": [
       "BlogPosting (author Person, datePublished, dateModified)",
@@ -9224,13 +9210,13 @@
       {
         "id": "W03",
         "q": "¿Cuánto cuesta un agente de IA para WhatsApp?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. Lo que más mueve el precio son los canales que atiende el agente, sus integraciones y el volumen de conversaciones.",
         "estado": "aprobada"
       },
       {
         "id": "G07",
         "q": "¿Cuánto cuesta trabajar con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance y el costo exactos dependen del tamaño de tu operación y de cuántos procesos quieras automatizar; para una cifra de tu caso, cotiza tu proyecto. No publicamos paquetes cerrados porque dos empresas del mismo tamaño pueden necesitar sistemas muy distintos.",
         "estado": "aprobada"
       },
       {
@@ -9430,8 +9416,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -9442,8 +9429,7 @@
       "/kommo/",
       "/gohighlevel/",
       "/servicios/crm-con-ia/",
-      "/casos/retail-multimarca-kommo/",
-      "/discovery/"
+      "/casos/retail-multimarca-kommo/"
     ],
     "jsonLd": [
       "BlogPosting (author Person, datePublished, dateModified)",
@@ -9666,8 +9652,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -9678,8 +9665,7 @@
       "/servicios/agentes-ia-whatsapp/",
       "/kain/",
       "/casos/clinica-dental-monterrey/",
-      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
-      "/discovery/"
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/"
     ],
     "jsonLd": [
       "BlogPosting (author Person, datePublished, dateModified)",
@@ -9891,8 +9877,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -9902,8 +9889,7 @@
     "internalLinks": [
       "/kommo/",
       "/servicios/crm-con-ia/",
-      "/blog/kommo-vs-gohighlevel/",
-      "/discovery/"
+      "/blog/kommo-vs-gohighlevel/"
     ],
     "jsonLd": [
       "BlogPosting (author Person, datePublished, dateModified)",
@@ -9926,7 +9912,7 @@
       {
         "id": "K04",
         "q": "¿Cuánto cuesta implementar Kommo con Ingeniak?",
-        "a": "Nuestros proyectos empiezan desde USD 997 al mes. El alcance exacto y las licencias de Kommo que necesitas los definimos después de una Discovery Session gratuita de 30 minutos.",
+        "a": "Nuestros proyectos empiezan {{price}}. El alcance exacto y las licencias de Kommo que necesitas los definimos contigo cuando cotizas tu proyecto. El costo de las licencias depende del plan de Kommo y de cuántas personas de tu equipo lo usarán; te lo explicamos por separado, sin sorpresas.",
         "estado": "aprobada"
       }
     ],
@@ -10111,8 +10097,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -10122,8 +10109,7 @@
     "internalLinks": [
       "/gohighlevel/",
       "/servicios/crm-con-ia/",
-      "/blog/kommo-vs-gohighlevel/",
-      "/discovery/"
+      "/blog/kommo-vs-gohighlevel/"
     ],
     "jsonLd": [
       "BlogPosting (author Person, datePublished, dateModified)",
@@ -10338,8 +10324,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -10349,8 +10336,7 @@
     "internalLinks": [
       "/servicios/automatizacion-n8n/",
       "/casos/logistica-n8n/",
-      "/tecnologias/",
-      "/discovery/"
+      "/tecnologias/"
     ],
     "jsonLd": [
       "BlogPosting (author Person, datePublished, dateModified)",
@@ -10406,10 +10392,10 @@
     "group": "Conversión",
     "url": "/discovery/",
     "canonical": "https://ingeniak.mx/discovery/",
-    "indexable": true,
-    "status": "conserva URL de v1 (301 desde /cotiza)",
+    "indexable": false,
+    "status": "landing oculta de campañas (cambio 2026-10-20): noindex,follow, fuera de sitemap.xml, llms*.txt, ⌘K, menús y footer",
     "template": "T-CONVERSION",
-    "purpose": "Convertir: explicar la llamada 1:1 gratuita y mandar a agendar en agenda.ingeniak.tech.",
+    "purpose": "Landing de campañas (tráfico de anuncios): explicar la llamada 1:1 sin costo de 30 minutos y reservarla en la propia página (#agenda, flujo de reserva portado de riklanderos.tech con Google Calendar y Meet).",
     "primaryKeyword": "Discovery Session Ingeniak",
     "secondaryKeywords": [
       "diagnóstico gratuito de IA",
@@ -10436,7 +10422,7 @@
         "order": 1,
         "id": "hero",
         "name": "Portada",
-        "spec": "Etiqueta 'Llamada 1:1 · 30 minutos · sin costo' + H1 + texto de v1 ('…Cotizar sin diagnóstico es adivinar con dinero ajeno.') + 3 chips + botón 'Agendar mi Discovery Session'.",
+        "spec": "Etiqueta 'Llamada 1:1 · 30 minutos · sin costo' + H1 + texto de v1 ('…Cotizar sin diagnóstico es adivinar con dinero ajeno.') + 3 chips + botón 'Agendar mi Discovery Session' → #agenda (data-section=\"hero\").",
         "cinematic": true,
         "image": {
           "file": "/img/cine/discovery-hero",
@@ -10462,7 +10448,7 @@
         "order": 2,
         "id": "video",
         "name": "Mira esto antes de agendar",
-        "spec": "VSL 'la silla vacía' (discovery-vsl-720.mp4, póster) + botón + 'Si reconociste tu negocio en este video, esta llamada es tu siguiente paso.' (r1: VideoScene = ImageSection subject-center con la placa discovery-vsl-poster; el póster actual trae texto horneado. Video recomprimido a 720p, ≤ 12 MB, preload=\"none\", subtítulos VTT, se abre a pantalla completa al hacer clic.)",
+        "spec": "VSL 'la silla vacía' (discovery-vsl-720.mp4, póster) + botón 'Agendar mi Discovery Session' → #agenda (data-section=\"video\") + 'Si reconociste tu negocio en este video, esta llamada es tu siguiente paso.' (r1: VideoScene = ImageSection subject-center con la placa discovery-vsl-poster; el póster actual trae texto horneado. Video recomprimido a 720p, ≤ 12 MB, preload=\"none\", subtítulos VTT, se abre a pantalla completa al hacer clic.)",
         "cinematic": true,
         "plate": {
           "id": "discovery-vsl-poster",
@@ -10486,9 +10472,9 @@
       },
       {
         "order": 3,
-        "id": "pasos",
-        "name": "Cómo funciona",
-        "spec": "3 pasos de v1: formulario corto (7 preguntas, 2 min), eliges horario (hora de CDMX, L–V), Google Meet.",
+        "id": "agenda",
+        "name": "Reserva en 3 pasos",
+        "spec": "Intertitle split + BookingFlow tipo=\"discovery\" (CAMBIO-COTIZAR §4.2 y §5.5). Izquierda: eyebrow 'Reserva en 3 pasos', H2 'Aparta tu lugar' / 'en minutos.', pasos 01 Tus datos · 02 Horario · 03 Confirmas, 'Sales con' y nota sin costo ni tarjeta. Derecha: el componente de reserva (Google Calendar en vivo, Meet al confirmar).",
         "cinematic": false
       },
       {
@@ -10528,7 +10514,7 @@
         "order": 6,
         "id": "despues",
         "name": "Después de la llamada",
-        "spec": "Texto de v1 'Si hay sentido, te cotizamos la implementación…' + botón.",
+        "spec": "Texto de v1 'Si hay sentido, te cotizamos la implementación…' + botón 'Agendar mi Discovery Session' → #agenda (data-section=\"despues\").",
         "cinematic": false
       },
       {
@@ -10542,7 +10528,7 @@
         "order": 8,
         "id": "cta-final",
         "name": "Cierre",
-        "spec": "Cierre cinematográfico: '30 minutos hoy valen más que una cotización a ciegas mañana.' + cita 'No cotizamos lo que no hemos visto…' + botón 'Agendar mi Discovery Session' (agenda.ingeniak.tech) + 'Construimos empresarios libres, no héroes cansados.' Imagen propia: KAIN de cuerpo completo sentado en la silla vacía del dueño, a la derecha.",
+        "spec": "Cierre cinematográfico: '30 minutos hoy valen más que una cotización a ciegas mañana.' + cita 'No cotizamos lo que no hemos visto…' + botón 'Agendar mi Discovery Session' → #agenda, Escríbele a Kain y .lnk[data-cotizar] '¿Ya sabes lo que necesitas? Cotizar proyecto' + 'Construimos empresarios libres, no héroes cansados.' Imagen propia: KAIN de cuerpo completo sentado en la silla vacía del dueño, a la derecha.",
         "cinematic": true,
         "image": {
           "file": "/img/cine/discovery-cta-final",
@@ -10572,7 +10558,8 @@
     ],
     "primaryCta": {
       "label": "Agendar mi Discovery Session",
-      "href": "https://agenda.ingeniak.tech/discovery/agendar"
+      "short": "Agendar",
+      "href": "#agenda"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -10580,9 +10567,6 @@
       "href": "https://wa.me/523321017799?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20la%20Discovery%20Session%20y%20tengo%20una%20duda%20antes%20de%20agendar."
     },
     "internalLinks": [
-      "https://agenda.ingeniak.tech/discovery/agendar",
-      "/casos/",
-      "/metodologia/",
       "/aviso-privacidad/"
     ],
     "jsonLd": [
@@ -10629,21 +10613,38 @@
         "estado": "aprobada"
       }
     ],
-    "redirectsFrom": [
-      "/cotiza"
-    ],
+    "redirectsFrom": [],
     "sitemap": {
       "priority": 0.9,
       "changefreq": "monthly"
     },
-    "notes": "Página de conversión: navegación reducida (logo + botón), sin mega menú, sin enlaces de salida en el cuerpo salvo agenda y WhatsApp.",
+    "notes": "Landing oculta (R17): nav reducida (logo + \"Agendar\"), barra móvil propia, footer mínimo; primario → #agenda (reserva en la página); la cotización solo como .lnk[data-cotizar] en el cierre y el footer mínimo. Sin enlaces a agenda.ingeniak.tech.",
     "folio": "600",
     "copy": {
       "status": "brief",
       "minWords": 600,
       "owner": "[POR ASIGNAR]",
       "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
-    }
+    },
+    "hidden": true,
+    "footerAnchors": [
+      {
+        "label": "Reservar",
+        "href": "#agenda"
+      },
+      {
+        "label": "Qué es",
+        "href": "#que-es"
+      },
+      {
+        "label": "Para quién",
+        "href": "#para-quien"
+      },
+      {
+        "label": "Preguntas",
+        "href": "#faq"
+      }
+    ]
   },
   {
     "id": "contacto",
@@ -10651,9 +10652,9 @@
     "url": "/contacto/",
     "canonical": "https://ingeniak.mx/contacto/",
     "indexable": true,
-    "status": "conserva URL (deja de redirigir a /discovery/)",
+    "status": "conserva URL; /cotiza redirige a /contacto/#cotizar (cambio 2026-10-20)",
     "template": "T-CONTACT",
-    "purpose": "Dar todas las rutas de contacto con la Discovery como la recomendada; datos NAP idénticos a la ficha.",
+    "purpose": "Dar todas las rutas de contacto con \"Cotizar proyecto\" como la recomendada (abre el modal; sin JS, la sección #cotizar); datos NAP idénticos a la ficha.",
     "primaryKeyword": "contacto Ingeniak",
     "secondaryKeywords": [
       "Ingeniak teléfono",
@@ -10662,8 +10663,8 @@
     ],
     "title": "Contacto: WhatsApp, correo y oficina | Ingeniak",
     "titleLength": 47,
-    "metaDescription": "Agenda tu Discovery Session, escríbele a Kain por WhatsApp al +52 33 2101 7799 o al correo contacto@ingeniak.mx. Oficina en Tlajomulco de Zúñiga, Jalisco.",
-    "metaLength": 154,
+    "metaDescription": "Habla con Ingeniak: cotiza tu proyecto en tres pasos, escríbele a Kain por WhatsApp o mándanos un correo. Te contactamos por WhatsApp y correo.",
+    "metaLength": 143,
     "h1": "Habla con Ingeniak",
     "breadcrumbs": [
       {
@@ -10680,7 +10681,7 @@
         "order": 1,
         "id": "hero",
         "name": "Portada",
-        "spec": "Breadcrumb + H1 + 3 rutas como tarjetas de cristal pequeñas sobre la imagen: Discovery (recomendada), WhatsApp con Kain, correo.",
+        "spec": "Breadcrumb + H1 + rutas como tarjetas de cristal pequeñas sobre la imagen: Cotizar proyecto (recomendada, abre el modal), WhatsApp con Kain, correo.",
         "cinematic": true,
         "image": {
           "file": "/img/cine/home-kain",
@@ -10710,17 +10711,15 @@
         "order": 2,
         "id": "rutas",
         "name": "Elige cómo hablar con nosotros",
-        "spec": "Tabla de 3 rutas con tiempo esperado de respuesta [VALIDAR tiempos]: Discovery Session, WhatsApp +52 33 2101 7799 (atiende Kain), contacto@ingeniak.mx.",
+        "spec": "Tabla de rutas sin promesa de tiempos de respuesta: Cotizar proyecto (id cotizar, acción \"Cotizar\", abre el modal), WhatsApp +52 33 2101 7799 (atiende Kain), contacto@ingeniak.mx.",
         "cinematic": false
       },
       {
         "order": 3,
-        "id": "formulario",
-        "name": "Formulario corto (opcional)",
-        "spec": "[POR DECIDIR] webform de Kommo con nombre, empresa, WhatsApp y mensaje, con casilla de aviso de privacidad; si no se aprueba, omitir.",
-        "cinematic": false,
-        "status": "conditional",
-        "renderIf": "Decisión del cliente: webform de Kommo con casilla de aviso de privacidad."
+        "id": "cotizar",
+        "name": "Cotiza tu proyecto",
+        "spec": "Intertitle split (CAMBIO-COTIZAR §1.4, fila /contacto/#cotizar): eyebrow 'Cotizar proyecto', H2, 'qué sigue' en 3 pasos, .btn[data-cotizar] href=\"#cotizar\" (abre el modal) y debajo las rutas directas (WhatsApp, correo) que sirven sin JS.",
+        "cinematic": false
       },
       {
         "order": 4,
@@ -10740,7 +10739,7 @@
         "order": 6,
         "id": "cta-final",
         "name": "Cierre",
-        "spec": "Cierre cinematográfico: \"La forma más rápida de saber si podemos ayudarte: 30 minutos.\" + botón Discovery + WhatsApp + microcopy \"Sin costo · Sin compromiso · 30 minutos por Google Meet\". Imagen de la variante compartida C: dueña de negocio tranquila al amanecer en su oficina, a la derecha (espejo); texto a la izquierda. [2026-10-19 · QA] Antes variante A (Kain saludando): repetía el saludo de la portada en dos escenas seguidas (R13). No se usa cta-equipo: los recortes del equipo no alcanzan el nivel premium hasta la sesión de fotos (R6; ver /servicios/branding/ y /casos/).",
+        "spec": "Cierre cinematográfico + botón \"Cotizar proyecto\" (abre el modal) + WhatsApp + microcopia \"Sin compromiso · Te contactamos por WhatsApp y correo\". Imagen de la variante compartida C: dueña de negocio tranquila al amanecer en su oficina, a la derecha (espejo); texto a la izquierda. [2026-10-19 · QA] Antes variante A (Kain saludando): repetía el saludo de la portada en dos escenas seguidas (R13). No se usa cta-equipo: los recortes del equipo no alcanzan el nivel premium hasta la sesión de fotos (R6; ver /servicios/branding/ y /casos/).",
         "cinematic": true,
         "image": {
           "file": "/img/cine/cta-duena-tranquila",
@@ -10775,8 +10774,9 @@
       "cta-final"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -10784,7 +10784,6 @@
       "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20contacto%20de%20Ingeniak%20y%20quiero%20hablar%20con%20el%20equipo."
     },
     "internalLinks": [
-      "/discovery/",
       "/agentes-ia-guadalajara/",
       "/nosotros/",
       "/aviso-privacidad/"
@@ -10796,7 +10795,7 @@
     ],
     "faq": [],
     "redirectsFrom": [
-      "/contacto"
+      "/cotiza"
     ],
     "sitemap": {
       "priority": 0.6,
@@ -10810,6 +10809,408 @@
       "owner": "[POR ASIGNAR]",
       "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
     }
+  },
+  {
+    "id": "power-session",
+    "group": "Conversión",
+    "url": "/power-session/",
+    "canonical": "https://ingeniak.mx/power-session/",
+    "indexable": false,
+    "hidden": true,
+    "status": "landing oculta de campañas (nueva, cambio 2026-10-20): noindex,follow, fuera de sitemap.xml, llms*.txt, ⌘K, menús y footer; 301 desde /powersession",
+    "template": "T-CONVERSION",
+    "purpose": "Landing de campañas: vender la Power Session (auditoría 1:1 de 90 minutos, pago único) y reservarla y pagarla en la propia página (#agenda, flujo portado de riklanderos.tech con Google Calendar y Stripe).",
+    "primaryKeyword": "Power Session Ingeniak",
+    "secondaryKeywords": [
+      "auditoría de operación 1:1",
+      "sesión de consultoría de 90 minutos",
+      "plan de automatización a 90 días"
+    ],
+    "title": "Power Session · auditoría 1:1 de 90 minutos | Ingeniak",
+    "titleLength": 54,
+    "metaDescription": "Sesión 1:1 de 90 minutos para dueños de pymes: auditamos tu operación, ubicamos tus cuellos de botella y sales con un plan a 90 días.",
+    "metaLength": 133,
+    "h1": "Deja de ser el héroe de tu negocio y conviértete en el arquitecto de tu sistema",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Power Session",
+        "url": "/power-session/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "cinematic": true,
+        "spec": "chip-spec 'Sesión 1:1 · 90 minutos · Google Meet'; H1 'Deja de ser el héroe de tu negocio' + soft 'y conviértete en el arquitecto de tu sistema' (.lit 'arquitecto'); lede; primario 'Agendar mi Power Session' → #agenda; micro {{offer:power-price}} · pago único · 90 min por Google Meet; Escríbele a Kain (CAMBIO-COTIZAR §4.3-1).",
+        "plate": {
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "srcsetMax": 2752,
+          "priority": "P1",
+          "id": "consultoria-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mobile": "split"
+        }
+      },
+      {
+        "order": 2,
+        "id": "video",
+        "name": "Mira esto antes de agendar",
+        "cinematic": true,
+        "renderIf": "Existe /video/powersession-vsl-720.mp4 recodificado (decisión del cliente: autorizar la descarga de powersession-vsl.mp4, CAMBIO-COTIZAR §9-4). Hasta entonces el copy lleva _omitir y la escena no se pinta.",
+        "spec": "VideoScene con el VSL de la Power Session; H2 'Mira esto' / 'antes de agendar.'; 'Si reconociste tu operación en este video, esta sesión es tu siguiente paso.' + primario → #agenda (data-section=\"video\").",
+        "plate": {
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "id": "home-sistema-5-medir",
+          "component": "VideoScene",
+          "layout": "subject-right",
+          "mobile": "split"
+        }
+      },
+      {
+        "order": 3,
+        "id": "agenda",
+        "name": "Reserva en 3 pasos",
+        "cinematic": false,
+        "spec": "Intertitle split + BookingFlow tipo=\"power\" (§4.3-3, §5.5): pasos 01 Tu diagnóstico · 02 Horario (apartado de 30 minutos mientras pagas) · 03 Pago ({{offer:power-price}} con Stripe); 'Sales con' (mapa de operación, plan a 90 días, stack con precios reales); nota de cupo."
+      },
+      {
+        "order": 4,
+        "id": "diagnostico",
+        "name": "Diagnóstico rápido",
+        "cinematic": true,
+        "spec": "eyebrow 'Diagnóstico rápido' (ámbar); H2 '¿Eres el cuello de botella' / 'de tu propio negocio?'; 5 casillas, contador N de 5 (aria-live), resultado por puntaje en cian; con ≥ 3 aparece el primario → #agenda (data-section=\"diagnostico\"). Sin datos guardados; evento ps_diagnostico.",
+        "plate": {
+          "mirror": false,
+          "height": "mid",
+          "tone": "dolor",
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "id": "dolor-operacion",
+          "component": "ImageSection mid",
+          "layout": "subject-left",
+          "mobile": "split"
+        }
+      },
+      {
+        "order": 5,
+        "id": "para-quien",
+        "name": "Para quién es",
+        "cinematic": true,
+        "spec": "'Encaje' / 'Para quién es' / 'esta sesión.'; TwoColumnScript fit: Es para ti si… (4) / No es para ti si… (4); remate.",
+        "plate": {
+          "mirror": true,
+          "height": "mid",
+          "tone": "sol",
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "id": "kain-si-no",
+          "component": "ImageSection mid + TwoColumnScript",
+          "layout": "subject-right",
+          "mobile": "split"
+        }
+      },
+      {
+        "order": 6,
+        "id": "verdad",
+        "name": "La verdad incómoda",
+        "cinematic": true,
+        "spec": "TwinScene: eyebrow 'La verdad incómoda'; frase; 3 filas [data-pain] → [data-fix]; remate + línea de kain.",
+        "plate": {
+          "id": [
+            "home-problema-a",
+            "home-problema-b"
+          ],
+          "component": "TwinScene",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "mid",
+          "tone": "dolor",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 7,
+        "id": "metodo",
+        "name": "El método",
+        "cinematic": true,
+        "spec": "'El método' / 'Las 4 A del empresario libre.'; ScriptList steps (Auditar · Agrupar · Agentizar · Automatizar, sin '27 procesos' ni horas); remate y cita de kain.",
+        "plate": {
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "id": "metodologia-hero",
+          "component": "ImageSection mid + ScriptList",
+          "layout": "subject-right",
+          "mobile": "split"
+        }
+      },
+      {
+        "order": 8,
+        "id": "incluye",
+        "name": "Qué incluye",
+        "cinematic": true,
+        "spec": "'Qué incluye' / 'Qué pasa en los 90 minutos.'; ScriptList de 6 entregables.",
+        "plate": {
+          "mirror": true,
+          "height": "mid",
+          "tone": "sol",
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "id": "home-sistema-3-organizar",
+          "component": "ImageSection mid + ScriptList",
+          "layout": "subject-left",
+          "mobile": "split"
+        }
+      },
+      {
+        "order": 9,
+        "id": "oferta",
+        "name": "Oferta",
+        "cinematic": false,
+        "spec": "Intertitle (aura isotipo): precio <span data-offer=\"power-price\"> + 'pago único · sin suscripción'; cupo; 6 entregables; primario → #agenda; micro 'Pago seguro con Stripe · Sin suscripción'."
+      },
+      {
+        "order": 10,
+        "id": "garantia",
+        "name": "Garantía",
+        "cinematic": false,
+        "spec": "Intertitle split: Garantía ({{offer:power-guarantee}}) · Por qué ahora ({{offer:power-price}} es precio introductorio). PREGUNTA AL CLIENTE antes del lanzamiento."
+      },
+      {
+        "order": 11,
+        "id": "quien",
+        "name": "Quién te atiende",
+        "cinematic": false,
+        "spec": "Intertitle split: Rik Landeros (cargo de TEAM), avatar duotono 72 px, VKTOR™ y {{metric:paises|full}}, KommoBadge."
+      },
+      {
+        "order": 12,
+        "id": "faq",
+        "name": "Preguntas frecuentes",
+        "cinematic": false,
+        "spec": "Acordeón P01–P07 (src/data/faq.json, categoría \"Power Session\"); texto idéntico al FAQPage del <head>."
+      },
+      {
+        "order": 13,
+        "id": "cta-final",
+        "name": "Cierre",
+        "cinematic": true,
+        "spec": "Dawn: H2 'Un gran sistema' / 'es la máxima responsabilidad.'; cita de kain; primario → #agenda, Escríbele a Kain; .lnk a /discovery/ ('Conoce la Discovery Session') y .lnk[data-cotizar] '¿Ya sabes lo que necesitas? Cotizar proyecto'.",
+        "plate": {
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "id": "cta-duena-tranquila",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mobile": "top"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "video",
+      "diagnostico",
+      "para-quien",
+      "verdad",
+      "metodo",
+      "incluye",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Agendar mi Power Session",
+      "short": "Agendar",
+      "href": "#agenda"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola, vengo de la página de la Power Session y tengo una duda antes de reservar.",
+      "href": "https://wa.me/523321017799?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20la%20Power%20Session%20y%20tengo%20una%20duda%20antes%20de%20reservar."
+    },
+    "internalLinks": [
+      "/discovery/",
+      "/aviso-privacidad/"
+    ],
+    "jsonLd": [
+      "WebPage",
+      "Service (Offer power)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "P01",
+        "q": "¿Esto es una llamada de ventas disfrazada?",
+        "a": "No. Es una sesión de trabajo pagada: sales con tu mapa de operación y tu plan, los implementes con nosotros o por tu cuenta.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "P02",
+        "q": "¿Sirve si mi negocio no es de tecnología?",
+        "a": "Sí. La sesión no revisa qué tecnología usas, sino cómo vendes, atiendes y operas. El cuello de botella del dueño aparece en cualquier giro.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "P03",
+        "q": "¿Qué necesito traer?",
+        "a": "Tus números reales: facturación mensual, tamaño del equipo y una idea de en qué se te van las horas. Nada presentable: los datos, tal cual.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "P04",
+        "q": "¿Es por videollamada?",
+        "a": "Sí, por Google Meet. La invitación con el enlace te llega al correo que registraste cuando se confirma tu pago, y la sesión queda grabada.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "P05",
+        "q": "¿Y si tengo menos de 3 empleados?",
+        "a": "Funciona igual, y muchas veces mejor: es el momento de construir el sistema antes de contratar.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "P06",
+        "q": "¿Puedo reagendar?",
+        "a": "Sí, con al menos 24 horas de anticipación. Escríbenos por WhatsApp al 33 2101 7799 o a contacto@ingeniak.mx y la movemos.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "P07",
+        "q": "¿Cómo aplica la garantía?",
+        "a": "Garantía: {{offer:power-guarantee}}. Para pedirla, escríbenos a contacto@ingeniak.mx dentro de las 48 horas siguientes a tu sesión.",
+        "estado": "aprobada"
+      }
+    ],
+    "redirectsFrom": [
+      "/powersession"
+    ],
+    "sitemap": null,
+    "folio": "602",
+    "copy": {
+      "status": "brief",
+      "minWords": 900,
+      "owner": "landings",
+      "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
+    },
+    "footerAnchors": [
+      {
+        "label": "Reservar",
+        "href": "#agenda"
+      },
+      {
+        "label": "Diagnóstico",
+        "href": "#diagnostico"
+      },
+      {
+        "label": "Qué incluye",
+        "href": "#incluye"
+      },
+      {
+        "label": "Preguntas",
+        "href": "#faq"
+      }
+    ],
+    "notes": "Landing oculta (R17): nav reducida (logo + \"Agendar\"), barra móvil propia, footer mínimo. Precio solo con {{offer:power-price}} dentro de [data-offer] (R18). Copy fuente: materiales/v2/landings/power-session-fuente.md con las correcciones de CAMBIO-COTIZAR §4.5; omisiones como DATO PENDIENTE en pendientes."
+  },
+  {
+    "id": "agendar-confirmado",
+    "group": "Conversión",
+    "url": "/agendar/confirmado/",
+    "canonical": "https://ingeniak.mx/agendar/confirmado/",
+    "indexable": false,
+    "hidden": true,
+    "status": "página oculta (nueva, cambio 2026-10-20): destino de Stripe Checkout; noindex,follow + X-Robots-Tag noindex",
+    "template": "T-CONFIRM",
+    "purpose": "Confirmar el pago de la Power Session (session_id de Stripe), mostrar fecha, hora y enlace de Google Meet, y qué preparar para la sesión.",
+    "primaryKeyword": "—",
+    "secondaryKeywords": [],
+    "title": "Confirmación de tu Power Session | Ingeniak",
+    "titleLength": 43,
+    "metaDescription": "Confirmamos el pago de tu Power Session y te mostramos la fecha, el enlace de Google Meet y qué preparar para la sesión.",
+    "metaLength": 120,
+    "h1": "Confirmación de tu Power Session",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Power Session",
+        "url": "/power-session/"
+      },
+      {
+        "name": "Confirmación",
+        "url": "/agendar/confirmado/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "estado",
+        "name": "Estado de tu reserva",
+        "cinematic": true,
+        "spec": "ImageSection hero; H1 'Confirmación de tu Power Session' (.lit 'Confirmación'); región aria-live con los estados cargando / ok / pending / error (flujo-agenda.md §4.8) en voz de Ingeniak; en ok: fecha y hora, invitación de Google Calendar, botón 'Abrir enlace de Meet' (sin data-primary), Escríbele a Kain, 'Ir al inicio' y la lista de qué tener a la mano.",
+        "plate": {
+          "id": "gohighlevel-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "split",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "estado"
+    ],
+    "primaryCta": null,
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola, acabo de pagar mi Power Session y quiero confirmar algo.",
+      "href": "https://wa.me/523321017799?text=Hola%2C%20acabo%20de%20pagar%20mi%20Power%20Session%20y%20quiero%20confirmar%20algo."
+    },
+    "internalLinks": [
+      "/",
+      "/aviso-privacidad/"
+    ],
+    "jsonLd": [
+      "WebPage",
+      "BreadcrumbList"
+    ],
+    "faq": [],
+    "redirectsFrom": [],
+    "sitemap": null,
+    "folio": "603",
+    "copy": {
+      "status": "brief",
+      "minWords": 80,
+      "owner": "agenda",
+      "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
+    },
+    "footerAnchors": [],
+    "notes": "Página oculta (R17, §5.6): BaseLayout nav=\"reduced\" sin CTA en el encabezado, footer mínimo; raíz con data-confirmado. Sin [data-primary]."
   },
   {
     "id": "aviso",
@@ -10862,8 +11263,9 @@
     ],
     "cinematicSections": [],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -10943,8 +11345,9 @@
       "hero"
     ],
     "primaryCta": {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
@@ -10955,8 +11358,7 @@
       "/",
       "/servicios/",
       "/casos/",
-      "/blog/",
-      "/discovery/"
+      "/blog/"
     ],
     "jsonLd": [],
     "faq": [],

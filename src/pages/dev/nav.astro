@@ -6,10 +6,13 @@
 //   ?y=1600        hace scroll a esa posición (estados del encabezado, barra móvil, píldora)
 //   ?reduced=1     simula el interruptor "Reducir movimiento"
 //   ?shot=1        sin transiciones (capturas con Chrome sin ventana)
-//   #specimen-reducido  muestra del encabezado reducido de /discovery/ (al final de la página)
+//   #specimen-reducido  muestra del encabezado reducido de las landings ocultas (al final de la página)
+//   Los CTA son «Cotizar proyecto» (CAMBIO-COTIZAR §1): abren el modal de cotización (data-cotizar) desde el encabezado,
+//   la portada, el cierre, la barra móvil, la hoja móvil, ⌘K, el mega menú ("Planes…") y el footer.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/nav/Breadcrumbs.astro';
 import Header from '../../components/nav/Header.astro';
+import Btn from '../../components/ui/Btn.astro';
 import { getPage } from '../../lib/site';
 
 const base = getPage('/servicios/agentes-ia-whatsapp/');
@@ -39,12 +42,8 @@ const rail = [
         <h1 id="hero-t" class="t-display-2">Agentes de IA para WhatsApp <span class="soft">que responden en segundos.</span></h1>
         <p class="t-lede">Página de pruebas del área de navegación: encabezado, mega menú, hoja móvil, buscador ⌘K, riel, barra móvil, píldora de Kain y créditos finales.</p>
         <div class="ctas">
-          <div class="cta-p">
-            <a class="btn" href="/discovery/" data-primary>Agenda tu Discovery Session
-              <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span></a>
-            <p class="t-micro btn-micro" data-allow-number>30 min · 1:1 · Google Meet · sin costo</p>
-          </div>
-          <a class="btn btn--ghost" href={base.secondaryCta.href} target="_blank" rel="noopener">Escríbele a Kain</a>
+          <Btn variant="primary" cotizar data-section="hero" micro />
+          <Btn variant="ghost" href={base.secondaryCta.href} label="Escríbele a Kain" />
         </div>
       </div>
     </div>
@@ -62,22 +61,18 @@ const rail = [
     </section>
   ))}
 
-  <section id="specimen-reducido" class="dev-specimen" aria-label="Muestra: encabezado reducido de /discovery/">
-    <p class="t-label t-label--cyan dev-specimen__l">Muestra · encabezado reducido (/discovery/)</p>
-    <div class="dev-specimen__box"><Header variant="reduced" current="/discovery/" /></div>
+  <section id="specimen-reducido" class="dev-specimen" aria-label="Muestra: encabezado reducido de una landing oculta">
+    <p class="t-label t-label--cyan dev-specimen__l">Muestra · encabezado reducido (landing oculta: CTA de la página → #agenda)</p>
+    <div class="dev-specimen__box"><Header variant="reduced" current="/dev/nav/" cta={{ label: 'Agendar mi Power Session', short: 'Agendar', href: '#agenda' }} /></div>
   </section>
 
   <section id="cta-final" class="dev-block dev-dawn" data-dawn aria-labelledby="cta-t">
     <div class="frame">
       <div class="col-text">
         <p class="t-label t-label--cyan">06:00 · Rise</p>
-        <h2 id="cta-t" class="t-h2">30 minutos para ver tu operación <span class="soft">como es.</span></h2>
+        <h2 id="cta-t" class="t-h2">Cuéntanos tu proyecto <span class="soft">y te contactamos.</span></h2>
         <div class="ctas" style="margin-top:32px">
-          <div class="cta-p">
-            <a class="btn" href="/discovery/" data-primary>Agenda tu Discovery Session
-              <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span></a>
-            <p class="t-micro btn-micro" data-allow-number>30 min · 1:1 · Google Meet · sin costo</p>
-          </div>
+          <Btn variant="primary" cotizar data-section="cta-final" micro />
         </div>
       </div>
     </div>

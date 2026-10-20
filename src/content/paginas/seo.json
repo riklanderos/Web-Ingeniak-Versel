@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "FAQ N04 (¿Qué es la visibilidad en IA o GEO?) sigue en validar: true en faq.json: no sale en el acordeón ni en el FAQPage hasta que se apruebe. #definicion usa un texto propio que dice lo mismo que N04 de D (sin depender del banco).",
@@ -18,7 +18,8 @@
     "CAMBIO DE TEXTO · hero.ui (tarjeta de 'respuesta de un motor de IA' con la cita a la marca, ESPEC §5.2.1) y como-medimos.ui (reporte con los cuatro indicadores, sin números): textos de la UI registrada con SIMULACIÓN / VISTA DEMO. La plantilla de servicio todavía no los pinta; no cuentan para las palabras mínimas.",
     "CAMBIO DE TEXTO · cta-final sin 'micro' del brief (repetiría la microcopia del botón primario).",
     "CAMBIO DE TEXTO · QA servicios r3: el lede de la portada repetía el H1 ('Que te encuentren en Google y te citen…'); ahora dice cómo se logra (texto en el HTML, respuestas claras y datos estructurados), lo mismo que #que-hacemos y #definicion. #como-medimos ya no regresa a la placa de la portada (salía el mismo encuadre): va con su propia placa y la vista demo de indicadores en la columna de texto.",
-    "DATO PENDIENTE · senales usa la placa de respaldo dolor-operacion mientras no exista dolor-anuncios; el pie de foto funciona con las dos."
+    "DATO PENDIENTE · senales usa la placa de respaldo dolor-operacion mientras no exista dolor-anuncios; el pie de foto funciona con las dos.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: hero.ctaPrimary y cta-final.ctaPrimary pasan a 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización; sin JS lleva a /contacto/#cotizar) con la microcopia compartida de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Claves reescritas porque nombraban la Discovery Session o prometían la llamada de 30 minutos: inversion.remate ('El plan lo armamos en tu Discovery Session…' → 'El plan lo armamos al cotizar tu proyecto…'); cta-final.lede ('En la Discovery Session revisamos qué encuentra Google…' → 'Dinos tu sitio y tu sector: revisamos qué encuentra Google de tu empresa, qué dicen los asistentes de IA y por dónde conviene empezar.'). Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "sections": {
     "hero": {
@@ -27,7 +28,7 @@
       "eyebrow": "Servicio · Atraer",
       "h1": { "text": "SEO y visibilidad en IA:", "soft": "que te encuentre Google y te citen los asistentes", "lit": "visibilidad" },
       "lede": "Texto en el HTML, respuestas claras y datos estructurados: lo que Google y la IA necesitan para mostrarte y citarte.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de SEO y quiero que mi empresa aparezca en Google y en ChatGPT."
@@ -170,7 +171,7 @@
         { "title": "Integraciones", "line": "Tu sitio actual y lo que se puede corregir en él, más tu CRM y tu analítica para medir hasta la conversación." },
         { "title": "Volumen", "line": "Cuántos servicios, ciudades y temas hay que cubrir, y cuánto contenido nuevo hace falta cada mes." }
       ],
-      "remate": "El plan lo armamos en tu Discovery Session, a partir de lo que ya tienes publicado y de lo que tus clientes buscan."
+      "remate": "El plan lo armamos al cotizar tu proyecto, a partir de lo que ya tienes publicado y de lo que tus clientes buscan."
     },
     "faq": {
       "_componente": "FAQAccordion (N04 sale cuando se apruebe)",
@@ -196,8 +197,8 @@
       "rail": "Cierre",
       "eyebrow": "Lo revisamos juntos",
       "h2": { "text": "¿Qué responde ChatGPT", "soft": "cuando preguntan por tu sector?" },
-      "lede": "En la Discovery Session revisamos qué encuentra Google de tu empresa, qué dicen los asistentes y por dónde conviene empezar.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "lede": "Dinos tu sitio y tu sector: revisamos qué encuentra Google de tu empresa, qué dicen los asistentes de IA y por dónde conviene empezar.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de SEO y quiero que mi empresa aparezca en Google y en ChatGPT."

@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "publishGate": {
     "ok": true,
     "fuente": "cliente en chat, 2026-10-19",
@@ -26,7 +26,8 @@
     "RESUELTO 2026-10-19 · cliente en chat · (17) situación inicial con números: no aplica (no hay más datos). El punto de partida se cuenta solo con los ocho minutos de respuesta (dental-respuesta) y en tono cualitativo.",
     "RESUELTO 2026-10-19 · cliente en chat · (18) hitos reales por fase de VKTOR™: no aplica. La sección muestra las fases genéricas aplicadas a la clínica de quien lee y enlaza a /metodologia/.",
     "RESUELTO 2026-10-19 · cliente en chat · (19) canales: Kain también atiende Instagram, Facebook Messenger, el chat de una web y el correo (capacidad general). En este caso las cifras son de WhatsApp: la ficha dice 'Canal: WhatsApp' y el cuerpo de implementación aclara que los otros canales son capacidad del agente, no parte de la medición.",
-    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
+    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' (sustituye la línea anterior sobre 'Agenda tu Discovery Session') y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Empecemos por tu primer mensaje.'; lede sin la Discovery Session."
   ],
   "sections": {
     "hero": {
@@ -35,7 +36,7 @@
       "h1": { "kicker": "Clínica dental en Monterrey:", "metricId": "dental-citas", "text": "más citas en 90 días con un agente de IA" },
       "chips": ["Salud", "Monterrey, N.L.", "Agente de IA en WhatsApp", "90 días"],
       "lede": "Un agente de IA contesta, califica y agenda a sus pacientes por WhatsApp, de día y de noche. Tiempo de respuesta: {{metric:dental-respuesta}}.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio." },
       "illus": "Imagen ilustrativa del sector"
     },
@@ -194,11 +195,10 @@
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
       "eyebrow": "Un sistema así para tu negocio",
-      "h2": { "text": "¿Cuántas citas más cabrían en tu agenda?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session revisamos cómo llega hoy un cliente a tu agenda y te decimos qué parte de este sistema aplica a tu negocio.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio." },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "h2": { "text": "¿Cuántas citas más cabrían en tu agenda?", "soft": "Empecemos por tu primer mensaje." },
+      "lede": "Cuéntanos al cotizar cómo llega hoy un cliente a tu agenda y vemos qué parte de este sistema aplica a tu negocio.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de la clínica dental de Monterrey y quiero algo así para mi negocio." }
     }
   }
 }

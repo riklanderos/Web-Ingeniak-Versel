@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE PREGUNTAS · S02, S03, S04 y S05 (propias de salud; R2 pide al menos cuatro por industria): redacción nueva, con validar: true en faq.json, así que hoy no salen en el acordeón ni en el FAQPage. S05 (urgencias) es nueva en la ronda 2. Al aprobarse, el orquestador suma sus ids a sitemap.json → ind-salud.faq y pasan a validar: false. S01 también sigue en validar y ya no alimenta la definición.",
@@ -16,7 +16,8 @@
     "RESUELTO 2026-10-19 · cliente en chat · (14) en la clínica de Monterrey el agente avisa al doctor en tiempo real cuando hay una urgencia. kain-sector.limite y datos (Escalamiento a una persona) lo dicen como regla que se define con cada clínica; S05 (urgencias, sigue en validar) lo incorpora.",
     "VALIDACIÓN LEGAL · sección 'Tus datos': revisar la redacción con el asesor legal del cliente antes de publicar. Desde la ronda 2 ya no describe cómo trabaja Kain hoy con datos de salud (consentimiento al iniciar, aviso citado y enlazado, responsabilidad de la clínica): lo presenta como reglas que se definen con cada clínica antes de encender el agente. La única afirmación de comportamiento es la de N01 (aprobada en D): no da consejo médico ni legal.",
     "CAMBIO DE AFIRMACIÓN (QA ronda 1) · definicion: el texto ya no sale de S01 (validar: true, se publicaba igual). Ahora es texto de la página armado solo con lo que dicen G02 y N01, aprobadas en D: entiende, responde con tu información, agenda, confirma, da seguimiento, registra en tu CRM y no da consejo médico.",
-    "CAMBIO DE TEXTO (QA ronda 1) · faq: orden S02–S05 primero (en validar), luego N01, W01, W02 y G07; sale G02. Mientras S02–S05 no se aprueben, el acordeón muestra 4 preguntas compartidas. Cuando se aprueben, recomendamos dejar solo N01 y G07 de las compartidas."
+    "CAMBIO DE TEXTO (QA ronda 1) · faq: orden S02–S05 primero (en validar), luego N01, W01, W02 y G07; sale G02. Mientras S02–S05 no se aprueben, el acordeón muestra 4 preguntas compartidas. Cuando se aprueben, recomendamos dejar solo N01 y G07 de las compartidas.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' (abre el formulario; sin JS va a /contacto/#cotizar) y sale la microcopia 'Sin costo · Sin compromiso · 30 minutos por Google Meet' (la del botón la pone la plantilla). Cierre: eyebrow 'El primer paso no cuesta nada' → 'Tu primer paso'; H2 'Lo vemos en 30 minutos.' → 'Cuéntanos cómo agenda tu clínica.'; lede sin la Discovery Session. datos.note: los requisitos propios se revisan al cotizar, ya no en la Discovery Session."
   ],
   "sections": {
     "hero": {
@@ -25,7 +26,7 @@
       "eyebrow": "Industria · Salud",
       "h1": { "text": "Agentes de IA", "soft": "para clínicas y consultorios", "lit": "IA" },
       "lede": "Tu agenda llena sin que tu recepción viva pegada al WhatsApp. Kain responde, agenda y confirma citas a cualquier hora, y deja a cada paciente registrado en tu CRM.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo una clínica y quiero ver cómo agendarías citas por WhatsApp."
@@ -142,7 +143,7 @@
         { "title": "Sin consejo médico ni legal", "line": "Kain atiende, agenda, confirma y da seguimiento. No da consejo médico ni legal." },
         { "title": "Tu aviso, tus reglas", "line": "Qué dice tu aviso de privacidad y quién responde por los datos lo define tu clínica con su asesor legal; nosotros configuramos a Kain con esas reglas." }
       ],
-      "note": "No mostramos sellos ni certificaciones que no tenemos. Si tu clínica tiene requisitos propios, los revisamos en la Discovery Session."
+      "note": "No mostramos sellos ni certificaciones que no tenemos. Si tu clínica tiene requisitos propios, cuéntanoslos al cotizar tu proyecto y los revisamos contigo."
     },
     "faq": {
       "_componente": "FAQAccordion",
@@ -156,15 +157,14 @@
     "cta-final": {
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
-      "eyebrow": "El primer paso no cuesta nada",
-      "h2": { "text": "¿Cuántas citas se te escapan por no contestar a tiempo?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session revisamos cómo llega hoy un paciente, del primer mensaje a la cita, y te decimos qué conviene automatizar primero.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "eyebrow": "Tu primer paso",
+      "h2": { "text": "¿Cuántas citas se te escapan por no contestar a tiempo?", "soft": "Cuéntanos cómo agenda tu clínica." },
+      "lede": "Al cotizar, describe cómo llega hoy un paciente, del primer mensaje a la cita. Con eso vemos contigo qué conviene automatizar primero.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, tengo una clínica y quiero ver cómo agendarías citas por WhatsApp."
-      },
-      "micro": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet"
+      }
     }
   }
 }

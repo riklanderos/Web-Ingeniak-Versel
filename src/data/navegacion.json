@@ -141,8 +141,9 @@
         },
         {
           "label": "Planes desde USD 997 al mes",
-          "href": "/discovery/",
-          "priceFrom": true
+          "href": "/contacto/#cotizar",
+          "priceFrom": true,
+          "cotizar": true
         }
       ]
     },
@@ -315,9 +316,9 @@
   ],
   "actions": [
     {
-      "label": "Agenda tu Discovery Session",
-      "href": "/discovery/",
-      "style": "primary"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "cotizar": true
     },
     {
       "label": "WhatsApp",
@@ -327,8 +328,9 @@
   ],
   "mobileStickyBar": [
     {
-      "label": "Agenda tu Discovery",
-      "href": "/discovery/"
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "cotizar": true
     },
     {
       "label": "Escríbele a Kain",
@@ -401,8 +403,7 @@
           "/blog/como-verificar-partner-oficial-kommo/",
           "/blog/gohighlevel-en-espanol/",
           "/blog/n8n-vs-zapier-vs-make/",
-          "/preguntas-frecuentes/",
-          "/discovery/"
+          "/preguntas-frecuentes/"
         ]
       }
     ],
@@ -436,5 +437,5 @@
     ],
     "rule": "Inicio › Hub › Página. El último elemento no lleva enlace. Kommo y GoHighLevel cuelgan de CRM con IA aunque su URL sea de primer nivel. El mismo arreglo alimenta el BreadcrumbList."
   },
-  "_revision": "r1 (18-oct-2026): Servicios por las 5 etapas de ESPEC §4.2; métricas por id de metrics.ts. Ver ESPEC §12. · r2 (18-oct-2026): metric → metricId en Industrias y Casos (las cifras salen de metrics.ts); ancla única del registro: /casos/#registro."
+  "_revision": "r1 (18-oct-2026): Servicios por las 5 etapas de ESPEC §4.2; métricas por id de metrics.ts. Ver ESPEC §12. · r2 (18-oct-2026): metric → metricId en Industrias y Casos (las cifras salen de metrics.ts); ancla única del registro: /casos/#registro. · r3 (20-oct-2026, CAMBIO-COTIZAR): primario del encabezado y de la barra móvil = \"Cotizar proyecto\" (cotizar: true → data-cotizar, abre el modal); \"Planes desde USD 997 al mes\" abre la cotización; el footer ya no enlaza /discovery/ (landings ocultas, ESPEC §12.6 R17)."
 }

@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "publishGate": {
     "ok": false,
     "fuente": null,
@@ -26,7 +26,8 @@
     "CAMBIO DE TEXTO · relacionados: el brief pide /servicios/automatizacion-n8n/, /industrias/industrial-logistica/ y el caso dental. Van el servicio, la industria y /servicios/desarrollo-software/ (internalLinks); el caso dental es el 'Siguiente reportaje' y cierra la cadena de casos.",
     "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir).",
     "CAMBIO DE TEXTO · hero.ledeM (QA casos): versión corta del lede para el primer pantallazo en móvil (R3: el sujeto de la portada entra en pantalla); en escritorio sigue el lede completo. Mismo contenido, sin datos nuevos.",
-    "CAMBIO DE TEXTO · mensaje de WhatsApp de portada y cierre (QA casos): la cifra va como token ({{metric:logistica-procesos|full}}), sale de metrics.ts y no escrita a mano (§0.1-2)."
+    "CAMBIO DE TEXTO · mensaje de WhatsApp de portada y cierre (QA casos): la cifra va como token ({{metric:logistica-procesos|full}}), sale de metrics.ts y no escrita a mano (§0.1-2).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' (sustituye la línea anterior sobre 'Agenda tu Discovery Session') y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Hagamos la lista contigo.'; lede sin la Discovery Session ni 'Sales con sugerencias concretas'."
   ],
   "sections": {
     "hero": {
@@ -36,7 +37,7 @@
       "chips": ["Logística", "n8n", "Agentes de IA", "En operación"],
       "lede": "Conectamos el CRM, el WhatsApp, el ERP y modelos de IA de una empresa de logística con flujos en n8n que se disparan en tiempo real, en cuanto algo cambia en uno de sus sistemas.",
       "ledeM": "Conectamos su CRM, WhatsApp, ERP e IA con n8n, en tiempo real.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de logística con {{metric:logistica-procesos|full}} y quiero automatizar mi operación." },
       "illus": "Imagen ilustrativa del sector"
     },
@@ -168,11 +169,10 @@
       "_componente": "Dawn (cta-amanecer; cta-equipo espera la sesión de fotos R6)",
       "rail": "Cierre",
       "eyebrow": "Tu operación, en flujos",
-      "h2": { "text": "¿Qué procesos de tu operación siguen a mano?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session listamos contigo las tareas que tu equipo repite cada día, los sistemas donde viven y cuál conviene automatizar primero, sin cambiar lo que ya funciona. Sales con sugerencias concretas.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de logística con {{metric:logistica-procesos|full}} y quiero automatizar mi operación." },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "h2": { "text": "¿Qué procesos de tu operación siguen a mano?", "soft": "Hagamos la lista contigo." },
+      "lede": "Al cotizar, cuéntanos qué tareas repite tu equipo cada día y en qué sistemas viven. Con eso vemos cuál conviene automatizar primero, sin cambiar lo que ya funciona.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de logística con {{metric:logistica-procesos|full}} y quiero automatizar mi operación." }
     }
   }
 }

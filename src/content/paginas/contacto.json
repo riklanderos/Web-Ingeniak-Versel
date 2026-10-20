@@ -1,34 +1,34 @@
 {
-  "_schema": "Texto publicable de /contacto/ (T-CONTACT, ContactTemplate). Forma general: _ESQUEMA.md §2–§6. Campos propios de esta plantilla: hero.mail = {label, line} (tercera ruta de la portada, mailto a SITE.email); hero.chat = {title, lines[]} (conversación SIMULADA registrada en el teléfono de cristal de la placa home-kain: lines = {who: 'cliente'|'kain', text, delay?}; sin precios ni cifras); rutas.routes[] = {id: 'discovery'|'whatsapp'|'correo', name, tag?, contact?, when, then, action} (tabla de 3 rutas; el destino lo pone la plantilla: /discovery/, waHref con el mensaje de la página, mailto); rutas.caption (leyenda de la tabla); oficina = {eyebrow, h2, lede, address, mapsLabel, mapsHref, visit, countriesLabel, nap[] = {term, value}} (address y nap van tal cual, con data-allow-number); redes.items[] = {slug: 'instagram'|'facebook'|'linkedin', name, handle, line} (el enlace sale de SITE.social). formulario existe con _omitir: true hasta que el cliente decida el webform de Kommo. Los campos que empiezan con _ no se imprimen.",
+  "_schema": "Texto publicable de /contacto/ (T-CONTACT, ContactTemplate). Forma general: _ESQUEMA.md §2–§6. Campos propios de esta plantilla: hero.mail = {label, line} (tercera ruta de la portada, mailto a SITE.email); hero.chat = {title, lines[]} (conversación SIMULADA registrada en el teléfono de cristal de la placa home-kain: lines = {who: 'cliente'|'kain', text, delay?}; sin precios ni cifras); rutas.routes[] = {id: 'cotizar'|'whatsapp'|'correo', name, tag?, contact?, when, then, action, cotizar?} (tabla de 3 rutas; el destino lo pone la plantilla: la ruta con cotizar: true abre el formulario de cotización (data-cotizar, href '#cotizar'), waHref con el mensaje de la página, mailto); rutas.caption (leyenda de la tabla); cotizar = {eyebrow, h2, lede, steps[] = {n, title, line}, ctaPrimary, directo = {line, wa, email}} (sección #cotizar: qué sigue en 3 pasos, botón que abre el formulario y, abajo, las rutas directas que sirven sin JS; antes 'formulario', condicional); oficina = {eyebrow, h2, lede, address, mapsLabel, mapsHref, visit, countriesLabel, nap[] = {term, value}} (address y nap van tal cual, con data-allow-number); redes.items[] = {slug: 'instagram'|'facebook'|'linkedin', name, handle, line} (el enlace sale de SITE.social). Los campos que empiezan con _ no se imprimen.",
   "pageId": "contacto",
   "url": "/contacto/",
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Todo el texto de la página.",
-    "PREGUNTA AL CLIENTE · Tiempo de respuesta esperado por ruta (Discovery, WhatsApp, correo). D lo pedía en la tabla de rutas [VALIDAR]; la página no promete tiempos hasta confirmarlos.",
+    "PREGUNTA AL CLIENTE · Tiempo de respuesta esperado por ruta (Cotizar proyecto, WhatsApp, correo). D lo pedía en la tabla de rutas [VALIDAR]; la página no promete tiempos hasta confirmarlos (tampoco el formulario de cotización).",
     "PREGUNTA AL CLIENTE · Horario de la oficina (D proponía L–V 09:00–18:00 [VALIDAR]) y si se recibe a visitas sin cita. La página pide escribir antes para coordinar la visita y no publica horario.",
     "PREGUNTA AL CLIENTE · ¿El +52 33 2101 7799 recibe llamadas de voz, además de WhatsApp? La ficha lo lista como 'Teléfono y WhatsApp' (igual que /agentes-ia-guadalajara/); D advierte que el Sales Brief usa otro número (+52 33 2101 2962): se publica solo el del sitio.",
     "PREGUNTA AL CLIENTE · ¿Confirmas que en ese WhatsApp contesta Kain y que pasa la conversación a una persona del equipo cuando hace falta? La portada simula ese primer mensaje (SIMULACIÓN) y la tabla de rutas lo dice.",
-    "PREGUNTA AL CLIENTE · Formulario de contacto (webform de Kommo con nombre, empresa, WhatsApp, mensaje y casilla del aviso de privacidad): la sección 'formulario' queda omitida hasta tu decisión.",
+    "RESUELTO 2026-10-20 · pedido del cliente ('Todos los CTA deberán ser para Cotizar proyecto… formulario que brinque como pop up… los datos se llevan a Kommo CRM') · Formulario de contacto: en lugar del webform de Kommo, el formulario de cotización del sitio (modal de 3 pasos → Kommo). La sección 'formulario' pasa a 'cotizar' (#cotizar) y ya se publica.",
     "DATO PENDIENTE · Mapa estático exportado en el build (ESPEC §5.12). Mientras no exista la imagen, la sección de oficina usa un esquema tipográfico (sin mapa con pines) y el enlace a Google Maps. Las coordenadas (geo) siguen sin confirmar.",
-    "CAMBIO DE TEXTO · Cierre: D proponía \"La forma más rápida de saber si podemos ayudarte: 30 minutos.\"; se acortó a \"¿Podemos ayudarte? Lo sabes en 30 minutos.\" para que el bloque quede arriba del horizonte de la placa de cierre."
+    "CAMBIO DE TEXTO · Cierre: D proponía \"La forma más rápida de saber si podemos ayudarte: 30 minutos.\"; se acortó a \"¿Podemos ayudarte? Lo sabes en 30 minutos.\" para que el bloque quede arriba del horizonte de la placa de cierre.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada (lede 'Si tienes un proyecto en mente, cotizarlo es lo más directo.' y botón 'Cotizar proyecto', href #cotizar), conversación simulada sin la Discovery Session ('Te comparto el formulario de cotización: son tres pasos y el equipo te escribe por aquí.'), primera ruta de la tabla = 'Cotizar proyecto' (Formulario de 3 pasos · acción 'Cotizar'; sale 'Discovery Session · 30 min · 1:1 · Google Meet · Agendar'), sección nueva #cotizar (antes 'formulario', omitida) con qué sigue en 3 pasos y las rutas directas, oficina.lede sin 'una llamada por Google Meet'. Cierre: eyebrow 'El primer paso no cuesta nada' → 'El siguiente paso'; H2 'Lo sabes en 30 minutos.' → 'Cuéntanos tu proyecto.'; sale la microcopia de 30 minutos (sustituye la nota anterior sobre el cierre de D)."
   ],
   "sections": {
     "hero": {
-      "_componente": "ImageSection hero (home-kain, subject-left) + 3 rutas: Discovery (.btn) · WhatsApp (.btn--ghost) · correo (.lnk) + ChatSim registrado en el teléfono de cristal",
+      "_componente": "ImageSection hero (home-kain, subject-left) + 3 rutas: Cotizar proyecto (.btn data-cotizar, href #cotizar) · WhatsApp (.btn--ghost) · correo (.lnk) + ChatSim registrado en el teléfono de cristal",
       "rail": "Portada",
       "eyebrow": "Contacto",
       "h1": {
         "text": "Habla con Ingeniak",
         "lit": "Ingeniak"
       },
-      "lede": "Tres formas de llegar al mismo equipo. Si quieres saber qué automatizar primero, la Discovery Session es la más directa.",
+      "lede": "Tres formas de llegar al mismo equipo. Si tienes un proyecto en mente, cotizarlo es lo más directo.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -57,7 +57,7 @@
           },
           {
             "who": "kain",
-            "text": "Perfecto. Empecemos con una Discovery Session de 30 minutos: ¿te comparto los horarios?",
+            "text": "Perfecto. Te comparto el formulario de cotización: son tres pasos y el equipo te escribe por aquí.",
             "delay": 1200
           }
         ]
@@ -82,13 +82,14 @@
       },
       "routes": [
         {
-          "id": "discovery",
-          "name": "Discovery Session",
+          "id": "cotizar",
+          "name": "Cotizar proyecto",
           "tag": "Recomendada",
-          "contact": "30 min · 1:1 · Google Meet",
-          "when": "Quieres saber qué conviene automatizar en tu negocio y en qué orden.",
-          "then": "Llenas un formulario de siete preguntas, eliges tu horario y nos vemos por Google Meet. Si tiene sentido para los dos, después te enviamos una propuesta.",
-          "action": "Agendar"
+          "contact": "Formulario de 3 pasos",
+          "when": "Tienes un proyecto en mente y quieres una cotización.",
+          "then": "Llenas un formulario corto con lo que necesitas y te contactamos por WhatsApp y correo para conocer los detalles y preparar tu cotización.",
+          "action": "Cotizar",
+          "cotizar": true
         },
         {
           "id": "whatsapp",
@@ -108,9 +109,40 @@
         }
       ]
     },
-    "formulario": {
-      "_omitir": true,
-      "_nota": "Sección condicional (sitemap.json → status: conditional). Se construye solo si el cliente aprueba el webform de Kommo con la casilla del aviso de privacidad."
+    "cotizar": {
+      "_componente": "Intertitle split · eyebrow + H2 + lede + qué sigue en 3 pasos + .btn[data-cotizar] href=\"#cotizar\" (data-section=\"cotizar\") y, abajo, las rutas directas (WhatsApp con el mensaje de la página y correo) que sirven sin JS",
+      "rail": "Cotizar",
+      "eyebrow": "Cotizar proyecto",
+      "h2": {
+        "text": "Cotiza tu proyecto.",
+        "soft": "Tres pasos y te contactamos."
+      },
+      "lede": "Cuéntanos qué necesitas, cómo es tu negocio y cómo prefieres que te contactemos.",
+      "steps": [
+        {
+          "n": "01",
+          "title": "Llenas el formulario",
+          "line": "Qué necesitas, tu negocio y tus datos de contacto."
+        },
+        {
+          "n": "02",
+          "title": "Te contactamos",
+          "line": "Por WhatsApp y por correo, para conocer los detalles."
+        },
+        {
+          "n": "03",
+          "title": "Recibes tu cotización",
+          "line": "Si tiene sentido para los dos, con alcance, tiempos y costo."
+        }
+      ],
+      "ctaPrimary": {
+        "label": "Cotizar proyecto"
+      },
+      "directo": {
+        "line": "¿Prefieres escribirnos directo?",
+        "wa": "Escríbele a Kain",
+        "email": "contacto@ingeniak.mx"
+      }
     },
     "oficina": {
       "_componente": "Intertitle split · dirección en grande sobre un faro de luz (esquema tipográfico, sin mapa con pines) + enlace a Google Maps + ficha NAP + países (CountryList)",
@@ -120,7 +152,7 @@
         "text": "Base en Guadalajara.",
         "soft": "Trabajamos donde estés."
       },
-      "lede": "La oficina está en Tlajomulco de Zúñiga, en la zona metropolitana de Guadalajara. Para empezar a trabajar juntos no hace falta venir: todo arranca con una llamada por Google Meet.",
+      "lede": "La oficina está en Tlajomulco de Zúñiga, en la zona metropolitana de Guadalajara. Para empezar a trabajar juntos no hace falta venir: cotiza tu proyecto desde aquí y te contactamos por WhatsApp y correo.",
       "ledeLinks": [{ "text": "zona metropolitana de Guadalajara", "href": "/agentes-ia-guadalajara/" }],
       "address": "Av. Punto Sur 312",
       "addressLine": "Tlajomulco de Zúñiga, Jalisco 45640, México",
@@ -178,21 +210,19 @@
     "cta-final": {
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
-      "eyebrow": "El primer paso no cuesta nada",
+      "eyebrow": "El siguiente paso",
       "h2": {
         "text": "¿Podemos ayudarte?",
-        "soft": "Lo sabes en 30 minutos."
+        "soft": "Cuéntanos tu proyecto."
       },
       "lede": "Vemos cómo llegan hoy tus clientes, dónde se pierden y qué conviene automatizar primero.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de contacto de Ingeniak y quiero hablar con el equipo."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

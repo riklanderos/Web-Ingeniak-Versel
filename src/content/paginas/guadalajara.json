@@ -5,7 +5,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'. Nadie del equipo de construcción cambia ese campo.",
     "PREGUNTA AL CLIENTE · horario de atención de la oficina (v1 usaba L–V 09:00–18:00 sin confirmar): no se publica en la ficha ni en el JSON-LD (openingHoursSpecification) hasta confirmarlo por escrito.",
@@ -16,7 +16,8 @@
     "CAMBIO DE TEXTO · casos: H2 de v1 ('Desde Jalisco, operando hoy mismo.'); la fila de logística solo dice lo de metrics.ts (n8n), sin herramientas ni ciudad que no estén confirmadas. Los cinco sistemas siguen activos (RESPUESTAS-CLIENTE #3).",
     "CAMBIO DE TEXTO · canales del agente: 'WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo' (RESPUESTAS-CLIENTE #19); v1 decía 'WhatsApp, Instagram y tu web'.",
     "CAMBIO DE TEXTO · vktor.phases[2]: el plazo de implementación es el general de Ingeniak (de 7 a 30 días según el alcance, RESPUESTAS-CLIENTE #16), nunca el de un caso.",
-    "DATO PENDIENTE · zona que atendemos (ficha): Guadalajara, Zapopan, Tlajomulco y el resto de la zona metropolitana; fuera de Jalisco, a distancia. Es lo mismo que decía v1."
+    "DATO PENDIENTE · zona que atendemos (ficha): Guadalajara, Zapopan, Tlajomulco y el resto de la zona metropolitana; fuera de Jalisco, a distancia. Es lo mismo que decía v1.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. que-es.body, ficha 'Primer paso' (→ 'Cotizar proyecto · te contactamos por WhatsApp y correo'), local-alcance (primer paso) y mapa.lede ya no hablan de la Discovery Session ni de la llamada por Google Meet. Cierre: eyebrow 'El primer paso no cuesta nada' → 'Para empezar'; H2 '…con una llamada de 30 minutos.' → '…con una solicitud de cotización.'. La FAQ G11 (en #faq) se reescribió en el banco."
   ],
   "sections": {
     "hero": {
@@ -32,8 +33,7 @@
       "trust": "Partner oficial de Kommo en LATAM · {{metric:sistemas|full}}",
       "illus": "Imagen ilustrativa",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -49,7 +49,7 @@
         "text": "Ingeniak es una consultoría de inteligencia artificial con sede en Guadalajara, Jalisco. Desde nuestra oficina en Tlajomulco de Zúñiga diseñamos e implementamos agentes de IA para WhatsApp, CRM con Kommo y GoHighLevel y automatizaciones con n8n para empresas de Guadalajara, Zapopan y Tlajomulco, y trabajamos con clientes en {{metric:paises|full}}."
       },
       "body": [
-        "Para empezar no tienes que venir a la oficina: la primera conversación es una Discovery Session de 30 minutos por Google Meet. Si tu empresa está en la zona metropolitana, trabajas con un equipo en tu mismo horario y a una llamada de distancia."
+        "Para empezar no tienes que venir a la oficina: cotiza tu proyecto desde el sitio y te contactamos por WhatsApp y correo. Si tu empresa está en la zona metropolitana, trabajas con un equipo en tu mismo horario y a una llamada de distancia."
       ],
       "metricRow": {
         "title": "Ingeniak en datos",
@@ -72,7 +72,7 @@
         { "term": "Correo", "value": "contacto@ingeniak.mx" },
         { "term": "Atendemos", "value": "Guadalajara, Zapopan, Tlajomulco de Zúñiga y el resto de la zona metropolitana; fuera de Jalisco, a distancia" },
         { "term": "Alianza", "value": "Partner oficial de Kommo en LATAM" },
-        { "term": "Primer paso", "value": "Discovery Session: 30 min · 1:1 · Google Meet · sin costo" }
+        { "term": "Primer paso", "value": "Cotizar proyecto · te contactamos por WhatsApp y correo" }
       ]
     },
     "que-hacemos": {
@@ -108,7 +108,7 @@
           "items": [
             "Oficina en Tlajomulco de Zúñiga, en la zona metropolitana de Guadalajara.",
             "Empresas de Guadalajara, Zapopan y Tlajomulco.",
-            "Primer paso: una Discovery Session 1:1 de 30 minutos por Google Meet."
+            "Primer paso: «Cotizar proyecto», un formulario de tres pasos."
           ]
         },
         {
@@ -144,7 +144,7 @@
         "text": "Oficina en Tlajomulco,",
         "soft": "al sur de la zona metropolitana."
       },
-      "lede": "Para empezar a trabajar juntos no hace falta venir: todo arranca con una llamada por Google Meet.",
+      "lede": "Para empezar a trabajar juntos no hace falta venir: todo arranca con tu solicitud de cotización.",
       "address": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, México",
       "map": {
         "aria": "Esquema de la zona metropolitana de Guadalajara: Zapopan al noroeste, Guadalajara al centro, Tlaquepaque y Tonalá al sureste y Tlajomulco de Zúñiga al sur, donde está la oficina de Ingeniak.",
@@ -188,21 +188,19 @@
     "cta-final": {
       "_componente": "Dawn (cta-duena-tranquila en espejo)",
       "rail": "Cierre",
-      "eyebrow": "El primer paso no cuesta nada",
+      "eyebrow": "Para empezar",
       "h2": {
         "text": "Tu sistema puede empezar en Guadalajara",
-        "soft": "con una llamada de 30 minutos."
+        "soft": "con una solicitud de cotización."
       },
       "lede": "Revisamos cómo vendes y operas hoy, estés en la zona metropolitana o fuera de Jalisco, y te decimos qué conviene automatizar primero.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola, vengo de la página de Ingeniak en Guadalajara y quiero información sobre agentes de IA para mi empresa."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

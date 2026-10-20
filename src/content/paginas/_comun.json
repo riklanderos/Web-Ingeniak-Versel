@@ -4,19 +4,22 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede aprobar la microcopia compartida (CTA, simulación, escenas, fuente).",
-    "RESUELTO 2026-10-19 · cliente en chat · (20) firma del footer y del cierre de /discovery/ ('Construimos empresarios libres, no héroes cansados.'): aprobada."
+    "RESUELTO 2026-10-19 · cliente en chat · (20) firma del footer y del cierre de /discovery/ ('Construimos empresarios libres, no héroes cansados.'): aprobada.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: cta suma cotizar ('Cotizar proyecto', etiqueta única del primario en todo el sitio público), cotizarCorto ('Cotizar', encabezado angosto), cotizarSub ('Te contactamos por WhatsApp y correo', subtítulo de la acción fija del buscador), cotizarLnk ('¿Tienes un proyecto en mente? Cotizar proyecto', enlace secundario del footer de las landings) y primerPaso ('Cotizar proyecto · te contactamos por WhatsApp y correo', fila 'Primer paso' de las fichas). micro y microCierre pasan a 'Sin compromiso · Te contactamos por WhatsApp y correo' (antes '30 min · 1:1 · Google Meet · sin costo' y 'Sin costo · Sin compromiso · 30 minutos por Google Meet'). Salen discovery ('Agenda tu Discovery Session'), discoveryCorto y agenda ('Agendar mi Discovery Session'): la Discovery Session y la Power Session quedan como landings ocultas con su propio CTA de reserva (su texto vive en discovery.json y power-session.json) y ninguna página pública las enlaza. Se conservan kain, kainAria, kainPill y kainPillEstado. Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],
   "cta": {
-    "discovery": "Agenda tu Discovery Session",
-    "discoveryCorto": "Agenda tu Discovery",
-    "agenda": "Agendar mi Discovery Session",
+    "cotizar": "Cotizar proyecto",
+    "cotizarCorto": "Cotizar",
+    "cotizarSub": "Te contactamos por WhatsApp y correo",
+    "cotizarLnk": "¿Tienes un proyecto en mente? Cotizar proyecto",
+    "primerPaso": "Cotizar proyecto · te contactamos por WhatsApp y correo",
     "kain": "Escríbele a Kain",
     "kainAria": "Escríbele a Kain por WhatsApp",
-    "micro": "30 min · 1:1 · Google Meet · sin costo",
-    "microCierre": "Sin costo · Sin compromiso · 30 minutos por Google Meet",
+    "micro": "Sin compromiso · Te contactamos por WhatsApp y correo",
+    "microCierre": "Sin compromiso · Te contactamos por WhatsApp y correo",
     "kainPill": "Escríbele a Kain",
     "kainPillEstado": "responde 24/7"
   },

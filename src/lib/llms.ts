@@ -2,6 +2,7 @@
 // Se generan desde sitemap.json (páginas construidas, indexables y sin puerta pendiente), metrics.ts y la ficha de la
 // entidad, con la MISMA redacción que el footer (src/components/nav/Footer.astro) y el JSON-LD (layout/jsonld.ts).
 // Precio: solo PRICE_FROM. Cifras: solo metrics.ts. Un caso breve (noindex) no se enlaza; su línea de resultado se queda sin enlace.
+// Las landings ocultas (hidden: true → noindex) no entran: indexablePages() ya las excluye (ESPEC §12.6 R17).
 import { METRICS, PRICE_FROM, SOURCE_NOTE, type MetricId } from './metrics';
 import { SITE, pages, indexablePages, copyOrNull, isBuilt, type Page } from './site';
 import { tokensToText, getFaqItems, VKTOR } from '../components/ui/ui-data';
@@ -32,7 +33,8 @@ export function entityLines(): string[] {
     `En producción: ${s.value} ${s.label} · ${p.value} ${p.label}: ${p.ctx}`,
     `Sub-marca de agentes: kain (${SITE.kainApp.replace(/^https?:\/\//, '')})`,
     `Inversión: ${PRICE_FROM}`,
-    `Primer paso: Discovery Session, 30 minutos, 1:1, por Google Meet, sin costo → ${abs(SITE.discovery)}`,
+    // Cambio 2026-10-20 (ESPEC §12.6 R15): el primer paso público es la cotización; las landings ocultas no se mencionan (R17).
+    `Primer paso: ${SITE.quote.label} (formulario de 3 pasos en el sitio; te contactamos por WhatsApp y correo) → ${abs(SITE.quote.href)}`,
   ];
 }
 

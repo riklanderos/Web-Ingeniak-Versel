@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "FAQ DISTINTA DE D · D01: agrega 'no tiene sentido proponerte un sistema sin haber visto cómo vendes, atiendes y operas hoy. Si después decides implementar, eso sí se cotiza aparte.'",
@@ -16,54 +16,109 @@
     "CAMBIO DE TEXTO (QA ronda 1) · hero.remate: 'No es una venta: es un diagnóstico. Cotizar sin diagnóstico es adivinar con dinero ajeno.' (v1: 'No entregamos nada: diagnosticamos…', que en el primer pantallazo contradecía la propuesta de #despues). hero.lede: el texto de v1 sin 'Discovery Session: una llamada 1:1 y gratuita con Ingeniak.' (ya lo dicen la etiqueta, el H1 y la microcopia del botón); queda en una oración de 16 palabras, entera en el primer pantallazo móvil.",
     "CAMBIO DE TEXTO (QA ronda 1) · que-es: 'La llamada no incluye grabación ni mapa de procesos.' (v1: '…ni documentos', chocaba con la propuesta que se envía después) y 'No es el proyecto de consultoría: es el descubrimiento previo.' (v1: 'No es consultoría', chocaba con el servicio de Consultoría en IA).",
     "CAMBIO DE TEXTO (QA ronda 1) · secundario 'Escríbele a Kain' en portada y FAQ (regla de marca; antes 'Escríbenos por WhatsApp'); el waMessage de la página no cambia. 'letra chica' queda una sola vez (eyebrow de pasos): #despues dice 'Sin presión: tú decides si avanzas.' y el eyebrow del FAQ es 'Lo que más nos preguntan'. El cierre ya no trae micro propia: toda la página usa la de §2.9. 'pymes' en minúscula en #para-quien.",
-    "CAMBIO DE TEXTO · hero.chips y hero.micro quedan como _chips / _micro con _omitir (no se pintaban: repetían el eyebrow, el lede y la microcopia fija del primario).",
     "RESUELTO 2026-10-19 · cliente en chat · (20) firma 'Construimos empresarios libres, no héroes cansados.' (cierre y pie de página): aprobada; se queda.",
     "RESUELTO 2026-10-19 · cliente en chat · (8) el H1 de esta página ('30 minutos para ver tu operación como es, no como crees que es') ya no se repite en el cierre del inicio, que ahora tiene su propio H2. La Discovery Session (30 min) y la Power Session (90 min) son propuestas distintas; la Power Session no se menciona en esta página.",
-    "DATO PENDIENTE · VSL: subtítulos .vtt y póster limpio (R14). La escena no promete subtítulos hasta que existan."
+    "DATO PENDIENTE · VSL: subtítulos .vtt y póster limpio (R14). La escena no promete subtítulos hasta que existan.",
+    "CAMBIO DE TEXTO (2026-10-20) · landing oculta con reserva directa (CAMBIO-COTIZAR §4.2): /discovery/ sale del sitio público (noindex,follow, fuera de menús, sitemap.xml y llms) y es la landing de campañas. Todo primario (portada, bajo el video, #despues y cierre) dice \"Agendar mi Discovery Session\" y baja a la nueva sección #agenda \"Reserva en 3 pasos\" con el formulario de reserva en la propia página (antes: enlace a agenda.ingeniak.tech/discovery/agendar). La microcopia del primario vuelve a ser \"30 min · 1:1 · Google Meet · sin costo\" (hero.micro; las demás secciones la heredan).",
+    "CAMBIO DE TEXTO (2026-10-20) · sale la sección #pasos (\"Cómo funciona\"): la absorbe #agenda. Su línea \"Siete preguntas sobre tu negocio y tu operación. Dos minutos, sin ensayo.\" ya no describía el formulario real; los pasos de #agenda describen el formulario sin conteos (\"Unas preguntas sobre ti y tu negocio. Sin ensayo.\").",
+    "CAMBIO DE TEXTO (2026-10-20) · #agenda \"Sales con\" reutiliza dos renglones de #que-es (sugerencias concretas de qué automatizar y en qué orden; claridad sobre si una implementación tiene sentido, y cuánto costaría). Nota: \"Sin costo y sin tarjeta. Si necesitas mover la llamada, escríbenos por WhatsApp o a contacto@ingeniak.mx.\" (D01 y D05 ya dicen lo mismo). Sin plazos: la invitación de Google Calendar llega al confirmar.",
+    "CAMBIO DE TEXTO (2026-10-20) · cierre: debajo de los botones, enlace de texto \"¿Ya sabes lo que necesitas? Cotizar proyecto\" (abre el formulario de cotización; ruta secundaria, nunca botón azul)."
   ],
   "sections": {
     "hero": {
-      "_componente": "ImageSection hero (discovery-hero, dueño junto a su silla vacía, subject-right) + .chip-spec + .btn directo a la agenda. Encabezado reducido.",
+      "_componente": "ImageSection hero (discovery-hero, dueño junto a su silla vacía, subject-right) + .chip-spec + .btn a la reserva de la página (#agenda) con la microcopia hero.micro. Encabezado reducido.",
       "rail": "Portada",
       "eyebrow": "Llamada 1:1 · 30 minutos · sin costo",
-      "h1": { "text": "30 minutos para ver tu operación", "soft": "como es, no como crees que es", "lit": "operación" },
+      "h1": {
+        "text": "30 minutos para ver tu operación",
+        "soft": "como es, no como crees que es",
+        "lit": "operación"
+      },
       "lede": "Mapeamos tus necesidades, detectamos las áreas de oportunidad de tu negocio y sales con sugerencias concretas.",
       "remate": "No es una venta: es un diagnóstico. Cotizar sin diagnóstico es adivinar con dinero ajeno.",
-      "_chips": { "_omitir": true, "_nota": "No se pinta: repetiría el eyebrow (.chip-spec 'Llamada 1:1 · 30 minutos · sin costo') y el lede en el primer pantallazo (páginas · ConversionTemplate #7a y #12).", "items": ["Media hora · 1:1", "Cero costo", "Sugerencias concretas"] },
-      "ctaPrimary": { "label": "Agendar mi Discovery Session", "href": "https://agenda.ingeniak.tech/discovery/agendar" },
-      "_micro": { "_omitir": true, "_nota": "No se pinta: el primario de la portada lleva la microcopia fija de §2.9 (_comun.cta.micro: '30 min · 1:1 · Google Meet · sin costo'); esta solo vive en el cierre (páginas · ConversionTemplate #12).", "text": "Sin costo · Sin compromiso · 30 minutos por Google Meet" },
+      "fig": {
+        "label": "La silla vacía",
+        "text": "La pregunta de esta llamada: qué pasa en tu negocio cuando tú no estás."
+      },
+      "_chips": {
+        "_omitir": true,
+        "_nota": "No se pinta: repetiría el eyebrow (.chip-spec 'Llamada 1:1 · 30 minutos · sin costo') y el lede en el primer pantallazo (páginas · ConversionTemplate #7a y #12).",
+        "items": [
+          "Media hora · 1:1",
+          "Cero costo",
+          "Sugerencias concretas"
+        ]
+      },
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session",
+        "href": "#agenda"
+      },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola, vengo de la página de la Discovery Session y tengo una duda antes de agendar."
-      }
+      },
+      "micro": "30 min · 1:1 · Google Meet · sin costo"
     },
     "video": {
-      "_componente": "VideoScene = ImageSection mid subject-center (discovery-vsl-poster): H2 abajo a la izquierda, botón de reproducir abajo a la derecha; el VSL se abre en <dialog> a pantalla completa",
+      "_componente": "VideoScene = ImageSection mid subject-center (discovery-vsl-poster): H2 abajo a la izquierda; reproducir, \"after\" y el primario a la reserva abajo a la derecha; el VSL se abre en <dialog> a pantalla completa",
       "rail": "El video",
       "eyebrow": "Antes de agendar",
-      "h2": { "text": "Mira esto", "soft": "antes de agendar." },
+      "h2": {
+        "text": "Mira esto",
+        "soft": "antes de agendar."
+      },
       "lede": "Tres minutos sobre una pregunta incómoda: si tu silla se queda vacía, ¿qué se detiene en tu negocio?",
       "play": "Reproducir el video",
       "close": "Cerrar el video",
-      "after": "Si reconociste tu negocio en este video, esta llamada es tu siguiente paso."
+      "after": "Si reconociste tu negocio en este video, esta llamada es tu siguiente paso.",
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session",
+        "href": "#agenda"
+      }
     },
-    "pasos": {
-      "_componente": "StepRow (ScriptList variant=steps)",
-      "rail": "Cómo funciona",
-      "eyebrow": "Tres pasos, cero letra chica",
-      "h2": { "text": "Cómo funciona." },
-      "items": [
-        { "n": "01", "title": "Llenas un formulario corto", "line": "Siete preguntas sobre tu negocio y tu operación. Dos minutos, sin ensayo." },
-        { "n": "02", "title": "Eliges tu horario", "line": "Calendario en vivo, en hora de la Ciudad de México. Sesiones de media hora, de lunes a viernes." },
-        { "n": "03", "title": "Nos vemos en Google Meet", "line": "Al confirmar tu horario recibes el enlace de la videollamada. Solo te conectas." }
+    "agenda": {
+      "_kind": "agenda",
+      "_componente": "Intertitle split (aura) · columna izquierda fija en escritorio (eyebrow, H2, pasos, Sales con, nota) + BookingFlow tipo=discovery a la derecha (área agenda)",
+      "rail": "Reservar",
+      "eyebrow": "Reserva en 3 pasos",
+      "h2": {
+        "text": "Aparta tu lugar",
+        "soft": "en minutos."
+      },
+      "steps": [
+        {
+          "n": "01",
+          "title": "Tus datos",
+          "line": "Unas preguntas sobre ti y tu negocio. Sin ensayo."
+        },
+        {
+          "n": "02",
+          "title": "Horario",
+          "line": "Próximos 5 días hábiles, en hora del centro de México."
+        },
+        {
+          "n": "03",
+          "title": "Confirmas",
+          "line": "Te llega la invitación de Google Calendar con el enlace de Meet."
+        }
       ],
-      "remate": "Las siete preguntas existen para que la llamada empiece en tu operación, no en una presentación."
+      "salesCon": {
+        "title": "Sales con",
+        "items": [
+          "Sugerencias concretas de qué automatizar y en qué orden.",
+          "Claridad sobre si una implementación tiene sentido, y cuánto costaría."
+        ]
+      },
+      "nota": "Sin costo y sin tarjeta. Si necesitas mover la llamada, escríbenos por WhatsApp o a contacto@ingeniak.mx."
     },
     "que-es": {
       "_componente": "TwoColumnScript variant=dodont ('Lo que sí es' en cian / 'Lo que no es' en ámbar)",
       "rail": "Qué es",
       "eyebrow": "Sin discurso de venta",
-      "h2": { "text": "Qué es una Discovery Session.", "soft": "Y qué no." },
+      "h2": {
+        "text": "Qué es una Discovery Session.",
+        "soft": "Y qué no."
+      },
       "lede": "No es una demo. No es un pitch con otro nombre. Es la media hora que evita cotizar a ciegas.",
       "left": {
         "title": "Lo que sí es",
@@ -101,7 +156,10 @@
       "_componente": "ImageSection mid (discovery-para-quien, subject-left, mobile split) + TwoColumnScript variant=fit",
       "rail": "Para quién",
       "eyebrow": "Sin filtros disfrazados",
-      "h2": { "text": "Para quién es", "soft": "esta llamada." },
+      "h2": {
+        "text": "Para quién es",
+        "soft": "esta llamada."
+      },
       "lede": "Preferimos decirlo antes de que agendes: no es para todos, y está bien.",
       "left": {
         "title": "Es para ti si…",
@@ -125,23 +183,38 @@
       }
     },
     "despues": {
-      "_componente": "Intertitle + .btn (directo a la agenda)",
+      "_componente": "Intertitle split + .btn (reserva en la página: #agenda)",
       "rail": "Después",
       "eyebrow": "Después de la llamada",
-      "h2": { "text": "Si hay sentido,", "soft": "te cotizamos la implementación." },
+      "h2": {
+        "text": "Si hay sentido,",
+        "soft": "te cotizamos la implementación."
+      },
       "body": [
         "Con lo que veamos en los 30 minutos preparamos una propuesta de implementación: qué se hace, en qué orden, en cuánto tiempo y cuánto cuesta. Sin presión: tú decides si avanzas.",
         "Si tu caso no encaja con lo que hacemos, te lo decimos en la misma llamada y te orientamos a dónde sí. Nadie te va a perseguir con llamadas después."
       ],
       "remate": "La Discovery Session no cuesta nada. Las implementaciones empiezan {{price}}.",
-      "ctaPrimary": { "label": "Agendar mi Discovery Session", "href": "https://agenda.ingeniak.tech/discovery/agendar" }
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session",
+        "href": "#agenda"
+      }
     },
     "faq": {
       "_componente": "FAQAccordion (D01–D06)",
       "rail": "Preguntas",
       "eyebrow": "Lo que más nos preguntan",
-      "h2": { "text": "Preguntas directas." },
-      "faqIds": ["D01", "D02", "D03", "D04", "D05", "D06"],
+      "h2": {
+        "text": "Preguntas directas."
+      },
+      "faqIds": [
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "D05",
+        "D06"
+      ],
       "footer": "¿Otra duda? Escríbele a Kain por WhatsApp.",
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -149,14 +222,30 @@
       }
     },
     "cta-final": {
-      "_componente": "Dawn (discovery-cta-final: Kain sentado en la silla del dueño)",
+      "_componente": "Dawn (discovery-cta-final: Kain sentado en la silla del dueño) · primario a #agenda + Escríbele a Kain + enlace de texto a la cotización",
       "rail": "Cierre",
       "eyebrow": "El primer paso no cuesta nada",
-      "h2": { "text": "30 minutos hoy valen más", "soft": "que una cotización a ciegas mañana." },
+      "h2": {
+        "text": "30 minutos hoy valen más",
+        "soft": "que una cotización a ciegas mañana."
+      },
       "quote": "No cotizamos lo que no hemos visto. Revisa la operación con nosotros: es gratis, y aun así va a valer más que la mayoría de las juntas de tu semana.",
-      "ctaPrimary": { "label": "Agendar mi Discovery Session", "href": "https://agenda.ingeniak.tech/discovery/agendar" },
-      "_micro": { "_omitir": true, "_nota": "No se pinta (QA ronda 1): la página usa una sola microcopia, la fija de §2.9 que la plantilla pone bajo el primario ('30 min · 1:1 · Google Meet · sin costo').", "text": "Sin costo · Sin compromiso · 30\u00a0minutos por Google Meet" },
-      "firma": "Construimos empresarios libres, no héroes cansados."
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session",
+        "href": "#agenda"
+      },
+      "firma": "Construimos empresarios libres, no héroes cansados.",
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, vengo de la página de la Discovery Session y tengo una duda antes de agendar."
+      },
+      "links": [
+        {
+          "label": "¿Ya sabes lo que necesitas? Cotizar proyecto",
+          "href": "/contacto/#cotizar",
+          "cotizar": true
+        }
+      ]
     }
   }
 }

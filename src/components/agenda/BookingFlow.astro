@@ -1,0 +1,297 @@
+---
+// BookingFlow · reserva en 3 pasos de las landings ocultas (CAMBIO-COTIZAR §5.5, dueño "agenda").
+// Port del BookingFlow de riklanderos.tech (flujo-agenda.md §4.6) a marcado estático + TypeScript sin framework
+// (src/scripts/agenda/booking.ts, cargado con import() solo si hay un [data-agenda] en la página).
+//   Discovery: Tus datos → Horario (Google Calendar en vivo) → Confirmar (Meet + invitación de Google al instante).
+//   Power:     Tus datos → Horario → Pago (apartado de 30 minutos → Stripe Checkout → /agendar/confirmado/).
+// Props: tipo ('discovery' | 'power', obligatorio) · waHref (WhatsApp de la landing: errores y vacío) ·
+//        waDoneHref (WhatsApp de la vista final de Discovery, ya con la sesión agendada; por defecto T.done.waMensaje) ·
+//        headingLevel (2 | 3, títulos de paso; por defecto 3) · id (por defecto bk-<tipo>) · class.
+// Raíz: <div class="bk glass-panel" data-agenda="<tipo>" data-hold="30">. Evento de entrada: `agenda:focus` sobre la raíz.
+// Diseño: errores ámbar; día y horario elegidos en cian; el ÚNICO azul es el botón del paso (.btn + data-primary);
+// "Atrás" y "Cambiar horario" en .btn--ghost. Primitivas de formulario de forms.css (área modal); lo propio en agenda.css.
+import '../../styles/forms.css';
+import '../../styles/agenda.css';
+import Icon from '../ui/Icon.astro';
+import PhoneField from '../forms/PhoneField.astro';
+import { T, POWER_PRICE, HOLD_SHOWN } from './textos';
+import { waHref as waLink } from '../../lib/site';
+import { INDUSTRIES, TEAM_SIZES, REVENUES, TIME_DRAINS, SESSION_RULES, CONTACT, type SessionType } from '../../../shared/agenda.js';
+
+interface Props { tipo: SessionType; waHref?: string; waDoneHref?: string; headingLevel?: 2 | 3; id?: string; class?: string }
+const { tipo, waHref = CONTACT.wa, waDoneHref = waLink(T.done.waMensaje), headingLevel = 3, id: idProp, class: cls } = Astro.props;
+const waMover = waLink(T.done.waMover);
+if (tipo !== 'discovery' && tipo !== 'power') throw new Error(`[agenda/BookingFlow] tipo inválido: ${tipo}`);
+const id = idProp ?? `bk-${tipo}`;
+const H = `h${headingLevel}` as 'h2' | 'h3';
+const isPower = tipo === 'power';
+const rule = SESSION_RULES[tipo];
+const steps = T.pasos[tipo];
+const f = (k: string) => `${id}-${k}`;
+const mail = `mailto:${CONTACT.email}`;
+const node = '<rect class="n" x="5" y="5" width="6" height="6" rx="1"/><path class="r" d="M8 8h6M11 5l3 3-3 3"/>';
+const [vacio1, vacio2] = T.s2.vacioCierre.split('{email}');
+const [nojs1, nojs2] = T.nojs.split('{email}');
+const [mover1, moverResto] = T.done.mover.split('{wa}');
+const [mover2, mover3] = moverResto.split('{email}');
+const goal = T.campos.goal[tipo];
+---
+<div class:list={['bk', 'glass-panel', `bk--${tipo}`, cls]} id={id} data-agenda={tipo} data-hold={String(HOLD_SHOWN)}
+  data-wa={waHref} data-minutes={String(rule.minutes)} data-price={isPower ? POWER_PRICE : undefined} data-step="1">
+
+  {/* Sin JavaScript: el flujo no puede leer la agenda; rutas directas. */}
+  <div class="bk__nojs">
+    <p>{nojs1}<a href={mail}>{CONTACT.email}</a>{nojs2}</p>
+    <p class="bk__nojs-a"><a class="btn btn--ghost" href={waHref} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /><span class="btn__t">{T.nojsWa}</span></a></p>
+  </div>
+
+  <div class="bk__js">
+    <header class="bk__head">
+      <ol class="bk__prog" aria-label="Pasos" data-bk-prog>
+        {steps.map((label, i) => (
+          <li class="bk__prog-i" data-n={i + 1} aria-current={i === 0 ? 'step' : undefined}>
+            <span class="bk__prog-bar" aria-hidden="true"></span>
+            <span class="bk__prog-t"><span class="bk__prog-n" aria-hidden="true">{i + 1}</span> {label}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="chip-sim bk__sim" data-bk-sim hidden>{T.sim}</p>
+    </header>
+
+    <p class="bk__notice" role="status" data-bk-notice hidden></p>
+    <p class="sr-only" aria-live="polite" data-bk-live></p>
+
+    {/* ── Paso 1 · Tus datos ── */}
+    <section class="bk__step" data-step-view="1" aria-labelledby={f('s1')}>
+      <div class="bk__step-head">
+        <p class="t-label bk__step-k" aria-hidden="true">{T.pasoDe.replace('{n}', '1')} · {steps[0]}</p>
+        <H class="bk__h" id={f('s1')} tabindex="-1">{T.s1.h}</H>
+        <p class="bk__sub">{T.s1.sub[tipo]}</p>
+      </div>
+      <form class="bk__form" data-bk-form novalidate>
+        <div class="form-summary bk__summary" data-bk-summary role="alert" tabindex="-1" hidden></div>
+
+        <fieldset class="bk__group">
+          <legend class="t-label bk__legend">{T.s1.grupos[0]}</legend>
+          <div class="bk__grid">
+            <div class="fld bk__full" data-field="fullName">
+              <label class="fld__label" for={f('fullName')}>{T.campos.fullName.label}</label>
+              <input class="fld__input" id={f('fullName')} name="fullName" type="text" autocomplete="name" maxlength="120" required />
+              <p class="fld__error" id={f('fullName-error')} hidden></p>
+            </div>
+            <div class="fld" data-field="email">
+              <label class="fld__label" for={f('email')}>{T.campos.email.label}</label>
+              <input class="fld__input" id={f('email')} name="email" type="email" inputmode="email" autocomplete="email" maxlength="200" required aria-describedby={f('email-help')} />
+              <p class="fld__help" id={f('email-help')}>{T.campos.email.help}</p>
+              <p class="fld__error" id={f('email-error')} hidden></p>
+            </div>
+            <PhoneField id={f('whatsapp')} name="whatsapp" label={T.campos.whatsapp.label} help={T.campos.whatsapp.help} />
+          </div>
+        </fieldset>
+
+        <fieldset class="bk__group">
+          <legend class="t-label bk__legend">{T.s1.grupos[1]}</legend>
+          <div class="bk__grid">
+            <div class="fld" data-field="businessName">
+              <label class="fld__label" for={f('businessName')}>{T.campos.businessName.label}</label>
+              <input class="fld__input" id={f('businessName')} name="businessName" type="text" autocomplete="organization" maxlength="150" required />
+              <p class="fld__error" id={f('businessName-error')} hidden></p>
+            </div>
+            <div class="fld" data-field="website">
+              <label class="fld__label" for={f('website')}>{T.campos.website.label}<span class="fld__opt">{T.campos.opcional}</span></label>
+              <input class="fld__input" id={f('website')} name="website" type="text" inputmode="url" autocomplete="url" maxlength="200" placeholder={T.campos.website.placeholder} />
+              <p class="fld__error" id={f('website-error')} hidden></p>
+            </div>
+            <div class="fld" data-field="industry">
+              <label class="fld__label" for={f('industry')}>{T.campos.industry.label}</label>
+              <select class="fld__select" id={f('industry')} name="industry" required>
+                <option value="" disabled selected>{T.campos.industry.placeholder}</option>
+                {INDUSTRIES.map((o) => <option value={o}>{o}</option>)}
+              </select>
+              <p class="fld__error" id={f('industry-error')} hidden></p>
+            </div>
+            <div class="fld" data-field="teamSize">
+              <label class="fld__label" for={f('teamSize')}>{T.campos.teamSize.label}</label>
+              <select class="fld__select" id={f('teamSize')} name="teamSize" required>
+                <option value="" disabled selected>{T.campos.teamSize.placeholder}</option>
+                {TEAM_SIZES.map((o) => <option value={o}>{o}</option>)}
+              </select>
+              <p class="fld__error" id={f('teamSize-error')} hidden></p>
+            </div>
+            <div class="fld bk__full" data-field="revenue" data-form-options="facturacion">
+              <label class="fld__label" for={f('revenue')}>{T.campos.revenue.label}</label>
+              <select class="fld__select" id={f('revenue')} name="revenue" required>
+                <option value="" disabled selected>{T.campos.revenue.placeholder}</option>
+                {REVENUES.map((o) => <option value={o}>{o}</option>)}
+              </select>
+              <p class="fld__error" id={f('revenue-error')} hidden></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="bk__group">
+          <legend class="t-label bk__legend">{T.s1.grupos[2]}</legend>
+          <div class="bk__grid">
+            {isPower && (
+              <fieldset class="fld bk__full" data-field="timeDrains" id={f('timeDrains')} aria-describedby={f('timeDrains-error')}>
+                <legend class="fld__label">{T.campos.timeDrains.label}<span class="fld__opt">{T.campos.timeDrains.opt}</span></legend>
+                <div class="bk__chips" data-bk-drains>
+                  {TIME_DRAINS.map((d) => (
+                    <button type="button" class="bk__chip" aria-pressed="false" data-drain={d}>
+                      <span class="bk__chip-dot" aria-hidden="true"></span><span class="bk__chip-t">{d}</span>
+                      <Icon name="check" size={14} class="bk__chip-check" />
+                    </button>
+                  ))}
+                </div>
+                <p class="fld__error" id={f('timeDrains-error')} hidden></p>
+              </fieldset>
+            )}
+            {isPower && (
+              <div class="fld bk__full" data-field="tools">
+                <label class="fld__label" for={f('tools')}>{T.campos.tools.label}</label>
+                <input class="fld__input" id={f('tools')} name="tools" type="text" maxlength="300" required aria-describedby={f('tools-help')} />
+                <p class="fld__help" id={f('tools-help')}>{T.campos.tools.help}</p>
+                <p class="fld__error" id={f('tools-error')} hidden></p>
+              </div>
+            )}
+            <div class="fld bk__full" data-field="goal">
+              <label class="fld__label" for={f('goal')}>{goal.label}</label>
+              <textarea class="fld__textarea" id={f('goal')} name="goal" rows="4" maxlength={isPower ? 1000 : 600} required aria-describedby={f('goal-help')}></textarea>
+              <p class="fld__help" id={f('goal-help')}>{goal.help}</p>
+              <p class="fld__error" id={f('goal-error')} hidden></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="hp" aria-hidden="true">
+          <label>{T.s1.honeypot} <input type="text" name="website_url" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <div class="bk__foot bk__foot--1">
+          <p class="bk__priv t-small">{T.s1.privacidad} <a href="/aviso-privacidad/" target="_blank" rel="noopener">{T.s1.aviso}</a></p>
+          <button type="submit" class="btn bk__next" data-primary>
+            <span class="btn__t">{T.s1.boton}</span>
+            <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16" set:html={node} /></span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    {/* ── Paso 2 · Horario ── */}
+    <section class="bk__step" data-step-view="2" aria-labelledby={f('s2')} hidden>
+      <div class="bk__step-head">
+        <p class="t-label bk__step-k" aria-hidden="true">{T.pasoDe.replace('{n}', '2')} · {steps[1]}</p>
+        <H class="bk__h" id={f('s2')} tabindex="-1">{T.s2.h}</H>
+        <p class="bk__sub" data-allow-number>{T.s2.sub(tipo)}</p>
+      </div>
+
+      <div class="bk__skel" data-bk-loading aria-busy="true" aria-label={T.s2.cargando}>
+        {[0, 1, 2, 3, 4].map(() => <span class="bk__skel-d" aria-hidden="true"></span>)}
+        <span class="bk__skel-s" aria-hidden="true"></span>
+      </div>
+
+      <div class="bk__alert" data-bk-days-error hidden>
+        <p data-bk-days-error-t></p>
+        <p class="bk__alert-a">
+          <button type="button" class="lnk" data-bk-retry>{T.s2.reintentar}</button>
+          <a class="lnk" href={waHref} target="_blank" rel="noopener" data-wa><Icon name="whatsapp" size={16} />{T.avisos.wa}</a>
+        </p>
+      </div>
+
+      <div class="bk__empty" data-bk-empty hidden>
+        <p>{T.s2.vacio[tipo]} {vacio1}<a href={mail}>{CONTACT.email}</a>{vacio2}</p>
+        <p><a class="lnk" href={waHref} target="_blank" rel="noopener" data-wa><Icon name="whatsapp" size={16} />{T.avisos.wa}</a></p>
+      </div>
+
+      <div class="bk__picker" data-bk-picker hidden>
+        <div class="bk__days" role="tablist" aria-label={T.s2.dias} data-bk-days></div>
+        <div class="bk__panel" role="tabpanel" data-bk-panel>
+          <p class="bk__daylabel" data-bk-daylabel></p>
+          <div class="bk__slots" data-bk-slots></div>
+        </div>
+      </div>
+
+      <template data-bk-day-tpl>
+        <button type="button" role="tab" class="bk__day" aria-selected="false" tabindex="-1">
+          <span class="bk__day-w"></span><span class="bk__day-n"></span><span class="bk__day-m"></span>
+        </button>
+      </template>
+      <template data-bk-slot-tpl>
+        <button type="button" class="bk__slot" aria-pressed="false"><span class="bk__slot-t"></span><span class="bk__slot-l"></span></button>
+      </template>
+
+      <div class="bk__foot">
+        <button type="button" class="btn btn--ghost bk__back" data-bk-back>
+          <Icon name="arrow" size={16} class="bk__back-ico" /><span class="btn__t">{T.s2.atras}</span>
+        </button>
+        <button type="button" class="btn bk__next" data-primary data-bk-continue disabled>
+          <span class="btn__t">{T.s2.continuar}</span>
+          <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16" set:html={node} /></span>
+        </button>
+      </div>
+    </section>
+
+    {/* ── Paso 3 · Confirmar / Pago ── */}
+    <section class="bk__step" data-step-view="3" aria-labelledby={f('s3')} hidden>
+      <div class="bk__step-head">
+        <p class="t-label bk__step-k" aria-hidden="true">{T.pasoDe.replace('{n}', '3')} · {steps[2]}</p>
+        <H class="bk__h" id={f('s3')} tabindex="-1">{T.s3.h[tipo]}</H>
+      </div>
+      <dl class="bk__sum">
+        <div class="bk__sum-r"><dt>{T.s3.filas.sesion}</dt><dd data-allow-number>{T.s3.sesion(tipo)}</dd></div>
+        <div class="bk__sum-r"><dt>{T.s3.filas.cuando}</dt><dd><span data-bk-when></span> <span class="bk__muted">{T.s3.cdmx}</span><span class="bk__sum-local" data-bk-when-local hidden></span></dd></div>
+        <div class="bk__sum-r"><dt>{T.s3.filas.para}</dt><dd><span data-bk-who></span><span class="bk__sum-local" data-bk-who-email></span></dd></div>
+        <div class="bk__sum-r"><dt>{T.s3.filas.costo}</dt><dd>{isPower ? <Fragment><span data-offer="power-price">{POWER_PRICE}</span> · {T.s3.pagoUnico}</Fragment> : T.s3.sinCosto}</dd></div>
+      </dl>
+      <p class="bk__note">{T.s3.nota[tipo]}</p>
+      <div class="bk__alert" role="alert" data-bk-error hidden>
+        <p data-bk-error-t></p>
+        <p class="bk__alert-a"><a class="lnk" href={waHref} target="_blank" rel="noopener" data-wa><Icon name="whatsapp" size={16} />{T.avisos.wa}</a></p>
+      </div>
+      <div class="bk__foot">
+        <button type="button" class="btn btn--ghost bk__back" data-bk-change>
+          <Icon name="arrow" size={16} class="bk__back-ico" /><span class="btn__t">{T.s3.cambiar}</span>
+        </button>
+        <button type="button" class="btn bk__next bk__go" data-primary data-bk-confirm>
+          <span class="btn__t" data-bk-go-idle>{isPower ? <Fragment>{`${T.s3.pagar} `}<span data-offer="power-price">{POWER_PRICE}</span></Fragment> : T.s3.confirmar}</span>
+          <span class="btn__t" data-bk-go-busy hidden>{isPower ? T.s3.abriendoPago : T.s3.agendando}</span>
+          <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16" set:html={node} /><span class="bk__spin"></span></span>
+        </button>
+      </div>
+    </section>
+
+    {/* ── Vista final (Discovery: confirmada al instante) ── */}
+    {!isPower && (
+      <section class="bk__step bk__done" data-step-view="done" aria-labelledby={f('done')} hidden>
+        <span class="bk__mark" aria-hidden="true"><Icon name="check" size={26} stroke={2} /></span>
+        <p class="t-label t-label--cyan bk__done-k">{T.done.kicker}</p>
+        <H class="bk__done-h" id={f('done')} tabindex="-1" data-bk-done-h>{T.done.hSinNombre}</H>
+        <p class="bk__done-when"><span data-bk-done-when></span><span class="bk__sum-local" data-bk-done-local hidden></span></p>
+        <p class="bk__done-p" data-bk-done-inv></p>
+        <div class="bk__done-a">
+          <a class="btn bk__meet" data-primary target="_blank" rel="noopener" data-bk-meet hidden>
+            <span class="btn__t">{T.done.meet}</span>
+            <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16" set:html={node} /></span>
+          </a>
+          <a class="btn btn--ghost" href={waDoneHref} target="_blank" rel="noopener" data-wa><Icon name="whatsapp" size={18} /><span class="btn__t">{T.done.wa}</span></a>
+          <a class="lnk" href="/">{T.done.inicio}</a>
+        </div>
+        <div class="bk__tips">
+          <p class="t-label bk__tips-h">{T.done.aprovechar}</p>
+          <ul class="bk__tips-l">
+            {T.done.tips.map((tip) => <li><span class="node" aria-hidden="true"></span><span>{tip}</span></li>)}
+          </ul>
+          <p class="t-small bk__mover">{mover1}<a href={waMover} target="_blank" rel="noopener" data-wa>{T.done.moverWa}</a>{mover2}<a href={mail}>{CONTACT.email}</a>{mover3}</p>
+        </div>
+      </section>
+    )}
+  </div>
+</div>
+
+<script>
+  // Carga perezosa de la máquina de estados: solo en páginas con una reserva.
+  const roots = Array.from(document.querySelectorAll<HTMLElement>('[data-agenda]'));
+  if (roots.length) {
+    import('../../scripts/agenda/booking').then((m) => roots.forEach((r) => m.initBooking(r)));
+  }
+</script>

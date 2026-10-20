@@ -5,13 +5,15 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Texto propio de la página: portada, buscador, entrada de cada tema, nota del editor y cierre. Las respuestas son las del banco src/data/faq.json (ya revisadas por copy).",
     "APROBACIÓN · 17 preguntas del banco siguen en 'validar' y no se publican (ni en la página ni en el FAQPage): H04, N02, N03, N04, N05, N06, N08, N09, N10, N11, N14, N15, S01, S02, S03, S04 y S05. Ya están asignadas a su tema: aparecen solas cuando se aprueben en faq.json.",
     "CAMBIO DE TEXTO · D proponía 32 preguntas en 6 temas (27 publicables hoy). La página publica las 37 preguntas aprobadas del banco: se suman G09, L02, N13, K03, H03, W03, K04, D03, D04 y D05, cada una en el tema que le corresponde.",
     "PREGUNTA AL CLIENTE · ¿Confirmas que en el WhatsApp +52 33 2101 7799 contesta Kain y que pasa la conversación a una persona del equipo cuando hace falta? La búsqueda sin resultados invita a 'preguntarle a Kain' por ahí.",
-    "PREGUNTA AL CLIENTE · ¿Make se usa en proyectos de clientes? Aparece junto a n8n en 'Con qué lo hacemos' (también lo cita la respuesta G09)."
+    "PREGUNTA AL CLIENTE · ¿Make se usa en proyectos de clientes? Aparece junto a n8n en 'Con qué lo hacemos' (también lo cita la respuesta G09).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: cierre pasa a 'Cotizar proyecto' y sale la microcopia de 30 minutos. #empezar ya no describe la Discovery Session: H2 'El primer paso es cotizar tu proyecto.', lede y tres pasos del formulario (salen 'Siete preguntas · Dos minutos', 'Eliges tu horario' y 'Media hora, 1:1 y sin costo'), remate sin 'Treinta minutos', y el enlace 'Qué pasa en la Discovery Session' (/discovery/) → 'Cotizar proyecto' (/contacto/#cotizar, abre el formulario). crm.lede y precio.lede sin la Discovery Session. Cierre: 'Hazla en la Discovery Session.' → 'Escríbela al cotizar tu proyecto.' y lede sin '30 minutos'.",
+    "CAMBIO DE TEXTO (2026-10-20) · FAQ de #empezar: D01–D06 salen de esta página (la landing /discovery/ queda oculta y sus preguntas viven solo ahí); el tema queda con G11 (reescrita: 'Cotizar proyecto'), N07 (pasa de #ingeniak a #empezar; categoría 'Empezar') y G12. G07, G08, G10, W03, K04 y L01 se reescribieron en el banco sin la Discovery Session. Las preguntas P01–P07 (Power Session) viven solo en /power-session/."
   ],
   "sections": {
     "hero": {
@@ -60,7 +62,6 @@
         "L01",
         "L02",
         "G15",
-        "N07",
         "N11"
       ],
       "links": [
@@ -166,7 +167,7 @@
         "text": "Tu CRM,",
         "soft": "según cómo vendes."
       },
-      "lede": "Implementamos los dos. Kommo, si vendes por mensajería y quieres el embudo dentro del chat; GoHighLevel, si te conviene tener CRM, páginas, calendarios y campañas en una sola cuenta. En la Discovery Session vemos cuál encaja con tu proceso comercial.",
+      "lede": "Implementamos los dos. Kommo, si vendes por mensajería y quieres el embudo dentro del chat; GoHighLevel, si te conviene tener CRM, páginas, calendarios y campañas en una sola cuenta. Cuando cotizas tu proyecto, vemos contigo cuál encaja con tu proceso comercial.",
       "badge": "Partner oficial de Kommo en LATAM",
       "ghl": "GoHighLevel: lo implementamos completo y en español.",
       "faqIds": [
@@ -260,7 +261,7 @@
         "figure": "{{Price}}",
         "line": "La implementación toma de 7 a 30 días, según el alcance."
       },
-      "lede": "No publicamos paquetes cerrados: dos empresas del mismo tamaño pueden necesitar sistemas muy distintos. El alcance y el costo exactos te los proponemos después de la Discovery Session, con tu operación a la vista y sin letra chica.",
+      "lede": "No publicamos paquetes cerrados: dos empresas del mismo tamaño pueden necesitar sistemas muy distintos. El alcance y el costo exactos te los proponemos cuando cotizas tu proyecto, con tu operación a la vista y sin letra chica.",
       "faqIds": [
         "G07",
         "W03",
@@ -289,43 +290,39 @@
       ]
     },
     "empezar": {
-      "_componente": "Intertitle split + los pasos de la Discovery Session + FAQAccordion + EditorNote",
+      "_componente": "Intertitle split + los tres pasos de «Cotizar proyecto» + FAQAccordion + EditorNote",
       "rail": "Cómo empezar",
       "eyebrow": "Cómo empezar",
       "h2": {
         "text": "El primer paso",
-        "soft": "es una llamada de 30 minutos."
+        "soft": "es cotizar tu proyecto."
       },
-      "lede": "Todo empieza con una Discovery Session: una llamada 1:1 por Google Meet, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden. Si tiene sentido para los dos, después te enviamos una propuesta.",
+      "lede": "Todo empieza con «Cotizar proyecto»: un formulario de tres pasos sobre lo que necesitas y tu negocio. Te contactamos por WhatsApp y correo y, si tiene sentido para los dos, te enviamos una propuesta con alcance, tiempos y costo.",
       "steps": [
         {
-          "title": "Llenas un formulario corto",
-          "line": "Siete preguntas sobre tu negocio. Dos minutos."
+          "title": "Cuentas qué necesitas",
+          "line": "Un formulario de tres pasos: qué necesitas, tu negocio y cómo contactarte."
         },
         {
-          "title": "Eliges tu horario",
-          "line": "En hora de la Ciudad de México, de lunes a viernes."
+          "title": "Te contactamos",
+          "line": "Por WhatsApp y correo, para entender tu operación."
         },
         {
-          "title": "Nos vemos en Google Meet",
-          "line": "Media hora, 1:1 y sin costo."
+          "title": "Recibes una propuesta",
+          "line": "Si tiene sentido para los dos: alcance, tiempos y costo."
         }
       ],
       "faqIds": [
         "G11",
-        "G12",
-        "D01",
-        "D02",
-        "D03",
-        "D04",
-        "D05",
-        "D06"
+        "N07",
+        "G12"
       ],
       "links": [
         {
-          "label": "Qué pasa en la Discovery Session",
-          "href": "/discovery/",
-          "line": "Qué revisamos, qué no es y para quién es."
+          "label": "Cotizar proyecto",
+          "href": "/contacto/#cotizar",
+          "cotizar": true,
+          "line": "Formulario de tres pasos; te contactamos por WhatsApp y correo."
         },
         {
           "label": "Contacto",
@@ -337,7 +334,7 @@
         "label": "Nota del editor",
         "text": "Estas respuestas son las mismas que aparecen en cada página del sitio: salen de un solo banco de preguntas, así que si una cambia, cambia en todas. Las preguntas nuevas se publican cuando el equipo las revisa. Fuente de las cifras: {{source}}; los nombres de los clientes están anonimizados."
       },
-      "remate": "Treinta minutos alcanzan para saber si tiene sentido trabajar juntos."
+      "remate": "Tres pasos bastan para empezar la conversación."
     },
     "cta-final": {
       "_componente": "Dawn (cta-amanecer)",
@@ -345,18 +342,16 @@
       "eyebrow": "¿Te quedó una duda?",
       "h2": {
         "text": "¿No encontraste tu pregunta?",
-        "soft": "Hazla en la Discovery Session."
+        "soft": "Escríbela al cotizar tu proyecto."
       },
-      "lede": "En 30 minutos revisamos tu operación contigo y respondemos lo que una página no alcanza a cubrir: qué te conviene a ti y en qué orden.",
+      "lede": "Cuéntanos tu operación en el formulario y te contactamos para responder lo que una página no alcanza a cubrir: qué te conviene a ti y en qué orden.",
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, revisé las preguntas frecuentes de Ingeniak y tengo una duda."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

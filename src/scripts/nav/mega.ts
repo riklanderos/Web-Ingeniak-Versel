@@ -356,6 +356,8 @@ export function initMega(): MegaApi | undefined {
   }, { passive: true });
   // Si cambian las fuentes, vuelve a medir el panel abierto
   document.fonts?.ready.then(() => { if (openKey) { const p = panelOf(openKey); if (p) measureBg(p); } });
+  // Otra capa (modal de cotización, CAMBIO-COTIZAR §2.5) pide cerrar todo: cierre inmediato, libera el lock 'mega'.
+  document.addEventListener('ingeniak:overlays-close', () => close());
 
   return { open: (k, f) => open(k, !!f, 'key'), close: (r) => close(!!r), current: () => openKey };
 }

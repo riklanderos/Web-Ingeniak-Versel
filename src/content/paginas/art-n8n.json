@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "articulo": {
     "categoria": "Automatización",
     "about": [
@@ -57,7 +57,8 @@
     "CAMBIO DE TEXTO · el brief de D pedía 'La respuesta corta' como sección 1 del cuerpo; es la caja AnswerBox y encabeza el índice. Las otras cinco secciones de D están completas y en orden.",
     "CAMBIO DE TEXTO · #caso-logistica: el H2 no lleva '27 procesos' escrito a mano (check-cifras); la cifra sale con <Metric> en la escena a sangre (logistica-procesos, una vez fuera del FAQ). Del caso solo se usa lo confirmado en sitemap.json: logística, n8n y agentes de IA, CRM, WhatsApp, ERP y modelos de IA con disparadores en tiempo real. No se describe punto de partida (no confirmado).",
     "ENLACES · /casos/logistica-n8n/ ya existe como caso breve (noindex mientras su puerta R2 siga pendiente); la escena y 'Sigue explorando' la enlazan. Si se retira, la plantilla pinta el texto sin enlace y completa con páginas construidas.",
-    "PLACA · portada home-sistema-4-automatizar en espejo (la misma de /servicios/automatizacion-n8n/, corte por coincidencia), escena caso-logistica-hero y cierre cta-amanecer, como pide sitemap.json. hero.ui queda escrito, pero la plantilla solo pinta la figura sobre una superficie telefono/pantalla/tableta y esta placa registra 'constelacion' (pedido en peticiones.md · Construcción · artículos)."
+    "PLACA · portada home-sistema-4-automatizar en espejo (la misma de /servicios/automatizacion-n8n/, corte por coincidencia), escena caso-logistica-hero y cierre cta-amanecer, como pide sitemap.json. hero.ui queda escrito, pero la plantilla solo pinta la figura sobre una superficie telefono/pantalla/tableta y esta placa registra 'constelacion' (pedido en peticiones.md · Construcción · artículos).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: cta-medio y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cuerpo (bloque 40): 'En la Discovery Session revisamos…' → 'Cuando cotizas tu proyecto, revisamos…'. Cierre: 'Lo priorizamos en 30 minutos.' → 'Lo priorizamos contigo.'."
   ],
   "sections": {
     "hero": {
@@ -302,7 +303,7 @@
           ]
         },
         "Para elegir el primero, haz una lista de las tareas que tu equipo repite cada semana y anota tres cosas de cada una: cuántas veces pasa, cuánto tarda y qué cuesta un error. La que gane en las tres es tu primer flujo, y casi siempre conviene construirla con la herramienta más sencilla que la resuelva.",
-        "En Ingeniak los proyectos empiezan {{price}}, e implementar un sistema toma de 7 a 30 días, según el alcance. En la Discovery Session revisamos tus procesos y te decimos cuál automatizar primero y con qué herramienta. Si basta con Zapier, te lo decimos."
+        "En Ingeniak los proyectos empiezan {{price}}, e implementar un sistema toma de 7 a 30 días, según el alcance. Cuando cotizas tu proyecto, revisamos tus procesos y te decimos cuál automatizar primero y con qué herramienta. Si basta con Zapier, te lo decimos."
       ]
     },
     "cta-medio": {
@@ -314,8 +315,7 @@
         "href": "/servicios/automatizacion-n8n/"
       },
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
@@ -434,17 +434,15 @@
       "eyebrow": "Empieza por uno",
       "h2": {
         "text": "¿Qué automatizarías primero?",
-        "soft": "Lo priorizamos en 30 minutos."
+        "soft": "Lo priorizamos contigo."
       },
       "ctaPrimary": {
-        "label": "Agenda tu Discovery Session",
-        "href": "/discovery/"
+        "label": "Cotizar proyecto"
       },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, leí la comparativa n8n vs Zapier vs Make y quiero automatizar mi empresa."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

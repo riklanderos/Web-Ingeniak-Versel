@@ -5,15 +5,16 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "PREGUNTA AL CLIENTE · qué sale de cada fase (fases.steps[].out y tabla): el texto usa solo lo que ya está confirmado (diagnóstico de qué automatizar primero, propuesta con alcance, tiempos y costo, sistema conectado, equipo capacitado, tableros y métricas cada mes). ¿Alguno de esos entregables tiene nombre propio o formato fijo (documento, mapa, reporte) que convenga decir?",
     "PREGUNTA AL CLIENTE · quién participa en cada fase (fases.steps[].who y columna 'Quién participa'): hoy dice en general 'tú y nuestro equipo'. ¿Hay roles fijos del lado del cliente (dueño, responsable de ventas, recepción) o del lado de Ingeniak que quieras nombrar? No se nombra a nadie del equipo sin confirmación.",
-    "PREGUNTA AL CLIENTE · cuánto dura Verify después de la Discovery Session: el texto solo dice que empieza ahí (30 minutos). No se promete un plazo para Verify ni para Koncept.",
+    "PREGUNTA AL CLIENTE · cuánto dura Verify después de la primera conversación (antes, la Discovery Session): el texto solo dice que empieza ahí. No se promete un plazo para Verify ni para Koncept.",
     "CAMBIO DE AFIRMACIÓN · 'resultados medibles en 60 a 90 días' (brief de D para que-es y tiempos) NO se publica: el cliente no lo ha confirmado (RESPUESTAS-CLIENTE 2026-10-19 solo confirma la implementación de 7 a 30 días según el alcance). En su lugar: el plazo confirmado de implementación, la aclaración de G08 (los resultados dependen de qué se implemente) y tres cifras de metrics.ts como referencia, con su fuente.",
     "CAMBIO DE TEXTO · fases y tabla usan las líneas de v1 (HowTo de la v1: 'Revisamos con números cómo vendes, atiendes y operas hoy', 'Definimos qué se automatiza, con qué herramientas y en qué orden', 'Implementamos agentes de IA, CRM, automatizaciones y campañas conectados entre sí', 'Capacitamos, monitoreamos y ajustamos el sistema en producción', 'Optimizamos cada mes con dashboards y métricas claras') ampliadas con lo confirmado en G11 (propuesta con alcance, tiempos y costo) y en la portada del inicio (la Discovery Session es la fase V).",
-    "DATO PENDIENTE · el HowTo del JSON-LD (src/components/layout/jsonld.ts, del área nav) usa los verbos oficiales como texto de cada paso; esos verbos están visibles en la página. Si se quiere que cada paso lleve la línea completa de fases.steps[].line, es un cambio de nav (pedido en peticiones.md)."
+    "DATO PENDIENTE · el HowTo del JSON-LD (src/components/layout/jsonld.ts, del área nav) usa los verbos oficiales como texto de cada paso; esos verbos están visibles en la página. Si se quiere que cada paso lleve la línea completa de fases.steps[].line, es un cambio de nav (pedido en peticiones.md).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. La fase V ya no empieza en la Discovery Session sino con la solicitud de cotización: fases.steps[0].line, tiempos.timeline[0] ('Primera conversación' · 'Después de tu solicitud de cotización, por WhatsApp y correo…'; sale 'Treinta minutos por Google Meet, sin costo'; el rótulo largo 'Primera conversación, después de tu solicitud de cotización' ocupaba 5 renglones en la línea de tiempo, así que la segunda mitad pasó a la línea), cierre ('con 30 minutos de diagnóstico.' → 'con tu solicitud de cotización.') y su lede. La FAQ G11 (en #faq) se reescribió en el banco."
   ],
   "sections": {
     "hero": {
@@ -30,7 +31,7 @@
         { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo" },
         { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados" }
       ],
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de la metodología VKTOR y quiero empezar el protocolo en mi empresa."
@@ -60,7 +61,7 @@
           "letter": "V",
           "name": "Verify",
           "verb": "Verificamos tu operación",
-          "line": "Revisamos con números cómo vendes, atiendes y operas hoy: por dónde llegan tus clientes, cuánto esperan una respuesta, qué pasa con cada prospecto y qué se mide. Empieza en la Discovery Session.",
+          "line": "Revisamos con números cómo vendes, atiendes y operas hoy: por dónde llegan tus clientes, cuánto esperan una respuesta, qué pasa con cada prospecto y qué se mide. Empieza con tu solicitud de cotización.",
           "out": "Un diagnóstico claro: qué conviene automatizar primero y qué todavía no.",
           "who": "Tú o quien dirige la operación, con nuestro equipo."
         },
@@ -124,7 +125,7 @@
       "h2": { "text": "De 7 a 30 días para implementar.", "soft": "Después, mes con mes." },
       "lede": "El plazo depende del alcance: no es lo mismo un agente para WhatsApp que un sistema con CRM, automatizaciones y campañas. Lo dejamos por escrito en la propuesta.",
       "timeline": [
-        { "letter": "V", "name": "Verify", "when": "Discovery Session", "line": "Treinta minutos por Google Meet, sin costo. Ahí empieza el diagnóstico." },
+        { "letter": "V", "name": "Verify", "when": "Primera conversación", "line": "Después de tu solicitud de cotización, por WhatsApp y correo. Ahí empieza el diagnóstico." },
         { "letter": "K", "name": "Koncept", "when": "La propuesta", "line": "Con alcance, tiempos y costo, antes de implementar nada." },
         { "letter": "T", "name": "Transform", "when": "De 7 a 30 días", "line": "Según el alcance del sistema." },
         { "letter": "O", "name": "Operate", "when": "En producción", "line": "Desde el primer día, con tu equipo y el nuestro." },
@@ -152,14 +153,13 @@
       "_componente": "Dawn (cta-amanecer en espejo)",
       "rail": "Cierre",
       "eyebrow": "Fase V · Verify",
-      "h2": { "text": "El protocolo empieza", "soft": "con 30 minutos de diagnóstico." },
-      "lede": "En la Discovery Session revisamos tu operación contigo y te decimos qué conviene automatizar y en qué orden.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "h2": { "text": "El protocolo empieza", "soft": "con tu solicitud de cotización." },
+      "lede": "Cuéntanos tu operación en el formulario y te contactamos para revisar contigo qué conviene automatizar y en qué orden.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de la metodología VKTOR y quiero empezar el protocolo en mi empresa."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

@@ -5,8 +5,8 @@ import sitemap from '../data/sitemap.json';
 import navegacion from '../data/navegacion.json';
 import plates from '../data/plates.json';
 import fs from 'node:fs';
-import { isNoindex, gatePending } from './indexacion.mjs';
-import { METRICS, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE } from './metrics';
+import { isNoindex, gatePending, isHidden } from './indexacion.mjs';
+import { METRICS, OFFERS, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE } from './metrics';
 import path from 'node:path';
 
 export const SITE = {
@@ -23,8 +23,13 @@ export const SITE = {
     facebook: 'https://www.facebook.com/ingeniakmx',
     linkedin: 'https://www.linkedin.com/company/ingeniakmx',
   },
+  /** Acción primaria del sitio público (CAMBIO-COTIZAR §1, ESPEC §12.6 R15): abre el modal <dialog id="cotizar">; sin JS,
+   *  href lleva a la sección real /contacto/#cotizar. La etiqueta visible sale del copy (_comun.cta.cotizar); esta es su respaldo. */
+  quote: { label: 'Cotizar proyecto', short: 'Cotizar', href: '/contacto/#cotizar', hash: 'cotizar' },
+  /** Landings ocultas de campaña (R17): nunca se enlazan desde una página pública (check-cta, check-seo). */
   discovery: '/discovery/',
-  agenda: 'https://agenda.ingeniak.tech/discovery/agendar',
+  power: '/power-session/',
+  confirm: '/agendar/confirmado/',
   kainApp: 'https://app.kain.mx',
   kommo: 'https://www.kommo.com/',
 } as const;
@@ -35,10 +40,16 @@ export type Page = (typeof sitemap)[number];
  * {{metric:ID|prose}}, {{price}}, {{Price}}, {{source}}), igual que el copy, y se resuelven aquí desde metrics.ts
  * (QA ronda 1: la meta de /industrias/salud/ llevaba "3.2× … y respuesta en 12 s" escrito a mano). Así <title>,
  * meta description, og:*, JSON-LD y llms.txt cambian solos con METRICS. check-cifras falla si queda una cifra suelta. */
-const SITE_TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|price|Price|source)\}\}/g;
+const SITE_TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price|Price|source)\}\}/g;
 export function resolveTokens<T>(s: T): T {
   if (typeof s !== 'string' || !s.includes('{{')) return s;
-  return s.replace(SITE_TOKEN_RX, (all, k: string, id: string, mod?: string) => {
+  return s.replace(SITE_TOKEN_RX, (all, k: string, id: string, mod?: string, offer?: string) => {
+    // {{offer:ID}}: oferta de una landing oculta (OFFERS de metrics.ts, R18). Solo se publica en OFFER_ROUTES (check-cifras).
+    if (offer) {
+      const o = (OFFERS as Record<string, string>)[offer];
+      if (!o) throw new Error(`[site] sitemap.json: oferta desconocida ${all}`);
+      return o;
+    }
     if (k === 'price') return PRICE_FROM;
     if (k === 'Price') return PRICE_FROM_CAP;
     if (k === 'source') return SOURCE_NOTE;
@@ -178,3 +189,22 @@ export function isGatePending(page: Page): boolean { return gatePending(page, co
 export function pageNoindex(page: Page): boolean { return isNoindex(page, copyOrNull(page.id)); }
 /** Páginas que van a sitemap.xml, llms.txt y llms-full.txt (R8): construidas, indexables y sin puerta pendiente. */
 export function indexablePages(): Page[] { return pages.filter((p) => builtRoutes.has(p.url) && !pageNoindex(p)); }
+
+/* ───────────────────────── Landings ocultas (ESPEC §12.6 R17) ─────────────────────────
+ * sitemap.json → "hidden": true. Salen con noindex,follow (isNoindex) y fuera de sitemap.xml, llms*.txt, /indice.json,
+ * menús, footer, "Sigue explorando" y de cualquier enlace desde una página pública (check-cta y check-seo lo vigilan). */
+/** URLs de las landings ocultas ('/discovery/', '/power-session/', '/agendar/confirmado/'). */
+export const hiddenRoutes: Set<string> = new Set(pages.filter((p) => isHidden(p)).map((p) => p.url));
+/** ¿La página es una landing oculta? */
+export function isHiddenPage(page: Page | null | undefined): boolean { return isHidden(page); }
+/** ¿El href lleva a una landing oculta (o a la agenda externa de v1)? Acepta rutas, URLs absolutas de ingeniak.mx y hash/query. */
+export function isHiddenRoute(href: string | null | undefined): boolean {
+  if (!href) return false;
+  if (/agenda\.ingeniak\.tech/i.test(href)) return true;
+  const r = normRoute(href);
+  return !!r && (hiddenRoutes.has(r) || r.startsWith('/agendar/'));
+}
+/** Páginas públicas construidas: ni ocultas ni el 404 (lo que pueden listar menús, footer, ⌘K y "Sigue explorando"). */
+export function publicPages(): Page[] {
+  return pages.filter((p) => builtRoutes.has(p.url) && !isHidden(p) && p.template !== 'T-404');
+}

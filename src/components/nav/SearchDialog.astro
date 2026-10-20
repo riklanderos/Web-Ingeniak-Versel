@@ -2,11 +2,16 @@
 // SearchDialog — ⌘K "Busca o pregúntale a Kain" (ESPEC §4.3, F17).
 // <dialog> modal; el índice /indice.json y la lógica (scripts/nav/search.ts) se cargan solo al primer uso.
 // Se abre con ⌘K / Ctrl+K o con cualquier [data-search-open] (opcional data-search-q="texto inicial").
-// Props: waHref (WhatsApp base; la acción arma "Hola Kain, " + lo escrito al hacer clic).
+// Props: waHref (WhatsApp base; la acción arma "Hola Kain, " + lo escrito al hacer clic), current (URL de la página).
+// Acción fija «Cotizar proyecto» (CAMBIO-COTIZAR §1.4): abre el modal (data-cotizar data-section="buscador"); el binder
+// del modal cierra antes esta capa con 'ingeniak:overlays-close'. scripts/nav/search.ts la clona en cada búsqueda.
 import { ICONS } from './icons';
 import { SITE } from '../../lib/site';
-interface Props { waHref?: string }
-const { waHref = SITE.waBase } = Astro.props;
+import { QUOTE, quoteAttrs, quoteHref } from '../layout/cta';
+interface Props { waHref?: string; current?: string }
+const { waHref = SITE.waBase, current } = Astro.props;
+// role="option" no admite aria-haspopup (ARIA 1.2): la opción lleva data-cotizar + aria-controls, sin aria-haspopup.
+const { 'aria-haspopup': _hp, ...optQuote } = quoteAttrs('buscador');
 const suggestions = ['¿Cuánto cuesta un agente de IA?', 'Kommo vs GoHighLevel', 'Casos de salud'];
 ---
 <dialog class="sd" id="sd" aria-labelledby="sd-title" data-sd data-wa-base={SITE.waBase} data-wa-page={waHref}>
@@ -32,8 +37,8 @@ const suggestions = ['¿Cuánto cuesta un agente de IA?', 'Kommo vs GoHighLevel'
         </div>
         <div class="sd-group" role="group" aria-labelledby="sd-g-act">
           <p class="sd-group__h" id="sd-g-act" role="presentation">Acciones</p>
-          <a class="sd-opt sd-opt--act" role="option" id="sd-a-0" href={SITE.discovery} aria-selected="false">
-            <span class="sd-opt__node" aria-hidden="true"></span><span class="sd-opt__t">Agenda tu Discovery Session</span><span class="sd-opt__u" data-allow-number>30 min · 1:1 · sin costo</span>
+          <a class="sd-opt sd-opt--act" role="option" id="sd-a-0" href={quoteHref(current)} aria-selected="false" {...optQuote}>
+            <span class="sd-opt__node" aria-hidden="true"></span><span class="sd-opt__t">{QUOTE.label}</span><span class="sd-opt__u">{QUOTE.sub}</span>
           </a>
           <a class="sd-opt sd-opt--act" role="option" id="sd-a-1" href={waHref} target="_blank" rel="noopener" aria-selected="false">
             <svg class="ico sd-opt__ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} /><span class="sd-opt__t">Escríbele a Kain por WhatsApp</span><span class="sd-opt__u">responde 24/7</span>

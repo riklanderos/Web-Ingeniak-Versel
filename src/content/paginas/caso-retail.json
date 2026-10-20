@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "publishGate": {
     "ok": false,
     "fuente": null,
@@ -26,7 +26,8 @@
     "CAMBIO DE TEXTO · relacionados: el brief pide /kommo/, /industrias/retail-ecommerce/ y el caso e-commerce. Van /kommo/, /servicios/crm-con-ia/ (internalLinks: el servicio del caso, R8) y la industria; el caso e-commerce es el 'Siguiente reportaje' (cadena dental → retail → e-commerce → HoReCa → logística → dental).",
     "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir).",
     "CAMBIO DE TEXTO · relacionados (QA casos): la línea de la industria decía '…en un negocio de retail o e-commerce' y a 375 px se partía en 'e-' / 'commerce'. Ahora: 'Cómo se ve el sistema completo en una tienda, física o en línea.'",
-    "CAMBIO DE TEXTO · hero.ledeM (QA casos): versión corta del lede para el primer pantallazo en móvil (R3: el sujeto de la portada entra en pantalla); en escritorio sigue el lede completo. Mismo contenido, sin datos nuevos."
+    "CAMBIO DE TEXTO · hero.ledeM (QA casos): versión corta del lede para el primer pantallazo en móvil (R3: el sujeto de la portada entra en pantalla); en escritorio sigue el lede completo. Mismo contenido, sin datos nuevos.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' (sustituye la línea anterior sobre 'Agenda tu Discovery Session') y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Revisemos tu embudo.'; lede sin la Discovery Session."
   ],
   "sections": {
     "hero": {
@@ -36,7 +37,7 @@
       "chips": ["Retail multimarca", "Kommo + IA", "En operación"],
       "lede": "Kommo automatizado con calificación de leads por IA y un embudo de conversión que se ve en tiempo real: el equipo sabe a quién atender primero.",
       "ledeM": "Leads calificados por IA en Kommo: el equipo sabe a quién atender primero.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso del retail multimarca con Kommo y quiero mejorar mis conversiones." },
       "illus": "Imagen ilustrativa del sector"
     },
@@ -167,11 +168,10 @@
       "_componente": "Dawn (cta-amanecer)",
       "rail": "Cierre",
       "eyebrow": "Un embudo así para tu tienda",
-      "h2": { "text": "¿Tu Kommo vende o solo guarda contactos?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session revisamos cómo entra hoy un prospecto a tu CRM, quién le da seguimiento y qué parte de este sistema aplica a tu tienda. Si todavía no usas Kommo, también lo platicamos.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso del retail multimarca con Kommo y quiero mejorar mis conversiones." },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "h2": { "text": "¿Tu Kommo vende o solo guarda contactos?", "soft": "Revisemos tu embudo." },
+      "lede": "Cotiza tu proyecto y cuéntanos cómo entra hoy un prospecto a tu CRM y quién le da seguimiento. Vemos qué parte de este sistema aplica a tu tienda; si todavía no usas Kommo, también lo platicamos.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso del retail multimarca con Kommo y quiero mejorar mis conversiones." }
     }
   }
 }

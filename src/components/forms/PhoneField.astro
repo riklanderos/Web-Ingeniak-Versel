@@ -1,0 +1,38 @@
+---
+// PhoneField · teléfono con lada (CAMBIO-COTIZAR §2.9, dueño "modal"). Lo usan el modal de cotización y la reserva.
+// Props: id (obligatorio; es el id del input del número) · name = "telefono" · label = "WhatsApp"
+//        help (sin help: la ayuda por país de cotizar.json → textos.telefonoAyuda, "10 dígitos con la lada de tu ciudad,
+//        sin el +52…", que bindPhone ajusta al cambiar de país y que usa las mismas palabras que el error)
+//        · required = true · pais = "mx"
+// Pinta <select name="{name}_pais"> (opciones de cotizar.json → paises: texto "MX +52", nombre completo en aria-label/title),
+// <input name="{name}_lada"> visible solo con "Otro país" y <input type="tel" name="{name}_numero">.
+// El error va en <p id="{id}-error" class="fld__error" hidden> (lo llena el JS); la lógica vive en scripts/forms/phone.ts
+// (readPhone, normalizePhone, bindPhone).
+import catalogo from '../../data/cotizar.json';
+import { phoneHelp } from '../../scripts/forms/phone';
+
+interface Props { id: string; name?: string; label?: string; help?: string; required?: boolean; pais?: string; class?: string }
+const { id, name = 'telefono', label = 'WhatsApp', required = true, pais = 'mx', class: cls } = Astro.props;
+const auto = Astro.props.help === undefined;
+const help = auto ? phoneHelp(pais) : Astro.props.help;
+const paises = catalogo.paises as { iso: string; lada: string | null; label: string }[];
+const optText = (p: { iso: string; lada: string | null }) => (p.lada ? `${p.iso.toUpperCase()} ${p.lada}` : 'Otro');
+const optName = (p: { iso: string; lada: string | null; label: string }) => (p.lada ? `${p.label} ${p.lada}` : `${p.label}: escribe la lada`);
+const otro = pais === 'otro';
+---
+<div class:list={['fld', 'fld--phone', cls]} data-phone data-field={name} id={`${id}-fld`}>
+  <label class="fld__label" for={id}>{label}{!required && <span class="fld__opt">Opcional</span>}</label>
+  <div class="fld-phone">
+    <select class="fld__select fld-phone__cc" id={`${id}-pais`} name={`${name}_pais`} aria-label="País y lada" autocomplete="off">
+      {paises.map((p) => (
+        <option value={p.iso} data-lada={p.lada ?? ''} aria-label={optName(p)} title={p.label} selected={p.iso === pais}>{optText(p)}</option>
+      ))}
+    </select>
+    <input class="fld__input fld-phone__lada" id={`${id}-lada`} name={`${name}_lada`} type="text" inputmode="tel" autocomplete="off"
+      maxlength="6" placeholder="+380" aria-label="Lada del país" hidden={!otro} disabled={!otro} />
+    <input class="fld__input fld-phone__num" id={id} name={`${name}_numero`} type="tel" inputmode="tel" autocomplete="tel-national"
+      maxlength="20" placeholder="33 1234 5678" required={required} aria-describedby={help ? `${id}-help` : undefined} />
+  </div>
+  {help && <p class="fld__help" id={`${id}-help`} data-phone-help={auto ? '' : undefined}>{help}</p>}
+  <p class="fld__error" id={`${id}-error`} hidden></p>
+</div>

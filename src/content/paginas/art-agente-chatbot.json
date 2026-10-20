@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "articulo": {
     "categoria": "Agentes de IA",
     "about": [
@@ -36,7 +36,8 @@
     "DATO DE TERCEROS · Meta Business Agent (qué hace, de dónde aprende, controles, disponibilidad por mercado, gratis al empezar y suscripciones de pago anunciadas), la ventana de servicio de 24 horas y los límites de botones y listas de WhatsApp se consultaron el 2026-10-19 en páginas oficiales de Meta (fuentes 1 a 5). Meta está ampliando su agente por mercado: revisar el artículo cada trimestre y actualizar 'actualizado'.",
     "CAMBIO DE TEXTO · el brief de D pedía la respuesta corta como bloque de 40–60 palabras: es la caja de respuesta corta (definición de G02 + diferencia de G03, una oración cada una) y encabeza el índice. Las siete secciones de D están completas y en orden; se sumó una octava, 'Por dónde empezar', que enlaza a la página comercial y al artículo de precios.",
     "CIFRAS · dental-respuesta aparece dos veces fuera del FAQ (H2 del caso con el token |prose y la cifra mega de la escena); dental-citas, una (texto de la escena); sistemas, una (escena 'Un agente a la medida…'). W01 repite las dos del caso dentro del FAQ.",
-    "PLACA · la portada usa art-agente-chatbot-hero (ya exportada). No lleva figura registrada: la superficie es la pantalla de la terminal apagada (el chatbot de antes) y a 1440 px mide menos de 180 px, donde la figura solo pintaría barras cian sin texto; una figura 'viva' sobre la terminal muerta contradice la escena. Escenas del cuerpo: home-sistema-3-organizar (Kain sostiene la tarjeta del lead frente a los carriles del CRM, sujeto a la derecha) e ind-salud-hero (Kain con bata en un consultorio dental, odontóloga al fondo; caso-dental-hero queda solo en art-costo para no repetir la misma escena en el clúster del blog); el cierre, cta-amanecer en espejo. Se descartó kain-si-no (sujeto a la izquierda): la prosa que sigue a una escena sube 108 px sobre su disolución y quedaba encima de los pies y la plataforma de Kain. R13: ninguna pose ni objeto de Kain se repite en escenas seguidas."
+    "PLACA · la portada usa art-agente-chatbot-hero (ya exportada). No lleva figura registrada: la superficie es la pantalla de la terminal apagada (el chatbot de antes) y a 1440 px mide menos de 180 px, donde la figura solo pintaría barras cian sin texto; una figura 'viva' sobre la terminal muerta contradice la escena. Escenas del cuerpo: home-sistema-3-organizar (Kain sostiene la tarjeta del lead frente a los carriles del CRM, sujeto a la derecha) e ind-salud-hero (Kain con bata en un consultorio dental, odontóloga al fondo; caso-dental-hero queda solo en art-costo para no repetir la misma escena en el clúster del blog); el cierre, cta-amanecer en espejo. Se descartó kain-si-no (sujeto a la izquierda): la prosa que sigue a una escena sube 108 px sobre su disolución y quedaba encima de los pies y la plataforma de Kain. R13: ninguna pose ni objeto de Kain se repite en escenas seguidas.",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: cta-medio y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Cuerpo (bloque 40): 'En una Discovery Session de 30 minutos revisamos…' → 'Cuando cotizas tu proyecto, revisamos…'. El H2 del cierre no cambia."
   ],
   "sections": {
     "hero": {
@@ -163,7 +164,7 @@
           "**Conecta lo mínimo.** Tu WhatsApp, tu CRM y tu agenda. Lo demás se suma cuando la primera pieza ya da resultados.",
           "**Mide antes y después.** Tiempo de respuesta, citas o ventas: los mismos indicadores, con los mismos criterios."
         ] },
-        "En Ingeniak lo hacemos contigo. En una Discovery Session de 30 minutos revisamos cómo te llegan los clientes y te decimos si un agente tiene sentido para tu negocio o si, por ahora, te basta con algo más sencillo. Implementar un sistema toma de 7 a 30 días, según el alcance, y nuestros proyectos empiezan {{price}}. Si quieres el detalle de costos, lee [cuánto cuesta un agente de IA para WhatsApp en México](/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/)."
+        "En Ingeniak lo hacemos contigo. Cuando cotizas tu proyecto, revisamos cómo te llegan los clientes y te decimos si un agente tiene sentido para tu negocio o si, por ahora, te basta con algo más sencillo. Implementar un sistema toma de 7 a 30 días, según el alcance, y nuestros proyectos empiezan {{price}}. Si quieres el detalle de costos, lee [cuánto cuesta un agente de IA para WhatsApp en México](/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/)."
       ]
     },
     "cta-medio": {
@@ -171,7 +172,7 @@
       "label": "Siguiente paso",
       "text": "¿Quieres ver cómo conversa un agente de IA? Conoce a Kain o escríbele por WhatsApp como le escribiría uno de tus clientes.",
       "link": { "label": "Conoce a Kain", "href": "/kain/" },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí la diferencia entre un agente de IA y un chatbot y quiero ver cómo funcionas." }
     },
     "faq": {
@@ -210,9 +211,8 @@
       "_componente": "Dawn (cta-amanecer en espejo: Kain saluda, texto a la derecha)",
       "eyebrow": "Tu caso",
       "h2": { "text": "¿Qué respondería un agente en tu WhatsApp?", "soft": "Te lo mostramos." },
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí la diferencia entre un agente de IA y un chatbot y quiero ver cómo funcionas." },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "ctaPrimary": { "label": "Cotizar proyecto" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí la diferencia entre un agente de IA y un chatbot y quiero ver cómo funcionas." }
     }
   }
 }

@@ -4,12 +4,14 @@
 // ≤ 2.0 MB / 1.2 MB; primer pantallazo (placa LCP + Lexend) ≤ 450 KB. Además: cada <img> con width y height, los
 // pesos por archivo de §8.2 (AVIF de placas, stills, rack, aura, grano; video) y el JS gzip por página desde
 // dist/_astro (inicio 85 KB, internas 60 KB; solo con build: el servidor de desarrollo no lo puede medir).
+// Cambio 2026-10-20: las landings ocultas (/discovery/, /power-session/) y /agendar/confirmado/ llevan el presupuesto de
+// página interna (R9) como cualquier ruta de sitemap.json distinta de "/"; si alguna no se pudo medir, aviso.
 // Uso: node scripts/check-pesos.mjs [--url http://127.0.0.1:4321] [--release]
 import { existsSync, statSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { gzipSync } from 'node:zlib';
 import { pathToFileURL } from 'node:url';
-import { ROOT, parseArgs, reporter, loadPages, parseHTML, findAll, find, closest, isEl } from './_html.mjs';
+import { ROOT, HIDDEN, parseArgs, reporter, loadPages, onlyRoutes, parseHTML, findAll, find, closest, isEl } from './_html.mjs';
 
 const KB = 1000, MB = 1000 * 1000;
 const BUDGET = { home: { d: 3.8 * MB, m: 2.2 * MB }, page: { d: 2.0 * MB, m: 1.2 * MB }, first: 450 * KB, js: { home: 85 * KB, page: 60 * KB } };
@@ -242,6 +244,9 @@ export async function run(opts) {
       R.info(`${pg.route} · JS gzip ${fmt(js)} / ${fmt(lim)} en el camino crítico · + ${fmt(deferred)} diferido con import() (primer nivel)`);
     }
   }
+  // rutas nuevas del cambio 2026-10-20: deben medirse (presupuesto de página interna)
+  const scope = onlyRoutes(opts);
+  for (const r of HIDDEN) if ((!scope || scope.has(r)) && !pages.some((p) => p.route === r)) R.warn(r, 'sin medir: la ruta no respondió 200 (presupuesto de página interna, R9)');
   if (opts.url) R.info('JS gzip: solo se mide contra dist/_astro después de "astro build" (el servidor de desarrollo sirve módulos sin empaquetar)');
   // §8.2: todos los AVIF publicados de placas, aura y grano (aunque hoy no los use ninguna página)
   const dir = join(ROOT, 'public/img/cine');

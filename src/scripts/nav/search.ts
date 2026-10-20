@@ -74,6 +74,9 @@ let list: HTMLElement;
 let status: HTMLElement;
 let staticHTML = '';
 let waIcon = '';
+/** Acción fija «Cotizar proyecto» (SearchDialog.astro, #sd-a-0): data-cotizar data-section="buscador" + subtítulo
+ *  _comun.cta.cotizarSub. Se clona en cada búsqueda para no escribir aquí la etiqueta (CAMBIO-COTIZAR §1.4). */
+let quoteOpt: HTMLElement | null = null;
 let active = -1;
 let setup = false;
 let tRender = 0;
@@ -183,11 +186,15 @@ function render() {
     if (!count) list.append(h('p', 'sd__empty-note', 'No encontré una página con esas palabras. Pregúntale directo a Kain:'));
     status.textContent = count ? `${count} resultados` : 'Sin resultados';
   }
-  // Acciones (siempre)
+  // Acciones (siempre): «Cotizar proyecto» (abre el modal) y WhatsApp con lo escrito
   const g = group('acciones', 'Acciones');
-  const a1 = opt('/discovery/', 'sd-opt--act');
-  const n1 = h('span', 'sd-opt__node'); n1.setAttribute('aria-hidden', 'true');
-  a1.append(n1, h('span', 'sd-opt__t', 'Agenda tu Discovery Session'), h('span', 'sd-opt__u', 'sin costo'));
+  let a1: HTMLElement | null = null;
+  if (quoteOpt) {
+    a1 = quoteOpt.cloneNode(true) as HTMLElement;
+    a1.id = `sd-o-${oid++}`;
+    a1.setAttribute('aria-selected', 'false');
+    a1.tabIndex = -1;
+  }
   const a2 = opt(waHref(raw), 'sd-opt--act sd-opt--wa');
   a2.target = '_blank';
   a2.rel = 'noopener';
@@ -196,13 +203,17 @@ function render() {
   t2.append('Pregúntale a Kain por WhatsApp: ', Object.assign(h('b'), { textContent: `«${raw}»` }));
   if (waIcon) a2.insertAdjacentHTML('beforeend', waIcon); else a2.append(h('span', 'sd-opt__node'));
   a2.append(t2);
-  g.append(a1, a2);
+  if (a1) g.append(a1);
+  g.append(a2);
   list.append(g);
   setActive(0, false);
 }
 
 function activate(o: HTMLElement | undefined, e?: Event) {
   if (!o) return;
+  // «Cotizar proyecto»: lo abre el binder del modal (clic delegado en captura, que antes cierra esta capa con
+  // 'ingeniak:overlays-close'). Con Enter se simula el clic; sin modal, el enlace lleva a /contacto/#cotizar.
+  if (o.hasAttribute('data-cotizar')) { if (!e) o.click(); return; }
   const fill = o.dataset.sdFill;
   if (fill) { e?.preventDefault(); input.value = fill; render(); input.focus(); return; }
   const a = o as HTMLAnchorElement;
@@ -258,6 +269,7 @@ function init() {
   status = dlg.querySelector<HTMLElement>('[data-sd-status]')!;
   staticHTML = list.innerHTML;
   waIcon = list.querySelector('#sd-a-1 svg')?.outerHTML ?? '';
+  quoteOpt = list.querySelector<HTMLElement>('#sd-a-0[data-cotizar]');
   input.addEventListener('input', () => { clearTimeout(tRender); tRender = window.setTimeout(render, 40); });
   input.addEventListener('keydown', onKey);
   list.addEventListener('click', (e) => {
@@ -272,6 +284,14 @@ function init() {
   dlg.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
   dlg.addEventListener('close', () => { unlock('search'); dlg.classList.remove('is-open'); });
   dlg.addEventListener('click', (e) => { if (e.target === dlg) close(); });
+  // Otra capa (modal de cotización, CAMBIO-COTIZAR §2.5) pide cerrar todo: cierre inmediato y libera el lock 'search'.
+  document.addEventListener('ingeniak:overlays-close', () => {
+    clearTimeout(closing);
+    if (!dlg.open) return;
+    dlg.classList.remove('is-open');
+    if (dlg.open) dlg.close();
+    unlock('search');
+  });
 }
 
 export async function openSearch(q = '') {

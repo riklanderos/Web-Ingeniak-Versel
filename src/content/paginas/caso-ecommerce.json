@@ -4,7 +4,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-19",
+  "actualizado": "2026-10-20",
   "publishGate": {
     "ok": false,
     "fuente": null,
@@ -26,7 +26,8 @@
     "CAMBIO DE TEXTO · relacionados: el brief pide /servicios/paid-media/, /industrias/retail-ecommerce/ y el caso HoReCa. Van paid media, la industria y /servicios/desarrollo-software/ (internalLinks); el caso HoReCa es el 'Siguiente reportaje' (cadena dental → retail → e-commerce → HoReCa → logística → dental).",
     "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir).",
     "CAMBIO DE TEXTO · hero.ledeM (QA casos): versión corta del lede para el primer pantallazo en móvil (R3: el sujeto de la portada entra en pantalla); en escritorio sigue el lede completo. Mismo contenido, sin datos nuevos.",
-    "CAMBIO DE TEXTO · replicar.eyebrow (QA casos): 'Qué puedes replicar en tu tienda' (antes 'en tu e-commerce': a 360 px se partía en el guion, 'E-' / 'COMMERCE'). Por lo mismo, ficha.deckBreve dice 'Esta tienda de la Ciudad de México…' (antes 'Este e-commerce…', partido en 'e-' / 'commerce' a 360 px)."
+    "CAMBIO DE TEXTO · replicar.eyebrow (QA casos): 'Qué puedes replicar en tu tienda' (antes 'en tu e-commerce': a 360 px se partía en el guion, 'E-' / 'COMMERCE'). Por lo mismo, ficha.deckBreve dice 'Esta tienda de la Ciudad de México…' (antes 'Este e-commerce…', partido en 'e-' / 'commerce' a 360 px).",
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' (sustituye la línea anterior sobre 'Agenda tu Discovery Session') y sale la microcopia de 30 minutos. Cierre: H2 'Lo vemos en 30 minutos.' → 'Saquemos la cuenta con tus números.'; lede sin la Discovery Session ('sacamos esa cuenta contigo' → 'cuéntanos al cotizar')."
   ],
   "sections": {
     "hero": {
@@ -36,7 +37,7 @@
       "chips": ["E-commerce", "Ciudad de México", "60 días", "En operación"],
       "lede": "Una tienda en línea de la Ciudad de México redujo lo que paga por cada lead, es decir, por cada persona interesada que llega a su embudo. El sistema que lo logró sigue operando.",
       "ledeM": "Una tienda en línea de CDMX redujo lo que paga por cada lead.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaPrimary": { "label": "Cotizar proyecto" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso del e-commerce de CDMX y quiero bajar mi costo por lead." },
       "illus": "Imagen ilustrativa del sector"
     },
@@ -149,11 +150,10 @@
       "_componente": "Dawn (cta-duena-tranquila)",
       "rail": "Cierre",
       "eyebrow": "Tu costo por lead, con tus números",
-      "h2": { "text": "¿Cuánto te cuesta hoy cada lead?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la Discovery Session sacamos esa cuenta contigo: cuánto inviertes, cuántos leads te llegan y cuántos terminan en compra. Si hoy no lo tienes medido, ese ya es el primer hallazgo.",
-      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso del e-commerce de CDMX y quiero bajar mi costo por lead." },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      "h2": { "text": "¿Cuánto te cuesta hoy cada lead?", "soft": "Saquemos la cuenta con tus números." },
+      "lede": "Al cotizar, cuéntanos cuánto inviertes, cuántos leads te llegan y cuántos terminan en compra. Si hoy no lo tienes medido, ese ya es el primer hallazgo.",
+      "ctaPrimary": { "label": "Cotizar proyecto" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso del e-commerce de CDMX y quiero bajar mi costo por lead." }
     }
   }
 }
