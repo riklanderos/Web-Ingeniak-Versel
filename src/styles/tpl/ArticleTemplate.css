@@ -254,9 +254,19 @@ html[data-overlay] .art-progress{opacity:0}
 .art-cta__btns .cta-p .btn-micro{white-space:nowrap}
 @media (max-width:767px){
   .art-cta__btns{flex-direction:column;align-items:stretch}
-  .art-cta__btns .cta-p{width:100%}
-  .art-cta__btns .btn{width:100%;justify-content:space-between}
+  .art-cta__btns .cta-p{width:100%;min-width:0}
+  .art-cta__btns .btn{width:100%;min-width:0;justify-content:space-between}
   .art-cta__btns .btn--ghost{justify-content:center}
+  /* Teléfonos estrechos (320–360 px): la etiqueta se parte antes de empujar el nodo fuera de la píldora, y la
+     microcopia (30 min · 1:1 · …) baja de renglón dentro del recuadro, nunca más allá del viewport */
+  .art-cta__btns .cta-p .btn{white-space:normal;line-height:1.2;text-align:left;gap:12px}
+  .art-cta__btns .cta-p .btn__t{flex:1 1 auto;min-width:0}
+  .art-cta__btns .cta-p .btn-micro{white-space:normal;text-wrap:balance;max-width:100%}
+  .art-cta .enote__body{flex-basis:100%;min-width:0}
+}
+@media (max-width:360px){
+  .art-prose .art-cta{padding-inline:16px}
+  .art-cta__btns .cta-p .btn{padding-left:20px}
 }
 
 /* Escenas a sangre dentro del artículo (ImageSection mid): texto en la penumbra de la placa, nunca en caja */

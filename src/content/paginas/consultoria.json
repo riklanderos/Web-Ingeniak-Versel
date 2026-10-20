@@ -10,11 +10,12 @@
     "APROBACIÓN DE PREGUNTA · N06 sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. La definición de #definicion usa un texto propio de la página (definition.text, 48 palabras) armado con lo que ya dicen N06, la meta de D y la metodología: detectar dónde la IA ahorra tiempo o trae ventas, diseñar, poner en producción con métricas; diagnóstico, roadmap, casos de uso, implementación y seguimiento mensual con VKTOR™.",
     "CAMBIO DE AFIRMACIÓN · 'retorno medible en 90 días' (brief de la portada) y 'resultados en 60–90 días' (brief de #definicion) NO se publican: el cliente no los ha confirmado (RESPUESTAS-CLIENTE 2026-10-19 solo confirma la implementación de 7 a 30 días según el alcance). En su lugar: métricas definidas desde el inicio, la cifra tiempo-operativo (que ya trae su ventana: promedio, primeros 90 días) y el plazo confirmado de implementación.",
     "CAMBIO DE TEXTO · portada: los chips '+73 sistemas · 7 países' del brief van dentro del lede como tokens ({{metric:sistemas|full}} y {{metric:paises}}), porque ServiceTemplate no pinta chips en la portada. Repetición de cifras: sistemas y paises salen en la portada y en la fila de #definicion (dos veces cada una); tiempo-operativo en #definicion y en el registro de #caso; logistica-procesos solo en el montaje de #caso.",
-    "CAMBIO DE TEXTO · #como-funciona y #vktor-cine contaban lo mismo (las cinco fases). Para no repetir: #como-funciona nombra cada nodo por su entregable (diagnóstico, casos de uso, roadmap, sistema en producción, tablero) y #vktor-cine cuenta qué pasa en cada fase y con quién.",
+    "CAMBIO DE TEXTO · #entregables, #como-funciona y #vktor-cine contaban la misma secuencia (QA servicios r3). #entregables se fundió en #como-funciona: los cinco nodos del riel son los entregables (diagnóstico, casos de uso, roadmap, sistema en producción con el equipo capacitado, tablero mensual) y el lede del riel dice dónde arranca (la Discovery Session, sin costo) y que cada entregable se aprueba antes del siguiente; la propuesta previa a implementar ya la cuentan el nodo 'Roadmap por escrito' y la fase Koncept de #vktor-cine. #vktor-cine cuenta qué pasa en cada fase y con quién. #casos-uso queda en un ejemplo por área (cinco filas, cada una enlazada al servicio que lo resuelve): el resto de los ejemplos se guarda para el diagnóstico.",
     "PREGUNTA AL CLIENTE · ¿la consultoría se puede contratar sola (solo diagnóstico y roadmap, sin implementación) o siempre va ligada a la implementación? El texto dice que la consultoría 'termina en producción' y no ofrece un diagnóstico suelto. Si existe como producto aparte, ¿tiene nombre, formato (documento, sesión, mapa) y precio propio distinto de {{price}}?",
     "PREGUNTA AL CLIENTE · ¿los 'casos de uso por área' (#casos-uso) se pueden presentar como ejemplos que suelen aparecer en un diagnóstico? Son ejemplos generales armados con los servicios de Ingeniak, no proyectos concretos; el lede lo aclara ('Tu lista sale de tu operación, no de esta página').",
     "PREGUNTA AL CLIENTE · #fit, 'No es para ti si…': la última línea ('Tu operación ya está sistematizada y medida…') adapta la de /discovery/. ¿Se queda?",
-    "CAMBIO DE TEXTO · #fit usa la firma aprobada (RESPUESTAS-CLIENTE 2026-10-19 #20) como eslogan: 'Construimos empresarios libres, no héroes cansados.'"
+    "CAMBIO DE TEXTO · #fit usa la firma aprobada (RESPUESTAS-CLIENTE 2026-10-19 #20) como eslogan: 'Construimos empresarios libres, no héroes cansados.'",
+    "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet'): repetía la microcopia que ya trae el botón primario. hero.h1.lit pasa de 'inteligencia artificial' a 'artificial' (una sola palabra con degradado por página, F6)."
   ],
   "sections": {
     "hero": {
@@ -24,7 +25,7 @@
       "h1": {
         "text": "Consultoría en inteligencia artificial",
         "soft": "para empresas",
-        "lit": "inteligencia artificial"
+        "lit": "artificial"
       },
       "lede": "Detectamos dónde la IA te ahorra horas o te trae ventas, y la ponemos a operar con tu equipo. Diagnóstico, roadmap, implementación y métricas, con {{metric:sistemas|full}} en {{metric:paises}} países.",
       "ctaPrimary": {
@@ -153,47 +154,49 @@
       ],
       "body": [
         "El diagnóstico arranca en la Discovery Session: 30 minutos por Google Meet, sin costo. Si hay sentido, recibes la propuesta con alcance, tiempos y costo antes de que se implemente nada."
-      ]
+      ],
+      "_omitir": true,
+      "_nota": "Fundida en #como-funciona (QA servicios r3): contaba la misma secuencia que el riel y que #vktor-cine. Los seis entregables quedan en los cinco nodos del riel (implementación y operación van juntas en \"Sistema en producción\") y el párrafo de la Discovery Session pasa a como-funciona.note."
     },
     "como-funciona": {
-      "_componente": "riel-servicios a sangre con 5 nodos registrados (uno por entregable)",
-      "rail": "Cómo funciona",
-      "eyebrow": "Cómo funciona",
+      "_componente": "riel-servicios a sangre con 5 nodos registrados: cada nodo es un entregable (absorbe a #entregables)",
+      "rail": "Qué recibes",
+      "eyebrow": "Qué recibes",
       "h2": {
-        "text": "Del dato a la decisión,",
-        "soft": "un entregable a la vez."
+        "text": "Cinco entregables,",
+        "soft": "uno a la vez."
       },
       "nodes": [
         {
-          "label": "Diagnóstico",
-          "line": "Tu operación medida: tiempos, fugas y tareas repetidas.",
+          "label": "Diagnóstico con números",
+          "line": "Tiempos de respuesta, fugas y tareas repetidas, medidos con tus datos.",
           "confirmed": true
         },
         {
           "label": "Casos de uso",
-          "line": "Lo que la IA resuelve en tu negocio, por prioridad.",
+          "line": "Lo que la IA resuelve en tu negocio, por impacto y esfuerzo.",
           "confirmed": true
         },
         {
-          "label": "Roadmap",
-          "line": "Alcance, herramientas, orden y costo, por escrito.",
+          "label": "Roadmap por escrito",
+          "line": "Qué se implementa, con qué, en qué orden y cuánto cuesta.",
           "confirmed": true
         },
         {
           "label": "Sistema en producción",
-          "line": "Construido y conectado de 7 a 30 días, según el alcance.",
+          "line": "Construido y conectado de 7 a 30 días, según el alcance, con tu equipo capacitado.",
           "confirmed": true
         },
         {
           "label": "Tablero mensual",
-          "line": "Lo que funcionó, lo que no y qué sigue.",
+          "line": "Lo que se respondió, se agendó y se vendió, y el ajuste que sigue.",
           "confirmed": true
         }
       ],
-      "note": "Cada entregable lo revisas y lo apruebas antes de pasar al siguiente."
+      "lede": "El diagnóstico arranca en la Discovery Session, sin costo. Cada entregable lo revisas y lo apruebas antes de pasar al siguiente."
     },
     "casos-uso": {
-      "_componente": "ScriptList agrupada por área (Ventas · Atención · Operación · Marketing · Datos), 3 ejemplos por área con enlace al servicio",
+      "_componente": "ScriptList agrupada por área (Ventas · Atención · Operación · Marketing · Datos), un ejemplo por área con enlace al servicio",
       "rail": "Casos de uso",
       "eyebrow": "Casos de uso por área",
       "h2": {
@@ -210,14 +213,6 @@
               "title": "Calificar cada lead al entrar",
               "line": "Un agente hace las preguntas de tu vendedor y deja al prospecto en su etapa del CRM.",
               "href": "/servicios/crm-con-ia/"
-            },
-            {
-              "title": "Seguimiento que no se olvida",
-              "line": "Mensajes y tareas que salen solos cuando un prospecto deja de contestar."
-            },
-            {
-              "title": "Datos sin recaptura",
-              "line": "Lo que el cliente escribe en el chat llega al CRM sin que nadie lo copie."
             }
           ]
         },
@@ -229,14 +224,6 @@
               "title": "Respuesta en segundos",
               "line": "Kain contesta en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo.",
               "href": "/servicios/agentes-ia-whatsapp/"
-            },
-            {
-              "title": "Citas y confirmaciones",
-              "line": "Aparta la cita en tu calendario, la confirma y manda el recordatorio."
-            },
-            {
-              "title": "Paso a una persona",
-              "line": "Cuando el caso lo pide, la conversación llega a tu equipo con todo el contexto."
             }
           ]
         },
@@ -248,14 +235,6 @@
               "title": "Sistemas que se hablan",
               "line": "CRM, WhatsApp, hojas de cálculo y ERP intercambian datos sin capturas a mano.",
               "href": "/servicios/automatizacion-n8n/"
-            },
-            {
-              "title": "Avisos a quien le toca",
-              "line": "Un pago, un pedido atorado o una urgencia avisan a la persona correcta al momento."
-            },
-            {
-              "title": "Reportes que se arman solos",
-              "line": "El resumen de la semana se genera y llega sin que alguien junte números."
             }
           ]
         },
@@ -267,14 +246,6 @@
               "title": "Campañas medidas por ventas",
               "line": "Meta, Google y TikTok Ads conectados al CRM para saber qué anuncio vende.",
               "href": "/servicios/paid-media/"
-            },
-            {
-              "title": "Cada lead con su origen",
-              "line": "Sabes de qué campaña llegó cada conversación y en qué terminó."
-            },
-            {
-              "title": "Creativos guiados por datos",
-              "line": "Se renuevan según lo que convierte, no según el gusto de alguien."
             }
           ]
         },
@@ -286,14 +257,6 @@
               "title": "Un tablero para decidir",
               "line": "Ventas, citas y costo por cliente en el mismo lugar, sin armar reportes a mano.",
               "href": "/servicios/desarrollo-software/"
-            },
-            {
-              "title": "Avisos cuando algo se sale",
-              "line": "Si el tiempo de respuesta sube o las citas bajan, te enteras ese mismo día."
-            },
-            {
-              "title": "Mes contra mes",
-              "line": "Qué se respondió, qué se agendó y qué se vendió, comparado con el mes anterior."
             }
           ]
         }
@@ -472,8 +435,7 @@
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de consultoría en IA y quiero saber por dónde empezar con la IA en mi empresa."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

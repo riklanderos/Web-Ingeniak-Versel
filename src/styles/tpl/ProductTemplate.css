@@ -152,15 +152,44 @@ body.prd main .tpl-glow:not(.is)::before{inset:-140px 0;
 .prd-facet__t{display:flex;align-items:baseline;gap:12px;color:var(--cyan)}
 .prd-facet__n{color:rgb(201 214 230 / .7)}
 .prd-facet__l{margin:0;font:300 clamp(1.0625rem,.95rem + .35vw,1.25rem)/1.45 var(--f-display);letter-spacing:-.008em;color:var(--text);text-wrap:pretty}
-.prd-def .it__body > .prd-def__body{margin-top:var(--s-8);max-width:26em;color:var(--soft)}
+.prd-def__grid > .prd-def__body{grid-column:1 / -1;margin:var(--s-8) 0 0;max-width:26em;color:var(--soft)}
 @media (max-width:1023px){
   .prd-def__grid{grid-template-columns:minmax(0,1fr);row-gap:var(--s-7)}
+  .prd-def__grid > .prd-def__body{margin-top:0}
+}
+/* Dentro de la toma compartida (la portada es subject-center y sigue nítida mientras la definición sube): las columnas
+   flanquean la franja del cuerpo de Kain (--q-b0 → --q-b1 de la placa, de la plantilla), 32 px fuera de ella, como el H1 y
+   el lede de la portada. Misma cuenta que el escenario: ancho del escenario --q-cap (cine.css · .is__stagebox), placa en
+   "cover" --q-sw, x(s) = borde del escenario + fx · escenario + (s − fx) · placa. Sin texto sobre el sujeto en ningún punto
+   del rack (antes la definición cruzaba sus piernas con el desenfoque a medias). */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .prd-def__grid--take{--q-fx:var(--q-fx0,.5);--q-h:max(100svh,680px);
+    --q-cap:min(100vw, 2200px, var(--q-h) * var(--q-ar,1.7778) * 1.08);
+    --q-sw:max(var(--q-cap), var(--q-h) * var(--q-ar,1.7778));
+    --q-x0:calc((100vw - var(--q-cap)) / 2 + var(--q-fx) * var(--q-cap) + (var(--q-b0,.4) - var(--q-fx)) * var(--q-sw));
+    --q-x1:calc((100vw - var(--q-cap)) / 2 + var(--q-fx) * var(--q-cap) + (var(--q-b1,.6) - var(--q-fx)) * var(--q-sw));
+    --q-fl:calc((100vw - var(--frame)) / 2);
+    --q-l:max(20rem, var(--q-x0) - 32px - var(--q-fl));
+    --q-r:max(18rem, var(--frame) + var(--q-fl) - var(--q-x1) - 32px)}
+}
+@media (min-width:1200px) and (min-aspect-ratio:7/5){
+  .prd-def__grid--take{grid-template-columns:minmax(0,var(--q-l)) minmax(0,1fr) minmax(0,var(--q-r));column-gap:0;row-gap:0}
+  .prd-def__grid--take > .prd-def__block{grid-column:1;grid-row:1}
+  .prd-def__grid--take > .prd-facets{grid-column:3;grid-row:1 / span 2}
+  .prd-def__grid--take > .prd-def__body{grid-column:1;grid-row:2;max-width:none}
+}
+/* Escritorios estrechos y 4:3: la portada corre el escenario a la izquierda (fx 0, Kain a la derecha) → una sola columna
+   a la izquierda de la franja, con las acepciones debajo de la definición. */
+@media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6),(min-width:768px) and (min-aspect-ratio:5/6) and (max-aspect-ratio:7/5){
+  .prd-def__grid--take{--q-fx:0;grid-template-columns:minmax(0,min(100%, var(--q-l)));column-gap:0;row-gap:var(--s-7)}
+  .prd-def__grid--take > *{grid-column:1}
+  .prd-def__grid--take > .prd-def__body{margin-top:0;max-width:none}
 }
 
 /* ── 03 · Lo que hago: filas de guion + teléfono de cristal con pestañas (fijo junto a las filas en escritorio) ── */
 .prd-hago .it__body{grid-column:1 / -1}
 .prd-hago__grid{width:100%;display:grid;grid-template-columns:minmax(0,1fr);column-gap:clamp(40px,6vw,112px);align-items:start}
-.prd-hago__grid--chat{grid-template-columns:minmax(0,1fr) min(384px,30vw)}
+.prd-hago__grid--chat{grid-template-columns:minmax(0,1fr) clamp(344px,30vw,384px)}   /* ≥ 344: las 4 pestañas en una fila */
 .prd-hago__main{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
 .prd-hago__main > .eyebrow{margin-bottom:var(--s-4)}
 .prd-hago__main > .t-lede{margin-top:var(--s-5);max-width:48ch}
@@ -169,6 +198,17 @@ body.prd main .tpl-glow:not(.is)::before{inset:-140px 0;
 .prd-hago__main > .prd-limit{margin-top:var(--s-5)}
 .prd-hago__aside{position:sticky;top:calc(var(--hdr) + var(--s-6));isolation:isolate;display:flex;justify-content:center;padding-top:var(--s-4)}
 .prd-hago__aside > .tpl-aura{z-index:-1}
+/* Pestañas de sector FUERA del teléfono (ChatTabs, como #kain del inicio), justo encima de él y fijas con él: dentro del
+   teléfono (≤ 320 px en vivo) la cuarta pestaña quedaba tras el desvanecido y el rol de la barra se cortaba. Si no caben en
+   una fila (columna estrecha, 320 px), bajan a una segunda; nunca se esconden. */
+.prd-hago__aside{flex-direction:column;align-items:center;gap:var(--s-4)}
+.prd-hago__tabs{justify-content:center;width:100%}
+.prd-hago__tabs .chat-tabs__list{flex-wrap:wrap;justify-content:center;row-gap:6px;overflow:visible;padding-right:0;-webkit-mask-image:none;mask-image:none}
+.prd-hago__tabs .chat-tabs__tab{padding:0 11px}
+/* Escritorio: teléfono + pestañas caben bajo el encabezado mientras están fijos (antes el teléfono solo, a 84svh) */
+@media (min-width:1024px) and (min-aspect-ratio:5/6){
+  .prd-hago .chat--inline.is-live .chat__device{aspect-ratio:auto;height:min(676px, 84svh - 64px);max-height:none}
+}
 @media (max-width:1023px){
   .prd-hago__grid--chat{grid-template-columns:minmax(0,1fr);row-gap:var(--s-8)}
   .prd-hago__aside{position:relative;top:auto}
@@ -229,6 +269,10 @@ a.prd-hub__a:is(:hover,:focus-visible) .prd-hub__name{color:var(--cyan-soft)}
 .prd-hub__pad{position:absolute;z-index:-1;left:50%;bottom:4%;width:62%;height:7%;translate:-50% 0;border-radius:50%;
   background:radial-gradient(50% 50% at 50% 50%,rgb(0 229 255 / .5),rgb(0 85 255 / .22) 45%,transparent 72%)}
 .prd-kain--hub{left:50%;bottom:0;height:106%;aspect-ratio:560 / 996;translate:-50% 0}
+/* Hub: el clip es solo el parpadeo con brazos cruzados (tramo 0 → 1.05 s, plantilla) → fundidos cortos para que el
+   parpadeo se vea entero y la vuelta al recorte no deje doble imagen; la plantilla lee esta duración para el fundido. */
+.prd-kain--hub .prd-kain__vid{transition-duration:.25s}
+.prd-kain--hub.is-playing .prd-kain__img{transition:opacity .25s var(--ease-ui) .08s}
 /* Pulso que recorre cada rama hacia Kain (canales) y desde Kain (sistemas): solo con movimiento y en pantalla */
 @keyframes prd-pulse{from{translate:-28px 0}to{translate:calc(var(--wire) + 28px) 0}}
 html.ui-motion .prd-hub__map.is-in .prd-hub__stub::after{content:"";position:absolute;top:-1px;left:0;width:28px;height:3px;
@@ -343,11 +387,12 @@ html.ui-motion .prd-hub__core::after{transform-origin:100% 50%;transition:scale 
 .prd-appui__logo.logo-mask--wide{height:11px!important}
 .prd-appui__ico{width:16px;height:16px;color:rgb(255 255 255 / .75)}
 .prd-appui__rows{margin:0;padding:6px 0;list-style:none}
-.prd-appui__row{display:grid;grid-template-columns:32px minmax(0,1fr) auto;column-gap:12px;row-gap:3px;align-items:center;padding:12px 18px 13px 16px;border-bottom:1px solid var(--hair)}
-.prd-appui__ch{grid-row:1 / span 2;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;box-shadow:inset 0 0 0 1px var(--hair-2);background:rgb(255 255 255 / .04)}
-.prd-appui__who{font:500 13px/1.2 var(--f-display);color:var(--text)}
-.prd-appui__msg{grid-column:2 / span 2;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-2)}
-.prd-appui__st{grid-column:3;grid-row:1;justify-self:end;padding:5px 8px;border-radius:var(--r-pill);font:500 9.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;
+.prd-appui__row{display:grid;grid-template-columns:32px minmax(0,1fr) auto;column-gap:12px;row-gap:3px;align-items:start;padding:12px 18px 13px 16px;border-bottom:1px solid var(--hair)}
+.prd-appui__ch{grid-row:1 / span 2;align-self:center;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;box-shadow:inset 0 0 0 1px var(--hair-2);background:rgb(255 255 255 / .04)}
+.prd-appui__who{align-self:center;font:500 13px/1.2 var(--f-display);color:var(--text)}
+/* Cada mensaje se lee completo (hasta dos líneas), nunca cortado a una línea con puntos suspensivos */
+.prd-appui__msg{grid-column:2 / span 2;min-width:0;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;color:var(--text-2);text-wrap:pretty}
+.prd-appui__st{grid-column:3;grid-row:1;justify-self:end;align-self:center;padding:5px 8px;border-radius:var(--r-pill);font:500 9.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;
   color:var(--text-2);box-shadow:inset 0 0 0 1px var(--hair-2);white-space:nowrap}
 .prd-appui__st.is-done{color:var(--cyan);box-shadow:inset 0 0 0 1px var(--hair-cyan);background:rgb(0 229 255 / .07)}
 .prd-appui__st.is-hand{color:var(--text);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .3)}
@@ -363,6 +408,10 @@ html.ui-motion .prd-appui__row{transition:opacity .6s var(--ease-cine) calc(var(
   .prd-appui__row{padding:11px 12px}
   .prd-appui__st{font-size:8.5px;padding:4px 6px}
   .prd-plat__win .pwin__mark{display:none}
+  /* Barra de la ventana: sin los puntos decorativos, el título cabe; si no, baja a una segunda línea */
+  .prd-plat__win .pwin__bar{gap:10px}
+  .prd-plat__win .pwin__dots{display:none}
+  .prd-plat__win .pwin__title{white-space:normal;text-wrap:balance;min-width:0}
 }
 
 /* ── 08 · Resultados (Montage) ───────────────────────────────────────────── */
@@ -371,6 +420,13 @@ html.ui-motion .prd-appui__row{transition:opacity .6s var(--ease-cine) calc(var(
 /* ── 09 · Preguntas frecuentes (cabecera fija junto al acordeón) ─────────── */
 .prd-faq .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start;display:flex;flex-direction:column;align-items:flex-start}
 .prd-faq .it__head > .eyebrow{margin-bottom:var(--s-4)}
+/* Titular en dos tiempos, una línea cada uno: los espacios duros (keepShort) pegan "me preguntan" y "de conocerme", así que
+   si una voz no cabe en la columna se parte en escalera ("Lo que / me preguntan / antes / de conocerme."). Mismo tamaño que
+   el titular de #plataforma, con tope por el ancho de la columna (la voz más larga, "Lo que me preguntan", mide 9.9 em). */
+@media (min-width:1024px) and (min-aspect-ratio:5/6){
+  .prd-faq .it__head{container-type:inline-size}
+  .prd-faq .it__head > .t-h2{font-size:min(clamp(2.25rem,1rem + 2.7vw,4.25rem), 9.8cqi)}
+}
 .prd-faq__foot{margin-top:var(--s-6);max-width:34ch;color:var(--text-2)}
 .prd-faq__foot a{color:var(--text);text-decoration:none;background:linear-gradient(var(--hair-cyan),var(--hair-cyan)) 0 100% / 100% 1px no-repeat}
 .prd-faq__cta{margin-top:var(--s-5)}

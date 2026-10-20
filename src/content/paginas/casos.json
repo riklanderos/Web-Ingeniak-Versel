@@ -49,10 +49,10 @@
       "eyebrow": "Ingeniak en datos",
       "definition": {
         "heading": "¿Qué resultados ha logrado Ingeniak con IA y automatización?",
-        "text": "Ingeniak tiene {{metric:sistemas|full}} en {{metric:paises|full}}. Entre sus casos: una clínica dental de Monterrey con {{metric:dental-citas|full}}, un retail multimarca con {{metric:retail-conversiones}} en conversiones con Kommo e IA, un e-commerce de la Ciudad de México con {{metric:ecom-cpl|full}} y un cliente de hoteles y restaurantes con {{metric:horeca-roas|full}}."
+        "text": "Ingeniak tiene {{metric:sistemas|full}} en {{metric:paises|full}}. Entre sus casos: una clínica dental de Monterrey con {{metric:dental-citas|full}}, un retail multimarca con {{metric:retail-conversiones}} en conversiones con Kommo e IA, un e-commerce de la Ciudad de México con {{metric:ecom-cpl}} en costo por lead en sesenta días y un cliente de hoteles y restaurantes con {{metric:horeca-roas|full}}."
       },
       "metricRow": {
-        "title": "Ingeniak en datos",
+        "title": "La operación, en cifras",
         "metricIds": [
           "sistemas",
           "paises",
@@ -178,7 +178,7 @@
       "items": [
         {
           "title": "Fuente",
-          "text": "Todas las cifras de esta página son {{source}}. Salen de la operación de cada cliente, no de una demo ni de una proyección."
+          "text": "La fuente de todas las cifras de esta página: {{source}}. Salen de la operación de cada cliente, no de una demo ni de una proyección."
         },
         {
           "title": "Plazos",

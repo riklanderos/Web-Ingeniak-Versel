@@ -66,7 +66,7 @@
           ]
         }
       },
-      "note": "Kain no da consejo médico, legal ni financiero: cuando una pregunta lo necesita, pasa la conversación a una persona de tu equipo."
+      "note": "Kain no da consejo médico ni legal: cuando una pregunta lo necesita, pasa la conversación a una persona de tu equipo."
     },
     "grid": {
       "_componente": "LocationSwitcher (8 sectores, escena del sector activo a sangre, SIMULACIÓN con 2 burbujas)",

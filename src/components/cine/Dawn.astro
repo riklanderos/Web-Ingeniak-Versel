@@ -8,9 +8,14 @@
 // placa, fuera de la franja .70–.87 del filo.
 // Contenido: slot por defecto (la página pasa eyebrow, H2 con id "<id>-t", CTAs con Btn) o la prop `copy`.
 // hud: etiqueta de acción (p. ej. "13 / 13 — 06:00").
+// Placas con PERSONA de sujeto (cta-duena-tranquila, cta-equipo; isPersonPlate): el haz y el filo dibujado en el piso son
+// efectos de Kain y sobre un interior se leían como una costura (un domo oscuro con filo cian cortando escritorio, ventana y
+// cintura; un manchón turquesa en el torso). Sin haz; el filo solo si la placa trae su horizonte horneado. arc / beam (props)
+// o plates.json → dawn.{arc,beam} mandan sobre esta regla.
 import ImageSection from './ImageSection.astro';
 import Btn from '../ui/Btn.astro';
-import { resolvePlate, type Fallback, type Layout } from './plate';
+import { resolvePlate, isPersonPlate, type Fallback, type Layout } from './plate';
+import { getPlate } from '../../lib/site';
 
 interface CtaCopy {
   eyebrow?: string;
@@ -29,15 +34,24 @@ interface Props {
   fallbackPlate?: Fallback;
   copy?: CtaCopy;
   hud?: string | { pos: 'tr' | 'bl' | 'br' | 'tl'; text: string }[];
+  /** Filo del horizonte (por defecto: sí, salvo placa con persona sin horizonte horneado). */
+  arc?: boolean;
+  /** Haz vertical sobre el sujeto (por defecto: sí, salvo placa con persona). */
+  beam?: boolean;
   class?: string;
 }
-const { id = 'cta-final', plate = 'cta-amanecer', mirror = false, layout, fallbackPlate, copy, hud, class: cls } = Astro.props;
+const { id = 'cta-final', plate = 'cta-amanecer', mirror = false, layout, fallbackPlate, copy, hud, arc, beam, class: cls } = Astro.props;
 const hasSlot = Astro.slots.has('default');
 // Altura del filo: el horizonte horneado de la placa o, si no lo trae, el piso (sus coordenadas viven en las variables
 // --A-horizonte-* / --A-piso-* que ImageSection ya escribe).
 const r = resolvePlate(plate, { mirror, layout, fallbackPlate });
 const baked = !!r.anchors.horizonte?.d;
 const at = baked ? 'horizonte' : 'piso';
+// Arte según la placa que de verdad se pinta (r.id: la pedida o su respaldo).
+const person = isPersonPlate(r.id);
+const art = (r.id ? getPlate(r.id)?.dawn : null) ?? {};
+const showArc: boolean = arc ?? art.arc ?? (baked || !person);
+const showBeam: boolean = beam ?? art.beam ?? !person;
 const hudList = typeof hud === 'string' ? [{ pos: 'tr' as const, text: hud }] : hud;
 ---
 <ImageSection
@@ -51,14 +65,14 @@ const hudList = typeof hud === 'string' ? [{ pos: 'tr' as const, text: hud }] : 
   alt=""
   shot="dawn"
   hud={hudList}
-  class={['dawn', baked && 'dawn--baked', cls].filter(Boolean).join(' ')}
-  data-horizon={at}
+  class={['dawn', baked && 'dawn--baked', person && 'dawn--person', cls].filter(Boolean).join(' ')}
+  data-horizon={showArc ? at : 'none'}
 >
   <Fragment slot="over">
     <span class="dawn__veil" aria-hidden="true"></span>
-    <span class="dawn__beam" aria-hidden="true"></span>
+    {showBeam && <span class="dawn__beam" aria-hidden="true"></span>}
   </Fragment>
-  <span slot="stage" class="dawn__arc" aria-hidden="true" style={`--hz-x:var(--A-${at}-x,.5);--hz-y:var(--A-${at}-y,.86);--hz-ym:var(--A-${at}-ym,var(--A-${at}-y,.9));`}><span class="dawn__edge"></span></span>
+  {showArc && <span slot="stage" class="dawn__arc" aria-hidden="true" style={`--hz-x:var(--A-${at}-x,.5);--hz-y:var(--A-${at}-y,.86);--hz-ym:var(--A-${at}-ym,var(--A-${at}-y,.9));`}><span class="dawn__edge"></span></span>}
   {hasSlot ? <slot /> : copy && (
     <>
       {copy.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{copy.eyebrow}</p>}

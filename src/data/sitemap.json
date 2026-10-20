@@ -1762,24 +1762,24 @@
         "spec": "'Kommo organiza. Kain atiende.' Explica cómo el agente responde, califica y registra en Kommo + video del chat.",
         "cinematic": true,
         "image": {
-          "file": "/img/cine/kommo-hero",
-          "subject": "Kain presentando un panel de cristal en blanco del que suben burbujas de chat de cristal vacías.",
-          "side": "izquierda",
-          "textSide": "derecha",
-          "brief": "Portada de /kommo/ (y regreso al set en \"Agente de IA dentro del chat\"). En la página, el sello Kommo Partner va en HTML anclado; nunca dentro de la imagen.",
-          "mobile": "4:5 · modo split: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Kain en x≈0.36; panel a su derecha (x≈0.64)."
+          "file": "/img/cine/home-sistema-2-atender",
+          "subject": "Kain junto a un teléfono de cristal gigante con la pantalla en blanco (ChatSim registrado en la pantalla).",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Escena \"Agente de IA dentro del chat\" de /kommo/: estación Atender del inicio SIN espejo, para alternar lado con la portada (kommo-hero, Kain a la izquierda con el panel). El chat es HTML registrado sobre la pantalla del teléfono; nunca dentro de la imagen.",
+          "mobile": "4:5 · modo split: texto arriba (40 %), Kain y el teléfono abajo (subjTop ≈ 0.41); en celular el chat va en línea bajo el texto."
         },
         "plate": {
           "id": "home-sistema-2-atender",
           "component": "ImageSection mid + ChatSim",
-          "layout": "subject-left",
-          "mirror": true,
+          "layout": "subject-right",
+          "mirror": false,
           "height": "mid",
           "tone": "sol",
           "mobile": "split",
           "srcsetMax": 2752,
           "priority": "P1",
-          "note": "[2026-10-19 · construcción] Antes kommo-hero con push 1.35→1.6 (regreso al set, R5): con el tope de cámara (camCap) el empuje no pasa de ≈1.1 y el encuadre repetía la portada. Estación Atender en espejo (Kain con el teléfono, ChatSim registrado)."
+          "note": "[2026-10-19 · construcción] Antes kommo-hero con push 1.35→1.6 (regreso al set, R5): con el tope de cámara (camCap) el empuje no pasa de ≈1.1 y el encuadre repetía la portada. Estación Atender (Kain con el teléfono, ChatSim registrado). [2026-10-19 · QA] Sin espejo: en espejo repetía el encuadre de la portada (Kain a la izquierda con la palma abierta hacia un cristal a la derecha, texto a la derecha; R5/R13). Ahora Kain va a la derecha y el texto a la izquierda."
         }
       },
       {
@@ -6718,8 +6718,8 @@
     ],
     "title": "E-commerce en CDMX: {{metric:ecom-cpl|full}}",
     "titleLength": 53,
-    "metaDescription": "Cómo un e-commerce de la Ciudad de México logró {{metric:ecom-cpl|full}}: el punto de partida, lo que implementamos y el resultado.",
-    "metaLength": 140,
+    "metaDescription": "Cómo un e-commerce de la Ciudad de México logró {{metric:ecom-cpl|full}}: la cifra, su fuente y tres ideas que puedes replicar.",
+    "metaLength": 133,
     "h1": "E-commerce en la Ciudad de México: {{metric:ecom-cpl}} en costo por lead en 60 días",
     "breadcrumbs": [
       {
@@ -6907,7 +6907,7 @@
       "priority": 0.7,
       "changefreq": "yearly"
     },
-    "notes": "Página bloqueada hasta confirmar con el cliente qué se implementó. Sin eso, solo puede publicarse la ficha y la cifra.",
+    "notes": "Página bloqueada hasta confirmar con el cliente qué se implementó. Sin eso, solo puede publicarse la ficha y la cifra. Mientras salga como caso breve, la metaDescription describe solo lo publicado (la cifra, su fuente y las tres ideas de #replicar); al abrir la puerta vuelve a 'Cómo un e-commerce de la Ciudad de México logró {{metric:ecom-cpl|full}}: el punto de partida, lo que implementamos y el resultado.'",
     "folio": "303",
     "copy": {
       "status": "brief",
@@ -7955,8 +7955,8 @@
         "image": {
           "file": "/img/cine/cta-amanecer",
           "subject": "Kain saludando de pie sobre un horizonte curvo con filo de amanecer frío cian-blanco (\"06:00 · Rise\").",
-          "side": "izquierda",
-          "textSide": "derecha",
+          "side": "derecha",
+          "textSide": "izquierda",
           "brief": "Cierre compartido (Dawn) de casi todo el sitio. Sustituye a cta-kain-saluda y cta-kain-senala (esta = espejo). Su placa limpia es el fondo de cta-equipo.",
           "mobile": "4:5 · modo top: Cielo vacío en el 40 % superior; cresta del horizonte en y≈0.86; Kain sobre ella centrado en x≈0.58 (antenas y≈0.46).",
           "shared": true
@@ -7964,13 +7964,14 @@
         "plate": {
           "id": "cta-amanecer",
           "component": "Dawn",
-          "layout": "subject-left",
-          "mirror": true,
+          "layout": "subject-right",
+          "mirror": false,
           "height": "cta",
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "note": "[2026-10-19 · QA] Variante A sin espejo (Kain a la derecha, texto a la izquierda), como pide el spec de esta sección y la lista kain-saluda de D-arquitectura §4. La portada (tecnologias-hero) también va a la derecha, pero con otra pose (sentado en el cubo)."
         }
       }
     ],
@@ -9473,6 +9474,12 @@
         "q": "¿Me venden las licencias de Kommo o solo la implementación?",
         "a": "Las dos cosas. Como partner oficial de Kommo en Latinoamérica te ayudamos a contratar las licencias y también implementamos el CRM: embudos, conexión de WhatsApp, automatizaciones y agentes de IA.",
         "estado": "aprobada"
+      },
+      {
+        "id": "H03",
+        "q": "¿Se puede conectar un agente de IA a GoHighLevel?",
+        "a": "Sí. Conectamos un agente de IA que atiende WhatsApp, Instagram o tu web, califica al prospecto, lo registra en GoHighLevel y le agenda cita en tu calendario.",
+        "estado": "aprobada"
       }
     ],
     "redirectsFrom": [
@@ -9495,7 +9502,7 @@
       "Cómo te ayudamos: partner oficial de Kommo e implementación de GoHighLevel en español"
     ],
     "sources": "Sitios oficiales de Kommo y HighLevel (funciones y precios con fecha de consulta).",
-    "notes": "GoHighLevel siempre como herramienta que implementamos; nunca 'partner'.",
+    "notes": "GoHighLevel siempre como herramienta que implementamos; nunca 'partner'. [2026-10-19 · QA] FAQ: la página publica H03 (aprobada; está en faqIds del copy) mientras H04 sigue en validar (se listan, no se publican hasta su aprobación). H03 se suma aquí para que sitemap.json, el copy y el FAQPage coincidan; falta que copy sume esta URL a faq.json → H03.pages (peticiones.md).",
     "folio": "502",
     "copy": {
       "status": "brief",
@@ -10147,6 +10154,12 @@
         "q": "¿Ingeniak es partner de GoHighLevel?",
         "a": "No usamos esa etiqueta. GoHighLevel es una herramienta que implementamos en español para nuestros clientes; nuestra alianza oficial es con Kommo, como partner en Latinoamérica.",
         "estado": "validar"
+      },
+      {
+        "id": "H03",
+        "q": "¿Se puede conectar un agente de IA a GoHighLevel?",
+        "a": "Sí. Conectamos un agente de IA que atiende WhatsApp, Instagram o tu web, califica al prospecto, lo registra en GoHighLevel y le agenda cita en tu calendario.",
+        "estado": "aprobada"
       }
     ],
     "redirectsFrom": [],
@@ -10172,7 +10185,8 @@
       "minWords": 1400,
       "owner": "[POR ASIGNAR]",
       "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
-    }
+    },
+    "notes": "[2026-10-19 · QA] FAQ: la página publica H03 (aprobada; está en faqIds del copy) mientras H04 y N15 siguen en validar (se listan, no se publican hasta su aprobación). H03 se suma aquí para que sitemap.json, el copy y el FAQPage coincidan; falta que copy sume esta URL a faq.json → H03.pages (peticiones.md)."
   },
   {
     "id": "art-n8n",
@@ -10726,27 +10740,33 @@
         "order": 6,
         "id": "cta-final",
         "name": "Cierre",
-        "spec": "Cierre cinematográfico: \"La forma más rápida de saber si podemos ayudarte: 30 minutos.\" + botón Discovery + WhatsApp + microcopy \"Sin costo · Sin compromiso · 30 minutos por Google Meet\". Imagen de la variante compartida A: KAIN de cuerpo completo saludando en el tercio derecho, texto a la izquierda.",
+        "spec": "Cierre cinematográfico: \"La forma más rápida de saber si podemos ayudarte: 30 minutos.\" + botón Discovery + WhatsApp + microcopy \"Sin costo · Sin compromiso · 30 minutos por Google Meet\". Imagen de la variante compartida C: dueña de negocio tranquila al amanecer en su oficina, a la derecha (espejo); texto a la izquierda. [2026-10-19 · QA] Antes variante A (Kain saludando): repetía el saludo de la portada en dos escenas seguidas (R13). No se usa cta-equipo: los recortes del equipo no alcanzan el nivel premium hasta la sesión de fotos (R6; ver /servicios/branding/ y /casos/).",
         "cinematic": true,
         "image": {
-          "file": "/img/cine/cta-amanecer",
-          "subject": "Kain saludando de pie sobre un horizonte curvo con filo de amanecer frío cian-blanco (\"06:00 · Rise\").",
+          "file": "/img/cine/cta-duena-tranquila",
+          "subject": "Dueña de negocio (42) tranquila junto a la ventana de su oficina al amanecer frío, café en mano; su celular brilla en cian sobre el escritorio.",
           "side": "derecha",
           "textSide": "izquierda",
-          "brief": "Cierre compartido (Dawn) de casi todo el sitio. Sustituye a cta-kain-saluda y cta-kain-senala (esta = espejo). Su placa limpia es el fondo de cta-equipo.",
-          "mobile": "4:5 · modo top: Cielo vacío en el 40 % superior; cresta del horizonte en y≈0.86; Kain sobre ella centrado en x≈0.58 (antenas y≈0.46).",
+          "brief": "Cierre compartido \"el sistema trabajó toda la noche\" (variante C, en espejo). En /contacto/ cierra la historia de la portada: escribiste a Kain y tu teléfono queda atendido.",
+          "mobile": "4:5 · modo top: 40 % superior vacío para texto; persona en el 60 % inferior (subjTop ≈ 0.44).",
           "shared": true
         },
         "plate": {
-          "id": "cta-amanecer",
+          "id": "cta-duena-tranquila",
           "component": "Dawn",
           "layout": "subject-right",
-          "mirror": false,
+          "mirror": true,
           "height": "cta",
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "cta-amanecer",
+            "mirror": false,
+            "note": "Mismo amanecer, persona y texto del mismo lado, si cta-duena-tranquila no estuviera exportada."
+          },
+          "note": "[2026-10-19 · QA] Antes cta-amanecer (Kain saludando): la portada home-kain también saluda (R13, dos escenas seguidas con la misma pose). cta-duena-tranquila en espejo: persona a la derecha, texto a la izquierda; alterna lado con la portada (Kain a la izquierda)."
         }
       }
     ],

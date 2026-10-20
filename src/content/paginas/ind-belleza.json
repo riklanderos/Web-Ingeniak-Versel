@@ -143,7 +143,7 @@
       "rail": "Cierre",
       "eyebrow": "Tu siguiente paso",
       "h2": { "text": "¿Cuántas clientas preguntan y no reservan?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "En la llamada revisamos tu agenda real: por dónde te escriben, quién contesta y en qué punto se cae la reserva. Sales con claro qué conviene automatizar primero.",
+      "lede": "En la llamada revisamos tu agenda real: por dónde te escriben, quién contesta y en qué punto se cae la reserva. Sales sabiendo qué conviene automatizar primero.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",

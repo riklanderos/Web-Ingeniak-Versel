@@ -12,16 +12,16 @@
     "FAQ DISTINTA DE D · G08: ya no promete '60 a 90 días'; dice el rango confirmado de implementación (7 a 30 días, según el alcance).",
     "FAQ DISTINTA DE D · G07: agrega por qué no hay paquetes cerrados.",
     "PREGUNTA AL CLIENTE · stack de front (D lo dejó en [VALIDAR]): la página solo nombra Supabase (base de datos y acceso de usuarios), Stripe (cobros) y los modelos de IA de G09. ¿Con qué construyen las pantallas (por ejemplo React, Next.js o Astro) y se puede decir?",
-    "PREGUNTA AL CLIENTE · los cinco tipos de sistema de #construimos (tableros, portales para clientes, integraciones con ERP, apps internas y agentes de IA propios) salen del brief de D. Confirma que los cinco se ofrecen hoy y, si quieres, con qué ERP ya han trabajado (no se nombra ninguno).",
+    "PREGUNTA AL CLIENTE · los tipos de sistema de #construimos salen del brief de D (tableros, portales para clientes, integraciones con ERP, apps internas y agentes de IA propios). Mientras no los confirmes por escrito (QA servicios r3), el titular ya no dice 'Cinco tipos de sistema' y 'Portales para clientes' salió de la lista (es el único que no respaldan el sitio actual ni otra página: los tableros tienen el caso ecom-tablero; integraciones y apps internas, la marquesina 'API development · web apps' del sitio actual; los agentes, el resto del sitio). Confirma cuáles se ofrecen hoy y, si quieres, con qué ERP ya han trabajado (no se nombra ninguno).",
     "PREGUNTA AL CLIENTE · tablero del e-commerce (#dashboard): ¿cuáles son las 7 fuentes y lleva alertas con IA, como dice el brief de D? El texto usa solo lo confirmado (la cifra ecom-tablero) y el contenido del brief (tráfico, conversión y retorno de campañas); las alertas no se mencionan. ¿Es el mismo cliente del caso de costo por lead (ESPEC §11-6)? 'Sigue explorando' enlaza ese caso sin decir que sea el mismo.",
     "PREGUNTA AL CLIENTE · plazo: aquí NO se usa el rango de 7 a 30 días porque un sistema a la medida puede ser más grande; inversion.remate dice que el plazo queda por escrito en la propuesta. ¿Aplica el mismo rango también a software?",
     "CAMBIO DE TEXTO · el chip de la portada del brief ('+73 sistemas en producción') va como token en el lede ({{metric:sistemas|full}}): la plantilla de servicio no pinta chips en la portada. La cifra sale 1 vez en el cuerpo (más la meta description).",
-    "CAMBIO DE TEXTO · #dashboard: el titular usa la cifra como token ({{metric:ecom-tablero}}) y ninguna otra parte de la página la repite con letra. dashboard.ui son los textos del tablero demo registrado sobre la pantalla de la placa (VISTA DEMO, sin cifras, fuentes sin nombre como pide la ESPEC §5.2.1); la plantilla todavía no los pinta.",
+    "CAMBIO DE TEXTO · #dashboard: el titular usa la cifra como token ({{metric:ecom-tablero}}) y ninguna otra parte de la página la repite con letra. QA servicios r3: el tablero de 7 fuentes sin nombre (ESPEC §5.2.1) pasa a la portada (hero.ui, registrado en la pantalla curva de home-sistema-5-medir) y #dashboard deja de regresar a esa placa (salía el mismo encuadre dos veces): la plantilla le da su propia placa (Kain señala desde sus paneles de cristal) y dashboard.ui es la vista demo del tablero del caso (tráfico, conversión y retorno de campañas, sin números). #relacionados ya no dice 'Otro sistema' del caso de costo por lead (no está confirmado si es el mismo cliente).",
     "CAMBIO DE TEXTO · cta-final sin 'micro' del brief (repetiría la microcopia del botón primario)."
   ],
   "sections": {
     "hero": {
-      "_componente": "SharedTake + ImageSection hero (home-sistema-5-medir: Kain en la estación Medir, subject-right) + Breadcrumbs. Sin UI registrada en la portada: el tablero demo vive en #dashboard (misma placa con push, R5).",
+      "_componente": "SharedTake + ImageSection hero (home-sistema-5-medir: Kain en la estación Medir, subject-right) + Breadcrumbs + tablero de 7 fuentes sin nombre registrado en la pantalla curva (ESPEC §5.2.1, VISTA DEMO).",
       "rail": "Portada",
       "eyebrow": "Servicio · Automatizar",
       "h1": { "text": "Desarrollo de software a la medida,", "soft": "con IA integrada", "lit": "medida" },
@@ -30,6 +30,14 @@
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de software a la medida y necesito un sistema para mi operación."
+      },
+      "ui": {
+        "_nota": "Tablero de 7 fuentes sin nombre (ESPEC §5.2.1) registrado en la parte libre de la pantalla curva de la placa, donde convergen los 7 hilos de luz: tres paneles con barras abstractas sin números y siete puntos de fuentes conectadas, sin nombre. VISTA DEMO y data-nosnippet; no son datos de ningún cliente.",
+        "label": "VISTA DEMO",
+        "title": "Una sola vista",
+        "panels": ["Ventas", "Operación", "Campañas"],
+        "sourcesLabel": "Fuentes conectadas",
+        "note": "Maqueta ilustrativa"
       }
     },
     "definicion": {
@@ -76,17 +84,16 @@
       ]
     },
     "construimos": {
-      "_componente": "ScriptList (5 filas) + línea de stack, sobre aura del isotipo",
+      "_componente": "ScriptList (4 filas, sin número fijo en el titular) + línea de stack, sobre aura del isotipo",
       "rail": "Qué construimos",
       "eyebrow": "Qué construimos",
-      "h2": { "text": "Cinco tipos de sistema,", "soft": "hechos para tu operación." },
-      "lede": "Todos parten del mismo principio: un dato se captura una vez, vive en un solo lugar y le llega a quien lo necesita.",
+      "h2": { "text": "Sistemas a la medida,", "soft": "hechos para tu operación." },
+      "lede": "Cada uno parte del mismo principio: un dato se captura una vez, vive en un solo lugar y le llega a quien lo necesita.",
       "items": [
         { "n": "01", "title": "Tableros unificados", "line": "Ventas, campañas, inventario y cobranza en una sola vista, con cada fuente conectada y sin exportar reportes." },
-        { "n": "02", "title": "Portales para clientes", "line": "Tus clientes consultan pedidos, documentos, citas o pagos con su propio acceso, sin escribirle a tu equipo." },
-        { "n": "03", "title": "Integraciones con tu ERP", "line": "Conectamos tu ERP o sistema administrativo con tu CRM, tu tienda en línea o tus formularios, para que nadie capture dos veces." },
-        { "n": "04", "title": "Apps internas", "line": "Herramientas para tu equipo: cotizadores, control de pedidos, inventarios, listas de verificación o aprobaciones." },
-        { "n": "05", "title": "Agentes de IA propios", "line": "Agentes que consultan tu base de datos y resumen, clasifican o redactan dentro de tu proceso, con el modelo que mejor lo resuelve." }
+        { "n": "02", "title": "Integraciones con tu ERP", "line": "Conectamos tu ERP o sistema administrativo con tu CRM, tu tienda en línea o tus formularios, para que nadie capture dos veces." },
+        { "n": "03", "title": "Apps internas", "line": "Herramientas para tu equipo: cotizadores, control de pedidos, inventarios, listas de verificación o aprobaciones." },
+        { "n": "04", "title": "Agentes de IA propios", "line": "Agentes que consultan tu base de datos y resumen, clasifican o redactan dentro de tu proceso, con el modelo que mejor lo resuelve." }
       ],
       "body": [
         "Construimos sobre Supabase para la base de datos y el acceso de usuarios, Stripe cuando hay cobros en línea y modelos de OpenAI, Anthropic (Claude) o Google (Gemini) cuando el sistema necesita entender, clasificar o redactar."
@@ -112,7 +119,7 @@
       "note": "Cada sistema es distinto: el flujo exacto lo dibujamos contigo en la fase Koncept de VKTOR™, a partir de lo que ya usas."
     },
     "dashboard": {
-      "_componente": "ImageSection mid (regreso al set: home-sistema-5-medir con push hacia la superficie, 1.35 → 1.6) + tablero demo registrado (VISTA DEMO)",
+      "_componente": "ImageSection mid con placa propia (servicios-no-se: Kain señala un panel de cristal; la portada ya trae el tablero, R5/R13) + vista demo del tablero del caso registrada sobre el panel (VISTA DEMO)",
       "rail": "Tablero unificado",
       "eyebrow": "Caso · Tablero unificado",
       "h2": { "text": "{{metric:ecom-tablero}}", "soft": "en un solo tablero de e-commerce." },
@@ -125,12 +132,15 @@
       "slogan": "Decidir con un tablero, no con pestañas abiertas.",
       "links": [{ "label": "IA para retail y e-commerce", "href": "/industrias/retail-ecommerce/" }],
       "ui": {
-        "_nota": "Tablero demo registrado sobre la pantalla de la placa: tres paneles con barras abstractas sin números y una columna de fuentes conectadas sin nombre (puntos que se encienden). Lleva VISTA DEMO y data-nosnippet; no son datos del cliente.",
+        "_nota": "Vista demo del tablero del caso registrada sobre el panel de cristal que señala Kain: las tres lecturas del brief (tráfico, conversión y retorno de campañas), cada una con su línea de tendencia sin números. Distinta del tablero de la portada (R5). VISTA DEMO y data-nosnippet; no son datos del cliente.",
         "label": "VISTA DEMO",
-        "title": "Tablero unificado",
-        "panels": ["Tráfico", "Conversión", "Retorno de campañas"],
-        "sourcesLabel": "Fuentes conectadas",
-        "note": "Maqueta ilustrativa"
+        "title": "Tablero del e-commerce",
+        "aria": "Vista demo: tráfico, conversión y retorno de campañas en un solo tablero",
+        "rows": [
+          { "k": "Tráfico", "src": "Fuente conectada" },
+          { "k": "Conversión", "src": "Fuente conectada" },
+          { "k": "Retorno de campañas", "src": "Fuente conectada" }
+        ]
       }
     },
     "vktor": {
@@ -176,7 +186,7 @@
       "items": [
         { "href": "/servicios/automatizacion-n8n/", "label": "Servicio", "title": "Automatización con n8n", "line": "Flujos entre tus sistemas, para lo que no necesita una aplicación propia." },
         { "href": "/tecnologias/", "label": "Stack", "title": "Tecnologías", "line": "Las herramientas con las que construimos y conectamos cada sistema." },
-        { "href": "/casos/ecommerce-cdmx-costo-por-lead/", "label": "Caso de estudio", "title": "E-commerce en la Ciudad de México", "line": "Otro sistema medido en e-commerce: el costo por lead, antes y después." }
+        { "href": "/casos/ecommerce-cdmx-costo-por-lead/", "label": "Caso de estudio", "title": "E-commerce en la Ciudad de México", "line": "Un caso de e-commerce medido: el costo por lead, antes y después." }
       ]
     },
     "cta-final": {

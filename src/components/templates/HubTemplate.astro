@@ -192,7 +192,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           {/* Guía destacada (D: "artículo destacado sobre la imagen"): solo si alguna guía ya existe. R3: en móvil baja a `more` */}
           {featured && (
             <p class="hub-featured tpl-mhide">
-              <span class="t-label t-label--cyan"><span class="node" aria-hidden="true"></span>{hero.featured?.label ?? 'Guía destacada'}</span>
+              <span class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{hero.featured?.label ?? 'Guía destacada'}</span>
               <a class="lnk" href={featured.href}>{featured.title} <Icon name="arrow" size={16} /></a>
             </p>
           )}
@@ -206,7 +206,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
               {heroLede.rest && <Copy as="p" class="t-lede t-lede--2 hub-hero__rest tpl-dhide" text={heroLede.rest} />}
               {featured && (
                 <p class="hub-featured tpl-dhide">
-                  <span class="t-label t-label--cyan"><span class="node" aria-hidden="true"></span>{hero.featured?.label ?? 'Guía destacada'}</span>
+                  <span class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{hero.featured?.label ?? 'Guía destacada'}</span>
                   <a class="lnk" href={featured.href}>{featured.title} <Icon name="arrow" size={16} /></a>
                 </p>
               )}

@@ -9,7 +9,7 @@
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "PREGUNTA AL CLIENTE · subsectores (D lo marcaba '[VALIDAR subsectores que atiende Ingeniak]'): la página habla a financieras de crédito, aseguradoras y despachos contables o fiscales como público, igual que el title y la meta de D, sin afirmar que sean clientes. Confirma si son los subsectores que quieres atender o si alguno sobra (p. ej. despachos fiscales, cajas de ahorro, Sofomes).",
     "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos del sector financiero que podamos mencionar por tipo (sin nombre)? La página no afirma que los haya. Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
-    "DATO PENDIENTE · kain-sector.chat.script = 'finanzas': el guion src/data/chats/finanzas.json todavía no existe (src/data no es del área de este encargo). Mientras no exista, ChatSim cae al guion de salud (limpieza dental), que no corresponde a esta página. El guion propuesto (crédito para un negocio: tres preguntas de calificación, sin prometer aprobación ni tasa, llamada con asesor y lista de documentos) está listo para pegar en materiales/v2/build/peticiones.md → 'Construcción · industrias (copy)'. El lede de kain-sector ya lo describe.",
+    "APROBACIÓN DE TONO · #kain-sector: la escena ya muestra su propio guion (src/data/chats/finanzas.json, SIMULACIÓN): crédito para un negocio, tres preguntas de calificación, sin prometer aprobación ni tasa, llamada con asesor y lista de documentos. Falta que apruebes el tono (y la revisión legal de abajo).",
     "VALIDACIÓN LEGAL · sitemap.json (notes): 'Revisar con el cliente obligaciones de protección de datos del sector antes de publicar ejemplos'. Revisar con el asesor legal: la sección 'Tus datos', la recepción de documentos por WhatsApp (automatizamos 02, jornada 11:00) y el guion de ejemplo. La página no afirma cumplimiento de ninguna norma ni muestra sellos.",
     "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas F01–F04 (preguntas de calificación, documentos por WhatsApp, aprobaciones y tasas, subsectores) con su texto en peticiones.md. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-finanzas.faq.",
     "FAQ DISTINTA DE D · faq.faqIds suma G05 (aprobada, '¿Me conviene Kommo o GoHighLevel?') al final: N11 y N14 siguen en validar: true y, sin G05, el acordeón quedaría con dos preguntas (W02 y G07). Al aprobarse N14 y las propias F01–F04, se puede quitar G05. Pedido: sumar /industrias/finanzas/ a G05.pages en faq.json.",
@@ -92,7 +92,7 @@
       ]
     },
     "kain-sector": {
-      "_componente": "ImageSection mid (ind-finanzas-kain-sector, Kain a la izquierda, push; respaldo home-sistema-2-atender en espejo) + ChatSim registrado (script finanzas: falta el archivo, ver pendientes). Fijada +100 % en escritorio",
+      "_componente": "ImageSection mid (ind-finanzas-kain-sector, Kain a la izquierda, push; respaldo home-sistema-2-atender en espejo) + ChatSim registrado (guion finanzas). Fijada +100 % en escritorio",
       "rail": "Kain en tu despacho",
       "eyebrow": "Kain en tu despacho",
       "h2": { "text": "Tres preguntas", "soft": "y una llamada agendada." },

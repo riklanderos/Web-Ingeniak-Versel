@@ -47,7 +47,7 @@
       "definition": { "heading": "¿Qué es kain?", "faqId": "G13" },
       "facets": [
         { "term": "La sub-marca", "line": "La línea de agentes de IA de Ingeniak. Cada agente se configura con la información de tu negocio y con las reglas que defines con nosotros." },
-        { "term": "La plataforma", "line": "app.kain.mx, donde las empresas tienen a sus agentes trabajando. El primer paso para tener el tuyo es una Discovery Session." },
+        { "term": "La plataforma", "line": "app.kain.mx. Es donde trabaja tu agente, conectado a tus canales y a tu CRM. El primer paso para tener el tuyo es una Discovery Session." },
         { "term": "El personaje", "line": "El robot blanco que ves aquí. Le pone cara a esos agentes y en esta página habla por ellos." }
       ],
       "body": [
@@ -64,14 +64,14 @@
         { "n": "01", "title": "Respondo en segundos", "line": "De día, de noche y en fin de semana. Quien te escribe recibe respuesta mientras todavía tiene el teléfono en la mano." },
         { "n": "02", "title": "Califico a cada prospecto", "line": "Hago las preguntas que haría tu equipo, en lenguaje natural y sin menús de opciones." },
         { "n": "03", "title": "Agendo la cita", "line": "Ofrezco horarios y aparto la cita en el calendario de tu CRM o en el que ya usa tu equipo." },
-        { "n": "04", "title": "Confirmo y recuerdo", "line": "Mando la confirmación y un recordatorio antes de la cita, para que nadie falte sin avisar." },
+        { "n": "04", "title": "Confirmo y recuerdo", "line": "Mando la confirmación y un recordatorio antes de la cita, para reducir las faltas sin aviso." },
         { "n": "05", "title": "Doy seguimiento", "line": "Retomo las conversaciones que se quedaron a medias y aviso a tu equipo cuando alguien necesita a una persona." },
         { "n": "06", "title": "Registro todo en tu CRM", "line": "Cada conversación queda en Kommo o GoHighLevel, en su etapa y con el historial completo.", "href": "/servicios/crm-con-ia/" }
       ],
       "body": [
         "Antes de encenderme, cargamos lo que tu equipo contesta todos los días: servicios, horarios, precios, políticas y requisitos. Y definimos contigo en qué momento paso una conversación a una persona de tu equipo."
       ],
-      "limite": "No doy consejo médico ni legal. Cuando una pregunta lo necesita, se la paso a tu equipo con el contexto.",
+      "limite": "No todo me toca: más abajo te digo qué le paso a tu equipo.",
       "chat": {
         "mode": "inline",
         "tabs": [
@@ -91,7 +91,7 @@
       "channels": {
         "label": "Canales",
         "items": [
-          { "slug": "whatsapp", "name": "WhatsApp Business", "line": "Respondo, califico y agendo en el mismo chat." },
+          { "slug": "whatsapp", "name": "WhatsApp Business", "line": "Respondo, califico y agendo en el mismo chat.", "href": "/servicios/agentes-ia-whatsapp/" },
           { "slug": "instagram", "name": "Instagram", "line": "Contesto los mensajes directos de tu perfil." },
           { "slug": "facebook", "name": "Facebook Messenger", "line": "Atiendo los mensajes de tu página." },
           { "icon": "atender", "name": "Chat de tu web", "line": "Atiendo a quien te visita desde la ventana de chat." },
@@ -172,9 +172,9 @@
       "rail": "Plataforma",
       "eyebrow": "La plataforma",
       "h2": { "text": "Trabajo desde app.kain.mx.", "soft": "Ahí vive el agente de tu empresa." },
-      "lede": "app.kain.mx es la plataforma de kain, donde las empresas tienen a sus agentes trabajando. Tu agente se configura con la información de tu negocio y se conecta a tus canales y a tu CRM.",
+      "lede": "Desde ahí atiendo todos tus canales al mismo tiempo, y tu equipo encuentra cada conversación en el CRM, lista para retomarla donde se quedó.",
       "body": [
-        "Los planes de la plataforma no se publican aquí. Los proyectos con agentes de IA empiezan {{price}}; el alcance exacto lo definimos contigo en la Discovery Session."
+        "Los proyectos con agentes de IA empiezan {{price}}; el alcance exacto lo definimos contigo en la Discovery Session."
       ],
       "window": {
         "title": "Conversaciones de hoy",

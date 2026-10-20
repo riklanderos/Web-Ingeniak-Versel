@@ -16,6 +16,9 @@
     "CAMBIO DE AFIRMACIÓN · que-hacemos.h2: v1 decía 'De la licencia al CRM que vende solo'. Queda 'De la licencia al CRM que trabaja con tu equipo' (misma razón: personas en la operación).",
     "CAMBIO DE AFIRMACIÓN · definicion.metricRow: D pedía +340 %, 8 min → 12 s, +73 sistemas y 7 países. Sale dental-respuesta: la clínica dental opera con GoHighLevel (RESPUESTAS-CLIENTE 2026-10-19 #15), no con Kommo, y bajo '¿Qué es Kommo?' se leería como resultado de Kommo. Queda retail-conversiones (el caso de Kommo), sistemas y paises, con el título 'Ingeniak en datos'.",
     "CAMBIO DE AFIRMACIÓN · casos: la cifra de la clínica dental sí aparece (D la pide), pero el lede aclara que es el mismo tipo de agente de IA y que esa clínica usa GoHighLevel como CRM. v1 la ponía bajo 'Kommo con IA' y decía 'sin intervención humana': esa frase sale.",
+    "CAMBIO DE TEXTO · casos.h2 (QA plataformas 2026-10-19): 'Kommo con IA, operando hoy mismo.' se leía como si las dos cifras fueran de Kommo, y la clínica dental usa GoHighLevel. Vuelve al texto aprobado 'Sistemas reales, operando hoy mismo.' (RESPUESTAS-CLIENTE #3); el eyebrow pasa a 'Casos con cifras medidas' para no repetir 'Sistemas reales'.",
+    "CAMBIO DE AFIRMACIÓN · licencias.credential 'Atención': decía 'En español, por Google Meet, desde Guadalajara', como si todo el soporte fuera por Google Meet; las fuentes solo confirman la Discovery Session de 30 min por Google Meet. Queda 'En español, desde Guadalajara (Discovery Session por Google Meet)'. PREGUNTA AL CLIENTE · ¿por qué canal dan el soporte después de la implementación?",
+    "CAMBIO DE TEXTO · licencias.credentialNote: la frase fija de la plantilla 'El sello enlaza a kommo.com, como pide el programa de partners de Kommo' (nota interna a la vista) pasa al copy como texto para el visitante: 'Verifica el sello: enlaza al sitio oficial de Kommo.'",
     "CAMBIO DE TEXTO · que-hacemos #06: v1 'Un tablero con prospectos, citas, ventas y costo por cliente en tiempo real' pasa a 'Reportes claros' con datos del propio CRM (sin 'tiempo real' ni 'costo por cliente', que dependen de cada implementación).",
     "RESUELTO 2026-10-19 · cliente en chat · (16) plazo de implementación general de Ingeniak: de 7 a 30 días según el alcance. Va en inversion.remate, nunca como plazo de un caso.",
     "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (#que-hacemos, #como-funciona, #inversion).",
@@ -158,8 +161,9 @@
       "credential": [
         { "term": "Alianza", "value": "Partner oficial y distribuidor de Kommo en Latinoamérica" },
         { "term": "Incluye", "value": "Licencias, implementación, agentes de IA y capacitación" },
-        { "term": "Atención", "value": "En español, por Google Meet, desde Guadalajara" }
+        { "term": "Atención", "value": "En español, desde Guadalajara (Discovery Session por Google Meet)" }
       ],
+      "credentialNote": "Verifica el sello: enlaza al sitio oficial de Kommo.",
       "items": [
         { "n": "01", "title": "Vemos quién lo usará", "line": "Revisamos tu equipo, tus canales y cuántas conversaciones atiendes." },
         { "n": "02", "title": "Elegimos tu plan", "line": "Te recomendamos el plan de Kommo y los usuarios que necesitas, sin licencias de más." },
@@ -195,8 +199,8 @@
     "casos": {
       "_componente": "Montage (2 filas) + ResultsLedger filtrado",
       "rail": "Casos",
-      "eyebrow": "Sistemas reales, cifras medidas",
-      "h2": { "text": "Kommo con IA,", "soft": "operando hoy mismo." },
+      "eyebrow": "Casos con cifras medidas",
+      "h2": { "text": "Sistemas reales,", "soft": "operando hoy mismo." },
       "lede": "El retail multimarca opera con Kommo y calificación de leads por IA. La clínica dental usa el mismo tipo de agente, con GoHighLevel como CRM: el agente se conecta a cualquiera de los dos.",
       "rows": [
         { "metricId": "retail-conversiones", "context": "Kommo con calificación de leads por IA · Retail multimarca", "href": "/casos/retail-multimarca-kommo/", "linkLabel": "Ver el caso" },

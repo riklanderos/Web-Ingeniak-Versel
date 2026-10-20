@@ -1,5 +1,5 @@
 {
-  "_schema": "Hub /blog/ · HubTemplate (T-HUB, ESPEC §5.5). Campos de _ESQUEMA.md §3–§6 y, propios del hub: hero.featured {label} (rótulo del artículo destacado: solo aparece si alguna guía ya está publicada) · categorias {eyebrow, all, chips[] {slug, label}, status} (filtran #grid sin recargar; status usa {n}) · grid.items[] {href, category, title, line, ask, related?} (índice de guías: enlace solo si la guía ya existe; si no, rótulo 'En edición' y botón que abre ⌘K con la pregunta en `ask`; related = página comercial del tema, se enlaza solo si existe) · grid.author / grid.labels {status, read, ask, related} · grid.note/noteLabel (EditorNote). suscripcion lleva _omitir hasta que el cliente decida la herramienta de correo.",
+  "_schema": "Hub /blog/ · HubTemplate (T-HUB, ESPEC §5.5). Campos de _ESQUEMA.md §3–§6 y, propios del hub: hero.featured {label} (rótulo del artículo destacado: solo aparece si alguna guía ya está publicada) · categorias {eyebrow, all, chips[] {slug, label}, status} (filtran #grid sin recargar; status usa {n}) · grid.items[] {href, category, title, line, ask, related?} (índice de guías: enlace solo si la guía ya existe; si no, rótulo 'En edición' y botón que abre ⌘K con la pregunta en `ask`; related = página comercial del tema, se enlaza solo si existe) · grid.author / grid.labels {status, read, ask, related, updated} (updated: rótulo de la fecha real de cada guía publicada, tomada del campo actualizado de su artículo) · grid.note/noteLabel (EditorNote). suscripcion lleva _omitir hasta que el cliente decida la herramienta de correo.",
   "pageId": "blog",
   "url": "/blog/",
   "estado": "borrador",
@@ -8,11 +8,11 @@
   "actualizado": "2026-10-19",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
-    "PREGUNTA AL CLIENTE · ¿se publica /blog/ antes de que exista el primer artículo aprobado? Hoy la página muestra las seis guías del plan como 'En edición', sin enlace, y deja preguntarle a Kain cada tema. Cuando una guía se publica, su fila enlaza sola y aparece como destacada en la portada.",
+    "RESUELTO 2026-10-19 · las seis guías ya tienen página (cada una en borrador hasta su aprobación, R1): su fila enlaza a la guía con su fecha real ('Actualizado', el campo actualizado del artículo) y la primera se destaca en la portada. El lede de #grid ya no dice que se están escribiendo.",
     "PREGUNTA AL CLIENTE · autores de las seis guías (R8): mientras no se confirme quién firma, el crédito visible es 'Equipo de Ingeniak'. Los autores sugeridos en D (Rik Landeros, Alonso Vega, Marcos González) no se publican sin tu confirmación.",
     "PREGUNTA AL CLIENTE · suscripcion: el formulario de correo conectado a Kommo sigue sin decidir (herramienta y doble opt-in). La sección no se publica.",
-    "CAMBIO DE TEXTO · grid: D pedía 6 tarjetas con imagen, autor, fecha 'Actualizado: …' y tiempo de lectura. Sin artículos publicados no hay fecha ni tiempo de lectura reales: la página no inventa ninguno. Las guías van como índice editorial (sin tarjetas) y cada fila toma su título y su resumen de sitemap.json.",
-    "DATO PENDIENTE · /preguntas-frecuentes/ no existe todavía; el enlace aparece cuando se publique."
+    "CAMBIO DE TEXTO · grid: D pedía 6 tarjetas con imagen, autor, fecha 'Actualizado: …' y tiempo de lectura. Las guías van como índice editorial (sin tarjetas, R7) con su autor y su fecha 'Actualizado' (la del artículo); el tiempo de lectura no se publica porque no está medido. Cada fila toma su título y su resumen de sitemap.json.",
+    "RESUELTO 2026-10-19 · /preguntas-frecuentes/ ya existe: el enlace del pie de #grid se muestra."
   ],
   "sections": {
     "hero": {
@@ -71,13 +71,14 @@
         "text": "Seis preguntas que nos hacen",
         "soft": "antes de contratar."
       },
-      "lede": "Las estamos escribiendo con el equipo que implementa estos sistemas. Mientras se publican, Kain te da la respuesta corta de cada una.",
+      "lede": "Seis guías escritas con el equipo que implementa estos sistemas, para decidir con criterios y no con promesas. Filtra por tema o empieza por la primera.",
       "author": "Equipo de Ingeniak",
       "labels": {
         "status": "En edición",
         "read": "Leer la guía",
         "ask": "Pregúntale a Kain",
-        "related": "Mientras tanto"
+        "related": "Mientras tanto",
+        "updated": "Actualizado"
       },
       "items": [
         {

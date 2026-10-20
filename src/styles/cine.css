@@ -450,6 +450,11 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.4s forwards}
   .dawn[data-layout="subject-left"] .is__text > .t-h2{max-width:none;font-size:min(clamp(2.25rem,1rem + 3.4vw,4.75rem),6.2svh)}
   .dawn[data-layout="subject-left"] .is__text > :is(.t-lede,.t-lede--2){max-width:40ch}
 }
+/* Con el riel de escenas (≥ 1280 px, fijo a la derecha: right = --action-x − 6 px, 32 px de ancho) la columna se detiene
+   24 px antes de su carril: a 1440 × 900 el titular de /metodologia/ llegaba a x 1416 y su punto final tocaba el tick activo. */
+@media (min-width:1280px) and (min-aspect-ratio:5/6){
+  .dawn[data-layout="subject-left"] .is__text{margin-right:calc((var(--frame) - 100vw) / 2 + var(--action-x) + 50px)}
+}
 /* El primer plano (suelo bajo los pies) se disuelve con una curva larga: sin borde recto en la costura con el pie */
 .dawn > .is__stagebox > .is__layer--media{--mask-y:linear-gradient(180deg,transparent 0,#000 var(--fade-top,11%),#000 80%,rgb(0 0 0 / .78) 87%,rgb(0 0 0 / .4) 93%,rgb(0 0 0 / .12) 97.5%,transparent 100%)}
 /* Velo que se levanta: nace con la costura (nunca un borde recto sobre el aura de la sección anterior) */
@@ -571,6 +576,12 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.4s forwards}
 @media (min-width:768px) and (min-aspect-ratio:5/6){
   .loc > .is__stagebox{top:50%;bottom:auto;height:min(100%,max(92svh,640px));translate:0 -50%}
 }
+/* Ultra ancho: el escenario sigue apoyado en el borde del SUJETO (derecha), como en ImageSection, aunque una plantilla
+   le reescriba `inset` (HubTemplate .hub-loc: con inset:auto 0 el escenario de 1839 px quedaba pegado a la IZQUIERDA a
+   2560 y la mano de Kain en Salud caía bajo la lista y junto a la entrada). */
+@media (min-width:1800px){
+  .is.loc[data-layout="subject-right"] > .is__stagebox{left:auto;right:0}
+}
 .loc__list{margin-top:var(--s-6);border-top:1px solid var(--hair);width:100%}
 .loc__row{position:relative;display:flex;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--hair)}
 /* Filas inactivas a .6 fija (≥ 4.5:1 sobre la tinta), sin desvanecido progresivo */
@@ -594,7 +605,8 @@ html.enc .co-layer--enc{animation:co-safety 0s 1.4s forwards}
 /* "Ver industria →" de la fila activa en su propia línea: objetivo ≥ 24 px (44 con puntero grueso), 8 px bajo el botón */
 .loc__go{display:none;align-items:center;min-height:24px;margin:8px 0 12px calc(2.25rem + 10px);padding-right:8px}
 .loc__row[aria-current] .loc__go{display:inline-flex}
-@media (pointer:coarse){.loc__go{min-height:44px;margin-block:8px 4px}}
+/* R11: las filas son botones tipo pestaña (aria-pressed): ≥ 44 px de alto con puntero grueso (medían 39 a 390 y 320 px) */
+@media (pointer:coarse){.loc__go{min-height:44px;margin-block:8px 4px}.loc__btn{min-height:44px;align-content:center}}
 .loc__ctrl{display:flex;align-items:center;gap:var(--s-5);margin-top:var(--s-5);flex-wrap:wrap}
 .loc__pause svg{width:18px;height:18px}
 .loc__pause .ico-play,.loc__pause[aria-pressed="true"] .ico-pause{display:none}

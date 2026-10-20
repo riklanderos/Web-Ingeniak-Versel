@@ -3,6 +3,10 @@
 // prose (opcional): la cifra redactada para una oración ({{metric:ID|prose}}). retail-conversiones, horeca-roas y
 // salud-citas-mes se publican tal cual, SIN periodo ni ventana: el cliente pidió publicarlas así (RESPUESTAS-CLIENTE
 // 2026-10-19 #1). No se inventa un plazo; las que ya lo traen (dental-citas, ecom-cpl) lo conservan.
+// href = el caso que respalda la cifra (Montage, MetricRow, ResultsLedger y llms.txt enlazan ahí con "Ver caso →").
+// ecom-tablero va SIN href: no está confirmado que el tablero sea del mismo cliente del caso de costo por lead
+// (caso-ecommerce.json pendientes; D-arquitectura.md, caso e-commerce, sección 4). Si el cliente lo confirma, vuelve
+// href: '/casos/ecommerce-cdmx-costo-por-lead/'.
 export const METRICS = {
   'dental-citas':        { value: '3.2×',                label: 'más citas en 90 días',      ctx: 'Clínica dental · Monterrey',     href: '/casos/clinica-dental-monterrey/', countable: false },
   'dental-respuesta':    { value: '8 min → 12 s',        label: 'tiempo de respuesta',       ctx: 'Clínica dental · Monterrey',     href: '/casos/clinica-dental-monterrey/', countable: false, prose: 'de 8 minutos a 12 segundos' },
@@ -12,7 +16,7 @@ export const METRICS = {
   'logistica-procesos':  { value: '27',                  label: 'procesos automatizados',    ctx: 'Logística · n8n',                href: '/casos/logistica-n8n/', countable: true, from: 0 },
   'salud-citas-mes':     { value: '12 → 47',             label: 'citas al mes en promedio',  ctx: 'Clientes de salud: odontología, medicina estética, quiropráctica y gastroenterología', href: undefined, countable: false },
   'tiempo-operativo':    { value: '−60%',                label: 'tiempo operativo',          ctx: 'Promedio, primeros 90 días',     href: undefined, countable: false },
-  'ecom-tablero':        { value: '1 vista · 7 fuentes', label: 'tablero unificado',         ctx: 'E-commerce',                     href: '/casos/ecommerce-cdmx-costo-por-lead/', countable: false },
+  'ecom-tablero':        { value: '1 vista · 7 fuentes', label: 'tablero unificado',         ctx: 'E-commerce',                     href: undefined, countable: false },
   'sistemas':            { value: '+73',                 label: 'sistemas en producción',    ctx: 'Agentes, CRM y automatizaciones',                       href: undefined, countable: false },
   'paises':              { value: '7',                   label: 'países',                    ctx: 'México (sede), Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador', href: '/nosotros/', countable: true, from: 0 },
 } as const;

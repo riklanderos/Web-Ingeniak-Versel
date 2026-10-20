@@ -195,6 +195,10 @@ export const TOOLS: Record<string, { name: string; logo: string; wide?: boolean 
   instagram: { name: 'Instagram', logo: 'instagram' }, facebook: { name: 'Facebook', logo: 'facebook' }, zapier: { name: 'Zapier', logo: 'zapier' },
   hubspot: { name: 'HubSpot', logo: 'hubspot' }, analytics: { name: 'Google Analytics', logo: 'googleanalytics' },
   elevenlabs: { name: 'ElevenLabs', logo: 'elevenlabs' }, linkedin: { name: 'LinkedIn', logo: 'linkedin' },
+  notion: { name: 'Notion', logo: 'notion' },
+  // Wordmark de n8n (su guía lo pide donde el logo va solo, ≥ 100 px de ancho); el ícono sigue siendo `n8n`.
+  'n8n-wordmark': { name: 'n8n', logo: 'n8n-wordmark-white', wide: true },
+  // HeyGen: pendiente de un archivo claro (SVG o WebP) en public/img/logos (peticiones · metodo-stack #8).
 };
 export const logoWide = (slug?: string) => !!(slug && TOOLS[slug]?.wide);
 export const logoUrl = (slug?: string) => (slug ? `/img/logos/${TOOLS[slug]?.logo ?? slug}.svg` : undefined);

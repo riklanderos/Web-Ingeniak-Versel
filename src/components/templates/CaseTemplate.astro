@@ -2,7 +2,8 @@
 // CaseTemplate · T-CASE (ESPEC §5.4, §5.4.1, §12.2 R2/R8/R11). Caso de estudio como reportaje.
 // Datos: src/data/sitemap.json (URL, H1, placas, breadcrumbs, CTAs, publishGate) + src/content/paginas/<page.id>.json (texto).
 // Sirve a todos los casos: cada sección se pinta en el orden de sitemap.sections y solo si su copy existe y no trae `_omitir`.
-//   01 hero          ImageSection hero (persona a la derecha) + Breadcrumbs + H1 en 3 voces (kicker · cifra mega · texto)
+//   01 hero          ImageSection hero (persona a la derecha) + Breadcrumbs + H1 en 3 voces (kicker · cifra mega · texto);
+//                    H1 y lede acotados a la zona segura de la placa en escritorio; hero.ledeM = lede corto del intro móvil
 //   02 ficha         entradilla (.t-standfirst) + EntitySheet variant="case" (Quick Jump: el riel muestra etiquetas en casos)
 //   03 punto-partida Prose + nota al margen en ámbar
 //   04 cifra         CaseFigure (variante de §5.4.1; fijada +100 % en escritorio). index/multiplier/nodes: en escritorio la
@@ -103,6 +104,39 @@ const heroPlate = plateOf('hero');
 const heroR = heroPlate ? resolvePlate(heroPlate.id, { mirror: heroPlate.mirror, fallbackPlate: heroPlate.launchFallback }) : null;
 const h1 = hero.h1 ?? {};
 const ledeFig = /\{\{metric:/.test(hero.lede ?? '');   // el lede lleva cifra → llamada ¹ a la nota de fuente
+// Móvil (R3): hero.ledeM (opcional) es la versión corta del lede para el intro; el lede completo queda en escritorio.
+// Sin ledeM no cambia nada (caso dental).
+const ledeM: string | null = hero.ledeM ?? null;
+const ledeMFig = /\{\{metric:/.test(ledeM ?? '');
+// Zona segura de la portada (escritorio, QA casos). El titular (y la cifra mega) no pasan del borde de la zona segura de texto
+// de la placa (safe.d) en su franja (y 0.2–0.8; retail: 0.42 aunque arriba y abajo llegue a 0.56): --case-edge, fracción de la
+// placa; pages.css lo proyecta con la geometría "cover" de la portada (como cine.css safeCol, sobre el alto de pantalla, sin
+// realimentarse con el alto real). El lede se acota igual (.case-edge, con la tolerancia de la zona segura). La columna completa
+// NO se acota: los CTA ya caben y, si la portada crece, la placa crece y el borde se corre (la realimentación que vimos con
+// safeCol a 1280 × 720).
+//   --fig-em: ancho de la cifra mega en em (fuente display a -0.065em; las letras van en .metric__word a .34em): se encoge si no cabe.
+//   --txt-em: ancho del texto del H1 en una línea, en em; solo en titulares cortos (≤ 13 em): en escritorios bajos (≤ 820 px de
+//   alto) el texto se ajusta a una línea en lugar de partirse (la portada no crece; HoReCa: "sostenido con paid media").
+const heroRaw: any = heroR?.id ? getPlate(heroR.id) : null;
+const zonesD: number[][] = heroR && !heroR.mirror && (heroR.layout ?? 'subject-right') === 'subject-right'
+  ? (heroRaw?.safe?.d ?? []).filter((z: any) => Array.isArray(z) && z.length >= 4 && z[0] <= 0.12) : [];
+const edgeAll = zonesD.length ? Math.max(...zonesD.map((z) => z[2])) : null;
+const bandZ = zonesD.filter((z) => z[1] < 0.8 && z[3] > 0.2);
+const edgeText = bandZ.length ? Math.min(...bandZ.map((z) => z[2])) : edgeAll;
+const figEm = (v: string) => +[...String(v ?? '')].reduce((n, ch) => n + (/\d/.test(ch) ? 0.46 : /[.,]/.test(ch) ? 0.2
+  : /[+\-−]/.test(ch) ? 0.5 : ch === '%' ? 0.62 : ch === '×' ? 0.32 : ch === ' ' ? 0.12 : /\p{L}/u.test(ch) ? 0.25 : 0.5), 0).toFixed(2);
+const txtEm = +[...String(h1.text ?? '')].reduce((n, ch) => n + (/\s/.test(ch) ? 0.3 : 0.53), 0).toFixed(2);
+const h1Vars = [
+  edgeText !== null && `--case-edge:${edgeText}`,
+  h1.metricId && (METRICS as any)[h1.metricId] && `--fig-em:${Math.max(0.9, figEm((METRICS as any)[h1.metricId].value))}`,
+  txtEm > 0 && txtEm <= 13 && `--txt-em:${txtEm}`,
+].filter(Boolean);
+const h1Style = h1Vars.length ? h1Vars.join(';') : undefined;
+// Tableta vertical (QA casos · logística a 1024 × 1366): si en la placa vertical hay ≥ 0.04 entre el final de la zona segura
+// (safe.m) y la cabeza del sujeto (subject.m), la última línea del intro ('Escríbele a Kain') quedaba en esa franja. data-case-gap
+// agranda el aire bajo el intro solo en pantallas de 600 px o más (pages.css); en teléfono sigue en 30 px.
+const safeM: number[][] = (heroRaw?.safe?.m ?? []).filter((z: any) => Array.isArray(z) && z.length >= 4 && z[1] < 0.2);
+const heroGapM = !!heroRaw?.subject?.m && safeM.length > 0 && Math.round((heroRaw.subject.m[1] - Math.max(...safeM.map((z) => z[3]))) * 1000) >= 40;
 
 // ── 02 Ficha ─────────────────────────────────────────────────────────────────
 const ficha = C.ficha ?? {};
@@ -214,13 +248,14 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
         fallbackPlate={heroPlate?.launchFallback}
         height="hero"
         priority
+        data-case-gap={heroGapM ? '' : undefined}
         class="case-hero tpl-hero tpl-glow"
       >
         {/* R3: en móvil el intro es solo H1 + lede + CTAs (crumbs fuera); la fila de datos baja a `more` en una línea */}
         <Breadcrumbs page={page} items={builtCrumbs(page.breadcrumbs)} class="tpl-mhide" />
         <span class="tpl-introglow" aria-hidden="true"></span>
         <span class="case-hero__floor" aria-hidden="true"></span>
-        <h1 id="hero-t" class="case-h1">
+        <h1 id="hero-t" class="case-h1" style={h1Style}>
           {h1.kicker && <span class="t-h4 case-h1__kicker">{h1.kicker}</span>}
           {' '}
           {h1.metricId && <Metric id={h1.metricId} variant="mega" label={false} as="span" class="case-h1__fig lit" />}
@@ -232,7 +267,12 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
             {hero.chips.map((c: string) => <li class="chip-spec">{c}</li>)}
           </ul>
         )}
-        {hero.lede && <p class="t-lede t-lede--2 case-hero__lede"><Copy text={hero.lede} />{ledeFig && <sup class="case-fn" aria-hidden="true">1</sup>}</p>}
+        {hero.lede && (
+          <p class:list={['t-lede t-lede--2 case-hero__lede', ledeM && 'tpl-mhide', edgeText !== null && 'case-edge']} style={edgeText !== null ? `--case-edge:${edgeText}` : undefined}>
+            <Copy text={hero.lede} />{ledeFig && <sup class="case-fn" aria-hidden="true">1</sup>}
+          </p>
+        )}
+        {ledeM && <p class="t-lede t-lede--2 case-hero__lede tpl-dhide"><Copy text={ledeM} />{ledeMFig && <sup class="case-fn" aria-hidden="true">1</sup>}</p>}
         <HeroCtas href={hero.ctaPrimary?.href ?? page.primaryCta?.href ?? SITE.discovery} label={primaryLabel(hero)}
           waHref={wa(hero.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} waLabel={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
         {/* QA #63 · §0.1-2: toda cifra lleva su nota de fuente, también en la portada */}

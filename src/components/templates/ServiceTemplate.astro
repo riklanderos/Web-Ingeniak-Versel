@@ -13,7 +13,8 @@
 //   vktor · vktor-cine → VktorRail (a sangre sobre metodologia-hero) · inversion → Intertitle de precio · faq → FAQAccordion
 //   relacionados → Still ×3 · cta-final → Dawn
 //   ids con placa no listados (crm-vivo, dashboard, este-sitio, como-medimos, kain-ejemplo, caso con imagen…) → ImageSection
-//   mid con la UI de su `ui` registrada en la parte libre de la superficie (y en línea en móvil, R4)
+//   mid con la UI de su `ui` registrada en la parte libre de la superficie (y en línea en móvil, R4). Si la escena regresa a la
+//   placa de la portada y Kain entero no deja empujar la cámara (camCap < PUSH_MIN), va con su placa de SCENE_ALT (R5/R13)
 // UI de portada por servicio (§5.2.1, `hero.ui`): bubbles → teléfono con ChatSim · roadmap → nodos de la ruta + leyenda ·
 //   pipeline → embudo · canvas → lienzo de nodos · panels → paneles de anuncio + curva · blocks → wireframe ·
 //   question/answer → respuesta de un motor de IA · modules → tablero de identidad. Siempre SIMULACIÓN/VISTA DEMO y data-nosnippet.
@@ -357,12 +358,58 @@ function toolSlug(label: string): string | null {
   if (!n) return null;
   return TOOL_KEYS.find((k) => n === k || n === norm((TOOLS as any)[k]?.name) || (n.startsWith(k) && k.length >= 4)) ?? null;
 }
+/* ── R5 + R13 · Regreso al set sin repetir el encuadre (QA servicios r3) ──
+   sitemap.json pide que crm-vivo, este-sitio, dashboard, como-medimos y kain-ejemplo vuelvan a la placa de la portada con
+   push 1.35 → 1.6. Con Kain de cuerpo completo (§0.1-5, manda) la cámara útil es ≈ 1.04–1.18 (camCap): la escena salía
+   casi igual que la portada (misma pose, mismo objeto, misma escala). Si el tope queda bajo PUSH_MIN, la escena NO reusa la
+   placa de la portada: toma la primera placa lista de SCENE_ALT que la página no usa, con otra pose y del otro lado que la
+   escena con Kain que la sigue (VKTOR, metodologia-hero: presenta, a la derecha). Sin placa libre, la escena va sobre aura.
+   Pedido a orquestador (peticiones.md): llevar estas placas a sitemap.json o encargar placas derivadas.
+   `box` = caja [x, y, w, h] de la UI en la placa SIN espejo, alineada a la superficie que la recibe (calendario, panel del
+   frente, pantalla del teléfono) cuando hudBox la correría hacia el texto;
+   `inline` = la UI va en la columna de texto (la placa no tiene superficie libre junto al sujeto). */
+const PUSH_MIN = 1.3;
+type Alt = { id: string; mirror?: boolean; box?: { name: string; d: B4 }; inline?: boolean };
+const SCENE_ALT: Record<string, Alt[]> = {
+  // Kain toca la casilla encendida de un calendario de cristal (la cita ya quedó en la agenda); el calendario es más angosto
+  // que la tarjeta del lead, así que la tarjeta (Nuevo → Calificado → Cita agendada) va en la columna de texto
+  'crm-vivo': [{ id: 'gohighlevel-hero', mirror: true, inline: true }, { id: 'home-sistema-4-automatizar', mirror: true, inline: true }],
+  // Kain sentado en el cubo de cristal del que salen las conexiones del stack (las capas con que está hecho este sitio,
+  // en la columna de texto). No home-sistema-1-atraer: su zona segura termina en el riel de luz (y .74) y las cinco viñetas
+  // de la sección lo cruzaban
+  'este-sitio': [{ id: 'tecnologias-hero', mirror: true, inline: true }, { id: 'home-sistema-1-atraer', mirror: true, box: { name: 'pantalla', d: [0.562, 0.31, 0.111, 0.31] } }],
+  // Kain señala hacia el texto desde sus paneles de cristal: la vista demo del tablero del caso va en la columna de texto
+  // (el tablero genérico de 7 fuentes ya está registrado en la pantalla de la portada, §5.2.1)
+  'dashboard': [{ id: 'servicios-no-se', inline: true }, { id: 'home-sistema-4-automatizar', mirror: true }],
+  // Kain toca un nodo de una red de luz (enlaces, menciones, fuentes); la vista demo de indicadores va en la columna de texto
+  'como-medimos': [{ id: 'home-sistema-4-automatizar', mirror: true, inline: true }, { id: 'tecnologias-hero', mirror: true, inline: true }],
+  // Kain presenta un teléfono de cristal (WhatsApp, uno de los canales del personaje): los canales en su pantalla. No
+  // home-kain ni kain-hero: saludan, y el cierre de branding (cta-amanecer) ya es Kain saludando (R13)
+  'kain-ejemplo': [{ id: 'home-sistema-2-atender', mirror: true, box: { name: 'telefono', d: [0.497, 0.36, 0.14, 0.3] } }, { id: 'kain-si-no', inline: true }],
+};
+const sceneAlt = new Map<string, any>();
+for (const s of list) {
+  if (kindOf(s) !== 'scene') continue;
+  const p = plateOf(s);
+  if (!p?.push) continue;
+  const r = resolvePlate(p.id, { fallbackPlate: p.launchFallback, mirror: p.mirror });
+  if (!r.id || r.id !== hr.id) continue;                       // solo el regreso al set de la portada
+  const a = rawAnchor(r.id, p.push.anchor ?? 'superficie');
+  const o: [number, number] | null = a ? (a.length >= 4 ? [a[0] + a[2] / 2, a[1] + a[3] / 2] : [a[0], a[1]]) : null;
+  if (camCap(rawSubj(r.id) as any, o, 1.6) >= PUSH_MIN) continue; // el push sí cambia el encuadre: se queda
+  const alt = (SCENE_ALT[s.id] ?? []).find((x) => plateReady(x.id) && !used.has(x.id));
+  sceneAlt.set(s.id, alt
+    ? { ...p, id: alt.id, alt: true, mirror: !!alt.mirror, layout: undefined, push: undefined, launchFallback: undefined, srcsetMax: undefined, altBox: alt.box, inline: !!alt.inline }
+    : { ...p, id: '__aura', mirror: false, layout: p.layout, push: undefined, launchFallback: undefined, inline: true });
+  if (alt) used.add(alt.id);
+}
+
 /** Escena con placa (crm-vivo, este-sitio, dashboard, como-medimos, kain-ejemplo, caso con imagen): empuje acotado a lo que
  *  deja al sujeto entero (camCap) y borde de la columna de texto en la placa, con el sujeto y la UI ya empujados (+3 %). */
 function sceneGeo(p: any, c: any, sid: string) {
   const r = resolvePlate(p.id, { fallbackPlate: p.launchFallback, mirror: p.mirror });
   const kind = hudKind(c.ui) ?? (sid === 'crm-vivo' && r.id ? 'lead' : null);
-  const hb = kind ? hudBox(kind, r.id) : null;
+  const hb = !kind || p.inline ? null : p.altBox ? { name: p.altBox.name, box: p.altBox.d as B4 } : hudBox(kind, r.id);
   const L = r.usedFallback ? r.layout : (lay(p) ?? r.layout);   // con respaldo manda el lado del sujeto de la placa pintada
   const sj = rawSubj(r.id);
   let push: { anchor: string; camFrom: number; camTo: number } | undefined;
@@ -383,9 +430,17 @@ function sceneGeo(p: any, c: any, sid: string) {
   const hbm = hb ? (r.mirror ? [1 - hb.box[0] - hb.box[2], hb.box[1], hb.box[2], hb.box[3]] : hb.box) : null;
   const oxm = r.mirror ? 1 - ox : ox;
   const at = (x: number) => (push ? oxm + (x - oxm) * cam : x);
-  const e = L === 'subject-left'
+  let e = L === 'subject-left'
     ? Math.max(sjm ? at(sjm[2]) : 0.46, hbm ? at(hbm[0] + hbm[2]) : 0) + 0.03
     : Math.min(sjm ? at(sjm[0]) : 0.54, hbm ? at(hbm[0]) : 1) - 0.03;
+  // Placa de reemplazo (SCENE_ALT): su objeto de cristal (calendario, teléfono, paneles) queda fuera de la caja del sujeto;
+  // la columna tampoco entra a la zona iluminada de la placa (borde de su zona segura de texto, ya espejado)
+  if (p.alt && r.id) {
+    const zs = ((getPlate(r.id) as any)?.safe?.d ?? []).filter((z: any) => Array.isArray(z) && z.length >= 4)
+      .map((z: number[]) => (r.mirror ? [1 - z[2], z[1], 1 - z[0], z[3]] : z));
+    const side = L === 'subject-left' ? zs.filter((z: number[]) => z[2] >= 0.88) : zs.filter((z: number[]) => z[0] <= 0.12);
+    if (side.length) e = L === 'subject-left' ? Math.max(e, ...side.map((z: number[]) => z[0])) : Math.min(e, ...side.map((z: number[]) => z[2]));
+  }
   const eClass = L === 'subject-left'
     ? `svc-e-${Math.min(70, Math.max(30, Math.ceil(e * 50) * 2))}`
     : `svc-e-${Math.min(70, Math.max(30, Math.floor(e * 50) * 2))}`;
@@ -479,14 +534,23 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
       }
       if (kind === 'pipeline') {
         const Pl = u.pipeline; const st = Pl.stages as string[]; const act = Math.min(Pl.active ?? 1, st.length - 1); const SK = [3, 2, 2, 1, 1];
+        // "Lead · Instagram": el canal va como su logo (la palabra no cabe en la columna de 45–60 px); sin logo, el texto
+        // se parte dentro de la tarjeta. En una superficie angosta (< 290 px) la columna final, si no es la activa, se oculta.
+        const [leadT, ...leadC] = String(Pl.lead ?? 'Lead nuevo').split(/\s*·\s*/);
+        const leadSl = leadC.length ? toolSlug(leadC.join(' ')) : null;
         return (
           <div class="svc-hud__card svc-kb" aria-hidden="true">
             {top(Pl.title)}
             <div class="svc-kb__cols" style={`--n:${st.length}`}>
               {st.map((t, i) => (
-                <div class:list={['svc-kb__col', i === act && 'is-on']} style={`--i:${i}`}>
+                <div class:list={['svc-kb__col', i === act && 'is-on', i >= 3 && i > act && 'is-tail']} style={`--i:${i}`}>
                   <span class="svc-kb__h">{t}</span>
-                  {i === act && <span class="svc-kb__lead"><i></i>{Pl.lead ?? 'Lead nuevo'}</span>}
+                  {i === act && (
+                    <span class="svc-kb__lead">
+                      {leadSl ? <span class:list={['logo-mask svc-kb__ch', logoWide(leadSl) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(leadSl)})`}></span> : <i></i>}
+                      <span class="svc-kb__lt">{leadSl ? leadT : [leadT, ...leadC].join(' · ')}</span>
+                    </span>
+                  )}
                   {Array.from({ length: Math.max(0, SK[i % SK.length] - (i === act ? 1 : 0)) }).map(() => <span class="svc-kb__sk"></span>)}
                 </div>
               ))}
@@ -668,10 +732,11 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
           {/* Sello de Kommo (único partner) cuando el copy lo pide en la portada (hero.badge) */}
           {c.badge && <div class="svc-hero__badge"><KommoBadge size="sm" text={/latam/i.test(String(c.badge))} /></div>}
           {heroLines && heroPanel && <LightBranch from="mano" via=".svc-ui" />}
-          {heroHud && <LightBranch from="mano" via=".svc-hud--reg" />}
+          {/* La rama sale de la tarjeta visible, no de la caja del ancla (más alta que la tarjeta: la rama nacía en el aire) */}
+          {heroHud && <LightBranch from="mano" via=".svc-hud--reg > .svc-hud__card" />}
           {heroHud && heroKind && (
             <div slot="anchors" class={`anchor anchor--panel svc-hud svc-hud--reg svc-hud--${heroKind}`} data-anchor={heroHud.name} data-lock data-m="none"
-              data-nosnippet style={boxCss(hr, heroHud.box)} role="img" aria-label={HUD_ARIA[heroKind]}>{hud(heroKind, heroUi)}</div>
+              data-nosnippet style={boxCss(hr, heroHud.box)} role="img" aria-label={heroUi?.aria ?? HUD_ARIA[heroKind]}>{hud(heroKind, heroUi)}</div>
           )}
           {heroRouteNodes.length > 1 && (
             <Fragment slot="anchors">
@@ -692,7 +757,7 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
             <Fragment slot="more">
               {heroLede.rest && <Copy text={heroLede.rest} as="p" class="t-lede t-lede--2 svc-hero__proof tpl-dhide" />}
               {heroKind && (
-                <div class={`svc-hud svc-hud--inline svc-hud--${heroKind}${heroHud ? ' tpl-dhide' : ''}`} role="img" aria-label={HUD_ARIA[heroKind]} data-nosnippet>{hud(heroKind, heroUi)}</div>
+                <div class={`svc-hud svc-hud--inline svc-hud--${heroKind}${heroHud ? ' tpl-dhide' : ''}`} role="img" aria-label={heroUi?.aria ?? HUD_ARIA[heroKind]} data-nosnippet>{hud(heroKind, heroUi)}</div>
               )}
               {heroBubbles.length > 0 && (
                 <div class="svc-bubbles tpl-dhide" role="group" aria-label="Simulación de una conversación por WhatsApp" data-nosnippet>
@@ -1205,7 +1270,8 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
       /* Escena con placa (R5: el set de la portada se revisita con push; o la persona ilustrativa de un caso). La placa mide
          una pantalla (no se estira con el texto) y la columna de texto termina/empieza en el borde que calcula sceneGeo, con
          el sujeto y la UI ya empujados: el texto nunca pisa a Kain ni a la UI registrada. */
-      const g = sceneGeo(p, c, s.id);
+      const sp = sceneAlt.get(s.id) ?? p;
+      const g = sceneGeo(sp, c, s.id);
       const r = g.r;
       const pan = c.chat ? panel(r) : null;
       const hk = pan ? null : g.kind;
@@ -1213,11 +1279,12 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
       const hasMore = c.items?.length > 0 || !!c.slogan || links.length > 0 || (c.chat && !pan) || !!hk;
       const illus = /^(caso|ind)-/.test(r.id ?? '') ? (c.illus ?? 'Imagen ilustrativa del sector') : null;
       const hudCls = hk === 'lead' ? 'svc-hud svc-hud--lead svc-lead' : `svc-hud svc-hud--${hk}`;
+      const hudInl = hk === 'lead' ? ' svc-lead--inline' : '';
       return (
         <ImageSection
-          id={s.id} plate={p.id} fallbackPlate={p.launchFallback} layout={g.r.usedFallback ? undefined : lay(p)} mirror={p.mirror} height={p.height ?? 'mid'}
-          tone={p.tone === 'dolor' ? 'dolor' : 'sol'} mobile={p.mobile === 'below' ? 'below' : hasMore ? 'split' : (p.mobile ?? 'top')} srcsetMax={p.srcsetMax ?? 1920}
-          push={g.push} alt={p.id === hp.id ? '' : undefined} class={`svc-scene ${g.eClass} tpl-glow-m`}
+          id={s.id} plate={sp.id} fallbackPlate={sp.launchFallback} layout={g.r.usedFallback ? undefined : lay(sp)} mirror={sp.mirror} height={sp.height ?? 'mid'}
+          tone={sp.tone === 'dolor' ? 'dolor' : 'sol'} mobile={sp.mobile === 'below' ? 'below' : hasMore ? 'split' : (sp.mobile ?? 'top')} srcsetMax={sp.srcsetMax ?? 1920}
+          push={g.push} alt={sp.id === hp.id ? '' : undefined} class={`svc-scene ${g.eClass} tpl-glow-m`}
         >
           <span class="tpl-introglow" aria-hidden="true"></span>
           {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
@@ -1226,11 +1293,11 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
           {illus && <p slot="over" class="chip-illus svc-illus tpl-mhide">{illus}</p>}
           {hk && g.hb && (
             <div slot="anchors" class={`anchor anchor--panel ${hudCls} svc-hud--reg`} data-anchor={g.hb.name} data-lock data-m="none" data-nosnippet
-              style={boxCss(r, g.hb.box)} role="img" aria-label={HUD_ARIA[hk]}>{hud(hk, c.ui)}</div>
+              style={boxCss(r, g.hb.box)} role="img" aria-label={c.ui?.aria ?? HUD_ARIA[hk]}>{hud(hk, c.ui)}</div>
           )}
           {hasMore && (
             <Fragment slot="more">
-              {hk && <div class={`${hudCls} svc-hud--inline${g.hb ? ' tpl-dhide' : ''}`} role="img" aria-label={HUD_ARIA[hk]} data-nosnippet>{hud(hk, c.ui)}</div>}
+              {hk && <div class={`${hudCls}${hudInl} svc-hud--inline${g.hb ? ' tpl-dhide' : ''}`} role="img" aria-label={c.ui?.aria ?? HUD_ARIA[hk]} data-nosnippet>{hud(hk, c.ui)}</div>}
               {c.items?.length > 0 && <ul class="svc-bullets">{c.items.map((t: any) => <li><span class="node" aria-hidden="true"></span><span set:html={annotateFigures(typeof t === 'string' ? t : t.title ?? '')} /></li>)}</ul>}
               {c.slogan && <Copy text={c.slogan} as="p" class="t-deck svc-slogan" />}
               {links.length > 0 && <p class="svc-links">{links.map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
@@ -1262,3 +1329,30 @@ const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url
     );
   })}
 </BaseLayout>
+
+<script>
+  // LightBranch de la portada (F20 · QA servicios r3, respaldo local): cuando los CTA se apilan (1280 × 720), _branch.ts
+  // toma el carril sobre la fila de CTA y la rama arranca a la altura del carril aunque la tarjeta de la UI termine más
+  // arriba: nacía en el aire, sin tocar la tarjeta. Si el inicio de la rama no está en el borde de la tarjeta, la rama no se
+  // pinta (clase en el SVG; cine la vuelve a dibujar en cada cambio de tamaño y aquí se revisa otra vez). Arreglo de fondo
+  // pedido a cine en peticiones.md (bajar a 45° desde la esquina inferior de la tarjeta hasta el carril).
+  const hero = document.querySelector<HTMLElement>('.svc-hero');
+  const card = hero?.querySelector<HTMLElement>('.svc-hud--reg > .svc-hud__card');
+  if (hero && card) {
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const svg = hero.querySelector<SVGSVGElement>(':scope > svg.branch');
+      const d = svg?.querySelector('path')?.getAttribute('d');
+      if (!svg || !d) return;
+      const [x, y] = d.slice(1).split(' L')[0].split(',').map(Number);
+      const o = hero.getBoundingClientRect(), c = card.getBoundingClientRect();
+      const l = c.left - o.left, r = c.right - o.left, t = c.top - o.top, b = c.bottom - o.top;
+      const on = y >= t - 2 && y <= b + 2 && (Math.abs(x - l) < 3 || Math.abs(x - r) < 3);
+      svg.classList.toggle('svc-branch-off', !on);
+    };
+    const later = () => { if (!raf) raf = requestAnimationFrame(check); };
+    new MutationObserver(later).observe(hero, { subtree: true, childList: true, attributes: true, attributeFilter: ['d'] });
+    addEventListener('resize', later, { passive: true });
+  }
+</script>

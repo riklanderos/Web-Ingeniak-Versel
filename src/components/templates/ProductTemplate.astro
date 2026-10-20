@@ -7,9 +7,11 @@
 //               izquierda; lede, CTAs y app.kain.mx abajo a la derecha (el texto flanquea al sujeto). Pantallas estrechas o
 //               4:3: el escenario se corre y todo el texto va a la izquierda. Sin placa exportada: escenario de luz (halo,
 //               ondas, piso) con el clip con alfa de Kain saludando (recorte fijo en móvil, Safari y movimiento reducido).
-//   que-es      Intertitle sobre la toma desenfocada de la portada (SharedTake) + DefinitionBlock (G13) + tres acepciones
+//   que-es      Intertitle sobre la toma desenfocada de la portada (SharedTake) + DefinitionBlock (G13) + tres acepciones;
+//               en escritorio las columnas flanquean la franja del cuerpo de Kain (la toma sigue nítida mientras entran)
 //   hago        Intertitle + ScriptList (6 capacidades en primera persona) + ChatSim con pestañas en teléfono de cristal
-//   donde       hub propio: canales → Kain (clip con alfa, brazos cruzados) → sistemas, unidos por ramas del isotipo
+//   donde       hub propio: canales → Kain (tramo de brazos cruzados del clip con alfa, en bucle) → sistemas, unidos por
+//               ramas del isotipo
 //   si-no       ImageSection mid subject-left (kain-si-no; móvil split) + TwoColumnScript "sí / no" + eslogan
 //   sectores    LocationSwitcher (8 sectores con el eslogan adaptado + 2 burbujas SIMULACIÓN sobre la portada del sector)
 //   plataforma  Intertitle split + ProductWindow (SIMULACIÓN sobre aura; sin capturas reales todavía) + app.kain.mx
@@ -33,6 +35,7 @@ import Copy from '../ui/Copy.astro';
 import Icon from '../ui/Icon.astro';
 import ScriptList from '../ui/ScriptList.astro';
 import ChatSim from '../ui/ChatSim.astro';
+import ChatTabs from '../ui/ChatTabs.astro';
 import TwoColumnScript from '../ui/TwoColumnScript.astro';
 import DefinitionBlock from '../ui/DefinitionBlock.astro';
 import FAQAccordion from '../ui/FAQAccordion.astro';
@@ -132,9 +135,20 @@ const heroCenter = hr.layout === 'subject-center';
 const heroLede = ledeParts(C.hero?.lede, 20);
 const lcp = hr.id ?? undefined;
 /* Clips con alfa (public/video/kain-*.webm) y sus recortes fijos (public/img/kain/*, 560 × 996, mismo encuadre que el
-   clip): el recorte es el estado de reposo y el respaldo (móvil, Safari, movimiento reducido, ahorro de datos). */
-const CLIP_HERO = { video: '/video/kain-presenta.webm', still: '/img/kain/kain-saluda.webp', loop: true };
-const CLIP_HUB = { video: '/video/kain-brazos.webm', still: '/img/kain/kain-brazos-cruzados.webp', loop: false };
+   clip): el recorte es el estado de reposo y el respaldo (móvil, Safari, movimiento reducido, ahorro de datos).
+   mode: loop = en bucle · once = una vez y queda en su último cuadro · seg = solo el tramo 0 → end s, en bucle con fundido
+   al recorte. kain-brazos.webm: brazos cruzados de 0 a ~2.9 s (parpadea en 0.3–0.5 s; desde 1.2 s ladea la cabeza) y después
+   descruza y SALUDA, la pose de la portada → el hub usa solo el parpadeo, 0 → 1.05 s, cuyos cuadros casi coinciden con el
+   recorte fijo (≈ cuadro 0.5 s): el fundido de vuelta no deja doble imagen (R13: nunca la misma pose en dos escenas seguidas). */
+const CLIP_HERO = { video: '/video/kain-presenta.webm', still: '/img/kain/kain-saluda.webp', mode: 'loop', end: 0 };
+const CLIP_HUB = { video: '/video/kain-brazos.webm', still: '/img/kain/kain-brazos-cruzados.webp', mode: 'seg', end: 1.05 };
+
+/* ── 02 · Qué es: la portada es subject-center y su toma sigue nítida mientras entra la definición → en escritorio las dos
+   columnas flanquean la franja del cuerpo de Kain (piernas y torso; la mano alzada queda por encima de por donde entra el
+   texto), como el H1 y el lede de la portada. Franja medida en la placa (fracción del ancho); sin medida, la caja del sujeto. */
+const DEF_BAND: Record<string, [number, number]> = { 'kain-hero': [0.41, 0.61] };
+const defBand: [number, number] = DEF_BAND[hr.id ?? ''] ?? (hr.subject?.d ? [hr.subject.d[0], hr.subject.d[2]] : [0.4, 0.6]);
+const defVars = `--q-ar:${hr.d.ar};--q-fx0:${hr.d.fx};--q-b0:${defBand[0]};--q-b1:${defBand[1]}`;
 
 /* ── 04 · Dónde trabajo: canales → Kain → sistemas ── */
 type HubItem = { slug?: string; icon?: string; name: string; line?: string; href?: string };
@@ -209,7 +223,7 @@ function figuresOf(c: any) {
               <span class="prd-stage__waves" aria-hidden="true"><img src={AURA_ONDAS} alt="" width="960" height="640" decoding="async" /></span>
               <span class="prd-stage__halo" aria-hidden="true"></span>
               <span class="prd-stage__floor" aria-hidden="true"></span>
-              <span class="prd-kain prd-kain--hero" data-kclip={CLIP_HERO.loop ? 'loop' : 'once'} data-src={CLIP_HERO.video}>
+              <span class="prd-kain prd-kain--hero" data-kclip={CLIP_HERO.mode} data-end={CLIP_HERO.end || undefined} data-src={CLIP_HERO.video}>
                 <img class="prd-kain__img" src={CLIP_HERO.still} alt="" width="560" height="996" decoding="async" fetchpriority="high" />
                 <img class="prd-kain__mirror" src={CLIP_HERO.still} alt="" width="560" height="996" decoding="async" loading="lazy" />
               </span>
@@ -235,7 +249,7 @@ function figuresOf(c: any) {
           <Intertitle id={b.next.s.id} rack aura="none" labelledby={`${b.next.s.id}-def-q`} class="prd-def tpl-glow">
             <Aura kind="ondas" x="38%" y="104%" o={1} only="d" />
             <Aura kind="ondas" x="50%" o={1} only="m" sticky />
-            <div class="prd-def__grid">
+            <div class="prd-def__grid prd-def__grid--take" style={defVars}>
               <DefinitionBlock
                 id={`${b.next.s.id}-def`}
                 faqId={b.next.c.definition?.faqId}
@@ -254,8 +268,8 @@ function figuresOf(c: any) {
                   ))}
                 </dl>
               )}
+              {(b.next.c.body ?? []).map((t: string) => <p class="prd-def__body t-deck" data-reveal set:html={annotateFigures(t)} />)}
             </div>
-            {(b.next.c.body ?? []).map((t: string) => <p class="prd-def__body t-deck" data-reveal set:html={annotateFigures(t)} />)}
           </Intertitle>
         )}
       </SharedTake>
@@ -290,7 +304,10 @@ function figuresOf(c: any) {
             {tabs && (
               <div class="prd-hago__aside">
                 <Aura kind="isotipo" x="50%" y="46%" w="250%" o={0.9} clip={false} class="prd-hago__aura" />
-                <ChatSim mode="inline" tabs={tabs} title="Agente de IA de tu negocio" />
+                {/* Pestañas de sector FUERA del teléfono (ChatTabs, como #kain del inicio), justo encima de él; SIMULACIÓN ya
+                    va en la barra del teléfono */}
+                {tabs.length > 1 && <ChatTabs for={`${s.id}-chat`} tabs={tabs} sim={false} class="prd-hago__tabs" />}
+                <ChatSim mode="inline" tabs={tabs} tabsOutside={tabs.length > 1} id={`${s.id}-chat`} title={c.chat?.title ?? 'Agente de tu negocio'} />
               </div>
             )}
           </div>
@@ -341,7 +358,7 @@ function figuresOf(c: any) {
                 <span class="prd-hub__glow"></span>
                 <span class="prd-hub__ring"></span>
                 <span class="prd-hub__pad"></span>
-                <span class="prd-kain prd-kain--hub" data-kclip={CLIP_HUB.loop ? 'loop' : 'once'} data-src={CLIP_HUB.video}>
+                <span class="prd-kain prd-kain--hub" data-kclip={CLIP_HUB.mode} data-end={CLIP_HUB.end || undefined} data-src={CLIP_HUB.video}>
                   <img class="prd-kain__img" src={CLIP_HUB.still} alt="" width="560" height="996" loading="lazy" decoding="async" />
                 </span>
                 <span class="prd-hub__node prd-hub__node--l"></span>
@@ -509,6 +526,10 @@ function figuresOf(c: any) {
   // reposo y el respaldo. El clip solo se carga y reproduce en escritorio, con movimiento permitido, sin ahorro de datos y
   // en navegadores que pintan el canal alfa de VP9 (Chromium y Firefox; Safari lo pintaría con fondo negro). Se reproduce
   // al estar en pantalla (50 %), se pausa fuera de ella y con la pestaña oculta; "once" se queda en su último cuadro.
+  // "seg" (data-end) reproduce solo el tramo 0 → end: al llegar a end − fundido (la transición de opacidad del clip) se
+  // funde al recorte (casi el mismo cuadro), vuelve al inicio y, tras HOLD ms en reposo, se repite. Así el hub nunca llega
+  // al saludo del final del clip.
+  const HOLD = 2800;       // ms en reposo con el recorte entre tomas
   const root = document.documentElement;
   const clips = Array.from(document.querySelectorAll<HTMLElement>('[data-kclip][data-src]'));
   const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || root.dataset.motion === 'reduced';
@@ -521,30 +542,56 @@ function figuresOf(c: any) {
   const vp9 = !!probe.canPlayType && probe.canPlayType('video/webm; codecs="vp9"') !== '';
   if (clips.length && 'IntersectionObserver' in window && !saveData && !webkitOnly && vp9) {
     const vids = new Map<HTMLElement, HTMLVideoElement>();
+    const holds = new Map<HTMLElement, number>();     // "seg": fundido + reposo en curso (no se reanuda hasta que termina)
+    const seen = new Set<HTMLElement>();
+    const clearHold = (box: HTMLElement) => { const t = holds.get(box); if (t) { clearTimeout(t); holds.delete(box); } };
     const ensure = (box: HTMLElement) => {
       let v = vids.get(box);
       if (v) return v;
-      v = document.createElement('video');
-      v.className = 'prd-kain__vid';
-      v.muted = true; v.playsInline = true; v.preload = 'auto';
-      v.setAttribute('aria-hidden', 'true'); v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
-      v.loop = box.dataset.kclip === 'loop';
-      v.width = 720; v.height = 1280;
-      v.src = box.dataset.src!;
-      v.addEventListener('playing', () => box.classList.add('is-playing'));
-      v.addEventListener('error', () => box.classList.remove('is-playing'));
-      box.appendChild(v);
-      vids.set(box, v);
-      return v;
+      const vid = document.createElement('video');
+      vid.className = 'prd-kain__vid';
+      vid.muted = true; vid.playsInline = true; vid.preload = 'auto';
+      vid.setAttribute('aria-hidden', 'true'); vid.setAttribute('muted', ''); vid.setAttribute('playsinline', '');
+      vid.loop = box.dataset.kclip === 'loop';
+      vid.width = 720; vid.height = 1280;
+      vid.src = box.dataset.src!;
+      vid.addEventListener('playing', () => box.classList.add('is-playing'));
+      vid.addEventListener('error', () => box.classList.remove('is-playing'));
+      const end = box.dataset.kclip === 'seg' ? parseFloat(box.dataset.end ?? '') : NaN;
+      if (end > 0) {
+        // Fin del tramo: fundido al recorte, vuelta al inicio y reposo; se repite si sigue en pantalla. El fundido dura lo
+        // que la transición de opacidad de .prd-kain__vid (ProductTemplate.css; el hub la acorta), leída ya en el documento.
+        let fade = 0;
+        const watch = () => {
+          if (!fade) fade = Math.min(parseFloat(getComputedStyle(vid).transitionDuration) || 0.5, end / 2);
+          if (!vid.paused && vid.currentTime >= end - fade && box.classList.contains('is-playing') && !holds.has(box)) {
+            box.classList.remove('is-playing');
+            holds.set(box, window.setTimeout(() => {
+              vid.pause(); vid.currentTime = 0;
+              holds.set(box, window.setTimeout(() => { holds.delete(box); if (seen.has(box)) play(box); }, HOLD));
+            }, fade * 1000 + 80));
+          }
+        };
+        const rvfc = (vid as any).requestVideoFrameCallback?.bind(vid);
+        if (rvfc) { const tick = () => { watch(); rvfc(tick); }; rvfc(tick); } else vid.addEventListener('timeupdate', watch);
+      }
+      box.appendChild(vid);
+      vids.set(box, vid);
+      return vid;
     };
     const play = (box: HTMLElement) => {
-      if (reduced() || !desk() || document.hidden) return;
+      if (reduced() || !desk() || document.hidden || holds.has(box)) return;
       const v = ensure(box);
       if (box.dataset.kclip === 'once' && v.ended) return;
       v.play().catch(() => box.classList.remove('is-playing'));
     };
-    const pause = (box: HTMLElement) => vids.get(box)?.pause();
-    const seen = new Set<HTMLElement>();
+    const pause = (box: HTMLElement) => {
+      const v = vids.get(box);
+      if (!v) return;
+      v.pause();
+      // "seg" interrumpido durante el fundido o el reposo: vuelve al cuadro 0 (el del recorte) para retomar limpio
+      if (holds.has(box) || (box.dataset.kclip === 'seg' && !box.classList.contains('is-playing'))) { clearHold(box); v.currentTime = 0; }
+    };
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         const box = e.target as HTMLElement;

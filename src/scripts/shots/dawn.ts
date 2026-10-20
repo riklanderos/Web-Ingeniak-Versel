@@ -28,12 +28,20 @@ export default function dawn(el: HTMLElement, env: Env) {
     const sh = Math.max(H, W / ar), top = (H - sh) * fy;
     return (ctaBottom() - top) / sh > LIMIT || (blockBottom() - top) / sh > LIMIT_B;
   };
+  // Con movimiento reducido (tokens.css) TODA propiedad transita .01 ms: min-height no se aplicaba hasta el cuadro
+  // siguiente, la medición leía el alto anterior y el ajuste se deshacía en cada refresh (a 1440 × 900 el primario del
+  // cierre quedaba en y .79, sobre el filo). Mientras se mide, la sección no transita.
   const fit = () => {
-    el.style.removeProperty('--is-h');
-    if (!primary || !layer || !env.desk || !stage) return;
-    for (let k = 0; k < 4 && over(); k++) {
-      const need = Math.ceil(Math.max(ctaBottom() / TARGET, blockBottom() / TARGET_B));
-      el.style.setProperty('--is-h', `${Math.max(need, el.offsetHeight + 24)}px`);
+    el.style.setProperty('transition-duration', '0s', 'important');
+    try {
+      el.style.removeProperty('--is-h');
+      if (!primary || !layer || !env.desk || !stage) return;
+      for (let k = 0; k < 4 && over(); k++) {
+        const need = Math.ceil(Math.max(ctaBottom() / TARGET, blockBottom() / TARGET_B));
+        el.style.setProperty('--is-h', `${Math.max(need, el.offsetHeight + 24)}px`);
+      }
+    } finally {
+      el.style.removeProperty('transition-duration');
     }
   };
   fit();

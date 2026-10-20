@@ -34,6 +34,7 @@ export function initRail() {
   live.forEach(({ target }) => io.observe(target));
 
   if (rail.dataset.mode === 'labels') guardLabels(rail, live.map(({ a }) => a));
+  guardFooter(rail);
 
   rail.addEventListener('click', (e) => {
     const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('[data-rail-target]');
@@ -50,6 +51,32 @@ export function initRail() {
       setTimeout(() => t.focus({ preventScroll: true }), 1150);
     }
   });
+}
+
+// El riel se retira en cuanto el footer llega a su altura (QA: con las etiquetas a la vista tapaba la columna "Recursos"
+// del mapa del sitio). html[data-rail-ftr] mientras el borde superior del footer queda por encima del borde inferior
+// del riel + FTR_GAP. Antes de eso el riel sigue (en servicio, industria y nosotros el cierre Dawn es su último tick).
+// Un IntersectionObserver cuyo "root" se recorta por abajo hasta esa línea; se vuelve a medir al cambiar el tamaño.
+// (El final del footer, html[data-end-visible], también lo retira: persist.ts.)
+const FTR_GAP = 64;   // con Lenis el contenido corre ~1 000 px/s: margen para el desvanecido de .3 s antes de la 1.ª fila
+
+function guardFooter(rail: HTMLElement) {
+  const ftr = document.querySelector<HTMLElement>('[data-ftr]');
+  if (!ftr || !('IntersectionObserver' in window)) return;
+  const html = document.documentElement;
+  let io: IntersectionObserver | null = null;
+  const build = () => {
+    io?.disconnect();
+    const r = rail.getBoundingClientRect();
+    if (!r.height) { html.removeAttribute('data-rail-ftr'); return; }   // < 1280 px: display:none
+    const cut = Math.max(0, Math.round(window.innerHeight - (r.bottom + FTR_GAP)));
+    io = new IntersectionObserver(([e]) => html.toggleAttribute('data-rail-ftr', e.isIntersecting), { rootMargin: `0px 0px -${cut}px 0px`, threshold: 0 });
+    io.observe(ftr);
+  };
+  build();
+  let t = 0;
+  addEventListener('resize', () => { clearTimeout(t); t = window.setTimeout(build, 150); }, { passive: true });
+  addEventListener('load', build, { once: true });   // por si el riel aún no tenía caja (estilos o fuentes tardíos)
 }
 
 // Modo "labels" (casos, Quick Jump): las etiquetas siempre visibles nunca tapan contenido (QA r2). Si bajo la caja de una

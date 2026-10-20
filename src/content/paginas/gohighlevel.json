@@ -15,6 +15,7 @@
     "CAMBIO DE AFIRMACIÓN · definicion.metricRow: título 'Resultados con distintas herramientas' (v1) con salud-citas-mes, sistemas y paises; dental-citas ya aparece en la portada y en #calendario (máximo dos veces fuera del FAQ).",
     "CAMBIO DE AFIRMACIÓN · v1 traía la FAQ '¿En cuánto tiempo veo resultados?' con 'resultados medibles en 60 a 90 días' (sin confirmar). No se usa; el plazo confirmado de implementación (7 a 30 días según el alcance) va en inversion.remate.",
     "CAMBIO DE TEXTO · hero.chip 'En español · implementación completa' (ESPEC §5.2.1) en el lugar del chip de la portada. Nunca 'partner', 'certificado' ni 'oficial' junto a GoHighLevel (D, nota de la página).",
+    "CAMBIO DE TEXTO · QA plataformas 2026-10-19: hero.legal 'en Ingeniak la implementamos' decía que se implementa la marca → 'en Ingeniak implementamos la plataforma.'; senales.fig.label 'Cinco herramientas, ningún seguimiento' no cabía en un renglón del pie de foto → 'Herramientas sueltas'.",
     "RESUELTO 2026-10-19 · cliente en chat · (15) CRM de la clínica dental de Monterrey: GoHighLevel. Habilita la prueba de #calendario y el enlace al caso.",
     "RESUELTO 2026-10-19 · cliente en chat · (16) plazo de implementación general: de 7 a 30 días según el alcance (inversion.remate).",
     "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (#inversion y FAQ H02/H03 del banco)."
@@ -32,7 +33,7 @@
         "waMessage": "Hola, vengo de la página de GoHighLevel de Ingeniak y quiero implementar GoHighLevel en mi empresa."
       },
       "chip": "En español · implementación completa",
-      "legal": "GoHighLevel es una marca de su dueño; en Ingeniak la implementamos.",
+      "legal": "GoHighLevel es una marca de su dueño; en Ingeniak implementamos la plataforma.",
       "ui": {
         "_nota": "Tarjeta de cita registrada junto a la casilla que toca Kain (ancla 'casilla'); con la placa de respaldo, agenda completa en la superficie libre. Hora ilustrativa, SIMULACIÓN, data-nosnippet.",
         "event": {
@@ -76,7 +77,7 @@
       "eyebrow": "Señales de que lo necesitas",
       "h2": { "text": "Tu operación", "soft": "vive en cinco herramientas." },
       "lede": "Si reconoces dos o más, GoHighLevel bien implementado te devuelve el control del seguimiento.",
-      "fig": { "label": "Cinco herramientas, ningún seguimiento" },
+      "fig": { "label": "Herramientas sueltas" },
       "items": [
         {
           "pain": "Agenda, embudos y correos, cada uno por su lado.",

@@ -24,7 +24,9 @@
     "CAMBIO DE TEXTO · ficha.deckBreve es la entradilla del caso breve; ficha.deck queda para la versión completa. ficha.note dice 'Reportaje breve…': al abrir la puerta se cambia por la nota de anonimato del caso dental.",
     "CAMBIO DE TEXTO · CTA primario de portada y cierre: 'Agenda tu Discovery Session' (regla de un solo azul, §0.1-4; sitemap.primaryCta dice 'Quiero un sistema así: agenda tu Discovery').",
     "CAMBIO DE TEXTO · relacionados: el brief pide /servicios/paid-media/, /industrias/retail-ecommerce/ y el caso HoReCa. Van paid media, la industria y /servicios/desarrollo-software/ (internalLinks); el caso HoReCa es el 'Siguiente reportaje' (cadena dental → retail → e-commerce → HoReCa → logística → dental).",
-    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
+    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir).",
+    "CAMBIO DE TEXTO · hero.ledeM (QA casos): versión corta del lede para el primer pantallazo en móvil (R3: el sujeto de la portada entra en pantalla); en escritorio sigue el lede completo. Mismo contenido, sin datos nuevos.",
+    "CAMBIO DE TEXTO · replicar.eyebrow (QA casos): 'Qué puedes replicar en tu tienda' (antes 'en tu e-commerce': a 360 px se partía en el guion, 'E-' / 'COMMERCE'). Por lo mismo, ficha.deckBreve dice 'Esta tienda de la Ciudad de México…' (antes 'Este e-commerce…', partido en 'e-' / 'commerce' a 360 px)."
   ],
   "sections": {
     "hero": {
@@ -33,6 +35,7 @@
       "h1": { "kicker": "E-commerce en la Ciudad de México:", "metricId": "ecom-cpl", "text": "en costo por lead en 60 días" },
       "chips": ["E-commerce", "Ciudad de México", "60 días", "En operación"],
       "lede": "Una tienda en línea de la Ciudad de México redujo lo que paga por cada lead, es decir, por cada persona interesada que llega a su embudo. El sistema que lo logró sigue operando.",
+      "ledeM": "Una tienda en línea de CDMX redujo lo que paga por cada lead.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso del e-commerce de CDMX y quiero bajar mi costo por lead." },
       "illus": "Imagen ilustrativa del sector"
@@ -48,7 +51,7 @@
         { "term": "Estado", "value": "Sigue en operación", "confirmed": true },
         { "term": "Cifra", "value": "{{metric:ecom-cpl|full}}" }
       ],
-      "deckBreve": "Para una tienda en línea, el costo por lead es la cuenta que decide si crecer es negocio: lo que inviertes para atraer interesados, dividido entre los que de verdad llegan. Este e-commerce de la Ciudad de México lo bajó en sesenta días. Aquí está la cifra, con su fuente y sin redondeos.",
+      "deckBreve": "Para una tienda en línea, el costo por lead es la cuenta que decide si crecer es negocio: lo que inviertes para atraer interesados, dividido entre los que de verdad llegan. Esta tienda de la Ciudad de México lo bajó en sesenta días. Aquí está la cifra, con su fuente y sin redondeos.",
       "deck": "Un e-commerce de la Ciudad de México bajó su costo por lead en sesenta días. Este reportaje cuenta qué se midió, desde dónde partió y qué piezas del sistema lo hicieron posible.",
       "byline": "Por el equipo de Ingeniak",
       "note": "Reportaje breve: publicamos la cifra, la ciudad y la ventana de medición. El nombre de la tienda está anonimizado."
@@ -105,7 +108,7 @@
     "replicar": {
       "_componente": "ScriptList (3 filas) + enlace a /servicios/paid-media/",
       "rail": "Replicar",
-      "eyebrow": "Qué puedes replicar en tu e-commerce",
+      "eyebrow": "Qué puedes replicar en tu tienda",
       "h2": { "text": "Tres ideas para pagar menos", "soft": "por cada cliente potencial." },
       "items": [
         {

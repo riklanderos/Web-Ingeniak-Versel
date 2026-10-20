@@ -7,7 +7,7 @@
   "actualizado": "2026-10-19",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
-    "DATO PENDIENTE · kain-sector.chat.script = 'nutricion': el guion src/data/chats/nutricion.json todavía no existe (src/data no es del área de este encargo). Mientras no exista, ChatSim cae al guion de salud (limpieza dental), que no corresponde a esta página. El guion propuesto (reagendar una consulta de seguimiento; Kain no da recomendaciones de alimentación) está listo para pegar en materiales/v2/build/peticiones.md → 'Construcción · industrias (copy)'. El lede de kain-sector ya lo describe.",
+    "APROBACIÓN DE TONO · #kain-sector: la escena ya muestra su propio guion (src/data/chats/nutricion.json, SIMULACIÓN): reagendar una consulta de seguimiento; Kain no da recomendaciones de alimentación y deja la duda para la nutrióloga. Falta que apruebes el tono.",
     "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos de nutrición que podamos mencionar por tipo (sin nombre)? La página no afirma que los haya. Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
     "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas U01–U04 (seguimiento, planes de alimentación, consulta en línea, pacientes inactivos) con su texto en peticiones.md. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-nutricion.faq.",
     "FAQ · N11 sigue en validar: true en el banco; mientras no se apruebe, el acordeón muestra N01, G02 y G07 (las tres aprobadas de D).",
@@ -91,7 +91,7 @@
       ]
     },
     "kain-sector": {
-      "_componente": "ImageSection mid (ind-nutricion-kain-sector, Kain a la izquierda, push; respaldo home-sistema-2-atender en espejo) + ChatSim registrado (script nutricion: falta el archivo, ver pendientes). Fijada +100 % en escritorio",
+      "_componente": "ImageSection mid (ind-nutricion-kain-sector, Kain a la izquierda, push; respaldo home-sistema-2-atender en espejo) + ChatSim registrado (guion nutricion). Fijada +100 % en escritorio",
       "rail": "Kain en tu consulta",
       "eyebrow": "Kain en tu consulta",
       "h2": { "text": "Así reagenda Kain", "soft": "una consulta de seguimiento." },
@@ -158,7 +158,7 @@
       "rail": "Cierre",
       "eyebrow": "Tu siguiente paso",
       "h2": { "text": "¿Cuántos pacientes dejan su seguimiento?", "soft": "Lo vemos en 30 minutos." },
-      "lede": "Revisamos juntos cómo agenda hoy un paciente nuevo, cómo vuelve a su seguimiento y en qué punto se pierde. Te llevas claro qué conviene automatizar primero.",
+      "lede": "Revisamos juntos cómo agenda hoy un paciente nuevo, cómo vuelve a su seguimiento y en qué punto se pierde. Te vas con una idea clara de qué conviene automatizar primero.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",

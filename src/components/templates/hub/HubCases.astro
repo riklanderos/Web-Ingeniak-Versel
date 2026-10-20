@@ -93,8 +93,11 @@ const status = (n: number) => String(f?.status ?? '{n} casos').replace('{n}', St
                   <img src={it.r.srcset.imgSrc} alt="" width={it.r.d.w} height={it.r.d.h} loading="lazy" decoding="async" />
                 </picture>
               )}
+              {/* El velo del lado del texto vive DENTRO de la escena: la misma máscara que funde la placa arriba y abajo lo
+                  funde a él. Fuera de ella pintaba un rectángulo recto sobre la escena anterior (las escenas se traslapan)
+                  y sobre la luz de #filtros. */}
+              <span class="hub-case__shade"></span>
             </span>
-            <span class="hub-case__shade" aria-hidden="true"></span>
             <span class="frame hub-case__frame">
               <span class="hub-case__copy">
                 <span class="hub-case__top">

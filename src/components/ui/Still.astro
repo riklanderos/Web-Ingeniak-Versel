@@ -2,8 +2,9 @@
 // Still · ESPEC §2.11 + R7 ("la imagen nunca va en caja"). Fotograma a sangre con el texto DENTRO de su penumbra, abajo a la
 // izquierda, en todos los tamaños. Sin anillo ni radio: solo un filete superior y los bordes disueltos a --ink.
 //   still → 16:10 en escritorio, 4:3 en móvil. La placa de escritorio (16:9) se encuadra con su caja de sujeto
-//           (plates.json → subject.d): Kain completo, de la cabeza a los pies, con su centro al ≈78 % del ancho; si el sujeto
-//           está a la izquierda, la imagen se espeja. El copy ocupa como máximo el 55 % del ancho (nunca sobre el torso).
+//           (plates.json → subject.d): la imagen se escala para que la caja quepa ENTERA en el escenario derecho
+//           (52–93 % del ancho, 10–87 % del alto) → Kain de la cabeza a los pies en cualquier proporción; si el sujeto
+//           está a la izquierda, la imagen se espeja. El copy ocupa como máximo el 55 % del ancho y nunca llega al sujeto.
 //   plana → 16:9, misma regla (hub de casos, blog móvil)
 //   mini  → 16:10 compacto (industrias ×4, sectores ×8)
 //   next  → "Siguiente reportaje": asoma 45svh con la cifra mega; clic = corte por coincidencia (View Transition "plate")
@@ -41,6 +42,23 @@ const sy = sb ? (sb[1] + sb[3]) / 2 : 0.5;
 const syt = sb ? sb[1] + (sb[3] - sb[1]) * 0.3 : 0.4;          // "next" (franja muy ancha): encuadre cargado a la cabeza
 const mirror = sx < 0.5;
 if (mirror) sx = 1 - sx;
+// Kain completo (regla de marca): con caja de sujeto y placa completa, la imagen se ESCALA para que el sujeto quepa entero
+// (cabeza a pies) en el escenario derecho del fotograma (ui.css · .still--fit) y el copy se detiene antes de su borde izquierdo.
+// Caja ya espejada si hace falta. "next" conserva su encuadre de franja (cargado a la cabeza).
+const fit = !!sb && widths.length > 0 && variant !== 'next' && fx === undefined;
+// La caja que se encuadra (y que el copy nunca cruza) suma a Kain los objetos que presenta a su lado (anchors con caja:
+// teléfono, terminal, panel, opciones): altos (≥ 25 % de la placa), angostos (≤ 25 %) y a ≤ 20 % del sujeto. Halos,
+// constelaciones y mesas no cuentan (son ambiente).
+let [bx1, by1, bx2, by2] = sb ?? [0, 0, 1, 1];
+if (fit) for (const a of Object.values((p as any)?.anchors ?? {}) as any[]) {
+  const d = a?.d;
+  if (!Array.isArray(d) || d.length !== 4) continue;
+  const [ax, ay, aw, ah] = d as number[];
+  if (aw > 0.25 || ah < 0.25 || ax > bx2 + 0.2 || ax + aw < bx1 - 0.2) continue;
+  bx1 = Math.max(0, Math.min(bx1, ax)); bx2 = Math.min(1, Math.max(bx2, ax + aw));
+  by1 = Math.max(0, Math.min(by1, ay)); by2 = Math.min(1, Math.max(by2, ay + ah));
+}
+const fx1 = mirror ? 1 - bx2 : bx1, fx2 = mirror ? 1 - bx1 : bx2;
 const hasImg = widths.length > 0 || !!legacy;
 if (!hasImg && plate && import.meta.env.DEV) console.warn(`[ui/Still] ${plate}: sin placa exportada, se usa el aura de respaldo`);
 
@@ -58,19 +76,33 @@ const external = /^https?:\/\//.test(href);
 const target = linkTarget(href);
 const Tag = target ? 'a' : 'div';
 const r4 = (n: number) => +n.toFixed(4);
-const style = `--sx:${r4(sx)};--sy:${r4(variant === 'next' ? syt : sy)};--iar:${r4(iar)};`;
+const style = `--sx:${r4(sx)};--sy:${r4(variant === 'next' ? syt : sy)};--iar:${r4(iar)};`
+  + (fit ? `--x1:${r4(fx1)};--x2:${r4(fx2)};--y1:${r4(by1)};--y2:${r4(by2)};` : '');
 const srcset = (ext: string) => widths.map((w) => `${base}-${w}.${ext} ${w}w`).join(', ');
 const sizes = variant === 'next' || variant === 'plana' ? '100vw' : variant === 'mini' ? '(max-width: 767px) 100vw, 25vw' : '(max-width: 767px) 100vw, 34vw';
 ---
-<Tag class:list={['still', `still--${variant}`, aura && `still--aura still--aura-${aura}`, isKommo && 'still--kommo', mirror && 'still--mirror', !target && 'still--static', cls]} href={target ?? undefined}
+<Tag class:list={['still', `still--${variant}`, aura && `still--aura still--aura-${aura}`, isKommo && 'still--kommo', mirror && 'still--mirror', fit && 'still--fit', !target && 'still--static', cls]} href={target ?? undefined}
    data-still={target && !external ? '' : undefined} style={style} target={target && external ? '_blank' : undefined} rel={target && external ? 'noopener' : undefined}>
   <span class="still__media" aria-hidden="true">
     {widths.length > 0 ? (
-      <picture>
-        {widths.every((w) => has(w, 'avif')) && <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />}
-        <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
-        <img src={`${base}-${widths[0]}.webp`} alt="" width={(p as any)?.d?.w ?? 1280} height={(p as any)?.d?.h ?? 714} loading="lazy" decoding="async" />
-      </picture>
+      <Fragment>
+        <picture>
+          {widths.every((w) => has(w, 'avif')) && <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />}
+          <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
+          <img src={`${base}-${widths[0]}.webp`} alt="" width={(p as any)?.d?.w ?? 1280} height={(p as any)?.d?.h ?? 714} loading="lazy" decoding="async" />
+        </picture>
+        {/* .still--fit: la misma placa a sangre, desenfocada y apagada, rellena lo que la placa encuadrada no cubre (mismas
+            fuentes → el navegador la sirve de la misma descarga). Va después para que ui.ts tome la imagen nítida. */}
+        {fit && (
+          <span class="still__bg">
+            <picture>
+              {widths.every((w) => has(w, 'avif')) && <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />}
+              <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
+              <img src={`${base}-${widths[0]}.webp`} alt="" width={(p as any)?.d?.w ?? 1280} height={(p as any)?.d?.h ?? 714} loading="lazy" decoding="async" />
+            </picture>
+          </span>
+        )}
+      </Fragment>
     ) : legacy ? (
       <picture>
         {legacy.avif && <source type="image/avif" srcset={legacy.avif} sizes={sizes} />}

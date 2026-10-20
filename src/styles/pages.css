@@ -172,7 +172,7 @@
 .case-h1{display:flex;flex-direction:column;align-items:flex-start;margin:0}
 .case-h1__kicker{display:block;color:var(--text-2);font-weight:400;letter-spacing:-.005em}
 .case-h1__fig{display:block;margin:.04em 0 .1em -.05em;gap:0}
-.case-h1__fig .metric__v{display:block;font-size:min(clamp(5.5rem,2rem + 15vw,16rem),23svh);line-height:.84;letter-spacing:-.065em}
+.case-h1__fig .metric__v{display:block;font-size:min(clamp(5.5rem,2rem + 15vw,16rem),23svh,var(--fig-cap,100vw));line-height:.84;letter-spacing:-.065em}
 .case-h1__fig .metric__sym{font-size:.62em;letter-spacing:0;margin-left:.04em}
 /* .lit de la página (una sola): la cifra hereda la luz del contraluz; el filo cruza una vez al entrar */
 .case-h1__fig.lit{background-image:linear-gradient(100deg,transparent 0 42%,rgb(255 255 255 / .95) 50%,transparent 58% 100%),
@@ -187,6 +187,36 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .case-specs .chip-spec{padding:8px 12px;backdrop-filter:none}
 .case-hero .is__text > .case-hero__lede{margin-top:var(--s-5);max-width:40ch}
 .case-hero .is__text > .ctas{margin-top:var(--s-6)}
+/* QA casos · zona segura de la portada (escritorio). El H1 no pasa del borde de la zona segura de texto de su franja
+   (--case-edge, fracción de la placa, lo pone la plantilla): --ch-x proyecta ese borde con la misma caja "cover" que pinta la
+   placa (fórmula de cine.css safeCol sobre el alto de pantalla; en escritorios bajos × 1.06, porque ahí la portada pasa del
+   alto de pantalla y el borde real se corre a la izquierda). El H1 puede usar 1 % del ancho de la placa de la tolerancia de
+   la zona segura (check-escenas admite 1.5 %). Solo se acotan el H1 y el lede (.case-edge; con placas holgadas, como la del
+   caso dental, ninguno cambia): la columna no se toca, así la portada no crece ni se realimenta. Dentro del H1 (contenedor): la cifra mega se encoge si no cabe (--fig-cap: ancho
+   del H1 menos la llamada ¹, entre su ancho en em --fig-em). Sin --case-edge (placa sin zonas) nada cambia.
+   Solo en pantallas más anchas que 3:2 (16:10, 16:9, ultra ancho): de 4:3 a 3:2 la placa se recorta con otro foco (.46) y la
+   columna es tan angosta que acotar el H1 partía titulares en líneas de una palabra; ahí la portada queda como estaba. */
+@media (min-width:768px) and (min-aspect-ratio:301/200){
+  .case-hero{--ch-k:1;--ch-h:calc(max(100svh, 680px) * var(--ch-k));--ch-lw:100vw;--ch-l0:0px;--ch-sw:max(var(--ch-lw), var(--ch-h) * var(--ar-d, 1.7917));
+    --ch-fl:calc((100vw - var(--frame)) / 2)}
+  .case-hero .case-h1[style*="--case-edge"],.case-hero .is__text > .case-hero__lede.case-edge{
+    --ch-x:calc(var(--ch-l0) + (var(--ch-lw) - var(--ch-sw)) * var(--fx-d, .5) + var(--case-edge) * var(--ch-sw) - var(--ch-fl))}
+  .case-hero .case-h1[style*="--case-edge"]{container-type:inline-size;align-self:stretch;max-width:calc(var(--ch-x) + var(--ch-sw) * .01 - 4px);
+    --fig-cap:calc((100cqi - 28px) / var(--fig-em, 2.6))}
+  .case-hero .is__text > .case-hero__lede.case-edge{max-width:min(40ch, calc(var(--ch-x) + var(--ch-sw) * .01 - 8px))}
+}
+@media (min-width:1800px) and (min-aspect-ratio:301/200){
+  .case-hero{--ch-lw:min(100vw, 2200px, max(100svh, 680px) * var(--ar-d, 1.7917) * 1.08);--ch-l0:calc(100vw - var(--ch-lw))}
+}
+/* Escritorios bajos (≤ 820 px de alto): un titular corto (--txt-em, ≤ 13 em en una línea) se ajusta a una línea dentro del H1
+   en lugar de partirse en dos: la portada no crece (HoReCa a 1280 × 720). Si para caber en una línea tendría que bajar de
+   2.25rem, se queda con su tamaño y se parte como siempre (max(… , (2.25rem − cap) × 1000)). */
+@media (min-width:768px) and (min-aspect-ratio:301/200) and (max-height:820px){
+  .case-hero{--ch-k:1.06}
+  .case-hero .case-h1[style*="--txt-em"][style*="--case-edge"] .case-h1__text{
+    --txt-cap:calc((100cqi - 6px) / var(--txt-em));
+    font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem), 6.6svh, max(var(--txt-cap), (2.25rem - var(--txt-cap)) * 1000))}
+}
 /* QA #63 · nota de fuente de las cifras de la portada (§0.1-2): llamada ¹ en la cifra del H1 y en la del lede */
 .case-fn{font:500 .6em/0 var(--f-mono);vertical-align:super;margin-left:.12em;color:var(--text-2)}
 .case-h1__fig{position:relative}
@@ -212,7 +242,7 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 @media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){
   .is.case-hero{padding-top:calc(var(--hdr) + var(--s-6))}
   .case-hero .is__text > .crumbs{margin-bottom:var(--s-4)}
-  .case-hero .case-h1__fig .metric__v{font-size:min(clamp(5.5rem,2rem + 15vw,16rem),19.5svh)}
+  .case-hero .case-h1__fig .metric__v{font-size:min(clamp(5.5rem,2rem + 15vw,16rem),19.5svh,var(--fig-cap,100vw))}
   .case-hero .case-specs{margin-top:var(--s-4)}
   .case-hero .is__text > .case-hero__lede{margin-top:var(--s-4)}
   .case-hero .is__text > .ctas{margin-top:var(--s-5)}
@@ -250,9 +280,16 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .case-reto .case-reto__prose .prose{max-width:62ch}
 .case-reto .case-reto__prose .prose > p:first-child::first-line{color:#fff}
 
-/* 04 · Cifra: el aura de la escena pasa de ámbar (antes) a cian (con Kain), más fuerte que la de cine */
+/* 04 · Cifra: luz de la escena más fuerte que la de cine. El ámbar (dolor) solo existe con un "antes" en ámbar: el cronómetro
+   (stopwatch: "Antes 2:56" en ámbar → cian con Kain). index-up/index-down (la barra "Antes" es gris), multiplier y nodes
+   llevan detrás del texto una luz índigo/cian de la misma intensidad (QA casos: el ámbar se reserva al dolor). */
 .case-cifra .cf__aura{opacity:.9}
 .case-cifra::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(70% 22% at 40% 8%,rgb(60 170 255 / .2),rgb(60 170 255 / .14) 50%,transparent 82%),
+    radial-gradient(70% 20% at 60% 94%,rgb(60 170 255 / .2),rgb(60 170 255 / .14) 50%,transparent 82%),
+    radial-gradient(34% 46% at 26% 56%,rgb(69 93 255 / .16),rgb(60 170 255 / .06) 50%,transparent 74%),
+    radial-gradient(40% 52% at 70% 50%,rgb(0 229 255 / .2),rgb(69 93 255 / .08) 50%,transparent 74%)}
+.case-cifra.cf--stopwatch::before{
   background:radial-gradient(70% 22% at 40% 8%,rgb(60 170 255 / .2),rgb(60 170 255 / .14) 50%,transparent 82%),
     radial-gradient(70% 20% at 60% 94%,rgb(60 170 255 / .2),rgb(60 170 255 / .14) 50%,transparent 82%),
     radial-gradient(34% 46% at 26% 56%,rgb(255 181 71 / .2),rgb(255 140 40 / .06) 50%,transparent 74%),
@@ -375,6 +412,12 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
   .case-agenda.anchor--panel{width:calc(var(--aw-m,var(--aw)) * 100%);height:calc(var(--ah-m,var(--ah)) * 100%)}
   .case-glow--amber{left:-50vw;width:140vw}
 }
+/* Tableta vertical: placas con ≥ 0.04 de placa entre su zona segura y la cabeza del sujeto (data-case-gap, la plantilla lo
+   calcula): el aire bajo el intro crece con la placa (3.5 % de su alto; 1024 × 1366 → 45 px), así la última línea del intro no
+   cae en esa franja. En teléfono, max() deja los 30 px de siempre. */
+@media (min-width:600px) and (max-aspect-ratio:5/6){
+  .case-hero.is[data-m="split"][data-case-gap]{--hero-gap:max(30px, calc(var(--plate-h) * .035))}
+}
 @media (forced-colors:active){.case-h1__fig.lit .metric__v,.case-h1__fig.lit .metric__v *{color:CanvasText}}
 /* QA #60 (también servicio e industria) · costuras sin franjas: la luz de base de cada escena sin placa (.tpl-glow) se extiende 140 px más allá de sus
    bordes y se funde en 280 px (antes 5 % del alto, que dejaba 40–60 px de tinta en cada costura). En cada costura las dos
@@ -395,6 +438,12 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 /* H1 largos (> 48 caracteres: industrial, HoReCa, belleza…): un paso menos de tamaño y una medida más ancha, así el bloque
    completo (crumbs, H1, lede y CTA) cabe en el primer pantallazo sin entrar al lado del sujeto */
 .ind-hero h1.ind-h1--long{font-size:min(clamp(2.25rem,.9rem + 3.3vw,4.25rem),7.2svh);max-width:16ch}
+/* Placas cuya zona segura sigue, en la franja de los CTA, más allá de la caja del sujeto (heroCtaBand, p. ej. belleza):
+   la fila de CTA puede salir hasta 4vw de la columna acotada por scene.ts, así "Escríbele a Kain" queda junto al primario
+   (como en salud) en lugar de caer debajo de la microcopia. Si ni así cabe, vuelve a partirse como siempre. */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .ind-hero--cta-band .is__text > .ctas{width:max-content;max-width:calc(100% + 4vw)}
+}
 /* IMAGEN ILUSTRATIVA DEL SECTOR: esquina inferior derecha de la portada (action-safe); se apaga con el rack focus de la toma */
 .ind-illus{position:absolute;z-index:2;right:var(--action-x);bottom:16px;margin:0;color:rgb(158 176 199 / .72);pointer-events:none;opacity:calc(1 - var(--rack,0) * 3)}
 /* Chip de prueba anclado a la tableta (§3.8): cristal en la zona de piso + línea guía que nace en la tableta */
@@ -1343,6 +1392,8 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
 .svc-cap__main > .eyebrow{margin-bottom:var(--s-4)}
 .svc-cap__main > .t-lede{margin-top:var(--s-5)}
 .svc-cap__rows{width:100%;margin-top:var(--s-7)}
+/* Lista por área con un ejemplo por grupo (consultoría · casos-uso): menos aire entre grupos, la sección cabe en ~1.5 pantallas */
+.svc-cap__rows.script--groups .script__block + .script__block{margin-top:var(--s-6)}
 .svc-cap__main > .svc-body{margin-top:var(--s-6)}
 .svc-cap__main > .svc-links{margin-top:var(--s-5)}
 .svc-cap__aside{position:sticky;top:calc(var(--hdr) + var(--s-6));isolation:isolate;display:flex;justify-content:center;padding-top:var(--s-4)}
@@ -1682,6 +1733,20 @@ a.svc-ind__link:is(:hover,:focus-visible){background:linear-gradient(90deg,rgb(0
 .svc-kb__lead{display:flex;align-items:flex-start;gap:.4em;padding:.5em .4em;border-radius:.45em;font:500 .74em/1.25 var(--f-body);color:#fff;
   background:linear-gradient(160deg,rgb(0 229 255 / .22),rgb(69 93 255 / .18));box-shadow:inset 0 0 0 1px rgb(0 229 255 / .6),0 0 18px rgb(0 229 255 / .3)}
 .svc-kb__lead i{width:.55em;height:.55em;margin-top:.3em;flex:none;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+/* QA servicios r3 · el texto no sale de su caja: rótulos sin tracking y más chicos, columnas con menos relleno, el canal del
+   lead como logo (la palabra no cabe en una columna de 45–60 px) y, si la superficie es angosta (< 290 px, 1280 × 720), la
+   columna final se oculta en vez de apretar las cuatro */
+.svc-hud--pipeline .svc-hud__card{padding-inline:clamp(10px,4.5cqi,16px)}
+.svc-kb__cols{gap:.3em}
+.svc-kb__col{padding-inline:.22em}
+.svc-kb__h{font-size:.6em;letter-spacing:0;overflow-wrap:normal;hyphens:manual}
+.svc-kb__lead{min-width:0;align-items:center}
+.svc-kb__lead .svc-kb__ch{width:1.05em;height:1.05em;color:var(--cyan)}
+.svc-kb__lt{min-width:0;overflow-wrap:anywhere}
+@container (max-width:289px){
+  .svc-kb__cols:has(> .is-tail){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .svc-kb__col.is-tail{display:none}
+}
 /* Lienzo de nodos (n8n): cadena vertical con un pulso que la recorre */
 .svc-cv__wrap{position:relative}
 .svc-cv__nodes{position:relative;list-style:none;margin:0;padding:0;display:grid;gap:.7em}
@@ -1760,12 +1825,17 @@ a.svc-ind__link:is(:hover,:focus-visible){background:linear-gradient(90deg,rgb(0
 .svc-rep__sp path{fill:none;stroke:var(--cyan);stroke-width:1.5;vector-effect:non-scaling-stroke}
 /* Canales del personaje (branding · kain-ejemplo) */
 .svc-chn .kain-mark{font-size:1.25em;letter-spacing:0;text-transform:none;color:#fff}
+/* Registrada en la pantalla del teléfono (angosta): el chip baja bajo la marca en vez de empujarla */
+.svc-chn .svc-hud__top{flex-wrap:wrap;row-gap:.45em}
+.svc-chn .svc-hud__k{flex:none}
 .svc-chn__l{list-style:none;margin:0;padding:0;display:grid;gap:.5em}
 .svc-chn__l li{display:flex;align-items:center;gap:.6em;padding:.55em .75em;border-radius:99px;font:500 .9em/1 var(--f-body);color:#fff;
   background:rgb(0 229 255 / .07);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .45),0 0 16px rgb(0 229 255 / .16)}
 .svc-chn__l .icon{width:1em;height:1em;color:var(--cyan)}
 .svc-chn__sq{width:.6em;height:.6em;flex:none;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
 .svc-hero__badge{margin-top:var(--s-5)}
+/* Rama de luz de la portada que no nace en el borde de la tarjeta de la UI (ver el script de ServiceTemplate): no se pinta */
+.svc-hero > svg.branch.svc-branch-off{display:none!important}
 /* Entrada: la portada al cargar (después de la mini firma); las escenas al entrar (scroll). Sin JS o con movimiento
    reducido: estado final, todo visible y quieto. */
 @media (prefers-reduced-motion:no-preference){

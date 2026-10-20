@@ -12,7 +12,7 @@
     "CAMBIO DE TEXTO · conexion: D describía 6 tramos (anuncio → web → agente → CRM → automatización → tablero). Quedan 5 (anuncio y web van juntos en Atraer) para coincidir con los 5 nodos de la placa riel-servicios y con las 5 etapas.",
     "PREGUNTA AL CLIENTE · conexion.nodes[0].logos: Meta, Google Ads y TikTok como plataformas de pauta en el tramo Atraer (las mismas del servicio de paid media en D). ¿Se quedan las tres?",
     "PREGUNTA AL CLIENTE · no-se.items: las tres señales ('te escriben más de lo que alcanzas a contestar', 'tus leads viven en chats y hojas de cálculo', 'pagas pauta y no sabes qué campaña vende') son las más comunes en las Discovery Sessions según el brief; confirma que describen bien a tus clientes.",
-    "DATO PENDIENTE · vktor.links: /metodologia/ todavía no existe; el enlace aparece solo cuando se publique esa página."
+    "RESUELTO 2026-10-19 · /metodologia/ ya existe: vktor.links enlaza al protocolo completo."
   ],
   "sections": {
     "hero": {

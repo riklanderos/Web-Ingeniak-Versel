@@ -187,7 +187,14 @@ function initChat() {
     const moreState = () => {
       if (!more) return;
       chat.classList.toggle('has-more', screen.scrollHeight - screen.clientHeight - screen.scrollTop > 8);
+      chat.classList.toggle('has-before', screen.scrollTop > 8);
     };
+    // Teléfono registrado quieto (movimiento reducido, save-data o fin del guion): la conversación se apoya en su FINAL,
+    // como un chat real — el cierre de Kain (el remate) a la vista y lo anterior arriba, desplazable. Se mantiene pegada al
+    // final mientras el usuario no suba (la superficie cambia de alto al cargar la placa o al girar).
+    const isReg = chat.classList.contains('chat--registered');
+    let atEnd = true;
+    const toEnd = () => { if (isReg && !chat.classList.contains('is-live') && atEnd) screen.scrollTop = screen.scrollHeight; };
     const halt = () => { clearTimeout(timer); running = false; };
     const finish = () => {               // estado final (movimiento reducido en vivo): conversación completa, quieta
       halt(); stepMode = false; chat.classList.remove('is-live', 'is-paused', 'is-reset');
@@ -195,6 +202,7 @@ function initChat() {
       typingEl()?.classList.remove('is-on');
       if (pauseBtn) pauseBtn.hidden = true;
       screen.setAttribute('data-lenis-prevent', '');
+      atEnd = true; toEnd();
       moreState();
     };
     const step = () => {
@@ -254,6 +262,7 @@ function initChat() {
       if (more) more.href = `#${chat.id}-end-${key}`;
       screen.classList.remove('is-swipe'); void screen.offsetWidth; screen.classList.add('is-swipe');
       screen.scrollTop = 0;
+      atEnd = true; toEnd();
       if (chat.classList.contains('is-live')) {
         if (stepMode) applyProgress(lastP);
         else { idx = startCount(); resume(); }
@@ -267,8 +276,15 @@ function initChat() {
 
     if (more) {
       more.addEventListener('click', (e) => { e.preventDefault(); screen.scrollTo({ top: screen.scrollHeight, behavior: reduced() ? 'auto' : 'smooth' }); });
-      screen.addEventListener('scroll', moreState, { passive: true });
-      if ('ResizeObserver' in window) new ResizeObserver(moreState).observe(screen);
+      screen.addEventListener('scroll', () => {
+        if (isReg && !chat.classList.contains('is-live')) atEnd = screen.scrollHeight - screen.clientHeight - screen.scrollTop <= 8;
+        moreState();
+      }, { passive: true });
+      if ('ResizeObserver' in window) {
+        const ro = new ResizeObserver(() => { toEnd(); moreState(); });
+        ro.observe(screen); panels.forEach((p) => ro.observe(p));
+      }
+      if (!live) toEnd();
       moreState();
     }
     if (!live) { screen.setAttribute('data-lenis-prevent', ''); continue; }
@@ -466,9 +482,11 @@ function initPrimaryRule() {
   root.dataset.primaryIo = 'ui';                     // nav (persist.ts) cede la regla a ui y no duplica el observador
   const inter = new Set<HTMLElement>();
   const watched = new WeakSet<Element>();
-  // Un primario en pantalla que todavía está entrando (opacidad < .5 por su revelado) se vuelve a medir cada 250 ms hasta
-  // 3 s después del último evento: con la página quieta, el CTA del encabezado no se queda azul junto al primario que
-  // termina de aparecer (cierre Dawn, portada con la CPU cargada).
+  // Un primario en pantalla que todavía está entrando (opacidad < .5 por su revelado) se vuelve a medir HASTA que se vea:
+  // cada 250 ms los primeros 3 s después del último evento y luego cada 1 s (hasta 30 s; cualquier scroll o evento lo
+  // reanuda). Antes se rendía a los 3 s: con la CPU cargada el revelado de la portada terminaba después y el CTA del
+  // encabezado se quedaba azul junto al primario (QA · casos/logistica, casos/retail). Además, el final de cualquier
+  // transición o animación CSS que contenga un primario en pantalla vuelve a medir en el acto (revelados por CSS).
   let retry = 0, tries = 0;
   const evaluate = () => {
     let on = false, fading = false;
@@ -478,11 +496,18 @@ function initPrimaryRule() {
     }
     if (on !== root.hasAttribute('data-primary-visible')) root.toggleAttribute('data-primary-visible', on);
     clearTimeout(retry);
-    if (!on && fading && tries < 12) { tries++; retry = window.setTimeout(schedule, 250); }
+    if (!on && fading && tries < 39) { tries++; retry = window.setTimeout(schedule, tries <= 12 ? 250 : 1000); }
   };
   let raf = 0;
   const schedule = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; evaluate(); }); };
   const kick = () => { tries = 0; schedule(); };
+  const onEnd = (e: Event) => {
+    if (!inter.size || root.hasAttribute('data-primary-visible')) return;
+    const t = e.target;
+    if (t instanceof Element && [...inter].some((p) => t === p || t.contains(p))) kick();
+  };
+  addEventListener('transitionend', onEnd, { passive: true, capture: true });
+  addEventListener('animationend', onEnd, { passive: true, capture: true });
   const io = new IntersectionObserver((entries) => {
     for (const en of entries) en.isIntersecting ? inter.add(en.target as HTMLElement) : inter.delete(en.target as HTMLElement);
     tries = 0;

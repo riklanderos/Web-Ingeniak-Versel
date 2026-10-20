@@ -11,6 +11,7 @@ import { pathToFileURL } from 'node:url';
 import {
   ROOT, SITE_URL, SITEMAP, SITEMAP_URLS, BUILT, parseArgs, reporter, loadPages, loadText, loadMetrics, parseHTML, find, findAll,
   closest, isEl, hasClass, textOf, norm, loose, metaContent, jsonLd, graphNodes, normRoute, copyOf, gatePending, indexablePages, sectionIdOf,
+  onlyRoutes,
 } from './_html.mjs';
 import { isNoindex } from '../src/lib/indexacion.mjs';
 
@@ -21,6 +22,10 @@ const isWa = (h) => /^https?:\/\/(wa\.me|api\.whatsapp\.com)\//i.test(h ?? '');
 export async function run(opts) {
   const R = reporter('check-seo', opts);
   const M = loadMetrics();
+  // --only: las comparaciones de sitio completo (sitemap.xml) se acotan a esas rutas; llms.txt y llms-full.txt se siguen
+  // revisando completos porque se descargan enteros
+  const scope = onlyRoutes(opts);
+  const inScope = (u) => !scope || scope.has(u);
   const loaded = await loadPages({ ...opts, dev: false });
   const pages = loaded.filter((p) => p.route !== '/404' || opts.url == null);
   const h1s = new Map();
@@ -204,16 +209,17 @@ export async function run(opts) {
       }
     }
   } else {
-    // en desarrollo no hay sitemap.xml: se evalúa el mismo filtro de astro.config.mjs sobre las rutas que responden
+    // en desarrollo no hay sitemap.xml: se evalúa el mismo filtro de astro.config.mjs (src/lib/indexacion.mjs) sobre las
+    // rutas de sitemap.json que responden (todas, o las de --only)
     xmlUrls = pages.map((p) => p.route).filter((r) => r !== '/404' && !r.startsWith('/dev/') && !isNoindex(SITEMAP.find((p) => p.url === r), copyOf(SITEMAP.find((p) => p.url === r)?.id)));
     R.info('sitemap.xml: en modo --url se evalúa el filtro de astro.config.mjs (el XML solo existe tras el build)');
   }
   if (xmlUrls) {
     for (const r of noindexRoutes) if (xmlUrls.includes(r)) R.fail(r, 'página noindex dentro de sitemap.xml');
-    const want = new Set(expected), got = new Set(xmlUrls);
+    const want = new Set(expected.filter(inScope)), got = new Set(xmlUrls.filter(inScope));
     for (const u of want) if (!got.has(u)) R.fail(u, 'página indexable fuera de sitemap.xml');
     for (const u of got) if (!want.has(u)) R.fail(u, 'sitemap.xml incluye una página que no es indexable/construida');
-    R.info(`sitemap.xml: ${got.size} URL(s) · esperadas ${want.size} (indexables sin puerta pendiente${opts.release ? ', todas' : ', construidas'})`);
+    R.info(`sitemap.xml: ${got.size} URL(s) · esperadas ${want.size} (indexables sin puerta pendiente${opts.release ? ', todas' : ', construidas'}${scope ? `; solo las ${scope.size} ruta(s) de --only` : ''})`);
   }
   const llms = await loadText(opts, '/llms.txt');
   const full = await loadText(opts, '/llms-full.txt');

@@ -142,7 +142,7 @@
       "rail": "Cierre",
       "eyebrow": "Tu siguiente paso",
       "h2": { "text": "¿Cuánto tarda tu equipo en contestar un lead?", "soft": "Lo medimos en 30 minutos." },
-      "lede": "Revisamos tus canales, tus anuncios y tu CRM, y te mostramos en qué paso se enfrían los leads. Te llevas qué automatizar primero para que cada uno llegue a visita.",
+      "lede": "Revisamos tus canales, tus anuncios y tu CRM, y te mostramos en qué paso se enfrían los leads. Te llevas una lista clara de qué automatizar primero para que cada lead llegue a visita.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": {
         "label": "Escríbele a Kain",

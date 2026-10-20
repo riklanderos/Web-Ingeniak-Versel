@@ -100,13 +100,15 @@ body.plt .plt-pulse::after{content:"";position:absolute;inset:-35%;border-radius
 }
 @keyframes plt-ping{0%{opacity:.9;scale:.6}70%{opacity:0;scale:1.6}100%{opacity:0;scale:1.6}}
 /* Etiqueta de la cita: debajo del calendario de cristal (nunca sobre Kain ni en la columna de texto), con su guía al nodo */
-body.plt .plt-pop{--pw:max(150px,10.6cqw);width:var(--pw);translate:calc(-100% + 1.2cqw) 0;pointer-events:none}
-body.plt .plt-pop::before{content:"";position:absolute;right:1.2cqw;top:calc(-1 * var(--wire,2cqh));height:var(--wire,2cqh);width:1px;
+/* --ax es su borde DERECHO (la plantilla lo limita a 1 % antes de Kain) y --pop-wr la distancia de ese borde a la guía */
+body.plt .plt-pop{--pw:max(136px,10.6cqw);width:var(--pw);translate:-100% 0;pointer-events:none}
+body.plt .plt-pop::before{content:"";position:absolute;right:calc(var(--pop-wr,.012) * 100cqw);top:calc(-1 * var(--wire,2cqh));height:var(--wire,2cqh);width:1px;
   background:linear-gradient(180deg,rgb(0 229 255 / .25),rgb(0 229 255 / .9));box-shadow:0 0 8px rgb(0 229 255 / .45)}
 body.plt .plt-pop__card{display:flex;flex-direction:column;gap:.32em;padding:.85em .95em .9em;border-radius:.9em;
   font:400 clamp(10px,.8cqw,14px)/1.35 var(--f-body);color:var(--text);
   background:linear-gradient(165deg,rgb(12 20 46 / .78),rgb(6 10 24 / .7));-webkit-backdrop-filter:blur(12px) saturate(1.2);backdrop-filter:blur(12px) saturate(1.2);
   box-shadow:inset 0 0 0 1px rgb(168 243 255 / .26),inset 0 1px 0 rgb(255 255 255 / .14),0 20px 50px rgb(3 4 11 / .5),0 0 36px rgb(0 229 255 / .12)}
+body.plt .plt-pop--corner .plt-pop__card{border-top-right-radius:2px}   /* la guía baja por la esquina: esquina recta */
 body.plt .plt-pop p{margin:0}
 body.plt .plt-pop__top{display:flex;align-items:center;flex-wrap:wrap;gap:.35em .6em;margin-bottom:.2em!important}
 body.plt .plt-pop__top .chip-sim{font-size:max(8px,.68em)}
@@ -139,6 +141,15 @@ body.plt .plt-seal--center{translate:-50% -50%}
 body.plt [data-layout="subject-right"] .plt-seal--fig{translate:-100% 0}
 body.plt [data-layout="subject-left"] .plt-seal--fig{translate:0 0}
 body.plt .plt-seal .kommo-badge{white-space:nowrap}
+/* Sello limitado al piso libre (--seal-w, lo escribe la plantilla): la caja del ancla mide el tramo y centra el sello; cuando
+   el tramo es más angosto que el sello, el rótulo pasa a dos renglones y el sello se ciñe a ellos en vez de crecer hacia la
+   pierna de Kain */
+body.plt .plt-seal--center[style*="--seal-w"]{width:calc(var(--seal-w) * 100cqw);display:flex;justify-content:center;container-type:inline-size;pointer-events:none}
+body.plt .plt-seal--center[style*="--seal-w"] .kommo-badge{pointer-events:auto}
+@container (max-width:343px){
+  body.plt .plt-seal--center .kommo-badge{white-space:normal}
+  body.plt .plt-seal--center .kommo-badge__t{max-width:9.2em;text-wrap:balance}
+}
 body.plt .plt-chip{display:inline-flex;align-items:center;gap:10px;margin:0;white-space:nowrap;font:500 .6875rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#fff}
 body.plt .plt-chip .node{width:5px;height:5px}
 
@@ -147,6 +158,9 @@ body.plt .plt-chip .node{width:5px;height:5px}
   /* R4: lo anclado sin coordenadas verticales (data-m="none") se retira de la placa; su versión en línea va en `more` */
   body.plt .anchor[data-m="none"]:is(.plt-pipe,.plt-pop,.plt-cal,.plt-ag,.plt-seal,.plt-scene__ui){display:none}
   body.plt .plt-hero .plt-h1{max-width:none}
+  /* el titular también se mide con su palabra más larga (--plt-h1-div): a 320 px "Implementación" cabe en la columna */
+  body.plt .plt-hero .plt-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem), (100vw - 2 * var(--safe-x)) / var(--plt-h1-div, 7.1))}
+  body.plt .plt-hero .is__text{min-width:0}
   body.plt .plt-pipe--inline{container-type:inline-size;width:min(100%,20rem);margin-top:var(--s-5)}
   body.plt .plt-pipe--inline .plt-pipe__card{height:auto;gap:12px;padding:16px 18px 18px;font-size:14px}
   body.plt .plt-pipe--inline .plt-pipe__board{height:15.5rem;flex:none}
@@ -201,10 +215,12 @@ body.plt .plt-junta__nt{white-space:nowrap}
   /* Móvil: el pilar baja por la izquierda, cada fila le da su rama y el nodo cierra la columna */
   body.plt .plt-junta__map{--br:24px;grid-template-columns:var(--br) minmax(0,1fr);grid-template-rows:auto auto}
   body.plt .plt-junta__list{grid-column:2;grid-row:1;border-bottom:0}
-  body.plt .plt-junta__it{grid-template-columns:minmax(0,1fr);row-gap:4px;padding:14px 0 15px}
-  body.plt .plt-junta__br{left:auto;right:100%;width:calc(var(--br) / 2);transform-origin:100% 50%;background:linear-gradient(270deg,rgb(0 229 255 / .25),rgb(0 229 255 / .9))}
+  /* la rama llega a la línea del título y su nodo queda en el margen de la fila (14 px antes del texto), nunca sobre una letra */
+  body.plt .plt-junta__it{--jt:calc(14px + clamp(1.0625rem,1rem + .35vw,1.3125rem) * .625);grid-template-columns:minmax(0,1fr);row-gap:4px;padding:14px 0 15px 14px}
+  body.plt .plt-junta__br{left:auto;right:100%;top:var(--jt);width:calc(var(--br) / 2);transform-origin:100% 50%;background:linear-gradient(270deg,rgb(0 229 255 / .25),rgb(0 229 255 / .9))}
   body.plt .plt-junta__br::before{left:auto;right:-3px}
   body.plt .plt-junta__it::after{left:calc(var(--br) / -2)}
+  body.plt .plt-junta__it:first-child::after{top:var(--jt)}
   body.plt .plt-junta__it:last-child::after{bottom:-34px}
   body.plt .plt-junta__node{grid-column:2;grid-row:2;padding:22px 0 0 0}
   body.plt .plt-junta__node::before{left:calc(var(--br) / -2);top:calc(22px + 6px);width:calc(var(--br) / 2)}
@@ -212,14 +228,18 @@ body.plt .plt-junta__nt{white-space:nowrap}
 
 /* ── 03 · Señales con la persona a la DERECHA (Kommo, placa en espejo): el texto vive a la izquierda de la persona ── */
 @media (min-width:768px) and (min-aspect-ratio:5/6){
-  body.plt .is.plt-pain[data-layout="subject-right"]{--pain-xr:calc((100vw - var(--pain-w)) + (var(--pain-w) - var(--pain-sw)) * var(--fx-d) + .41 * var(--pain-sw))}
+  /* espejo exacto de la columna aprobada de T-SERVICE (texto desde .57 de la placa con la persona a la izquierda): aquí el
+     texto termina en .43 → ~470 px a 1280 × 720, las señales en 2–3 renglones y la lista dentro del primer pantallazo */
+  body.plt .is.plt-pain[data-layout="subject-right"]{--pain-xr:calc((100vw - var(--pain-w)) + (var(--pain-w) - var(--pain-sw)) * var(--fx-d) + .43 * var(--pain-sw))}
   body.plt .is.plt-pain[data-layout="subject-right"] > .is__copy .is__text,
-  body.plt .is.plt-pain[data-layout="subject-right"] > .is__more .is__text{margin-left:0;max-width:calc(var(--pain-xr) - (100vw - var(--frame)) / 2 - 24px)}
+  body.plt .is.plt-pain[data-layout="subject-right"] > .is__more .is__text{margin-left:0;max-width:calc(var(--pain-xr) - (100vw - var(--frame)) / 2)}
   body.plt .is.plt-pain[data-layout="subject-right"] > .is__fx{background:
     linear-gradient(90deg,rgb(3 4 11 / var(--veil-a)) 0%,rgb(3 4 11 / .8) 34%,rgb(3 4 11 / .35) 52%,rgb(3 4 11 / 0) 64%),
     linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent calc(var(--fade-from) * 100% - 8%),var(--ink) 100%)}
 }
 @media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){
+  /* aquí la placa mide --pain-h de alto (T-SERVICE, QA #21), no 100svh: la columna se calcula con esa misma caja */
+  body.plt .is.plt-pain[data-layout="subject-right"]{--pain-sw:max(var(--pain-w), var(--pain-h) * var(--ar-d))}
   body.plt .is.plt-pain[data-layout="subject-right"] > .is__more .is__text{max-width:none}
 }
 

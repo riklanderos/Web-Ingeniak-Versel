@@ -250,12 +250,36 @@ const calBox = evt && !touch ? freeBox(hr, ['superficie', 'pantalla', 'calendari
    vertical desde la casilla que toca Kain hasta su borde superior (--wire, en cqh del escenario). */
 const calB = touch ? boxOf(hr, "calendario") : null, casB = touch ? boxOf(hr, "casilla") : null;
 const popTop = calB ? calB[1] + calB[3] + 0.022 : null;
-const popStyle = calB && casB && popTop !== null
-  ? `--ax:${f4(casB[0] + casB[2] / 2)};--ay:${f4(popTop)};--wire:${f4((popTop - (casB[1] + casB[3])) * 100)}cqh;`
+/* Borde derecho de la etiqueta: 1.2 % pasada la casilla, pero nunca sobre Kain (QA plataformas: a 1024–1440 px la tarjeta
+   tocaba el muslo y la rodilla). Si el sujeto está a la derecha de la casilla, la tarjeta termina 1 % antes de su caja; cuando
+   ya no cabe la guía bajo el centro de la casilla dentro de la tarjeta, la guía baja por su esquina superior derecha
+   (--pop-wr 0 y esquina recta, clase plt-pop--corner) y sigue naciendo dentro de la casilla. */
+const casC = casB ? casB[0] + casB[2] / 2 : null;
+const subjD = hr.subject?.d ?? null;
+const popR = casC !== null ? (subjD && subjD[0] > casC ? Math.min(casC + 0.012, subjD[0] - 0.01) : casC + 0.012) : null;
+const popCorner = casC !== null && popR !== null && popR - casC < 0.008;
+const popWr = casC !== null && popR !== null ? (popCorner ? 0 : popR - casC) : 0.012;
+const popStyle = calB && casB && popTop !== null && popR !== null
+  ? `--ax:${f4(popR)};--ay:${f4(popTop)};--wire:${f4((popTop - (casB[1] + casB[3])) * 100)}cqh;--pop-wr:${f4(popWr)};`
   : touch ? centerStyle(hr, "casilla") : "";
 const evtAria = evt ? `Simulación: ${evt.title}, ${evt.when}. ${evt.what}. ${evt.status}.` : '';
-/* Sello (Kommo) o chip (GHL) anclado al piso: ancla `sello` (centro) o `fig` (esquina hacia el lado del texto) */
-const sealAt = hr.anchors.sello?.d ? { style: pointStyle(hr, 'sello'), mode: 'center' } : hr.anchors.fig?.d ? { style: pointStyle(hr, 'fig'), mode: 'fig' } : null;
+/* Sello (Kommo) o chip (GHL) anclado al piso: ancla `sello` (centro) o `fig` (esquina hacia el lado del texto).
+   Sello: la placa marca el centro del piso libre (`sello`) y su extremo del lado del texto (`fig`); el piso libre es simétrico
+   alrededor de `sello` (del lado de Kain termina en 2·sello − fig, junto a la pierna). El sello se centra en ese tramo, con 1 %
+   de aire del lado de Kain y sin pasar el borde de la zona segura del texto, y su ancho se limita al tramo (en cqw de la placa):
+   en escritorios bajos su rótulo pasa a dos renglones en vez de crecer hacia la pierna (QA plataformas, 1024–1440 px). */
+function sealSpan(r: Resolved): string {
+  const s = r.anchors.sello?.d, f = r.anchors.fig?.d;
+  if (!s) return '';
+  const edge = safeEdge(r);
+  const reach = f ? Math.abs(f[0] - s[0]) : 0.11;
+  let lo: number, hi: number;
+  if (r.layout === 'subject-right') { hi = s[0] + reach - 0.01; lo = Math.max(s[0] - reach - 0.01, edge + 0.01); }
+  else { lo = s[0] - reach + 0.01; hi = Math.min(s[0] + reach + 0.01, edge - 0.01); }
+  if (hi - lo < 0.12) return pointStyle(r, 'sello');
+  return `--ax:${f4((lo + hi) / 2)};--ay:${s[1]};--seal-w:${f4(hi - lo)};`;
+}
+const sealAt = hr.anchors.sello?.d ? { style: sealSpan(hr), mode: 'center' } : hr.anchors.fig?.d ? { style: pointStyle(hr, 'fig'), mode: 'fig' } : null;
 const heroUiSel = pipe ? '.plt-pipe' : touch ? '.plt-pop' : '.plt-cal';
 const heroHasUi = !!(pipeBox || touch || calBox);
 
@@ -397,7 +421,7 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
           {evt && touch && (
             <Fragment slot="anchors">
               <span class="anchor plt-pulse" style={centerStyle(hr, 'casilla')} aria-hidden="true"></span>
-              <div class="anchor plt-pop plt-ui" data-anchor="casilla" data-lock data-m="none" data-nosnippet style={popStyle} role="img" aria-label={evtAria}>
+              <div class:list={['anchor plt-pop plt-ui', popCorner && 'plt-pop--corner']} data-anchor="casilla" data-lock data-m="none" data-nosnippet style={popStyle} role="img" aria-label={evtAria}>
                 <div class="plt-pop__card" aria-hidden="true">
                   <p class="plt-pop__top"><span class="chip-sim">SIMULACIÓN</span><span class="plt-pop__time">{heroUi.timeLabel ?? 'Hora ilustrativa'}</span></p>
                   <p class="plt-pop__t"><span class="plt-pop__ok"></span>{evt.title}</p>
@@ -673,7 +697,7 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
                     ))}
                   </dl>
                 )}
-                <p class="t-micro plt-cred__foot">El sello enlaza a kommo.com, como pide el programa de partners de Kommo.</p>
+                {c.credentialNote && <Copy text={c.credentialNote} as="p" class="t-micro plt-cred__foot" />}
               </div>
             </div>
             {steps.length > 0 && <ScriptList variant="steps" rows={steps} label={c.eyebrow} class="plt-lic__steps" />}
@@ -723,8 +747,10 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
           {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
           <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
           {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+          {/* Con caja vertical del teléfono (R4) el chat sigue registrado en la placa también en móvil, como en T-SERVICE (en un
+              teléfono < 180 px ChatSim pinta su miniatura encendida); sin ella, se retira y su versión en línea baja a `more`. */}
           {pan && lines && (
-            <div slot="anchors" class="anchor anchor--panel svc-panel svc-ui plt-scene__ui" data-anchor={pan.name} data-lock data-m="none" style={pan.style}>
+            <div slot="anchors" class="anchor anchor--panel svc-panel svc-ui plt-scene__ui" data-anchor={pan.name} data-lock data-m={pan.m ? undefined : 'none'} style={pan.style}>
               <ChatSim mode="registered" scripts={{ plt: lines }} tabs={[{ id: 'plt', label: c.chat.tab ?? 'WhatsApp' }]} note={false} title={c.chat.title} />
             </div>
           )}
@@ -748,7 +774,7 @@ for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); scen
             )}
             {c.proof && <Copy text={c.proof} as="p" class="plt-proof" />}
             {built(c.links).length > 0 && <p class="svc-links plt-scene__links">{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
-            {lines && (
+            {lines && !pan?.m && (
               <div class="plt-scene__chat tpl-dhide">
                 <Fragment set:html={aura('isotipo', 'phone')} />
                 <ChatSim mode="inline" scripts={{ plt: lines }} tabs={[{ id: 'plt', label: c.chat.tab ?? 'WhatsApp' }]} title={c.chat.title ?? 'Agente de IA'} />

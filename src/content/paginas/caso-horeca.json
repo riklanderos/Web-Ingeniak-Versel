@@ -24,17 +24,22 @@
     "CAMBIO DE TEXTO · ficha.deckBreve es la entradilla del caso breve; ficha.deck queda para la versión completa. ficha.note dice 'Reportaje breve…': al abrir la puerta se cambia por la nota de anonimato del caso dental.",
     "CAMBIO DE TEXTO · CTA primario de portada y cierre: 'Agenda tu Discovery Session' (regla de un solo azul, §0.1-4; sitemap.primaryCta dice 'Quiero un sistema así: agenda tu Discovery').",
     "CAMBIO DE TEXTO · relacionados: el brief pide /servicios/paid-media/, /industrias/horeca/ y el caso e-commerce. Van los tres como filas; el 'Siguiente reportaje' es logística, para cerrar la cadena dental → retail → e-commerce → HoReCa → logística → dental (si fuera e-commerce, logística no tendría quien la anuncie).",
-    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
+    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir).",
+    "CAMBIO DE TEXTO · hero.ledeM (QA casos): versión corta del lede para el primer pantallazo en móvil (R3: el sujeto de la portada entra en pantalla); en escritorio sigue el lede completo. Mismo contenido, sin datos nuevos.",
+    "CAMBIO DE TEXTO · mensaje de WhatsApp de portada y cierre (QA casos): la cifra va como token ({{metric:horeca-roas}}), sale de metrics.ts y no escrita a mano (§0.1-2).",
+    "CAMBIO DE TEXTO · relacionados (QA casos): la línea de paid media decía 'El servicio de este caso: Meta, Google y TikTok Ads…'; solo Meta Ads está confirmado en este caso. Ahora: 'El servicio de este caso: campañas medidas por ventas, no por clics.'",
+    "CAMBIO DE TEXTO · H1: \"paid media\" va con espacio duro (no se parte en dos líneas). El texto del H1 no cambia."
   ],
   "sections": {
     "hero": {
       "_componente": "ImageSection hero (caso-horeca-hero, persona a la derecha) + Breadcrumbs + fila .chip-spec",
       "rail": "Portada",
-      "h1": { "kicker": "HoReCa:", "metricId": "horeca-roas", "text": "sostenido con paid media" },
+      "h1": { "kicker": "HoReCa:", "metricId": "horeca-roas", "text": "sostenido con paid media" },
       "chips": ["Hoteles y restaurantes", "Meta Ads", "En operación"],
       "lede": "Campañas en Meta Ads para un cliente de hoteles y restaurantes, medidas por lo que regresan en ventas y no por los clics. El retorno se sostuvo: no fue el pico de una sola campaña.",
+      "ledeM": "Campañas en Meta Ads medidas por ventas, no por clics.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso HoReCa con ROAS 4.8× y quiero campañas así para mi negocio." },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso HoReCa con {{metric:horeca-roas}} y quiero campañas así para mi negocio." },
       "illus": "Imagen ilustrativa del sector"
     },
     "ficha": {
@@ -154,7 +159,7 @@
       "rail": "Sigue explorando",
       "eyebrow": "Sigue explorando",
       "items": [
-        { "title": "Paid media", "line": "El servicio de este caso: Meta, Google y TikTok Ads conectados a tu CRM y medidos por ventas.", "href": "/servicios/paid-media/" },
+        { "title": "Paid media", "line": "El servicio de este caso: campañas medidas por ventas, no por clics.", "href": "/servicios/paid-media/" },
         { "title": "Restaurantes y hoteles", "line": "Campañas, reservas por WhatsApp y automatización para tu negocio.", "href": "/industrias/horeca/" },
         { "title": "E-commerce en la Ciudad de México", "line": "Otra cifra de adquisición, en otro sector: el costo por lead, antes y después.", "href": "/casos/ecommerce-cdmx-costo-por-lead/" }
       ],
@@ -167,7 +172,7 @@
       "h2": { "text": "¿Tus campañas se miden en ventas?", "soft": "Lo vemos en 30 minutos." },
       "lede": "En la Discovery Session revisamos qué mides hoy de tus anuncios, si una reserva puede llegar a la campaña que la trajo y qué conviene cambiar primero en tu restaurante o tu hotel. Sales con sugerencias concretas.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso HoReCa con ROAS 4.8× y quiero campañas así para mi negocio." },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso HoReCa con {{metric:horeca-roas}} y quiero campañas así para mi negocio." },
       "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
     }
   }

@@ -107,7 +107,7 @@ export default function scene(el: HTMLElement, env: Env) {
   const caps = anchors ? [...anchors.querySelectorAll<HTMLElement>('.caption')] : [];
   if (textCol && desk && stagebox && /^subject-(left|right)$/.test(el.dataset.layout ?? '')) {
     const right = el.dataset.layout === 'subject-right';
-    const fitCopy = () => {
+    const fitInner = () => {
       textCol.style.removeProperty('max-width');
       textCol.style.removeProperty('padding-left');
       caps.forEach((c) => c.style.removeProperty('--cap-w'));
@@ -168,6 +168,14 @@ export default function scene(el: HTMLElement, env: Env) {
           if (minL - 24 < R) cap.style.setProperty('--cap-w', `${Math.max(200, Math.floor(minL - 24 - L))}px`);
         }
       }
+    };
+    // Con movimiento reducido (tokens.css) toda propiedad transita .01 ms: el ancho de la columna y de los pies se aplicaría
+    // un cuadro después y la medición leería el anterior (el ajuste se alternaba en cada ResizeObserver). Mientras se mide,
+    // la columna y los pies no transitan.
+    const fitCopy = () => {
+      const guard = [textCol, ...caps];
+      guard.forEach((g) => g.style.setProperty('transition-duration', '0s', 'important'));
+      try { fitInner(); } finally { guard.forEach((g) => g.style.removeProperty('transition-duration')); }
     };
     fitCopy();
     let raf = 0;

@@ -22,9 +22,11 @@
     "BORRADOR SIN PUBLICAR · implementacion, resultado y vktor existen para cuando se abra la puerta, pero CaseTemplate no los pinta en el caso breve. Solo usan la descripción ya publicada (sitio actual, G06) y fases genéricas de VKTOR aplicadas a la operación de quien lee. punto-partida va con _omitir hasta tener el dato.",
     "CAMBIO DE TEXTO · ficha.deckBreve es la entradilla del caso breve; ficha.deck queda para la versión completa. ficha.note dice 'Reportaje breve…': al abrir la puerta se cambia por la nota de anonimato del caso dental.",
     "CAMBIO DE TEXTO · CTA primario de portada y cierre: 'Agenda tu Discovery Session' (regla de un solo azul, §0.1-4; sitemap.primaryCta dice 'Quiero un sistema así: agenda tu Discovery').",
-    "CAMBIO DE TEXTO · cierre: el brief dice '¿Qué procesos de tu operación podrían moverse solos?'. Se queda tal cual porque pregunta por la operación de quien lee, no afirma nada del caso.",
+    "CAMBIO DE TEXTO · cierre: el brief dice '¿Qué procesos de tu operación podrían moverse solos?'. Cambia a '¿Qué procesos de tu operación siguen a mano?': 'moverse solos' contradice la indicación (6) del cliente (en la operación intervienen personas; operan IA + equipo).",
     "CAMBIO DE TEXTO · relacionados: el brief pide /servicios/automatizacion-n8n/, /industrias/industrial-logistica/ y el caso dental. Van el servicio, la industria y /servicios/desarrollo-software/ (internalLinks); el caso dental es el 'Siguiente reportaje' y cierra la cadena de casos.",
-    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
+    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir).",
+    "CAMBIO DE TEXTO · hero.ledeM (QA casos): versión corta del lede para el primer pantallazo en móvil (R3: el sujeto de la portada entra en pantalla); en escritorio sigue el lede completo. Mismo contenido, sin datos nuevos.",
+    "CAMBIO DE TEXTO · mensaje de WhatsApp de portada y cierre (QA casos): la cifra va como token ({{metric:logistica-procesos|full}}), sale de metrics.ts y no escrita a mano (§0.1-2)."
   ],
   "sections": {
     "hero": {
@@ -33,8 +35,9 @@
       "h1": { "kicker": "Logística:", "metricId": "logistica-procesos", "text": "procesos automatizados con n8n y agentes de IA" },
       "chips": ["Logística", "n8n", "Agentes de IA", "En operación"],
       "lede": "Conectamos el CRM, el WhatsApp, el ERP y modelos de IA de una empresa de logística con flujos en n8n que se disparan en tiempo real, en cuanto algo cambia en uno de sus sistemas.",
+      "ledeM": "Conectamos su CRM, WhatsApp, ERP e IA con n8n, en tiempo real.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de logística con 27 procesos automatizados y quiero automatizar mi operación." },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de logística con {{metric:logistica-procesos|full}} y quiero automatizar mi operación." },
       "illus": "Imagen ilustrativa del sector"
     },
     "ficha": {
@@ -165,10 +168,10 @@
       "_componente": "Dawn (cta-amanecer; cta-equipo espera la sesión de fotos R6)",
       "rail": "Cierre",
       "eyebrow": "Tu operación, en flujos",
-      "h2": { "text": "¿Qué procesos de tu operación podrían moverse solos?", "soft": "Lo vemos en 30 minutos." },
+      "h2": { "text": "¿Qué procesos de tu operación siguen a mano?", "soft": "Lo vemos en 30 minutos." },
       "lede": "En la Discovery Session listamos contigo las tareas que tu equipo repite cada día, los sistemas donde viven y cuál conviene automatizar primero, sin cambiar lo que ya funciona. Sales con sugerencias concretas.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
-      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de logística con 27 procesos automatizados y quiero automatizar mi operación." },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de logística con {{metric:logistica-procesos|full}} y quiero automatizar mi operación." },
       "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
     }
   }

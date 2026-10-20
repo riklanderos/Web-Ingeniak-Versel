@@ -24,7 +24,9 @@
     "CAMBIO DE TEXTO · ficha.deckBreve es la entradilla del caso breve; ficha.deck queda para la versión completa. ficha.note dice 'Reportaje breve…': al abrir la puerta se cambia por la nota de anonimato del caso dental.",
     "CAMBIO DE TEXTO · CTA primario de portada y cierre: 'Agenda tu Discovery Session' (regla de un solo azul, §0.1-4; sitemap.primaryCta dice 'Quiero un sistema así: agenda tu Discovery'). La idea queda en el eyebrow del cierre.",
     "CAMBIO DE TEXTO · relacionados: el brief pide /kommo/, /industrias/retail-ecommerce/ y el caso e-commerce. Van /kommo/, /servicios/crm-con-ia/ (internalLinks: el servicio del caso, R8) y la industria; el caso e-commerce es el 'Siguiente reportaje' (cadena dental → retail → e-commerce → HoReCa → logística → dental).",
-    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
+    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir).",
+    "CAMBIO DE TEXTO · relacionados (QA casos): la línea de la industria decía '…en un negocio de retail o e-commerce' y a 375 px se partía en 'e-' / 'commerce'. Ahora: 'Cómo se ve el sistema completo en una tienda, física o en línea.'",
+    "CAMBIO DE TEXTO · hero.ledeM (QA casos): versión corta del lede para el primer pantallazo en móvil (R3: el sujeto de la portada entra en pantalla); en escritorio sigue el lede completo. Mismo contenido, sin datos nuevos."
   ],
   "sections": {
     "hero": {
@@ -33,6 +35,7 @@
       "h1": { "kicker": "Retail multimarca:", "metricId": "retail-conversiones", "text": "en conversiones con Kommo e IA" },
       "chips": ["Retail multimarca", "Kommo + IA", "En operación"],
       "lede": "Kommo automatizado con calificación de leads por IA y un embudo de conversión que se ve en tiempo real: el equipo sabe a quién atender primero.",
+      "ledeM": "Leads calificados por IA en Kommo: el equipo sabe a quién atender primero.",
       "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
       "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso del retail multimarca con Kommo y quiero mejorar mis conversiones." },
       "illus": "Imagen ilustrativa del sector"
@@ -156,7 +159,7 @@
       "items": [
         { "title": "Kommo", "line": "La plataforma de este caso. Somos partner oficial de Kommo.", "href": "/kommo/" },
         { "title": "CRM con IA", "line": "El servicio: embudos, calificación de leads y seguimiento con IA.", "href": "/servicios/crm-con-ia/" },
-        { "title": "Retail y e-commerce", "line": "Cómo se ve el sistema completo en un negocio de retail o e-commerce.", "href": "/industrias/retail-ecommerce/" }
+        { "title": "Retail y e-commerce", "line": "Cómo se ve el sistema completo en una tienda, física o en línea.", "href": "/industrias/retail-ecommerce/" }
       ],
       "next": { "label": "Siguiente reportaje", "title": "E-commerce en la Ciudad de México: costo por lead", "metricId": "ecom-cpl", "href": "/casos/ecommerce-cdmx-costo-por-lead/" }
     },

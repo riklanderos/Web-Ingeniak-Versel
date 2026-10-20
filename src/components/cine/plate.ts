@@ -181,6 +181,19 @@ export function resolvePlate(key: string, o: ResolveOpts = {}): Resolved {
   };
 }
 
+/** ¿El sujeto de la placa es una persona (o varias), no Kain? Lo dice plates.json con `sujeto: "persona"` (o "kain") si
+ *  la placa lo trae, o `personas` (retratos registrados, cta-equipo); si no, la convención de los alt (R11): las escenas
+ *  con personas terminan en "(imagen ilustrativa)"; las que empiezan por "Kain" tienen a Kain de sujeto aunque al fondo haya
+ *  una persona (las de sector). Dawn lo usa para no pintar sus efectos de Kain (haz vertical, filo del horizonte en el piso)
+ *  sobre una persona. */
+export function isPersonPlate(id: string | null | undefined): boolean {
+  const p = id ? getPlate(id) : null;
+  if (!p) return false;
+  if (p.sujeto === 'persona') return true;
+  if (p.sujeto === 'kain' || /^Kain\b/.test(p.alt ?? '')) return false;
+  return !!p.personas || /\(imagen ilustrativa\)/i.test(p.alt ?? '');
+}
+
 /** Borde de la zona segura de texto de escritorio (safe.d de plates.json) del lado del TEXTO, en fracción del ancho de la
  *  placa y ya espejado: con el sujeto a la derecha (o al centro), el borde derecho de la zona que nace en el margen
  *  izquierdo; con el sujeto a la izquierda, el borde izquierdo de la zona que llega al margen derecho. Sin una zona pegada

@@ -1,7 +1,7 @@
 ---
 // IndustryTemplate · T-INDUSTRY (ESPEC-v2 §5.3, §12.2 R2/R3/R4/R5/R7/R11) · ejemplo /industrias/salud/
 // Misma plantilla para las 8 industrias (salud es el modelo aprobado): todo sale de la placa usada (o su launchFallback),
-// del copy y de sitemap.json; nada depende del sector salvo los guiones locales de ChatSim (respaldo mientras falte su JSON).
+// del copy y de sitemap.json; nada depende del sector (el guion de ChatSim sale de src/data/chats/<sector>.json).
 // Data-driven: recorre page.sections (src/data/sitemap.json) en su orden y pinta cada id con su componente;
 // el texto sale de src/content/paginas/<page.id>.json (área copy). Secciones sin copy o con `_omitir` no se pintan.
 //   hero          SharedTake + ImageSection hero (persona/Kain del sector) + chip de prueba anclado a la tableta + IMAGEN ILUSTRATIVA
@@ -96,6 +96,21 @@ const heroLit: string | null = hero?.h1?.lit ?? (hero?.h1?.text ? (hero.h1.text 
 // H1 largos (D: industrial 63 caracteres, HoReCa 59, belleza 55): un paso menos de tamaño para que el bloque completo
 // (crumbs, H1, lede y CTA) quepa en el primer pantallazo de 1280 × 720 a 1920 × 1080 sin invadir el lado del sujeto.
 const heroH1Long = `${hero?.h1?.text ?? ''} ${hero?.h1?.soft ?? ''}`.trim().length > 48;
+// Fila de CTA de escritorio: scene.ts acota la columna al borde de la caja del sujeto (− 32 px). Si la placa declara que,
+// a la altura de los CTA (franja baja, donde ya no está la mano), la zona segura de texto sigue más allá de esa caja
+// (belleza: safe.d [.46–.55 × .58–.97] frente al sujeto en .47), la fila puede usar ese hueco (≤ 4vw, siempre ≤ .04 del
+// ancho de la placa) y el WhatsApp no cae debajo de la microcopia del primario. Solo con el texto a la izquierda.
+const heroCtaBand: boolean = (() => {
+  if (!rHero?.id || rHero.aura || rHero.layout !== 'subject-right') return false;
+  const sx0 = rHero.subject?.d?.[0];
+  const zones: number[][] = ((getPlate(rHero.id) as any)?.safe?.d ?? [])
+    .filter((z: any) => Array.isArray(z) && z.length >= 4)
+    .map((z: number[]) => (rHero.mirror ? [1 - z[2], z[1], 1 - z[0], z[3]] : z));
+  const main = zones.find((z) => z[0] <= 0.12);
+  if (typeof sx0 !== 'number' || !main) return false;
+  const reach = Math.max(...zones.filter((z) => Math.abs(z[0] - main[2]) <= 0.02 && z[1] <= 0.65 && z[3] >= 0.9).map((z) => z[2]), 0);
+  return reach - sx0 >= 0.06;
+})();
 const heroEyebrow: string = hero?.eyebrow ?? `Industria · ${(P.breadcrumbs as any[])?.at(-1)?.name ?? ''}`;
 // R3 · intro móvil: lede ≤ 20 palabras (el resto baja a `more`); la etiqueta repite los crumbs → solo en móvil
 const heroLede = ledeParts(hero?.lede, 20);
@@ -163,60 +178,12 @@ const ksPanelR: number = panel ? panel.d[0] + panel.d[2] : 0;
 const ksCol = ksLayout !== 'subject-left' ? '' : ksSafeX > 0.55 || ksPanelR > 0.5 ? 'ind-kain--c8' : ksPanelR > 0.47 ? 'ind-kain--c7' : '';
 // Titulares de escena largos (> 36 caracteres; salud tiene 31): un paso menos para que el bloque quepa mientras está fijado
 const ksLong = `${ks?.h2?.text ?? ''} ${ks?.h2?.soft ?? ''}`.trim().length > 36;
-// Guion del sector (R2: uno propio por industria). Manda src/data/chats/<guion>.json (área copy); mientras el archivo no
-// exista, el respaldo local de abajo (los guiones que el área copy dejó en peticiones.md) evita que ChatSim caiga al guion
-// de salud (limpieza dental) en otra industria. Si no hay ninguno de los dos, el guion general (default), nunca el de salud.
+// Guion del sector (R2: uno propio por industria): src/data/chats/<guion>.json (área copy). Las 8 industrias ya tienen el
+// suyo; si alguno faltara, el guion general (default), nunca el de salud (limpieza dental) en otra industria.
 const chatFiles = import.meta.glob('../../data/chats/*.json', { eager: true, import: 'default' }) as Record<string, any>;
 const hasChatFile = (k: string) => Object.keys(chatFiles).some((x) => x.endsWith(`/${k}.json`));
-const LOCAL_CHATS: Record<string, any[]> = {
-  nutricion: [
-    { who: 'cliente', text: 'Hola, tengo mi consulta de seguimiento mañana a las 9:00, pero no voy a poder llegar. ¿La puedo mover?', delay: 900, time: '7:52 p. m.' },
-    { who: 'kain', text: '¡Hola! Claro. Para tu seguimiento tengo el jueves a las 8:30 o el viernes a las 18:00. ¿Cuál te acomoda?', delay: 1100 },
-    { who: 'cliente', text: 'El viernes. Oye, mientras, ¿puedo cenar fruta o mejor no?', delay: 1600 },
-    { who: 'kain', text: 'Eso te lo tiene que indicar tu nutrióloga; yo no puedo darte recomendaciones de alimentación. Si quieres, le dejo tu pregunta para que la revise contigo el viernes.', delay: 1200 },
-    { who: 'cliente', text: 'Sí, porfa. Soy Ana.', delay: 1300 },
-    { who: 'kain', text: 'Listo, Ana: tu seguimiento quedó el viernes a las 18:00, con tu pregunta en la nota para tu nutrióloga. El jueves te mando un recordatorio.', delay: 1000, event: 'Cita reagendada en tu CRM · horario anterior liberado' },
-    { who: 'cliente', text: 'Gracias.', delay: 1100 },
-    { who: 'kain', text: 'A ti, Ana. Que tengas buena noche.', delay: 800 },
-  ],
-  finanzas: [
-    { who: 'cliente', text: 'Hola, vi su anuncio. Me interesa un crédito para mi negocio.', delay: 900, time: '9:26 p. m.' },
-    { who: 'kain', text: '¡Hola! Con gusto. Para pasarte con el asesor indicado, ¿cuánto tiempo lleva operando tu negocio?', delay: 1100 },
-    { who: 'cliente', text: 'Tres años. Es una cafetería.', delay: 1400 },
-    { who: 'kain', text: 'Gracias. ¿Para qué usarías el crédito: equipo, capital de trabajo u otra cosa?', delay: 1000 },
-    { who: 'cliente', text: 'Para abrir otra sucursal. ¿Me lo van a aprobar?', delay: 1500 },
-    { who: 'kain', text: 'Eso lo decide el área de crédito con tu solicitud; yo no puedo prometerte una aprobación ni darte una tasa. Última pregunta: ¿facturas a nombre del negocio?', delay: 1200 },
-    { who: 'cliente', text: 'Sí. Soy Ricardo.', delay: 1300 },
-    { who: 'kain', text: 'Gracias, Ricardo. Te agendo una llamada con un asesor mañana a las 10:00 o a las 16:30. ¿Cuál prefieres?', delay: 1100 },
-    { who: 'cliente', text: 'A las 10.', delay: 1100 },
-    { who: 'kain', text: 'Listo: llamada mañana a las 10:00. Te dejo aquí la lista de documentos para que los tengas a la mano.', delay: 1000, event: 'Prospecto calificado · llamada agendada en tu CRM' },
-  ],
-  industrial: [
-    { who: 'cliente', text: 'Buenas tardes. ¿Me ayudas con el estatus del pedido 4512? Lo necesitamos en planta esta semana.', delay: 900, time: '4:37 p. m.' },
-    { who: 'kain', text: '¡Hola! Soy Kain, de servicio a clientes. Ya lo revisé: el pedido 4512 salió de almacén hoy a las 13:20 y va en ruta. Entrega estimada: el jueves por la mañana.', delay: 1100, event: 'Estatus consultado en tu ERP' },
-    { who: 'cliente', text: 'Perfecto. ¿Me mandas la guía y la factura?', delay: 1500 },
-    { who: 'kain', text: 'Claro. Aquí tienes la guía de rastreo y la factura en PDF del pedido 4512.', delay: 1000, event: 'Documentos enviados · conversación registrada en tu CRM' },
-    { who: 'cliente', text: 'Una más: ¿cuántas piezas les quedan de ese código? Quiero pedir otras doscientas.', delay: 1600 },
-    { who: 'kain', text: 'Las existencias no las puedo compartir por aquí. Le paso tu solicitud a tu ejecutivo de cuenta, con el código y la cantidad, para que te confirme y te cotice.', delay: 1200, event: 'Tarea creada para tu ejecutivo · cotización' },
-    { who: 'cliente', text: 'Va, gracias.', delay: 1100 },
-    { who: 'kain', text: 'A ti. En cuanto se entregue el pedido, te aviso por este chat.', delay: 900 },
-  ],
-  horeca: [
-    { who: 'cliente', text: 'Hola, ¿tienen mesa para cuatro este viernes a las 9 de la noche?', delay: 900, time: '8:46 p. m.' },
-    { who: 'kain', text: '¡Hola! Soy Kain, del restaurante. El viernes a las 21:00 tengo mesa para cuatro en la terraza o en el salón. ¿Cuál prefieres?', delay: 1100 },
-    { who: 'cliente', text: 'Terraza. Es el cumpleaños de mi esposa, ¿le pueden preparar algo?', delay: 1600 },
-    { who: 'kain', text: '¡Qué gusto! Lo anoto para el equipo. Lo del postre te lo confirma el gerente mañana antes de las 13:00, porque depende de la cocina. ¿A nombre de quién dejo la reserva?', delay: 1200 },
-    { who: 'cliente', text: 'De Daniel.', delay: 1100 },
-    { who: 'kain', text: 'Listo, Daniel: terraza para cuatro, viernes a las 21:00, con nota de cumpleaños. El jueves te escribo para confirmar.', delay: 1000, event: 'Reserva registrada en tu CRM · origen: campaña de Meta' },
-    { who: 'cliente', text: 'Perfecto, gracias.', delay: 1300 },
-    { who: 'kain', text: 'Gracias a ti, Daniel. Nos vemos el viernes.', delay: 800 },
-  ],
-};
 const wantedScript: string = ks?.chat?.script ?? (Array.isArray(ks?.chat?.scripts) ? ks.chat.scripts[0] : null) ?? 'default';
-const localChat = !hasChatFile(wantedScript) ? LOCAL_CHATS[wantedScript] : undefined;
-const chatScript: string = hasChatFile(wantedScript) || localChat || wantedScript === 'salud' ? wantedScript : 'default';
-const chatScripts: Record<string, any[]> | undefined = localChat ? { [chatScript]: localChat } : undefined;
-if (dev && localChat) console.warn(`[IndustryTemplate] ${P.id}: falta src/data/chats/${wantedScript}.json → guion local de la plantilla (peticiones.md)`);
+const chatScript: string = hasChatFile(wantedScript) || wantedScript === 'salud' ? wantedScript : 'default';
 
 /* ── 06 · cifras ────────────────────────────────────────────────────────── */
 const cif = cp('cifras');
@@ -274,7 +241,7 @@ if (dev) {
           priority
           take
           encendido
-          class="ind-hero tpl-hero"
+          class:list={['ind-hero tpl-hero', heroCtaBand && 'ind-hero--cta-band']}
         >
           {/* Crumbs en escritorio; la etiqueta "Industria · Salud" los repite → solo en móvil, donde los crumbs se ocultan (R3) */}
           <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
@@ -388,7 +355,7 @@ if (dev) {
           <h2 id="kain-sector-t" class="t-h2" data-split set:html={headHtml(ks.h2)} />
           {ks.lede && <Copy as="p" class="t-lede t-lede--2" text={ks.lede} />}
           <div slot="more" class="ind-kain__more" style={`--sb:${ksSubjBottomM}`}>
-            {!panelInPlateM && <div class="only-m ind-kain__chat"><ChatSim mode="inline" script={chatScript} scripts={chatScripts} aura={false} note={false} id="ks-chat-m" /></div>}
+            {!panelInPlateM && <div class="only-m ind-kain__chat"><ChatSim mode="inline" script={chatScript} aura={false} note={false} id="ks-chat-m" /></div>}
             {ks.limite && (
               <p class="ind-limit"><span class="node" aria-hidden="true"></span><Copy text={ks.limite} /></p>
             )}
@@ -399,7 +366,7 @@ if (dev) {
             <div slot="anchors" class:list={['anchor anchor--panel ind-panel', !panelInPlateM && 'ind-panel--mini']} data-anchor={panel.name} data-lock
               data-m={panel.m ? undefined : 'none'} style={panelStyle}>
               {/* Escritorio: el guion avanza con el scroll de la escena fijada (una burbuja por tramo); móvil: miniatura */}
-              <ChatSim mode="registered" script={chatScript} scripts={chatScripts} note={false} control="external" id="ks-chat" />
+              <ChatSim mode="registered" script={chatScript} note={false} control="external" id="ks-chat" />
             </div>
           )}
         </ImageSection>

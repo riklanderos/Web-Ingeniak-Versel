@@ -12,8 +12,9 @@
     "CAMBIO DE TEXTO · repetición de cifras: retail-conversiones sale en la fila de #definicion y en el montaje de #caso (dos veces). Por eso #crm-vivo no repite la cifra +340% que pedía su brief. dental-respuesta solo en #definicion y dental-citas solo en #caso.",
     "CAMBIO DE TEXTO · #caso suma una segunda fila: la clínica dental de Monterrey, cuyo CRM es GoHighLevel (RESPUESTAS-CLIENTE 2026-10-19 #15), para que la página muestre un caso por plataforma. El brief solo pedía el de retail con Kommo.",
     "PREGUNTA AL CLIENTE · licencias: ¿las licencias de Kommo o la suscripción de GoHighLevel van incluidas en {{price}} o se pagan aparte? El texto (#inversion.remate) solo dice que dependen del plan y de los usuarios y que se explican por separado, como en /kommo/.",
-    "PREGUNTA AL CLIENTE · ¿implementan sobre una cuenta de Kommo o GoHighLevel que el cliente ya tiene (revisión y reconfiguración)? #como-funciona.note y #implementamos.body lo dicen ('partimos de tu cuenta'), apoyados en la línea de v1 'Ya tienes Kommo, pero nadie lo usa como debería'. No se promete migración de contactos desde otro CRM.",
-    "PREGUNTA AL CLIENTE · el sello de partner de Kommo (brief de la portada) no se pinta: ServiceTemplate no tiene sello en la portada y esta página no tiene sección de integraciones. Va en _badge (sin pintar) y como pedido a plantillas en peticiones.md."
+    "PREGUNTA AL CLIENTE · ¿implementan sobre una cuenta de Kommo o GoHighLevel que el cliente ya tiene (revisión y reconfiguración)? Mientras no se confirme por escrito, la página no lo dice (QA servicios r3): salió #como-funciona.note ('Si ya tienes Kommo o GoHighLevel, partimos de tu cuenta'), #implementamos.body ya no empieza con 'Si ya tienes un CRM' y #cta-final.lede ya no ofrece 'ajustar el CRM que ya tienes'. Con la confirmación, vuelven. No se promete migración de contactos desde otro CRM.",
+    "PREGUNTA AL CLIENTE · el sello de partner de Kommo (brief de la portada) no se pinta: ServiceTemplate no tiene sello en la portada y esta página no tiene sección de integraciones. Va en _badge (sin pintar) y como pedido a plantillas en peticiones.md.",
+    "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet'): repetía la microcopia que ya trae el botón primario. hero.h1.lit pasa de 'inteligencia artificial' a 'artificial' (una sola palabra con degradado por página, F6)."
   ],
   "sections": {
     "hero": {
@@ -23,7 +24,7 @@
       "h1": {
         "text": "CRM con inteligencia artificial,",
         "soft": "implementado para vender",
-        "lit": "inteligencia artificial"
+        "lit": "artificial"
       },
       "lede": "Kommo o GoHighLevel con pipelines, automatizaciones y seguimiento sin capturas a mano. Un agente de IA registra y califica a cada lead; tu equipo se dedica a cerrar.",
       "ctaPrimary": {
@@ -211,8 +212,7 @@
           "line": "Prospectos por etapa, citas y ventas, con los datos del CRM.",
           "confirmed": true
         }
-      ],
-      "note": "Si ya tienes Kommo o GoHighLevel, partimos de tu cuenta: no hace falta empezar de cero."
+      ]
     },
     "implementamos": {
       "_componente": "ScriptList (6 filas) sobre aura",
@@ -257,11 +257,11 @@
         }
       ],
       "body": [
-        "Si ya tienes un CRM, primero revisamos cómo se usa hoy: qué etapas sobran, qué datos faltan y en qué momento tu equipo deja de capturar. Muchas veces el problema no es la herramienta, sino cómo se configuró. Y si eliges Kommo, también te ayudamos con las licencias como partner oficial."
+        "Antes de configurar, revisamos cómo vende tu equipo hoy: qué etapas usa, qué datos le faltan y en qué momento deja de capturar. Muchas veces el problema no es la herramienta, sino cómo se configuró. Y si eliges Kommo, también te ayudamos con las licencias como partner oficial."
       ]
     },
     "crm-vivo": {
-      "_componente": "ImageSection mid (home-sistema-3-organizar, regreso al set: push hacia la superficie) + viñetas del recorrido de un lead",
+      "_componente": "ImageSection mid con placa propia (gohighlevel-hero en espejo: Kain toca la casilla encendida del calendario de cristal; ya no regresa a la placa de la portada, R5/R13) + tarjeta del lead (Nuevo → Calificado → Cita agendada, SIMULACIÓN) + viñetas del recorrido de un lead",
       "rail": "Un CRM vivo",
       "eyebrow": "Un CRM vivo",
       "h2": {
@@ -434,7 +434,7 @@
         "text": "¿Qué CRM encaja con cómo vendes?",
         "soft": "Lo vemos en 30 minutos."
       },
-      "lede": "En la Discovery Session revisamos por dónde te llegan los clientes y cómo les das seguimiento, y te decimos si te conviene Kommo, GoHighLevel o ajustar el CRM que ya tienes.",
+      "lede": "En la Discovery Session revisamos por dónde te llegan los clientes y cómo les das seguimiento, y te decimos si te conviene Kommo o GoHighLevel.",
       "ctaPrimary": {
         "label": "Agenda tu Discovery Session",
         "href": "/discovery/"
@@ -442,8 +442,7 @@
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de CRM con IA y quiero saber si me conviene Kommo o GoHighLevel."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

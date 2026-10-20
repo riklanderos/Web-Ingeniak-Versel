@@ -6,6 +6,7 @@
 //   mode?   'ticks' (etiqueta con hover/foco) | 'labels' (etiquetas siempre visibles; Quick Jump de casos)
 //   groups? tamaños de grupos (actos del inicio, p. ej. [3, 6, 4]) → 8 px entre grupos
 // scripts/nav/rail.ts quita los ticks cuyo #id no existe, renumera y marca el activo (línea central del viewport).
+// Se retira cuando el footer llega a su altura (html[data-rail-ftr], rail.ts) para no tapar el mapa del sitio.
 import type { Page } from '../../lib/site';
 type Item = { id: string; label: string };
 interface Props { items?: Item[]; page?: Page; mode?: 'ticks' | 'labels'; groups?: number[] }

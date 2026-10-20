@@ -11,7 +11,7 @@
     "FAQ DISTINTA DE D · G14: agrega 'medido hasta la venta' y la cifra como token (horeca-roas, 'sostenido').",
     "FAQ DISTINTA DE D · G08: ya no promete '60 a 90 días'; dice el rango confirmado de implementación (7 a 30 días, según el alcance) y deja los resultados a la propuesta.",
     "FAQ DISTINTA DE D · G07: agrega por qué no hay paquetes cerrados.",
-    "PREGUNTA AL CLIENTE · tecnología de los sitios de clientes: el texto dice 'HTML estático' y pone este sitio (Astro) como ejemplo, pero no promete Astro para todo proyecto. ¿Los sitios de clientes siempre se construyen así, o también en WordPress, Shopify u otra plataforma?",
+    "PREGUNTA AL CLIENTE · tecnología de los sitios de clientes: ¿siempre se construyen como este sitio (HTML estático con Astro), o también en WordPress, Shopify u otra plataforma? Mientras no se confirme por escrito (QA servicios r3), la página no promete una tecnología: #incluye 04 pasa de 'Desarrollo estático y rápido · HTML estático…' a 'Desarrollo rápido y legible' (sin nombrar la tecnología) y #este-sitio ya no dice 'ingeniak.mx está hecho con lo mismo que te proponemos': solo cuenta cómo está hecho este sitio. Con la confirmación, vuelven.",
     "PREGUNTA AL CLIENTE · ¿el servicio incluye dominio, hosting y mantenimiento mensual? Hoy la página no lo dice.",
     "PREGUNTA AL CLIENTE · rendimiento de ingeniak.mx: la sección 'Este sitio es el ejemplo' no publica ninguna cifra (Lighthouse, Core Web Vitals). Cuando se midan en producción, ¿las publicamos con su fecha y su fuente?",
     "PREGUNTA AL CLIENTE · inversion.remate usa el rango general confirmado (de 7 a 30 días, según el alcance). ¿Aplica también a un sitio web completo con textos nuevos, o el plazo de un sitio se dice distinto?",
@@ -93,7 +93,7 @@
         { "n": "01", "title": "Estrategia de conversión", "line": "Definimos a quién le habla cada página, qué duda le resuelve y qué acción le pide. Una página, un objetivo." },
         { "n": "02", "title": "Textos que venden", "line": "Escribimos con las palabras de tus clientes: qué haces, para quién y por qué tú, con datos en lugar de adjetivos." },
         { "n": "03", "title": "Diseño con tu identidad", "line": "Tu marca aplicada con intención: jerarquía clara, imágenes propias y un botón principal que no compite con nada.", "href": "/servicios/branding/" },
-        { "n": "04", "title": "Desarrollo estático y rápido", "line": "HTML estático, imágenes en formatos modernos y nada que estorbe la carga. El texto vive en el código, listo para Google y para los asistentes de IA." },
+        { "n": "04", "title": "Desarrollo rápido y legible", "line": "Imágenes en formatos modernos y nada que estorbe la carga en el celular. Tu texto queda legible para Google y para los asistentes de IA." },
         { "n": "05", "title": "Conexión con tu CRM y WhatsApp", "line": "Formularios, botones de WhatsApp y agenda conectados a Kommo o GoHighLevel, con el origen de cada lead.", "href": "/servicios/crm-con-ia/" },
         { "n": "06", "title": "Analítica y SEO técnico base", "line": "Eventos de conversión, títulos, datos estructurados y mapa del sitio desde el lanzamiento.", "href": "/servicios/seo/" }
       ],
@@ -118,11 +118,11 @@
       "note": "Si ya usas Kommo o GoHighLevel, la web se conecta a tu cuenta; si todavía no tienes CRM, te ayudamos a elegirlo en la fase Koncept de VKTOR™."
     },
     "este-sitio": {
-      "_componente": "ImageSection mid (regreso al set: paginas-web-hero con push hacia la superficie, 1.35 → 1.6) + UI registrada: capas de este sitio",
+      "_componente": "ImageSection mid con placa propia (tecnologias-hero en espejo: Kain sentado en el cubo de cristal del stack; ya no regresa a la placa de la portada, R5/R13) + vista demo de las capas de este sitio en la columna de texto",
       "rail": "Este sitio",
       "eyebrow": "Este sitio es el ejemplo",
       "h2": { "text": "Lo que estás viendo", "soft": "es nuestra forma de trabajar." },
-      "lede": "ingeniak.mx está hecho con lo mismo que te proponemos: HTML estático, imágenes producidas para cada sección y movimiento que no estorba la lectura.",
+      "lede": "Así está hecho ingeniak.mx: HTML estático, imágenes producidas para cada sección y movimiento que no estorba la lectura.",
       "items": [
         "Astro genera cada página como HTML: el texto ya está ahí cuando llega Google o un asistente de IA.",
         "Imágenes en AVIF y WebP, con una composición vertical propia para el celular, no un recorte.",
@@ -133,8 +133,9 @@
       "slogan": "Si te gusta cómo se navega, así puede sentirse el tuyo.",
       "links": [{ "label": "Cómo hacemos que te encuentren Google y ChatGPT", "href": "/servicios/seo/" }],
       "ui": {
-        "_nota": "Capas de este sitio registradas sobre la superficie de cristal al acercarse la cámara (distinta UI que la portada, R5). VISTA DEMO, data-nosnippet, sin cifras.",
+        "_nota": "Capas de este sitio en la columna de texto, junto a Kain sentado en el cubo del stack (distinta UI que la portada, R5). VISTA DEMO, data-nosnippet, sin cifras.",
         "label": "VISTA DEMO",
+        "title": "Capas de ingeniak.mx",
         "layers": ["HTML estático", "Imágenes AVIF · WebP", "Movimiento GSAP", "JSON-LD", "llms.txt"]
       }
     },

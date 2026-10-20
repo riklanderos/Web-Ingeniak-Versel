@@ -11,7 +11,7 @@
     "FAQ DISTINTA DE D · G14: agrega 'medido hasta la venta' y la cifra como token (horeca-roas, 'sostenido').",
     "FAQ DISTINTA DE D · G07: agrega por qué no hay paquetes cerrados.",
     "PREGUNTA AL CLIENTE · #kain-ejemplo (D lo dejó en [VALIDAR]): ¿el personaje de Kain lo diseñó el equipo de Ingeniak? Mientras no se confirme, la sección presenta a Kain como ejemplo de un personaje de marca que trabaja en varios canales, sin decir quién lo creó ni presentarlo como portafolio. Si lo diseñaron ustedes, se agrega 'Lo diseñamos nosotros'.",
-    "PREGUNTA AL CLIENTE · #que-hacemos: los seis bloques salen del brief de D (estrategia, identidad visual, personaje o mascota, contenido para redes, video y motion graphics, creativos para pauta). ¿Los seis se ofrecen hoy? ¿El video incluye producción presencial (foto o grabación en tu negocio) o solo animación y edición? ¿Usan avatares o voces generadas con IA (HeyGen, ElevenLabs) en proyectos de clientes? No se menciona.",
+    "PREGUNTA AL CLIENTE · #que-hacemos: los seis bloques salen del brief de D (estrategia, identidad visual, personaje o mascota, contenido para redes, video y motion graphics, creativos para pauta). Mientras no se confirme por escrito (QA servicios r3), la página publica cuatro: estrategia e identidad (el servicio de branding del sitio actual), contenido para redes (su Content Lab) y creativos para pauta (confirmados en el caso HoReCa: creativos dinámicos en Meta Ads); 'Personaje o mascota de marca' y 'Video y motion graphics' salieron, y el lede ya no dice 'Seis entregables'. ¿Los seis se ofrecen hoy? ¿El video incluye producción presencial (foto o grabación en tu negocio) o solo animación y edición? ¿Usan avatares o voces generadas con IA (HeyGen, ElevenLabs) en proyectos de clientes? No se menciona.",
     "PREGUNTA AL CLIENTE · 'branding sistémico' como nombre del enfoque (#definicion, del brief de D). ¿Lo quieren usar como término propio?",
     "CAMBIO DE TEXTO · cta-final: D pedía la variante del equipo real (cta-equipo); sitemap.json usa cta-amanecer hasta la sesión de fotos (R6). El texto no menciona al equipo, así sirve con cualquiera de las dos placas. Sin 'micro' (repetiría la microcopia del botón primario).",
     "CAMBIO DE TEXTO · hero.ui (tablero de identidad: isotipo, paleta, tipografía, voz; ESPEC §5.2.1) y kain-ejemplo.ui (canales donde aparece el personaje): textos de la UI registrada con VISTA DEMO. La plantilla de servicio todavía no los pinta; no cuentan para las palabras mínimas.",
@@ -80,18 +80,16 @@
       ]
     },
     "que-hacemos": {
-      "_componente": "ScriptList (6 filas) sobre aura del isotipo",
+      "_componente": "ScriptList (4 filas) sobre aura del isotipo",
       "rail": "Qué hacemos",
       "eyebrow": "Qué hacemos",
       "h2": { "text": "De la estrategia", "soft": "a la pieza que se publica." },
-      "lede": "Seis entregables que se apoyan entre sí: la estrategia decide la identidad, y la identidad decide cada pieza.",
+      "lede": "Entregables que se apoyan entre sí: la estrategia decide la identidad, y la identidad decide cada pieza.",
       "items": [
         { "n": "01", "title": "Estrategia de marca", "line": "A quién le hablas, contra quién compites y por qué te eligen: posicionamiento, promesa y mensajes clave, por escrito." },
         { "n": "02", "title": "Identidad visual", "line": "Logotipo, isotipo, paleta, tipografía, estilo de imagen y reglas de uso para web, redes, anuncios y documentos." },
-        { "n": "03", "title": "Personaje o mascota de marca", "line": "Un personaje con diseño, personalidad y reglas de uso, que puede ser la cara de tu marca y de tu agente de IA." },
-        { "n": "04", "title": "Contenido para redes", "line": "Publicaciones y carruseles con pilares y calendario, pensados para tu cliente y no para la tendencia de la semana." },
-        { "n": "05", "title": "Video y motion graphics", "line": "Reels, videos de producto y animaciones con tu identidad, para redes, anuncios y tu sitio." },
-        { "n": "06", "title": "Creativos para pauta", "line": "Piezas para Meta Ads, Google Ads y TikTok Ads en varias versiones, listas para probar cuál convierte.", "href": "/servicios/paid-media/" }
+        { "n": "03", "title": "Contenido para redes", "line": "Publicaciones y carruseles con pilares y calendario, pensados para tu cliente y no para la tendencia de la semana." },
+        { "n": "04", "title": "Creativos para pauta", "line": "Piezas para Meta Ads, Google Ads y TikTok Ads en varias versiones, listas para probar cuál convierte.", "href": "/servicios/paid-media/" }
       ],
       "body": [
         "La voz de tu marca también se escribe para tu agente de IA: cómo saluda, qué palabras usa y cuáles nunca. Así Kain atiende tus mensajes con el mismo tono que tus anuncios y tu web."
@@ -113,7 +111,7 @@
       "note": "Así tu contenido deja de medirse en “me gusta” y se mide en conversaciones."
     },
     "kain-ejemplo": {
-      "_componente": "ImageSection mid (regreso al set: branding-hero con push hacia la superficie, 1.35 → 1.6) + canales del personaje registrados (VISTA DEMO)",
+      "_componente": "ImageSection mid con placa propia (home-sistema-2-atender en espejo: Kain presenta un teléfono de cristal; ya no regresa a la placa de la portada, R5/R13) + canales del personaje registrados en la pantalla del teléfono (VISTA DEMO)",
       "rail": "Un personaje que trabaja",
       "eyebrow": "Un personaje que trabaja",
       "h2": { "text": "Kain no es una mascota de adorno:", "soft": "atiende, agenda y vende." },
@@ -127,7 +125,7 @@
       "slogan": "Eso es un personaje de marca: reglas que se cumplen en cada canal.",
       "links": [{ "label": "Conoce a Kain", "href": "/kain/" }],
       "ui": {
-        "_nota": "Chips de los canales donde aparece el personaje, registrados sobre el tablero de cristal al acercarse la cámara (distinta UI que la portada, R5). VISTA DEMO y data-nosnippet.",
+        "_nota": "Chips de los canales donde aparece el personaje, registrados en la pantalla del teléfono de cristal que presenta Kain (distinta placa y distinta UI que la portada, R5). VISTA DEMO y data-nosnippet.",
         "label": "VISTA DEMO",
         "channels": ["Web", "Video", "WhatsApp"]
       }

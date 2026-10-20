@@ -9,12 +9,13 @@
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
     "APROBACIÓN DE PREGUNTA · N02 ('¿La inversión en pauta está incluida?') sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. El dato que la sostiene viene del sitio actual ('inversión en pauta siempre por separado') y se dice en #inversion.remate.",
     "CAMBIO DE TEXTO · la definición (#definicion) es un párrafo propio de la página, sin faqId, como pide el brief ('párrafo citable de 40–60 palabras'); mide 50 palabras.",
-    "CAMBIO DE TEXTO · repetición de cifras: horeca-roas sale en la portada y en #caso (dos veces); ecom-cpl solo en la fila de #definicion. Los chips 'ROAS 4.8× · −58% CPL' del brief de la portada no se pintan (ServiceTemplate no pinta chips): la portada lleva horeca-roas dentro del lede.",
-    "PREGUNTA AL CLIENTE · caso de e-commerce en la Ciudad de México ({{metric:ecom-cpl|full}}): ¿el resultado vino de campañas de paid media de Ingeniak y en qué plataformas? El texto no lo afirma: la cifra sale en la fila de #definicion con su sector y su fuente, y #relacionados enlaza al caso sin decir qué se implementó.",
+    "CAMBIO DE TEXTO · repetición de cifras: horeca-roas sale en la portada, en la fila de #definicion y en #caso. ecom-cpl ya no sale en la página (QA servicios r3): encabezaba la fila 'Resultados medidos con su fuente' y #relacionados enlazaba ese caso, y las dos cosas daban a entender que el resultado vino de paid media. Los chips 'ROAS 4.8× · −58% CPL' del brief de la portada no se pintan (ServiceTemplate no pinta chips).",
+    "PREGUNTA AL CLIENTE · caso de e-commerce en la Ciudad de México ({{metric:ecom-cpl|full}}): ¿el resultado vino de campañas de paid media de Ingeniak y en qué plataformas? Mientras no se confirme, la cifra y el enlace al caso no salen en esta página (QA servicios r3); con la confirmación, vuelven a la fila de #definicion y a #relacionados.",
     "PREGUNTA AL CLIENTE · caso HoReCa: la ficha confirma paid media en Meta Ads con creativos dinámicos, audiencias predictivas y atribución multicanal. ¿Hubo también Google o TikTok, o agente de IA en WhatsApp? El texto de #caso solo dice Meta Ads.",
     "PREGUNTA AL CLIENTE · el sitio actual también menciona Pinterest y LinkedIn Ads. Esta página solo nombra Meta, Google y TikTok (brief de D). ¿Se agregan?",
     "PREGUNTA AL CLIENTE · ¿las campañas corren en la cuenta publicitaria del cliente (los datos y los activos son suyos) o en una cuenta de Ingeniak? No se afirma nada; si es la del cliente, conviene decirlo en #inversion o #que-hacemos.",
-    "CAMBIO DE TEXTO · #caso: la cifra va en el lede y no en el H2 (el token |full dentro de un titular con SplitText se recorta en escritorio)."
+    "CAMBIO DE TEXTO · #caso: la cifra va en el lede y no en el H2 (el token |full dentro de un titular con SplitText se recorta en escritorio).",
+    "CAMBIO DE TEXTO · QA servicios r3: la portada ya no abre repitiendo 'Meta, Google y TikTok Ads' del H1 (dice cómo se mide); #como-funciona se titula por la atribución ('Cada venta regresa a la campaña que la trajo') para no repetir 'Del anuncio a la venta' de #que-hacemos; #canales sale de la página (su contenido pasa al nodo 01 de #como-funciona); #como-funciona.note ('Si ya tienes página o CRM, partimos de lo tuyo') sale hasta que se confirme, igual que en /servicios/crm-con-ia/; cta-final sin 'micro' (repetía la microcopia del botón primario)."
   ],
   "sections": {
     "hero": {
@@ -26,7 +27,7 @@
         "soft": "Meta, Google y TikTok Ads",
         "lit": "CRM"
       },
-      "lede": "Meta, Google y TikTok Ads medidos por ventas, no por clics. Para un cliente de hoteles y restaurantes, las campañas en Meta Ads lograron un {{metric:horeca-roas|full}}.",
+      "lede": "Cada campaña se mide por las ventas que registra tu CRM, no por los clics. Para un cliente de hoteles y restaurantes, las campañas en Meta Ads lograron un {{metric:horeca-roas|full}}.",
       "ctaPrimary": {
         "label": "Agenda tu Discovery Session",
         "href": "/discovery/"
@@ -61,7 +62,7 @@
       "metricRow": {
         "title": "Resultados medidos con su fuente",
         "metricIds": [
-          "ecom-cpl",
+          "horeca-roas",
           "sistemas"
         ],
         "sourceNote": true
@@ -153,13 +154,13 @@
       "rail": "Cómo funciona",
       "eyebrow": "Cómo funciona",
       "h2": {
-        "text": "Del anuncio a la venta medida,",
-        "soft": "en cinco tramos."
+        "text": "Cada venta regresa",
+        "soft": "a la campaña que la trajo."
       },
       "nodes": [
         {
           "label": "Tus anuncios",
-          "line": "Meta, Google y TikTok, cada uno con su estrategia.",
+          "line": "Meta para crear demanda, Google para captar intención y TikTok para que te descubran.",
           "logos": [
             "meta",
             "googleads",
@@ -194,8 +195,7 @@
           "line": "Cada venta vuelve a su campaña para decidir dónde invertir.",
           "confirmed": true
         }
-      ],
-      "note": "Si ya tienes página o CRM, partimos de lo tuyo y lo conectamos."
+      ]
     },
     "caso": {
       "_componente": "ImageSection mid (caso-horeca-hero, persona ilustrativa del sector a la derecha) + viñetas + enlace al caso",
@@ -258,7 +258,9 @@
           "line": "Video corto para llegar a quien todavía no te conoce."
         }
       ],
-      "note": "Meta, Google y TikTok son herramientas que usamos para tus campañas; la medición vive en tu CRM."
+      "note": "Meta, Google y TikTok son herramientas que usamos para tus campañas; la medición vive en tu CRM.",
+      "_omitir": true,
+      "_nota": "Fuera de la página (QA servicios r3): era una fila de tres logos iguales que repetía los del nodo 01 de #como-funciona. El papel de cada plataforma vive ahora en la línea de ese nodo; la nota de la medición, en #que-hacemos (atribución multicanal)."
     },
     "vktor": {
       "_componente": "VktorRail variant=phases (sobre metodologia-hero si está libre)",
@@ -369,10 +371,10 @@
           "line": "Reservas y pedidos medidos desde el anuncio."
         },
         {
-          "href": "/casos/ecommerce-cdmx-costo-por-lead/",
-          "label": "Caso",
-          "title": "E-commerce en la Ciudad de México",
-          "line": "Cómo bajó su costo por lead."
+          "href": "/servicios/crm-con-ia/",
+          "label": "Organizar",
+          "title": "CRM con IA",
+          "line": "Donde cada lead del anuncio queda con su origen."
         }
       ]
     },
@@ -392,8 +394,7 @@
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de paid media y quiero campañas medidas por ventas, no por clics."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

@@ -178,11 +178,17 @@ function routeOfDist(file, dist) {
 /** Carga las páginas a revisar: [{ route, html, page (entrada de sitemap.json o null), source }]. */
 export async function loadPages(opts) {
   const list = [];
+  const only = onlyRoutes(opts);
   if (opts.url) {
-    for (const p of SITEMAP) {
+    // con --only solo se piden esas rutas (antes se pedían las ~70 de sitemap.json y se filtraban al final)
+    for (const p of only ? SITEMAP.filter((x) => only.has(x.url)) : SITEMAP) {
       const u = p.url === '/404' ? '/404' : p.url;
       let res;
-      try { res = await fetch(opts.url + u, { redirect: 'manual' }); } catch (e) { throw new Error(`[check] no responde ${opts.url}: ${e.message}`); }
+      // el servidor de desarrollo compartido a veces tarda o corta una conexión mientras recompila: 3 intentos
+      for (let i = 0; i < 3 && !res; i++) {
+        try { res = await fetch(opts.url + u, { redirect: 'manual' }); }
+        catch (e) { if (i === 2) throw new Error(`[check] no responde ${opts.url}${u}: ${e.message}`); await new Promise((r) => setTimeout(r, 1500)); }
+      }
       if (res.status !== 200) continue;
       const ct = res.headers.get('content-type') || '';
       if (!ct.includes('html')) continue;
@@ -217,13 +223,24 @@ export async function loadPages(opts) {
       list.push({ route, html: readFileSync(f, 'utf8'), page: SITEMAP.find((p) => p.url === route) ?? null, source: f, dev });
     }
   }
-  const out = opts.only ? list.filter((x) => opts.only.includes(x.route)) : list;
+  const out = only ? list.filter((x) => only.has(x.route)) : list;
   return opts.dev === false ? out.filter((x) => !x.dev) : out;
+}
+/** Rutas de --only normalizadas a la forma de sitemap.json ('/x/y/'), o null si se revisa todo el sitio. Las guardas de
+ *  sitio completo (sitemap.xml, WhatsApp único…) la usan para acotar su comparación a esas rutas (si no, un --only de
+ *  una familia reportaba como "fuera de sitemap.xml" todas las demás páginas indexables). */
+export function onlyRoutes(opts) {
+  return opts?.only?.length ? new Set(opts.only.map((r) => normRoute(r) ?? r)) : null;
 }
 /** Texto de un recurso del sitio (llms.txt, robots.txt, sitemap xml…) desde dist o el servidor. null si no existe. */
 export async function loadText(opts, path) {
   if (opts.url) {
-    try { const r = await fetch(opts.url + path); return r.status === 200 ? await r.text() : null; } catch { return null; }
+    // 3 intentos: con el servidor de desarrollo compartido ocupado, una conexión cortada daba un falso "falta /llms.txt"
+    for (let i = 0; i < 3; i++) {
+      try { const r = await fetch(opts.url + path); return r.status === 200 ? await r.text() : null; }
+      catch { if (i < 2) await new Promise((r) => setTimeout(r, 1500)); }
+    }
+    return null;
   }
   const p = join(opts.dist, path.replace(/^\//, ''));
   return existsSync(p) && statSync(p).isFile() ? readFileSync(p, 'utf8') : null;

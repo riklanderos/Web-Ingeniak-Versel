@@ -10,11 +10,12 @@
     "APROBACIÓN DE PREGUNTA · N05 sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. La definición de #definicion usa un texto propio (definition.text) con la primera oración de N05 y lo que ya dicen G06 y G09 (CRM, WhatsApp, formularios, hojas de cálculo y sistemas internos sin capturas a mano; agentes de IA).",
     "CAMBIO DE AFIRMACIÓN · #antes-despues: el comparador del brief ('100% manual → 40% automatizado') NO se publica: esa cifra venía del sitio actual y no está en metrics.ts. Queda solo tiempo-operativo (promedio, primeros 90 días) con su fuente, y las columnas Antes / Con n8n sin números.",
     "CAMBIO DE TEXTO · repetición de cifras: logistica-procesos sale en la portada y en #caso (dos veces); tiempo-operativo en la fila de #definicion y en #antes-despues (dos veces). La portada lleva la cifra del chip del brief ('27 procesos automatizados') dentro del lede, porque ServiceTemplate no pinta chips.",
-    "PREGUNTA AL CLIENTE · ¿instalan n8n en la infraestructura del cliente (self-hosted) cuando hace falta, o siempre en la nube? #como-funciona.note y la fila 'Dónde vive' de #comparativa lo ofrecen ('en la nube o en la infraestructura de tu empresa'), igual que N05 (en validar).",
+    "PREGUNTA AL CLIENTE · ¿instalan n8n en la infraestructura del cliente (self-hosted) cuando hace falta, o siempre en la nube? Mientras no se confirme por escrito, la página no lo dice: #como-funciona.note ya no ofrece 'en la nube o en la infraestructura de tu empresa' y #comparativa perdió la fila 'Dónde vive' (QA servicios r3). Con la confirmación, vuelven las dos.",
     "PREGUNTA AL CLIENTE · #comparativa (n8n vs. Zapier o Make) usa criterios generales de las herramientas, sin precios: ¿coincide con cómo eligen ustedes? En especial la regla 'Zapier para conexiones simples; Make para escenarios visuales que tu equipo quiera ajustar; n8n cuando el proceso es central y va a crecer'.",
-    "PREGUNTA AL CLIENTE · #que-automatizamos lista ocho flujos del brief (CRM ↔ WhatsApp, formularios, recordatorios, cobros, reportes, ERP, alertas y agentes de IA). ¿Hay alguno que hoy no hagan o que prefieran no ofrecer (por ejemplo, cobros)?",
+    "PREGUNTA AL CLIENTE · #que-automatizamos lista siete flujos del brief (CRM ↔ WhatsApp, formularios, recordatorios, reportes, ERP, alertas y agentes de IA). 'Cobros' (recordatorios de pago y registro del cobro) salió de la lista y de las líneas de recordatorios y del disparador hasta que confirmes que lo ofrecen (QA servicios r3). ¿Hay alguno de los siete que hoy no hagan?",
     "DATO PENDIENTE · el brief de #definicion pide el logo oficial de n8n según su guía (wordmark, mínimo 100 px): es tarea de plantillas/ui, no de copy.",
-    "CAMBIO DE TEXTO · #caso: la cifra va en el lede y no en el H2 (con el token |full dentro del titular, SplitText recortaba \"automatizados\" en escritorio)."
+    "CAMBIO DE TEXTO · #caso: la cifra va en el lede y no en el H2 (con el token |full dentro del titular, SplitText recortaba \"automatizados\" en escritorio).",
+    "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet'): repetía la microcopia que ya trae el botón primario (igual que en /servicios/agentes-ia-whatsapp/)."
   ],
   "sections": {
     "hero": {
@@ -109,11 +110,11 @@
       "remate": "Cada tarea que se hace igual todas las veces es candidata a moverse sola."
     },
     "que-automatizamos": {
-      "_componente": "ScriptList (8 filas) sobre aura",
+      "_componente": "ScriptList (7 filas) sobre aura",
       "rail": "Qué automatizamos",
       "eyebrow": "Qué automatizamos",
       "h2": {
-        "text": "Ocho flujos",
+        "text": "Los flujos",
         "soft": "que más se repiten en una empresa."
       },
       "items": [
@@ -131,30 +132,25 @@
         {
           "n": "03",
           "title": "Recordatorios",
-          "line": "Citas, pagos, renovaciones y entregas: el aviso sale solo y a tiempo."
+          "line": "Citas, renovaciones y entregas: el aviso sale solo y a tiempo."
         },
         {
           "n": "04",
-          "title": "Cobros",
-          "line": "Recordatorios de pago y registro del cobro en tu sistema en cuanto se confirma."
-        },
-        {
-          "n": "05",
           "title": "Reportes automáticos",
           "line": "Ventas, citas o pedidos de la semana, armados y enviados sin que nadie los junte."
         },
         {
-          "n": "06",
+          "n": "05",
           "title": "Sincronización con tu ERP",
           "line": "Clientes, pedidos e inventario iguales en el ERP, el CRM y las hojas de cálculo."
         },
         {
-          "n": "07",
+          "n": "06",
           "title": "Alertas",
           "line": "Un pedido atorado, una urgencia o un lead caliente avisan a la persona correcta al momento."
         },
         {
-          "n": "08",
+          "n": "07",
           "title": "Agentes de IA orquestados",
           "line": "n8n le da a un agente de IA las herramientas para consultar, registrar y actuar en tus sistemas.",
           "href": "/servicios/agentes-ia-whatsapp/"
@@ -181,7 +177,7 @@
       "nodes": [
         {
           "label": "El disparador",
-          "line": "Un formulario, un mensaje, un pago o una hora del día.",
+          "line": "Un formulario, un mensaje, un pedido o una hora del día.",
           "confirmed": true
         },
         {
@@ -213,7 +209,7 @@
           "confirmed": true
         }
       ],
-      "note": "n8n puede vivir en la nube o en la infraestructura de tu empresa; lo decidimos contigo en la fase Koncept."
+      "note": "Qué flujo va primero y con qué herramienta lo decidimos contigo en la fase Koncept."
     },
     "antes-despues": {
       "_componente": "TwoColumnScript variant=before-after (antes en ámbar, después en cian, filas pareadas) + cifra tiempo-operativo con su fuente en el lede",
@@ -268,7 +264,7 @@
       ]
     },
     "comparativa": {
-      "_componente": "Comparación por criterio (4 filas, sin precios): Zapier o Make (neutro) vs. n8n (cian) + enlace al artículo",
+      "_componente": "Comparación por criterio (3 filas, sin precios): Zapier o Make (neutro) vs. n8n (cian) + enlace al artículo",
       "rail": "n8n, Make o Zapier",
       "eyebrow": "n8n, Make o Zapier",
       "h2": {
@@ -289,11 +285,6 @@
           "criterio": "Complejidad",
           "left": "Flujos cortos o de complejidad media entre aplicaciones populares.",
           "right": "Flujos largos, con condiciones, ciclos y varios sistemas a la vez."
-        },
-        {
-          "criterio": "Dónde vive",
-          "left": "En la nube del proveedor.",
-          "right": "En la nube o en la infraestructura de tu empresa."
         },
         {
           "criterio": "Con IA",
@@ -445,8 +436,7 @@
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de automatización con n8n y quiero automatizar procesos de mi empresa."
-      },
-      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+      }
     }
   }
 }

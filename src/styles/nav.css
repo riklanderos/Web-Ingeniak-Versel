@@ -411,8 +411,9 @@ button.sd-opt{width:100%;text-align:left}
   /* Sobre la portada, atenuado (no compite con el sujeto); con puntero o foco vuelve a 1 */
   html[data-hdr-state="top"] .rail,html:not([data-fold]) .rail{opacity:.25}
   html .rail:hover,html .rail:focus-within{opacity:1}
-  /* Oculto de verdad (sale del orden de tabulación): capas abiertas, secuencias fijadas, final del footer y la firma */
-  html[data-overlay] .rail,html[data-sala] .rail,html[data-end-visible] .rail,html.co .rail{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility 0s linear .3s}
+  /* Oculto de verdad (sale del orden de tabulación): capas abiertas, secuencias fijadas, el footer a la altura del riel
+     (data-rail-ftr, rail.ts), final del footer y la firma */
+  html[data-overlay] .rail,html[data-sala] .rail,html[data-rail-ftr] .rail,html[data-end-visible] .rail,html.co .rail{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility 0s linear .3s}
 }
 .rail__list{display:flex;flex-direction:column;align-items:flex-end}
 .rail__item[data-gap]{margin-top:8px}
@@ -474,10 +475,10 @@ html[data-fold]:not([data-primary-visible]):not([data-dawn-visible]):not([data-e
   transition:translate .45s var(--ease-cut),opacity .3s var(--ease-ui),visibility 0s linear .45s,box-shadow .3s}
 @media (min-width:768px){.kpill{display:inline-flex}}
 /* Visible solo con el encabezado oculto, pasado el primer viewport y sin tapar nada: se retira en secuencias fijadas, con el
-   cierre o el final del footer en pantalla, con #kain / #casos / #cta-final a la vista (ya ofrecen "Escríbele a Kain"),
+   cierre o cualquier parte del footer en pantalla, con #kain / #casos / #cta-final a la vista (ya ofrecen "Escríbele a Kain"),
    cuando su caja caería sobre texto o UI del contenido (data-kpill-cover, kpill.ts), con foco de teclado en el
    contenido y durante la firma. */
-html[data-hdr-state="hidden"][data-fold]:not(.co):not([data-sala]):not([data-dawn-visible]):not([data-end-visible]):not([data-overlay]):not([data-kpill-off]):not([data-kpill-cover]):not(:has(main :focus-visible)) .kpill{opacity:1;visibility:visible;translate:0 0;transition:translate .45s var(--ease-cut),opacity .3s var(--ease-ui),visibility 0s,box-shadow .3s}
+html[data-hdr-state="hidden"][data-fold]:not(.co):not([data-sala]):not([data-dawn-visible]):not([data-ftr-visible]):not([data-end-visible]):not([data-overlay]):not([data-kpill-off]):not([data-kpill-cover]):not(:has(main :focus-visible)) .kpill{opacity:1;visibility:visible;translate:0 0;transition:translate .45s var(--ease-cut),opacity .3s var(--ease-ui),visibility 0s,box-shadow .3s}
 /* Si se retira porque el contenido llega a su caja, sale rápido (el texto no alcanza a pasar por debajo). */
 html[data-kpill-cover] .kpill{transition:translate .3s var(--ease-cut),opacity .1s linear,visibility 0s linear .3s,box-shadow .3s}
 .kpill:hover,.kpill:focus-visible{box-shadow:inset 0 0 0 1px rgb(0 229 255 / .65),0 0 40px rgb(0 229 255 / .18),var(--e-2)}
