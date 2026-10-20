@@ -2,8 +2,12 @@
 // Sin red: `fetch` se simula por prueba con `t.mock.method(globalThis, 'fetch', …)` y unos "servidores" de mentira
 // con estado para Google Calendar, Stripe, Kommo y Supabase. Ningún valor real: llaves, IDs y URLs son de prueba.
 import { __resetHttp } from '../../server/http.js';
+import { __resetKommo } from '../../server/kommo.js';
 import { __resetGoogleToken } from '../../server/agenda/google-auth.js';
 import { __resetMock } from '../../server/agenda/mock.js';
+import { cuentaSimulada, Ids } from '../cotizar/_kommo-simulador.mjs';
+
+export { KommoSimulado, TOKEN_SIMULADO } from '../cotizar/_kommo-simulador.mjs';
 
 export const ORIGIN = 'http://127.0.0.1:4321';
 
@@ -42,6 +46,7 @@ export function env(t, vars = {}) {
   for (const k of ENV_KEYS) delete process.env[k];
   Object.assign(process.env, vars);
   __resetHttp();
+  __resetKommo();
   __resetGoogleToken();
   __resetMock();
   t.after(() => {
@@ -231,12 +236,21 @@ export class FakeStripe {
 
 /* ── Kommo de mentira ────────────────────────────────────────────────────────────────────── */
 
+/** Cuenta de Kommo con la estructura aprobada (shared/kommo-esquema.js) e ids por nombre. */
+export const CUENTA = cuentaSimulada();
+export const IDS = new Ids(CUENTA);
+
+/**
+ * Kommo a nivel de `fetch` (sin validar cuerpos; para eso está KommoSimulado, el servidor HTTP local).
+ * `estructura: false` = cuenta sin la estructura aprobada (el script de configuración no se ha corrido).
+ */
 export class FakeKommo {
-  constructor() {
+  constructor({ estructura = true } = {}) {
     /** @type {any[]} */
     this.calls = [];
     this.down = false;
     this.seq = 4241;
+    this.cuenta = estructura ? CUENTA : cuentaSimulada({ estructura: false });
   }
   /** @param {URL} u @param {RequestInit} init */
   handle(u, init) {
@@ -247,7 +261,10 @@ export class FakeKommo {
     this.calls.push({ method, path, query: u.search, body });
     if (this.down) return jsonRes({ title: 'Internal' }, 500);
     if (path === '/contacts' && method === 'GET') return new Response(null, { status: 204 });
-    if (path === '/leads/custom_fields') return jsonRes({ _embedded: { custom_fields: [] } });
+    if (path === '/leads/pipelines') {
+      return jsonRes({ _embedded: { pipelines: this.cuenta.pipelines.map(({ statuses, ...p }) => ({ ...p, _embedded: { statuses } })) } });
+    }
+    if (path === '/leads/custom_fields') return jsonRes({ _embedded: { custom_fields: this.cuenta.campos } });
     if (path === '/leads/complex' && method === 'POST') return jsonRes([{ id: ++this.seq, contact_id: 77, company_id: 88 }]);
     if (path === '/leads/notes' && method === 'POST') return jsonRes({ _embedded: { notes: [{ id: 1 }] } });
     if (/^\/leads\/\d+$/.test(path) && method === 'PATCH') return jsonRes({ id: Number(path.split('/')[2]) });
@@ -255,6 +272,9 @@ export class FakeKommo {
   }
   get complex() {
     return this.calls.filter((c) => c.path === '/leads/complex');
+  }
+  get notes() {
+    return this.calls.filter((c) => c.path === '/leads/notes').map((c) => c.body[0]);
   }
 }
 

@@ -33,7 +33,7 @@ test('api · liberar: id inválido → 400; otro origen → 403', async (t) => {
   assert.equal(g.events.size, 1);
 });
 
-test('api · liberar: pendiente con Checkout abierto → expira la sesión, borra el apartado y Kommo `expirado`', async (t) => {
+test('api · liberar: pendiente con Checkout abierto → expira la sesión, borra el apartado y nota «No completó el pago» en Kommo', async (t) => {
   const { g, s, k, eventId, sessionId } = await apartado(t);
   const r = await read(await post(eventId));
   assert.deepEqual([r.status, r.body], [200, { ok: true }]);
@@ -42,8 +42,11 @@ test('api · liberar: pendiente con Checkout abierto → expira la sesión, borr
   assert.equal(g.events.has(eventId), false);
   const del = g.calls.find((c) => c.method === 'DELETE');
   assert.equal(del.query.sendUpdates, 'none');
-  const tags = k.calls.find((c) => c.method === 'PATCH' && c.path === '/leads/4242');
-  assert.deepEqual(tags.body, { tags_to_add: [{ name: 'expirado' }], tags_to_delete: [{ name: 'pago-pendiente' }] });
+  // Kommo: el lead se queda donde está (sin PATCH) y recibe la nota «No completó el pago…».
+  assert.equal(k.calls.filter((c) => c.method === 'PATCH').length, 0);
+  const nota = k.notes.at(-1);
+  assert.equal(nota.entity_id, 4242);
+  assert.equal(nota.params.text, 'No completó el pago de la Power Session: el horario apartado (Miércoles 21 de octubre · 10:00 AM, hora del centro de México) se liberó.');
   // Segunda vez: el evento ya no existe → 200 igual.
   assert.equal((await post(eventId)).status, 200);
 });

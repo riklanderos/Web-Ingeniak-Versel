@@ -118,7 +118,7 @@ test('estado · fuera de simulación no expone IDs ni secretos', async (t) => {
   assert.equal(r.status, 200);
   assert.deepEqual(r.body, {
     ok: true, entorno: 'preview', simulacion: false, google: 'ok', googleAuth: 'oauth', stripe: 'ok', live: false,
-    calendarios: { power: true, discovery: true }, kommo: 'sin-configurar', supabase: 'sin-configurar', cron: true,
+    calendarios: { power: true, discovery: true }, kommo: 'sin-configurar', kommoEstructura: 'sin-configurar', supabase: 'sin-configurar', cron: true,
   });
   const text = JSON.stringify(r.body);
   for (const s of Object.values(FAKE)) assert.ok(!text.includes(s), `sin ${s}`);

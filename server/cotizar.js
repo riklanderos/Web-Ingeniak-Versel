@@ -1,11 +1,13 @@
 /**
  * Lógica del formulario «Cotizar proyecto» (CAMBIO-COTIZAR §2.3, §2.4, §3.3, §3.4).
  * Validación con las listas blancas de `src/data/cotizar.json` (las mismas que usa el modal),
- * normalización del teléfono a E.164, folio y armado de lo que se manda a Kommo (lead, nota, etiquetas, rastreo).
+ * normalización del teléfono a E.164, folio y armado de lo que se manda a Kommo (lead, nota, etiquetas, rastreo
+ * y los campos de la estructura aprobada el 2026-10-20: embudo «Sitio web · Cotizaciones», etapa «Nueva cotización»).
  * Puro: no llama a la red ni lee `process.env` (el entorno llega como argumento).
  */
 import catalogo from '../src/data/cotizar.json' with { type: 'json' };
 import { clean } from './http.js';
+import { etiquetasDeOrigen, opcionKommo, urlDePagina } from './kommo.js';
 
 /**
  * @typedef {{ slug: string, label: string }} Opcion
@@ -388,26 +390,49 @@ export function fechaCdmx(d) {
 const fila = (seg) => seg.filter(Boolean).join(' · ');
 
 /**
- * Etiquetas de Kommo de una cotización (§3.4), en este orden:
- * web-cotizar · servicio-<slug>… · presupuesto-<slug> · plazo-<slug> · industria-<slug> · prefiere-<canal>
- * · pagina-<page.id> | pagina-otra · entorno-preview (solo en Preview).
- * @param {Cotizacion} data
+ * Etiquetas de Kommo de una cotización (estructura aprobada el 2026-10-20), en este orden:
+ * web-cotizar · campaña (utm_medium de pago, gclid, fbclid, gbraid o wbraid) u orgánico · entorno-preview (fuera de producción).
+ * Servicios, presupuesto, plazo, industria, contacto preferido y página ya no van como etiqueta: van en sus campos.
+ * @param {Cotizacion} _data
  * @param {Meta} meta
  * @param {Record<string, string | undefined>} env
  * @returns {string[]}
  */
-export function tagsFor(data, meta, env) {
-  const tags = [
-    'web-cotizar',
-    ...data.servicios.map((s) => `servicio-${s}`),
-    `presupuesto-${data.presupuesto}`,
-    `plazo-${data.plazo}`,
-    `industria-${data.industria}`,
-    `prefiere-${data.canal_preferido}`,
-    `pagina-${pageIdFrom(meta.pagina) ?? 'otra'}`,
-  ];
-  if (entornoDe(env) === 'preview') tags.push('entorno-preview');
-  return [...new Set(tags)];
+export function tagsFor(_data, meta, env) {
+  const origen = etiquetasDeOrigen(
+    { utmMedium: meta.utm_medium, gclid: meta.gclid, fbclid: meta.fbclid, gbraid: meta.gbraid, wbraid: meta.wbraid },
+    entornoDe(env),
+  );
+  return ['web-cotizar', ...origen];
+}
+
+/**
+ * Campos del lead (claves de `shared/kommo-esquema.js` → CAMPOS) con la opción exacta de Kommo para cada respuesta.
+ * Una respuesta sin opción equivalente se omite (y sigue en la nota). Sin claves vacías.
+ * @param {Cotizacion} data
+ * @param {Meta} meta
+ * @returns {import('./kommo.js').ValoresCampos}
+ */
+export function camposFor(data, meta) {
+  const c = catalogo;
+  /** @param {string} clave @param {Opcion[]} lista @param {string} slug */
+  const una = (clave, lista, slug) => (slug ? opcionKommo(clave, etiqueta(lista, slug)) : null);
+  /** @param {string} clave @param {Opcion[]} lista @param {string[]} slugs */
+  const varias = (clave, lista, slugs) => [...new Set(slugs.map((s) => opcionKommo(clave, etiqueta(lista, s))).filter((x) => x !== null))];
+  /** @type {Record<string, string | string[] | null>} */
+  const campos = {
+    servicios: varias('servicios', c.servicios, data.servicios),
+    objetivo: una('objetivo', c.objetivos, data.objetivo),
+    industria: una('industria', c.industrias, data.industria),
+    tamano: una('tamano', c.tamanos, data.tamano),
+    presupuesto: una('presupuesto', c.presupuestos, data.presupuesto),
+    plazo: una('plazo', c.plazos, data.plazo),
+    crm: una('crm', c.crms, data.crm),
+    canales: varias('canales', c.canales, data.canales),
+    contacto: una('contacto', c.canalesPreferidos, data.canal_preferido),
+    origen: urlDePagina(meta.pagina),
+  };
+  return Object.fromEntries(Object.entries(campos).filter(([, v]) => v !== null && !(Array.isArray(v) && v.length === 0)));
 }
 
 /**
@@ -474,8 +499,10 @@ export function trackingFor(meta) {
 }
 
 /**
- * Todo lo que se manda a Kommo para una cotización (§3.4).
- * `lead` son los argumentos de `createLeadWithNote` salvo `tags`, `note` y `tracking`.
+ * Todo lo que se manda a Kommo para una cotización (§3.4 + estructura aprobada).
+ * `lead` son los argumentos de `createLeadWithNote` salvo `tags`, `note` y `tracking`:
+ * embudo «Sitio web · Cotizaciones» y etapa «Nueva cotización» por nombre; KOMMO_PIPELINE_ID / KOMMO_STATUS_ID,
+ * si existen, mandan sobre los nombres.
  * @param {Cotizacion} data  validada y con `folio`
  * @param {Meta} meta
  * @param {Record<string, string | undefined>} [env]  variables de entorno (process.env)
@@ -487,6 +514,9 @@ export function buildKommo(data, meta, env = process.env, now = new Date()) {
       name: `Cotización web · ${data.empresa}`,
       contact: { name: data.nombre, phoneE164: data.telefono.e164, email: data.email },
       company: data.empresa,
+      embudo: /** @type {const} */ ('cotizaciones'),
+      etapa: 'nueva',
+      campos: camposFor(data, meta),
       pipelineId: intEnv(env.KOMMO_PIPELINE_ID),
       statusId: intEnv(env.KOMMO_STATUS_ID),
       responsibleUserId: intEnv(env.KOMMO_RESPONSIBLE_USER_ID),

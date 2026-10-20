@@ -7,7 +7,7 @@ import { google } from '../../server/agenda/google.js';
 import { stripe } from '../../server/agenda/stripe.js';
 import { leads } from '../../server/agenda/leads.js';
 import limpiar from '../../api/agenda/limpiar.js';
-import { env, REAL, KOMMO, FAKE, FakeGoogle, FakeKommo, FakeStripe, mockFetch, NOW, req, read, captureLogs } from './_util.mjs';
+import { env, REAL, KOMMO, FAKE, IDS, FakeGoogle, FakeKommo, FakeStripe, mockFetch, NOW, req, read, captureLogs } from './_util.mjs';
 
 const at = (h) => new Date(NOW.getTime() + h * 3600_000).toISOString();
 const hold = (props, start = at(26)) => ({
@@ -82,9 +82,13 @@ test('barrido · confirma pagados, libera vencidos y sin rl_stripe; un retrieve 
   assert.ok(g.events.has(rik));
   assert.equal(s.sessions.get('cs_test_rik').status, 'open');
 
-  // Kommo: pagado del confirmado y expirado del vencido.
-  const tagCalls = k.calls.filter((c) => c.method === 'PATCH');
-  assert.deepEqual(tagCalls.map((c) => [c.path, c.body.tags_to_add[0].name]).sort(), [['/leads/5001', 'pagado'], ['/leads/5002', 'expirado']]);
+  // Kommo: el confirmado pasa a «Power Session pagada» (PATCH al mismo lead); el vencido solo recibe la nota.
+  const patches = k.calls.filter((c) => c.method === 'PATCH');
+  assert.deepEqual(patches.map((c) => [c.path, c.body.status_id]), [['/leads/5001', IDS.etapa('Agenda · Sesiones', 'Power Session pagada')]]);
+  assert.deepEqual(k.notes.map((n) => [n.entity_id, n.params.text.split(' · ')[0].split(':')[0]]).sort(), [
+    [5001, 'Pago confirmado en Stripe'],
+    [5002, 'No completó el pago de la Power Session'],
+  ]);
   assert.equal(g.events.get(pagado).extendedProperties.private.ik_kommo_pago, '1');
   // Filtro del listado: rl_estado=pendiente y rl_sitio=ingeniak.
   const list = g.calls.find((c) => c.method === 'GET' && c.path.endsWith('/events'));

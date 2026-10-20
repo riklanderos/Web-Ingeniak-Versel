@@ -36,10 +36,21 @@ test('§3.9-1 · válido sin variables → 200 dryRun con la instantánea de com
     'GET /api/v4/contacts?query=ana%40empresa.mx',
     'GET /api/v4/contacts?query=%2B523312345678',
   ]);
-  const tags = [
-    'web-cotizar', 'servicio-agentes-ia', 'servicio-crm-ia', 'presupuesto-3k-5k', 'plazo-1-3m',
-    'industria-salud', 'prefiere-whatsapp', 'pagina-agentes-whatsapp',
-  ];
+  // Estructura aprobada (2026-10-20): solo web-cotizar + origen + entorno; lo demás va en campos.
+  const tags = ['web-cotizar', 'orgánico', 'entorno-preview'];
+  assert.deepEqual(b.preview.destino, { embudo: 'Sitio web · Cotizaciones', etapa: 'Nueva cotización' });
+  assert.deepEqual(b.preview.campos, {
+    'Servicios de interés': ['Agentes de IA para WhatsApp', 'CRM con IA (Kommo o GoHighLevel)'],
+    'Objetivo principal': 'Responder rápido a cada cliente',
+    'Industria': 'Salud',
+    'Tamaño de empresa': '11–50',
+    'Presupuesto estimado': 'USD 3,000 a 5,000',
+    'Plazo': 'En 1 a 3 meses',
+    'CRM actual': 'Ninguno (Excel, libreta o solo WhatsApp)',
+    'Canales que usa hoy': ['WhatsApp', 'Instagram'],
+    'Contacto preferido': 'WhatsApp',
+    'Página de origen': 'https://ingeniak.mx/servicios/agentes-ia-whatsapp/',
+  });
   assert.deepEqual(b.preview.complex, [
     {
       name: 'Cotización web · Clínica Ejemplo',
@@ -78,6 +89,15 @@ test('simulación en Preview: etiqueta entorno-preview y embudo de las variables
   assert.equal(lead.responsible_user_id, 3333333);
   assert.equal(lead.price, undefined, 'sin price');
   assert.equal(b.preview.tags.at(-1), 'entorno-preview');
+  assert.deepEqual(b.preview.destino, { pipeline_id: 1111111, status_id: 2222222 }, 'las variables mandan sobre los nombres');
+});
+
+test('simulación en Preview con campaña: web-cotizar · campaña · entorno-preview', async (t) => {
+  entorno(t, { VERCEL_ENV: 'preview' });
+  logs(t);
+  simularFetch(t, []);
+  const b = await cuerpo(await handler.fetch(peticion(valido({ meta: { utm_medium: 'cpc', utm_source: 'google' } }))));
+  assert.deepEqual(b.preview.tags, ['web-cotizar', 'campaña', 'entorno-preview']);
 });
 
 test('§3.9-7 · producción sin variables → 503 con respaldo (sin llamadas)', async (t) => {

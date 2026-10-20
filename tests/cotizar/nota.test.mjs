@@ -73,22 +73,27 @@ test('hora del centro de México (sin horario de verano desde 2022)', () => {
   assert.equal(fechaCdmx(new Date('2026-07-01T23:59:00Z')), '01/07/2026 17:59');
 });
 
-test('etiquetas · orden y forma exactos de §3.4', () => {
+test('etiquetas · estructura aprobada: web-cotizar · campaña | orgánico · entorno-preview fuera de producción', () => {
   const { data, meta } = datos();
-  assert.deepEqual(tagsFor(data, meta, {}), [
-    'web-cotizar',
-    'servicio-agentes-ia',
-    'servicio-crm-ia',
-    'presupuesto-3k-5k',
-    'plazo-1-3m',
-    'industria-salud',
-    'prefiere-whatsapp',
-    'pagina-agentes-whatsapp',
-  ]);
-  assert.deepEqual(tagsFor(data, meta, { VERCEL_ENV: 'preview' }).slice(-1), ['entorno-preview']);
-  assert.ok(!tagsFor(data, meta, { VERCEL_ENV: 'production' }).includes('entorno-preview'));
-  const otra = cleanMeta({ pagina: '/no-existe/' });
-  assert.equal(tagsFor(data, otra, {}).at(-1), 'pagina-otra');
+  assert.deepEqual(tagsFor(data, meta, {}), ['web-cotizar', 'orgánico', 'entorno-preview'], 'local cuenta como prueba');
+  assert.deepEqual(tagsFor(data, meta, { VERCEL_ENV: 'preview' }), ['web-cotizar', 'orgánico', 'entorno-preview']);
+  assert.deepEqual(tagsFor(data, meta, { VERCEL_ENV: 'development' }), ['web-cotizar', 'orgánico', 'entorno-preview']);
+  assert.deepEqual(tagsFor(data, meta, { VERCEL_ENV: 'production' }), ['web-cotizar', 'orgánico']);
+  const prod = { VERCEL_ENV: 'production' };
+  /** @param {Record<string, string>} m */
+  const conMeta = (m) => tagsFor(data, cleanMeta({ ...valido().meta, ...m }), prod);
+  for (const medio of ['cpc', 'CPC', 'ppc', 'paid', 'paid_social', 'paidsocial', 'paid-search', 'social-paid', 'cpm', 'display', 'ads', 'facebook_ads', 'retargeting']) {
+    assert.deepEqual(conMeta({ utm_medium: medio }), ['web-cotizar', 'campaña'], medio);
+  }
+  for (const medio of ['', 'email', 'social', 'organic', 'referral', 'newsletter', 'whatsapp', 'badges']) {
+    assert.deepEqual(conMeta({ utm_medium: medio }), ['web-cotizar', 'orgánico'], medio || '(vacío)');
+  }
+  assert.deepEqual(conMeta({ gclid: 'Cj0-prueba' }), ['web-cotizar', 'campaña']);
+  assert.deepEqual(conMeta({ fbclid: 'IwAR-prueba' }), ['web-cotizar', 'campaña']);
+  assert.deepEqual(conMeta({ gbraid: 'gb-prueba' }), ['web-cotizar', 'campaña']);
+  assert.deepEqual(conMeta({ wbraid: 'wb-prueba' }), ['web-cotizar', 'campaña']);
+  // Ninguna etiqueta vieja por servicio, presupuesto, plazo, industria, contacto o página.
+  for (const t of tagsFor(data, meta, {})) assert.doesNotMatch(t, /^(servicio|presupuesto|plazo|industria|prefiere|pagina)-/);
 });
 
 test('page.id desde meta.pagina (ruta, URL completa, sin barra, con query)', () => {
@@ -113,10 +118,27 @@ test('buildKommo · lead, contacto, empresa y ids de embudo desde variables', ()
     name: 'Cotización web · Clínica Ejemplo',
     contact: { name: 'Ana Pérez', phoneE164: '+523312345678', email: 'ana@empresa.mx' },
     company: 'Clínica Ejemplo',
+    embudo: 'cotizaciones',
+    etapa: 'nueva',
+    campos: {
+      servicios: ['Agentes de IA para WhatsApp', 'CRM con IA (Kommo o GoHighLevel)'],
+      objetivo: 'Responder rápido a cada cliente',
+      industria: 'Salud',
+      tamano: '11–50',
+      presupuesto: 'USD 3,000 a 5,000',
+      plazo: 'En 1 a 3 meses',
+      crm: 'Ninguno (Excel, libreta o solo WhatsApp)',
+      canales: ['WhatsApp', 'Instagram'],
+      contacto: 'WhatsApp',
+      origen: 'https://ingeniak.mx/servicios/agentes-ia-whatsapp/',
+    },
     pipelineId: 1111111,
     statusId: 2222222,
     responsibleUserId: undefined,
   });
+  // Opcionales vacíos: sin claves vacías (CRM y canales no se mandan).
+  const sinOpc = buildKommo(datos({ crm: '', canales: [], meta: { pagina: '' } }).data, cleanMeta({}), {}, AHORA);
+  assert.deepEqual(Object.keys(sinOpc.lead.campos).sort(), ['contacto', 'industria', 'objetivo', 'plazo', 'presupuesto', 'servicios', 'tamano']);
   assert.deepEqual(k.tracking, { REFERRER: 'https://www.google.com/' });
   assert.equal(k.tags[0], 'web-cotizar');
   assert.match(k.note, /^Solicitud de cotización · sitio web · Folio IK-6F1C2D\n/);

@@ -3,14 +3,24 @@
  * opcionalmente (opción A1), Supabase `public.leads` por REST — el mismo esquema y los mismos estados de pago
  * que riklanderos.tech (`lib/agenda/leads.server.ts`).
  *
+ * Kommo (estructura aprobada el 2026-10-20, por nombre; ver `shared/kommo-esquema.js`):
+ *   Discovery reservada   → embudo «Agenda · Sesiones», etapa «Discovery agendada», campos de la sesión.
+ *   Power apartada        → etapa «Power Session por pagar», Pago Power Session = Pendiente.
+ *   Power pagada          → EL MISMO lead (PATCH /leads/{id}, id guardado en `ik_kommo` del evento de Calendar):
+ *                           etapa «Power Session pagada», Pago = Pagado, fecha y Meet. Si ese lead ya no existe
+ *                           (404) o Kommo lo rechaza siempre: un lead nuevo en «Power Session pagada» con la nota.
+ *   Apartado liberado     → el lead se queda donde está, con la nota «No completó el pago…».
+ * Sin la estructura (script sin correr) todo cae como antes: embudo de respaldo o principal + nota completa.
+ *
  * Reglas: NUNCA lanza (Google Calendar es la fuente de verdad: Kommo o Supabase caídos no tumban una reserva);
  * tiempo límite por operación; logs sin nombres, correos, teléfonos ni tokens.
  *
  * `createLeads({ kommo, env })` permite inyectar un Kommo simulado (modo local) o espía (pruebas).
  */
-import { CDMX_TZ, SESSION_RULES, formatSlotEs, phoneToE164 } from '../../shared/agenda.js';
+import { CDMX_TZ, LANDING, SESSION_RULES, formatSlotEs, phoneToE164 } from '../../shared/agenda.js';
 import { clean } from '../http.js';
 import * as kommoApi from '../kommo.js';
+import { etiquetasDeOrigen, urlDePagina } from '../kommo.js';
 
 /** Supabase: 5 s por operación (como el original). */
 export const SUPABASE_MS = 5000;
@@ -39,11 +49,18 @@ const REVENUE_CODE = new Map([
  * @typedef {{
  *   kommoConfigured: () => boolean,
  *   createLeadWithNote: (input: any) => Promise<any>,
- *   updateLeadTags: (leadId: any, change: { add?: string[], remove?: string[] }) => Promise<any>,
+ *   updateLead: (leadId: any, change: any) => Promise<any>,
  *   addLeadNote: (leadId: any, text: string) => Promise<any>,
- *   notify: (event: string, payload: any) => Promise<boolean>
+ *   notify: (event: string, payload: any) => Promise<boolean>,
+ *   revisarEstructura?: () => Promise<{ estado: string, faltan: string[], opcionales?: string[] }>
  * }} KommoApi
  */
+
+/** Segundos unix de un ISO (campo «Fecha de la sesión», tipo date_time). @param {string | null | undefined} iso */
+const unixDe = (iso) => {
+  const ms = Date.parse(String(iso ?? ''));
+  return Number.isFinite(ms) ? Math.floor(ms / 1000) : undefined;
+};
 
 /** @param {unknown} v @param {number} max */
 const clip = (v, max) => clean(v, max) || null;
@@ -185,11 +202,106 @@ export function createLeads({ kommo, env = process.env } = {}) {
     if (!r.ok) log({ accion: 'supabase', paso: status, ok: false, status: r.status });
   }
 
+  /**
+   * El lead guardado en el evento ya no existe (o Kommo lo rechaza siempre): el pago se registra en un lead nuevo en
+   * «Power Session pagada», con el contacto que guarda el evento (nombre y correo) y una nota que lo explica.
+   * @param {KommoApi} k @param {string} leadIdViejo
+   * @param {{ when: string, start?: string | null, meetLink: string | null, brief: string | null, eventId?: string,
+   *           contacto?: { name?: string | null, email?: string | null, business?: string | null } }} d
+   * @param {string} textoPago @param {{ status?: number, reason?: string }} motivo
+   * @returns {Promise<{ ok: boolean, leadId?: string, error?: true }>}
+   */
+  async function pagoEnLeadNuevo(k, leadIdViejo, d, textoPago, motivo) {
+    const c = d.contacto ?? {};
+    const negocio = String(c.business ?? '').trim();
+    const nombre = String(c.name ?? '').trim();
+    const folio = d.eventId ? bookingFolio(d.eventId) : undefined;
+    const environment = envLabel();
+    const borrado = motivo.status === 404;
+    const note = [
+      textoPago,
+      '—',
+      borrado
+        ? `El lead original de esta reserva (n.º ${leadIdViejo}) ya no existe en Kommo: se borró o se fusionó con otro. Este lead lo reemplaza para que el pago no se pierda; si la persona ya tiene otro lead abierto, fusiónalos.`
+        : `Kommo no dejó actualizar el lead original de esta reserva (n.º ${leadIdViejo}). Este lead lo reemplaza para que el pago no se pierda; revisa el original y fusiónalos si hace falta.`,
+      'Los datos completos de la reserva (respuestas del formulario y WhatsApp) están en la cita de Google Calendar.',
+      folio ? `Folio ${folio}${d.eventId ? ` · Calendario: evento ${d.eventId}` : ''}` : null,
+      `Entorno: ${environment}`,
+    ].filter(Boolean).join('\n');
+    /** @type {any} */
+    let res;
+    try {
+      res = await withTimeout(Promise.resolve(k.createLeadWithNote({
+        name: `${SESSION_RULES.power.label} · ${negocio || nombre || 'sin nombre'}`,
+        contact: { name: nombre || negocio || 'Sin nombre', email: String(c.email ?? '').trim() || undefined },
+        company: negocio || undefined,
+        tags: ['web-agenda', 'power-session', ...(environment === 'production' ? [] : ['entorno-preview'])],
+        note,
+        embudo: /** @type {const} */ ('agenda'),
+        etapa: 'power-pagada',
+        campos: {
+          sesion: SESSION_RULES.power.label,
+          pago: 'Pagado',
+          fechaSesion: unixDe(d.start),
+          meet: d.meetLink ?? undefined,
+          origen: urlDePagina(LANDING.power) ?? undefined,
+        },
+        // Sin KOMMO_AGENDA_STATUS_ID: esa es la etapa de entrada, no la de «pagada».
+        pipelineId: int(env.KOMMO_AGENDA_PIPELINE_ID),
+        fallbackPipelineId: int(env.KOMMO_PIPELINE_ID),
+        fallbackStatusId: int(env.KOMMO_STATUS_ID),
+        responsibleUserId: int(env.KOMMO_RESPONSIBLE_USER_ID),
+        source: 'agenda-power',
+        folio,
+        budgetMs: KOMMO_MS - 500,
+      })), KOMMO_MS);
+    } catch (e) {
+      res = { ok: false, status: 0, reason: e instanceof Error && e.name === 'TimeoutError' ? 'timeout' : 'network' };
+    }
+    const nuevo = res?.ok && res.leadId != null ? String(res.leadId) : null;
+    // Definitivo: Kommo rechaza también el lead nuevo (validación). Reintentar no cambia nada: se marca y se avisa.
+    const definitivo = !nuevo && res?.reason === 'validation';
+    log({ accion: 'kommo-pagado-lead-nuevo', ok: !!nuevo, status: res?.status ?? null, reason: res?.reason ?? null, leadId: nuevo, definitivo });
+    if (nuevo || definitivo) {
+      try {
+        await withTimeout(Promise.resolve(k.notify('kommo.alerta', {
+          source: 'agenda-power',
+          folio,
+          kommo: { ok: !!nuevo, status: motivo.status ?? null, reason: motivo.reason ?? null, leadId: nuevo ? res.leadId : null },
+          alerta: nuevo ? 'lead de la reserva no encontrado' : 'pago sin registrar en Kommo',
+          mensaje: nuevo
+            ? 'El lead de esta Power Session ya no se podía actualizar en Kommo (se borró o se fusionó). El pago se registró en un lead nuevo en «Power Session pagada».'
+            : 'Kommo no dejó registrar el pago de esta Power Session (ni en el lead original ni en uno nuevo). Regístralo a mano; el pago y la cita están en Stripe y en Google Calendar.',
+        })), 5000);
+      } catch { /* el webhook es opcional */ }
+    }
+    if (nuevo) return { ok: true, leadId: nuevo };
+    if (definitivo) return { ok: true, error: true };
+    return { ok: false };
+  }
+
   return {
     /** Diagnóstico sin valores. */
     async status() {
       const k = await getKommo();
       return { kommo: k.kommoConfigured(), supabase: supabaseOn() };
+    },
+
+    /**
+     * Diagnóstico de la estructura de Kommo (solo nombres, sin ids). `faltan`: lo que el sitio usa y no encontró;
+     * `opcionales`: lo que falta de «Clientes · Implementación» (no cambia el estado).
+     * @returns {Promise<{ estado: string, faltan: string[], opcionales: string[] }>}
+     */
+    async kommoEstructura() {
+      try {
+        const k = await getKommo();
+        if (!k.kommoConfigured()) return { estado: 'sin-configurar', faltan: [], opcionales: [] };
+        if (typeof k.revisarEstructura !== 'function') return { estado: 'simulado', faltan: [], opcionales: [] };
+        const r = await withTimeout(k.revisarEstructura(), KOMMO_MS);
+        return { estado: r.estado, faltan: r.faltan ?? [], opcionales: r.opcionales ?? [] };
+      } catch {
+        return { estado: 'error', faltan: [], opcionales: [] };
+      }
     },
 
     /**
@@ -202,10 +314,16 @@ export function createLeads({ kommo, env = process.env } = {}) {
       const t0 = Date.now();
       const environment = envLabel();
       const k = await getKommo();
-      const tags = ['web-agenda', `agenda-${i.type}`];
-      if (i.type === 'power') tags.push('pago-pendiente');
-      if (environment === 'preview') tags.push('entorno-preview');
       const a = i.attribution;
+      // web-agenda · discovery | power-session · campaña | orgánico · entorno-preview (fuera de producción)
+      const tags = [
+        'web-agenda',
+        i.type === 'discovery' ? 'discovery' : 'power-session',
+        ...etiquetasDeOrigen(
+          { utmMedium: a.utm.utm_medium, gclid: a.clid.gclid, fbclid: a.clid.fbclid, gbraid: a.clid.gbraid, wbraid: a.clid.wbraid },
+          environment,
+        ),
+      ];
       const phoneE164 = phoneToE164(i.form.whatsapp);
       const input = {
         name: `${SESSION_RULES[i.type].label} · ${i.form.businessName}`,
@@ -219,8 +337,27 @@ export function createLeads({ kommo, env = process.env } = {}) {
           UTM_TERM: a.utm.utm_term ?? '', UTM_CONTENT: a.utm.utm_content ?? '',
           REFERRER: a.landing.referrer ?? a.referrer ?? '', GCLID: a.clid.gclid ?? '', FBCLID: a.clid.fbclid ?? '',
         },
-        pipelineId: int(env.KOMMO_AGENDA_PIPELINE_ID) ?? int(env.KOMMO_PIPELINE_ID),
-        statusId: int(env.KOMMO_AGENDA_STATUS_ID) ?? int(env.KOMMO_STATUS_ID),
+        // Estructura aprobada, por nombre. «Industria: Otro» se guarda como «Otra» (alias del esquema).
+        embudo: /** @type {const} */ ('agenda'),
+        etapa: i.type === 'discovery' ? 'discovery' : 'power-por-pagar',
+        campos: {
+          sesion: SESSION_RULES[i.type].label,
+          fechaSesion: unixDe(i.startIso),
+          meet: i.type === 'discovery' ? i.meetLink ?? undefined : undefined,
+          industria: i.form.industry,
+          tamano: i.form.teamSize,
+          facturacion: i.form.revenue,
+          origen: urlDePagina(a.pagePath ?? LANDING[i.type]) ?? undefined,
+          pago: i.type === 'power' ? 'Pendiente' : undefined,
+        },
+        // Variables: KOMMO_AGENDA_PIPELINE_ID manda sobre «Agenda · Sesiones». KOMMO_AGENDA_STATUS_ID es solo un
+        // respaldo: la etapa con su nombre («Discovery agendada» o «Power Session por pagar») siempre le gana, porque
+        // una sola variable no puede ser la entrada de los dos tipos de reserva. Las de la cotización, solo si no
+        // existe el embudo «Agenda · Sesiones».
+        pipelineId: int(env.KOMMO_AGENDA_PIPELINE_ID),
+        statusIdRespaldo: int(env.KOMMO_AGENDA_STATUS_ID),
+        fallbackPipelineId: int(env.KOMMO_PIPELINE_ID),
+        fallbackStatusId: int(env.KOMMO_STATUS_ID),
         responsibleUserId: int(env.KOMMO_RESPONSIBLE_USER_ID),
         source: `agenda-${i.type}`,
         folio: bookingFolio(i.eventId),
@@ -289,31 +426,58 @@ export function createLeads({ kommo, env = process.env } = {}) {
     },
 
     /**
-     * Pago confirmado: etiqueta `pagado` (quita `pago-pendiente`) + nota. Devuelve true si Kommo lo registró.
-     * @param {string} leadId @param {{ when: string, meetLink: string | null, brief: string | null }} d
+     * Pago confirmado: el MISMO lead pasa a «Power Session pagada» con Pago = Pagado, fecha y Meet (PATCH), y recibe
+     * la nota «Pago confirmado en Stripe…». Sin la estructura en la cuenta no hay nada que mover: basta con la nota.
+     *
+     * Si ese lead ya no existe en Kommo (404: se borró o se fusionó) o Kommo lo sigue rechazando después del reintento,
+     * reintentar no sirve: el pago se registra en un lead NUEVO en «Power Session pagada» (ligado al contacto por su
+     * correo) con la nota de pago y la explicación, y se avisa al webhook. Así el cron deja de reintentar.
+     *
+     * Resultado: `ok` → marcar el evento (ik_kommo_pago) y no reintentar; `leadId` → el lead nuevo (va a ik_kommo);
+     * `error` → no se pudo registrar ni en un lead nuevo y reintentar tampoco serviría (se marca con «error» y se avisa).
+     * `ok: false` → falla pasajera (red, 5xx, token…): el cron lo reintenta.
+     * @param {string} leadId
+     * @param {{ when: string, start?: string | null, meetLink: string | null, brief: string | null, eventId?: string,
+     *           contacto?: { name?: string | null, email?: string | null, business?: string | null } }} d
+     * @returns {Promise<{ ok: boolean, leadId?: string, error?: true }>}
      */
     async kommoPaid(leadId, d) {
       try {
         const k = await getKommo();
-        if (!k.kommoConfigured()) return false;
-        const tags = await withTimeout(Promise.resolve(k.updateLeadTags(leadId, { add: ['pagado'], remove: ['pago-pendiente'] })), KOMMO_MS);
+        if (!k.kommoConfigured()) return { ok: false };
+        const up = await withTimeout(Promise.resolve(k.updateLead(leadId, {
+          embudo: 'agenda',
+          etapa: 'power-pagada',
+          pipelineId: int(env.KOMMO_AGENDA_PIPELINE_ID),
+          campos: { pago: 'Pagado', fechaSesion: unixDe(d.start), meet: d.meetLink ?? undefined },
+          source: 'agenda-power',
+          budgetMs: KOMMO_MS - 500,
+        })), KOMMO_MS);
         const text = [`Pago confirmado en Stripe · ${d.when} (hora del centro de México)`, d.meetLink ? `Meet: ${d.meetLink}` : null, d.brief ? `Brief: ${d.brief}` : null]
           .filter(Boolean).join(' · ');
+        if (!up?.ok) {
+          log({ accion: 'kommo-pagado', ok: false, status: up?.status ?? null, reason: up?.reason ?? null, final: !!up?.final });
+          return up?.final ? await pagoEnLeadNuevo(k, leadId, d, text, up) : { ok: false };
+        }
         const note = await withTimeout(Promise.resolve(k.addLeadNote(leadId, text)), KOMMO_MS);
-        log({ accion: 'kommo-pagado', ok: !!tags?.ok, nota: !!note?.ok });
-        return !!tags?.ok;
+        log({ accion: 'kommo-pagado', ok: true, movido: !!up.movido, campos: up.campos?.enviados ?? [], nota: !!note?.ok });
+        return { ok: up.enviado === false ? !!note?.ok : true };
       } catch (e) {
         log({ accion: 'kommo-pagado', ok: false, error: e instanceof Error ? e.name : 'error' });
-        return false;
+        return { ok: false };
       }
     },
 
-    /** Apartado vencido o cancelado: etiqueta `expirado` (quita `pago-pendiente`). @param {string} leadId */
-    async kommoExpired(leadId) {
+    /**
+     * Apartado vencido o cancelado: el lead se queda donde está (sin mover ni cambiar campos) y recibe la nota
+     * «No completó el pago…». @param {string} leadId @param {{ when?: string | null }} [d]
+     */
+    async kommoExpired(leadId, d = {}) {
       try {
         const k = await getKommo();
         if (!k.kommoConfigured()) return false;
-        const r = await withTimeout(Promise.resolve(k.updateLeadTags(leadId, { add: ['expirado'], remove: ['pago-pendiente'] })), KOMMO_MS);
+        const text = `No completó el pago de la Power Session: el horario apartado${d.when ? ` (${d.when}, hora del centro de México)` : ''} se liberó.`;
+        const r = await withTimeout(Promise.resolve(k.addLeadNote(leadId, text)), KOMMO_MS);
         log({ accion: 'kommo-expirado', ok: !!r?.ok });
         return !!r?.ok;
       } catch (e) {

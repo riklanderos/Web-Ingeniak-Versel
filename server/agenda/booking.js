@@ -57,6 +57,9 @@ export function baseUrl(request, env = process.env) {
 function log(o) {
   try { console.log(JSON.stringify({ evento: 'agenda', ...o })); } catch { /* nada */ }
 }
+/** Horario legible de un evento (para la nota de Kommo), o null. @param {{ start?: { dateTime?: string } }} ev */
+const slotDe = (ev) =>
+  ev?.start?.dateTime && Number.isFinite(Date.parse(ev.start.dateTime)) ? formatSlotEs(new Date(ev.start.dateTime).toISOString()) : null;
 /** @param {unknown} e */
 const errName = (e) => (e instanceof Error ? `${e.name}${'status' in e ? ` ${/** @type {any} */ (e).status}` : ''}` : 'error');
 
@@ -172,16 +175,23 @@ export function createBooking(a) {
   }
 
   /**
-   * Kommo `pagado` + nota, una sola vez por evento (marca ik_kommo_pago=1). Nunca lanza.
+   * Kommo: el mismo lead (ik_kommo) pasa a «Power Session pagada» + nota, una sola vez por evento (marca
+   * ik_kommo_pago=1). Si ese lead ya no existe en Kommo, el pago queda en un lead nuevo y ik_kommo apunta a él; si ni
+   * así se pudo, la marca es «error» (el cron deja de reintentar y el webhook avisa). Nunca lanza.
    * @param {string} cal @param {string} eventId @param {Record<string, string>} props
-   * @param {{ when: string, meetLink: string | null, brief: string | null }} d
+   * @param {{ when: string, start: string, meetLink: string | null, brief: string | null, business?: string | null }} d
    */
   async function syncKommoPaidFor(cal, eventId, props, d) {
     try {
       if (!props[P.kommo] || props[P.kommoPaid]) return false;
-      const ok = await leads.kommoPaid(props[P.kommo], d);
-      if (!ok) return false;
-      await google.patchPrivate(cal, eventId, { ...props, [P.kommoPaid]: '1' });
+      const { business, ...pago } = d;
+      const r = await leads.kommoPaid(props[P.kommo], {
+        ...pago, eventId, contacto: { name: props[P.name] ?? null, email: props[P.email] ?? null, business: business ?? null },
+      });
+      if (!r?.ok) return false;
+      await google.patchPrivate(cal, eventId, {
+        ...props, ...(r.leadId ? { [P.kommo]: r.leadId } : {}), [P.kommoPaid]: r.error ? 'error' : '1',
+      });
       return true;
     } catch (e) {
       log({ accion: 'kommo-pagado-sync', ok: false, error: errName(e) });
@@ -316,7 +326,7 @@ export function createBooking(a) {
       meetLink = updated?.hangoutLink ?? meetLink;
       current = updated?.extendedProperties?.private ?? current;
     }
-    await syncKommoPaidFor(cal, eventId, current, { when, meetLink, brief: briefLink });
+    await syncKommoPaidFor(cal, eventId, current, { when, start: startIso, meetLink, brief: briefLink, business });
     return { when, start: startIso, meetLink, brief: briefLink };
   }
 
@@ -377,14 +387,16 @@ export function createBooking(a) {
     } else {
       await leads.supabaseExpiredByEvent(eventId);
     }
-    if (props[P.kommo]) await leads.kommoExpired(props[P.kommo]);
+    if (props[P.kommo]) await leads.kommoExpired(props[P.kommo], { when: slotDe(ev) });
     await google.deleteEvent(cal, eventId);
     return 'liberado';
   }
 
   /**
-   * Cron: Kommo `pagado` para las Power Sessions de ingeniak.mx confirmadas en los últimos 2 días sin ik_kommo_pago
-   * (caso en que confirmó el cron de riklanderos.tech, que no conoce Kommo). Un evento que falla no detiene a los demás.
+   * Cron: Kommo `pagado` para las Power Sessions de ingeniak.mx confirmadas sin ik_kommo_pago, con la sesión entre
+   * hace 2 días y dentro de 21 (caso en que confirmó el cron de riklanderos.tech, que no conoce Kommo, o en que Kommo
+   * no respondió al pagar). Un lead que ya no existe se resuelve con un lead nuevo (no se reintenta para siempre).
+   * Un evento que falla no detiene a los demás.
    */
   async function syncKommoPaid() {
     const cal = calendarFor('power');
@@ -400,11 +412,12 @@ export function createBooking(a) {
       if (!props[P.kommo] || props[P.kommoPaid]) continue;
       try {
         const startIso = ev.start?.dateTime ? new Date(ev.start.dateTime).toISOString() : '';
+        const business = ((ev.summary ?? '').split('Power Session · ')[1] ?? '').replace(/\s*\([^)]*\)$/, '');
         const token = await brief.ensureBrief({
           eventId: ev.id, stripeSessionId: props[P.stripe] ?? null, name: props[P.name] ?? null, email: props[P.email] ?? null,
-          business: ((ev.summary ?? '').split('Power Session · ')[1] ?? '').replace(/\s*\([^)]*\)$/, ''), sessionStart: startIso || null,
+          business, sessionStart: startIso || null,
         });
-        const d = { when: formatSlotEs(startIso), meetLink: ev.hangoutLink ?? null, brief: token ? brief.briefUrl(token) : null };
+        const d = { when: formatSlotEs(startIso), start: startIso, meetLink: ev.hangoutLink ?? null, brief: token ? brief.briefUrl(token) : null, business };
         if (await syncKommoPaidFor(cal, ev.id, props, d)) synced++;
       } catch (e) {
         log({ accion: 'kommo-sync', ok: false, error: errName(e) });
@@ -436,7 +449,7 @@ export function createBooking(a) {
           const created = Date.parse(/** @type {any} */ (ev).created ?? '');
           if (Number.isFinite(created) && t - created < 5 * 60_000) continue;
           await leads.supabaseExpiredByEvent(ev.id);
-          if (props[P.kommo]) await leads.kommoExpired(props[P.kommo]);
+          if (props[P.kommo]) await leads.kommoExpired(props[P.kommo], { when: slotDe(ev) });
           await google.deleteEvent(cal, ev.id);
           result.liberados++;
           continue;
@@ -449,7 +462,7 @@ export function createBooking(a) {
           // Stripe marca las sesiones vencidas con retraso: si ya pasó su hora, se vence aquí mismo.
           if (s.status === 'open') await stripe.expireCheckout(s.id ?? sid).catch(() => {});
           await leads.supabaseExpired(sid);
-          if (props[P.kommo]) await leads.kommoExpired(props[P.kommo]);
+          if (props[P.kommo]) await leads.kommoExpired(props[P.kommo], { when: slotDe(ev) });
           await google.deleteEvent(cal, ev.id);
           result.liberados++;
         }

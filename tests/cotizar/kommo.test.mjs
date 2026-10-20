@@ -1,15 +1,32 @@
 // Kommo con variables (casos 2 a 6 de §3.9) y API de server/kommo.js que consume la agenda (§3.7, §5.4).
 import test, { beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { cargar, cuerpo, entorno, FAKE, KOMMO, kommoVars, logs, peticion, simularFetch, valido } from './_util.mjs';
+import { cargar, cuerpo, entorno, FAKE, IDS, KOMMO, kommoVars, logs, peticion, simularFetch, valido } from './_util.mjs';
 
 const { handler, cotizar, kommo, http } = await cargar();
 const FALLBACK = { whatsapp: 'https://wa.me/523321017799', email: 'contacto@ingeniak.mx' };
 const ID = '6f1c2d3e-4b5a-4c3d-8e2f-1a2b3c4d5e6f';
-const TAGS = [
-  'web-cotizar', 'servicio-agentes-ia', 'servicio-crm-ia', 'presupuesto-3k-5k', 'plazo-1-3m',
-  'industria-salud', 'prefiere-whatsapp', 'pagina-agentes-whatsapp',
-].map((name) => ({ name }));
+// Fuera de producción (aquí: local) toda cotización lleva entorno-preview; sin UTM de pago, orgánico.
+const TAGS = ['web-cotizar', 'orgánico', 'entorno-preview'].map((name) => ({ name }));
+/** Campos del envío de ejemplo con los ids de la cuenta simulada (orden de camposFor). */
+const sel = (campo, opcion) => ({ field_id: IDS.campo(campo), values: [{ enum_id: IDS.opcion(campo, opcion) }] });
+const CAMPOS_EJEMPLO = [
+  { field_id: IDS.campo('Servicios de interés'), values: [{ enum_id: IDS.opcion('Servicios de interés', 'Agentes de IA para WhatsApp') }, { enum_id: IDS.opcion('Servicios de interés', 'CRM con IA (Kommo o GoHighLevel)') }] },
+  sel('Objetivo principal', 'Responder rápido a cada cliente'),
+  sel('Industria', 'Salud'),
+  sel('Tamaño de empresa', '11–50'),
+  sel('Presupuesto estimado', 'USD 3,000 a 5,000'),
+  sel('Plazo', 'En 1 a 3 meses'),
+  sel('CRM actual', 'Ninguno (Excel, libreta o solo WhatsApp)'),
+  { field_id: IDS.campo('Canales que usa hoy'), values: [{ enum_id: IDS.opcion('Canales que usa hoy', 'WhatsApp') }, { enum_id: IDS.opcion('Canales que usa hoy', 'Instagram') }] },
+  sel('Contacto preferido', 'WhatsApp'),
+  { field_id: IDS.campo('Página de origen'), values: [{ value: 'https://ingeniak.mx/servicios/agentes-ia-whatsapp/' }] },
+];
+/** Rutas de la estructura: con ella (por defecto) o sin ella (script sin correr). */
+const estructura = (con = true) => [
+  { match: 'GET /leads/pipelines', json: con ? KOMMO.pipelines : KOMMO.pipelinesSinEstructura },
+  { match: 'GET /leads/custom_fields', json: con ? KOMMO.campos : KOMMO.camposSinEstructura },
+];
 const CONTACTO_NUEVO = {
   name: 'Ana Pérez',
   custom_fields_values: [
@@ -31,12 +48,12 @@ beforeEach(() => {
   kommo.__resetKommo();
 });
 
-test('§3.9-2 · contacto nuevo: 204, 204 → custom_fields → complex → notes (orden y cuerpos exactos)', async (t) => {
-  entorno(t, kommoVars({ KOMMO_PIPELINE_ID: '1111111', KOMMO_STATUS_ID: '2222222', KOMMO_RESPONSIBLE_USER_ID: '3333333' }));
+test('§3.9-2 · contacto nuevo: 204, 204 → pipelines + custom_fields → complex → notes (orden y cuerpos exactos)', async (t) => {
+  entorno(t, kommoVars({ KOMMO_RESPONSIBLE_USER_ID: '3333333' }));
   logs(t);
   const llamadas = simularFetch(t, [
     { match: 'GET /contacts', status: 204 },
-    { match: 'GET /leads/custom_fields', json: KOMMO.camposTracking },
+    ...estructura(),
     { match: 'POST /leads/complex', json: KOMMO.complexOk },
     { match: 'POST /leads/notes', json: KOMMO.notaOk },
   ]);
@@ -49,7 +66,8 @@ test('§3.9-2 · contacto nuevo: 204, 204 → custom_fields → complex → note
     [
       `GET ${FAKE.base}/contacts?query=ana%40empresa.mx`,
       `GET ${FAKE.base}/contacts?query=%2B523312345678`,
-      `GET ${FAKE.base}/leads/custom_fields?limit=250`,
+      `GET ${FAKE.base}/leads/pipelines`,
+      `GET ${FAKE.base}/leads/custom_fields?limit=250&page=1`,
       `POST ${FAKE.base}/leads/complex`,
       `POST ${FAKE.base}/leads/notes`,
     ],
@@ -59,25 +77,42 @@ test('§3.9-2 · contacto nuevo: 204, 204 → custom_fields → complex → note
     assert.equal(c.headers.accept, 'application/json');
     if (c.method === 'POST') assert.equal(c.headers['content-type'], 'application/json');
   }
-  assert.deepEqual(llamadas[3].body, [
+  assert.deepEqual(llamadas[4].body, [
     {
       name: 'Cotización web · Clínica Ejemplo',
-      pipeline_id: 1111111,
-      status_id: 2222222,
+      pipeline_id: IDS.embudo('Sitio web · Cotizaciones'),
+      status_id: IDS.etapa('Sitio web · Cotizaciones', 'Nueva cotización'),
       responsible_user_id: 3333333,
-      custom_fields_values: [{ field_id: 508, values: [{ value: 'https://www.google.com/' }] }],
+      custom_fields_values: [...CAMPOS_EJEMPLO, { field_id: IDS.campo('REFERRER'), values: [{ value: 'https://www.google.com/' }] }],
       _embedded: { tags: TAGS, contacts: [CONTACTO_NUEVO], companies: [{ name: 'Clínica Ejemplo' }] },
     },
   ]);
-  const nota = llamadas[4].body;
+  const nota = llamadas[5].body;
   assert.equal(nota.length, 1);
   assert.equal(nota[0].entity_id, 9774766);
   assert.equal(nota[0].note_type, 'common');
   assert.match(nota[0].params.text, /^Solicitud de cotización · sitio web · Folio IK-6F1C2D\nServicios: /);
 
-  // La caché de campos de rastreo dura toda la instancia: el segundo envío no la vuelve a pedir.
+  // La estructura se recuerda 10 min: el segundo envío no la vuelve a pedir.
   await handler.fetch(peticion(valido()));
   assert.equal(llamadas.filter((c) => c.path.startsWith('/leads/custom_fields')).length, 1);
+  assert.equal(llamadas.filter((c) => c.path.startsWith('/leads/pipelines')).length, 1);
+});
+
+test('variables KOMMO_PIPELINE_ID / KOMMO_STATUS_ID mandan sobre los nombres', async (t) => {
+  entorno(t, kommoVars({ KOMMO_PIPELINE_ID: '1111111', KOMMO_STATUS_ID: '2222222' }));
+  logs(t);
+  const llamadas = simularFetch(t, [
+    { match: 'GET /contacts', status: 204 },
+    ...estructura(),
+    { match: 'POST /leads/complex', json: KOMMO.complexOk },
+    { match: 'POST /leads/notes', json: KOMMO.notaOk },
+  ]);
+  assert.equal((await handler.fetch(peticion(valido()))).status, 200);
+  const lead = llamadas.find((c) => c.path === '/leads/complex').body[0];
+  assert.equal(lead.pipeline_id, 1111111);
+  assert.equal(lead.status_id, 2222222);
+  assert.equal(lead.custom_fields_values.length, CAMPOS_EJEMPLO.length + 1, 'los campos se llenan igual');
 });
 
 test('§3.9-3 · contacto existente por correo → contacts: [{ id }] y sin companies', async (t) => {
@@ -95,6 +130,7 @@ test('§3.9-3 · contacto existente por correo → contacts: [{ id }] y sin comp
         },
       },
     },
+    ...estructura(false),
     { match: 'POST /leads/complex', json: KOMMO.complexOk },
     { match: 'POST /leads/notes', json: KOMMO.notaOk },
   ]);
@@ -102,13 +138,17 @@ test('§3.9-3 · contacto existente por correo → contacts: [{ id }] y sin comp
   assert.equal(r.status, 200);
   assert.deepEqual(
     llamadas.map((c) => `${c.method} ${c.path}`),
-    ['GET /contacts?query=ana%40empresa.mx', 'POST /leads/complex', 'POST /leads/notes'],
-    'sin búsqueda por teléfono ni campos de rastreo (no hay rastreo)',
+    ['GET /contacts?query=ana%40empresa.mx', 'GET /leads/pipelines', 'GET /leads/custom_fields?limit=250&page=1', 'POST /leads/complex', 'POST /leads/notes'],
+    'sin búsqueda por teléfono (el correo ya coincidió)',
   );
-  const lead = llamadas[1].body[0];
+  const lead = llamadas[3].body[0];
   assert.deepEqual(lead._embedded.contacts, [{ id: 555 }]);
   assert.equal(lead._embedded.companies, undefined);
+  // Sin la estructura en la cuenta (y sin rastreo): embudo principal, sin campos; la nota lleva todo.
   assert.equal(lead.custom_fields_values, undefined);
+  assert.equal(lead.pipeline_id, undefined);
+  assert.equal(lead.status_id, undefined);
+  assert.match(llamadas[4].body[0].params.text, /\nIndustria: Salud · Equipo: 11–50 personas\n/);
 });
 
 test('contacto existente por teléfono (el correo no coincide exacto)', async (t) => {
@@ -123,12 +163,13 @@ test('contacto existente por teléfono (el correo no coincide exacto)', async (t
       match: 'GET /contacts?query=%2B523312345678',
       json: { _embedded: { contacts: [{ id: 777, custom_fields_values: [{ field_code: 'PHONE', values: [{ value: '33 1234 5678' }] }] }] } },
     },
+    ...estructura(),
     { match: 'POST /leads/complex', json: KOMMO.complexOk },
     { match: 'POST /leads/notes', json: KOMMO.notaOk },
   ]);
   const r = await handler.fetch(peticion(valido({ meta: { referrer: '' } })));
   assert.equal(r.status, 200);
-  assert.deepEqual(llamadas[2].body[0]._embedded.contacts, [{ id: 777 }]);
+  assert.deepEqual(llamadas.find((c) => c.path === '/leads/complex').body[0]._embedded.contacts, [{ id: 777 }]);
 });
 
 test('§3.9-4 · complex 400 por rastreo → un reintento sin rastreo → 200', async (t) => {
@@ -136,6 +177,7 @@ test('§3.9-4 · complex 400 por rastreo → un reintento sin rastreo → 200', 
   logs(t);
   const llamadas = simularFetch(t, [
     { match: 'GET /contacts', status: 204 },
+    { match: 'GET /leads/pipelines', json: KOMMO.pipelinesSinEstructura },
     { match: 'GET /leads/custom_fields', json: KOMMO.camposTracking },
     { match: 'POST /leads/complex', status: 400, json: ERR_400_TRACKING, once: true },
     { match: 'POST /leads/complex', json: KOMMO.complexOk },

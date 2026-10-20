@@ -1,5 +1,5 @@
 // 4 · Confirmar: id inválido → 400; `unpaid` → pending; `paid` → PATCH a la cita real (invitado, Meet, sendUpdates=all,
-// "Pago confirmado en Stripe." antes del marcador) + Kommo `pagado`; segunda llamada idempotente.
+// "Pago confirmado en Stripe." antes del marcador) + Kommo: el mismo lead a «Power Session pagada»; segunda llamada idempotente.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createBooking } from '../../server/agenda/booking.js';
@@ -8,7 +8,7 @@ import { stripe } from '../../server/agenda/stripe.js';
 import { leads, bookingAttribution } from '../../server/agenda/leads.js';
 import { MARKER } from '../../shared/agenda.js';
 import confirmar from '../../api/agenda/confirmar.js';
-import { env, REAL, KOMMO, SUPABASE, FakeGoogle, FakeKommo, FakeStripe, FakeSupabase, mockFetch, NOW, form, ATRIB, req, read, captureLogs, ORIGIN } from './_util.mjs';
+import { env, REAL, KOMMO, SUPABASE, IDS, FakeGoogle, FakeKommo, FakeStripe, FakeSupabase, mockFetch, NOW, form, ATRIB, req, read, captureLogs, ORIGIN } from './_util.mjs';
 
 const START = '2026-10-21T16:00:00.000Z';
 
@@ -76,10 +76,22 @@ test('api · confirmar: pagado → cita real con invitado, Meet y aviso; Kommo p
   assert.equal(p.body.extendedProperties.private.rl_sitio, 'ingeniak');
   assert.equal(p.body.extendedProperties.private.ik_kommo, '4242');
 
-  // Kommo: pagado (quita pago-pendiente) + nota, y el evento queda marcado ik_kommo_pago=1.
+  // Kommo: EL MISMO lead (ik_kommo) pasa a «Power Session pagada» con Pago = Pagado, fecha y Meet + nota;
+  // ningún lead nuevo, y el evento queda marcado ik_kommo_pago=1.
   const kc = k.calls.slice(kBefore);
-  const tags = kc.find((c) => c.method === 'PATCH' && c.path === '/leads/4242');
-  assert.deepEqual(tags.body, { tags_to_add: [{ name: 'pagado' }], tags_to_delete: [{ name: 'pago-pendiente' }] });
+  assert.equal(kc.filter((c) => c.path === '/leads/complex').length, 0, 'no se crea otro lead');
+  const patch = kc.filter((c) => c.method === 'PATCH');
+  assert.equal(patch.length, 1);
+  assert.equal(patch[0].path, '/leads/4242');
+  assert.deepEqual(patch[0].body, {
+    pipeline_id: IDS.embudo('Agenda · Sesiones'),
+    status_id: IDS.etapa('Agenda · Sesiones', 'Power Session pagada'),
+    custom_fields_values: [
+      { field_id: IDS.campo('Pago Power Session'), values: [{ enum_id: IDS.opcion('Pago Power Session', 'Pagado') }] },
+      { field_id: IDS.campo('Fecha de la sesión'), values: [{ value: Date.parse(START) / 1000 }] },
+      { field_id: IDS.campo('Enlace de Meet'), values: [{ value: r.body.meetLink }] },
+    ],
+  });
   const note = kc.find((c) => c.path === '/leads/notes');
   assert.match(note.body[0].params.text, /^Pago confirmado en Stripe · Miércoles 21 de octubre · 10:00 AM \(hora del centro de México\) · Meet: https:\/\/meet\.google\.test\/.+ · Brief: https:\/\/www\.riklanderos\.tech\/brief\//);
   assert.equal(g.events.get(eventId).extendedProperties.private.ik_kommo_pago, '1');

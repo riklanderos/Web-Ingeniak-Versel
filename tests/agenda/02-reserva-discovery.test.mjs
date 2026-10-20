@@ -9,7 +9,7 @@ import { stripe } from '../../server/agenda/stripe.js';
 import { leads, bookingAttribution } from '../../server/agenda/leads.js';
 import { MARKER, validateForm, EMPTY_FORM, bookableDates, cdmxToIso } from '../../shared/agenda.js';
 import reservar from '../../api/agenda/reservar.js';
-import { env, REAL, KOMMO, FAKE, FakeGoogle, FakeKommo, FakeStripe, mockFetch, NOW, form, ATRIB, req, read, captureLogs, ORIGIN } from './_util.mjs';
+import { env, REAL, KOMMO, FAKE, IDS, FakeGoogle, FakeKommo, FakeStripe, mockFetch, NOW, form, ATRIB, req, read, captureLogs, ORIGIN } from './_util.mjs';
 
 const START = '2026-10-21T16:00:00.000Z'; // miércoles 21, 10:00 CDMX
 const book = () => createBooking({ google, stripe, leads, now: () => NOW });
@@ -80,11 +80,24 @@ test('reserva discovery · evento con Meet, invitación, propiedades rl_* + rl_s
   assert.match(ins.body.description, /^Discovery Session · 30 min\n\nNombre: Ana Prueba Ejemplo\n/);
   assert.match(ins.body.description, /\n\nOrigen: Sección: hero · meta · prueba\n\nAgendado desde/);
 
-  // Kommo: lead con las etiquetas exactas, contacto E.164 y nota.
+  // Kommo: lead en «Agenda · Sesiones / Discovery agendada», etiquetas exactas, campos de la sesión, contacto E.164 y nota.
   assert.equal(k.complex.length, 1);
   const lead = k.complex[0].body[0];
   assert.equal(lead.name, 'Discovery Session · Clínica Ejemplo');
-  assert.deepEqual(lead._embedded.tags.map((x) => x.name), ['web-agenda', 'agenda-discovery']);
+  // ATRIB trae utm_medium=paid → campaña; fuera de producción → entorno-preview.
+  assert.deepEqual(lead._embedded.tags.map((x) => x.name), ['web-agenda', 'discovery', 'campaña', 'entorno-preview']);
+  assert.equal(lead.pipeline_id, IDS.embudo('Agenda · Sesiones'));
+  assert.equal(lead.status_id, IDS.etapa('Agenda · Sesiones', 'Discovery agendada'));
+  const sel = (campo, opcion) => ({ field_id: IDS.campo(campo), values: [{ enum_id: IDS.opcion(campo, opcion) }] });
+  assert.deepEqual(lead.custom_fields_values.filter((c) => c.field_id >= 7000), [
+    sel('Tipo de sesión', 'Discovery Session'),
+    { field_id: IDS.campo('Fecha de la sesión'), values: [{ value: Date.parse(START) / 1000 }] },
+    { field_id: IDS.campo('Enlace de Meet'), values: [{ value: r.meetLink }] },
+    sel('Industria', 'Salud y bienestar'),
+    sel('Tamaño de empresa', '6–10'),
+    sel('Facturación mensual', '$100K–$300K MXN'),
+    { field_id: IDS.campo('Página de origen'), values: [{ value: 'https://ingeniak.mx/discovery/' }] },
+  ]);
   assert.deepEqual(lead._embedded.contacts[0].custom_fields_values, [
     { field_code: 'PHONE', values: [{ value: '+523312345678', enum_code: 'MOB' }] },
     { field_code: 'EMAIL', values: [{ value: 'ana@ejemplo.test', enum_code: 'WORK' }] },
@@ -132,8 +145,18 @@ test('reserva discovery · Preview etiqueta entorno-preview', async (t) => {
   const k = new FakeKommo();
   mockFetch(t, g, k);
   captureLogs(t);
-  await reserve();
-  assert.deepEqual(k.complex[0].body[0]._embedded.tags.map((x) => x.name), ['web-agenda', 'agenda-discovery', 'entorno-preview']);
+  await reserve({ attribution: bookingAttribution({ ...ATRIB, utm_medium: 'email' }) });
+  assert.deepEqual(k.complex[0].body[0]._embedded.tags.map((x) => x.name), ['web-agenda', 'discovery', 'orgánico', 'entorno-preview']);
+});
+
+test('reserva discovery · producción: sin entorno-preview; gclid cuenta como campaña', async (t) => {
+  env(t, { ...REAL, ...KOMMO, VERCEL_ENV: 'production' });
+  const g = new FakeGoogle();
+  const k = new FakeKommo();
+  mockFetch(t, g, k);
+  captureLogs(t);
+  await reserve({ attribution: bookingAttribution({ page_path: '/discovery/', clid: { gclid: 'Cj0-prueba' } }) });
+  assert.deepEqual(k.complex[0].body[0]._embedded.tags.map((x) => x.name), ['web-agenda', 'discovery', 'campaña']);
 });
 
 test('reserva discovery · horario ocupado → SlotTakenError (y nada se inserta)', async (t) => {

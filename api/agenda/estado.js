@@ -1,7 +1,10 @@
 /**
  * GET /api/agenda/estado/ · diagnóstico para el primer Preview (CAMBIO-COTIZAR §5.2 y §5.9-2). Nunca en producción (404).
  * Responde solo estados ('ok' | 'error' | 'sin-configurar'), sin IDs, llaves ni datos de personas:
- * { ok, entorno, simulacion, google, googleAuth, stripe, live, calendarios: { power, discovery }, kommo, supabase, cron }.
+ * { ok, entorno, simulacion, google, googleAuth, stripe, live, calendarios: { power, discovery }, kommo,
+ *   kommoEstructura: 'completa' | 'incompleta' | 'sin-estructura' | 'error' | 'sin-configurar', kommoFaltan?: [nombres],
+ *   kommoOpcional?: [nombres de «Clientes · Implementación» que faltan; no cambian kommoEstructura], supabase, cron }.
+ *   kommoEstructura y kommoFaltan solo cuentan lo que el sitio usa (embudos de cotización y agenda + los 15 campos).
  *
  * POST { simular: 'pago', session_id } · SOLO en la simulación local: "Simular pago" de /dev/agenda-checkout/.
  * POST { simular: 'reiniciar' } · SOLO en la simulación local: vacía la memoria simulada (QA repetible).
@@ -62,6 +65,8 @@ export default {
     try { live = env.STRIPE_SECRET_KEY ? stripe.stripeLive() : null; } catch { live = null; }
     const st = await leads.status();
     const supabase = st.supabase ? (await leads.sb('/leads?select=id&limit=1')).ok ? 'ok' : 'error' : 'sin-configurar';
+    // Estructura aprobada (embudos, etapas, campos y opciones): ¿ya corrió el script de configuración?
+    const estructura = await leads.kommoEstructura();
     return json({
       ok: true,
       entorno: envName(),
@@ -72,6 +77,10 @@ export default {
       live,
       calendarios: { power, discovery },
       kommo: st.kommo ? 'configurado' : 'sin-configurar',
+      kommoEstructura: estructura.estado,
+      ...(estructura.faltan.length ? { kommoFaltan: estructura.faltan } : {}),
+      // Lo que falta de «Clientes · Implementación»: el sitio no lo usa, así que no cambia kommoEstructura.
+      ...(estructura.opcionales?.length ? { kommoOpcional: estructura.opcionales } : {}),
       supabase,
       cron: Boolean(env.CRON_SECRET),
     });

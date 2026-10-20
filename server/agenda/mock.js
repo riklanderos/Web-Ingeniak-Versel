@@ -202,6 +202,10 @@ const kommo = {
     st.kommo.push({ op: 'create', name: input?.name, tags: input?.tags ?? [] });
     return { ok: true, leadId: 900000 + st.seq, contactId: 800000 + st.seq, dryRun: true };
   },
+  async updateLead(/** @type {any} */ leadId, /** @type {any} */ change) {
+    state().kommo.push({ op: 'update', leadId, etapa: change?.etapa ?? null, campos: Object.keys(change?.campos ?? {}) });
+    return { ok: true, enviado: true, movido: Boolean(change?.etapa) };
+  },
   async updateLeadTags(/** @type {any} */ leadId, /** @type {any} */ change) {
     state().kommo.push({ op: 'tags', leadId, ...change });
     return { ok: true };

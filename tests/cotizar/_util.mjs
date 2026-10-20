@@ -3,6 +3,7 @@
 // Ningún valor real: el token y las URL de Kommo/webhook son de mentira.
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { cuentaSimulada, Ids } from './_kommo-simulador.mjs';
 
 export const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 export const CATALOGO = fileURLToPath(new URL('../../src/data/cotizar.json', import.meta.url));
@@ -184,8 +185,21 @@ export function simularFetch(t, rutas = []) {
   return llamadas;
 }
 
+/** Cuenta con la estructura aprobada (embudos, etapas y campos de shared/kommo-esquema.js) y otra sin ella. */
+const CON = cuentaSimulada();
+const SIN = cuentaSimulada({ estructura: false });
+const pipelinesJson = (c) => ({ _embedded: { pipelines: c.pipelines.map(({ statuses, ...p }) => ({ ...p, _embedded: { statuses } })) } });
+/** Ids por nombre de la cuenta con estructura. */
+export const IDS = new Ids(CON);
+
 /** Respuestas de Kommo de ejemplo (formas de la documentación; ids ilustrativos). */
 export const KOMMO = Object.freeze({
+  /** GET /leads/pipelines y GET /leads/custom_fields con la estructura aprobada. */
+  pipelines: pipelinesJson(CON),
+  campos: { _embedded: { custom_fields: CON.campos } },
+  /** Lo mismo sin la estructura (el script todavía no se corrió): embudo principal y campos de rastreo. */
+  pipelinesSinEstructura: pipelinesJson(SIN),
+  camposSinEstructura: { _embedded: { custom_fields: SIN.campos } },
   camposTracking: {
     _embedded: {
       custom_fields: [

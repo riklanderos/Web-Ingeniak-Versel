@@ -8,12 +8,12 @@ import { stripe, STRIPE_VERSION } from '../../server/agenda/stripe.js';
 import { leads, bookingAttribution } from '../../server/agenda/leads.js';
 import { MARKER, bookableDates, cdmxToIso } from '../../shared/agenda.js';
 import reservar from '../../api/agenda/reservar.js';
-import { env, REAL, KOMMO, FAKE, FakeGoogle, FakeKommo, FakeStripe, mockFetch, NOW, form, ATRIB, req, read, captureLogs, ORIGIN } from './_util.mjs';
+import { env, REAL, KOMMO, FAKE, IDS, FakeGoogle, FakeKommo, FakeStripe, mockFetch, NOW, form, ATRIB, req, read, captureLogs, ORIGIN } from './_util.mjs';
 
 const START = '2026-10-21T16:00:00.000Z';
 const book = () => createBooking({ google, stripe, leads, now: () => NOW });
 
-test('reserva power · apartado → Checkout → rl_stripe → Kommo pago-pendiente', async (t) => {
+test('reserva power · apartado → Checkout → rl_stripe → Kommo «Power Session por pagar»', async (t) => {
   env(t, { ...REAL, ...KOMMO });
   const g = new FakeGoogle();
   const s = new FakeStripe();
@@ -84,10 +84,22 @@ test('reserva power · apartado → Checkout → rl_stripe → Kommo pago-pendie
   // El título del apartado no cambia (riklanderos obtiene el negocio de él).
   assert.equal(g.events.get(eventId).summary, '[Apartado · pago pendiente] Power Session · Clínica Ejemplo');
 
-  // Kommo: etiquetas de Power con pago pendiente.
+  // Kommo: «Agenda · Sesiones / Power Session por pagar», Pago Power Session = Pendiente.
   const lead = k.complex[0].body[0];
   assert.equal(lead.name, 'Power Session · Clínica Ejemplo');
-  assert.deepEqual(lead._embedded.tags.map((x) => x.name), ['web-agenda', 'agenda-power', 'pago-pendiente']);
+  assert.deepEqual(lead._embedded.tags.map((x) => x.name), ['web-agenda', 'power-session', 'campaña', 'entorno-preview']);
+  assert.equal(lead.pipeline_id, IDS.embudo('Agenda · Sesiones'));
+  assert.equal(lead.status_id, IDS.etapa('Agenda · Sesiones', 'Power Session por pagar'));
+  const sel = (campo, opcion) => ({ field_id: IDS.campo(campo), values: [{ enum_id: IDS.opcion(campo, opcion) }] });
+  assert.deepEqual(lead.custom_fields_values.filter((c) => c.field_id >= 7000), [
+    sel('Tipo de sesión', 'Power Session'),
+    { field_id: IDS.campo('Fecha de la sesión'), values: [{ value: Date.parse(START) / 1000 }] },
+    sel('Industria', 'Salud y bienestar'),
+    sel('Tamaño de empresa', '6–10'),
+    sel('Facturación mensual', '$100K–$300K MXN'),
+    { field_id: IDS.campo('Página de origen'), values: [{ value: 'https://ingeniak.mx/discovery/' }] },
+    sel('Pago Power Session', 'Pendiente'),
+  ], 'sin Meet todavía (llega al pagar)');
   const note = k.calls.find((c) => c.path === '/leads/notes').body[0].params.text;
   assert.match(note, /Pago: pendiente en Stripe Checkout/);
   assert.match(note, /Dónde se le va el tiempo: Cotizar, Supervisar al equipo/);
