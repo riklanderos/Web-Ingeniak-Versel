@@ -111,15 +111,30 @@ const toolsOf = (slugs?: string[]) => (slugs ?? [])
   .filter((t) => t.url && publicExists(t.url))
   .map((t) => t.slug);
 const linksOf = (links?: any[]) => (links ?? []).map((l) => ({ ...l, href: l?.href ? linkTarget(l.href) : null })).filter((l) => l.href);
-// Luz por tema (alternada; ninguna zona > 40vh sin luz y nunca la misma escena dos veces seguidas)
+// Luz por tema (alternada; ninguna zona > 40vh sin luz y nunca la misma escena dos veces seguidas). El isotipo va siempre
+// del lado del acordeón (x ≥ 60 %): la cabeza es pegajosa y recorre todo el alto de su sección, así que un isotipo bajo
+// ella dejaba el lede y la línea del precio bajo AA (auditoría: 1.7–2.6:1 en crm y precio a 1280–1920).
 const LIGHT: Record<string, { d: { kind: 'isotipo' | 'ondas'; x: string; y: string; w?: string; o: number }[] }> = {
   ingeniak: { d: [{ kind: 'isotipo', x: '84%', y: '18%', w: 'min(48vw,720px)', o: 0.75 }, { kind: 'ondas', x: '30%', y: '96%', o: 1 }] },
   agentes: { d: [{ kind: 'ondas', x: '62%', y: '40%', o: 1 }] },
-  crm: { d: [{ kind: 'isotipo', x: '14%', y: '30%', w: 'min(44vw,660px)', o: 0.7 }, { kind: 'ondas', x: '70%', y: '92%', o: 0.9 }] },
+  crm: { d: [{ kind: 'isotipo', x: '88%', y: '66%', w: 'min(40vw,600px)', o: 0.5 }, { kind: 'ondas', x: '70%', y: '8%', o: 0.9 }] },
   automatizacion: { d: [{ kind: 'ondas', x: '38%', y: '50%', o: 1 }] },
-  precio: { d: [{ kind: 'isotipo', x: '20%', y: '44%', w: 'min(52vw,780px)', o: 0.8 }] },
+  precio: { d: [{ kind: 'isotipo', x: '88%', y: '76%', w: 'min(46vw,700px)', o: 0.5 }, { kind: 'ondas', x: '12%', y: '20%', o: 0.7 }] },
   empezar: { d: [{ kind: 'ondas', x: '58%', y: '30%', o: 1 }, { kind: 'isotipo', x: '88%', y: '86%', w: 'min(40vw,600px)', o: 0.6 }] },
 };
+
+// Búsqueda: cada respuesta también responde al nombre genérico de su tema y a unos sinónimos (quien busca "precio" espera
+// las 4 respuestas de "Precio y tiempos", aunque digan "cuesta" o "USD"). Sin marcas (Kommo, GoHighLevel, n8n): esas se
+// buscan en el texto, para que "kommo" no traiga las de GoHighLevel. El copy puede traer las suyas (searchKeys).
+const SEARCH_KEYS: Record<string, string> = {
+  ingeniak: 'sobre ingeniak empresa equipo nosotros',
+  agentes: 'agente agentes chatbot bot asistente',
+  crm: 'crm embudo pipeline',
+  automatizacion: 'automatizacion automatizar integracion integraciones marketing',
+  precio: 'precio precios costo costos cuesta cuanto tarifa inversion pago tiempo tiempos dias plazo tarda',
+  empezar: 'empezar inicio comenzar primer paso',
+};
+const searchKeys = (id: string, c: any) => String(c?.searchKeys ?? SEARCH_KEYS[id] ?? '');
 
 /* ── cierre ─────────────────────────────────────────────────────────────── */
 const cta = cp('cta-final');
@@ -172,7 +187,7 @@ if (dev) {
             <div class="faq-search__field">
               <Icon name="search" size={20} class="faq-search__i" />
               <input id="faq-q" class="faq-search__input" type="search" name="q" autocomplete="off" spellcheck="false"
-                enterkeyhint="search" placeholder={search.placeholder} aria-describedby="faq-q-hint faq-q-status" aria-controls={topics.map((t) => `${t.id}-list`).join(' ')} data-faq-input />
+                enterkeyhint="search" placeholder={search.placeholder} data-ph-short={search.placeholderShort} aria-describedby="faq-q-hint faq-q-status" aria-controls={topics.map((t) => `${t.id}-list`).join(' ')} data-faq-input />
               <button type="button" class="faq-search__clear" aria-label={search.clear ?? 'Borrar la búsqueda'} hidden data-faq-clear>
                 <Icon name="close" size={16} />
               </button>
@@ -210,7 +225,7 @@ if (dev) {
         <Intertitle id={id} aura="none" layout="split" class={`faq-sec faq-sec--${id} tpl-glow`}>
           {light.d.map((a) => <Aura kind={a.kind} x={a.x} y={a.y} w={a.w} o={a.o} only="d" />)}
           <Fragment slot="head">
-            <div class="faq-sec__head" data-faq-group={id}>
+            <div class="faq-sec__head" data-faq-group={id} data-faq-keys={searchKeys(id, c)}>
               <p class="t-label t-label--cyan eyebrow faq-sec__eyebrow">
                 <span class="faq-sec__n" aria-hidden="true">{pad(t.n)}</span>{c.eyebrow}
               </p>
@@ -340,13 +355,17 @@ if (dev) {
     const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
     const fill = (tpl: string | undefined, v: Record<string, string>) => String(tpl ?? '').replace(/\{(\w+)\}/g, (m, k) => v[k] ?? m);
     const sections = [...document.querySelectorAll<HTMLElement>('.faq-sec')];
-    const groups = sections.map((sec) => ({
-      sec,
-      id: sec.id,
-      count: sec.querySelector<HTMLElement>('[data-faq-count]'),
-      chip: document.querySelectorAll<HTMLElement>(`[data-faq-topic="${sec.id}"]`),
-      items: [...sec.querySelectorAll<HTMLElement>('[data-faq-item]')].map((el) => ({ el, text: norm(el.textContent ?? '') })),
-    }));
+    const groups = sections.map((sec) => {
+      // tema + sinónimos (data-faq-keys de la cabeza): cuentan para el filtro, no se resaltan (no están en la respuesta)
+      const keys = norm(sec.querySelector<HTMLElement>('[data-faq-keys]')?.dataset.faqKeys ?? '');
+      return {
+        sec,
+        id: sec.id,
+        count: sec.querySelector<HTMLElement>('[data-faq-count]'),
+        chip: document.querySelectorAll<HTMLElement>(`[data-faq-topic="${sec.id}"]`),
+        items: [...sec.querySelectorAll<HTMLElement>('[data-faq-item]')].map((el) => ({ el, text: `${norm(el.textContent ?? '')} ${keys}` })),
+      };
+    });
     const total = groups.reduce((a, g) => a + g.items.length, 0);
     const hl = (window as any).Highlight && (CSS as any).highlights ? (CSS as any).highlights : null;
     const refresh = () => { try { (window as any).__cine?.refresh?.(); } catch {} };
@@ -424,6 +443,22 @@ if (dev) {
       if (lenis) lenis.scrollTo(y); else scrollTo({ top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       window.setTimeout(() => btn?.focus({ preventScroll: true }), 650);
     };
+
+    // Placeholder: si el largo no cabe en el campo (teléfonos angostos), el corto del copy (nunca cortado a media palabra)
+    const phLong = input.placeholder;
+    const phShort = input.dataset.phShort;
+    const fitPh = () => {
+      if (!phShort) return;
+      const cs = getComputedStyle(input);
+      const ctx = document.createElement('canvas').getContext('2d');
+      if (!ctx) return;
+      ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+      const room = input.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      input.placeholder = ctx.measureText(phLong).width > room ? phShort : phLong;
+    };
+    fitPh();
+    document.fonts?.ready.then(fitPh);
+    addEventListener('resize', fitPh, { passive: true });
 
     input.addEventListener('input', () => apply(input.value));
     input.addEventListener('keydown', (e) => {

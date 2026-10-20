@@ -175,6 +175,7 @@
     },
     "relacionados": {
       "eyebrow": "Sigue explorando",
+      "h2": { "text": "Ya sabes verificar.", "soft": "Ahora, cómo trabajamos Kommo." },
       "items": [
         { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con Ingeniak", "line": "Licencias, implementación y agentes de IA dentro de Kommo.", "plate": "home-kain" },
         { "href": "/blog/kommo-vs-gohighlevel/", "label": "Blog", "title": "Kommo vs GoHighLevel", "line": "Cuál conviene según cómo vende tu equipo." },

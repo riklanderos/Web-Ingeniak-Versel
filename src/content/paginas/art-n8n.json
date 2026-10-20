@@ -407,6 +407,7 @@
     },
     "relacionados": {
       "eyebrow": "Sigue explorando",
+      "h2": { "text": "De la herramienta", "soft": "al flujo funcionando." },
       "items": [
         {
           "href": "/servicios/automatizacion-n8n/",

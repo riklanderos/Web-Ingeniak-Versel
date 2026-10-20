@@ -37,7 +37,7 @@
     "DATO DE TERCEROS · funciones, planes, idioma y modelos de cobro de Kommo, HighLevel y HubSpot consultados el 2026-10-19 (fuentes 1 a 5). No se copian precios (check-cifras y la regla de precios de D: 'enlace a precios oficiales vigentes'). Revisar cada trimestre y actualizar 'actualizado'.",
     "CAMBIO DE TEXTO · el brief de D pedía una sección 'La respuesta corta' dentro del cuerpo; es la caja de respuesta corta (AnswerBox) y encabeza el índice. Las otras seis secciones de D están completas y en orden.",
     "CASOS · la escena del cuerpo usa dos cifras confirmadas de metrics.ts: retail-conversiones (Retail multimarca · Kommo + IA; la descripción 'calificación de leads por IA' viene de la respuesta K03 aprobada) y dental-citas (la clínica usa GoHighLevel, confirmado el 2026-10-19). El caso retail no tiene página construida: su nombre se pinta sin enlace.",
-    "PLACA · la portada pide servicios-no-se en espejo; mientras no esté exportada, sale home-sistema-3-organizar (Kain con la tarjeta del lead frente a los carriles del embudo; respaldo local de la plantilla)."
+    "PLACA · la portada pide servicios-no-se en espejo; mientras no esté exportada, sale home-sistema-3-organizar (Kain con la tarjeta del lead frente a los carriles del embudo; respaldo local de la plantilla). Escena del cuerpo: ind-retail-kain-sector en espejo (Kain en el aparador de una tienda atendiendo pedidos; al fondo una clienta generada, por eso lleva el rótulo de imagen ilustrativa); caso-retail-hero queda solo en art-partner-kommo para no repetir la misma escena en el clúster del blog."
   ],
   "sections": {
     "hero": {
@@ -103,7 +103,7 @@
           "**Restaurantes y hoteles:** depende de dónde se cierra la reserva. Si se cierra en el chat, Kommo; si se cierra en una página con calendario, GoHighLevel."
         ] },
         { "variant": "scene", "id": "escena-dos-casos",
-          "plate": { "id": "caso-retail-hero", "layout": "subject-right", "mirror": false },
+          "plate": { "id": "ind-retail-kain-sector", "layout": "subject-right", "mirror": true },
           "eyebrow": "Dos casos, dos plataformas",
           "title": "Elegimos por proceso, no por marca.",
           "metricId": "retail-conversiones",
@@ -168,6 +168,7 @@
     },
     "relacionados": {
       "eyebrow": "Sigue explorando",
+      "h2": { "text": "Ya comparaste.", "soft": "Ahora, cómo se implementa." },
       "items": [
         { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con Ingeniak", "line": "Licencias, implementación y agentes de IA." },
         { "href": "/gohighlevel/", "label": "Plataforma", "title": "GoHighLevel en español", "line": "Implementación completa para tu equipo." },

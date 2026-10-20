@@ -55,6 +55,14 @@ function headHtml(h: any, lit?: string | null): string {
   }
   return h.soft ? `${first} <span class="soft">${annotateFigures(h.soft)}</span>` : first;
 }
+/** Texto del copy con tokens resueltos y enlaces internos [etiqueta](/ruta/): la ruta pasa por linkTarget (sin construir →
+ *  solo la etiqueta, nunca un enlace roto). Para los enlaces de contexto que pide sitemap.json → internalLinks. */
+function richHtml(t: string | null | undefined): string {
+  return annotateFigures(t ?? '').replace(/\[([^\]]+)\]\((\/[^)\s]*)\)/g, (_m, label: string, href: string) => {
+    const h = linkTarget(href);
+    return h ? `<a class="mth-a" href="${h}">${label}</a>` : label;
+  });
+}
 const wa = P.secondaryCta?.href ?? waHref(C.hero?.ctaSecondary?.waMessage ?? 'Hola Kain');
 const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
 const plateOf = (id: string) => sec(id)?.plate ?? null;
@@ -67,6 +75,9 @@ const rHero = resolvePlate(heroKey, { mirror: !!heroPlate?.mirror, fallbackPlate
 const lcpPlate = rHero.id ?? undefined;
 const heroEyebrow: string = hero?.eyebrow ?? (P.breadcrumbs as any[])?.at(-1)?.name ?? '';
 const heroEyebrowDup = eyebrowRepeatsCrumbs(heroEyebrow, P.breadcrumbs);
+// En móvil no hay migas: si el eyebrow repite el kicker del H1 ("Metodología VKTOR™" / "Metodología VKTOR™:"), no se pinta.
+const normK = (t: unknown) => String(t ?? '').replace(/[\s:·.]+$/u, '').trim().toLowerCase();
+const heroEyebrowIsKicker = !!hero?.h1?.kicker && normK(heroEyebrow) === normK(hero.h1.kicker);
 // R3 · intro móvil: lede ≤ 20 palabras (el resto baja a `more`). En escritorio el lede NO va en la portada: la zona segura
 // de la placa termina en y = 0.64 y abajo están las losas; su texto completo vive en la definición (que-es).
 const heroLede = ledeParts(hero?.lede, 20);
@@ -140,7 +151,7 @@ if (dev) {
           class="mth-hero tpl-hero"
         >
           <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
-          <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>
+          {!heroEyebrowIsKicker && <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>}
           <h1 id="hero-t" class="mth-h1" data-split>
             {h1.kicker && <span class="t-h4 mth-h1__k">{h1.kicker}</span>}{' '}
             <span class="t-display-2 mth-h1__t">{litAt >= 0
@@ -187,7 +198,7 @@ if (dev) {
             ) : (
               <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{qe.eyebrow}</p>
             )}
-            {(qe.body ?? []).map((b: string) => <Copy as="p" class="t-lede t-lede--2 mth-def__body" text={b} data-reveal />)}
+            {(qe.body ?? []).map((b: string) => <p class="t-lede t-lede--2 mth-def__body" data-reveal set:html={richHtml(b)} />)}
           </Intertitle>
         )}
       </SharedTake>
@@ -252,7 +263,7 @@ if (dev) {
                       </th>
                       <td data-label={cols[1]}><Copy text={r.does} /></td>
                       <td data-label={cols[2]} class="mth-table__out"><Copy text={r.out} /></td>
-                      <td data-label={cols[3]} class="mth-table__who"><Copy text={r.who} /></td>
+                      <td data-label={cols[3]} class="mth-table__who"><Fragment set:html={richHtml(r.who)} /></td>
                     </tr>
                   ))}
                 </tbody>
@@ -295,7 +306,7 @@ if (dev) {
           {tiIds.length > 0 && (
             <div class="frame mth-tiempos__ref">
               <Metric variant="row" ids={tiIds} heading={ti.metricRow?.heading} link class="mth-tiempos__row" />
-              {ti.note && <Copy as="p" class="t-micro mth-tiempos__note" text={ti.note} data-reveal />}
+              {ti.note && <p class="t-micro mth-tiempos__note" data-reveal set:html={richHtml(ti.note)} />}
             </div>
           )}
         </section>

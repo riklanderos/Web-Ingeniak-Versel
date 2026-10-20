@@ -10,7 +10,7 @@
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'. Nadie del equipo de construcción cambia ese campo.",
     "PREGUNTA AL CLIENTE · horario de atención de la oficina (v1 usaba L–V 09:00–18:00 sin confirmar): no se publica en la ficha ni en el JSON-LD (openingHoursSpecification) hasta confirmarlo por escrito.",
     "PREGUNTA AL CLIENTE · coordenadas de la oficina (geo del JSON-LD) y, si se quiere, un mapa estático real exportado en el build. Mientras, la sección 'Cómo llegar' usa un esquema ilustrativo, no a escala, con la ubicación relativa de los municipios, y el enlace a Google Maps busca la dirección.",
-    "PREGUNTA AL CLIENTE · ¿reciben visitas en la oficina? El texto solo pide escribir antes por WhatsApp para coordinar la cita.",
+    "PREGUNTA AL CLIENTE · ¿reciben visitas en la oficina? Mientras no se confirme por escrito, 'Cómo llegar' no invita a visitar: da la dirección y aclara que todo arranca por Google Meet. Si se confirma, se vuelve a sumar 'Si quieres visitarnos, escríbenos antes por WhatsApp para coordinar la cita.'",
     "PREGUNTA AL CLIENTE · ¿Ingeniak tiene perfil de Google Business? Si existe, su enlace (hasMap / sameAs del JSON-LD y la ficha local deben ser idénticos a ese perfil).",
     "CAMBIO DE TEXTO · cierre: el brief de sitemap.json ('30 minutos para ver tu operación como es, estés en Guadalajara o fuera de Jalisco.') se parece al H1 de /discovery/ (RESPUESTAS-CLIENTE 2026-10-19 #8 pide que los cierres sean distintos). Ahora: 'Tu sistema puede empezar en Guadalajara con una llamada de 30 minutos.'",
     "CAMBIO DE TEXTO · casos: H2 de v1 ('Desde Jalisco, operando hoy mismo.'); la fila de logística solo dice lo de metrics.ts (n8n), sin herramientas ni ciudad que no estén confirmadas. Los cinco sistemas siguen activos (RESPUESTAS-CLIENTE #3).",
@@ -131,8 +131,8 @@
       },
       "lede": "Dos de los sistemas que construimos desde Guadalajara y que siguen activos. Cada cifra trae su sector y su fuente.",
       "items": [
-        { "href": "/casos/clinica-dental-monterrey/", "label": "Caso · Salud · Monterrey", "title": "Clínica dental en Monterrey", "metricId": "dental-citas", "line": "Agente de IA en WhatsApp que contesta, agenda y confirma citas." },
-        { "href": "/casos/logistica-n8n/", "label": "Caso · Logística", "title": "Operación logística con n8n", "metricId": "logistica-procesos", "line": "Procesos de la operación automatizados con n8n." }
+        { "href": "/casos/clinica-dental-monterrey/", "label": "Caso · Salud · Monterrey", "title": "Clínica dental en Monterrey", "metricId": "dental-citas", "line": "más citas en 90 días con un agente de IA en WhatsApp que contesta, agenda y confirma." },
+        { "href": "/casos/logistica-n8n/", "label": "Caso · Logística", "title": "Operación logística con n8n", "metricId": "logistica-procesos", "line": "procesos automatizados con n8n en la operación." }
       ],
       "note": "{{source}}. Nombres de clientes anonimizados."
     },
@@ -144,11 +144,11 @@
         "text": "Oficina en Tlajomulco,",
         "soft": "al sur de la zona metropolitana."
       },
-      "lede": "Si quieres visitarnos, escríbenos antes por WhatsApp para coordinar la cita. Para empezar a trabajar juntos no hace falta: todo arranca con una llamada por Google Meet.",
+      "lede": "Para empezar a trabajar juntos no hace falta venir: todo arranca con una llamada por Google Meet.",
       "address": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, México",
       "map": {
         "aria": "Esquema de la zona metropolitana de Guadalajara: Zapopan al noroeste, Guadalajara al centro, Tlaquepaque y Tonalá al sureste y Tlajomulco de Zúñiga al sur, donde está la oficina de Ingeniak.",
-        "note": "Esquema ilustrativo, no a escala.",
+        "note": "Esquema ilustrativo, no a escala · norte arriba.",
         "office": "Ingeniak · Av. Punto Sur 312"
       },
       "links": [
@@ -182,7 +182,8 @@
         "soft": "de Guadalajara."
       },
       "faqIds": ["L01", "G10", "L02", "G04", "G11", "G07"],
-      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx.",
+      "links": [{ "label": "Todos los canales de contacto", "href": "/contacto/" }]
     },
     "cta-final": {
       "_componente": "Dawn (cta-duena-tranquila en espejo)",

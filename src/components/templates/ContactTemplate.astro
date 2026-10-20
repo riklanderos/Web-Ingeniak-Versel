@@ -58,6 +58,17 @@ const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? '
 const plateOf = (id: string) => sec(id)?.plate ?? null;
 const mailto = `mailto:${SITE.email}`;
 const pad = (n: number) => String(n).padStart(2, '0');
+/** Texto del copy con enlaces internos en línea (`ledeLinks: [{text, href}]`): solo a páginas construidas (linkTarget);
+ *  si la página no existe o la frase no está en el texto, queda el texto plano. */
+function linked(text: string, links?: { text: string; href: string }[]): string {
+  let h = annotateFigures(text);
+  for (const l of links ?? []) {
+    const to = l?.href ? linkTarget(l.href) : null;
+    const k = esc(l?.text ?? '');
+    if (to && k && h.includes(k)) h = h.replace(k, `<a class="ct-in" href="${esc(to)}">${k}</a>`);
+  }
+  return h;
+}
 
 /* ── 01 · portada ───────────────────────────────────────────────────────── */
 const hero = cp('hero');
@@ -155,7 +166,7 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
         <div class="ct-head">
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{rutas.eyebrow}</p>
           <h2 id="rutas-t" class="t-h2" data-split set:html={headHtml(rutas.h2)} />
-          {rutas.lede && <Copy as="p" class="t-lede t-lede--2 ct-head__lede" text={rutas.lede} data-reveal />}
+          {rutas.lede && <p class="t-lede t-lede--2 ct-head__lede" data-reveal set:html={linked(rutas.lede, rutas.ledeLinks)} />}
         </div>
         <table class="ct-routes" data-reveal>
           <caption class="sr-only">{rutas.caption}</caption>
@@ -191,6 +202,13 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
             })}
           </tbody>
         </table>
+        {rutas.privacy?.label && linkTarget(rutas.privacy.href ?? '/aviso-privacidad/') && (
+          <p class="t-micro ct-privacy" data-reveal>
+            <span class="node" aria-hidden="true"></span>
+            {rutas.privacy.line && <span>{rutas.privacy.line}</span>}
+            <a class="ct-in" href={linkTarget(rutas.privacy.href ?? '/aviso-privacidad/')}>{rutas.privacy.label}</a>
+          </p>
+        )}
       </Intertitle>
     );
 
@@ -201,7 +219,7 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
         <Fragment slot="head">
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{of.eyebrow}</p>
           <h2 id="oficina-t" class="t-h2" data-split set:html={headHtml(of.h2)} />
-          {of.lede && <Copy as="p" class="t-lede t-lede--2 ct-of__lede" text={of.lede} data-reveal />}
+          {of.lede && <p class="t-lede t-lede--2 ct-of__lede" data-reveal set:html={linked(of.lede, of.ledeLinks)} />}
           {of.visit && <Copy as="p" class="ct-of__visit" text={of.visit} data-reveal />}
           <div class="ctas ct-of__ctas" data-reveal><Btn variant="ghost" href={wa} label={waLabel(of)} /></div>
         </Fragment>
@@ -216,7 +234,7 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
             <a class="lnk ct-place__maps" href={mapsHref} target="_blank" rel="noopener">{of.mapsLabel ?? 'Abrir en Google Maps'}<Icon name="external" size={16} /></a>
           )}
         </div>
-        {of.nap?.length > 0 && <EntitySheet variant="local" rows={of.nap} title={of.napLabel ?? 'Datos de contacto'} class="ct-nap" />}
+        {of.nap?.length > 0 && <EntitySheet variant="local" rows={of.nap} title={of.napLabel ?? 'Datos de contacto'} waHref={wa} class="ct-nap" />}
         <Credits variant="countries" label={of.countriesLabel} class="ct-countries" />
       </Intertitle>
     );
@@ -224,7 +242,7 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
     /* ── 05 · redes ── */
     if (id === 'redes' && redes && socialItems.length) return (
       <Intertitle id="redes" aura="none" layout="split" class="ct-redes tpl-glow">
-        <Aura kind="isotipo" x="20%" y="50%" w="min(44vw,640px)" o={0.7} only="d" />
+        <Aura kind="isotipo" x="18%" y="50%" w="min(44vw,640px)" o={0.35} only="d" />
         <Fragment slot="head">
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{redes.eyebrow}</p>
           <h2 id="redes-t" class="t-h2" data-split set:html={headHtml(redes.h2)} />

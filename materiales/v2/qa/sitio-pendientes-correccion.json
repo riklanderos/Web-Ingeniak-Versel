@@ -1,0 +1,455 @@
+{
+ "kain": [
+  {
+   "severity": "major",
+   "page": "/kain/ #donde",
+   "viewport": "Desktop with motion on: 1280x720, 1440x900, 1920x1080 and 2560x1080. At 390 and below, and with reduced motion, the crossed-arms still stays.",
+   "problem": "The hub is meant to show Kain with crossed arms (template comment: 'clip con alfa, brazos cruzados'). Instead the clip plays once and freezes on a wave. The wave is the same pose as the hero plate (kain-hero) and the Dawn close, so there are three waves on one page. The hero and the hub are consecutive Kain scenes, which breaks R13 (no repeated pose in two scenes in a row).",
+   "evidence": "ProductTemplate.astro line 137 sets CLIP_HUB = { video: '/video/kain-brazos.webm', still: kain-brazos-cruzados.webp, loop: false }, and the script leaves a 'once' clip on its last frame. A CDP probe at 1280x720 read .prd-kain--hub 'is-playing' with video ended:true, currentTime 5.04, still opacity 0. Timed crops (hubt-sheet.jpg) show crossed arms turning into the raised-hand wave. public/img/kain/kain-brazos-last.webp, the clip's last frame, is the wave.",
+   "fix": "For a 'once' clip, keep Kain on a crossed-arms frame at rest. Options: on 'ended', set currentTime back to 0 and remove is-playing so the crossed-arms still shows again; or loop only a crossed-arms segment; or skip the clip in the hub and keep the still. Either way, the hub must not end on the hero's wave.",
+   "owner": "kain"
+  },
+  {
+   "severity": "major",
+   "page": "/kain/ #que-es (hero to definition transition)",
+   "viewport": "1280x720, 1440x900, 1920x1080 with real scroll, while the que-es top sits about 0.6 to 0.45 viewport below the fold",
+   "problem": "Text runs over the subject. The hero is subject-center, so the shared take keeps Kain sharp in the middle of the screen while the definition section scrolls in. The definition paragraph (left column) and the facets column (right) slide across Kain's legs and hips before the blur takes over. In that stretch, muted copy sits on Kain's light-grey legs. The approved service page shows no such overlap because its subject is on the right and the text crosses the empty phone.",
+   "evidence": "Captures tq-0.jpg and tq-1.jpg (1440), tq-cmp.jpg (1920 and 1280): 'donde las empresas', 'Kain, el personaje, es la', 'agenda, confirma, da' and 'en WhatsApp, Instagram,' are drawn over Kain's thighs and shins. ProductTemplate.css line 149: .prd-def__grid{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}, so the left column runs past the centre of the frame, where Kain stands. check-contraste passes only because it measures with reduced motion, where the take is static.",
+   "fix": "For a subject-center take, keep both columns clear of the centre band. For example, place the definition in columns 1–5 and the facets in columns 9–12, or stack the facets under the definition on the left. Another option is to blur and dim the take fully (or slide Kain sideways) before the que-es text reaches the middle of the viewport.",
+   "owner": "kain"
+  },
+  {
+   "severity": "major",
+   "page": "/kain/",
+   "viewport": "All (the problem is in the HTML)",
+   "problem": "The body never links to /servicios/agentes-ia-whatsapp/. That page is built (HTTP 200), it is the first entry in this page's sitemap internalLinks, and it is the main commercial page for Kain. Only the mega menu and footer reach it. The product page should feed it in-body link equity, and a reader who wants the service has no path from the content.",
+   "evidence": "In <main> of curl http://127.0.0.1:4321/kain/, href=\"/servicios/agentes-ia-whatsapp/\" appears 0 times. Counts for the other internalLinks: /industrias/ 1, /casos/clinica-dental-monterrey/ 3, /kommo/ 1, /gohighlevel/ 1, https://app.kain.mx/ 3, /discovery/ 2. sitemap.json kain.internalLinks[0] = \"/servicios/agentes-ia-whatsapp/\".",
+   "fix": "Add a contextual link in the copy. Options: an href on a #hago item (for example 'Respondo en segundos' or the WhatsApp row) or in the #donde channel 'WhatsApp Business' → /servicios/agentes-ia-whatsapp/; or a 'Cómo implementamos un agente para WhatsApp →' link in #que-es or #plataforma, rendered through linkTarget().",
+   "owner": "kain"
+  },
+  {
+   "severity": "minor",
+   "page": "/kain/ #plataforma",
+   "viewport": "390x844, 360x740, 320x640",
+   "problem": "On mobile the simulated app window cuts every message to one line with an ellipsis, which removes the meaning. Examples: 'Listo: tu limpieza quedó el viernes a las 17:…', 'Esa pregunta la ve la doctora. Te paso con…', 'Te envío la confirmación de tu visita por c…'. At 360 and below the window title 'Conversaciones de hoy' is cut as well.",
+   "evidence": "DOM probe: .prd-appui__msg has scrollWidth > clientWidth on 4 of 5 rows at 390, and on 5 of 5 at 360 and 320. .pwin__title overflows at 360 and 320 (sw146 > cw99 at 320). Visible in m-sheet-3.jpg frame 3 and sheet-320.jpg. Cause: ProductTemplate.css line 349, .prd-appui__msg{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.",
+   "fix": "Under 768px, let .prd-appui__msg wrap to 2 lines (white-space:normal plus -webkit-line-clamp:2). On narrow screens, pass a shorter window title (for example 'Hoy') or let the title wrap.",
+   "owner": "kain"
+  },
+  {
+   "severity": "minor",
+   "page": "/kain/ #hago",
+   "viewport": "1280x720 with motion (default experience); at 1440 and wider the 4th tab is cut to 'RETA'",
+   "problem": "The chat phone in 'Lo que hago' is too narrow at 1280. Its header role is cut to 'AGENTE DE / IA DE TU…', and the 4th tab ('Retail') is hidden behind the fade mask with no visible label. At 1440–2560 only 45 of its 63 px show ('RETA'). Users will not find the Retail script, and the cut header looks unfinished next to the approved home scene, which uses tabsOutside.",
+   "evidence": "r1280m.png (1280x720, motion on): header reads 'AGENTE DE IA DE TU…'; the tabs show GENERAL / SALUD / INMOBILIARIO only. Probe: last tab visible 45 of 63 px at 1280–1920 (chat__tabs is-scroll). The template passes 4 tabs inside the phone (ProductTemplate.astro line 293: <ChatSim mode=\"inline\" tabs={tabs} title=\"Agente de IA de tu negocio\" />).",
+   "fix": "Do what the home does: <ChatSim … tabsOutside> and draw the tab list under the copy, or widen the phone column at ≤1366px. Alternatively pass a shorter title such as 'Agente de tu negocio'.",
+   "owner": "kain"
+  },
+  {
+   "severity": "minor",
+   "page": "/kain/",
+   "viewport": "All",
+   "problem": "The copy repeats itself. 'donde las empresas tienen a sus agentes trabajando' appears 5 times in the visible text: the G13 definition, facet 02, the #plataforma lede, and FAQ G13 and N13. 'consejo médico ni legal' also appears 5 times: the definition, hago.limite, si-no, and FAQ N01 and G13. In one scroll this reads as padding and works against the premium, 'sin humo' tone.",
+   "evidence": "Text count over <main> of the served HTML: 'donde las empresas tienen a sus agentes trabajando' = 5, 'consejo médico ni legal' = 5. Sources in kain.json: que-es.facets[1].line, plataforma.lede, hago.limite, si-no.right.items[0].",
+   "fix": "Keep the FAQ and definition wording, since it comes from the approved bank. Rewrite the page-owned lines: facet 02 could cover what the platform gives the client; plataforma.lede could open on what happens there, not repeat the definition; hago.limite could point to #si-no instead of restating it.",
+   "owner": "kain"
+  },
+  {
+   "severity": "minor",
+   "page": "/kain/ #plataforma and #hago",
+   "viewport": "All",
+   "problem": "Two lines hurt copy quality and honesty. (1) 'Los planes de la plataforma no se publican aquí.' reads like an internal decision leaking into public copy, and it suggests something is being hidden. (2) 'Mando la confirmación y un recordatorio antes de la cita, para que nadie falte sin avisar.' is an absolute promise that reminders cannot guarantee.",
+   "evidence": "kain.json plataforma.body[0] and hago.items[3].line, both rendered as-is (1440x900-09.jpg, 1440x900-03.jpg).",
+   "fix": "(1) Use 'Los proyectos con agentes de IA empiezan {{price}}; el alcance exacto lo definimos contigo en la Discovery Session.' (2) Use 'para que menos personas falten sin avisar' or 'para reducir las faltas sin aviso'.",
+   "owner": "kain"
+  },
+  {
+   "severity": "minor",
+   "page": "/kain/ #faq",
+   "viewport": "1280x720, 1440x900, 1920x1080, 2560x1080",
+   "problem": "The FAQ H2 breaks into an awkward 4-line staircase: 'Lo que / me preguntan / antes / de conocerme.' 'antes' sits alone on its own display line. The non-breaking spaces from keepShort glue 'me preguntan' and 'de conocerme', which forces those breaks in the narrow split head column. This weakens the typographic rhythm next to the other H2s.",
+   "evidence": "1440x900-11.jpg, sheet-1280x720-2.jpg, sheet-1920x1080-2.jpg and sheet-2560x1080-2.jpg all show the same 4 lines.",
+   "fix": "Add text-wrap:balance to .prd-faq .t-h2 or widen .prd-faq .it__head at ≥1024px. Another option is to shorten the soft voice so it holds two lines ('Lo que me preguntan / antes de conocerme.').",
+   "owner": "kain"
+  }
+ ],
+ "hubs": [
+  {
+   "severity": "blocker",
+   "page": "/casos/",
+   "viewport": "1440x900 (also 1280x720, 1920x1080, 2560x1080; desktop only)",
+   "problem": "The case scenes have hard horizontal seams and look like separate boxed photos, which breaks the client's must-have (no seams, no visible image edges). Each `.hub-case` overlaps the previous one (`.hub-case + .hub-case{margin-top:-var(--s-7)}`). The next scene's `.hub-case__shade` has `inset:0`, no vertical mask, and is up to .94 opaque on its text side. It paints a straight-edged dark rectangle over the bottom of the previous scene's image. The same straight cut appears between the #filtros glow band and the first case.",
+   "evidence": "Real-scroll captures, hubaudit/d/casos-03..06.jpg and crops z-casos03.png, z-casos04-a.png, z-casos04-b.png, z-casos06.png. At 1440x900: the filtros→dental boundary at y≈348 is a full-width straight line. The doctor's coat is cut by a straight line at y≈158 in casos-04. The retail image ends in a hard edge at y≈668, the e-commerce laptop is cut flat at y≈480 (casos-05), and the HoReCa image ends in a full-width line at y≈289 (casos-06). At 2560 (z-c2560.jpg) the retail and dental images read as boxed rectangles with flat top and bottom edges. The `.hub-case__media` mask (HubTemplate.css:328) fades correctly. The shade (HubTemplate.css:336-337) is what cuts it.",
+   "fix": "Give `.hub-case__shade` the same vertical mask as the media: `mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%)`. At ≥1800px also add the side fade. As an alternative, keep the shade inside the media box and drop the negative overlap. Re-check every boundary at 1280, 1440, 1920 and 2560, including after filtering (non-adjacent items become neighbours).",
+   "owner": "hubs"
+  },
+  {
+   "severity": "major",
+   "page": "/industrias/ and /blog/ (cta-final Dawn, subject-left)",
+   "viewport": "1280x720, 1440x900, 1920x1080, 2560x1080",
+   "problem": "On the two subject-left closings, the H2 runs past the frame's right edge and into the SceneRail column. The hub rule `body.hub #cta-final .t-h2{font-size:clamp(2.25rem,1rem + 3.3vw,4.75rem)}` (HubTemplate.css:475) removes cine's `6.2svh` cap for subject-left Dawn. cine also sets `max-width:none` there, so the larger headline overflows the column. The H2 is 63.5px at 1440x900, against 55.8px on the other pages that use this Dawn.",
+   "evidence": "CDP geometry, right edge of the last H2 line against the frame's right edge and the rail. /industrias/: 1249 vs frame 1200 and rail 1209–1241 at 1280; 1385 vs 1350 and rail 1364–1396 at 1440; 1753 vs 1680 at 1920; 2308 vs 2000 at 2560. /blog/: 1412 vs 1350 at 1440; 1785 vs 1680 at 1920; 2309 vs 2000 at 2560. Rail ticks visibly cross 'caso?' and 'minutos.' in z-blog-dawn.png, ind-dawn-1280.jpg and d/industrias-08.jpg. For comparison, /servicios/crm-con-ia/ and /nosotros/ keep their lines at ≤1338 at 1440.",
+   "fix": "Keep the svh cap in the hub override, e.g. `font-size:min(clamp(2.25rem,1rem + 3.3vw,4.75rem),6.2svh)`, or scope the override to subject-right closings. Also bound the H2 to the frame, e.g. `max-width:min(100%,13.5em)` or a max-width that stops at the frame edge.",
+   "owner": "hubs"
+  },
+  {
+   "severity": "major",
+   "page": "/blog/",
+   "viewport": "1280x720, 1440x900, 1920x1080, 2560x1080 (≥1024 desktop)",
+   "problem": "The sticky 'portada' column of the guide index cuts Kain in half and sometimes shows an empty crop. `.hub-guides__still img{object-fit:cover;object-position:72% 40%}` crops every 16:9 plate into a 404×505 portrait with a radial mask, with no regard for where the subject sits. Kain appears sliced at the right edge for guides 01, 03, 05 and 06, which breaks the brand rule that Kain is always full body. Guides 02 (servicios-no-se) and 04 (kommo-hero) show an empty dark crop. The right ~35% of the screen reads as a dead column for about 1,500px of scroll.",
+   "evidence": "Per-guide captures in hubaudit/stills-sheet.jpg (srcs: home-sistema-2-atender, servicios-no-se, art-agente-chatbot-hero, kommo-hero, gohighlevel-hero, home-sistema-4-automatizar). Also blog-still.jpg (Kain cut at x≈1345), d/blog-02.jpg and d/blog-03.jpg (near-black column), and sh/s2560-blog-00.jpg (half Kain). CSS at HubTemplate.css:412-415.",
+   "fix": "Frame each still from plates.json `subject.d`. Either set object-position and size per item (e.g. through `--ox/--oy` like HubCases) so the full figure fits, or use a landscape box. Where the plate cannot fit a full-body subject, use the plate's still or cut asset, or remove the sticky still.",
+   "owner": "hubs"
+  },
+  {
+   "severity": "major",
+   "page": "/blog/",
+   "viewport": "all",
+   "problem": "The guide-index lede is now false. It says 'Las estamos escribiendo con el equipo que implementa estos sistemas. Mientras se publican, Kain te da la respuesta corta de cada una.' All six guides are built (200), every row shows 'LEER LA GUÍA →', and the hero shows a 'Guía destacada'. blog.json pendientes are also out of date: they say no article exists and that /preguntas-frecuentes/ doesn't exist, and both now exist. servicios.json says the same about /metodologia/, which is now built and linked. The index still omits the real 'Actualizado' date that the articles now show (19 de octubre de 2026), which §5.5 and D ask for.",
+   "evidence": "src/content/paginas/blog.json:74. Visible text in hubaudit/text-blog.txt. curl returns 200 for all six /blog/* routes and for /preguntas-frecuentes/ and /metodologia/. The articles render `<time datetime=\"2026-10-19\">`.",
+   "fix": "Rewrite the lede for published guides (e.g. 'Seis guías escritas con el equipo que implementa estos sistemas…'). Update the pendientes in blog.json and servicios.json. Optionally add 'Actualizado: <fecha>' to each built row from the article's `actualizado` field.",
+   "owner": "hubs"
+  },
+  {
+   "severity": "minor",
+   "page": "/casos/",
+   "viewport": "1280x720, 1440x900, 1920x1080, 2560x1080",
+   "problem": "The 'IMAGEN ILUSTRATIVA DEL SECTOR' label sits at `right:var(--action-x)` (HubTemplate.css:352), which is the fixed SceneRail column. As the page scrolls, the rail ticks cross the word 'SECTOR'. At 2560 the left-side labels float at the viewport edge (x≈45), far from the 2200px-capped image they label.",
+   "evidence": "Label vs rail x-range: 1026–1235 vs 1209–1241 at 1280; 1181–1390 vs 1364–1396 at 1440; 1655–1864 vs 1838–1870 at 1920. Visible collision in z-casos05-rail.png (d/casos-05.jpg, y≈398). 2560: z-c2560.jpg.",
+   "fix": "Anchor the label to the frame or the media box, e.g. `right:calc((100% - var(--frame))/2)` and the mirrored `left`, so the rail gutter stays clear. Clamp it inside the ≤2200px media at ultra-wide.",
+   "owner": "hubs"
+  },
+  {
+   "severity": "minor",
+   "page": "/servicios/#conexion (also /blog/ index)",
+   "viewport": "390x844, 360x740, desktop",
+   "problem": "The service links under each conexion node (`.hub-node__a`, mono 10.5px) are 15px tall and only 4–12px apart. 'Web' and 'SEO' are 23×15px, side by side. That falls below R11's ≥24×24 target rule and WCAG 2.5.8 spacing. The blog 'Leer la guía →' links are 117×11px. They pass WCAG only because the title link duplicates them, but they still miss R11.",
+   "evidence": "CDP tap-target scan at 390x844. Paid media 76×15, Web 23×15, SEO 23×15, Kommo 38×15, Agentes de IA 98×15. hub-guide__read 117×11 (×6). CSS at HubTemplate.css:238-239.",
+   "fix": "Give `.hub-node__a` `min-height:24px` with inline-flex alignment or block padding, and widen the gap to ≥8px with 24px boxes. Apply the same to `.hub-guide__read`, or make the whole row the target.",
+   "owner": "hubs"
+  },
+  {
+   "severity": "minor",
+   "page": "/blog/ (hero 'Guía destacada')",
+   "viewport": "1440x900, 390x844",
+   "problem": "The featured-guide link has `line-height` equal to its font size (15px/15px), so its two lines nearly touch. Its label is `display:block`, so the square node is glued to 'GUÍA' with no gap, unlike every other eyebrow. At 1440x900 the block ends at y=897, on the fold.",
+   "evidence": "CDP: `.hub-featured a` font 15px, line-height 15px, box 851–897 of a 900px viewport. Label display:block, gap normal. Crop z-blog-feat.png and mobile capture mm/blog-00.jpg (frame 2).",
+   "fix": "Set `line-height:1.35` on `.hub-featured a` and use the eyebrow flex+gap pattern for the label. Consider dropping the featured block below the hero at heights under about 950px, as the code already does under 820px.",
+   "owner": "hubs"
+  },
+  {
+   "severity": "minor",
+   "page": "/casos/",
+   "viewport": "all",
+   "problem": "Spanish and copy polish. (1) In Nota de método the token makes 'Todas las cifras de esta página son Datos internos de Ingeniak…', with a capital 'Datos' mid-sentence. (2) The datos definition reads 'un e-commerce de la Ciudad de México con −58% costo por lead en 60 días', missing 'en'. (3) 'INGENIAK EN DATOS' appears twice in a row (definition eyebrow, then MetricRow heading). The paragraph's '+73 sistemas en producción en 7 países' is repeated in the figure row directly below.",
+   "evidence": "src/content/paginas/casos.json:181 ({{source}} mid-sentence) and :52 ({{metric:ecom-cpl|full}}). Rendered text in hubaudit/text-casos.txt. Duplicate label visible in d/casos-01.jpg and d/casos-02.jpg.",
+   "fix": "Rephrase so {{source}} doesn't start lowercase prose, e.g. 'La fuente de todas las cifras: {{source}}.' Use 'con {{metric:ecom-cpl}} en costo por lead en 60 días', as the meta does. Change one of the two 'Ingeniak en datos' labels, or drop sistemas/países from the sentence.",
+   "owner": "hubs"
+  },
+  {
+   "severity": "minor",
+   "page": "/industrias/ (#definicion note)",
+   "viewport": "all",
+   "problem": "The note says 'Kain no da consejo médico, legal ni financiero'. The approved FAQ bank (faq.json, K-entries) only says Kain 'no da consejo médico ni legal'. 'financiero' adds an unconfirmed product claim.",
+   "evidence": "src/content/paginas/industrias.json:69 vs src/data/faq.json:225 and :449.",
+   "fix": "Use the approved wording ('no da consejo médico ni legal'), or keep 'financiero' only with a 'PREGUNTA AL CLIENTE' pendiente until it's confirmed.",
+   "owner": "hubs"
+  }
+ ],
+ "nosotros-local": [
+  {
+   "severity": "major",
+   "page": "/agentes-ia-guadalajara/#casos",
+   "viewport": "all (1440x900, 1280x720, 1920x1080, 2560x1080, 390x844, 360x740)",
+   "problem": "The dental case Still shows a bare '3.2×' with no unit or time window. The template renders Still variant=\"plana\", which calls <Metric variant=\"mega\" label={false}>, so 'más citas en 90 días' never appears. The copy line under it ('Agente de IA en WhatsApp que contesta, agenda y confirma citas.') does not say what was multiplied either. This breaks ESPEC §0.1-2: every figure must carry its sector, city and time window. The approved /casos/ hub (HubCases.astro) prints m.label right next to the same mega figure.",
+   "evidence": "gdl-d/gdl-07.jpg and z-stills.png in scratchpad/aud-nl. Rendered HTML: <span data-metric=\"dental-citas\" class=\"metric metric--mega still__metric still__metric--mega\"><span class=\"metric__v t-mega\">3.2×</span></span> followed by the title and line, with no label. Source: LocalTemplate.astro:268 (variant=\"plana\") and Still.astro, where plana uses label={false}.",
+   "fix": "Show the metric label in the Still. Either stop using variant=\"plana\" for these cards, or file a request with ui (peticiones.md) so plana prints METRICS[id].label the way HubCases does. Until then, put the label in casos.items[0].line, e.g. 'más citas en 90 días con un agente de IA en WhatsApp que contesta, agenda y confirma'.",
+   "owner": "nosotros-local"
+  },
+  {
+   "severity": "major",
+   "page": "/agentes-ia-guadalajara/#mapa",
+   "viewport": "1440x900, 1280x720, 2560x1080, 390x844, 360x740",
+   "problem": "In the custom 'Cómo llegar' map, the light branches cross text, which F20 forbids. branch() always ends with a horizontal run into the municipality node. Tonalá's label sits on the left side (side:'l'), so the cyan line strikes straight through 'TONALÁ'. Every branch also starts with a horizontal segment along office.y, so it runs underneath the 'INGENIAK · AV. PUNTO SUR 312' pill; the Tonalá diagonal visibly ends inside the pill. On mobile, the labels are 9.5px mono (.lc-plan__lbl font-size:9.5px), and 'TONALÁ' nearly touches 'TLAQUEPAQUE'. The north arrow (stroke at .6 alpha under the radial mask) is almost invisible.",
+   "evidence": "z-map.png (desktop) and z-map-m.png (mobile) in scratchpad/aud-nl: line through 'TONALÁ', branches entering the office label. DOM probe at 390: lc-plan__lbl fs=9.5px. LocalTemplate.astro:117-125 branch() and places[] (Tonalá side 'l'); LocalTemplate.css:142-171.",
+   "fix": "Route the branches so they never sit under a label. Put Tonalá's label on the right (side 'r') or end its branch with a vertical approach. Start the branches vertically or diagonally from the office node, or move the office pill below or left of the node so the horizontal runs stay clear of it. Raise the mobile label size to ≥11px (the t-label floor used elsewhere) and space Tlaquepaque and Tonalá apart. Make the N mark legible or remove it.",
+   "owner": "nosotros-local"
+  },
+  {
+   "severity": "minor",
+   "page": "/nosotros/",
+   "viewport": "1920x1080, 2560x1080, any DPR≥2 laptop (e.g. 1440x900@2x)",
+   "problem": "The hero LCP preload asks for image widths that don't exist, so the browser logs a 404 and the preload is wasted. The hero falls back to nosotros-manifiesto (srcsetMax 1920; only -1280 and -1920 are exported). AboutTemplate still passes lcpSrcsetMax={2752}, so BaseLayout emits <link rel=preload imagesrcset> with -2560.avif and -2752.avif. The visible <img> correctly stops at 1920.",
+   "evidence": "Console at 1920x1080 and 2560x1080: 'Failed to load resource: 404 http://127.0.0.1:4321/img/cine/nosotros-manifiesto-2560.avif' plus a 'preloaded but not used' warning (nos-1920x1080.log, nos-2560x1080.log). nos.html preload imagesrcset lists 2560w and 2752w. public/img/cine has only nosotros-manifiesto-1280/-1920. AboutTemplate.astro:138.",
+   "fix": "Pass the srcsetMax of the plate actually rendered: teamReady ? (heroPl.srcsetMax ?? 2752) : (getPlate(heroFb)?.srcsetMax ?? 1920). Optionally, ask nav (peticiones.md) to have BaseLayout clamp lcpSrcsetMax to the widths plates.json actually exports.",
+   "owner": "nosotros-local"
+  },
+  {
+   "severity": "minor",
+   "page": "/agentes-ia-guadalajara/#mapa",
+   "viewport": "all",
+   "problem": "The copy treats an unconfirmed fact as true. The map lede says 'Si quieres visitarnos, escríbenos antes por WhatsApp para coordinar la cita.', which promises that office visits can be arranged. The page's own pendientes still lists 'PREGUNTA AL CLIENTE · ¿reciben visitas en la oficina?'. No source (A-sitio-actual, v1 agentes-ia-guadalajara, RESPUESTAS-CLIENTE) says that visits happen.",
+   "evidence": "src/content/paginas/guadalajara.json mapa.lede vs pendientes[3]. Rendered in gdl-d/gdl-08.jpg.",
+   "fix": "Until the client confirms, drop the visit invitation and keep the address plus 'Para empezar a trabajar juntos no hace falta venir: todo arranca con una llamada por Google Meet.' Restore the sentence once visits are confirmed in writing.",
+   "owner": "nosotros-local"
+  },
+  {
+   "severity": "minor",
+   "page": "/nosotros/ and /agentes-ia-guadalajara/",
+   "viewport": "all",
+   "problem": "Several pages from sitemap.json internalLinks are linked only from the header and footer, not from the page body. In /nosotros/ the body has no link to /metodologia/, /casos/, /agentes-ia-guadalajara/ or /contacto/. The ficha prints 'Metodología VKTOR™', 'Sede Guadalajara', '+73 sistemas en producción' and 'Correo' without links. /agentes-ia-guadalajara/ has no body link to /contacto/. All of these pages are built and return 200.",
+   "evidence": "Main-body href scan: nosotros is missing /metodologia/, /casos/, /agentes-ia-guadalajara/ and /contacto/ (4 of 7 internalLinks); guadalajara is missing /contacto/. By comparison, the approved /servicios/agentes-ia-whatsapp/ is missing 0 of 11.",
+   "fix": "Add href fields to the EntitySheet rows in nosotros.json: Metodología → /metodologia/, Sede → /agentes-ia-guadalajara/, En producción → /casos/. Add a /contacto/ link where it fits (FAQ footer or ficha) on both pages. EntitySheet already supports href.",
+   "owner": "nosotros-local"
+  },
+  {
+   "severity": "minor",
+   "page": "/agentes-ia-guadalajara/#local-alcance and /nosotros/#hero",
+   "viewport": "1280x720, 1440x900, 1920x1080",
+   "problem": "The project's own scene guard flags text sitting outside the plate's safe zone, over the blurred city lights of nosotros-manifiesto: 9–10 lines of the two lists in local-alcance, and 2–5 lines of the H1 and lede in the /nosotros/ hero. AA contrast still passes thanks to the veil, but it is the one scene on these pages where body text sits on busy bokeh.",
+   "evidence": "node scripts/check-escenas.mjs --only /nosotros/,/agentes-ia-guadalajara/ gives 7 warnings, e.g. '! /agentes-ia-guadalajara/#local-alcance @1440x900 · 10 línea(s) fuera de la zona segura de nosotros-manifiesto: \"En Guadalajara y Jalisco\"' and '! /nosotros/#hero @1440x900 · 5 línea(s)…\"operan y miden.\"'. Output in scratchpad/aud-nl/escenas.txt.",
+   "fix": "local-alcance: narrow .lc-reach .is__text, or keep the two lists stacked at ≥1400 so they stay within x ≥ 0.6 of the mirrored plate; or strengthen the right-side veil only below the lede. Nosotros hero (fallback plate): cap the H1 and lede width to the plate's safe box (x ≤ 0.40 below y 0.46) while the fallback is in use.",
+   "owner": "nosotros-local"
+  }
+ ],
+ "metodo-stack": [
+  {
+   "severity": "major",
+   "page": "/metodologia/",
+   "viewport": "1280x720, 1440x900 (pinned VKTOR sequence)",
+   "problem": "In the pinned VktorSequence, the 'Qué sale de la fase / Con quién' block sits on top of the lit glass slabs and their cyan step markers. The text leaves the plate's safe zone (metodologia-hero safe.d = [0.04, 0.06, 0.56, 0.64], so y ≤ ~576 px at 900 px tall). Several lines run over illuminated plate elements, which hurts readability and breaks the 'text never over the subject or lit surfaces' rule.",
+   "evidence": "Real-scroll pinned captures are in scratchpad/aud-ms/pin/zoom1280.png and pin/zoom1440.png. At 1280x720, on the Verify step the active V marker prints on top of 'todavía' ('qué t●davía no'). On the Koncept step the K marker sits on 'decides'. At 1440x900 the Operate step's 'pasa a una persona.' and the Rise step's 'mes.' rest on the V/K slab tops, and the block reaches y≈690–720 of 900. Full sequences: pin/sheet-m1280.jpg and aud-ms/met/1440x900-03…05.jpg.",
+   "fix": "In src/styles/tpl/MethodTemplate.css, while the sequence is pinned, keep each step inside y ≤ 0.62 of the stage. Options: put 'qué sale' and 'con quién' on one compact line, or hide .seq__line below ~920 px of height (the full text stays in the table); or move the stagebox down so the slab row sits under the text block. Recheck at 1280x720, 1366x768 and 1440x900.",
+   "owner": "metodo-stack"
+  },
+  {
+   "severity": "major",
+   "page": "/metodologia/",
+   "viewport": "1280x720 – 2560x1080; also reduced motion and no-JS",
+   "problem": "The VktorSequence reuses the hero plate with almost the same framing. The camera push is capped to 1 + (cam−1)·0.3 ≤ 1.1, so the sequence reads as the hero shown again. With the que-es rack blur in between, the same Kain 'presenta' frame appears three times in a row. This breaks ESPEC R5 (\"nunca se ve dos veces el mismo encuadre en una página\") and R13 (no repeated pose in consecutive scenes). The page loses its main cinematic beat compared with the approved pages.",
+   "evidence": "Kain's position in the hero (aud-ms/met/1440x900-00.jpg, x≈610–800 and y≈70–385 at 900 px width) is the same as in every pinned step (1440x900-03…05.jpg; pin/sheet-m1920.jpg and pin/sheet-m2560.jpg). The cap is in MethodTemplate.css: `.mth-seq .seq__stagebox .stage{scale:min(calc(1 + (var(--cam,1) - 1) * .3),1.1)}`. In reduced motion the full hero frame is repeated at the same size (aud-ms/red/met-at0-fases.png).",
+   "fix": "Give the sequence its own camera while keeping Kain either fully in frame or fully out of it. For example, open tight on slabs V, K and T (≥1.35, with Kain fully out of frame) and pull back or pan right to show Kain whole on R at the end. Another option is a horizontal pan per slab instead of a centered zoom. Either way, never show the hero framing again. If that is not possible, ask for the P3 phase plates.",
+   "owner": "metodo-stack"
+  },
+  {
+   "severity": "major",
+   "page": "/tecnologias/",
+   "viewport": "desktop ≥768 (hero)",
+   "problem": "The hero places third-party logos (OpenAI, n8n, WhatsApp, Supabase) and the Kommo seal on the glass plaques with a cyan drop-shadow glow, over a busy lit plate. LOGOS.md requires logos without shadows or effects, and n8n's guide explicitly forbids shadows and busy backgrounds. This page's stated purpose is to show each tool with its brand rules. The hero also shows two Kommo seals at once: the one on the plaque and the one in the trust row under the CTAs.",
+   "evidence": "src/styles/tpl/StackTemplate.css sets `.stk-plaque .logo-mask{…filter:drop-shadow(0 0 8px rgb(0 229 255 / .55))}` and `.stk-plaque--seal img{…filter:drop-shadow(0 0 8px rgb(0 229 255 / .4))}`. It is visible in aud-ms/tec/1440x900-00.jpg and spot/tec-1280x720-00.png. The rule is in materiales/logos-software/LOGOS.md ('Úsalos sin deformar, sin rotar, sin sombras ni efectos'; n8n: 'Lo que no se hace: … ponerle sombras, ponerlo sobre fondos cargados').",
+   "fix": "Remove the filters from the marks and put any glow on the glass plaque instead. Keep the logos flat white. Either remove the n8n plaque or use the official wordmark at ≥100 px. Keep a single Kommo seal in the hero; the linked trust-row badge is enough.",
+   "owner": "metodo-stack"
+  },
+  {
+   "severity": "major",
+   "page": "/metodologia/",
+   "viewport": "all",
+   "problem": "The page body has no contextual links to 4 of the 5 internalLinks required by sitemap.json and D-arquitectura (/servicios/consultoria-ia-empresas/, /casos/, /servicios/, /nosotros/). Those pages are reachable only from the header and footer. The methodology page therefore misses the conversion and SEO paths it is meant to feed. All four target pages are already built.",
+   "evidence": "Links inside <main> on /metodologia/: /, /discovery/ (×2), wa.me (×3), #fases-fin, /casos/clinica-dental-monterrey/ and /casos/ecommerce-cdmx-costo-por-lead/ (from the MetricRow). None point to consultoria, /casos/, /servicios/ or /nosotros/. The extraction is in scratchpad/aud-ms/met.html.",
+   "fix": "Add in-body links with linkTarget(). Suggested places: the que-es body ('Consultoría en IA' → /servicios/consultoria-ia-empresas/); the Koncept step or the table ('servicios' → /servicios/); the tiempos note ('ver casos' → /casos/); and the correccion note or Dawn lede (equipo → /nosotros/).",
+   "owner": "metodo-stack"
+  },
+  {
+   "severity": "minor",
+   "page": "/tecnologias/",
+   "viewport": "all",
+   "problem": "In the StackHub, n8n appears as a 34 px icon. The sitemap brief for the automatizacion section ('n8n (wordmark oficial, mín. 100 px)') and n8n's guide (use the n8n-wordmark-*.svg files; the icon alone is only for small icons) both call for the official wordmark.",
+   "evidence": "`.stk-tool__mark .logo-mask{width:34px;height:34px}` renders the n8n mark (aud-ms/tec/1440x900-05.jpg). public/img/logos/n8n-wordmark-white.svg exists but is not used.",
+   "fix": "For slug n8n, use n8n-wordmark-white.svg at ≥100 px width in its own wide mark slot (logo-mask--wide with min-width:100px), with no effects.",
+   "owner": "metodo-stack"
+  },
+  {
+   "severity": "minor",
+   "page": "/tecnologias/",
+   "viewport": "desktop 1280–2560 and mobile 360–390",
+   "problem": "The StackHub falls short of §5.8 ('isotipo de cristal al centro con ramas hacia 5 grupos'). It is built as a small 150–210 px sticky isotipo with a text index in the left column. The five groups repeat the same label/H3/line/two-column icon list for ~3,300 px on desktop and ~4,000 px on mobile, so the section reads as a logo directory rather than a scene. Below 1024 px the index and pillar are hidden, leaving the glass isotipo floating alone between the hub intro and group 01.",
+   "evidence": "aud-ms/tec/1440x900-03…08.jpg; aud-ms/tec-m-sheet-0.jpg (frame 4) and spot/sheet-tec-360-0.jpg (frame 4) show the orphan isotipo on mobile.",
+   "fix": "Make the isotipo the visual hub: larger and centred, with branches that draw toward each group as it enters. Vary the rhythm across groups (for example, give the Kommo/CRM group a hero row). On mobile, either drop the orphan isotipo or fold it into the hub intro as an aura.",
+   "owner": "metodo-stack"
+  },
+  {
+   "severity": "minor",
+   "page": "/metodologia/, /tecnologias/",
+   "viewport": "1280x720 – 1920x1080 (and stacked mobile)",
+   "problem": "There are small typographic misalignments below the approved bar. In each VKTOR step, the 'Qué sale de la fase' and 'Con quién' values are not top-aligned, because the .mth-io grid rows stretch. In /tecnologias/ criterios, the four titles do not share a left edge because numeral widths vary.",
+   "evidence": "Measured offsets of the .mth-io__v values from the top of .seq__metrics: V 30/30, K 30/40, T 40/30, O 30/51, R 30/51 px (also visible in aud-ms/red/met-at1-fasesseqsteps.png). Criterios title x-offsets: 76, 84, 83 and 88 px (aud-ms/tec/1440x900-02.jpg).",
+   "fix": "`.mth-io{align-content:start}`. For criterios, give the numeral column a fixed width, e.g. `.stk-crit__item{grid-template-columns:4.75rem 1fr}`, or use tabular numerals.",
+   "owner": "metodo-stack"
+  },
+  {
+   "severity": "minor",
+   "page": "/metodologia/",
+   "viewport": "360x740, 390x844",
+   "problem": "The top of the mobile hero says 'Metodología VKTOR™' twice in a row: the eyebrow, then the H1 kicker 'Metodología VKTOR™:'. eyebrowRepeatsCrumbs only hides the eyebrow on desktop, where the breadcrumbs repeat it; on mobile the breadcrumbs are hidden and the eyebrow duplicates the kicker.",
+   "evidence": "aud-ms/met-m-sheet-0.jpg frame 1 and spot/sheet-met-360-0.jpg frame 1.",
+   "fix": "Hide the eyebrow on mobile when it equals the H1 kicker, or change it to something that adds information (e.g. 'Cómo trabajamos · 5 fases').",
+   "owner": "metodo-stack"
+  },
+  {
+   "severity": "minor",
+   "page": "/metodologia/",
+   "viewport": "all",
+   "problem": "The Operate copy overstates the source. 'monitoreamos cada conversación y cada flujo' (fases.steps[3].line) promises a per-conversation monitoring service that is not confirmed anywhere. The v1 source line is only 'Capacitamos, monitoreamos y ajustamos el sistema en producción'.",
+   "evidence": "src/content/paginas/metodologia.json sections.fases.steps[3].line; materiales/v1/index.html:86 and :506.",
+   "fix": "Rewrite as 'Capacitamos a tu equipo, monitoreamos el sistema en producción y ajustamos lo que haga falta', or add a PREGUNTA AL CLIENTE before keeping the stronger claim.",
+   "owner": "metodo-stack"
+  }
+ ],
+ "faq-contacto-legal": [
+  {
+   "severity": "major",
+   "page": "/preguntas-frecuentes/",
+   "viewport": "1280x720, 1440x900, 1920x1080 (desktop only; 390x844 passes)",
+   "problem": "In the 'precio' and 'crm' topics, the isotipo aura sits right behind the text column, so some text drops below AA contrast (ESPEC §2.1.1 makes AA mandatory). The worst case is the 12 px cyan mono line 'La implementación toma de 7 a 30 días, según el alcance.' Its words 'DÍAS, SEGÚN' are cyan on a light-cyan glow and are visibly hard to read.",
+   "evidence": "Measured on the brightest pixel under each text line, the same method as scripts/check-contraste.mjs, with reduced motion. .faq-price__line (12 px, #00E5FF; the cyan marker square was excluded): 1.67:1 at 1280x720, 1.78:1 at 1440x900, 1.96:1 at 1920x1080, 8.98:1 at 390x844. Lede '#crm .faq-sec__lede' (20.7 px, weight 400): 2.30:1. Lede '#precio .faq-sec__lede': 2.58:1. Both ledes need 4.5:1. Captures: scratchpad/aud-fcl/price-zoom.jpg, crm-lede.jpg, precio-lede.jpg. Cause: the LIGHT map in src/components/templates/FaqTemplate.astro:118 and :120 places the crm isotipo at x 14% / y 30% and the precio isotipo at x 20% / y 44% with opacity 0.7–0.8. Both positions are under the 5-column head. check-contraste.mjs only scans section.is, so it does not catch this.",
+   "fix": "Move the 'precio' and 'crm' isotipo auras to the accordion side (x ≥ 60%), or below the head column (y ≥ 80%). Alternatively, lower their opacity under the head to ≤ 0.35. Also set .faq-price__line to var(--soft) or white, keeping the cyan only on the marker square. Re-measure at 1280, 1440 and 1920.",
+   "owner": "faq-contacto-legal"
+  },
+  {
+   "severity": "minor",
+   "page": "/contacto/",
+   "viewport": "all",
+   "problem": "The 'Teléfono y WhatsApp' row of the 'Datos de contacto' sheet links to WhatsApp with a generic message, 'Hola Kain, quiero información sobre Ingeniak.', instead of this page's own message. That breaks the per-page WhatsApp attribution (D, R10): leads from that link cannot be traced to /contacto/. The row is also labelled 'Teléfono' but has no tel: link.",
+   "evidence": "In the rendered HTML, the oficina EntitySheet row has <a href=\"https://wa.me/523321017799?text=Hola%20Kain%2C%20quiero%20informaci%C3%B3n%20sobre%20Ingeniak.\" data-wa>. Every other WhatsApp link on the page uses 'Hola Kain, vengo de la página de contacto de Ingeniak…'. EntitySheet accepts a waHref prop (src/components/ui/EntitySheet.astro:26,30), but ContactTemplate.astro:219 does not pass it.",
+   "fix": "In ContactTemplate.astro:219 render <EntitySheet … waHref={wa} />. Add a tel: link to the number only once the client confirms it takes voice calls (see the cliente finding).",
+   "owner": "faq-contacto-legal"
+  },
+  {
+   "severity": "minor",
+   "page": "/aviso-privacidad/",
+   "viewport": "≥1024 px (desktop)",
+   "problem": "On desktop the index's <summary> looks like a static 'ÍNDICE' label but is still a focusable disclosure control. A keyboard user who tabs to it and presses Enter collapses the whole index. What is left is a bare 'ÍNDICE' label with no chevron, and because the summary has pointer-events:none, a mouse user cannot reopen it. Screen readers announce it as an expand/collapse button.",
+   "evidence": "Over CDP at 1440x900: the 13th Tab stop is SUMMARY.lg-toc__sum (297×11 px). Pressing Enter changes details[data-lg-details].open from true to false. Capture: scratchpad/aud-fcl/lg-toc-collapsed.jpg, where only 'ÍNDICE' remains. CSS: LegalTemplate.css '@media (min-width:1024px){.lg-toc__sum{pointer-events:none}}'.",
+   "fix": "At ≥1024 px, set tabindex=\"-1\" on the summary and preventDefault on its click/toggle. Simpler: in the existing script, listen for 'toggle' and force details.open = true while !narrow.matches. Alternatively, render the desktop label outside <details>.",
+   "owner": "faq-contacto-legal"
+  },
+  {
+   "severity": "minor",
+   "page": "/contacto/",
+   "viewport": "all",
+   "problem": "The page body links to none of the internal targets sitemap.json requires for /contacto/: /agentes-ia-guadalajara/, /nosotros/ and /aviso-privacidad/. All three pages are already built. The aviso link matters most here, because this page is where people hand over their contact data.",
+   "evidence": "Unique internal hrefs inside <main> of /contacto/ are only '/' and '/discovery/'. sitemap.json contacto.internalLinks = ['/discovery/','/agentes-ia-guadalajara/','/nosotros/','/aviso-privacidad/'], and all of them return 200 on the dev server.",
+   "fix": "Add the links through linkTarget(). For example: the oficina lede's 'zona metropolitana de Guadalajara' to /agentes-ia-guadalajara/; 'mismo equipo' in the hero or the rutas lede to /nosotros/; a micro line under the routes table such as 'Cómo tratamos tus datos: Aviso de privacidad' to /aviso-privacidad/.",
+   "owner": "faq-contacto-legal"
+  },
+  {
+   "severity": "minor",
+   "page": "/contacto/",
+   "viewport": "390x844, 360x740",
+   "problem": "On mobile the hero promises 'Tres formas de llegar al mismo equipo', but the WhatsApp route shrinks to an unlabelled 48 px icon circle squeezed beside the micro text. That leaves only two routes legible. On the approved Service and Industry heroes at the same width, WhatsApp is a full-width labelled 'Escríbele a Kain' button.",
+   "evidence": "scratchpad/aud-fcl/cmp-m-hero.jpg and ct/390x844m-00.jpg compared with svc-m0.jpg and salud-m0.jpg. The shared rule in pages.css (lines 18–25) hides .btn__t for .tpl-hero. Conversion and home override it (body.cv / body.hm, pages.css:612–616 and :827); /contacto/ does not.",
+   "fix": "In src/styles/tpl/ContactTemplate.css add a body.ctc override that mirrors body.cv: stack the CTAs ('p' 'm' 'w') and make .btn--wa a labelled pill 52 px tall at full width with .btn__t visible.",
+   "owner": "faq-contacto-legal"
+  },
+  {
+   "severity": "minor",
+   "page": "/preguntas-frecuentes/",
+   "viewport": "all (placeholder: 390x844, 360x740)",
+   "problem": "The search matches only the literal question and answer text, while the placeholder suggests 'Precio' as a search term. Typing 'precio' returns '1 respuesta' (W03) and switches off the other 3 answers of the 'Precio y tiempos' topic (G07, K04, G08), whose text says 'cuesta' or 'USD'. Separately, on phones the placeholder is cut mid-word: 'Precio, Kommo, WhatsApp, n8' at 390 px and '…WhatsApp' at 360 px.",
+   "evidence": "CDP: typing 'precio' gives status '1 respuesta para «precio»' and visible ['W03']; 'cuánto' returns 5. Captures: faq/390x844m-00.jpg and cmp-360.jpg. The input has 56 px padding on both sides even when the clear button is hidden (FaqTemplate.css:23).",
+   "fix": "Give each [data-faq-item] a hidden searchable string with its topic rail/eyebrow plus a few synonyms (precio/costo/cuesta/USD, tiempo/días/plazo), and include it in norm(). Shorten the mobile placeholder (e.g. 'Precio, Kommo, n8n…'), or reduce the right padding to about 20 px while the clear button is hidden.",
+   "owner": "faq-contacto-legal"
+  },
+  {
+   "severity": "minor",
+   "page": "/preguntas-frecuentes/",
+   "viewport": "1440x900, 390x844",
+   "problem": "Between the hero and the closing scene, the page repeats one skeleton six times: about 7,600 px at 1440 and about 12,500 px at 390. Each topic is the same split: numbered eyebrow, two-voice H2, lede, one small widget, remate, 'N respuestas' counter, glass accordion, then 2–3 'Para profundizar' arrow rows. The auras alternate, but scale, alignment and rhythm never change. Compared with the approved pages, it reads as a template loop rather than an edited sequence. The 'Automatización' topic has only 2 answers under a full-size head, which makes the repetition more obvious.",
+   "evidence": "Desktop captures scratchpad/aud-fcl/faq/1440x900-01…10 and mobile sheets faq-m-a…e. The six sections share identical geometry (FaqTemplate.astro:201–305, a single Intertitle split for every topic).",
+   "fix": "Break the loop in 2–3 places without adding boxes. Make 'precio' a centred full-width price beat with the factors as an inline row. Show 'empezar' steps as a horizontal rail at full width. Fold the six 'Para profundizar' blocks into one closing index before the Dawn, or show them only on hover/focus. Optionally merge 'automatizacion' into a shorter band, since it has only 2 answers.",
+   "owner": "faq-contacto-legal"
+  }
+ ],
+ "blog": [
+  {
+   "severity": "major",
+   "page": "art-partner-kommo · /blog/como-verificar-partner-oficial-kommo/",
+   "viewport": "all",
+   "problem": "An unconfirmed Ingeniak process claim is published as fact. Section 7 'Qué incluye' says 'Te explicamos por separado las licencias de Kommo … y nuestra implementación'. art-costo lists exactly this as unknown ('PREGUNTA AL CLIENTE · ¿la propuesta separa las licencias de Kommo/GoHighLevel…?'), and approved FAQ K01 does not say it. The same article lists 'No separa licencias e implementación en la propuesta' as a red flag, so the sentence presents Ingeniak as free of that flag without a source. It is also missing from this page's pendientes.",
+   "evidence": "src/content/paginas/art-partner-kommo.json, cuerpo block after h2 #verifica-a-ingeniak, item 3. Contrast with src/content/paginas/art-costo.json pendientes[3].",
+   "fix": "Rewrite using approved K01 wording ('te ayudamos a contratar las licencias y también implementamos el CRM…'), drop 'por separado', and add a PREGUNTA AL CLIENTE line to pendientes.",
+   "owner": "blog"
+  },
+  {
+   "severity": "major",
+   "page": "All 6 articles (cta-medio block)",
+   "viewport": "320×700 and 340×700 (any width under ~360)",
+   "problem": "The page scrolls sideways on narrow phones. In the 'Siguiente paso' CTA box, the label 'Agenda tu Discovery Session' pushes the button's node circle outside the pill. The micro line '30 min · 1:1 · Google Meet · sin costo' (white-space:nowrap) runs past the box and the viewport and is clipped ('sin co…'). The approved pages (/, /servicios/agentes-ia-whatsapp/, /industrias/salud/, /casos/clinica-dental-monterrey/) have no overflow at 320.",
+   "evidence": "documentElement.scrollWidth is 342 at 320 and 343 at 340 on every blog URL. Overflowing elements: P.t-micro 41→342 and SPAN.btn__node 295→331 inside #cta-medio (box 20→300, padding 48px 20px 32px). Screenshot: /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/blogqa/kghl/cta320-0.jpg",
+   "fix": "In ArticleTemplate.css under @media (max-width:767px): set `.art-cta .btn-micro{white-space:normal}`, let the button label wrap or shrink (`.art-cta__btns .btn{min-width:0} .art-cta__btns .btn__t{white-space:normal;text-align:left}`), and/or reduce `.enote--cta` side padding at ≤360px. Then re-check that scrollWidth equals clientWidth at 320.",
+   "owner": "blog"
+  },
+  {
+   "severity": "major",
+   "page": "art-n8n · /blog/n8n-vs-zapier-vs-make/ (hero)",
+   "viewport": "1280×720, 1440×900, 1920×1080",
+   "problem": "In the hero (subject-left, text-right), the text column starts over Kain's node-network graphic. 'vs Make:' and 'cuál' sit on glowing nodes and lines. The H1 fails AA contrast and the deck is at the limit. This breaks the rule that text never goes over the subject or plate graphic.",
+   "evidence": "check-contraste: '✗ #hero @1440x900 · 3 líneas bajo AA; peor 1.65:1 … \"cuál\"' and '✗ #hero @1920x1080 … 3.00:1 \"Cómo cobra cada una…\"'. check-escenas: '11 línea(s) fuera de la zona segura de home-sistema-4-automatizar' at 1280, 1440 and 1920. Reduced-motion screenshot: /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/blogqa/n8n/hero-red-0.jpg and spot/n8n-vs-zapier-vs-make-1280x720.jpg",
+   "fix": "safeRight() and --art-safe-r only limit left-side text columns. For subject-left or mirrored heroes, compute the text column's left start from plates.json safe.d (mirrored) and offset `.art-hero .is__text` or `.art-copy` to it, or add a text-side veil. Re-run check-contraste and check-escenas for /blog/n8n-vs-zapier-vs-make/.",
+   "owner": "blog"
+  },
+  {
+   "severity": "minor",
+   "page": "art-agente-chatbot · #escena-a-la-medida",
+   "viewport": "1440×900",
+   "problem": "The bottom of the in-article Kain scene ends in a visible floor line. The template's .is__fx mask turns transparent over the bottom 22%, so the plate's floor reflection fades to dark in about 44px. Approved mid scenes dissolve to ink over about 110px.",
+   "evidence": "Row luminance at x 700–1400: 52 at y772 → 12 at y816. Approved /industrias/salud/#kain-sector goes 80 → 3.6 over about 110px. Crop: /private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/blogqa/chat/scene1-crop.jpg (full: chat/scene1-d-0.jpg)",
+   "fix": "Mask the plate layer itself, e.g. `.art-scene .is__layer{mask-image:linear-gradient(180deg,#000 70%,transparent 100%)}`, or lengthen the bottom dissolve to at least 15% of the scene height so it blends into the reading light.",
+   "owner": "blog"
+  },
+  {
+   "severity": "minor",
+   "page": "art-n8n · Sigue explorando",
+   "viewport": "1440×900",
+   "problem": "The 'Automatización con n8n' related card shows the pain plate dolor-operacion (a stressed man on the phone at night under a warm, amber lamp) as the teaser for a positive service page. This breaks 'amber only for pain'. stillPlate() picks the target page's first unused plate: the hero home-sistema-4-automatizar is already used here, so it falls back to the 'senales' pain plate. art-partner-kommo hit the same problem and fixed it with a hint; art-n8n did not.",
+   "evidence": "/private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/blogqa/n8n/rel-d-0.jpg. Images in main include dolor-operacion-1280.webp.",
+   "fix": "Pass a plate hint for that item in art-n8n relacionados (e.g. riel-servicios), or make stillPlate() skip ids starting with 'dolor-'.",
+   "owner": "blog"
+  },
+  {
+   "severity": "minor",
+   "page": "All 6 articles · Sigue explorando",
+   "viewport": "1440×900",
+   "problem": "The 'Sigue explorando' block has weaker hierarchy than the approved pages. It has only the small mono eyebrow (the h2 is styled as t-label) above about 200px of empty dark. Approved pages give the same block a display headline ('Otras piezas del mismo sistema.').",
+   "evidence": "/private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/blogqa/n8n/rel-d-0.jpg vs ref/serv-rel-d-0.jpg",
+   "fix": "Render a display H2 from copy (relacionados.h2 with text and soft) under the eyebrow, as ServiceTemplate does, and tighten the top padding.",
+   "owner": "blog"
+  },
+  {
+   "severity": "minor",
+   "page": "art-costo, art-agente-chatbot, art-n8n (hero category line)",
+   "viewport": "360×740 and 390×844",
+   "problem": "The category and reading-time line wraps with the separator dot left at the end of the first line ('PRECIOS Y DECISIONES ▪' / 'LECTURA DE 11 MINUTOS'), which looks like a typographic error.",
+   "evidence": "/private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/blogqa/spot/g-360.jpg; costo/m-00.jpg; chat/sheet-m-00.jpg",
+   "fix": "Wrap the dot and the reading time in one nowrap span so the dot moves to the second line with it, or hide .art-cat__dot under 480px and stack the two labels.",
+   "owner": "blog"
+  },
+  {
+   "severity": "minor",
+   "page": "art-costo (hero glass figure)",
+   "viewport": "390×844",
+   "problem": "On mobile the 'Fig. 01 · Qué mueve el precio' panel inside the phone hides its title and all labels. What is left is five unlabeled bars that look like a loading skeleton.",
+   "evidence": "/private/tmp/claude-501/-Users-riklanderos-Web-Ingeniak-Versel/e64796e3-3852-42c2-8549-9c83b0f55e3b/scratchpad/blogqa/costo/m-hero-crop.jpg. CSS: ArticleTemplate.css lines 91–94 `.art-fig__top,.art-fig__t,.art-fig__l{display:none}`.",
+   "fix": "Show at least the title and short labels at mobile size (e.g. 11px), or hide the whole panel on mobile and leave the phone dark.",
+   "owner": "blog"
+  },
+  {
+   "severity": "minor",
+   "page": "All 6 articles",
+   "viewport": "1440×900 keyboard, and 390×844",
+   "problem": "Keyboard and touch access. At ≥1024px the fixed TOC is visibility:hidden while the hero is on screen and comes before the body in DOM order. Tabbing from the hero goes from 'Ir a la respuesta corta' straight to the first footnote, so keyboard users never reach the TOC. On mobile, 'Ir a la respuesta corta ↓' is a 209×23px tap target, under 24px.",
+   "evidence": "Focus trace: Blog crumb → A.art-jump → A «1» (footnote); TOC links have visibility:hidden at load. over.js at 390 and 320: A «Ir a la respuesta corta ↓» 209x23.",
+   "fix": "Make the TOC reachable: show it on :focus-within (e.g. `.art-toc:focus-within{visibility:visible}`) or add a skip link to #indice. Give .art-jump padding-block so it is at least 44px tall.",
+   "owner": "blog"
+  },
+  {
+   "severity": "minor",
+   "page": "Blog cluster (art-costo, art-agente-chatbot, art-ghl-espanol, art-kommo-ghl, art-partner-kommo)",
+   "viewport": "all",
+   "problem": "The same scenes repeat across the cluster, which reads as templated. caso-dental-hero (the doctor) is the only in-body scene in 3 of 6 articles, each with the same 8 min → 12 s / 3.2× figures. caso-retail-hero (the retail woman) appears in 2 of 6, and cta-amanecer closes 4 of 6. A reader who opens two or three articles sees the same doctor scene each time.",
+   "evidence": "Scene plates per page from DOM: escena-caso-dental in art-costo, art-agente-chatbot and art-ghl-espanol; escena-caso-retail and escena-dos-casos (caso-retail-hero) in art-partner-kommo and art-kommo-ghl. Screenshots: costo/scene-d-0.jpg, chat/grid-d-03.jpg, ghl/grid-d-02.jpg",
+   "fix": "Vary the in-body scene per article. For example, use home-sistema-* stations or the new sector plates for art-ghl-espanol and art-agente-chatbot, and keep caso-dental for art-costo only, where the case is the argument.",
+   "owner": "blog"
+  }
+ ]
+}

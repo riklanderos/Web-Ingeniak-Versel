@@ -60,7 +60,8 @@
         },
         {
           "term": "Sede",
-          "value": "Guadalajara, Jalisco, México"
+          "value": "Guadalajara, Jalisco, México",
+          "href": "/agentes-ia-guadalajara/"
         },
         {
           "term": "Oficina",
@@ -72,7 +73,8 @@
         },
         {
           "term": "En producción",
-          "value": "{{metric:sistemas|full}}"
+          "value": "{{metric:sistemas|full}}",
+          "href": "/casos/"
         },
         {
           "term": "Presencia",
@@ -80,7 +82,8 @@
         },
         {
           "term": "Metodología",
-          "value": "VKTOR™: Verify · Koncept · Transform · Operate · Rise"
+          "value": "VKTOR™: Verify · Koncept · Transform · Operate · Rise",
+          "href": "/metodologia/"
         },
         {
           "term": "Sub-marca",
@@ -299,7 +302,8 @@
         "L01",
         "G04"
       ],
-      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx.",
+      "links": [{ "label": "Todos los canales de contacto", "href": "/contacto/" }]
     },
     "cta-final": {
       "_componente": "Dawn (cta-amanecer en espejo)",

@@ -194,6 +194,7 @@
     },
     "relacionados": {
       "eyebrow": "Sigue explorando",
+      "h2": { "text": "Del precio", "soft": "al sistema completo." },
       "items": [
         { "href": "/servicios/agentes-ia-whatsapp/", "label": "Servicio", "title": "Agentes de IA para WhatsApp", "line": "Cómo atiende, califica y agenda un agente conectado a tu CRM.", "plate": "home-kain" },
         { "href": "/blog/agente-ia-whatsapp-vs-chatbot/", "label": "Blog", "title": "Agente de IA vs chatbot", "line": "Qué cambia y cuándo conviene cada uno." },

@@ -236,7 +236,8 @@ function stillPlate(it: any): string | undefined {
     if (fb) tried.push(typeof fb === 'string' ? fb : fb.plate);
   }
   tried.push(...NEUTRAL);
-  const pick = tried.find((id) => id && plateReady(id) && !used.has(id) && !stillTaken.has(id) && id !== 'cta-amanecer');
+  // Nunca una placa de dolor (ámbar) como portada de una pieza positiva, ni el amanecer del cierre
+  const pick = tried.find((id) => id && plateReady(id) && !used.has(id) && !stillTaken.has(id) && id !== 'cta-amanecer' && !id.startsWith('dolor-'));
   if (pick) stillTaken.add(pick);
   return pick;
 }
@@ -307,7 +308,7 @@ const H = (h: any) => h ?? { text: '' };
         <Breadcrumbs page={page} items={builtCrumbs(page.breadcrumbs)} class="tpl-mhide" />
         <p class="t-label t-label--cyan eyebrow art-cat">
           <span class="node" aria-hidden="true"></span><span>{categoria}</span>
-          <span class="art-cat__dot" aria-hidden="true"></span><span class="art-cat__read">Lectura de {minutes} minutos</span>
+          <span class="art-cat__rd"><span class="art-cat__dot" aria-hidden="true"></span><span class="art-cat__read">Lectura de {minutes} minutos</span></span>
         </p>
         <h1 id="hero-t" class="t-display-2 art-h1" data-split>
           <span set:html={litIn === 'text' ? voice(h1.text, h1.lit) : annotateFigures(h1.text)} />
@@ -587,7 +588,14 @@ const H = (h: any) => h ?? { text: '' };
     <section id="relacionados" class="art-sec art-rel tpl-glow" aria-labelledby="relacionados-t" data-art-stop>
       <div class="frame">
         <header class="art-rel__head">
-          <h2 id="relacionados-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{relC.eyebrow ?? 'Sigue explorando'}</h2>
+          {relC.h2?.text ? (
+            <>
+              <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{relC.eyebrow ?? 'Sigue explorando'}</p>
+              <h2 id="relacionados-t" class="t-h2 art-rel__t" data-split set:html={annotateFigures(relC.h2.text) + (relC.h2.soft ? ` <span class="soft">${annotateFigures(relC.h2.soft)}</span>` : '')} />
+            </>
+          ) : (
+            <h2 id="relacionados-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{relC.eyebrow ?? 'Sigue explorando'}</h2>
+          )}
         </header>
         <div class="art-rel__grid">
           {relItems.map((it: any) => <Still href={it.href} plate={it.plate} label={it.label} title={it.title} line={it.line} headingLevel={3} />)}

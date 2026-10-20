@@ -93,19 +93,54 @@ html.js:not([data-motion="reduced"]) .mth-slab{animation:mth-slab .7s cubic-bezi
   .mth-hero__pn{display:block;font:500 10.5px/1.2 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:3px}
 }
 
+/* Enlaces de contexto dentro del texto (sitemap.json → internalLinks): subrayado de luz, nunca un botón */
+.mth-a{color:var(--text);text-decoration:none;background:linear-gradient(var(--hair-cyan),var(--hair-cyan)) 0 100% / 100% 1px no-repeat;
+  padding-bottom:1px;transition:color .3s,background-image .3s}
+.mth-a:hover,.mth-a:focus-visible{color:#fff;background-image:linear-gradient(var(--cyan),var(--cyan))}
+
 /* ── 02 · Qué es (Intertitle sobre la copia desenfocada de la portada): el sujeto sigue a la derecha durante el rack ── */
 .mth-def .defn,.mth-def .it__body > :not(.tpl-aura-box):not(.tpl-aura-sticky){max-width:min(100%,41rem)}
 .mth-def .defn__q{max-width:20ch}
 .mth-def__body{max-width:min(54ch,41rem)}
 
 /* ── 03 · Las cinco fases (PlateSequence "phases") ──────────────────────────────────────────────────────────────── */
-/* Cámara: la secuencia sube de losa en losa (sequence.ts: --cam 1.14 → 1.34 con origen en escalon-1…5). Con Kain en el
-   tercio derecho, ese empuje lo saca del cuadro (a 1440 × 900, con origen en la losa V el borde derecho del sujeto pasa
-   de x .97; con origen en la R se cortan las antenas). §0.1-5 manda (Kain siempre de cuerpo completo): el empuje se
-   comprime a un tercio y se topa en 1.1, mismo factor en las cuatro capas registradas (placa, palabra, recorte, luces). */
-.mth-seq .seq__stagebox .stage{scale:min(calc(1 + (var(--cam,1) - 1) * .3),1.1)}
-/* VKTOR de la secuencia en el mismo lugar que el de la portada (detrás de Kain, nunca detrás del titular) */
-.mth-seq .seq__ghost .ghost--reg{left:72.5%;top:23%;font-size:14cqw}
+/* Cámara propia de la secuencia (R5: nunca el encuadre de la portada otra vez; §0.1-5: Kain completo o fuera de cuadro).
+   Con pin, la cámara la lleva --p (0 → 1, scrub de sequence.ts) y se ignora el --cam de cine. V, K y T: plano cerrado
+   de la escalera (×1.6 → ×1.8, paneo lento a la derecha, el borde izquierdo de la placa fijo en el de la pantalla); Kain
+   queda fuera de cuadro: (.66 − borde) × escala ≥ 1.03. O: la cámara se abre y Kain entra entero a la derecha (×1.15);
+   R: empuja sobre él (×1.22). En O y R manda el sujeto: cabeza ≥ 10 % (fuera del fundido superior), pies sobre el fundido
+   inferior, y el borde derecho de la placa nunca dentro de la pantalla. Cada clave es (punto de la placa ax/ay → punto de
+   la pantalla vx/vy, escala s); entre claves, interpolación lineal por tramos. Mismo transform en las cuatro capas
+   registradas (placa, palabra, recorte, luces); la palabra VKTOR solo aparece con Kain. */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .mth-seq.seq--pinned .seq__stagebox .stage{
+    --q1:clamp(0,var(--p,0) * 4,1);--q2:clamp(0,(var(--p,0) - .25) * 4,1);--q3:clamp(0,(var(--p,0) - .5) * 4,1);--q4:clamp(0,(var(--p,0) - .75) * 4,1);
+    --k-ax:calc(.04 * var(--q1) + .04 * var(--q2) + .702 * var(--q3));
+    --k-ay:calc(.76 - .375 * var(--q3));
+    --k-vx:calc(var(--k-vx3,.76) * var(--q3) + var(--k-vx4,-.015) * var(--q4));
+    --k-vy:calc(.8 + var(--k-vy3,-.36) * var(--q3) + var(--k-vy4,.026) * var(--q4));
+    --k-s:calc(1.6 + .1 * var(--q1) + .1 * var(--q2) + var(--k-s3,-.65) * var(--q3) + var(--k-s4,.07) * var(--q4));
+    transform-origin:calc(var(--k-ax) * 100%) calc(var(--k-ay) * 100%);
+    scale:var(--k-s);
+    translate:calc(var(--k-vx) * 100cqw - (100cqw - var(--sw)) * var(--fx) - var(--k-ax) * var(--sw))
+      calc(var(--k-vy) * 100cqh - (100cqh - var(--sw) / var(--ar)) * var(--fy) - var(--k-ay) * var(--sw) / var(--ar));
+  }
+  .mth-seq.seq--pinned .seq__stagebox > .seq__ghost{opacity:clamp(0,(var(--p,0) - .55) * 5,1)}
+  /* Sin fijar (movimiento reducido, tableta táctil, sin JS): un solo plano de las losas V·K·T, Kain fuera de cuadro */
+  .mth-seq:not(.seq--pinned) .seq__stagebox .stage{transform-origin:47.7% 73.2%;scale:1.95;
+    translate:calc(.7 * 100cqw - (100cqw - var(--sw)) * var(--fx) - .477 * var(--sw)) calc(.6 * 100cqh - (100cqh - var(--sw) / var(--ar)) * var(--fy) - .732 * var(--sw) / var(--ar))}
+  .mth-seq:not(.seq--pinned) .seq__stagebox > .seq__ghost{display:none}
+}
+/* Escritorios de 3:2 o más estrechos: la placa sobra a los lados; Kain más adentro para que quepa entero */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-aspect-ratio:3/2){
+  .mth-seq.seq--pinned .seq__stagebox .stage{--k-vx3:.7;--k-vx4:-.01}
+}
+/* Ultra ancho (≥ 2:1): la placa se recorta arriba y abajo; en O y R la cámara no empuja (cabeza dentro del cuadro) */
+@media (min-width:768px) and (min-aspect-ratio:2/1){
+  .mth-seq.seq--pinned .seq__stagebox .stage{--k-vx3:.8;--k-vx4:0;--k-s3:-.8;--k-s4:0;--k-vy3:-.358;--k-vy4:0}
+}
+/* VKTOR de la secuencia: más chico y corrido a la derecha que el de la portada (con el empuje de O y R queda detrás de Kain, nunca detrás del titular) */
+.mth-seq .seq__ghost .ghost--reg{left:76.5%;top:23%;font-size:11cqw}
 .mth-seq__lede{max-width:44ch}
 /* Sin fijar en escritorio (movimiento reducido, tableta táctil, sin JS): la placa entra en el flujo después del titular
    (que se queda sobre su penumbra superior) y las cinco fases van debajo de ella, nunca sobre las losas iluminadas */
@@ -126,6 +161,11 @@ html.js:not([data-motion="reduced"]) .mth-slab{animation:mth-slab .7s cubic-bezi
   .mth-seq.seq--pinned .seq__body{gap:var(--s-3)}
   .mth-seq .seq__metrics{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-6);width:min(100%,36rem)}
 }
+/* Zona segura del texto con pin (y ≤ .62 del escenario): hasta 920 px de alto, "qué sale / con quién" queda solo para
+   lectores de pantalla (el mismo dato, en corto, está en la tabla de la sección siguiente) */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:920px){
+  .mth-seq.seq--pinned .seq__metrics{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+}
 @media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){
   .mth-seq.seq--pinned .seq__title{font-size:min(clamp(1.75rem,1rem + 1.9vw,2.75rem),5svh)}
   .mth-seq.seq--pinned .seq__line{font-size:1rem;line-height:1.5}
@@ -136,7 +176,7 @@ html.js:not([data-motion="reduced"]) .mth-slab{animation:mth-slab .7s cubic-bezi
 .mth-seq .seq__title{font-size:clamp(1.75rem,1rem + 1.9vw,2.75rem);line-height:1.02;letter-spacing:-.03em;max-width:15ch}
 .mth-seq .seq__line{max-width:44ch}
 .mth-seq .seq__metrics{display:grid;gap:14px;margin-top:var(--s-2);width:min(100%,44ch)}
-.mth-io{display:grid;gap:4px;padding-top:12px;border-top:1px solid var(--hair)}
+.mth-io{display:grid;gap:4px;align-content:start;padding-top:12px;border-top:1px solid var(--hair)}
 .mth-io__k{font:500 10.5px/1.2 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
 .mth-io--who .mth-io__k{color:rgb(158 176 199 / .85)}
 .mth-io__v{font:400 .9375rem/1.45 var(--f-body);color:var(--text)}

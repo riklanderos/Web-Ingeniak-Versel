@@ -38,7 +38,7 @@ import { annotateFigures, esc } from '../ui/ui-data';
 import HeroCtas from './HeroCtas.astro';
 import Aura from './Aura.astro';
 import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
-import { waHref, isBuilt, SITE, type Page } from '../../lib/site';
+import { waHref, isBuilt, getPlate, SITE, type Page } from '../../lib/site';
 import { METRICS, type MetricId } from '../../lib/metrics';
 import { LOCAL_ID } from '../layout/jsonld';
 
@@ -105,23 +105,26 @@ const reachSb: number = (() => {
        (centro de cada municipio, norte arriba) en un lienzo de 1000 × 900; la oficina, en Tlajomulco al suroeste del centro. ── */
 const mapa = cp('mapa');
 const MAP_W = 1000, MAP_H = 900;
+// Todos los rótulos van a la derecha de su nodo; Tonalá baja un poco (esquema, no a escala) para separarse de Tlaquepaque.
+// `stem` = alto del tronco vertical que sale de la oficina antes de la diagonal.
 const places = [
-  { id: 'zap', name: 'Zapopan', x: 364, y: 92, r: 150, side: 'r' },
-  { id: 'gdl', name: 'Guadalajara', x: 476, y: 214, r: 210, side: 'r' },
-  { id: 'tlq', name: 'Tlaquepaque', x: 580, y: 318, r: 130, side: 'r' },
-  { id: 'ton', name: 'Tonalá', x: 792, y: 368, r: 110, side: 'l' },
-  { id: 'tlj', name: 'Tlajomulco de Zúñiga', x: 222, y: 796, r: 120, side: 'r' },
+  { id: 'zap', name: 'Zapopan', x: 364, y: 92, r: 150, side: 'r', stem: 358 },
+  { id: 'gdl', name: 'Guadalajara', x: 476, y: 214, r: 210, side: 'r', stem: 124 },
+  { id: 'tlq', name: 'Tlaquepaque', x: 580, y: 318, r: 130, side: 'r', stem: 68 },
+  { id: 'ton', name: 'Tonalá', x: 792, y: 392, r: 110, side: 'r', stem: 28 },
+  { id: 'tlj', name: 'Tlajomulco de Zúñiga', x: 222, y: 796, r: 120, side: 'r', stem: 64 },
 ];
 const office = { x: 286, y: 528 };
-/** Rama del isotipo (horizontal → diagonal a 45° → horizontal) de la oficina a un municipio. */
-function branch(to: { x: number; y: number }) {
-  const dx = to.x - office.x, dy = to.y - office.y;
-  const d = Math.min(Math.abs(dx), Math.abs(dy)) * 0.9;
-  const sx = Math.sign(dx) || 1, sy = Math.sign(dy) || 1;
-  const run = (Math.abs(dx) - d) / 2;
-  const x1 = office.x + sx * run;
-  const x2 = x1 + sx * d;
-  return `M${office.x},${office.y} H${x1.toFixed(1)} L${x2.toFixed(1)},${(office.y + sy * d).toFixed(1)} V${to.y} H${to.x}`;
+/** Rama del isotipo de la oficina a un municipio: tronco vertical → diagonal a 45° → tramo final.
+ *  Nunca corre en horizontal junto a la oficina (ahí va su rótulo, a la derecha) y entra a cada nodo en vertical o desde
+ *  la izquierda, así que no cruza ningún rótulo (todos a la derecha de su nodo). */
+function branch(to: { x: number; y: number; stem: number }) {
+  const sy = Math.sign(to.y - office.y) || -1, sx = Math.sign(to.x - office.x) || 1;
+  const y1 = office.y + sy * to.stem;                    // fin del tronco
+  const d = Math.min(Math.abs(to.x - office.x), Math.abs(to.y - y1));
+  const x2 = office.x + sx * d, y2 = y1 + sy * d;        // fin de la diagonal
+  const tail = Math.abs(to.y - y2) > 0.5 ? `V${to.y}` : `H${to.x}`;
+  return `M${office.x},${office.y} V${y1} L${x2},${y2} ${tail}`;
 }
 const mapsHref: string | null = (mapa?.links ?? []).find((l: any) => /google\.[a-z.]+\/maps/.test(l?.href ?? ''))?.href ?? null;
 
@@ -145,7 +148,7 @@ if (dev) {
 /* ── JSON-LD: teléfono y mapa del mismo nodo #localbusiness (los mismos datos de la ficha) ── */
 const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: SITE.phoneE164, ...(mapsHref ? { hasMap: mapsHref } : {}) }];
 ---
-<BaseLayout page={page} lcpPlate={heroUsed ?? undefined} lcpSrcsetMax={2752} bodyClass="lc" jsonLd={localLd}>
+<BaseLayout page={page} lcpPlate={heroUsed ?? undefined} lcpSrcsetMax={(heroUsed ? (getPlate(heroUsed) as any)?.srcsetMax : null) ?? 1920} bodyClass="lc" jsonLd={localLd}>
   {order.map((id) => {
     /* ── 01 + 02 · portada y "qué hace Ingeniak en Guadalajara" en la misma toma ── */
     if (id === 'hero' && hero && heroPl) return (
@@ -265,7 +268,11 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
           {casos.items.slice(0, 2).map((it: any) => {
             const pg = (METRICS as any)[it.metricId]?.href as string | undefined;
             const plate = it.plate ?? (pg?.includes('clinica-dental') ? 'caso-dental-hero' : pg?.includes('logistica') ? 'caso-logistica-hero' : undefined);
-            return <Still href={it.href} plate={plate} label={it.label} title={it.title} line={it.line} metricId={(METRICS as any)[it.metricId] ? it.metricId : undefined} variant="plana" />;
+            // Still plana pinta la cifra mega sin rótulo: la línea arranca con el rótulo de metrics.ts (qué mide y en qué plazo)
+            // y CSS la sube justo debajo de la cifra ("3.2×" / "más citas en 90 días…"), como el hub de casos (§0.1-2).
+            const mLbl: string | undefined = (METRICS as any)[it.metricId]?.label;
+            const line = mLbl && !String(it.line ?? '').toLowerCase().startsWith(mLbl.toLowerCase()) ? `${mLbl}${it.line ? ` · ${it.line}` : ''}` : it.line;
+            return <Still href={it.href} plate={plate} label={it.label} title={it.title} line={line} metricId={mLbl ? it.metricId : undefined} variant="plana" class={mLbl ? 'lc-still--lbl' : undefined} />;
           })}
         </div>
         {casos.note && <div class="frame"><Copy as="p" class="t-micro lc-cases__note" text={casos.note} data-reveal /></div>}
@@ -340,15 +347,12 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
               {places.map((p) => <rect class="lc-plan__node" x={p.x - 5} y={p.y - 5} width="10" height="10" rx="2" />)}
               <rect class="lc-plan__office" x={office.x - 9} y={office.y - 9} width="18" height="18" rx="3" />
               <rect class="lc-plan__pulse" x={office.x - 9} y={office.y - 9} width="18" height="18" rx="3" />
-              {/* norte */}
-              <g class="lc-plan__north" transform="translate(930 70)"><path d="M0 26 L0 -18 M-8 -8 L0 -18 L8 -8" /></g>
             </svg>
             <span class="lc-plan__labels" aria-hidden="true">
               {places.map((p) => (
                 <span class:list={['lc-plan__lbl', `lc-plan__lbl--${p.side}`]} style={`--x:${p.x / MAP_W};--y:${p.y / MAP_H}`}>{p.name}</span>
               ))}
               <span class="lc-plan__lbl lc-plan__lbl--office" style={`--x:${office.x / MAP_W};--y:${office.y / MAP_H}`}>{mapa.map?.office ?? 'Ingeniak'}</span>
-              <span class="lc-plan__n" style={`--x:${930 / MAP_W};--y:${118 / MAP_H}`}>N</span>
             </span>
           </figure>
           {mapa.map?.note && <p class="t-micro lc-plan__note" data-reveal>{mapa.map.note}</p>}
@@ -377,7 +381,7 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{faq.eyebrow}</p>
           <h2 id="faq-t" class="t-h2" data-split set:html={headHtml(faq.h2)} />
           {faq.footer && <Copy as="p" class="t-lede t-lede--2 lc-faq__foot" text={faq.footer} data-reveal />}
-          {faq.footer && <div class="lc-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} /></div>}
+          {faq.footer && <div class="lc-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} />{builtLinks(faq.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name="arrow" size={16} /></a>)}</div>}
         </Fragment>
         <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
         <FAQAccordion ids={faq.faqIds} glass id="faq-list" label={faq.eyebrow} />

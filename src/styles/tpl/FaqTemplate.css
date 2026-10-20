@@ -20,8 +20,11 @@ html.no-js .faq-search{display:none}
   transition:box-shadow .45s var(--ease-cine)}
 .faq-search__field:focus-within{box-shadow:inset 0 0 0 1px var(--cyan),inset 0 1px 0 rgb(255 255 255 / .1),0 0 0 4px rgb(0 229 255 / .12),0 18px 60px rgb(0 229 255 / .16)}
 .faq-search__i{position:absolute;left:22px;color:var(--cyan);pointer-events:none}
-.faq-search__input{flex:1;min-width:0;height:100%;padding:0 56px 0 56px;border:0;background:none;color:#fff;border-radius:inherit;
-  font:400 1.0625rem/1 var(--f-body);-webkit-appearance:none;appearance:none}
+/* A la derecha solo se reserva el botón de borrar cuando existe (vacío: 20 px; el placeholder cabe entero a 360 px y, si no
+   cupiera, termina en "…" en vez de cortarse a media palabra) */
+.faq-search__input{flex:1;min-width:0;height:100%;padding:0 20px 0 56px;border:0;background:none;color:#fff;border-radius:inherit;
+  font:400 1.0625rem/1 var(--f-body);text-overflow:ellipsis;-webkit-appearance:none;appearance:none}
+.faq-search__field:has(.faq-search__clear:not([hidden])) .faq-search__input{padding-right:56px}
 .faq-search__input::placeholder{color:rgb(158 176 199 / .72)}
 .faq-search__input:focus{outline:none}
 .faq-search__input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
@@ -128,7 +131,8 @@ html[data-faq-filtering] .faq-search__hint{display:none}
 
 .faq-price{margin-top:var(--s-5);display:flex;flex-direction:column;gap:var(--s-3)}
 .faq-price__fig{font:200 clamp(2.4rem,1rem + 3vw,4.5rem)/1 var(--f-display);letter-spacing:-.045em;color:#fff;text-wrap:balance}
-.faq-price__line{display:flex;align-items:baseline;gap:10px;font:500 .75rem/1.45 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+/* La línea va en --soft (12 px mono: el cian solo en el nodo, como marca; en cian daba < AA sobre el aura) */
+.faq-price__line{display:flex;align-items:baseline;gap:10px;font:500 .75rem/1.45 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
 .faq-price__line::before{content:"";flex:none;width:7px;height:7px;border-radius:1.5px;background:var(--cyan);box-shadow:var(--glow-cyan);translate:0 -1px}
 
 /* Qué mueve el precio: lista corta con nodos */
@@ -159,7 +163,7 @@ html[data-faq-filtering] .faq-search__hint{display:none}
 
 /* Para profundizar: filas con rama (sin tarjetas) */
 .faq-more{width:100%;margin-top:var(--s-7)!important}
-.faq-more__h{display:flex;align-items:center;gap:10px;margin-bottom:var(--s-3)}
+.faq-more__h{display:flex;align-items:center;gap:10px;margin-bottom:var(--s-3);color:var(--soft)}  /* AA sobre las ondas (el .t-label al 80 % daba 4.2:1) */
 .faq-more__list{border-top:1px solid var(--hair)}
 .faq-more__a{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 40px;column-gap:var(--s-5);row-gap:4px;align-items:center;
   padding:18px 0 17px;border-bottom:1px solid var(--hair);color:var(--text);text-decoration:none}
@@ -172,6 +176,22 @@ html[data-faq-filtering] .faq-search__hint{display:none}
   box-shadow:inset 0 0 0 1px var(--hair-2);transition:box-shadow var(--d-ui),background var(--d-ui),translate .45s var(--ease-cine)}
 .faq-more__a:hover .faq-more__go,.faq-more__a:focus-visible .faq-more__go{box-shadow:inset 0 0 0 1px var(--cyan);background:rgb(0 229 255 / .1);translate:4px 0}
 .faq-note{width:100%;margin-top:var(--s-7)!important}
+
+/* Precio (escritorio): rompe el bucle de seis cabezas iguales con un compás centrado a todo el ancho: la cifra grande, su
+   línea, la entrada y "qué mueve el precio" en una fila; las respuestas debajo, en las 8 columnas del centro. */
+@media (min-width:1024px){
+  .faq-sec--precio .it__head{grid-column:1 / -1;position:static}
+  .faq-sec--precio .faq-sec__head{align-items:center;text-align:center;max-width:64rem;margin-inline:auto}
+  .faq-sec--precio h2.faq-sec__h2{max-width:none}
+  .faq-sec--precio .faq-price{align-items:center;margin-top:var(--s-6)}
+  .faq-sec--precio .faq-price__fig{font-size:clamp(3.5rem,1rem + 5vw,7rem)}
+  .faq-sec--precio .faq-sec__lede{max-width:52ch;text-wrap:balance}
+  .faq-sec--precio .faq-factors{display:flex;flex-direction:column;align-items:center}
+  .faq-sec--precio .faq-factors__list{display:flex;flex-wrap:wrap;justify-content:center;gap:10px var(--s-6);max-width:48rem}
+  .faq-sec--precio .faq-factors__list li{text-align:left}
+  .faq-sec--precio .faq-sec__remate{max-width:none}
+  .faq-sec--precio .it__body{grid-column:3 / span 8;margin-top:var(--s-4)}
+}
 
 /* Luz de base por tema: los centros de las tres elipses cambian de lado para que la secuencia no se vea repetida */
 .faq-sec--agentes{--g1x:70%;--g2x:26%;--g3x:68%}

@@ -71,13 +71,15 @@ const heroEyebrowDup = eyebrowRepeatsCrumbs(heroEyebrow, P.breadcrumbs);
 const heroLede = ledeParts(hero?.lede, 20);
 // F10 · UI registrada sobre cristal en blanco: la portada de Tecnologías trae cinco placas de cristal vacías unidas a Kain por
 // ramas de luz (anclas de caja placa-1…5). Encima va, en HTML, el logo de una herramienta por capa del stack (modelos, CRM,
-// automatización, canales, datos), en blanco al 72 % con brillo cian; en móvil las placas miden < 30 px → solo la placa (R4).
-// Kommo, único partner, con su sello oficial. Decorativo (aria-hidden): la lista completa está en el StackHub.
-const PLAQUE_LOGOS = ['openai', 'kommo', 'n8n', 'whatsapp', 'supabase'];
+// automatización, canales, datos), en blanco plano (LOGOS.md: sin sombras ni efectos; la luz es de la placa de cristal, no
+// de la marca); en móvil las placas miden < 30 px → solo la placa (R4). Kommo va con su logotipo: el único sello de partner
+// de la portada es el de la fila de confianza bajo los CTA. n8n no cabe aquí a su tamaño mínimo (wordmark ≥ 100 px): la
+// capa de automatización usa Make. Decorativo (aria-hidden): la lista completa está en el StackHub.
+const PLAQUE_LOGOS = ['openai', 'kommo', 'make', 'whatsapp', 'supabase'];
 const plaqueNames = [1, 2, 3, 4, 5].map((i) => `placa-${i}`);
 const hasPlaques = !rHero.aura && plaqueNames.every((n) => rHero.anchors[n]?.box?.d);
 const plaques = hasPlaques
-  ? plaqueNames.map((n, i) => ({ name: n, slug: PLAQUE_LOGOS[i], url: PLAQUE_LOGOS[i] === 'kommo' ? '/img/logos/kommo-partner-blanco.webp' : logoUrl(PLAQUE_LOGOS[i]) }))
+  ? plaqueNames.map((n, i) => ({ name: n, slug: PLAQUE_LOGOS[i], url: logoUrl(PLAQUE_LOGOS[i]) }))
       .filter((x) => x.url && publicExists(x.url))
   : [];
 // Placa sin cristales (respaldo de lanzamiento): el sello de Kommo va anclado al piso (zona `fig`) donde cabe junto a los CTA.
@@ -93,10 +95,13 @@ type Tool = { slug: string; name: string; role?: string; href?: string; partner?
 const groups = HUB_IDS.filter((id) => order.includes(id) && cp(id)).map((id) => {
   const g = cp(id);
   const tools: (Tool & { logo: string | null; link: string | null })[] = (g.tools ?? []).map((t: Tool) => {
-    const url = TOOLS[t.slug] ? logoUrl(t.slug) : `/img/logos/${t.slug}.svg`;
+    // n8n: su guía pide el wordmark oficial donde el logo va solo (≥ 100 px de ancho); el ícono es solo para íconos chicos
+    const wordUrl = t.slug === 'n8n' && TOOLS['n8n-wordmark'] ? logoUrl('n8n-wordmark') : null;
+    const word = wordUrl && publicExists(wordUrl) ? wordUrl : null;
+    const url = word ?? (TOOLS[t.slug] ? logoUrl(t.slug) : `/img/logos/${t.slug}.svg`);
     const logo = url && publicExists(url) ? url : null;
     if (dev && !logo && !t.partner) console.warn(`[StackTemplate] ${t.slug}: sin logo en public/img/logos → se pinta solo el nombre`);
-    return { ...t, logo, link: t.href ? linkTarget(t.href) : null };
+    return { ...t, logo, word: !!word, link: t.href ? linkTarget(t.href) : null };
   });
   const links = (g.links ?? []).map((l: any) => ({ ...l, href: linkTarget(l.href) })).filter((l: any) => l.href);
   return { id, ...g, tools, links };
@@ -160,11 +165,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
           {(badgeAt || plaques.length > 0) && (
             <Fragment slot="anchors">
               {plaques.map((q, i) => (
-                <span class:list={['anchor anchor--panel stk-plaque', q.slug === 'kommo' && 'stk-plaque--seal']} data-anchor={q.name} data-lock data-m="none" aria-hidden="true"
+                <span class="anchor anchor--panel stk-plaque" data-anchor={q.name} data-lock data-m="none" aria-hidden="true"
                   style={anchorStyle(q.name, `--i:${i};`)}>
-                  {q.slug === 'kommo'
-                    ? <img src={q.url} alt="" width="318" height="144" loading="lazy" decoding="async" />
-                    : <span class:list={['logo-mask', logoWide(q.slug) && 'logo-mask--wide']} style={`--logo:url(${q.url})`}></span>}
+                  <span class:list={['logo-mask', logoWide(q.slug) && 'logo-mask--wide']} style={`--logo:url(${q.url})`}></span>
                 </span>
               ))}
               {badgeAt && (
@@ -213,6 +216,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <section id="stack" class="stk-hub tpl-glow" aria-labelledby="stack-t" data-stk-hub>
           <Aura kind="ondas" x="30%" y="8%" o={1} only="d" />
           <Aura kind="ondas" x="70%" y="96%" o={1} only="d" />
+          {/* Móvil y tableta: el isotipo no queda suelto entre el titular y la capa 01; vive como aura detrás del titular */}
+          <Aura kind="isotipo" x="78%" y="30%" w="min(96vw,520px)" o={0.7} only="m" />
           <div class="frame stk-hub__head">
             <div class="stk-hub__intro">
               {hubIntro?.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{hubIntro.eyebrow}</p>}
@@ -248,10 +253,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
                   {g.line && <Copy as="p" class="t-lede t-lede--2 stk-g__line" text={g.line} data-reveal />}
                   <ul class="stk-tools" role="list" data-reveal="stagger">
                     {g.tools.map((t, ti) => (
-                      <li class:list={['stk-tool', t.partner && 'stk-tool--partner', !t.logo && !t.partner && 'stk-tool--word']} style={`--i:${ti}`}>
+                      <li class:list={['stk-tool', t.partner && 'stk-tool--partner', !t.logo && !t.partner && 'stk-tool--word', t.word && 'stk-tool--wordmark']} style={`--i:${ti}`}>
                         <span class="stk-tool__mark">
                           {t.partner ? <KommoBadge size="sm" label={false} />
-                            : t.logo ? <span class:list={['logo-mask', logoWide(t.slug) && 'logo-mask--wide']} style={`--logo:url(${t.logo})`} aria-hidden="true"></span>
+                            : t.logo ? <span class:list={['logo-mask', t.word ? 'stk-mark--word' : logoWide(t.slug) && 'logo-mask--wide']} style={`--logo:url(${t.logo})`} aria-hidden="true"></span>
                             : <span class="stk-tool__mono" aria-hidden="true">{t.name.slice(0, 1)}</span>}
                         </span>
                         <span class="stk-tool__body">

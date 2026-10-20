@@ -78,12 +78,13 @@ body.hub :is(h1,h2)[data-split]{text-wrap:balance}
   .hub-hero .is__text > .crumbs{margin-bottom:var(--s-4)}
   .hub-hero .is__text > :is(.t-deck,.t-lede){margin-top:var(--s-4)}
   .hub-hero .is__text > .ctas{margin-top:var(--s-6);row-gap:var(--s-3)}
-  /* La guía destacada sale de la portada en escritorios bajos (la placa crecería y el sujeto entraría a la columna);
-     sigue a la mano en el índice de guías, justo debajo */
-  .hub-hero .hub-featured{display:none}
   .hub-hero .hub-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),8.6svh,var(--hub-col,100vw) / (var(--hub-long,10) * .64))}
   .hub-hero--servicios .hub-h1{font-size:min(clamp(2.25rem,.9rem + 3.6vw,4.75rem),7.2svh,var(--hub-col,100vw) / (var(--hub-long,10) * .64))}
 }
+/* La guía destacada sale de la portada en escritorios de menos de ~950 px de alto: a 1440 × 900 su segundo renglón caía
+   sobre el pliegue (y = 908) y con menos alto la placa crecería y el sujeto entraría a la columna. Sigue a la mano en el
+   índice de guías, justo debajo. */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:950px){.hub-hero .hub-featured{display:none}}
 /* Escritorios estrechos (< 1200 px): crumbs O etiqueta sobre el H1, nunca dos renglones mono */
 @media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){.hub-hero .is__text > .crumbs ~ .eyebrow{display:none}}
 @media (max-width:767px),(max-aspect-ratio:5/6){
@@ -356,16 +357,19 @@ a.hub-node__a:hover,a.hub-node__a:focus-visible{background-size:100% 1px;color:#
 .hub-case__link:focus-visible{outline:2px solid var(--cyan);outline-offset:-6px}
 /* Rótulo anclado al borde de la retícula (nunca al carril del SceneRail, que vive en --action-x); a ultra ancho la retícula
    (≤ 1440 px) queda dentro de la escena (≤ 2200 px) */
-.hub-case__illus{position:absolute;right:calc((100% - var(--frame)) / 2);bottom:22%;color:rgb(158 176 199 / .7);pointer-events:none}
+/* Más abajo (donde la máscara ya funde al sujeto) y con halo de tinta: legible aunque caiga sobre una bata o una laptop */
+.hub-case__illus{position:absolute;right:calc((100% - var(--frame)) / 2);bottom:15%;color:rgb(158 176 199 / .78);pointer-events:none;
+  text-shadow:0 0 3px rgb(3 4 11 / .9),0 0 12px rgb(3 4 11 / .85)}
 .hub-case--r .hub-case__illus{right:auto;left:calc((100% - var(--frame)) / 2)}
 .hub-cases__empty{width:var(--frame);margin:0 auto;padding-top:var(--s-6);color:var(--muted)}
 [data-hub-empty][hidden]{display:none!important}
-/* Ultra ancho: la escena no pasa de ~2200 px y funde sus lados (como la placa de ImageSection) */
+/* Ultra ancho: la escena no pasa de ~2200 px y funde sus lados (como la placa de ImageSection). Fundidos más largos que a
+   1440: con 10 % de lado y 18 % arriba y abajo, a 2560 la placa se leía como un rectángulo de bordes suaves */
 @media (min-width:1800px){
   .hub-case__media{left:max(0px,(100% - 2200px) / 2);right:max(0px,(100% - 2200px) / 2);
-    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%),linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 24%,#000 76%,transparent 100%),linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
     -webkit-mask-composite:source-in;
-    mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%),linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-composite:intersect}
+    mask-image:linear-gradient(180deg,transparent 0,#000 24%,#000 76%,transparent 100%),linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-composite:intersect}
 }
 @media (max-width:1023px) and (min-width:768px) and (min-aspect-ratio:5/6){
   .hub-case__copy,.hub-case--r .hub-case__copy{grid-column:1 / span 5}
@@ -424,10 +428,10 @@ a.hub-node__a:hover,a.hub-node__a:focus-visible{background-size:100% 1px;color:#
     display:block;grid-column:9 / span 4;grid-row:1;align-self:start;justify-self:start;position:sticky;
     top:calc(var(--hdr) + (100svh - var(--hdr) - var(--hub-gh)) / 2);width:calc(var(--hub-gh) * 1.05);height:var(--hub-gh);
     margin:var(--s-8) 0 0;overflow:hidden;pointer-events:none;
-    -webkit-mask-image:radial-gradient(ellipse 60% 72% at calc(var(--mx,.5) * 100%) calc(var(--my,.5) * 100%),#000 58%,transparent 100%),
+    -webkit-mask-image:radial-gradient(ellipse 60% 62% at calc(var(--mx,.5) * 100%) calc(var(--my,.5) * 100%),#000 58%,transparent 100%),
       linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent),linear-gradient(180deg,transparent,#000 9%,#000 93%,transparent);
     -webkit-mask-composite:source-in,source-in;
-    mask-image:radial-gradient(ellipse 60% 72% at calc(var(--mx,.5) * 100%) calc(var(--my,.5) * 100%),#000 58%,transparent 100%),
+    mask-image:radial-gradient(ellipse 60% 62% at calc(var(--mx,.5) * 100%) calc(var(--my,.5) * 100%),#000 58%,transparent 100%),
       linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent),linear-gradient(180deg,transparent,#000 9%,#000 93%,transparent);
     mask-composite:intersect}
   .hub-guides__still img{display:block;width:100%;height:100%;object-fit:cover;object-position:calc(var(--ox,.5) * 100%) 50%;opacity:.92;

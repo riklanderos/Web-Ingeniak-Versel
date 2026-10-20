@@ -14,7 +14,23 @@
   .ct-hero h1.ct-h1{max-width:none}
   .ct-hero__rest{margin:0;max-width:40ch}
   .ct-mail--m{margin-top:var(--s-4)}
+  /* La portada promete "tres formas de llegar": WhatsApp es una ruta con nombre, no el círculo de 48 px de las portadas.
+     Primario a todo el ancho, la microcopia debajo y "Escríbele a Kain" en su fila (como /discovery/ y el inicio). */
+  body.ctc .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
+  body.ctc .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px;gap:12px;justify-content:center;border-radius:var(--r-pill);margin-top:2px}
+  body.ctc .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+  body.ctc .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
 }
+@media (min-width:600px) and (max-width:767px),(min-width:600px) and (max-aspect-ratio:5/6){
+  body.ctc .tpl-hero .is__text > .ctas:has(> .cta-p){width:min(100%,420px)}
+}
+/* Enlaces internos en línea (lede de rutas y de oficina, aviso de privacidad): subrayado cian como en la prosa */
+.ct-in{color:#fff;text-decoration:underline;text-decoration-color:var(--cyan);text-decoration-thickness:1px;text-underline-offset:4px;
+  transition:text-decoration-color var(--d-ui)}
+.ct-in:hover,.ct-in:focus-visible{text-decoration-color:#fff}
+.ct-privacy{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin-top:var(--s-5)!important;color:var(--soft)}
+.ct-privacy .node{flex:none;translate:0 -1px}
+.ct-privacy .ct-in{padding:6px 0}
 /* Pantalla del teléfono de cristal: se enciende en oscuro para que el chat se lea sobre la superficie de la placa */
 .ct-phone{overflow:hidden;border-radius:1.6cqw;
   background:linear-gradient(180deg,rgb(6 10 24 / .9),rgb(6 10 24 / .8) 55%,rgb(6 10 24 / .9));

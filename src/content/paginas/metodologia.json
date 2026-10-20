@@ -42,8 +42,8 @@
       "eyebrow": "Qué es VKTOR™",
       "definition": { "heading": "¿Qué es la metodología VKTOR™?", "faqId": "G12" },
       "body": [
-        "No es un curso ni una plantilla. Es el orden en que trabajamos cada proyecto, sea un agente de IA para WhatsApp, un CRM con Kommo o GoHighLevel, una automatización con n8n o una campaña: lo que cambia es lo que se construye en cada fase, no el orden.",
-        "Por eso no empezamos por la herramienta. Empezamos por tu operación: cómo llega hoy un cliente, quién le contesta, dónde se pierde y qué se puede medir. Con eso decidimos qué conviene automatizar primero."
+        "No es un curso ni una plantilla. Es el orden en que trabajamos [cada proyecto](/servicios/), sea un agente de IA para WhatsApp, un CRM con Kommo o GoHighLevel, una automatización con n8n o una campaña: lo que cambia es lo que se construye en cada fase, no el orden.",
+        "Por eso no empezamos por la herramienta. Empezamos por tu operación: cómo llega hoy un cliente, quién le contesta, dónde se pierde y qué se puede medir. Con eso decidimos qué conviene automatizar primero. Es el mismo punto de partida de nuestra [consultoría en inteligencia artificial para empresas](/servicios/consultoria-ia-empresas/)."
       ]
     },
     "fases": {
@@ -87,7 +87,7 @@
           "letter": "O",
           "name": "Operate",
           "verb": "Operamos junto con tu equipo",
-          "line": "Activamos el sistema con clientes reales. Capacitamos a tu equipo, monitoreamos cada conversación y cada flujo, y ajustamos lo que haga falta ya en producción.",
+          "line": "Activamos el sistema con clientes reales. Capacitamos a tu equipo, monitoreamos el sistema en producción y ajustamos lo que haga falta.",
           "out": "Tu equipo operando el sistema, con reglas claras de qué atiende Kain y qué pasa a una persona.",
           "who": "Tu equipo y el nuestro, en la operación diaria."
         },
@@ -110,7 +110,7 @@
       "caption": "Metodología VKTOR™: qué hacemos, qué sale y quién participa en cada fase.",
       "cols": ["Fase", "Qué hacemos", "Qué sale de la fase", "Quién participa"],
       "rows": [
-        { "letter": "V", "name": "Verify", "does": "Diagnóstico con números de cómo vendes, atiendes y operas hoy.", "out": "Prioridades: qué automatizar primero.", "who": "Tú y nuestro equipo" },
+        { "letter": "V", "name": "Verify", "does": "Diagnóstico con números de cómo vendes, atiendes y operas hoy.", "out": "Prioridades: qué automatizar primero.", "who": "Tú y [nuestro equipo](/nosotros/)" },
         { "letter": "K", "name": "Koncept", "does": "Diseño del sistema: herramientas, flujos y orden de implementación.", "out": "Propuesta con alcance, tiempos y costo.", "who": "Nuestro equipo propone; tú decides" },
         { "letter": "T", "name": "Transform", "does": "Implementación de agentes, CRM, automatizaciones y campañas conectados.", "out": "Sistema construido y conectado.", "who": "Nuestro equipo, con la validación del tuyo" },
         { "letter": "O", "name": "Operate", "does": "Activación con clientes reales, capacitación y monitoreo.", "out": "Sistema en producción y equipo capacitado.", "who": "Tu equipo y el nuestro" },
@@ -131,7 +131,7 @@
         { "letter": "R", "name": "Rise", "when": "Cada mes", "line": "Tableros, métricas y ajustes." }
       ],
       "metricRow": { "heading": "Como referencia, en sistemas que ya operan", "metricIds": ["dental-citas", "ecom-cpl", "tiempo-operativo"] },
-      "note": "Son resultados de proyectos concretos, no una promesa de plazo: cuándo se notan depende de qué se implemente y de tu operación."
+      "note": "Son resultados de [proyectos concretos](/casos/), no una promesa de plazo: cuándo se notan depende de qué se implemente y de tu operación."
     },
     "correccion": {
       "_componente": "EditorNote 'Nota de consistencia' + las cinco palabras de la expansión oficial",

@@ -27,6 +27,7 @@
       "search": {
         "label": "Busca una pregunta",
         "placeholder": "Precio, Kommo, WhatsApp, n8n…",
+        "placeholderShort": "Precio, Kommo, n8n…",
         "hint": "Filtra mientras escribes. Con Enter vas a la primera respuesta.",
         "results": "{n} respuestas para «{q}»",
         "resultsOne": "1 respuesta para «{q}»",

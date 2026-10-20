@@ -45,7 +45,7 @@
     "DATO DE TERCEROS · funciones, planes, idioma de la plataforma, snapshots, WhatsApp (conexión y cobro) y Conversation AI de HighLevel consultados el 2026-10-19 en su sitio y su centro de ayuda oficiales (fuentes 1 a 8). No se copian precios (check-cifras y la regla de D: 'enlace oficial'). Revisar cada trimestre y actualizar 'actualizado'.",
     "CAMBIO DE TEXTO · el brief de D no pedía 'La respuesta corta' dentro del cuerpo; la respuesta es la caja AnswerBox y encabeza el índice. Las siete secciones del cuerpo de D están completas y en orden. Se suman una escena a sangre con el caso dental (CRM GoHighLevel confirmado el 2026-10-19, RESPUESTAS-CLIENTE #14 y #15) y una nota final sobre la relación con HighLevel (nunca 'partner').",
     "CIFRAS · la escena usa dental-citas (cifra grande) y dental-respuesta (|prose), una vez cada una. Nada más del artículo lleva cifras de Ingeniak; el precio solo como {{price}} y el plazo confirmado de 7 a 30 días, según el alcance.",
-    "PLACA · portada gohighlevel-hero (la misma de /gohighlevel/, corte por coincidencia), escena caso-dental-hero y cierre cta-duena-tranquila, como pide sitemap.json. hero.ui queda escrito, pero la plantilla solo pinta la figura sobre una superficie telefono/pantalla/tableta y esta placa registra 'calendario' (pedido en peticiones.md · Construcción · artículos)."
+    "PLACA · portada gohighlevel-hero (la misma de /gohighlevel/, corte por coincidencia), escena ind-salud-kain-sector en espejo (Kain en la recepción de una clínica agendando citas; caso-dental-hero queda solo en art-costo para no repetir la misma escena en el clúster del blog) y cierre cta-duena-tranquila, como pide sitemap.json. hero.ui queda escrito, pero la plantilla solo pinta la figura sobre una superficie telefono/pantalla/tableta y esta placa registra 'calendario' (pedido en peticiones.md · Construcción · artículos)."
   ],
   "sections": {
     "hero": {
@@ -248,9 +248,9 @@
           "variant": "scene",
           "id": "escena-caso-dental",
           "plate": {
-            "id": "caso-dental-hero",
+            "id": "ind-salud-kain-sector",
             "layout": "subject-right",
-            "mirror": false
+            "mirror": true
           },
           "eyebrow": "Caso real · Salud · Monterrey",
           "title": "Una clínica dental que agenda con GoHighLevel.",
@@ -261,8 +261,7 @@
               "label": "Ver el caso completo",
               "href": "/casos/clinica-dental-monterrey/"
             }
-          ],
-          "illus": "Imagen ilustrativa del sector"
+          ]
         },
         "El resultado no es de la plataforma sola, sino del sistema completo: GoHighLevel ordena el calendario y el seguimiento, y el agente atiende a cualquier hora. No te prometemos esos números para tu negocio; dependen de tu volumen, de tu oferta y de tu equipo. Lo que el caso sí muestra es el orden: primero el proceso, luego la plataforma y al final el agente que la alimenta.",
         {
@@ -441,6 +440,7 @@
     },
     "relacionados": {
       "eyebrow": "Sigue explorando",
+      "h2": { "text": "De la plataforma", "soft": "al sistema completo." },
       "items": [
         {
           "href": "/gohighlevel/",

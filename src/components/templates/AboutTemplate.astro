@@ -37,7 +37,7 @@ import { annotateFigures, esc, TEAM } from '../ui/ui-data';
 import HeroCtas from './HeroCtas.astro';
 import Aura from './Aura.astro';
 import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
-import { waHref, linkTarget, isBuilt, SITE, type Page } from '../../lib/site';
+import { waHref, linkTarget, isBuilt, getPlate, SITE, type Page } from '../../lib/site';
 import { ORG_ID } from '../layout/jsonld';
 
 interface Props { page: Page; copy: any }
@@ -79,6 +79,8 @@ const heroUsed: string | null = teamReady ? heroPl.id : heroFb;
 // El lado del sujeto lo decide la placa realmente usada (nunca el layout de sitemap.json sobre otra placa)
 const rHero = resolvePlate(heroPl.id, { fallbackPlate: heroFb, layout: teamReady ? heroPl.layout : undefined, where: '#hero' });
 const heroLayout = teamReady ? heroPl.layout : undefined;
+// Preload LCP: solo los anchos que la placa usada exporta (el respaldo nosotros-manifiesto llega a 1920; pedir 2560/2752 da 404)
+const heroSrcsetMax: number = (rHero.id ? (getPlate(rHero.id) as any)?.srcsetMax : null) ?? 1920;
 const heroLeft = rHero.layout === 'subject-left';
 const heroLit: string | null = hero?.h1?.lit ?? null;
 const heroEyebrow: string = hero?.eyebrow ?? 'Nosotros';
@@ -135,7 +137,7 @@ const personLd = cast.map((p) => ({
   ...(p.linkedin ? { sameAs: [p.linkedin] } : {}),
 }));
 ---
-<BaseLayout page={page} lcpPlate={rHero.id ?? undefined} lcpSrcsetMax={2752} bodyClass="ab" jsonLd={personLd}>
+<BaseLayout page={page} lcpPlate={rHero.id ?? undefined} lcpSrcsetMax={heroSrcsetMax} bodyClass="ab" jsonLd={personLd}>
   {order.map((id) => {
     /* ── 01 + 02 · portada y ficha en la misma toma (SharedTake) ── */
     if (id === 'hero' && hero) return (
@@ -150,7 +152,7 @@ const personLd = cast.map((p) => ({
           priority
           take
           encendido
-          class="ab-hero tpl-hero"
+          class:list={["ab-hero tpl-hero", !teamReady && "ab-hero--fb"]}
         >
           <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
           <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>
@@ -329,7 +331,7 @@ const personLd = cast.map((p) => ({
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{faq.eyebrow}</p>
           <h2 id="faq-t" class="t-h2" data-split set:html={headHtml(faq.h2)} />
           {faq.footer && <Copy as="p" class="t-lede t-lede--2 ab-faq__foot" text={faq.footer} data-reveal />}
-          {faq.footer && <div class="ab-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} /></div>}
+          {faq.footer && <div class="ab-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} />{builtLinks(faq.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name="arrow" size={16} /></a>)}</div>}
         </Fragment>
         <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
         <FAQAccordion ids={faq.faqIds} glass id="faq-list" label={faq.eyebrow} />

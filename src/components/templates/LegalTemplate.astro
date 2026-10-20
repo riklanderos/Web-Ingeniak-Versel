@@ -111,10 +111,12 @@ if (dev) {
       <div class="lg-light" aria-hidden="true"><span class="lg-light__a"></span><span class="lg-light__b"></span></div>
       <div class="frame lg-doc__frame">
         <nav id="indice" class="lg-toc" aria-label={idx?.label ?? 'Índice'} data-lg-toc>
+          {/* Escritorio: el rótulo vive fuera de <details> y el <summary> no existe (display:none): nada que enfocar ni
+              plegar. Móvil y tableta: el <summary> es el control que abre y cierra el índice. */}
+          <p class="t-label t-label--cyan lg-toc__label" aria-hidden="true"><span class="node"></span>{idx?.label ?? 'Índice'}</p>
           <details class="lg-toc__details" open data-lg-details>
             <summary class="lg-toc__sum">
-              <span class="t-label t-label--cyan lg-toc__label"><span class="node" aria-hidden="true"></span>{idx?.label ?? 'Índice'}</span>
-              <span class="lg-toc__mlabel" aria-hidden="true">{idx?.mobileLabel ?? idx?.label ?? 'Índice'} · {clauses.length}</span>
+              <span class="lg-toc__mlabel">{idx?.mobileLabel ?? idx?.label ?? 'Índice'} · {clauses.length}</span>
               <Icon name="chevron" size={16} class="lg-toc__chev" />
             </summary>
             <div class="lg-toc__rail">
@@ -183,6 +185,8 @@ if (dev) {
     const narrow = matchMedia('(max-width: 1023px)');
     if (details && narrow.matches) details.open = false;
     narrow.addEventListener?.('change', (e) => { if (details) details.open = !e.matches; });
+    // En escritorio el índice no se pliega (sin <summary> visible no habría cómo reabrirlo)
+    details?.addEventListener('toggle', () => { if (!narrow.matches && !details.open) details.open = true; });
     links.forEach((l) => l.addEventListener('click', () => { if (details && narrow.matches) details.open = false; }));
     let raf = 0;
     const sync = () => {

@@ -72,6 +72,8 @@
         "soft": "tres puertas de entrada."
       },
       "lede": "Las tres llegan al mismo equipo. Elige según lo que necesitas hoy, no según lo que creas que esperamos.",
+      "ledeLinks": [{ "text": "mismo equipo", "href": "/nosotros/" }],
+      "privacy": { "line": "Cómo tratamos tus datos:", "label": "Aviso de privacidad", "href": "/aviso-privacidad/" },
       "caption": "Rutas de contacto de Ingeniak: para qué sirve cada una y qué pasa después",
       "cols": {
         "route": "Ruta",
@@ -119,6 +121,7 @@
         "soft": "Trabajamos donde estés."
       },
       "lede": "La oficina está en Tlajomulco de Zúñiga, en la zona metropolitana de Guadalajara. Para empezar a trabajar juntos no hace falta venir: todo arranca con una llamada por Google Meet.",
+      "ledeLinks": [{ "text": "zona metropolitana de Guadalajara", "href": "/agentes-ia-guadalajara/" }],
       "address": "Av. Punto Sur 312",
       "addressLine": "Tlajomulco de Zúñiga, Jalisco 45640, México",
       "mapsLabel": "Abrir en Google Maps",

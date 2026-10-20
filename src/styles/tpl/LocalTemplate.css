@@ -113,6 +113,11 @@ body.lc main .tpl-glow:not(.is)::before{inset:-140px 0;
 .lc-cases__grid{margin-top:var(--s-7);row-gap:var(--gap)}
 .lc-cases__grid > .still{grid-column:span 6}
 .lc-cases__note{grid-column:1 / -1;margin-top:var(--s-5)}
+/* La línea (que arranca con el rótulo de la cifra) va pegada a la cifra mega; el título del caso cierra el bloque */
+.lc-still--lbl .still__title{order:1}
+.lc-still--lbl .still__line{margin-top:-2px;font:400 15px/1.4 var(--f-body);color:var(--text)}
+@media (max-width:767px){.lc-still--lbl .still__line{font-size:14px}}
+.lc-still--lbl .still__title{margin-top:6px}
 @media (max-width:1023px){.lc-sec__head,.lc-cases__grid > .still{grid-column:1 / -1}}
 
 /* ── 07 · Cómo llegar: texto a la izquierda, esquema a la derecha (sin caja: bordes disueltos a --ink) ── */
@@ -136,15 +141,13 @@ body.lc main .tpl-glow:not(.is)::before{inset:-140px 0;
 .lc-plan__node{fill:#03040B;stroke:var(--cyan);stroke-width:1.5;vector-effect:non-scaling-stroke}
 .lc-plan__office{fill:var(--cyan);filter:drop-shadow(0 0 6px var(--cyan)) drop-shadow(0 0 18px rgb(0 229 255 / .6))}
 .lc-plan__pulse{fill:none;stroke:var(--cyan);stroke-width:1.5;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center;opacity:0}
-.lc-plan__north path{fill:none;stroke:rgb(158 176 199 / .6);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .lc-plan__labels{position:absolute;inset:0;pointer-events:none}
 .lc-plan__lbl{position:absolute;left:calc(var(--x) * 100%);top:calc(var(--y) * 100%);translate:16px -50%;white-space:nowrap;
-  font:500 clamp(9.5px,.62rem + .15vw,11.5px)/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+  font:500 clamp(11px,.62rem + .15vw,12px)/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
 .lc-plan__lbl--l{translate:calc(-100% - 16px) -50%}
 .lc-plan__lbl--office{translate:22px -50%;padding:8px 12px;border-radius:var(--r-chip);color:var(--text);
   background:linear-gradient(150deg,rgb(255 255 255 / .12),rgb(255 255 255 / .04) 50%,rgb(69 93 255 / .10));box-shadow:inset 0 0 0 1px rgb(0 229 255 / .4),var(--e-1);
   -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-.lc-plan__n{position:absolute;left:calc(var(--x) * 100%);top:calc(var(--y) * 100%);translate:-50% 0;font:500 11px/1 var(--f-mono);letter-spacing:.16em;color:var(--muted)}
 .lc-plan__note{grid-column:6 / -1;justify-self:end;margin:calc(var(--s-7) * -1) 8% 0 0;color:rgb(158 176 199 / .8)}
 @media (prefers-reduced-motion:no-preference){
   html:not([data-motion="reduced"]) .lc-plan__pulse{animation:lc-pulse 3.2s var(--ease-cine) infinite}
@@ -166,9 +169,9 @@ body.lc main .tpl-glow:not(.is)::before{inset:-140px 0;
 @media (max-width:767px){
   .lc-plan{width:calc(100% + 2 * var(--safe-x));margin-inline:calc(var(--safe-x) * -1);
     -webkit-mask-image:radial-gradient(70% 62% at 50% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(70% 62% at 50% 50%,#000 60%,transparent 100%)}
-  .lc-plan__lbl{font-size:9.5px;letter-spacing:.1em;translate:12px -50%}
-  .lc-plan__lbl--l{translate:calc(-100% - 12px) -50%}
-  .lc-plan__lbl--office{padding:6px 9px;translate:16px -50%}
+  .lc-plan__lbl{font-size:11px;letter-spacing:.08em;translate:10px -50%}
+  .lc-plan__lbl--l{translate:calc(-100% - 10px) -50%}
+  .lc-plan__lbl--office{padding:6px 9px;translate:14px -50%}
   .lc-plan__note{justify-self:start;margin:calc(var(--s-5) * -1) 0 0}
 }
 
@@ -179,7 +182,8 @@ body.lc main .tpl-glow:not(.is)::before{inset:-140px 0;
 /* ── 09 · Preguntas ── */
 .lc-faq .it__head > .t-lede{margin-top:var(--s-5)}
 .lc-faq .faq{width:100%;align-self:stretch}
-.lc-faq__cta{margin-top:var(--s-6)}
+.lc-faq__cta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-6);margin-top:var(--s-6)}
+.lc-faq__cta .lnk .icon{width:16px;height:16px}
 @media (min-width:1024px){.lc-faq .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}}
 
 /* ── 10 · Cierre ── */
@@ -194,4 +198,10 @@ body.lc #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-
     linear-gradient(270deg,rgb(3 4 11 / .94) 0%,rgb(3 4 11 / .86) 30%,rgb(3 4 11 / .5) 47%,rgb(3 4 11 / 0) 62%),
     linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent calc(var(--fade-from) * 100% - 8%),var(--ink) 100%),
     radial-gradient(40% 50% at 78% 50%,rgb(0 229 255 / .06),transparent 70%)}
+}
+/* Bajo la entradilla, las dos listas caen sobre la ciudad desenfocada de nosotros-manifiesto (fuera de su zona segura
+   espejada, x ≥ .60): un velo suave, sin bordes, apaga el bokeh solo detrás de las listas; el sujeto queda intacto */
+@media (min-width:1024px) and (min-aspect-ratio:5/6){
+  .is.lc-reach[data-layout="subject-left"] > .is__fx::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(36% 34% at 70% 68%,rgb(3 4 11 / .7) 0,rgb(3 4 11 / .55) 50%,rgb(3 4 11 / 0) 100%)}
 }
