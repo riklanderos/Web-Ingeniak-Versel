@@ -1,0 +1,697 @@
+---
+// ArticleTemplate · T-ARTICLE (ESPEC §5.10, §8.5, §12.2 R1/R3/R7/R8/R11, F22). Artículo del blog como pieza editorial.
+// Datos: src/data/sitemap.json (URL, H1, breadcrumbs, placas, CTAs, faq) + src/content/paginas/<page.id>.json (texto;
+// su clave "_schema" documenta cada campo). Las secciones siguen el orden de sitemap.sections:
+//   hero          SharedTake + ImageSection hero (placa de D) · crumbs, categoría, H1 en dos voces, entradilla, firma,
+//                 fecha y minutos de lectura · figura registrada en la superficie de cristal si la placa la tiene
+//   respuesta     AnswerBox (DefinitionBlock variant="answer") sobre la portada desenfocada (rack de la toma compartida)
+//   indice        TOC: fijo a la izquierda en escritorio (≥ 1024 px, se retira sobre escenas a sangre), plegable en móvil
+//   cuerpo        Prose por bloques (h2/h3, párrafos, listas, tablas, notas, pasos, calculadora) + escenas a sangre
+//                 (ImageSection mid dentro del artículo) + CTA intermedio en la posición que marque el copy
+//   cta-medio     InlineCTA (primario + página comercial + WhatsApp)
+//   faq           FAQAccordion (banco src/data/faq.json; FAQPage lo emite SEOHead con el mismo texto)
+//   autor         AuthorCard (Organization "Equipo de Ingeniak" mientras no haya autor confirmado, R8)
+//   fuentes       lista numerada con editor, enlace y fecha de consulta (las llamadas [^n] del texto apuntan aquí)
+//   relacionados  Still ×3 (solo rutas construidas; sin repetir placas de la página)
+//   cta-final     Dawn
+// Ninguna sección pinta fondo (§3.11): la luz del texto la dan la placa, el rack y una luz pegajosa que acompaña la lectura.
+// JSON-LD: BlogPosting + BreadcrumbList + FAQPage (SEOHead) + nodo complementario del mismo @id (wordCount, articleSection,
+// keywords, citation, timeRequired) mientras buildGraph no los acepte (peticiones.md · Construcción · artículos).
+import fs from 'node:fs';
+import path from 'node:path';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/tpl/ArticleTemplate.css';
+import ImageSection from '../cine/ImageSection.astro';
+import SharedTake from '../cine/SharedTake.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Dawn from '../cine/Dawn.astro';
+import { resolvePlate, plateReady, type Resolved, type Fallback } from '../cine/plate';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import Metric from '../ui/Metric.astro';
+import DefinitionBlock from '../ui/DefinitionBlock.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import Still from '../ui/Still.astro';
+import Icon from '../ui/Icon.astro';
+import AuthorCard from '../content/AuthorCard.astro';
+import { builtCrumbs, builtRelated, ledeParts, sentences } from './heroKit';
+import { getCopy, getPlate, plateAlt, waHref, linkTarget, copyOrNull, pages, SITE, type Page } from '../../lib/site';
+import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { annotateFigures, tokensToText, esc, getFaqItems } from '../ui/ui-data';
+
+interface Props { page: Page }
+const page = Astro.props.page as any;
+const copy = getCopy(page.id);
+const C: Record<string, any> = copy.sections ?? {};
+const secs: any[] = page.sections ?? [];
+const has = (id: string) => secs.some((s) => s.id === id) && C[id] && !C[id]._omitir;
+const secPlate = (id: string) => secs.find((s) => s.id === id)?.plate ?? null;
+const waMsg: string | undefined = page.secondaryCta?.waMessage;
+const wa = (msg?: string) => waHref(msg ?? waMsg ?? 'Hola Kain, leí un artículo de Ingeniak y quiero saber más.');
+
+/* ── Placas: respaldo local cuando la placa de D todavía no está exportada (sitemap.json no trae launchFallback para
+      estas P1; pedido en peticiones.md). Nunca una sección vacía: si tampoco hay respaldo, ImageSection pinta el aura. ── */
+const LOCAL_FALLBACK: Record<string, { plate: string; mirror?: boolean }> = {
+  'servicios-no-se': { plate: 'home-sistema-3-organizar', mirror: false },      // elegir camino → Kain frente a los carriles
+  'cta-duena-tranquila': { plate: 'cta-amanecer', mirror: true },               // cierre: mismo amanecer, sujeto a la izquierda
+  'art-agente-chatbot-hero': { plate: 'home-sistema-2-atender', mirror: false },
+};
+const SECTION_FALLBACK: Record<string, { plate: string; mirror?: boolean }> = {
+  hero: { plate: 'home-sistema-2-atender', mirror: false },
+  'cta-final': { plate: 'cta-amanecer', mirror: false },
+  scene: { plate: 'home-kain', mirror: false },
+};
+const fbOf = (p: any, kind: string): Fallback => p?.launchFallback ?? LOCAL_FALLBACK[p?.id] ?? SECTION_FALLBACK[kind];
+const used = new Set<string>();
+
+/** Borde derecho de la penumbra del lado del texto (fracción de la placa), desde plates.json → safe.d (espejado si aplica).
+ *  Solo cuentan las zonas pegadas a la izquierda que cruzan la banda media (donde vive el bloque de texto). */
+function safeRight(r: Resolved): number {
+  const raw: any = r.id ? getPlate(r.id) : null;
+  const rects: number[][] = raw?.safe?.d ?? [];
+  const mir = (b: number[]) => (r.mirror ? [1 - b[2], b[1], 1 - b[0], b[3]] : b);
+  const band = rects.map(mir).filter((b) => b[0] < 0.2 && b[1] < 0.75 && b[3] > 0.35);
+  return band.length ? Math.max(0.36, Math.min(...band.map((b) => b[2]))) : 0.44;
+}
+/** Superficie de cristal registrada (telefono, pantalla, tableta) en fracciones de la placa, con su versión vertical. */
+function panelOf(r: Resolved, names = ['telefono', 'pantalla', 'tableta']) {
+  if (!r.id) return null;
+  const a = (getPlate(r.id) as any)?.anchors ?? {};
+  const name = names.find((n) => Array.isArray(a[n]?.d) && a[n].d.length >= 4);
+  if (!name) return null;
+  const [x, y, w, h] = a[name].d as number[];
+  let style = `--ax:${r.mirror ? +(1 - x - w).toFixed(4) : x};--ay:${y};--aw:${w};--ah:${h};`;
+  const m = a[name].m as number[] | null;
+  if (Array.isArray(m) && m.length >= 4) style += `--ax-m:${r.mirror ? +(1 - m[0] - m[2]).toFixed(4) : m[0]};--ay-m:${m[1]};--aw-m:${m[2]};--ah-m:${m[3]};`;
+  return { name, style, m: Array.isArray(m) && m.length >= 4 };
+}
+
+/* ── Texto: enlaces [etiqueta](ruta), **negritas**, llamadas [^n] a las fuentes y tokens de cifra/precio (_ESQUEMA §5) ── */
+const fuentes: any[] = C.fuentes?.items ?? [];
+const INLINE = /\[\^(\d+)\]|\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+)\*\*/g;
+function inl(s?: string | null): string {
+  const src = String(s ?? '');
+  let out = '';
+  let last = 0;
+  const rx = new RegExp(INLINE.source, 'g');
+  let m: RegExpExecArray | null;
+  while ((m = rx.exec(src))) {
+    out += annotateFigures(src.slice(last, m.index));
+    if (m[1]) {
+      const n = +m[1];
+      const f = fuentes[n - 1];
+      out += f ? `<sup class="art-fn"><a href="#fuente-${n}" aria-label="Fuente ${n}: ${esc(f.publisher ?? '')}">${n}</a></sup>` : '';
+    } else if (m[2]) {
+      const href = m[3];
+      const external = /^https?:\/\//.test(href) && !/^https?:\/\/(www\.)?ingeniak\.mx/.test(href);
+      const target = external ? href : linkTarget(href);
+      const label = annotateFigures(m[2]);
+      out += !target
+        ? `<span class="art-nolink">${label}</span>`
+        : external
+          ? `<a href="${esc(target)}" target="_blank" rel="noopener">${label}<span class="art-ext" aria-hidden="true">↗</span></a>`
+          : `<a href="${esc(target)}">${label}</a>`;
+    } else if (m[4]) {
+      out += `<strong>${inl(m[4])}</strong>`;
+    }
+    last = m.index + m[0].length;
+  }
+  return out + annotateFigures(src.slice(last));
+}
+const plain = (s?: string | null) =>
+  tokensToText(String(s ?? '')).replace(/\[\^\d+\]/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/\*\*/g, '');
+const words = (s?: string | null) => (plain(s).match(/[\p{L}\p{N}]+/gu) ?? []).length;
+
+/* ── 01 · Portada ── */
+const hero = C.hero ?? {};
+const heroP = secPlate('hero') ?? { id: 'home-sistema-2-atender', layout: 'subject-right' };
+const heroFb = fbOf(heroP, 'hero');
+const heroR = resolvePlate(heroP.id, { mirror: heroP.mirror, layout: heroP.layout, fallbackPlate: heroFb, where: '#hero' });
+if (heroR.id) used.add(heroR.id);
+const heroSafe = safeRight(heroR);
+/** Ancho máximo realmente exportado de una placa (plates.mjs exporta hasta srcsetMax de plates.json, que puede ser menor
+ *  que el de la portada en sitemap.json: p. ej. servicios-no-se sale a 1920 aunque aquí sea portada). Nunca un srcset roto. */
+function exportedMax(id: string | null, want = 2752): number {
+  if (!id) return want;
+  const base = String((getPlate(id) as any)?.d?.src ?? `/img/cine/${id}`);
+  const pub = (w: number) => { try { return fs.existsSync(path.join(process.cwd(), 'public', `${base}-${w}.avif`)); } catch { return false; } };
+  return [2752, 2560, 1920, 1280].find((w) => w <= want && pub(w)) ?? Math.min(want, 1280);
+}
+const heroMax = exportedMax(heroR.id, heroP.srcsetMax ?? 2752);
+const heroPanel = hero.ui?.items?.length ? panelOf(heroR) : null;
+const h1 = hero.h1 ?? { text: page.h1 };
+/** Titular en dos voces; `lit` (una sola .lit por página) puede caer en la primera o en la segunda voz. */
+function voice(t: string, lit?: string): string {
+  const html = annotateFigures(t);
+  if (!lit) return html;
+  const w = esc(lit);
+  const at = html.indexOf(w);
+  return at < 0 ? html : `${html.slice(0, at)}<span class="lit">${w}</span>${html.slice(at + w.length)}`;
+}
+const litIn = h1.lit && String(h1.text ?? '').includes(h1.lit) ? 'text' : h1.lit && String(h1.soft ?? '').includes(h1.lit) ? 'soft' : null;
+const deck = ledeParts(hero.deck, 22);
+const categoria: string = copy.articulo?.categoria ?? hero.eyebrow ?? 'Blog';
+
+/* Fechas (R8: salen del copy, no del build) y lectura */
+const fmt = (iso?: string) => (iso ? new Date(`${iso}T12:00:00Z`).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : '');
+const publicado: string | undefined = copy.publicado ?? copy.actualizado;
+const actualizado: string | undefined = copy.actualizado;
+
+/* ── 02 · Respuesta corta ── */
+const R = C.respuesta ?? {};
+
+/* ── 04 · Cuerpo: bloques → tramos de prosa separados por escenas a sangre ── */
+const blocks: any[] = C.cuerpo?.blocks ?? [];
+type Seg = { kind: 'prose'; items: any[] } | { kind: 'scene'; b: any };
+const segs: Seg[] = [];
+for (const b of blocks) {
+  if (b && typeof b === 'object' && b.variant === 'scene') { segs.push({ kind: 'scene', b }); continue; }
+  const lastSeg = segs[segs.length - 1];
+  if (lastSeg && lastSeg.kind === 'prose') lastSeg.items.push(b);
+  else segs.push({ kind: 'prose', items: [b] });
+}
+const ctaInBody = blocks.some((b) => b?.variant === 'cta-medio');
+// Escenas: placa resuelta (respaldo si falta), lado del texto y borde de su penumbra
+const scenes = new Map<any, { r: Resolved; p: any; fb: Fallback; safe: number }>();
+for (const s of segs) if (s.kind === 'scene') {
+  const p = s.b.plate ?? {};
+  const fb = fbOf(p, 'scene');
+  const r = resolvePlate(p.id ?? 'home-kain', { mirror: p.mirror, layout: p.layout, fallbackPlate: fb, where: `#${s.b.id}` });
+  if (r.id) used.add(r.id);
+  scenes.set(s.b, { r, p, fb, safe: safeRight(r) });
+}
+
+/* Conteo de palabras del artículo (respuesta + cuerpo) para la lectura y el wordCount del BlogPosting */
+function blockWords(b: any): number {
+  if (typeof b === 'string') return words(b);
+  if (!b || typeof b !== 'object') return 0;
+  switch (b.variant) {
+    case 'h2': case 'h3': return words(b.text);
+    case 'ul': case 'ol': return (b.items ?? []).reduce((n: number, t: string) => n + words(t), 0);
+    case 'note': return words(b.label) + words(b.text);
+    case 'table': return words(b.caption) + (b.head ?? []).reduce((n: number, t: string) => n + words(t), 0)
+      + (b.rows ?? []).flat().reduce((n: number, t: string) => n + words(t), 0) + words(b.note);
+    case 'steps': return (b.items ?? []).reduce((n: number, i: any) => n + words(i.title) + words(i.text), 0);
+    case 'calc': return words(b.eyebrow) + words(b.title) + (b.formula?.terms ?? []).reduce((n: number, t: string) => n + words(t), 0)
+      + (b.fields ?? []).reduce((n: number, f: any) => n + words(f.label) + words(f.hint), 0) + words(b.note);
+    case 'scene': return words(b.eyebrow) + words(b.title) + words(b.text);
+    default: return 0;
+  }
+}
+const bodyWords = words(R.text) + blocks.reduce((n, b) => n + blockWords(b), 0);
+const minutes = Math.max(1, Math.round((bodyWords + words(hero.deck)) / 200));
+
+/* ── 03 · Índice: respuesta + h2 del cuerpo + FAQ + fuentes ── */
+const faqC = C.faq ?? {};
+const faqItems = has('faq') ? getFaqItems(faqC.faqIds ?? []) : [];
+const toc = [
+  ...(has('respuesta') ? [{ id: 'respuesta', text: R.label ?? 'Respuesta corta' }] : []),
+  ...blocks.filter((b) => b?.variant === 'h2' && b.id).map((b) => ({ id: b.id, text: plain(b.rail ?? b.text) })),
+  ...(faqItems.length ? [{ id: 'faq', text: faqC.eyebrow ?? 'Preguntas frecuentes' }] : []),
+  ...(fuentes.length ? [{ id: 'fuentes', text: C.fuentes?.eyebrow ?? 'Fuentes' }] : []),
+];
+
+/* ── 05 · CTA intermedio ── */
+const mid = C['cta-medio'] ?? {};
+const midLink = mid.link?.href ? linkTarget(mid.link.href) : null;
+
+/* ── 09 · Sigue explorando: rutas construidas; si faltan, las que ya enlaza el artículo y luego el resto ── */
+const relC = C.relacionados ?? {};
+const bodyHrefs = blocks.flatMap((b) => (typeof b === 'string' ? [b] : [b?.text ?? '', ...(b?.items ?? []).map((i: any) => (typeof i === 'string' ? i : i?.text ?? ''))]))
+  .flatMap((t: string) => [...String(t).matchAll(/\]\((\/[^)\s]*)\)/g)].map((m) => m[1]));
+const sceneHrefs = segs.flatMap((s) => (s.kind === 'scene' ? (s.b.links ?? []).map((l: any) => l.href) : []));
+const prefer = [...new Set([...sceneHrefs, ...bodyHrefs, ...(page.internalLinks ?? [])])].filter((h) => h && h !== page.url && h !== '/discovery/');
+const relRaw = has('relacionados') ? builtRelated(relC.items, { self: page.url, want: 3, prefer: [...prefer, '/discovery/'] }) : [];
+const NEUTRAL = ['home-kain', 'ind-salud-kain-sector', 'home-sistema-5-medir', 'home-sistema-4-automatizar', 'home-problema-b', 'home-hero'];
+const stillTaken = new Set<string>();
+function stillPlate(it: any): string | undefined {
+  const url = String(it.href).split('#')[0];
+  const target = (pages as any[]).find((p) => p.url === url);
+  const tried: string[] = [];
+  if (it.plate) tried.push(it.plate);
+  for (const s of (target?.sections ?? []) as any[]) if (s.plate?.id) {
+    tried.push(s.plate.id);
+    const fb = s.plate.launchFallback ?? LOCAL_FALLBACK[s.plate.id];
+    if (fb) tried.push(typeof fb === 'string' ? fb : fb.plate);
+  }
+  tried.push(...NEUTRAL);
+  const pick = tried.find((id) => id && plateReady(id) && !used.has(id) && !stillTaken.has(id) && id !== 'cta-amanecer');
+  if (pick) stillTaken.add(pick);
+  return pick;
+}
+const groupLabel: Record<string, string> = { Recursos: 'Blog', Servicios: 'Servicio', Industrias: 'Industria', Casos: 'Caso de estudio', 'Conversión': 'Discovery Session' };
+const relItems = relRaw.map((it: any) => {
+  const url = String(it.href).split('#')[0];
+  const target: any = (pages as any[]).find((p) => p.url === url);
+  const tcopy = target ? copyOrNull(target.id) : null;
+  const line = it.line || sentences(tcopy?.sections?.hero?.deck ?? tcopy?.sections?.hero?.lede).find((x) => !/\{\{|\d/.test(x)) || '';
+  return { ...it, label: it.label || groupLabel[target?.group] || '', line, plate: stillPlate(it) };
+});
+
+/* ── 10 · Cierre ── */
+const cta = C['cta-final'] ?? {};
+const ctaP = secPlate('cta-final') ?? { id: 'cta-amanecer', layout: 'subject-left', mirror: true };
+const ctaFb = fbOf(ctaP, 'cta-final');
+
+/* ── JSON-LD: BlogPosting.about (R8: autor = Organization) + nodo complementario del mismo @id ── */
+const pageUrl = `${SITE.url}${page.url}`;
+const about = ((copy.articulo?.about ?? []) as any[]).map((a) => {
+  if (a.type === 'Service' && String(a.url ?? '').startsWith('/') && linkTarget(a.url))
+    return { '@type': 'Service', '@id': `${SITE.url}${a.url}#service`, name: a.name, url: `${SITE.url}${a.url}` };
+  return { '@type': a.type ?? 'Thing', name: a.name, ...(a.url && /^https?:/.test(a.url) ? { url: a.url } : {}) };
+});
+const keywords = [page.primaryKeyword, ...(page.secondaryKeywords ?? [])].filter(Boolean).join(', ');
+const articleExtra = [{
+  '@id': `${pageUrl}#article`,
+  articleSection: categoria,
+  wordCount: bodyWords,
+  timeRequired: `PT${minutes}M`,
+  keywords,
+  isAccessibleForFree: true,
+  ...(fuentes.length ? { citation: fuentes.map((f) => ({ '@type': 'CreativeWork', name: f.title, url: f.href, publisher: { '@type': 'Organization', name: f.publisher } })) } : {}),
+}];
+const dates = { datePublished: publicado, dateModified: actualizado };
+const H = (h: any) => h ?? { text: '' };
+---
+<BaseLayout
+  page={page}
+  lcpPlate={heroR.id ?? undefined}
+  lcpSrcsetMax={heroMax}
+  rail={false}
+  articleAbout={about.length ? about : undefined}
+  jsonLd={articleExtra}
+  {...dates}
+  bodyClass="t-art"
+>
+  <div class="art-progress" aria-hidden="true"><i data-art-progress></i></div>
+
+  {/* ───────────── 01 · Portada + 02 · Respuesta corta (toma compartida: la respuesta entra en foco sobre la portada) ───────────── */}
+  <SharedTake plate={heroP.id} fallbackPlate={heroFb} mirror={heroP.mirror} class="art-take">
+    <ImageSection
+      id="hero"
+      plate={heroP.id}
+      fallbackPlate={heroFb}
+      layout={heroP.layout}
+      mirror={heroP.mirror}
+      height="hero"
+      priority
+      take
+      mobile="split"
+      srcsetMax={heroMax}
+      alt={plateAlt(heroR.id ?? heroP.id, page.id) || undefined}
+      class="art-hero tpl-hero"
+    >
+      <span class="tpl-introglow" aria-hidden="true"></span>
+      <div class="art-copy art-hero__copy" style={`--art-safe-r:${heroSafe}`}>
+        <Breadcrumbs page={page} items={builtCrumbs(page.breadcrumbs)} class="tpl-mhide" />
+        <p class="t-label t-label--cyan eyebrow art-cat">
+          <span class="node" aria-hidden="true"></span><span>{categoria}</span>
+          <span class="art-cat__dot" aria-hidden="true"></span><span class="art-cat__read">Lectura de {minutes} minutos</span>
+        </p>
+        <h1 id="hero-t" class="t-display-2 art-h1" data-split>
+          <span set:html={litIn === 'text' ? voice(h1.text, h1.lit) : annotateFigures(h1.text)} />
+          {h1.soft && <> <span class="soft" set:html={litIn === 'soft' ? voice(h1.soft, h1.lit) : annotateFigures(h1.soft)} /></>}
+        </h1>
+        {deck.intro && (
+          <p class="t-standfirst art-deck"><Copy text={deck.intro} />{deck.rest && <span class="tpl-mhide"> <Copy text={deck.rest} /></span>}</p>
+        )}
+        <div class="art-byline tpl-mhide">
+          <span class="art-byline__mark" aria-hidden="true"></span>
+          <p class="art-byline__who">Por <b>{hero.byline ?? 'Equipo de Ingeniak'}</b></p>
+          {publicado && <p class="art-byline__when"><time datetime={publicado}>{fmt(publicado)}</time>{actualizado && actualizado !== publicado && <> · Actualizado el <time datetime={actualizado}>{fmt(actualizado)}</time></>}</p>}
+        </div>
+        {has('respuesta') && <a class="lnk--mono art-jump tpl-mhide" href="#respuesta">{hero.jump ?? 'Ir a la respuesta corta'} <span aria-hidden="true">↓</span></a>}
+      </div>
+
+      {heroPanel && (
+        <div slot="anchors" class="anchor anchor--panel art-panel" data-anchor={heroPanel.name} data-lock style={heroPanel.style}
+          data-m={heroPanel.m ? undefined : 'none'} aria-hidden="true" data-nosnippet>
+          <div class="art-fig">
+            <p class="art-fig__top"><span class="art-fig__k">{hero.ui.label ?? 'Fig. 01'}</span><span class="art-fig__live" aria-hidden="true"></span></p>
+            <p class="art-fig__t">{hero.ui.title}</p>
+            <ol class="art-fig__list" role="list">
+              {(hero.ui.items as string[]).map((t, i) => (
+                <li style={`--i:${i}`}><i class="art-fig__node"></i><span class="art-fig__l">{t}</span><b class="art-fig__bar" style={`--w:${[0.92, 0.7, 0.84, 0.62, 0.76][i % 5]}`}></b></li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      )}
+
+      <Fragment slot="more">
+        {deck.rest && <Copy text={deck.rest} as="p" class="t-standfirst art-deck art-deck--rest tpl-dhide" />}
+        <div class="art-byline art-byline--m tpl-dhide">
+          <span class="art-byline__mark" aria-hidden="true"></span>
+          <p class="art-byline__who">Por <b>{hero.byline ?? 'Equipo de Ingeniak'}</b></p>
+          {publicado && <p class="art-byline__when"><time datetime={publicado}>{fmt(publicado)}</time></p>}
+        </div>
+        {has('respuesta') && <a class="lnk--mono art-jump tpl-dhide" href="#respuesta">{hero.jump ?? 'Ir a la respuesta corta'} <span aria-hidden="true">↓</span></a>}
+      </Fragment>
+    </ImageSection>
+
+    {has('respuesta') && (
+      <Intertitle id="respuesta" rack aura="none" labelledby="respuesta-def-q" class="art-answer tpl-glow">
+        <DefinitionBlock id="respuesta-def" variant="answer" heading={R.heading} text={R.text} label={R.label ?? 'Respuesta corta'} />
+      </Intertitle>
+    )}
+  </SharedTake>
+
+  {/* ───────────── 03–07 · Lectura: índice, cuerpo, FAQ, autor y fuentes bajo una luz que acompaña ───────────── */}
+  <div class="art-read" data-art-read>
+    <span class="art-light" aria-hidden="true"><span class="art-light__in"></span></span>
+
+    {toc.length > 2 && (
+      <div class="frame art-tocwrap">
+        <nav id="indice" class="toc art-toc" aria-label={C.indice?.label ?? 'En este artículo'} data-toc data-art-toc>
+          <details class="toc__details" open>
+            <summary class="toc__sum t-label"><span class="node" aria-hidden="true"></span>{C.indice?.label ?? 'En este artículo'}</summary>
+            <ol class="toc__list">
+              {toc.map((t) => <li class="toc__item"><a href={`#${t.id}`} data-toc-link>{t.text}</a></li>)}
+            </ol>
+          </details>
+        </nav>
+      </div>
+    )}
+
+    <div id="cuerpo" class="art-cuerpo">
+      {segs.map((seg, si) => {
+        if (seg.kind === 'scene') {
+          const b = seg.b;
+          const sc = scenes.get(b)!;
+          const links = (b.links ?? []).map((l: any) => ({ ...l, to: linkTarget(l.href) })).filter((l: any) => l.to);
+          return (
+            <ImageSection
+              id={b.id}
+              plate={sc.p.id ?? 'home-kain'}
+              fallbackPlate={sc.fb}
+              layout={sc.p.layout}
+              mirror={sc.p.mirror}
+              height="mid"
+              mobile="top"
+              srcsetMax={1920}
+              alt=""
+              class="art-scene"
+              data-art-scene
+            >
+              <div class="art-copy art-scene__copy" style={`--art-safe-r:${sc.safe}`}>
+                {b.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{b.eyebrow}</p>}
+                <h3 id={`${b.id}-t`} class="art-scene__t" data-split set:html={inl(b.title)} />
+                {b.metricId && (METRICS as any)[b.metricId] && (
+                  <p class="art-scene__fig">
+                    <Metric id={b.metricId as MetricId} variant="mega" label={false} as="span" class="art-scene__mega" />
+                    <span class="art-scene__lab">{(METRICS as any)[b.metricId].label}<span class="art-scene__ctx"> · {(METRICS as any)[b.metricId].ctx}</span></span>
+                  </p>
+                )}
+                {b.text && <p class="t-lede t-lede--2 art-scene__txt" set:html={inl(b.text)} />}
+                <p class="t-micro art-scene__src"><span class="node" aria-hidden="true"></span>{SOURCE_NOTE}.</p>
+                {links.length > 0 && (
+                  <p class="art-scene__links">{links.map((l: any) => <a class="lnk" href={l.to}>{l.label}<Icon name="arrow" size={16} /></a>)}</p>
+                )}
+                {/* Rótulo de imagen con personas generadas: en la columna de texto (nunca sobre el sujeto, §3.10) */}
+                {b.illus && <p class="chip-illus art-illus">{b.illus}</p>}
+              </div>
+            </ImageSection>
+          );
+        }
+        return (
+          <div class:list={['frame art-grid', si === 0 && 'art-grid--first']}>
+            <div class="prose art-prose">
+              {seg.items.map((b: any) => {
+                if (typeof b === 'string') return <p set:html={inl(b)} />;
+                if (!b || typeof b !== 'object') return null;
+                switch (b.variant) {
+                  case 'h2': return <h2 id={b.id} class="art-h2" set:html={inl(b.text)} />;
+                  case 'h3': return <h3 class="art-h3" set:html={inl(b.text)} />;
+                  case 'ul': return <ul>{(b.items ?? []).map((t: string) => <li set:html={inl(t)} />)}</ul>;
+                  case 'ol': return <ol class="art-ol">{(b.items ?? []).map((t: string) => <li set:html={inl(t)} />)}</ol>;
+                  case 'note': return (
+                    <aside class="art-note" aria-label={b.label ?? 'Nota'}>
+                      <p class="t-label t-label--cyan art-note__k"><span class="node" aria-hidden="true"></span>{b.label ?? 'Nota'}</p>
+                      <p class="art-note__t" set:html={inl(b.text)} />
+                    </aside>
+                  );
+                  case 'table': return (
+                    <figure class="art-table">
+                      <table>
+                        {b.caption && <caption><span class="node" aria-hidden="true"></span>{plain(b.caption)}</caption>}
+                        <thead><tr>{(b.head ?? []).map((h: string) => <th scope="col" set:html={inl(h)} />)}</tr></thead>
+                        <tbody>
+                          {(b.rows ?? []).map((r: string[]) => (
+                            <tr>
+                              <th scope="row" set:html={inl(r[0])} />
+                              {r.slice(1).map((c, ci) => <td data-label={plain(b.head?.[ci + 1] ?? '')} set:html={inl(c)} />)}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      {b.note && <figcaption class="t-micro art-table__note" set:html={inl(b.note)} />}
+                    </figure>
+                  );
+                  case 'steps': return (
+                    <ol class="art-steps" role="list">
+                      {(b.items ?? []).map((it: any, i: number) => (
+                        <li class="art-steps__i" style={`--i:${i}`}>
+                          <span class="art-steps__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                          <h3 class="art-steps__t" set:html={inl(it.title)} />
+                          <p class="art-steps__p" set:html={inl(it.text)} />
+                        </li>
+                      ))}
+                    </ol>
+                  );
+                  case 'calc': return (
+                    <div class="art-calc" id={b.id} data-art-calc data-nosnippet>
+                      <p class="t-label t-label--cyan eyebrow art-calc__k"><span class="node" aria-hidden="true"></span>{b.eyebrow}</p>
+                      <h3 class="art-calc__t">{b.title}</h3>
+                      {b.formula?.terms?.length > 0 && (
+                        <p class="art-calc__formula">
+                          {(b.formula.terms as string[]).map((t, i) => <>{i > 0 && <span class="art-calc__op" aria-label="por">×</span>}<span class="art-calc__term">{t}</span></>)}
+                          <span class="art-calc__op" aria-label="igual a">=</span><span class="art-calc__term art-calc__term--res">{b.formula.result}</span>
+                        </p>
+                      )}
+                      <form class="art-calc__form" data-art-calc-form novalidate>
+                        {(b.fields ?? []).map((f: any) => (
+                          <label class="art-calc__f">
+                            <span class="art-calc__l">{f.label}</span>
+                            <span class:list={['art-calc__in', `art-calc__in--${f.mode ?? 'count'}`]}>
+                              {f.mode === 'money' && <span class="art-calc__u" aria-hidden="true">$</span>}
+                              <input type="number" inputmode="decimal" min="0" step="any" name={f.id} data-mode={f.mode ?? 'count'} autocomplete="off" />
+                              {f.mode === 'percent' && <span class="art-calc__u" aria-hidden="true">%</span>}
+                            </span>
+                            {f.hint && <span class="art-calc__h">{f.hint}</span>}
+                          </label>
+                        ))}
+                      </form>
+                      <output class="art-calc__out" aria-live="polite" data-art-calc-out>
+                        <span class="art-calc__row"><span class="art-calc__ok">{b.result?.month ?? 'Al mes'}</span><b data-out="month">—</b></span>
+                        <span class="art-calc__row art-calc__row--y"><span class="art-calc__ok">{b.result?.year ?? 'Al año'}</span><b data-out="year">—</b></span>
+                        <span class="t-micro art-calc__empty" data-out="empty">{b.result?.empty ?? 'Escribe tus datos'}</span>
+                      </output>
+                      {b.note && <p class="t-micro art-calc__note"><span class="node" aria-hidden="true"></span>{b.note}</p>}
+                    </div>
+                  );
+                  case 'cta-medio': return has('cta-medio') ? (
+                    <aside id="cta-medio" class="enote enote--cta art-cta" aria-label={mid.label ?? 'Siguiente paso'}>
+                      <p class="enote__label t-label"><span class="node" aria-hidden="true"></span>{mid.label ?? 'Siguiente paso'}</p>
+                      <div class="enote__body">
+                        <p set:html={inl(mid.text)} />
+                        {midLink && <a class="lnk art-cta__link" href={midLink}>{mid.link.label}<Icon name="arrow" size={16} /></a>}
+                      </div>
+                      <div class="ctas art-cta__btns">
+                        <Btn variant="primary" micro href={mid.ctaPrimary?.href ?? SITE.discovery} label={mid.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+                        <Btn variant="ghost" href={wa(mid.ctaSecondary?.waMessage)} label={mid.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+                      </div>
+                    </aside>
+                  ) : null;
+                  default: return null;
+                }
+              })}
+            </div>
+          </div>
+        );
+      })}
+      {!ctaInBody && has('cta-medio') && (
+        <div class="frame art-grid">
+          <div class="prose art-prose">
+            <aside id="cta-medio" class="enote enote--cta art-cta" aria-label={mid.label ?? 'Siguiente paso'}>
+              <p class="enote__label t-label"><span class="node" aria-hidden="true"></span>{mid.label ?? 'Siguiente paso'}</p>
+              <div class="enote__body"><p set:html={inl(mid.text)} />{midLink && <a class="lnk art-cta__link" href={midLink}>{mid.link.label}<Icon name="arrow" size={16} /></a>}</div>
+              <div class="ctas art-cta__btns">
+                <Btn variant="primary" micro href={mid.ctaPrimary?.href ?? SITE.discovery} label={mid.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+                <Btn variant="ghost" href={wa(mid.ctaSecondary?.waMessage)} label={mid.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+              </div>
+            </aside>
+          </div>
+        </div>
+      )}
+    </div>
+
+    {/* ───────────── 06 · Preguntas frecuentes ───────────── */}
+    {faqItems.length > 0 && (
+      <section id="faq" class="art-sec art-faq" aria-labelledby="faq-t">
+        <div class="frame art-grid">
+          <div class="art-col">
+            <header class="art-head">
+              {faqC.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{faqC.eyebrow}</p>}
+              <h2 id="faq-t" class="t-h2 art-head__t" data-split set:html={inl(H(faqC.h2).text) + (faqC.h2?.soft ? ` <span class="soft">${inl(faqC.h2.soft)}</span>` : '')} />
+            </header>
+            <FAQAccordion ids={faqC.faqIds} label={faqC.eyebrow ?? 'Preguntas frecuentes'} />
+          </div>
+        </div>
+      </section>
+    )}
+
+    {/* ───────────── 07 · Autor ───────────── */}
+    {has('autor') && (
+      <section id="autor" class="art-sec art-author" aria-label="Sobre el autor">
+        <div class="frame art-grid">
+          <div class="art-col">
+            <AuthorCard person={C.autor.persona ?? null} bio={C.autor.bio} />
+          </div>
+        </div>
+      </section>
+    )}
+
+    {/* ───────────── 08 · Fuentes ───────────── */}
+    {fuentes.length > 0 && (
+      <section id="fuentes" class="art-sec art-src" aria-labelledby="fuentes-t">
+        <div class="frame art-grid">
+          <div class="art-col">
+            <header class="art-head">
+              <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{C.fuentes.eyebrow ?? 'Fuentes'}</p>
+              <h2 id="fuentes-t" class="art-src__t">{H(C.fuentes.h2).text || 'Fuentes'}</h2>
+              {C.fuentes.lede && <p class="art-src__lede" set:html={inl(C.fuentes.lede)} />}
+            </header>
+            <ol class="art-src__list" role="list">
+              {fuentes.map((f: any, i: number) => (
+                <li id={`fuente-${i + 1}`} class="art-src__i">
+                  <span class="art-src__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <div class="art-src__b">
+                    <p class="art-src__pub">{f.publisher}</p>
+                    <a class="art-src__a" href={f.href} target="_blank" rel="noopener external">{f.title}<span class="art-ext" aria-hidden="true">↗</span></a>
+                    {f.nota && <p class="art-src__nota">{f.nota}</p>}
+                    {f.consultado && <p class="t-micro art-src__date">Consultado el <time datetime={f.consultado}>{fmt(f.consultado)}</time></p>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+            {C.fuentes.internas && <p class="t-micro art-src__int"><span class="node" aria-hidden="true"></span><Copy text={C.fuentes.internas} /></p>}
+          </div>
+        </div>
+      </section>
+    )}
+  </div>
+
+  {/* ───────────── 09 · Sigue explorando ───────────── */}
+  {relItems.length > 0 && (
+    <section id="relacionados" class="art-sec art-rel tpl-glow" aria-labelledby="relacionados-t" data-art-stop>
+      <div class="frame">
+        <header class="art-rel__head">
+          <h2 id="relacionados-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{relC.eyebrow ?? 'Sigue explorando'}</h2>
+        </header>
+        <div class="art-rel__grid">
+          {relItems.map((it: any) => <Still href={it.href} plate={it.plate} label={it.label} title={it.title} line={it.line} headingLevel={3} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* ───────────── 10 · Cierre (Dawn) ───────────── */}
+  {has('cta-final') && (
+    <Dawn plate={ctaP.id} mirror={ctaP.mirror} layout={ctaP.layout} fallbackPlate={ctaFb} class="tpl-glow-m art-dawn">
+      {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
+      <h2 id="cta-final-t" class="t-h2" data-split set:html={annotateFigures(H(cta.h2).text) + (cta.h2?.soft ? ` <span class="soft">${annotateFigures(cta.h2.soft)}</span>` : '')} />
+      {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
+      <div class="ctas">
+        {cta.micro ? (
+          <div class="cta-p">
+            <Btn variant="primary" href={cta.ctaPrimary?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+            <p class="t-micro btn-micro" set:html={annotateFigures(cta.micro)} />
+          </div>
+        ) : (
+          <Btn variant="primary" micro href={cta.ctaPrimary?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+        )}
+        <Btn variant="ghost" href={wa(cta.ctaSecondary?.waMessage)} label={cta.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+      </div>
+    </Dawn>
+  )}
+</BaseLayout>
+
+<script>
+  // Artículo (F22 + índice + calculadora). Sin JS: el índice queda en el flujo (plegable) y la calculadora muestra "—".
+  const root = document.documentElement;
+  const read = document.querySelector<HTMLElement>('[data-art-read]');
+  const bar = document.querySelector<HTMLElement>('[data-art-progress]');
+  const toc = document.querySelector<HTMLElement>('[data-art-toc]');
+
+  /* Barra de lectura de 2 px bajo el encabezado: avance desde la respuesta corta hasta el final de las fuentes */
+  if (read && bar) {
+    const start = document.getElementById('respuesta') ?? read;
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const a = start.getBoundingClientRect().top + scrollY - innerHeight * 0.25;
+      const b = read.getBoundingClientRect().bottom + scrollY - innerHeight * 0.85;
+      const p = Math.min(1, Math.max(0, (scrollY - a) / Math.max(1, b - a)));
+      bar.style.transform = `scaleX(${p.toFixed(4)})`;
+      root.toggleAttribute('data-art-reading', scrollY > a && p < 1);
+    };
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    addEventListener('resize', update, { passive: true });
+    update();
+  }
+
+  /* Índice fijo (≥ 1024 px): visible mientras se lee; se retira sobre escenas a sangre, relacionados y cierre */
+  if (read && toc) {
+    const blockers = new Set<Element>();
+    let inRead = false;
+    const sync = () => root.toggleAttribute('data-art-toc', inRead && blockers.size === 0);
+    const band = { rootMargin: '-30% 0px -30% 0px' };
+    new IntersectionObserver((en) => { for (const e of en) inRead = e.isIntersecting; sync(); }, band).observe(read);
+    const bo = new IntersectionObserver((en) => {
+      for (const e of en) (e.isIntersecting ? blockers.add(e.target) : blockers.delete(e.target));
+      sync();
+    }, { rootMargin: '-8% 0px -8% 0px' });
+    document.querySelectorAll('[data-art-scene], [data-art-stop], .art-take').forEach((n) => bo.observe(n));
+    // Renglón activo = la última sección cuyo inicio ya pasó el 32 % superior (también con saltos de ancla o scroll rápido)
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+    const targets = links.map((l) => document.getElementById(decodeURIComponent(l.hash.slice(1))));
+    let queued = false;
+    const mark = () => {
+      queued = false;
+      let cur = -1;
+      targets.forEach((t, i) => { if (t && t.getBoundingClientRect().top < innerHeight * 0.32) cur = i; });
+      links.forEach((l, i) => (i === cur ? l.setAttribute('aria-current', 'true') : l.removeAttribute('aria-current')));
+    };
+    addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(mark); } }, { passive: true });
+    mark();
+  }
+
+  /* Calculadora: leads × % sin respuesta a tiempo × tasa de cierre × ticket. Nada se guarda ni se envía. */
+  document.querySelectorAll<HTMLElement>('[data-art-calc]').forEach((calc) => {
+    const form = calc.querySelector<HTMLFormElement>('[data-art-calc-form]');
+    const out = calc.querySelector<HTMLElement>('[data-art-calc-out]');
+    if (!form || !out) return;
+    const money = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 });
+    const val = (n: string) => {
+      const el = form.elements.namedItem(n) as HTMLInputElement | null;
+      const v = el ? parseFloat(el.value.replace(',', '.')) : NaN;
+      return Number.isFinite(v) && v >= 0 ? v : NaN;
+    };
+    const fields = [...form.querySelectorAll<HTMLInputElement>('input[name]')];
+    const run = () => {
+      const vals = fields.map((f) => {
+        const v = val(f.name);
+        return f.dataset.mode === 'percent' ? Math.min(v, 100) / 100 : v;
+      });
+      const ok = vals.length > 0 && vals.every((v) => Number.isFinite(v));
+      const m = ok ? vals.reduce((a, b) => a * b, 1) : NaN;
+      const set = (k: string, t: string) => { const n = out.querySelector<HTMLElement>(`[data-out="${k}"]`); if (n) n.textContent = t; };
+      set('month', ok ? money.format(m) : '—');
+      set('year', ok ? money.format(m * 12) : '—');
+      out.toggleAttribute('data-ready', ok);
+    };
+    form.addEventListener('input', run);
+    form.addEventListener('submit', (e) => e.preventDefault());
+  });
+</script>

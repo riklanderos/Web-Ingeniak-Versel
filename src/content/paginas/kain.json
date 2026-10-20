@@ -1,0 +1,225 @@
+{
+  "_schema": "Texto publicable de /kain/ (T-PRODUCT, ESPEC §5.6). Lo lee src/components/templates/ProductTemplate.astro. Una clave por id de sección de sitemap.json, en el mismo orden. Campos comunes: _ESQUEMA.md §3–§6 (eyebrow, h1/h2 {text, soft, lit}, lede, body, items, ctaPrimary, ctaSecondary {label, waMessage = sitemap.secondaryCta.waMessage}, faqIds, links, slogan, note). Campos propios de esta plantilla: hero.firma (logotipo 'kain · by Ingeniak'), hero.channels {label, items[]} (línea de canales), hero.app {label, href}; que-es.facets [{term, line}] (sub-marca · plataforma · personaje); hago.limite; donde.channels / donde.systems {label, items [{slug?, icon?, name, line}]} (hub con Kain al centro), donde.handoff, donde.note; sectores.sectors [{slug, name, line, href, bubbles [{who, text}]}] (LocationSwitcher), sectores.footer; plataforma.window {title, status, rows [{channel, who, text, state}], foot, note} (SIMULACIÓN dentro de ProductWindow), plataforma.app {label, href}; cifras.rows [{metricId}] (Montage). Tokens: {{metric:ID}}, {{metric:ID|prose}}, {{price}}, {{source}}. Campos con _ = notas para quien construye; nunca se imprimen.",
+  "pageId": "kain",
+  "url": "/kain/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · #plataforma: capturas reales de app.kain.mx (una cuenta demo) para la ventana de producto, marcadas VISTA DEMO (ESPEC §5.6, R7). Mientras no lleguen, la ventana es una simulación en HTML con la etiqueta SIMULACIÓN y la nota 'No es una captura de app.kain.mx'.",
+    "PREGUNTA AL CLIENTE · ¿se publican los planes de app.kain.mx? (regla de marca: terminan en 47 o 97 y nunca bajan de USD 97 al mes). Por defecto no se publican: #plataforma solo dice que los proyectos con agentes de IA empiezan {{price}} (misma afirmación que W03).",
+    "PREGUNTA AL CLIENTE · ¿qué hace una empresa dentro de app.kain.mx (ver conversaciones, ajustar respuestas, reportes) o la opera solo el equipo de Ingeniak? El texto no describe funciones de la plataforma: solo dice que ahí trabajan los agentes (N13).",
+    "PREGUNTA AL CLIENTE · ¿el agente se presenta como 'Kain' ante los clientes de cada empresa o con el nombre del negocio? El guion de salud dice 'Soy Kain, el asistente de la clínica'; las burbujas de #sectores no dicen el nombre.",
+    "PREGUNTA AL CLIENTE · idiomas: ¿Kain atiende en inglés u otros idiomas? (hay clientes en Estados Unidos). No se menciona.",
+    "PREGUNTA AL CLIENTE · notas de voz y llamadas: ¿Kain entiende notas de voz de WhatsApp o contesta llamadas? No se menciona.",
+    "PREGUNTA AL CLIENTE · portada animada (ESPEC §5.6 y §11-8): ¿producimos la placa limpia de kain-hero (sin Kain) para montar encima el clip con alfa de Kain saludando? Hoy la portada usa la placa fija; el clip kain-presenta.webm solo aparece mientras la placa no está exportada.",
+    "CAMBIO DE AFIRMACIÓN · #cifras: el resultado de la clínica dental de Monterrey se atribuye a 'un agente de IA de Ingeniak', no a Kain en primera persona. Si el agente de ese caso corre en app.kain.mx, se puede decir 'yo' en el titular.",
+    "CAMBIO DE TEXTO · hero.lede: D decía 'en WhatsApp, Instagram y tu web'; los canales pasan a su propia línea (hero.channels) con los cinco confirmados.",
+    "FAQ · G13, N12, N13, N01 y W02 salen del banco tal cual (src/data/faq.json). G13 es también la definición de #que-es (DefinitionBlock), igual que G02 en la página de agentes para WhatsApp.",
+    "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (hero.channels, donde.channels).",
+    "RESUELTO 2026-10-19 · cliente en chat · (12) calendarios: 'el calendario de tu CRM o el que ya usa tu equipo' (hago, donde).",
+    "RESUELTO 2026-10-19 · cliente en chat · (16) la implementación toma de 7 a 30 días según el alcance (rango general de Ingeniak): no se menciona en esta página."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero subject-center (kain-hero; respaldo: escenario de luz con el clip/recorte de Kain saludando) + Breadcrumbs · texto abajo a la izquierda, lede y CTAs abajo a la derecha",
+      "rail": "Portada",
+      "firma": "kain · by Ingeniak",
+      "h1": { "text": "Soy Kain,", "soft": "el agente de IA de tu empresa", "lit": "Kain" },
+      "lede": "Respondo, agendo y confirmo por ti a cualquier hora, y registro cada conversación en tu CRM.",
+      "channels": {
+        "label": "Atiendo en",
+        "items": ["WhatsApp", "Instagram", "Facebook Messenger", "Chat web", "Correo"]
+      },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de tu página en ingeniak.mx y quiero ver una demo de cómo atiendes a mis clientes."
+      },
+      "app": { "label": "Entra a app.kain.mx", "href": "https://app.kain.mx/" }
+    },
+    "que-es": {
+      "_componente": "Intertitle sobre la toma desenfocada de la portada (SharedTake) + DefinitionBlock (G13) + tres acepciones",
+      "rail": "Qué es",
+      "eyebrow": "Definición",
+      "definition": { "heading": "¿Qué es kain?", "faqId": "G13" },
+      "facets": [
+        { "term": "La sub-marca", "line": "La línea de agentes de IA de Ingeniak. Cada agente se configura con la información de tu negocio y con las reglas que defines con nosotros." },
+        { "term": "La plataforma", "line": "app.kain.mx, donde las empresas tienen a sus agentes trabajando. El primer paso para tener el tuyo es una Discovery Session." },
+        { "term": "El personaje", "line": "El robot blanco que ves aquí. Le pone cara a esos agentes y en esta página habla por ellos." }
+      ],
+      "body": [
+        "Por eso esta página está en primera persona: lo que yo te cuento que hago es lo que hace el agente de tu empresa."
+      ]
+    },
+    "hago": {
+      "_componente": "Intertitle + ScriptList (6 capacidades en primera persona) + ChatSim inline con pestañas en teléfono de cristal sobre aura (fijo en escritorio)",
+      "rail": "Lo que hago",
+      "eyebrow": "Lo que hago",
+      "h2": { "text": "Contesto, califico, agendo.", "soft": "Nada se me olvida." },
+      "lede": "Cada conversación sigue el mismo camino: entiendo lo que te escriben, respondo con la información de tu negocio y dejo hecho el siguiente paso.",
+      "items": [
+        { "n": "01", "title": "Respondo en segundos", "line": "De día, de noche y en fin de semana. Quien te escribe recibe respuesta mientras todavía tiene el teléfono en la mano." },
+        { "n": "02", "title": "Califico a cada prospecto", "line": "Hago las preguntas que haría tu equipo, en lenguaje natural y sin menús de opciones." },
+        { "n": "03", "title": "Agendo la cita", "line": "Ofrezco horarios y aparto la cita en el calendario de tu CRM o en el que ya usa tu equipo." },
+        { "n": "04", "title": "Confirmo y recuerdo", "line": "Mando la confirmación y un recordatorio antes de la cita, para que nadie falte sin avisar." },
+        { "n": "05", "title": "Doy seguimiento", "line": "Retomo las conversaciones que se quedaron a medias y aviso a tu equipo cuando alguien necesita a una persona." },
+        { "n": "06", "title": "Registro todo en tu CRM", "line": "Cada conversación queda en Kommo o GoHighLevel, en su etapa y con el historial completo.", "href": "/servicios/crm-con-ia/" }
+      ],
+      "body": [
+        "Antes de encenderme, cargamos lo que tu equipo contesta todos los días: servicios, horarios, precios, políticas y requisitos. Y definimos contigo en qué momento paso una conversación a una persona de tu equipo."
+      ],
+      "limite": "No doy consejo médico ni legal. Cuando una pregunta lo necesita, se la paso a tu equipo con el contexto.",
+      "chat": {
+        "mode": "inline",
+        "tabs": [
+          { "id": "default", "label": "General" },
+          { "id": "salud", "label": "Salud" },
+          { "id": "inmobiliario", "label": "Inmobiliario" },
+          { "id": "retail", "label": "Retail" }
+        ]
+      }
+    },
+    "donde": {
+      "_componente": "Hub: canales a la izquierda, Kain al centro (clip con alfa de brazos cruzados; recorte fijo en móvil, Safari y movimiento reducido), sistemas a la derecha, unidos por ramas del isotipo + KommoBadge",
+      "rail": "Dónde trabajo",
+      "eyebrow": "Dónde trabajo",
+      "h2": { "text": "Contesto donde te escriben.", "soft": "Anoto donde trabaja tu equipo." },
+      "lede": "Una sola conversación con tu cliente, llegue por donde llegue, y un solo registro para tu equipo.",
+      "channels": {
+        "label": "Canales",
+        "items": [
+          { "slug": "whatsapp", "name": "WhatsApp Business", "line": "Respondo, califico y agendo en el mismo chat." },
+          { "slug": "instagram", "name": "Instagram", "line": "Contesto los mensajes directos de tu perfil." },
+          { "slug": "facebook", "name": "Facebook Messenger", "line": "Atiendo los mensajes de tu página." },
+          { "icon": "atender", "name": "Chat de tu web", "line": "Atiendo a quien te visita desde la ventana de chat." },
+          { "icon": "mail", "name": "Correo", "line": "También contesto por correo electrónico." }
+        ]
+      },
+      "systems": {
+        "label": "Sistemas",
+        "items": [
+          { "slug": "kommo", "name": "Kommo", "line": "Registro al prospecto en su etapa y le doy seguimiento.", "href": "/kommo/" },
+          { "slug": "gohighlevel", "name": "GoHighLevel", "line": "El mismo registro, si tu operación vive en GoHighLevel.", "href": "/gohighlevel/" },
+          { "icon": "calendar", "name": "Tu calendario", "line": "El de tu CRM o el que ya usa tu equipo." },
+          { "slug": "n8n", "name": "n8n", "line": "Me conecta con tus otros sistemas cuando hace falta.", "href": "/servicios/automatizacion-n8n/" }
+        ]
+      },
+      "handoff": "Y cuando hace falta una persona, le paso la conversación a tu equipo con el historial completo.",
+      "note": "Ingeniak es partner oficial de Kommo en Latinoamérica. GoHighLevel y n8n son herramientas que implementamos."
+    },
+    "si-no": {
+      "_componente": "ImageSection mid subject-left (kain-si-no; móvil split) + TwoColumnScript dodont + eslogan",
+      "rail": "Sí y no",
+      "eyebrow": "Lo que sí y lo que no",
+      "h2": { "text": "Sé lo que hago.", "soft": "También sé lo que no me toca." },
+      "lede": "Un buen agente de IA no es el que contesta todo: es el que contesta bien y sabe cuándo pasarle la conversación a una persona.",
+      "left": {
+        "title": "Lo que sí hago",
+        "tone": "cian",
+        "items": [
+          "Contesto con la información de tu negocio, no con frases genéricas.",
+          "Entiendo lo que el cliente escribe, como lo escribe.",
+          "Agendo, confirmo y recuerdo citas.",
+          "Registro cada conversación en tu CRM.",
+          "Te paso la conversación cuando necesita a una persona."
+        ]
+      },
+      "right": {
+        "title": "Lo que no hago",
+        "tone": "neutral",
+        "items": [
+          "No doy consejo médico ni legal.",
+          "No soy un chatbot de menús: no te obligo a elegir entre opciones fijas.",
+          "No invento precios, políticas ni promociones.",
+          "No sustituyo a tu equipo: le quito lo repetitivo.",
+          "No contesto lo que no sé: lo digo y busco a una persona."
+        ]
+      },
+      "slogan": "Tu negocio trabajando, sin depender más de ti."
+    },
+    "sectores": {
+      "_componente": "LocationSwitcher: 8 filas (eslogan adaptado al sector) + portada del sector activo a sangre + 2 burbujas SIMULACIÓN",
+      "rail": "Tu sector",
+      "eyebrow": "Kain en tu sector",
+      "h2": { "text": "Mismo agente,", "soft": "tu forma de trabajar." },
+      "lede": "En cada sector cambian el guion, las preguntas y las etapas del CRM. Lo demás funciona igual.",
+      "sectors": [
+        { "slug": "salud", "name": "Salud y clínicas", "line": "Tu clínica trabajando, sin depender más de ti.", "href": "/industrias/salud/",
+          "bubbles": [{ "who": "cliente", "text": "¿Me pueden cambiar la cita del jueves?" }, { "who": "kain", "text": "Claro. Tengo el viernes a las 9:00 o a las 12:30. ¿Cuál prefieres?" }] },
+        { "slug": "belleza", "name": "Belleza y estética", "line": "Tu salón trabajando, sin depender más de ti.", "href": "/industrias/belleza-estetica/",
+          "bubbles": [{ "who": "cliente", "text": "Quiero cita para corte y tinte." }, { "who": "kain", "text": "Con gusto. ¿Te acomoda el sábado a las 10:00 o a las 12:00?" }] },
+        { "slug": "nutricion", "name": "Nutrición", "line": "Tu consultorio trabajando, sin depender más de ti.", "href": "/industrias/nutricion/",
+          "bubbles": [{ "who": "cliente", "text": "Quiero agendar mi primera consulta." }, { "who": "kain", "text": "¿La prefieres en consultorio o en línea? Te paso los horarios." }] },
+        { "slug": "finanzas", "name": "Finanzas", "line": "Tu despacho trabajando, sin depender más de ti.", "href": "/industrias/finanzas/",
+          "bubbles": [{ "who": "cliente", "text": "¿Qué necesito para solicitar un crédito?" }, { "who": "kain", "text": "Te comparto los requisitos y, si quieres, te agendo con un asesor." }] },
+        { "slug": "inmobiliario", "name": "Inmobiliario", "line": "Tu inmobiliaria trabajando, sin depender más de ti.", "href": "/industrias/inmobiliario/",
+          "bubbles": [{ "who": "cliente", "text": "¿Puedo ver la casa este fin de semana?" }, { "who": "kain", "text": "Sí: sábado a las 11:00 o domingo a las 13:00. Te mando la ubicación." }] },
+        { "slug": "industrial", "name": "Industrial y logística", "line": "Tu operación trabajando, sin depender más de ti.", "href": "/industrias/industrial-logistica/",
+          "bubbles": [{ "who": "cliente", "text": "Necesito cotizar un envío a Monterrey." }, { "who": "kain", "text": "Te ayudo. ¿Qué mercancía es y para cuándo? Con eso le paso la solicitud a un ejecutivo." }] },
+        { "slug": "retail", "name": "Retail y e-commerce", "line": "Tu tienda trabajando, sin depender más de ti.", "href": "/industrias/retail-ecommerce/",
+          "bubbles": [{ "who": "cliente", "text": "¿Hacen envíos a Guadalajara?" }, { "who": "kain", "text": "Sí. ¿Me compartes tu código postal para darte el costo y el tiempo de entrega?" }] },
+        { "slug": "horeca", "name": "HoReCa", "line": "Tu restaurante trabajando, sin depender más de ti.", "href": "/industrias/horeca/",
+          "bubbles": [{ "who": "cliente", "text": "¿Puedo reservar para un cumpleaños de ocho personas?" }, { "who": "kain", "text": "Claro. ¿Para qué día y a qué hora? Te confirmo la mesa por aquí." }] }
+      ],
+      "footer": "¿Tu sector no está en la lista? El sistema es el mismo: lo adaptamos contigo en la Discovery Session.",
+      "links": [{ "label": "Ver todas las industrias", "href": "/industrias/" }]
+    },
+    "plataforma": {
+      "_componente": "Intertitle split + ProductWindow (SIMULACIÓN, sin captura real) sobre aura + enlace a app.kain.mx",
+      "rail": "Plataforma",
+      "eyebrow": "La plataforma",
+      "h2": { "text": "Trabajo desde app.kain.mx.", "soft": "Ahí vive el agente de tu empresa." },
+      "lede": "app.kain.mx es la plataforma de kain, donde las empresas tienen a sus agentes trabajando. Tu agente se configura con la información de tu negocio y se conecta a tus canales y a tu CRM.",
+      "body": [
+        "Los planes de la plataforma no se publican aquí. Los proyectos con agentes de IA empiezan {{price}}; el alcance exacto lo definimos contigo en la Discovery Session."
+      ],
+      "window": {
+        "title": "Conversaciones de hoy",
+        "status": "Kain · en línea",
+        "rows": [
+          { "channel": "whatsapp", "who": "Laura", "text": "Listo: tu limpieza quedó el viernes a las 17:30.", "state": "Cita agendada" },
+          { "channel": "instagram", "who": "Mario", "text": "¿Me compartes tu nombre y qué necesitas cotizar?", "state": "Calificando" },
+          { "channel": "facebook", "who": "Ana", "text": "Esa pregunta la ve la doctora. Te paso con su equipo.", "state": "Pasa a tu equipo" },
+          { "channel": "web", "who": "Visitante del sitio", "text": "Los sábados atendemos de 9:00 a 14:00.", "state": "Respondido" },
+          { "channel": "correo", "who": "Jorge", "text": "Te envío la confirmación de tu visita por correo.", "state": "Registrado en tu CRM" }
+        ],
+        "foot": "Cada conversación queda registrada en tu CRM.",
+        "note": "Simulación ilustrativa de un agente trabajando. No es una captura de app.kain.mx."
+      },
+      "app": { "label": "Entra a app.kain.mx", "href": "https://app.kain.mx/" }
+    },
+    "cifras": {
+      "_componente": "Montage (dental-respuesta, dental-citas) con la portada del caso dentro de las cifras + nota de fuente",
+      "rail": "Resultados",
+      "eyebrow": "Resultados",
+      "h2": { "text": "Lo que pasa cuando alguien", "soft": "contesta a tiempo." },
+      "lede": "Un agente de IA de Ingeniak en una clínica dental de Monterrey: así cambiaron su respuesta por WhatsApp y su agenda.",
+      "rows": [{ "metricId": "dental-respuesta" }, { "metricId": "dental-citas" }],
+      "note": "Nombres de clientes anonimizados.",
+      "links": [{ "label": "Lee el caso completo", "href": "/casos/clinica-dental-monterrey/" }]
+    },
+    "faq": {
+      "_componente": "Intertitle split + FAQAccordion (FAQPage en SEOHead con las mismas ids)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Lo que me preguntan", "soft": "antes de conocerme." },
+      "faqIds": ["G13", "N12", "N13", "N01", "W02"],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Tu siguiente paso",
+      "h2": { "text": "Escríbeme y te muestro", "soft": "cómo atendería a tus clientes." },
+      "lede": "O agenda tu Discovery Session: en 30 minutos revisamos qué debería atender tu agente, en qué canales y con qué sistemas se conecta.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de tu página en ingeniak.mx y quiero ver una demo de cómo atiendes a mis clientes."
+      }
+    }
+  }
+}

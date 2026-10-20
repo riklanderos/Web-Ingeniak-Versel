@@ -1,0 +1,342 @@
+/* ===== PlatformTemplate ===== */
+/* T-PLATFORM (ESPEC §5.2 "Variantes T-PLATFORM") · clases .plt-* de src/components/templates/PlatformTemplate.astro.
+   La plantilla hereda el lenguaje aprobado de T-SERVICE (body.svc + clases .svc-* de pages.css); aquí solo va lo propio de
+   una plataforma. Todas las reglas cuelgan de body.plt (sin depender del orden de carga frente a cine.css y pages.css).
+   Reglas: ninguna sección pinta fondo (§3.11); la luz viene de la placa, del aura o de la UI; sin caja detrás del texto;
+   todo visible sin JS y con movimiento reducido. Las variables --plt-edge (borde de la zona segura del texto, en fracción
+   de la placa) y --plt-h1-div las escribe la plantilla por escena con los números de plates.json. */
+
+@property --plt-pos{syntax:"<number>";inherits:true;initial-value:0}
+
+/* ── 01 · Portada: columna de texto en la zona segura de SU placa (cualquier lado), con la misma caja "cover" del escenario ── */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  body.plt :is(.plt-hero,.plt-scene){--plt-lw:100vw;--plt-sw:max(var(--plt-lw), var(--plt-h) * var(--ar-d));
+    --plt-x0:calc(100vw - var(--plt-lw));--plt-fl:calc((100vw - var(--frame)) / 2);
+    --plt-ex:calc(var(--plt-x0) + (var(--plt-lw) - var(--plt-sw)) * var(--fx-d) + var(--plt-edge,.44) * var(--plt-sw))}
+  body.plt .plt-hero{--plt-h:max(100svh,680px)}
+  /* escenas intermedias: la placa mide un alto fijo (como la comparativa de T-SERVICE); el texto que no quepa sigue en su
+     disolución inferior. Así el borde de la zona segura se calcula exacto aunque la sección crezca con su texto. En 4:3 la
+     placa se acerca al ancho para que Kain quede completo. */
+  body.plt .plt-scene{--plt-h:min(max(92svh,640px), 100vw / var(--ar-d) * 1.06)}
+  body.plt .plt-scene > .is__stagebox{bottom:auto;height:var(--plt-h);overflow:hidden}
+  /* la sección mide al menos la placa + parte de la costura: la siguiente nace bajo la UI registrada, nunca encima */
+  body.plt .is.plt-scene{--is-h:calc(var(--plt-h) + var(--seam) * .6)}
+  body.plt :is(.plt-hero,.plt-scene)[data-layout="subject-left"]{--plt-x0:0px;
+    --plt-ml:max(0px, var(--plt-ex) - var(--plt-fl) + 16px);--plt-col:calc(var(--frame) - var(--plt-ml))}
+  body.plt :is(.plt-hero,.plt-scene)[data-layout="subject-right"]{--plt-col:calc(var(--plt-ex) - var(--plt-fl) - 16px)}
+  body.plt :is(.plt-hero,.plt-scene)[data-layout="subject-right"] .is__text{grid-column:1 / -1;max-width:min(var(--plt-col), 44rem)}
+  body.plt :is(.plt-hero,.plt-scene)[data-layout="subject-left"] .is__text{grid-column:1 / -1;margin-left:var(--plt-ml);max-width:min(var(--plt-col), 44rem)}
+  body.plt .plt-hero .plt-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem), var(--plt-col) / var(--plt-h1-div,7.1), 9.4svh)}
+}
+@media (min-width:1800px){
+  body.plt :is(.plt-hero,.plt-scene){--plt-lw:min(100vw, var(--cap, 2200px))}   /* el mismo tope del escenario (cine.css) */
+}
+body.plt .plt-hero .plt-h1{max-width:13ch}
+body.plt .plt-hero .plt-h1 .soft{display:block}
+body.plt .plt-hero__lede{max-width:42ch}
+body.plt .plt-hero .plt-legal{margin-top:var(--s-4);color:rgb(158 176 199 / .78);max-width:44ch}
+body.plt .plt-hero__proof{margin:0;max-width:36ch}
+/* Escritorios bajos (1280 × 720, 1366 × 768): el bloque completo cabe en el primer pantallazo sobre el piso de la placa */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){
+  body.plt .is.plt-hero{padding-top:calc(var(--hdr) + var(--s-5));padding-bottom:var(--s-6)}
+  body.plt .plt-hero .is__text > .crumbs{margin-bottom:var(--s-4)}
+  body.plt .plt-hero .is__text > :is(.t-deck,.t-lede){margin-top:var(--s-4)}
+  body.plt .plt-hero .is__text > .ctas{margin-top:var(--s-6);row-gap:var(--s-3)}
+  body.plt .plt-hero .plt-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem), var(--plt-col) / var(--plt-h1-div,7.1), 8.6svh)}
+  body.plt .plt-hero .plt-hero__lede{font-size:1.0625rem}
+  body.plt .plt-hero .plt-legal{margin-top:var(--s-3)}
+}
+/* Escritorios estrechos (< 1200 px): crumbs O etiqueta sobre el H1, nunca dos renglones mono */
+@media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){
+  body.plt .plt-hero .is__text > .crumbs ~ .eyebrow{display:none}
+  body.plt .plt-hero .plt-hero__lede{font-size:1.0625rem}
+}
+
+/* ── UI registrada de la portada ─────────────────────────────────────────────────────────────────────────────────────── */
+/* Kommo · embudo genérico sobre la superficie de cristal: translúcido (la luz del panel de la placa se sigue viendo) */
+body.plt .plt-pipe{display:flex;align-items:stretch;justify-content:center;pointer-events:none}
+body.plt .plt-pipe__card{--g:3.2cqi;width:100%;height:100%;display:flex;flex-direction:column;gap:4cqi;padding:7cqi 7cqi 8cqi;
+  border-radius:clamp(10px,7cqi,22px);font:400 clamp(9px,6.2cqi,14px)/1.3 var(--f-body);color:var(--text);
+  background:linear-gradient(172deg,rgb(8 16 40 / .5),rgb(4 8 20 / .34));-webkit-backdrop-filter:blur(6px) saturate(1.15);backdrop-filter:blur(6px) saturate(1.15);
+  box-shadow:inset 0 0 0 1px rgb(168 243 255 / .2),inset 0 1px 0 rgb(255 255 255 / .12),0 0 40px rgb(0 229 255 / .08)}
+body.plt .plt-pipe__top{margin:0}
+body.plt .plt-pipe__top .chip-sim{font-size:max(8px,.7em)}
+body.plt .plt-pipe__k{display:flex;align-items:center;gap:.6em;margin:0;font:500 .8em/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+body.plt .plt-pipe__k .node{width:5px;height:5px}
+body.plt .plt-pipe__board{position:relative;flex:1 1 auto;min-height:0}
+body.plt .plt-pipe__stages{list-style:none;margin:0;padding:0;height:100%;display:grid;grid-template-rows:repeat(var(--n,4),minmax(0,1fr));gap:var(--g)}
+body.plt .plt-pipe__st{position:relative;min-height:0;display:flex;flex-direction:column;justify-content:space-between;gap:.4em;padding:.7em .8em;
+  border-radius:.8em;color:var(--muted);box-shadow:inset 0 0 0 1px rgb(158 176 199 / .2)}
+body.plt .plt-pipe__name{font:500 .74em/1.15 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+body.plt .plt-pipe__slots{display:flex;flex-direction:column;gap:.38em}
+body.plt .plt-pipe__slots i{display:block;width:72%;height:.42em;border-radius:.2em;background:rgb(255 255 255 / .09)}
+body.plt .plt-pipe__slots i:nth-child(2){width:54%} body.plt .plt-pipe__slots i:nth-child(3){width:36%}
+body.plt .plt-pipe__st.is-done{color:var(--text-2);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .26)}
+body.plt .plt-pipe__st.is-on{color:#fff;background:linear-gradient(160deg,rgb(0 229 255 / .16),rgb(69 93 255 / .12));
+  box-shadow:inset 0 0 0 1px rgb(0 229 255 / .55),0 0 24px rgb(0 229 255 / .22)}
+body.plt .plt-pipe__st.is-on .plt-pipe__slots i{background:rgb(168 243 255 / .2)}
+/* El lead viaja de "Nuevo" a su etapa (--plt-pos de 0 a --active); paso de fila = (alto + hueco) / n */
+body.plt .plt-pipe__lead{--plt-pos:var(--active,2);--pitch:calc((100% + var(--g)) / var(--n,4));position:absolute;right:.7em;
+  top:calc(var(--plt-pos) * var(--pitch) + var(--pitch) - var(--g) - .55em);translate:0 -100%;
+  display:inline-flex;align-items:center;gap:.5em;padding:.42em .7em .4em;border-radius:999px;white-space:nowrap;
+  font:500 .72em/1 var(--f-mono);letter-spacing:.04em;color:#fff;background:rgb(3 4 11 / .72);
+  box-shadow:inset 0 0 0 1px rgb(0 229 255 / .6),0 0 18px rgb(0 229 255 / .35)}
+body.plt .plt-pipe__dot{width:.5em;height:.5em;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+body.plt .plt-pipe__evt{display:flex;align-items:center;gap:.6em;margin:0;font:500 .74em/1.25 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+body.plt .plt-pipe__ok,body.plt .plt-pop__ok{width:.85em;height:.85em;flex:none;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--cyan),0 0 10px rgb(0 229 255 / .5)}
+@media (prefers-reduced-motion:no-preference){
+  html.js:not([data-motion="reduced"]) body.plt .plt-hero .plt-pipe__lead{animation:plt-lead 2.6s cubic-bezier(.65,0,.35,1) 1.3s both}
+  html.js:not([data-motion="reduced"]) body.plt .plt-hero .plt-pipe__st.is-on{animation:plt-on .6s ease 3.6s both}
+}
+@keyframes plt-lead{0%{--plt-pos:0;opacity:0}12%{--plt-pos:0;opacity:1}45%{--plt-pos:1}62%{--plt-pos:1}100%{--plt-pos:var(--active,2);opacity:1}}
+@keyframes plt-on{from{color:var(--muted);background:transparent;box-shadow:inset 0 0 0 1px rgb(158 176 199 / .2)}}
+
+/* GoHighLevel · pulso en la casilla que toca Kain (también en la placa vertical) */
+body.plt .plt-pulse{width:max(10px,1.6cqw);aspect-ratio:1;translate:-50% -50%;border-radius:.3cqw;pointer-events:none;
+  box-shadow:0 0 0 1.5px rgb(168 243 255 / .9),0 0 22px rgb(0 229 255 / .7)}
+body.plt .plt-pulse::after{content:"";position:absolute;inset:-35%;border-radius:.5cqw;box-shadow:0 0 0 1px rgb(0 229 255 / .6);opacity:0}
+@media (prefers-reduced-motion:no-preference){
+  html.js:not([data-motion="reduced"]) body.plt .plt-pulse::after{animation:plt-ping 2.4s ease-out 1.4s infinite}
+}
+@keyframes plt-ping{0%{opacity:.9;scale:.6}70%{opacity:0;scale:1.6}100%{opacity:0;scale:1.6}}
+/* Etiqueta de la cita: debajo del calendario de cristal (nunca sobre Kain ni en la columna de texto), con su guía al nodo */
+body.plt .plt-pop{--pw:max(150px,10.6cqw);width:var(--pw);translate:calc(-100% + 1.2cqw) 0;pointer-events:none}
+body.plt .plt-pop::before{content:"";position:absolute;right:1.2cqw;top:calc(-1 * var(--wire,2cqh));height:var(--wire,2cqh);width:1px;
+  background:linear-gradient(180deg,rgb(0 229 255 / .25),rgb(0 229 255 / .9));box-shadow:0 0 8px rgb(0 229 255 / .45)}
+body.plt .plt-pop__card{display:flex;flex-direction:column;gap:.32em;padding:.85em .95em .9em;border-radius:.9em;
+  font:400 clamp(10px,.8cqw,14px)/1.35 var(--f-body);color:var(--text);
+  background:linear-gradient(165deg,rgb(12 20 46 / .78),rgb(6 10 24 / .7));-webkit-backdrop-filter:blur(12px) saturate(1.2);backdrop-filter:blur(12px) saturate(1.2);
+  box-shadow:inset 0 0 0 1px rgb(168 243 255 / .26),inset 0 1px 0 rgb(255 255 255 / .14),0 20px 50px rgb(3 4 11 / .5),0 0 36px rgb(0 229 255 / .12)}
+body.plt .plt-pop p{margin:0}
+body.plt .plt-pop__top{display:flex;align-items:center;flex-wrap:wrap;gap:.35em .6em;margin-bottom:.2em!important}
+body.plt .plt-pop__top .chip-sim{font-size:max(8px,.68em)}
+body.plt .plt-pop__time{font:400 .66em/1.2 var(--f-mono);letter-spacing:.06em;color:var(--muted);white-space:nowrap}
+body.plt .plt-pop__t{display:flex;align-items:center;gap:.55em;font:500 1em/1.2 var(--f-display);color:#fff}
+body.plt .plt-pop__when{font:500 .86em/1.2 var(--f-mono);letter-spacing:.04em;color:var(--cyan-soft)}
+body.plt .plt-pop__what{color:var(--text-2);font-size:.86em}
+body.plt .plt-pop__st{display:flex;align-items:center;gap:.5em;margin-top:.25em!important;font:500 .7em/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+body.plt .plt-pop__st .node,body.plt .plt-cal__st .node,body.plt .plt-ag__k .node{width:5px;height:5px}
+/* Placa de respaldo (sin casilla): agenda de la semana en la superficie libre */
+body.plt .plt-cal{display:flex;pointer-events:none}
+body.plt .plt-cal__card{width:100%;height:100%;display:flex;flex-direction:column;gap:5cqi;padding:7cqi 7cqi 8cqi;border-radius:clamp(10px,6cqi,20px);
+  font:400 clamp(9px,6.4cqi,14px)/1.3 var(--f-body);color:var(--text);
+  background:linear-gradient(172deg,rgb(8 16 40 / .56),rgb(4 8 20 / .4));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  box-shadow:inset 0 0 0 1px rgb(168 243 255 / .22),0 0 40px rgb(0 229 255 / .08)}
+body.plt .plt-cal__card p{margin:0}
+body.plt .plt-cal__top .chip-sim{font-size:max(8px,.68em)}
+body.plt .plt-cal__grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(var(--days,5),minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:2.6cqi;grid-template-rows:auto}
+body.plt .plt-cal__d{font:500 .66em/1.6 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center}
+body.plt .plt-cal__c{display:block;min-height:1.4em;border-radius:.35em;box-shadow:inset 0 0 0 1px rgb(158 176 199 / .18)}
+body.plt .plt-cal__c.is-busy{background:rgb(158 176 199 / .12)}
+body.plt .plt-cal__c.is-on{background:linear-gradient(160deg,rgb(0 229 255 / .5),rgb(69 93 255 / .35));box-shadow:inset 0 0 0 1px rgb(168 243 255 / .9),0 0 18px rgb(0 229 255 / .55)}
+body.plt .plt-cal__evt{display:flex;align-items:center;gap:.55em;font-size:.86em;color:var(--text-2)}
+body.plt .plt-cal__evt b{font-weight:500;color:#fff}
+body.plt .plt-cal__st{display:flex;align-items:center;gap:.5em;font:500 .7em/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+
+/* Sello de Kommo (único partner) o chip de la plataforma, anclado al piso de la placa */
+body.plt .plt-seal{pointer-events:auto}
+body.plt .plt-seal--center{translate:-50% -50%}
+body.plt [data-layout="subject-right"] .plt-seal--fig{translate:-100% 0}
+body.plt [data-layout="subject-left"] .plt-seal--fig{translate:0 0}
+body.plt .plt-seal .kommo-badge{white-space:nowrap}
+body.plt .plt-chip{display:inline-flex;align-items:center;gap:10px;margin:0;white-space:nowrap;font:500 .6875rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#fff}
+body.plt .plt-chip .node{width:5px;height:5px}
+
+/* Móvil y tableta vertical: lo registrado baja en línea a `more`, después de la placa (R4) */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  /* R4: lo anclado sin coordenadas verticales (data-m="none") se retira de la placa; su versión en línea va en `more` */
+  body.plt .anchor[data-m="none"]:is(.plt-pipe,.plt-pop,.plt-cal,.plt-ag,.plt-seal,.plt-scene__ui){display:none}
+  body.plt .plt-hero .plt-h1{max-width:none}
+  body.plt .plt-pipe--inline{container-type:inline-size;width:min(100%,20rem);margin-top:var(--s-5)}
+  body.plt .plt-pipe--inline .plt-pipe__card{height:auto;gap:12px;padding:16px 18px 18px;font-size:14px}
+  body.plt .plt-pipe--inline .plt-pipe__board{height:15.5rem;flex:none}
+  body.plt .plt-pipe--inline{--g:8px}
+  body.plt .plt-pop--inline{width:min(100%,19rem);translate:none;margin-top:var(--s-5)}
+  body.plt .plt-pop--inline::before{display:none}
+  body.plt .plt-pop--inline .plt-pop__card{font-size:14px}
+  body.plt .plt-seal-m{margin-top:var(--s-5)}
+  body.plt .plt-chip-m{margin-top:var(--s-5)}
+  body.plt .plt-hero .is__more .plt-legal{margin-top:var(--s-4)}
+  body.plt .plt-pulse{width:9px}
+}
+
+/* ── 02 · Definición (GHL): lo que junta en un solo lugar · cinco ramas → pilar → nodo (geometría del isotipo) ── */
+body.plt .plt-junta{position:relative;width:100%;margin-top:var(--s-8)}
+body.plt .it__body > .plt-junta{align-self:stretch}
+body.plt .plt-junta__h{margin:0 0 var(--s-5)}
+body.plt .plt-junta__map{--br:clamp(28px,4vw,64px);position:relative;display:grid;grid-template-columns:minmax(0,1fr) var(--br) auto;align-items:center}
+body.plt .plt-junta__list{grid-column:1;list-style:none;margin:0;padding:0;border-bottom:1px solid var(--hair)}
+body.plt .plt-junta__it{position:relative;display:grid;grid-template-columns:minmax(9rem,.55fr) minmax(0,1fr);column-gap:var(--gap);align-items:baseline;
+  padding:16px 0 17px;border-top:1px solid var(--hair)}
+body.plt .plt-junta__t{font:500 clamp(1.0625rem,1rem + .35vw,1.3125rem)/1.25 var(--f-display);letter-spacing:-.01em;color:var(--text)}
+body.plt .plt-junta__l{font:400 .9375rem/1.5 var(--f-body);color:var(--muted);text-wrap:pretty}
+/* rama de cada fila: del borde de la fila al pilar, con su nodo cuadrado; el pilar lo forman los tramos de cada fila
+   (del centro de la primera al centro de la última), así nunca depende del alto de las filas */
+body.plt .plt-junta__br{position:absolute;left:100%;top:50%;width:calc(var(--br) / 2);height:1px;transform-origin:0 50%;
+  background:linear-gradient(90deg,rgb(0 229 255 / .25),rgb(0 229 255 / .9))}
+body.plt .plt-junta__br::before{content:"";position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:1.5px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+body.plt .plt-junta__it::after{content:"";position:absolute;left:calc(100% + var(--br) / 2);top:-1px;bottom:0;width:1px;transform-origin:50% 0;
+  background:var(--cyan);box-shadow:0 0 10px rgb(0 229 255 / .45)}
+body.plt .plt-junta__it:first-child::after{top:50%}
+body.plt .plt-junta__it:last-child::after{bottom:50%}
+body.plt .plt-junta__node{grid-column:3;grid-row:1;position:relative;display:flex;align-items:center;gap:14px;margin:0;padding-left:calc(var(--br) / 2);
+  font:500 .6875rem/1.3 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
+body.plt .plt-junta__node::before{content:"";position:absolute;left:calc(var(--br) / -2);top:50%;width:var(--br);height:1px;transform-origin:0 50%;
+  background:var(--cyan);box-shadow:0 0 8px rgb(0 229 255 / .6)}
+body.plt .plt-junta__sq{width:16px;height:16px;flex:none;border-radius:4px;background:var(--cyan);box-shadow:var(--glow-cyan),0 0 40px rgb(0 229 255 / .35)}
+body.plt .plt-junta__id{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+body.plt .plt-junta__logo{width:clamp(120px,10vw,160px);height:auto;aspect-ratio:172 / 38;color:#fff}
+body.plt .plt-junta__nt{white-space:nowrap}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    html.js:not([data-motion="reduced"]) body.plt .plt-junta{view-timeline-name:--junta}
+    html.js:not([data-motion="reduced"]) body.plt .plt-junta__br{animation:plt-grow linear both;animation-timeline:--junta;animation-range:entry calc(20% + var(--i,0) * 7%) entry calc(45% + var(--i,0) * 7%)}
+    html.js:not([data-motion="reduced"]) body.plt .plt-junta__it::after{animation:plt-grow-y linear both;animation-timeline:--junta;animation-range:entry calc(40% + var(--i,0) * 7%) entry calc(60% + var(--i,0) * 7%)}
+    html.js:not([data-motion="reduced"]) body.plt .plt-junta__node::before{animation:plt-grow linear both;animation-timeline:--junta;animation-range:entry 85% cover 45%}
+  }
+}
+@keyframes plt-grow{from{scale:0 1}}
+@keyframes plt-grow-y{from{scale:1 0}}
+@media (max-width:767px){
+  /* Móvil: el pilar baja por la izquierda, cada fila le da su rama y el nodo cierra la columna */
+  body.plt .plt-junta__map{--br:24px;grid-template-columns:var(--br) minmax(0,1fr);grid-template-rows:auto auto}
+  body.plt .plt-junta__list{grid-column:2;grid-row:1;border-bottom:0}
+  body.plt .plt-junta__it{grid-template-columns:minmax(0,1fr);row-gap:4px;padding:14px 0 15px}
+  body.plt .plt-junta__br{left:auto;right:100%;width:calc(var(--br) / 2);transform-origin:100% 50%;background:linear-gradient(270deg,rgb(0 229 255 / .25),rgb(0 229 255 / .9))}
+  body.plt .plt-junta__br::before{left:auto;right:-3px}
+  body.plt .plt-junta__it::after{left:calc(var(--br) / -2)}
+  body.plt .plt-junta__it:last-child::after{bottom:-34px}
+  body.plt .plt-junta__node{grid-column:2;grid-row:2;padding:22px 0 0 0}
+  body.plt .plt-junta__node::before{left:calc(var(--br) / -2);top:calc(22px + 6px);width:calc(var(--br) / 2)}
+}
+
+/* ── 03 · Señales con la persona a la DERECHA (Kommo, placa en espejo): el texto vive a la izquierda de la persona ── */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  body.plt .is.plt-pain[data-layout="subject-right"]{--pain-xr:calc((100vw - var(--pain-w)) + (var(--pain-w) - var(--pain-sw)) * var(--fx-d) + .41 * var(--pain-sw))}
+  body.plt .is.plt-pain[data-layout="subject-right"] > .is__copy .is__text,
+  body.plt .is.plt-pain[data-layout="subject-right"] > .is__more .is__text{margin-left:0;max-width:calc(var(--pain-xr) - (100vw - var(--frame)) / 2 - 24px)}
+  body.plt .is.plt-pain[data-layout="subject-right"] > .is__fx{background:
+    linear-gradient(90deg,rgb(3 4 11 / var(--veil-a)) 0%,rgb(3 4 11 / .8) 34%,rgb(3 4 11 / .35) 52%,rgb(3 4 11 / 0) 64%),
+    linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent calc(var(--fade-from) * 100% - 8%),var(--ink) 100%)}
+}
+@media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){
+  body.plt .is.plt-pain[data-layout="subject-right"] > .is__more .is__text{max-width:none}
+}
+
+/* ── 04 · Qué hacemos agrupado por etapa del sistema (Kommo) ── */
+body.plt .plt-cap--groups .script--groups .script__block + .script__block{margin-top:var(--s-6)}
+
+/* ── 06 · Licencias con un partner oficial: credencial (sello + ficha con filetes y marcas de esquina, sin relleno) ── */
+body.plt .plt-lic .it__body{grid-column:1 / -1}
+body.plt .plt-lic__grid{width:100%;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:var(--s-8);align-items:center}
+body.plt .plt-lic__main{grid-column:1 / span 6;display:flex;flex-direction:column;align-items:flex-start}
+body.plt .plt-lic__main > .eyebrow{margin-bottom:var(--s-4)}
+body.plt .plt-lic__main > .t-lede{margin-top:var(--s-5);max-width:46ch}
+body.plt .plt-lic__cred{grid-column:8 / span 5;position:relative;isolation:isolate}
+body.plt .plt-lic__cred .tpl-aura-box{inset:-40% calc((100% - 100vw) / 2)}
+body.plt .plt-lic__aura{--ax:62%;--ay:50%;width:min(56vw,760px);opacity:.75}
+body.plt .plt-cred{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:22px;padding:34px 34px 30px}
+body.plt .plt-cred__mk{position:absolute;width:18px;height:18px;pointer-events:none}
+body.plt .plt-cred__mk--tl{left:0;top:0;border-left:1px solid var(--hair-cyan);border-top:1px solid var(--hair-cyan)}
+body.plt .plt-cred__mk--tr{right:0;top:0;border-right:1px solid var(--hair-cyan);border-top:1px solid var(--hair-cyan)}
+body.plt .plt-cred__mk--bl{left:0;bottom:0;border-left:1px solid var(--hair-cyan);border-bottom:1px solid var(--hair-cyan)}
+body.plt .plt-cred__mk--br{right:0;bottom:0;border-right:1px solid var(--hair-cyan);border-bottom:1px solid var(--hair-cyan)}
+body.plt .plt-cred__label{margin:0;color:var(--cyan)}
+body.plt .plt-cred__dl{width:100%;margin:0;border-bottom:1px solid var(--hair)}
+body.plt .plt-cred__row{display:grid;grid-template-columns:7.5rem minmax(0,1fr);column-gap:var(--s-4);align-items:baseline;padding:13px 0 14px;border-top:1px solid var(--hair)}
+body.plt .plt-cred__row dt{color:var(--muted)}
+body.plt .plt-cred__row dd{margin:0;font:400 .9375rem/1.5 var(--f-body);color:var(--text)}
+body.plt .plt-cred__foot{margin:0;color:var(--muted);max-width:40ch}
+body.plt .plt-lic__steps{grid-column:1 / -1;width:100%}
+body.plt .plt-lic__foot{grid-column:1 / span 8;display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-4)}
+body.plt .plt-lic__note{margin:0;max-width:62ch;color:var(--text-2)}
+@media (max-width:1023px){
+  body.plt .plt-lic__grid{grid-template-columns:minmax(0,1fr);row-gap:var(--s-7)}
+  body.plt :is(.plt-lic__main,.plt-lic__cred,.plt-lic__steps,.plt-lic__foot){grid-column:1 / -1}
+  body.plt .plt-lic__cred{max-width:34rem}
+}
+@media (max-width:767px){
+  body.plt .plt-cred{padding:26px 22px 22px}
+  body.plt .plt-cred__row{grid-template-columns:minmax(0,1fr);row-gap:4px}
+}
+
+/* ── 07 · Escenas con UI registrada (agente en el chat · agenda del día) ── */
+body.plt .plt-scene .t-h2{max-width:14ch}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  body.plt .plt-scene .t-h2{font-size:min(clamp(2rem,1rem + 3vw,4.75rem), var(--plt-col) / 6.2)}
+  body.plt .plt-scene .is__text > .t-lede{max-width:44ch}
+  body.plt .plt-scene > .is__more{margin-top:var(--s-6)}
+  /* velo más denso del lado del texto: el piso de luz de la placa cruza todo el ancho a la altura de los pasos (AA medido) */
+  body.plt .plt-scene > .is__fx{background:
+    linear-gradient(var(--side),rgb(3 4 11 / .95) 0%,rgb(3 4 11 / .88) 30%,rgb(3 4 11 / .52) 44%,rgb(3 4 11 / 0) 58%),
+    linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent calc(var(--fade-from) * 100% - 8%),var(--ink) 100%),
+    radial-gradient(40% 50% at var(--halo-x) 58%,rgb(0 229 255 / .07),transparent 70%)}
+}
+/* Pantalla del teléfono de la placa: tinte oscuro bajo la conversación registrada (la luz de la placa no baja el contraste) */
+body.plt .plt-scene__ui.svc-ui{background:linear-gradient(180deg,rgb(3 4 11 / .46),rgb(3 4 11 / .62))}
+body.plt .plt-scene__chat .svc-aura{opacity:.5}
+body.plt .plt-bullets{margin:0;padding:0;list-style:none;max-width:46ch}
+body.plt .plt-bullets li{font:400 1rem/1.5 var(--f-body)}
+body.plt .plt-bullets .node{width:6px;height:6px;flex:none;translate:0 -2px}
+/* Pasos verticales (4) en la columna de texto: número mono, título y línea en la misma fila */
+body.plt .plt-vsteps{list-style:none;margin:0;padding:0;width:100%;max-width:40rem;border-bottom:1px solid var(--hair);counter-reset:none}
+body.plt .plt-vsteps__it{position:relative;display:grid;grid-template-columns:36px minmax(9rem,.8fr) minmax(0,1.3fr);column-gap:var(--s-4);align-items:baseline;
+  padding:13px 0 14px;border-top:1px solid var(--hair)}
+body.plt .plt-vsteps__n{font:500 11px/1 var(--f-mono);letter-spacing:.14em;color:var(--cyan)}
+body.plt .plt-vsteps__t{font:500 1.0625rem/1.3 var(--f-display);letter-spacing:-.01em;color:var(--text)}
+body.plt .plt-vsteps__l{font:400 .9375rem/1.45 var(--f-body);color:var(--text-2);text-wrap:pretty}
+body.plt .plt-proof{margin:var(--s-6) 0 0;max-width:46ch;font:300 clamp(1.125rem,1rem + .45vw,1.375rem)/1.45 var(--f-display);color:#E6EEF8;text-wrap:pretty}
+body.plt .plt-proof .metric{color:var(--cyan-soft)}
+body.plt .plt-scene__links{margin-top:var(--s-5)}
+body.plt .plt-scene__chat{position:relative;isolation:isolate;display:flex;justify-content:center;width:100%;margin-top:var(--s-7)}
+/* Agenda del día registrada en la superficie libre de la placa */
+body.plt .plt-ag{display:flex;pointer-events:none}
+body.plt .plt-ag__card{width:100%;height:100%;display:flex;flex-direction:column;gap:5cqi;padding:7cqi 7cqi 8cqi;border-radius:clamp(10px,6cqi,20px);
+  font:400 clamp(10px,6cqi,15px)/1.35 var(--f-body);color:var(--text);
+  background:linear-gradient(170deg,rgb(10 18 44 / .66),rgb(4 8 20 / .5));-webkit-backdrop-filter:blur(12px) saturate(1.15);backdrop-filter:blur(12px) saturate(1.15);
+  box-shadow:inset 0 0 0 1px rgb(168 243 255 / .22),inset 0 1px 0 rgb(255 255 255 / .12),0 24px 60px rgb(3 4 11 / .45),0 0 44px rgb(0 229 255 / .1)}
+body.plt .plt-ag__card p{margin:0}
+body.plt .plt-ag__top{display:flex;align-items:center;justify-content:space-between;gap:.6em}
+body.plt .plt-ag__top .chip-sim{font-size:max(8px,.68em)}
+body.plt .plt-ag__time{font:400 .64em/1.2 var(--f-mono);letter-spacing:.06em;color:var(--muted);text-align:right}
+body.plt .plt-ag__k{display:flex;align-items:center;gap:.6em;font:500 .8em/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+body.plt .plt-ag__slots{list-style:none;margin:0;padding:0;flex:1;min-height:0;display:grid;grid-auto-rows:minmax(0,1fr);gap:3.4cqi}
+body.plt .plt-ag__slot{display:flex;align-items:center;gap:.8em;min-height:0;padding:.55em .8em;border-radius:.75em;color:var(--muted);box-shadow:inset 0 0 0 1px rgb(158 176 199 / .2)}
+body.plt .plt-ag__h{font:500 .8em/1 var(--f-mono);letter-spacing:.04em;color:var(--text-2)}
+body.plt .plt-ag__l{font-size:.9em;line-height:1.25}
+body.plt .plt-ag__slot.is-on{color:#fff;background:linear-gradient(160deg,rgb(0 229 255 / .2),rgb(69 93 255 / .16));box-shadow:inset 0 0 0 1px rgb(0 229 255 / .55),0 0 22px rgb(0 229 255 / .25)}
+body.plt .plt-ag__slot.is-on .plt-ag__h{color:var(--cyan-soft)}
+body.plt .plt-ag__st{display:flex;align-items:center;gap:.6em;font:500 .74em/1.25 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    html:not([data-motion="reduced"]) body.plt .plt-ag{view-timeline-name:--ag}
+    html:not([data-motion="reduced"]) body.plt .plt-ag__slot.is-on{animation:plt-on linear both;animation-timeline:--ag;animation-range:entry 60% entry 90%}
+  }
+}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.plt .plt-scene .t-h2{max-width:none}
+  body.plt .plt-ag--inline{container-type:inline-size;width:min(100%,21rem);margin-top:var(--s-6)}
+  body.plt .plt-ag--inline .plt-ag__card{height:auto;gap:10px;padding:16px 18px 18px;font-size:14px}
+  body.plt .plt-ag--inline .plt-ag__slots{gap:8px}
+  body.plt .plt-vsteps__it{grid-template-columns:30px minmax(0,1fr);row-gap:4px}
+  body.plt .plt-vsteps__l{grid-column:2}
+  body.plt .plt-scene__chat{margin-top:var(--s-6)}
+}
+
+/* ── 14 · Cierre en espejo (Kain a la izquierda, GHL): del lado del texto la cresta del horizonte queda más alta; el titular
+   gana ancho (hasta el margen derecho del marco) y baja un punto para que la fila de CTA quede sobre el piso, lejos del filo
+   (contraste AA del botón medido a 1440 × 900) ── */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  body.plt .dawn[data-layout="subject-left"] .is__text{grid-column:7 / -1;margin-right:calc((var(--frame) - 100vw) / 2 + var(--s-5))}
+  body.plt .dawn[data-layout="subject-left"] .is__text > .t-h2{max-width:none;font-size:min(clamp(2.25rem,1rem + 3.4vw,4.75rem),6.2svh)}
+  body.plt .dawn[data-layout="subject-left"] .is__text > .t-lede{max-width:40ch}
+}
+
+/* ── 09 · ¿Es para ti? (enlaces bajo las dos columnas) ── */
+body.plt .plt-two .it__body > .plt-two__links{margin-top:var(--s-7)}
+
+@media (forced-colors:active){
+  body.plt :is(.plt-pipe__card,.plt-pop__card,.plt-cal__card,.plt-ag__card){-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid CanvasText}
+  body.plt :is(.plt-junta__br,.plt-junta__it){--hl:CanvasText}
+}
+/* ===== fin PlatformTemplate ===== */

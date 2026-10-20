@@ -6,7 +6,7 @@
 //   lcpPlate?     id de la placa de la PRIMERA ImageSection → dos precargas excluyentes (escritorio / vertical), §8.3
 //   lcpSrcsetMax? tope de ancho de escritorio de esa placa (2752 portadas; por defecto el de plates.json)
 //   faq? / faqIds?  preguntas visibles para el FAQPage (ver SEOHead)
-//   title?, description?, ogImage?, noindex?, datePublished?, dateModified?, jsonLd?, articleAbout?  → SEOHead
+//   title?, description?, ogImage?, noindex?, datePublished?, dateModified?, jsonLd?, articleAbout?, articleExtra?, howToSteps?  → SEOHead
 //   rail?         false | [{ id, label }]   (por defecto: secciones de page.sections; solo ≥ 1280 px)
 //   railMode?     'ticks' | 'labels'  (casos: 'labels')      railGroups?  [3, 6, 4] (actos del inicio)
 //   waHref?       WhatsApp de la página (por defecto page.secondaryCta.href)
@@ -50,6 +50,8 @@ interface Props {
   dateModified?: string;
   jsonLd?: Record<string, any>[];
   articleAbout?: Record<string, any> | Record<string, any>[];
+  articleExtra?: Record<string, any>;
+  howToSteps?: { name: string; text: string }[];
   rail?: false | { id: string; label: string }[];
   railMode?: 'ticks' | 'labels';
   railGroups?: number[];
@@ -114,7 +116,8 @@ const showRail = full && p.rail !== false && page.template !== 'T-404';
       <link rel="preload" as="image" type="image/avif" fetchpriority="high" media={lcp.mob.media} imagesrcset={lcp.mob.srcset} imagesizes={lcp.mob.sizes} />
     )}
     <SEOHead page={page} faq={p.faq} faqIds={p.faqIds} title={p.title} description={p.description} ogImage={p.ogImage}
-      noindex={p.noindex} datePublished={p.datePublished} dateModified={p.dateModified} jsonLd={p.jsonLd} articleAbout={p.articleAbout} />
+      noindex={p.noindex} datePublished={p.datePublished} dateModified={p.dateModified} jsonLd={p.jsonLd} articleAbout={p.articleAbout}
+      articleExtra={p.articleExtra} howToSteps={p.howToSteps} />
     <meta name="theme-color" content="#03040B" />
     <meta name="color-scheme" content="dark" />
     <meta name="format-detection" content="telephone=no" />

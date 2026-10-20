@@ -1,0 +1,119 @@
+---
+// HubCases · /casos/#filtros + /casos/#grid (ESPEC §5.5: chips de sector y servicio que filtran la lista ya renderizada,
+// sin fetch; casos como fotogramas planos). R7: la imagen nunca va en caja → cada caso es una ESCENA a sangre de la
+// retícula: la portada del caso de fondo (la misma placa de su página), la persona de un lado y, del otro, en su
+// penumbra, la cifra confirmada en Lexend 200, el título y una línea. Las escenas alternan lado (espejo) como el Montage.
+// Móvil: la placa vertical propia del caso; cifra y título sobre su penumbra superior, línea y enlace en la disolución.
+// El enlace al caso aparece solo si su página existe (linkTarget). Sin JS: no hay chips y se ven los cinco casos.
+import Metric from '../../ui/Metric.astro';
+import Copy from '../../ui/Copy.astro';
+import Icon from '../../ui/Icon.astro';
+import Aura from '../Aura.astro';
+import { resolvePlate } from '../../cine/plate';
+import { METRICS, type MetricId } from '../../../lib/metrics';
+import { pages, linkTarget } from '../../../lib/site';
+import { MQ_MOBILE } from '../../layout/lcp';
+import { head } from './hubKit';
+
+interface Props { f: any; g: any; idFilters: string; idGrid: string }
+const { f, g, idFilters, idGrid } = Astro.props;
+
+const heroPlateOfUrl = (href: string) => {
+  const pg = (pages as any[]).find((p) => p.url === href.split('#')[0]);
+  return pg?.sections?.find((s: any) => s.plate)?.plate?.id as string | undefined;
+};
+const items = ((g?.items ?? []) as any[])
+  .filter((it) => it.metricId && (METRICS as any)[it.metricId])
+  .map((it, i) => {
+    const plateId = heroPlateOfUrl(it.href);
+    const r = plateId ? resolvePlate(plateId, { srcsetMax: 1920, mobileMax: 1080, where: `HubCases ${it.href}` }) : null;
+    const sd = r?.subject?.d;
+    const sm = r?.subject?.m;
+    const mirror = i % 2 === 1;
+    // Encuadre: centro del sujeto en X (espejado en las filas pares) y el tercio superior del sujeto en Y (cabeza a la vista)
+    const ox = sd ? (sd[0] + sd[2]) / 2 : r?.d.fx ?? 0.7;
+    const oy = sd ? Math.max(0, Math.min(1, sd[1] + (sd[3] - sd[1]) * 0.18)) : 0.3;
+    const oxm = sm ? (sm[0] + sm[2]) / 2 : r?.m.fx ?? 0.5;
+    return {
+      ...it,
+      i,
+      mirror,
+      r,
+      href: it.href ? linkTarget(it.href) : null,
+      style: `--ox:${(mirror ? 1 - ox : ox).toFixed(3)};--oy:${oy.toFixed(3)};--oxm:${(mirror ? 1 - oxm : oxm).toFixed(3)};--subj-top:${r?.m.subjTop ?? 0.44};`,
+      services: (it.services ?? []) as string[],
+    };
+  });
+const usedSectors = [...new Set(items.map((it) => it.sector).filter(Boolean))] as string[];
+const usedServices = Object.keys(g?.services ?? {}).filter((s) => items.some((it) => it.services.includes(s)));
+const sectorName = (s: string) => g?.sectors?.[s] ?? s;
+const serviceName = (s: string) => g?.services?.[s] ?? s;
+const status = (n: number) => String(f?.status ?? '{n} casos').replace('{n}', String(n));
+---
+<section id={idFilters} class="hub-sec hub-filtros tpl-glow" aria-labelledby={`${idGrid}-t`} data-hub-filter="cases">
+  <Aura kind="isotipo" x="84%" y="30%" o={0.75} only="d" />
+  <div class="frame hub-sec__frame">
+    <div class="hub-sec__head">
+      {g?.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{g.eyebrow}</p>}
+      <h2 id={`${idGrid}-t`} class="t-h2" data-split set:html={head(g?.h2)} />
+      {g?.lede && <Copy as="p" class="t-lede t-lede--2 hub-sec__lede" text={g.lede} data-reveal />}
+    </div>
+    <div class="hub-chips" role="group" aria-label={f?.eyebrow ?? 'Filtra los casos'} data-hub-chips>
+      <p class="t-label hub-chips__h"><span class="node" aria-hidden="true"></span>{f?.eyebrow ?? 'Filtra los casos'}</p>
+      <div class="hub-chips__row" role="group" aria-label={f?.sectorLabel ?? 'Sector'}>
+        <span class="hub-chips__k t-label" aria-hidden="true">{f?.sectorLabel ?? 'Sector'}</span>
+        <button type="button" class="hub-chip" aria-pressed="true" data-dim="sector" data-val="*">{f?.all ?? 'Todos'}</button>
+        {usedSectors.map((s) => <button type="button" class="hub-chip" aria-pressed="false" data-dim="sector" data-val={s}>{sectorName(s)}</button>)}
+      </div>
+      <div class="hub-chips__row" role="group" aria-label={f?.serviceLabel ?? 'Servicio'}>
+        <span class="hub-chips__k t-label" aria-hidden="true">{f?.serviceLabel ?? 'Servicio'}</span>
+        <button type="button" class="hub-chip" aria-pressed="true" data-dim="service" data-val="*">{f?.all ?? 'Todos'}</button>
+        {usedServices.map((s) => <button type="button" class="hub-chip" aria-pressed="false" data-dim="service" data-val={s}>{serviceName(s)}</button>)}
+      </div>
+      <p class="t-micro hub-chips__status" aria-live="polite" data-hub-status data-tpl={f?.status ?? '{n} casos'}>{status(items.length)}</p>
+    </div>
+  </div>
+</section>
+
+<section id={idGrid} class="hub-cases" aria-label={g?.rail ?? 'Casos'} data-hub-list="cases">
+  <ol class="hub-cases__list" role="list">
+    {items.map((it) => {
+      const m = (METRICS as any)[it.metricId as MetricId];
+      const Tag = it.href ? 'a' : 'div';
+      return (
+        <li class:list={['hub-case', it.mirror ? 'hub-case--r' : 'hub-case--l']} data-sector={it.sector} data-services={it.services.join(' ')} style={it.style}>
+          <Tag class:list={['hub-case__link', !it.href && 'hub-case__link--static']} href={it.href ?? undefined} data-still={it.href ? '' : undefined}>
+            <span class="hub-case__media" aria-hidden="true">
+              {it.r?.id && (
+                <picture>
+                  {it.r.srcset.avifM && <source media={MQ_MOBILE} type="image/avif" srcset={it.r.srcset.avifM} sizes="100vw" />}
+                  {it.r.srcset.webpM && <source media={MQ_MOBILE} type="image/webp" srcset={it.r.srcset.webpM} sizes="100vw" />}
+                  <source type="image/avif" srcset={it.r.srcset.avifD} sizes="100vw" />
+                  <source type="image/webp" srcset={it.r.srcset.webpD} sizes="100vw" />
+                  <img src={it.r.srcset.imgSrc} alt="" width={it.r.d.w} height={it.r.d.h} loading="lazy" decoding="async" />
+                </picture>
+              )}
+            </span>
+            <span class="hub-case__shade" aria-hidden="true"></span>
+            <span class="frame hub-case__frame">
+              <span class="hub-case__copy">
+                <span class="hub-case__top">
+                  <span class="t-label hub-case__label"><span class="node" aria-hidden="true"></span>{it.label}</span>
+                  <Metric id={it.metricId} variant="mega" label={false} class="hub-case__fig" />
+                  <span class="hub-case__what">{m.label}</span>
+                </span>
+                <span class="hub-case__bottom">
+                  <h3 class="hub-case__title">{it.title}</h3>
+                  {it.line && <Copy class="hub-case__line" text={it.line} />}
+                  {it.href && <span class="lnk--mono hub-case__go">{g?.linkLabel ?? 'Ver el caso'} <Icon name="arrow" size={16} /></span>}
+                </span>
+              </span>
+            </span>
+            {g?.illus && <span class="chip-illus hub-case__illus" aria-hidden="true">{g.illus}</span>}
+          </Tag>
+        </li>
+      );
+    })}
+  </ol>
+  <p class="t-micro hub-cases__empty" data-hub-empty hidden>{f?.empty}</p>
+</section>

@@ -1,0 +1,452 @@
+{
+  "pageId": "n8n",
+  "url": "/servicios/automatizacion-n8n/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "APROBACIÓN DE PREGUNTA · N05 sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. La definición de #definicion usa un texto propio (definition.text) con la primera oración de N05 y lo que ya dicen G06 y G09 (CRM, WhatsApp, formularios, hojas de cálculo y sistemas internos sin capturas a mano; agentes de IA).",
+    "CAMBIO DE AFIRMACIÓN · #antes-despues: el comparador del brief ('100% manual → 40% automatizado') NO se publica: esa cifra venía del sitio actual y no está en metrics.ts. Queda solo tiempo-operativo (promedio, primeros 90 días) con su fuente, y las columnas Antes / Con n8n sin números.",
+    "CAMBIO DE TEXTO · repetición de cifras: logistica-procesos sale en la portada y en #caso (dos veces); tiempo-operativo en la fila de #definicion y en #antes-despues (dos veces). La portada lleva la cifra del chip del brief ('27 procesos automatizados') dentro del lede, porque ServiceTemplate no pinta chips.",
+    "PREGUNTA AL CLIENTE · ¿instalan n8n en la infraestructura del cliente (self-hosted) cuando hace falta, o siempre en la nube? #como-funciona.note y la fila 'Dónde vive' de #comparativa lo ofrecen ('en la nube o en la infraestructura de tu empresa'), igual que N05 (en validar).",
+    "PREGUNTA AL CLIENTE · #comparativa (n8n vs. Zapier o Make) usa criterios generales de las herramientas, sin precios: ¿coincide con cómo eligen ustedes? En especial la regla 'Zapier para conexiones simples; Make para escenarios visuales que tu equipo quiera ajustar; n8n cuando el proceso es central y va a crecer'.",
+    "PREGUNTA AL CLIENTE · #que-automatizamos lista ocho flujos del brief (CRM ↔ WhatsApp, formularios, recordatorios, cobros, reportes, ERP, alertas y agentes de IA). ¿Hay alguno que hoy no hagan o que prefieran no ofrecer (por ejemplo, cobros)?",
+    "DATO PENDIENTE · el brief de #definicion pide el logo oficial de n8n según su guía (wordmark, mínimo 100 px): es tarea de plantillas/ui, no de copy.",
+    "CAMBIO DE TEXTO · #caso: la cifra va en el lede y no en el H2 (con el token |full dentro del titular, SplitText recortaba \"automatizados\" en escritorio)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (home-sistema-4-automatizar: Kain toca un nodo de la constelación) + lienzo de nodos con pulsos registrado + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Servicio · Automatizar",
+      "h1": {
+        "text": "Automatización de procesos con n8n",
+        "soft": "para empresas",
+        "lit": "n8n"
+      },
+      "lede": "Flujos con n8n y Make que conectan tus sistemas y eliminan el trabajo repetitivo. En una empresa de logística ya suman {{metric:logistica-procesos|full}}.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de automatización con n8n y quiero automatizar procesos de mi empresa."
+      },
+      "ui": {
+        "_nota": "UI de la portada de n8n según ESPEC §5.2.1: lienzo de nodos con pulsos registrado sobre la constelación (anclas nodo/constelacion de home-sistema-4-automatizar); nombres genéricos, sin copiar la interfaz de n8n. Sin burbujas a propósito: ServiceTemplate solo pinta ui.bubbles (pedido a plantillas en peticiones.md). SIMULACIÓN + data-nosnippet.",
+        "canvas": {
+          "nodes": [
+            "Formulario web",
+            "n8n",
+            "Agente de IA",
+            "CRM",
+            "Aviso al equipo"
+          ],
+          "status": "Flujo ejecutado"
+        }
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio; N05 en validar) + cuándo usamos Make o Zapier + MetricRow",
+      "rail": "Qué es",
+      "eyebrow": "Definición",
+      "definition": {
+        "heading": "¿Qué es n8n?",
+        "faqId": "N05",
+        "text": "n8n es una herramienta para conectar aplicaciones y crear flujos automáticos, incluidos flujos con agentes de IA. En Ingeniak la usamos para que tu CRM, WhatsApp, formularios, hojas de cálculo y sistemas internos intercambien información sin capturas a mano, y para que un agente de IA pueda actuar dentro de tus procesos.",
+        "_nota": "Texto propio de la página (N05 sigue en validar: true y DefinitionBlock no lo pintaría)."
+      },
+      "body": [
+        "No es la única herramienta que usamos. Elegimos Make cuando el flujo es de complejidad media y tu equipo quiere verlo y ajustarlo en un lienzo visual.",
+        "Y Zapier, cuando basta con conectar dos o tres aplicaciones populares con un flujo corto y sin lógica complicada. Lo que decide es el proceso, no la marca."
+      ],
+      "metricRow": {
+        "title": "Automatización en producción",
+        "metricIds": [
+          "tiempo-operativo",
+          "sistemas"
+        ],
+        "sourceNote": true
+      }
+    },
+    "senales": {
+      "_componente": "ImageSection mid (dolor-operacion, persona, tone=dolor, subject-left, mobile split) + lista de señales (dolor ámbar → salida cian)",
+      "rail": "Señales",
+      "eyebrow": "Señales de que lo necesitas",
+      "h2": {
+        "text": "Tu equipo hace de cable",
+        "soft": "entre tus sistemas."
+      },
+      "lede": "Si alguna de estas escenas se repite cada semana, hay horas de trabajo que un flujo haría mejor y sin cansarse.",
+      "fig": {
+        "label": "El cierre de semana, todo a mano"
+      },
+      "items": [
+        {
+          "pain": "Copiar y pegar datos entre sistemas.",
+          "painLine": "Del formulario a la hoja, de la hoja al CRM, del CRM a la factura.",
+          "fix": "Los sistemas se pasan la información solos, en cuanto llega."
+        },
+        {
+          "pain": "Errores por doble captura.",
+          "painLine": "Un dígito mal escrito y el pedido sale a otra dirección.",
+          "fix": "Un dato se captura una vez y viaja igual a todos lados."
+        },
+        {
+          "pain": "Reportes armados a mano cada semana.",
+          "painLine": "Alguien pierde la mañana del lunes juntando números de cinco lugares.",
+          "fix": "El reporte se genera solo y llega a quien lo necesita."
+        },
+        {
+          "pain": "Todo pasa por ti.",
+          "painLine": "Para que algo avance, tú tienes que avisar, revisar o reenviar.",
+          "fix": "El flujo avisa a la persona que le toca, en el momento en que le toca."
+        }
+      ],
+      "remate": "Cada tarea que se hace igual todas las veces es candidata a moverse sola."
+    },
+    "que-automatizamos": {
+      "_componente": "ScriptList (8 filas) sobre aura",
+      "rail": "Qué automatizamos",
+      "eyebrow": "Qué automatizamos",
+      "h2": {
+        "text": "Ocho flujos",
+        "soft": "que más se repiten en una empresa."
+      },
+      "items": [
+        {
+          "n": "01",
+          "title": "CRM ↔ WhatsApp",
+          "line": "Cada conversación crea o actualiza el contacto en tu CRM, y el CRM puede mandar mensajes por WhatsApp.",
+          "href": "/servicios/crm-con-ia/"
+        },
+        {
+          "n": "02",
+          "title": "Formularios → CRM",
+          "line": "Lo que llena un cliente en tu web o en un anuncio entra al CRM con su origen, sin recaptura."
+        },
+        {
+          "n": "03",
+          "title": "Recordatorios",
+          "line": "Citas, pagos, renovaciones y entregas: el aviso sale solo y a tiempo."
+        },
+        {
+          "n": "04",
+          "title": "Cobros",
+          "line": "Recordatorios de pago y registro del cobro en tu sistema en cuanto se confirma."
+        },
+        {
+          "n": "05",
+          "title": "Reportes automáticos",
+          "line": "Ventas, citas o pedidos de la semana, armados y enviados sin que nadie los junte."
+        },
+        {
+          "n": "06",
+          "title": "Sincronización con tu ERP",
+          "line": "Clientes, pedidos e inventario iguales en el ERP, el CRM y las hojas de cálculo."
+        },
+        {
+          "n": "07",
+          "title": "Alertas",
+          "line": "Un pedido atorado, una urgencia o un lead caliente avisan a la persona correcta al momento."
+        },
+        {
+          "n": "08",
+          "title": "Agentes de IA orquestados",
+          "line": "n8n le da a un agente de IA las herramientas para consultar, registrar y actuar en tus sistemas.",
+          "href": "/servicios/agentes-ia-whatsapp/"
+        }
+      ],
+      "body": [
+        "Antes de construir, dibujamos el proceso como está hoy: quién hace qué, con qué sistema y dónde se atora. Automatizar un proceso desordenado solo lo desordena más rápido."
+      ],
+      "links": [
+        {
+          "label": "Las herramientas con las que construimos",
+          "href": "/tecnologias/"
+        }
+      ]
+    },
+    "como-funciona": {
+      "_componente": "riel-servicios a sangre con 5 nodos registrados",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": {
+        "text": "Algo pasa en tu negocio,",
+        "soft": "y el resto se mueve solo."
+      },
+      "nodes": [
+        {
+          "label": "El disparador",
+          "line": "Un formulario, un mensaje, un pago o una hora del día.",
+          "confirmed": true
+        },
+        {
+          "label": "n8n",
+          "line": "Recibe el dato, aplica tus reglas y decide el camino.",
+          "logos": [
+            "n8n"
+          ],
+          "confirmed": true
+        },
+        {
+          "label": "IA, si hace falta",
+          "line": "Lee, clasifica o redacta con OpenAI, Claude o Gemini.",
+          "logos": [
+            "openai",
+            "claude",
+            "gemini"
+          ],
+          "confirmed": true
+        },
+        {
+          "label": "Tus sistemas",
+          "line": "CRM, ERP, hojas de cálculo o WhatsApp quedan al día.",
+          "confirmed": true
+        },
+        {
+          "label": "La persona correcta",
+          "line": "Recibe el aviso con lo que necesita para actuar.",
+          "confirmed": true
+        }
+      ],
+      "note": "n8n puede vivir en la nube o en la infraestructura de tu empresa; lo decidimos contigo en la fase Koncept."
+    },
+    "antes-despues": {
+      "_componente": "TwoColumnScript variant=before-after (antes en ámbar, después en cian, filas pareadas) + cifra tiempo-operativo con su fuente en el lede",
+      "rail": "Antes y después",
+      "eyebrow": "Antes y después",
+      "h2": {
+        "text": "La misma operación,",
+        "soft": "sin el trabajo de cable."
+      },
+      "lede": "Promedio de nuestros clientes en los primeros 90 días: {{metric:tiempo-operativo|full}}. {{source}}.",
+      "left": {
+        "title": "Antes",
+        "tone": "ambar",
+        "items": [
+          "Alguien copia cada pedido del correo al sistema.",
+          "El reporte semanal se arma a mano el lunes.",
+          "Los recordatorios dependen de que alguien se acuerde.",
+          "Tú reenvías cada aviso a quien le toca."
+        ]
+      },
+      "right": {
+        "title": "Con n8n",
+        "tone": "cian",
+        "items": [
+          "El pedido entra al sistema en cuanto llega.",
+          "El reporte llega solo, a la hora que definiste.",
+          "Los recordatorios salen a tiempo, todos los días.",
+          "Cada aviso va directo a la persona correcta."
+        ]
+      },
+      "slogan": "Tu equipo deja de mover datos y vuelve a atender clientes."
+    },
+    "caso": {
+      "_componente": "ImageSection mid (caso-logistica-hero, persona ilustrativa del sector a la derecha) + viñetas + enlace al caso",
+      "rail": "Caso",
+      "eyebrow": "Caso · Logística",
+      "h2": {
+        "text": "Logística,",
+        "soft": "con sus sistemas hablando entre sí."
+      },
+      "lede": "Para una empresa de logística conectamos CRM, WhatsApp, ERP y modelos de IA con n8n, con disparadores en tiempo real. Resultado: {{metric:logistica-procesos|full}} ({{source}}).",
+      "items": [
+        "CRM, WhatsApp y ERP conectados en n8n.",
+        "Modelos de IA dentro de los flujos.",
+        "Disparadores en tiempo real: el flujo arranca en cuanto pasa algo."
+      ],
+      "links": [
+        {
+          "label": "Lee el caso completo",
+          "href": "/casos/logistica-n8n/"
+        }
+      ]
+    },
+    "comparativa": {
+      "_componente": "Comparación por criterio (4 filas, sin precios): Zapier o Make (neutro) vs. n8n (cian) + enlace al artículo",
+      "rail": "n8n, Make o Zapier",
+      "eyebrow": "n8n, Make o Zapier",
+      "h2": {
+        "text": "La herramienta correcta",
+        "soft": "depende del flujo."
+      },
+      "lede": "Usamos las tres. Esta es la regla con la que elegimos, sin hablar de precios.",
+      "left": {
+        "title": "Zapier o Make",
+        "tone": "muted"
+      },
+      "right": {
+        "title": "n8n",
+        "tone": "cian"
+      },
+      "rows": [
+        {
+          "criterio": "Complejidad",
+          "left": "Flujos cortos o de complejidad media entre aplicaciones populares.",
+          "right": "Flujos largos, con condiciones, ciclos y varios sistemas a la vez."
+        },
+        {
+          "criterio": "Dónde vive",
+          "left": "En la nube del proveedor.",
+          "right": "En la nube o en la infraestructura de tu empresa."
+        },
+        {
+          "criterio": "Con IA",
+          "left": "Pasos de IA puntuales: resumir, clasificar o redactar.",
+          "right": "Agentes de IA que consultan y actúan en varios sistemas."
+        },
+        {
+          "criterio": "Cuándo la elegimos",
+          "left": "Zapier, para conexiones simples que necesitas hoy; Make, para escenarios visuales que tu equipo quiera ajustar.",
+          "right": "Cuando el proceso es central para tu operación y va a crecer."
+        }
+      ],
+      "links": [
+        {
+          "label": "Lee la comparación completa",
+          "href": "/blog/n8n-vs-zapier-vs-make/"
+        }
+      ]
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sobre metodologia-hero si está libre)",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": {
+        "text": "Del proceso a mano",
+        "soft": "al flujo en producción."
+      },
+      "phases": [
+        {
+          "letter": "V",
+          "name": "Verify",
+          "verb": "Verificamos tu operación",
+          "line": "Mapeamos tus procesos como están hoy: quién hace qué, en qué sistema y cada cuánto."
+        },
+        {
+          "letter": "K",
+          "name": "Koncept",
+          "verb": "Diseñamos el concepto",
+          "line": "Elegimos qué automatizar primero, con qué herramienta y cómo se ve cada flujo antes de construirlo."
+        },
+        {
+          "letter": "T",
+          "name": "Transform",
+          "verb": "Transformamos",
+          "line": "Construimos los flujos, los conectamos a tus sistemas y los probamos con casos reales de tu operación."
+        },
+        {
+          "letter": "O",
+          "name": "Operate",
+          "verb": "Operamos junto con tu equipo",
+          "line": "Los encendemos contigo, vigilamos cada ejecución y corregimos lo que se atore."
+        },
+        {
+          "letter": "R",
+          "name": "Rise",
+          "verb": "Hacemos crecer los resultados",
+          "line": "Medimos el tiempo que se libera y elegimos contigo el siguiente proceso a automatizar."
+        }
+      ],
+      "links": [
+        {
+          "label": "Cómo trabajamos: VKTOR™",
+          "href": "/metodologia/"
+        }
+      ]
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": {
+        "text": "{{Price}}."
+      },
+      "lede": "El costo de automatizar depende de:",
+      "items": [
+        {
+          "title": "Procesos",
+          "line": "Cuántos flujos se construyen y qué tan largos son."
+        },
+        {
+          "title": "Integraciones",
+          "line": "Con cuántos sistemas se conecta: CRM, ERP, WhatsApp, hojas de cálculo o modelos de IA."
+        },
+        {
+          "title": "Volumen",
+          "line": "Cuántas veces se ejecutan los flujos al mes y cuántos datos mueven."
+        }
+      ],
+      "remate": "Empezamos por el proceso que más horas le come a tu equipo, y en tu Discovery Session lo identificamos. Según el alcance, la implementación toma de 7 a 30 días."
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Preguntas sobre automatización",
+        "soft": "con n8n."
+      },
+      "faqIds": [
+        "N05",
+        "G06",
+        "G08",
+        "G07"
+      ],
+      "footer": "¿Quieres saber si tu proceso se puede automatizar? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": {
+        "text": "Más allá",
+        "soft": "del primer flujo."
+      },
+      "items": [
+        {
+          "href": "/industrias/industrial-logistica/",
+          "label": "Industria",
+          "title": "Industrial y logística",
+          "line": "Pedidos, inventario y entregas que se mueven solos."
+        },
+        {
+          "href": "/servicios/desarrollo-software/",
+          "label": "Construir",
+          "title": "Software a la medida",
+          "line": "Cuando ninguna herramienta encaja con tu operación."
+        },
+        {
+          "href": "/blog/n8n-vs-zapier-vs-make/",
+          "label": "Guía",
+          "title": "n8n vs Zapier vs Make",
+          "line": "Cuál conviene según tu proceso, sin hablar de precios."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila, subject-left)",
+      "rail": "Cierre",
+      "eyebrow": "Empieza por uno",
+      "h2": {
+        "text": "¿Qué proceso te come más horas?",
+        "soft": "Empecemos por ese."
+      },
+      "lede": "En la Discovery Session revisamos qué tareas repite tu equipo cada semana y te decimos cuál conviene automatizar primero.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de automatización con n8n y quiero automatizar procesos de mi empresa."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

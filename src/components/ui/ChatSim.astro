@@ -21,6 +21,8 @@
 //   who: "cliente" | "kain" (también se aceptan from/de/role); delay (ms) = pausa antes de la línea ("escribiendo…" si es de Kain);
 //   time = hora ilustrativa del primer mensaje (sale como sello "Hora ilustrativa"); event = chip del sistema bajo la burbuja.
 // tabs: ['salud','belleza'] o [{id,label}]. Sector sin archivo → se omite (salud y default tienen respaldo en línea).
+//   Si ningún sector pedido tiene guion, se usa el general (default.json), nunca el de salud salvo que se haya pedido salud:
+//   una página de otro sector no muestra una limpieza dental.
 import Icon from './Icon.astro';
 import { annotateFigures, SIM } from './ui-data';
 
@@ -48,7 +50,13 @@ const FALLBACK: Record<string, any[]> = {
     { who: 'kain', text: 'Listo: tu limpieza quedó el viernes a las 17:30. Un día antes te mando un recordatorio por aquí.', event: 'Cita registrada en tu CRM' },
   ],
 };
-FALLBACK.default = FALLBACK.salud;
+// General (mismo arranque que src/data/chats/default.json): solo si falta también ese archivo.
+FALLBACK.default = [
+  { who: 'cliente', text: 'Hola, quiero informes. ¿Atienden los sábados?', time: '11:48 p. m.' },
+  { who: 'kain', text: '¡Hola! Sí, los sábados atendemos de 9:00 a 14:00. ¿Qué servicio te interesa? Así te doy la información exacta.' },
+  { who: 'cliente', text: 'Una cotización para mi negocio.' },
+  { who: 'kain', text: 'Con gusto. ¿Me compartes tu nombre y qué necesitas cotizar? Con eso te agendo una llamada con un asesor.', event: 'Lead registrado en tu CRM' },
+];
 
 const files = import.meta.glob('../../data/chats/*.json', { eager: true, import: 'default' }) as Record<string, any>;
 const fileFor = (sector: string) => { const k = Object.keys(files).find((x) => x.endsWith(`/${sector}.json`)); return k ? files[k] : null; };
@@ -72,7 +80,12 @@ const sectors = tabsIn
     return { key, label, lines, note: NOTES[key], stamp: lines.find((l) => l.time)?.time };
   })
   .filter(Boolean) as { key: string; label: string; lines: Line[]; note?: string; stamp?: string }[];
-if (!sectors.length) sectors.push({ key: 'salud', label: 'Salud', lines: norm(FALLBACK.salud), note: NOTES.salud, stamp: nbsp('11:02 p. m.') });
+if (!sectors.length) {
+  const asked = tabsIn.map((t) => (typeof t === 'string' ? t : t.id));
+  const key = asked.includes('salud') ? 'salud' : 'default';
+  const lines = norm(fileFor(key) ?? FALLBACK[key]).slice(0, limit && limit > 0 ? limit : undefined);
+  sectors.push({ key, label: LABELS[key], lines, note: NOTES[key], stamp: lines.find((l) => l.time)?.time });
+}
 
 const uid = id ?? `chat-${Math.random().toString(36).slice(2, 8)}`;
 const whoLabel = (f: Line['from']) => (f === 'kain' ? 'Kain' : f === 'sistema' ? 'Sistema' : 'Cliente');

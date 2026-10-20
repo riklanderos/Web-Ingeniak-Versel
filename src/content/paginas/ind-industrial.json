@@ -1,0 +1,154 @@
+{
+  "pageId": "ind-industrial",
+  "url": "/industrias/industrial-logistica/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "APROBACIÓN DE PREGUNTAS · R2 pide al menos cuatro preguntas propias por industria y el banco no tiene ninguna de industria y logística. Propuesta en materiales/v2/build/peticiones.md (Construcción · industrias · copy): P01 '¿Tengo que cambiar de ERP para automatizar?', P02 '¿El agente puede decirle a un cliente el estatus de su pedido?', P03 '¿Qué procesos conviene automatizar primero en una operación logística?', P04 '¿Dónde quedan los datos de mi operación?' (ids P: I01–I04 ya los propuso inmobiliario). Al aprobarse, entran a faq.json y a faq.faqIds de esta página, delante de las compartidas.",
+    "CAMBIO DE TEXTO · faq: se suma G09 (aprobada, modelos de IA y herramientas que integramos) porque N05 sigue en validar: true y el acordeón se quedaba con tres preguntas. Orden: G06, N05, G09, G08, G07. Mientras N05 no se apruebe, se muestran G06, G09, G08 y G07.",
+    "CAMBIO DE AFIRMACIÓN · portada: el brief decía 'más operación que se mueve sola'. Con RESPUESTAS-CLIENTE #6 (en la operación sí intervienen personas) el lede dice que la información se captura una vez y que 'tu equipo se queda con las decisiones'. La definición cierra igual: 'Las decisiones siguen siendo de tu equipo.'",
+    "CAMBIO DE TEXTO · definicion: texto propio de la página (no hay pregunta del banco para este sector). Se apoya en G06 (aprobada) y en la implementación confirmada del caso de logística: integraciones entre CRM, WhatsApp, ERP y modelos de IA con disparadores en tiempo real. La cifra del caso no se repite aquí (sale en la portada y en Resultados).",
+    "CHAT · BLOQUEA #kain-sector: falta src/data/chats/industrial.json (src/data es compartido; el guion listo para pegar está en peticiones.md → Construcción · industrias · copy: ind-industrial, ind-retail, ind-horeca). Mientras no exista, ChatSim cae al guion de salud (limpieza dental) y la escena no coincide con su lede. El guion propuesto (SIMULACIÓN): pedido con folio inventado, estatus consultado en el ERP, guía y factura, y el límite (no comparte existencias; pasa la solicitud al ejecutivo con una tarea). Revisa que el tono B2B sea el que quieres.",
+    "PREGUNTA AL CLIENTE · ¿Con qué ERP han integrado (por ejemplo SAP Business One, Odoo, Aspel, CONTPAQi u otro)? Hoy la página dice solo 'tu ERP' y no promete ninguna marca.",
+    "PREGUNTA AL CLIENTE · En el caso de logística, ¿el agente contesta estatus de pedidos a clientes por WhatsApp, o los procesos del caso son flujos internos? La conversación de #kain-sector es ilustrativa y se presenta como capacidad general, no como parte del caso.",
+    "PREGUNTA AL CLIENTE · ¿Ofrecen hoy cotizaciones asistidas por IA y lectura de documentos (por ejemplo, datos de una orden de compra en PDF)? Aparecen en 'Qué automatizamos' (filas 05 y 06) como capacidades; si no las ofrecen, se cambian.",
+    "PREGUNTA AL CLIENTE · tiempo-operativo ('Promedio, primeros 90 días' en metrics.ts): la página lo presenta como 'la reducción promedio de tiempo operativo de nuestros clientes en sus primeros 90 días', sin sector. Confirma que ese es el universo del promedio.",
+    "PREGUNTA AL CLIENTE · ¿Atienden también manufactura (plantas de producción) o solo logística y distribución? El H1 de D dice 'empresas industriales y de logística'; la jornada usa ejemplos de almacén y embarques para no inventar procesos de planta."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (ind-industrial-hero: Kain con chaleco en la nave, gerente de planta desenfocado al fondo) + chip anclado (logistica-procesos) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Industria · Industrial y logística",
+      "h1": { "text": "Automatización con IA", "soft": "para empresas industriales y de logística", "lit": "IA" },
+      "lede": "Menos captura manual y menos «¿cómo va mi pedido?». Conectamos tu ERP, tu CRM y tu WhatsApp con flujos en n8n y agentes de IA: cada dato se captura una vez y tu equipo se queda con las decisiones.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo una empresa industrial o de logística y quiero automatizar procesos."
+      },
+      "chip": { "metricId": "logistica-procesos", "context": "Empresa de logística · n8n" },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio de la página)",
+      "rail": "Cómo ayuda",
+      "eyebrow": "IA en industria y logística",
+      "definition": {
+        "heading": "¿Cómo ayuda la IA en una empresa industrial o de logística?",
+        "text": "Conecta los sistemas que ya usas (ERP, CRM, WhatsApp y hojas de cálculo) para que cada dato se capture una sola vez y llegue sin volver a teclearlo a donde se necesita. Agentes de IA contestan el estatus de un pedido, arman reportes y avisan cuando algo se sale de lo normal. Las decisiones siguen siendo de tu equipo.",
+        "_nota": "Texto de la página (59 palabras), armado con G06 (aprobada) y la implementación confirmada del caso de logística. No hay pregunta del banco para este sector."
+      },
+      "body": [
+        "No hace falta cambiar de ERP ni tirar lo que ya funciona: los flujos se arman en n8n alrededor de tus sistemas, empezando por el proceso que más se repite. Así trabajamos con una empresa de logística, conectando su CRM, su WhatsApp, su ERP y modelos de IA con disparadores en tiempo real; el resultado está más abajo."
+      ]
+    },
+    "dolores": {
+      "_componente": "DayTimeline vertical (aguja con scrub, sin pin) sobre la toma desenfocada que vira a ámbar o cian por tramo",
+      "rail": "El turno",
+      "eyebrow": "El turno",
+      "h2": { "text": "Un turno en tu operación,", "soft": "del primer pedido al reporte de cierre." },
+      "lede": "En ámbar, lo que hoy se hace a mano y se repite; en cian, lo que el sistema ya resolvió cuando tu equipo llega a revisarlo.",
+      "entries": [
+        {
+          "time": "07:00",
+          "pain": "Arranca el turno y alguien pasa al ERP, a mano, los pedidos que llegaron anoche por correo y por WhatsApp.",
+          "fix": "Los pedidos entraron al ERP y al CRM en cuanto llegaron. Tu equipo empieza revisando, no capturando."
+        },
+        {
+          "time": "10:30",
+          "pain": "El mismo pedido se teclea dos o tres veces: en el ERP, en la hoja de producción y en el CRM. Un dígito mal puesto y la entrega sale mal.",
+          "fix": "Un solo dato, sincronizado entre tus sistemas. Si algo no cuadra, el flujo lo marca antes de que salga el camión."
+        },
+        {
+          "time": "12:15",
+          "pain": "Tres clientes preguntan por WhatsApp cómo va su pedido. Alguien deja lo que está haciendo para buscarlo en el sistema.",
+          "fix": "Kain consulta el estatus y contesta en el mismo chat, con la fecha estimada que tu sistema tiene registrada."
+        },
+        {
+          "time": "16:40",
+          "pain": "Un embarque se retrasa y el cliente se entera cuando ya debía tenerlo.",
+          "fix": "El responsable recibe la alerta en el momento, y el cliente, un aviso con la nueva fecha y el mensaje que tu equipo aprobó."
+        },
+        {
+          "time": "19:30",
+          "pain": "Cierre del turno: el reporte se arma copiando y pegando de varios archivos.",
+          "fix": "El reporte de pedidos, entregas y pendientes llega solo al correo de quien lo necesita."
+        }
+      ]
+    },
+    "automatizamos": {
+      "_componente": "ScriptList (6 filas)",
+      "rail": "Qué automatizamos",
+      "eyebrow": "Qué automatizamos",
+      "h2": { "text": "Seis flujos", "soft": "para que ningún dato se capture dos veces." },
+      "items": [
+        { "n": "01", "title": "ERP y CRM sincronizados", "line": "Pedidos, clientes y estatus se registran una vez y se copian solos entre tus sistemas." },
+        { "n": "02", "title": "Estatus de pedidos por WhatsApp", "line": "Kain consulta tu sistema y le contesta al cliente con el estatus y la fecha estimada, sin que nadie lo busque." },
+        { "n": "03", "title": "Alertas en tiempo real", "line": "Un retraso, un pedido sin surtir o un dato que no cuadra llegan al responsable en el momento, no al día siguiente." },
+        { "n": "04", "title": "Reportes automáticos", "line": "El reporte del turno, de la semana o del mes se arma solo y llega a quien decide." },
+        { "n": "05", "title": "Cotizaciones asistidas", "line": "La IA junta los datos de la solicitud y deja la cotización armada para que tu equipo la revise y la envíe." },
+        { "n": "06", "title": "Agentes de IA orquestados con n8n", "line": "Flujos que combinan tus sistemas con modelos de IA; por ejemplo, para clasificar las solicitudes que llegan por correo o leer los datos de un documento." }
+      ]
+    },
+    "kain-sector": {
+      "_componente": "ImageSection mid (ind-industrial-kain-sector; respaldo de lanzamiento home-sistema-2-atender en espejo) + ChatSim registrado (guion industrial). Fijada +100 % en escritorio",
+      "rail": "Kain en tu operación",
+      "eyebrow": "Kain en tu operación",
+      "h2": { "text": "«¿Cómo va mi pedido?»", "soft": "Respondido con tu ERP." },
+      "lede": "Un cliente pregunta por su pedido a media tarde. Kain consulta el estatus en tu ERP, le manda la guía y la factura y, cuando pide algo que no le toca ver, pasa la solicitud a su ejecutivo de cuenta.",
+      "chat": { "mode": "registered", "script": "industrial" },
+      "limite": "Kain solo comparte lo que tu sistema autoriza para ese cliente: estatus, fechas y documentos de sus propios pedidos. Existencias, precios especiales y datos de otras cuentas se quedan con tu equipo.",
+      "note": "Ejemplo ilustrativo: la conversación, el folio y las horas no son datos de un caso."
+    },
+    "cifras": {
+      "_componente": "Montage (2 filas) con enlace al caso",
+      "rail": "Resultados",
+      "eyebrow": "Resultados",
+      "h2": { "text": "Del ERP al WhatsApp,", "soft": "medido en procesos y en tiempo." },
+      "lede": "Dos cifras con su fuente: los procesos que automatizamos con n8n en una empresa de logística y la reducción promedio de tiempo operativo de nuestros clientes en sus primeros 90 días.",
+      "rows": [
+        { "metricId": "logistica-procesos", "context": "Empresa de logística · n8n y agentes de IA", "href": "/casos/logistica-n8n/", "linkLabel": "Ver el caso" },
+        { "metricId": "tiempo-operativo", "context": "Promedio de nuestros clientes, primeros 90 días" }
+      ],
+      "sourceNote": true,
+      "links": [{ "label": "Lee el caso de logística", "href": "/casos/logistica-n8n/" }]
+    },
+    "servicios": {
+      "_componente": "Still ×3",
+      "rail": "Servicios",
+      "eyebrow": "Servicios recomendados",
+      "h2": { "text": "Tres servicios", "soft": "para conectar tu operación." },
+      "items": [
+        { "href": "/servicios/automatizacion-n8n/", "label": "Automatizar", "title": "Automatización con n8n", "line": "Tu ERP, tu CRM y tu WhatsApp conectados, sin capturas a mano." },
+        { "href": "/servicios/desarrollo-software/", "label": "A la medida", "title": "Software a la medida", "line": "Tableros e integraciones propias cuando ninguna herramienta encaja con tu operación." },
+        { "href": "/servicios/consultoria-ia-empresas/", "label": "Medir", "title": "Consultoría en IA", "line": "Qué automatizar primero, en qué orden y cómo medir el resultado." }
+      ]
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas de operación", "soft": "y logística." },
+      "faqIds": ["G06", "N05", "G09", "G08", "G07"],
+      "_nota": "N05 sigue en validar: true (no se publica hasta que el cliente la apruebe). G09 se suma para que el acordeón tenga cuatro preguntas. Cuando existan P01–P04 (propuestas en peticiones.md), van primero y G09 puede salir.",
+      "footer": "¿Tu duda es sobre un sistema en particular? Escríbele a Kain por WhatsApp o mándanos el detalle a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila, espejo)",
+      "rail": "Cierre",
+      "eyebrow": "Antes del próximo cierre de mes",
+      "h2": { "text": "¿Cuántas horas se van en capturar datos a mano?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "En la Discovery Session seguimos un pedido de tu operación, desde que entra hasta que se entrega y se factura, y te decimos qué conviene conectar primero.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo una empresa industrial o de logística y quiero automatizar procesos."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

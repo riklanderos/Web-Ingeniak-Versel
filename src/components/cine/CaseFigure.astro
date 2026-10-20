@@ -74,14 +74,16 @@ const colsN = 9;
       )}
       {(variant === 'index-up' || variant === 'index-down') && (
         <div class="cf-ix" style={`--before:${before};--after:${after};--max:${Math.max(before, after)}`}>
-          <div class="cf-ix__col cf-ix__col--before"><span class="cf-ix__bar" data-h={before / Math.max(before, after)}></span><b aria-hidden="true">{before}</b><span class="t-label">{labels?.before ?? 'Antes'}</span></div>
-          <div class="cf-ix__col cf-ix__col--after"><span class="cf-ix__bar" data-h={after / Math.max(before, after)}></span><b aria-hidden="true" data-count-to={after}>{after}</b><span class="t-label t-label--cyan">{labels?.after ?? 'Después'}</span></div>
+          <div class="cf-ix__col cf-ix__col--before"><span class="cf-ix__bar" data-h={before / Math.max(before, after)} style={`--h:${before / Math.max(before, after)}`}></span><b aria-hidden="true">{before}</b><span class="t-label">{labels?.before ?? 'Antes'}</span></div>
+          <div class="cf-ix__col cf-ix__col--after"><span class="cf-ix__bar" data-h={after / Math.max(before, after)} style={`--h:${after / Math.max(before, after)}`}></span><b aria-hidden="true" data-count-to={after}>{after}</b><span class="t-label t-label--cyan">{labels?.after ?? 'Después'}</span></div>
           <p class="t-micro cf-ix__base">Índice: base 100 = antes</p>
         </div>
       )}
       {variant === 'multiplier' && (
         <div class="cf-mx">
-          <p class="cf-mx__eq" aria-hidden="true"><span>$1</span><span class="cf-mx__arrow">→</span><span class="lit-off">${String(after)}</span></p>
+          {/* El signo de pesos lo dibuja el CSS (data-cur → ::before): el texto no lleva un importe (check-cifras; no es un precio,
+              es "por cada peso invertido"); el valor real vive en data-metric del escenario. */}
+          <p class="cf-mx__eq" aria-hidden="true"><span data-cur="$">1</span><span class="cf-mx__arrow">→</span><span class="lit-off" data-cur="$">{String(after)}</span></p>
           <div class="cf-mx__cols">{cols.map((h, i) => <span class="cf-mx__col" style={`--h:${h}`} data-i={i}></span>)}</div>
         </div>
       )}
@@ -91,7 +93,9 @@ const colsN = 9;
             {Array.from({ length: n - 1 }, (_, i) => {
               const x1 = (i % colsN) * 10 + 5, y1 = Math.floor(i / colsN) * 10 + 5;
               const x2 = ((i + 1) % colsN) * 10 + 5, y2 = Math.floor((i + 1) / colsN) * 10 + 5;
-              return <path d={y1 === y2 ? `M${x1} ${y1}H${x2}` : `M${x1} ${y1}V${y1 + 5}L${x2} ${y2}`} pathLength="1" vector-effect="non-scaling-stroke" data-i={i} />;
+              // Sin vector-effect="non-scaling-stroke": con él Chrome mide stroke-dasharray (pathLength 1) en px de pantalla y
+              // las ramas salían como puntos. El SVG escala uniforme (celdas cuadradas): el trazo va en unidades del viewBox.
+              return <path d={y1 === y2 ? `M${x1} ${y1}H${x2}` : `M${x1} ${y1}V${y1 + 5}L${x2} ${y2}`} pathLength="1" data-i={i} />;
             })}
           </svg>
           <div class="cf-nd__grid" aria-hidden="true">{Array.from({ length: n }, (_, i) => <span class="cf-nd__n" data-i={i}></span>)}</div>

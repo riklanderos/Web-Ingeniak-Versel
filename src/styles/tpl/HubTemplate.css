@@ -1,0 +1,485 @@
+/* ===== HubTemplate ===== */
+/* T-HUB · ESPEC §5.5 (/servicios/, /industrias/, /casos/, /blog/) · clases .hub-* de src/components/templates/HubTemplate.astro
+   y src/components/templates/hub/*. Reglas: ninguna sección pinta fondo (§3.11): la luz viene de placas, auras, .tpl-glow,
+   nodos y UI; cero cajas detrás del copy; todo visible sin JS y con movimiento reducido. */
+
+/* ── Lo que las plantillas aprobadas ya hacen para su body (pages.css · compartido) ─────────────────────────────── */
+body.hub .it__aura--ondas{opacity:1}
+body.hub .it__aura--isotipo{opacity:.9}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.hub .it__aura{width:max(130vw,520px)}
+  body.hub .it__aura--ondas{width:max(200vw,780px)}
+}
+/* Costuras: la luz de base de cada sección se extiende y se funde (las dos luces se suman en la costura, sin filo) */
+body.hub main .tpl-glow:not(.is)::before{inset:-140px 0;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 280px,#000 calc(100% - 280px),transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 280px,#000 calc(100% - 280px),transparent 100%)}
+body.hub :is(h1,h2)[data-split]{text-wrap:balance}
+/* "Escríbele a Kain" se lee en móvil (botón fantasma a todo el ancho bajo la microcopia), como servicio, industria y caso */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.hub .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
+  body.hub .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px 0 20px;gap:12px;justify-content:center;border-radius:var(--r-pill);margin-top:2px}
+  body.hub .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+  body.hub .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
+}
+@media (max-width:767px) and (max-height:780px){
+  body.hub .tpl-hero.is[data-m="split"]{--hero-gap:16px}
+  body.hub .tpl-hero .is__text > .ctas:has(> .cta-p){margin-top:var(--s-5);row-gap:8px}
+  body.hub .tpl-hero .is__text > .ctas > .cta-p > .btn{height:48px}
+  body.hub .tpl-hero .is__text > .ctas > .btn--wa{height:44px;margin-top:0}
+}
+@media (min-width:600px) and (max-aspect-ratio:5/6){
+  body.hub .tpl-hero .is__text > .ctas:has(> .cta-p){max-width:26.25rem}
+}
+
+/* ── Columna de texto acotada a la penumbra de la placa pintada (también con su respaldo) ──────────────────────────
+   .hub-eNN = borde de la zona segura de texto de la placa en fracción de su ancho (hubKit.safeEdge). Con la misma caja
+   "cover" del escenario registrado (§3.5) se calcula dónde cae ese borde en pantalla: con sujeto a la derecha la columna
+   termina ahí; con sujeto a la izquierda empieza ahí. Así el titular nunca entra a la parte iluminada de la escena. */
+.hub-e38{--hub-edge:.38}.hub-e39{--hub-edge:.39}.hub-e40{--hub-edge:.40}.hub-e41{--hub-edge:.41}.hub-e42{--hub-edge:.42}
+.hub-e43{--hub-edge:.43}.hub-e44{--hub-edge:.44}.hub-e45{--hub-edge:.45}.hub-e46{--hub-edge:.46}.hub-e47{--hub-edge:.47}
+.hub-e48{--hub-edge:.48}.hub-e49{--hub-edge:.49}.hub-e50{--hub-edge:.50}.hub-e51{--hub-edge:.51}.hub-e52{--hub-edge:.52}
+.hub-e53{--hub-edge:.53}.hub-e54{--hub-edge:.54}.hub-e55{--hub-edge:.55}.hub-e56{--hub-edge:.56}.hub-e57{--hub-edge:.57}
+.hub-e58{--hub-edge:.58}.hub-e59{--hub-edge:.59}.hub-e60{--hub-edge:.60}.hub-e61{--hub-edge:.61}.hub-e62{--hub-edge:.62}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .is.hub-hero{--hub-h:max(100svh,680px)}
+  .is.hub-nose{--hub-h:max(88svh,600px)}
+  .is:is(.hub-hero,.hub-nose){--hub-lw:100vw;--hub-sw:max(var(--hub-lw), var(--hub-h) * var(--ar-d));
+    --hub-x:calc((100vw - var(--hub-lw)) / 2 + (var(--hub-lw) - var(--hub-sw)) * var(--fx-d) + var(--hub-edge,.5) * var(--hub-sw))}
+  .is:is(.hub-hero,.hub-nose)[data-layout="subject-right"] .is__text{--hub-col:max(21rem, calc(var(--hub-x) - (100vw - var(--frame)) / 2 - 8px));max-width:var(--hub-col)}
+  .is:is(.hub-hero,.hub-nose)[data-layout="subject-left"] .is__text{--hub-pad:max(0px, calc(var(--hub-x) - 50vw - var(--gap) / 2 + 16px));padding-left:var(--hub-pad);
+    --hub-col:calc(var(--frame) / 2 - var(--gap) / 2 - var(--hub-pad))}
+}
+@media (min-width:1800px){.is:is(.hub-hero,.hub-nose){--hub-lw:min(100vw,2200px,100svh * var(--ar-d) * 1.08)}}
+
+/* ── 01 · Portada ───────────────────────────────────────────────────────────────────────────────────────────────── */
+/* La palabra más larga (--hub-long, letras) cabe en la columna: Lexend 600 ≈ .64em por letra */
+.hub-hero .hub-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),9.4svh,var(--hub-col,100vw) / (var(--hub-long,10) * .64));max-width:15ch}
+.hub-hero .hub-h1 .soft{display:block}
+/* El H1 largo de servicios ("…para empresas, conectados en un solo sistema") baja un escalón y gana medida */
+.hub-hero--servicios .hub-h1{font-size:min(clamp(2.25rem,.9rem + 3.6vw,4.75rem),7.8svh,var(--hub-col,100vw) / (var(--hub-long,10) * .64));max-width:19ch}
+.hub-hero__lede{max-width:42ch}
+.hub-hero__rest{margin:0;max-width:40ch}
+@media (min-width:768px) and (min-aspect-ratio:5/6){.hub-hero > .is__more{display:none}}
+.hub-featured{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:var(--s-6)}
+/* Rótulo "imagen ilustrativa" (persona generada): esquina inferior derecha, se apaga con el rack focus de la toma */
+.hub-illus{position:absolute;z-index:2;right:var(--action-x);bottom:16px;margin:0;color:rgb(158 176 199 / .72);pointer-events:none;opacity:calc(1 - var(--rack,0) * 3)}
+/* Casos: sumario de 3 cifras arriba, del lado del texto (con el sujeto a la izquierda, a la derecha de la retícula) */
+.hub-hero.is[data-layout="subject-left"] .sumario--cover{left:auto;right:calc((100% - var(--frame)) / 2);width:min(420px,32vw)}
+.hub-sumario-row{margin-top:var(--s-5);width:100%}
+.hub-sumario-row .sumario__h{color:var(--text-2)}   /* AA sobre la disolución de la placa (el rótulo mono al 80 % quedaba en 4.4:1) */
+/* En la toma compartida el sumario se apaga con el rack (vive fuera de .is__copy, que take.ts ya desvanece) */
+.hub-sumario-wrap{opacity:calc(1 - var(--rack,0) * 3)}
+/* Escritorios bajos: el bloque completo cabe sobre el piso de la placa; se recorta aire, nunca texto */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){
+  .is.hub-hero{padding-top:calc(var(--hdr) + var(--s-5));padding-bottom:var(--s-6)}
+  .hub-hero .is__text > .crumbs{margin-bottom:var(--s-4)}
+  .hub-hero .is__text > :is(.t-deck,.t-lede){margin-top:var(--s-4)}
+  .hub-hero .is__text > .ctas{margin-top:var(--s-6);row-gap:var(--s-3)}
+  /* La guía destacada sale de la portada en escritorios bajos (la placa crecería y el sujeto entraría a la columna);
+     sigue a la mano en el índice de guías, justo debajo */
+  .hub-hero .hub-featured{display:none}
+  .hub-hero .hub-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),8.6svh,var(--hub-col,100vw) / (var(--hub-long,10) * .64))}
+  .hub-hero--servicios .hub-h1{font-size:min(clamp(2.25rem,.9rem + 3.6vw,4.75rem),7.2svh,var(--hub-col,100vw) / (var(--hub-long,10) * .64))}
+}
+/* Escritorios estrechos (< 1200 px): crumbs O etiqueta sobre el H1, nunca dos renglones mono */
+@media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){.hub-hero .is__text > .crumbs ~ .eyebrow{display:none}}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .hub-hero .is__text{--hub-col:calc(100vw - 2 * var(--safe-x))}
+  .hub-hero .hub-h1,.hub-hero--servicios .hub-h1{max-width:none}
+  .hub-hero--servicios .hub-h1{font-size:clamp(2.125rem,1.4rem + 3.4vw,2.75rem)}
+  .hub-illus{display:none}
+}
+
+/* ── 02 · Definición sobre la toma desenfocada (y "Ingeniak en datos" en casos) ─────────────────────────────────── */
+.hub-def .defn,.hub-def .it__body > :not(.tpl-aura-box):not(.tpl-aura-sticky):not(.metric-row):not(.hub-split){max-width:min(100%,42rem)}
+.hub-def .defn__q{max-width:24ch}
+.hub-def__body{max-width:min(54ch,42rem)}
+.hub-def .it__body{grid-column:1 / span 10}
+.hub-def .it__body > .hub-def__row{width:100%;margin-top:var(--s-8)}
+/* Con el sujeto de la portada a la izquierda, la definición corre del lado de la penumbra (derecha) mientras dura el rack */
+@media (min-width:1024px){
+  .hub-def--right .it__body{grid-column:1 / -1}
+  .hub-def--right .it__body > :not(.hub-def__row):not(.tpl-aura-box):not(.tpl-aura-sticky){align-self:flex-end;width:min(100%,42rem)}
+}
+@media (max-width:1023px){.hub-def .it__body{grid-column:1 / -1}}
+/* Lo que se queda igual / lo que cambia (industrias): dos columnas unidas por el pilar del isotipo */
+.hub-split{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:calc(var(--gap) * 3);width:100%;margin-top:var(--s-8)}
+.hub-split::before{content:"";position:absolute;left:50%;top:6px;bottom:6px;width:1px;
+  background:linear-gradient(180deg,rgb(0 229 255 / .7),rgb(0 229 255 / .15) 70%,transparent);box-shadow:0 0 10px rgb(0 229 255 / .35)}
+.hub-split__h{display:flex;align-items:center;gap:10px;margin:0 0 var(--s-4);color:var(--text-2)}
+.hub-split__mark{width:8px;height:8px;border-radius:2px;flex:none}
+.hub-split__mark--same{background:#fff;box-shadow:0 0 10px rgb(255 255 255 / .5)}
+.hub-split__mark--changes{background:var(--cyan);box-shadow:var(--glow-cyan)}
+.hub-split__list{margin:0;padding:0;list-style:none;border-top:1px solid var(--hair)}
+.hub-split__list li{padding:14px 0 15px;border-bottom:1px solid var(--hair);font:400 clamp(1.0625rem,1rem + .25vw,1.1875rem)/1.4 var(--f-display);font-weight:300;color:var(--text)}
+.hub-split__col--changes .hub-split__list li{color:var(--cyan-soft)}
+.hub-limit{display:flex;gap:12px;align-items:baseline;margin-top:var(--s-7);padding-top:var(--s-4);border-top:1px solid var(--hair);
+  font:400 1rem/1.55 var(--f-body);color:var(--text-2);max-width:56ch}
+.hub-limit .node{translate:0 -2px;flex:none}
+@media (max-width:767px){
+  .hub-split{grid-template-columns:minmax(0,1fr);row-gap:var(--s-7)}
+  .hub-split::before{display:none}
+}
+
+/* ── Secciones propias (filtros, guías) ─────────────────────────────────────────────────────────────────────────── */
+.hub-sec{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0}
+.hub-sec__frame{row-gap:0}
+.hub-sec__head{grid-column:1 / span 8;display:flex;flex-direction:column;align-items:flex-start}
+.hub-sec__head > .t-label + *{margin-top:var(--s-4)}
+.hub-sec__lede{margin-top:var(--s-5);max-width:52ch}
+.hub-links{display:flex;flex-wrap:wrap;gap:var(--s-2) var(--s-6);margin-top:var(--s-6)}
+@media (max-width:1023px){.hub-sec__head{grid-column:1 / -1}}
+
+/* Chips de filtro (casos: sector × servicio · blog: categoría). Sin JS no existen: se ve todo. */
+.hub-chips{grid-column:1 / -1;margin-top:var(--s-7);display:flex;flex-direction:column;gap:12px}
+html.no-js .hub-chips{display:none}
+.hub-chips__h{display:flex;align-items:center;gap:10px;color:var(--cyan);margin:0 0 4px}
+.hub-chips__row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.hub-chips__k{min-width:6.5rem;color:var(--muted)}
+.hub-chip{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border:0;border-radius:var(--r-pill);background:transparent;cursor:pointer;
+  font:500 11px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);box-shadow:inset 0 0 0 1px var(--hair-2);
+  transition:color var(--d-ui,.3s) var(--ease-ui,ease),box-shadow var(--d-ui,.3s) var(--ease-ui,ease),background var(--d-ui,.3s) var(--ease-ui,ease)}
+.hub-chip:hover{box-shadow:inset 0 0 0 1px var(--hair-cyan);color:#fff}
+.hub-chip[aria-pressed="true"]{color:var(--cyan);background:rgb(0 229 255 / .1);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .6)}
+.hub-chips__status{margin:2px 0 0;color:var(--muted)}
+@media (pointer:coarse){.hub-chip{min-height:44px}}
+@media (max-width:767px){
+  .hub-chips__row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:calc(var(--safe-x) * -1);padding-inline:var(--safe-x);
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--safe-x),#000 calc(100% - var(--safe-x)),transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 var(--safe-x),#000 calc(100% - var(--safe-x)),transparent)}
+  .hub-chips__row::-webkit-scrollbar{display:none}
+  .hub-chip{flex:none}
+  .hub-chips__k{min-width:auto;flex:none;margin-right:4px}
+}
+@keyframes hub-in{from{opacity:0;translate:0 14px}to{opacity:1;translate:0 0}}
+@media (prefers-reduced-motion:no-preference){html:not([data-motion="reduced"]) .is-in{animation:hub-in .5s var(--ease-cine,ease) both}}
+
+/* ── servicios · Mapa: riel de 5 etapas + filas de guion ────────────────────────────────────────────────────────── */
+.hub-map .it__body{grid-column:7 / span 6}
+.hub-map .it__body > .hub-map__list{align-self:stretch;width:100%}   /* .script es contenedor de tamaño en línea: sin ancho propio mide su contenido mínimo */
+.hub-map__head{display:flex;flex-direction:column;align-items:flex-start}
+.hub-map__head > .t-label + *{margin-top:var(--s-4)}
+.hub-map__lede{margin-top:var(--s-5)}
+.hub-map__closing{margin-top:var(--s-7);font:300 clamp(1.125rem,1rem + .4vw,1.375rem)/1.4 var(--f-display);color:var(--text-2);max-width:30ch}
+.hub-spine{--hub-fill:0;position:relative;margin-top:var(--s-7);width:100%;max-width:26rem}
+.hub-spine__pillar{position:absolute;left:4px;top:10px;bottom:10px;width:1px;background:var(--hair-2)}
+.hub-spine__fill{position:absolute;inset:0;transform-origin:50% 0;transform:scaleY(var(--hub-fill));
+  background:linear-gradient(180deg,var(--cyan),var(--cyan-soft));box-shadow:0 0 10px rgb(0 229 255 / .55);transition:transform .7s var(--ease-cine,ease)}
+.hub-spine__list{margin:0;padding:0;list-style:none;display:grid;row-gap:6px}
+.hub-spine__st{position:relative;padding-left:30px}
+.hub-spine__btn{all:unset;box-sizing:border-box;display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;column-gap:10px;width:100%;
+  min-height:44px;cursor:pointer;color:var(--text-2);transition:color .4s var(--ease-ui,ease)}
+.hub-spine__btn:disabled{cursor:default}
+.hub-spine__btn:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:6px}
+.hub-spine__node{position:absolute;left:0;top:18px;width:9px;height:9px;border-radius:2px;background:var(--ink);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .55);
+  transition:background .4s var(--ease-ui,ease),box-shadow .4s var(--ease-ui,ease)}
+.hub-spine__glyph{color:var(--muted);transition:color .4s var(--ease-ui,ease)}
+.hub-spine__name{font:500 clamp(1.25rem,1rem + .7vw,1.75rem)/1.1 var(--f-display);letter-spacing:-.02em}
+.hub-spine__n{color:var(--muted)}
+.hub-spine__line{display:block;margin:-2px 0 6px 34px;font:400 .875rem/1.45 var(--f-body);color:var(--muted);max-height:0;opacity:0;overflow:hidden;
+  transition:max-height .5s var(--ease-cine,ease),opacity .4s var(--ease-ui,ease)}
+.hub-spine__st:is(.is-on,.is-past) .hub-spine__node{background:var(--cyan);box-shadow:var(--glow-cyan)}
+.hub-spine__st.is-on .hub-spine__btn{color:#fff}
+.hub-spine__st.is-on .hub-spine__glyph{color:var(--cyan)}
+.hub-spine__st.is-on .hub-spine__n{color:var(--cyan)}
+.hub-spine__st.is-on .hub-spine__line{max-height:3em;opacity:1}
+.hub-spine__btn:hover{color:#fff}
+/* Sin JS (o antes de que llegue): todas las etapas legibles y con su línea */
+html.no-js .hub-spine__line{max-height:none;opacity:1}
+@media (min-width:1024px){
+  .hub-map .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}
+}
+@media (max-width:1023px){
+  .hub-map .it__body{grid-column:1 / -1}
+  .hub-map .it__body > .hub-map__list{margin-top:var(--s-6)}
+  /* Móvil y tableta: el riel en horizontal, sin fijar (un vistazo a las 5 etapas antes de la lista) */
+  .hub-spine{max-width:none;margin-top:var(--s-6)}
+  .hub-spine__pillar{left:0;right:0;top:4px;bottom:auto;width:auto;height:1px}
+  .hub-spine__fill{transform-origin:0 50%;transform:scaleX(var(--hub-fill))}
+  .hub-spine__list{grid-template-columns:repeat(5,minmax(0,1fr));column-gap:6px}
+  .hub-spine__st{padding:18px 0 0}
+  .hub-spine__node{top:0}
+  .hub-spine__btn{grid-template-columns:none;grid-auto-flow:row;justify-items:start;row-gap:6px;min-height:0}
+  .hub-spine__list{column-gap:8px}
+  .hub-spine__name{font:500 9px/1.2 var(--f-mono);letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
+  .hub-spine__n,.hub-spine__line{display:none}
+}
+
+/* ── servicios · Cómo se conectan (riel-servicios con 5 tramos registrados) ─────────────────────────────────────── */
+@property --hub-p{syntax:"<number>";inherits:true;initial-value:1}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .is.hub-flow{--is-h:max(100svh,820px);--fy:1}
+  .hub-flow .stage{--sw:100cqw}
+  .hub-flow .is__layer--media > .stage{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 26%);mask-image:linear-gradient(180deg,transparent 0,#000 26%)}
+}
+.hub-flow.is[data-layout] > .is__fx{background:
+  linear-gradient(180deg,rgb(3 4 11 / .6) 0,rgb(3 4 11 / .2) 22%,transparent 40%,transparent calc(var(--fade-from) * 100% - 10%),var(--ink) 100%),
+  radial-gradient(42% 46% at 24% 30%,rgb(0 229 255 / .06),transparent 70%)}
+.hub-flow .is__text{grid-column:1 / span 7}
+.is.hub-flow[data-layout] .is__aside{grid-column:9 / span 4;justify-self:stretch;text-align:left}
+.hub-flow__aside > .t-lede{margin:0;max-width:34ch}
+.hub-flow__note{margin-top:var(--s-4);max-width:40ch;color:var(--text-2)}
+.hub-nodes{margin:0;padding:0}
+.hub-node{--on:clamp(0,(var(--hub-p) * (var(--nn,5) - 1) - var(--k,0) + .6) * 2.4,1);width:0;height:0}
+.hub-node__stem{position:absolute;left:0;bottom:1.4cqh;width:1px;height:3.6cqh;margin-left:-.5px;transform-origin:50% 100%;scale:1 var(--on);
+  background:linear-gradient(180deg,rgb(0 229 255 / 0),rgb(0 229 255 / .85));box-shadow:0 0 8px rgb(0 229 255 / .5)}
+.hub-node__card{position:absolute;left:0;bottom:5.6cqh;width:15.5cqw;transform:translateX(-50%);pointer-events:auto;
+  display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;opacity:calc(.34 + .66 * var(--on));transition:opacity .3s linear}
+.hub-node__top{display:flex;align-items:center;justify-content:center}
+.hub-node__n{color:var(--cyan)}
+.hub-node__logos{display:flex;align-items:center;justify-content:center;gap:10px;min-height:22px;color:rgb(255 255 255 / .72)}
+.hub-node__logos:empty{display:none}
+.hub-node__logos .logo-mask{width:19px;height:19px}
+.hub-node__logos .logo-mask--wide{width:auto;height:14px!important}
+.hub-node__kain{font-size:19px;color:#fff}
+.hub-node__t{font:500 clamp(.9375rem,.8rem + .3vw,1.125rem)/1.25 var(--f-display);letter-spacing:-.01em;color:var(--text);text-wrap:balance}
+.hub-node__l{font:400 .8125rem/1.45 var(--f-body);color:var(--text-2);max-width:24ch;text-wrap:pretty}
+.hub-node__svc{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;margin-top:2px}
+.hub-node__a{font:500 10.5px/1.4 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);text-decoration:none;
+  background:linear-gradient(var(--cyan),var(--cyan)) 0 100% / 0 1px no-repeat;transition:background-size .45s var(--ease-cine,ease),color .3s}
+a.hub-node__a:hover,a.hub-node__a:focus-visible{background-size:100% 1px;color:#fff}
+.hub-node__a--static{color:var(--text-2)}
+/* "al pasar el cursor se ilumina el servicio de cada tramo" (D): el tramo bajo el cursor manda; los demás bajan */
+@media (hover:hover) and (pointer:fine){
+  .hub-nodes:has(.hub-node__card:hover) .hub-node__card:not(:hover){opacity:.28}
+  .hub-node__card:hover .hub-node__t{color:#fff}
+  .hub-node__card:hover ~ .hub-node__stem,.hub-node:has(.hub-node__card:hover) .hub-node__stem{box-shadow:0 0 14px rgb(0 229 255 / .9)}
+}
+.hub-bead{position:absolute;left:calc(var(--b0x) * 100%);top:calc(var(--b0y) * 100%);width:10cqw;height:2px;
+  translate:calc(-100% + (var(--b1x) - var(--b0x)) * var(--hub-p) * 100cqw) -50%;border-radius:2px;pointer-events:none;opacity:0;
+  background:linear-gradient(90deg,transparent,rgb(168 243 255 / .85) 70%,#fff);box-shadow:0 0 14px 2px rgb(0 229 255 / .65)}
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion:no-preference){
+    html.js:not([data-motion="reduced"]) .hub-flow{animation:hub-run linear both;animation-timeline:view();animation-range:cover 16% cover 46%}
+    html.js:not([data-motion="reduced"]) .hub-bead{opacity:calc(min(1, var(--hub-p) * 8) * min(1, (1 - var(--hub-p)) * 8))}
+  }
+}
+@keyframes hub-run{from{--hub-p:0}to{--hub-p:1}}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  /* Placa vertical más alta que en servicio: cada tarjeta de tramo lleva sus servicios y necesita ~150 px entre nodos.
+     El escenario "cover" se ensancha con ese alto: --fx .17 deja el pilar de luz (x ≈ .12 de la placa) a ~20 px del borde. */
+  .is.hub-flow{--fx:.17;--plate-h:max(var(--plate-w) / var(--ar-m), min(275vw, 1120px));min-height:0;padding-bottom:calc(var(--plate-h) * .8 + var(--s-6))}
+  .hub-node__logos{display:none}
+  .hub-flow .is__text,.is.hub-flow[data-layout] .is__aside{grid-column:1 / -1}
+  .hub-flow__aside{margin-top:var(--s-5)}
+  .hub-node__stem{left:10px;bottom:auto;top:0;width:14px;height:1px;margin:-.5px 0 0;transform-origin:0 50%;scale:var(--on) 1;
+    background:linear-gradient(90deg,rgb(0 229 255 / .85),rgb(0 229 255 / 0))}
+  .hub-node__card{left:30px;bottom:auto;top:0;width:min(300px,calc(100vw - 110px));transform:translateY(-50%);align-items:flex-start;text-align:left;gap:4px}
+  .hub-node__top,.hub-node__logos,.hub-node__svc{justify-content:flex-start}
+  .hub-node__l{max-width:none}
+  .hub-bead{left:calc(var(--b0xm) * 100%);top:calc(var(--b0ym) * 100%);width:2px;height:9cqh;
+    translate:-50% calc(-100% + (var(--b1ym) - var(--b0ym)) * var(--hub-p) * 100cqh);background:linear-gradient(180deg,transparent,rgb(168 243 255 / .85) 70%,#fff)}
+}
+.hub-flow-alt .it__body{grid-column:1 / -1}
+
+/* ── servicios · ¿No sabes por dónde empezar? (Kain señala; señales en ámbar → por dónde empezar en cian) ───────── */
+.hub-nose .is__more{margin-top:var(--s-6)}
+.hub-nose__list{width:100%;max-width:40rem}
+.hub-nose__ctas{margin-top:var(--s-7);display:flex;flex-wrap:wrap;gap:var(--s-4);align-items:flex-start}
+.hub-nose .t-h2{font-size:clamp(2.125rem,1rem + 2.9vw,4.25rem)}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  /* La sección crece con su lista; la placa NO: se queda con el alto de una escena mid, anclada arriba (el titular a la
+     altura del rostro de Kain) y la lista sigue sobre su disolución. Así el sujeto nunca se agiganta ni sus paneles
+     cruzan la columna de texto. */
+  .is.hub-nose{align-content:start}
+  .hub-nose > .is__stagebox{bottom:auto;height:var(--hub-h)}
+}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .is.hub-nose[data-m="split"] .is__more{margin-top:0}
+}
+
+/* ── servicios · VKTOR™ ─────────────────────────────────────────────────────────────────────────────────────────── */
+.hub-vk .it__body{grid-column:1 / -1}
+.hub-vk__head{display:flex;flex-direction:column;align-items:flex-start;max-width:min(100%,50rem)}
+.hub-vk__head > .t-label + *{margin-top:var(--s-4)}
+.hub-vk__head > .t-lede{margin-top:var(--s-5)}
+.hub-vk .it__body > .hub-vk__rail{align-self:stretch;margin-top:var(--s-8)}
+
+/* ── industrias · Elige tu sector (LocationSwitcher) ────────────────────────────────────────────────────────────── */
+.hub-loc__lede{margin-top:var(--s-5)}
+/* Escritorio: la lista de 8 sectores ocupa las columnas 1–5 sobre la escena del sector activo; el velo del lado del texto
+   llega más lejos que el estándar (§3.9) porque algunas placas de sector traen luz cerca del centro (AA en text-2) */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  /* La lista de 8 sectores + conversación + notas hace la escena más alta que la pantalla; la placa NO crece con ella
+     (Kain se agigantaba y se cortaba): escenario de un alto de pantalla, centrado en la escena (sus bordes ya se funden) */
+  .is.hub-loc > .is__stagebox{inset:auto 0;top:50%;height:min(100%,max(92svh,640px));translate:0 -50%}
+  .is.hub-loc > .is__fx{background:
+    linear-gradient(90deg,rgb(3 4 11 / .95) 0%,rgb(3 4 11 / .86) 30%,rgb(3 4 11 / .5) 46%,rgb(3 4 11 / 0) 62%),
+    linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent calc(var(--fade-from) * 100% - 8%),var(--ink) 100%),
+    radial-gradient(40% 50% at 22% 58%,rgb(0 229 255 / .06),transparent 70%)}
+}
+.hub-loc__foot{max-width:34ch;color:var(--text-2)}
+.hub-loc__all{margin-top:var(--s-3)}
+
+/* ── industrias · Resultados por sector (Montage + nota del editor) ─────────────────────────────────────────────── */
+.hub-cifras__lede{margin-top:var(--s-5)}
+.hub-cifras__note{margin-top:var(--s-7);max-width:44rem}
+
+/* ── casos · Escenas a sangre (una por caso) ────────────────────────────────────────────────────────────────────── */
+.hub-filtros{padding-bottom:var(--s-7)}
+.hub-cases{position:relative;z-index:1;padding:0 0 var(--beat)}
+.hub-cases__list{margin:0;padding:0;list-style:none}
+.hub-case{position:relative}
+.hub-case + .hub-case{margin-top:calc(var(--s-7) * -1)}
+.hub-case[hidden]{display:none}
+.hub-case__link{position:relative;display:grid;align-items:center;min-height:clamp(420px,62svh,640px);isolation:isolate;color:inherit;text-decoration:none;overflow:hidden}
+.hub-case__media,.hub-case__shade{position:absolute;inset:0;pointer-events:none}
+.hub-case__media{z-index:-2;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%)}
+.hub-case__media picture,.hub-case__media img{display:block;width:100%;height:100%}
+.hub-case__media img{object-fit:cover;object-position:calc(var(--ox) * 100%) calc(var(--oy) * 100%);scale:1.04;transition:scale 1.2s var(--ease-cine,ease)}
+.hub-case--r .hub-case__media img{transform:scaleX(-1)}
+.hub-case__link:is(:hover,:focus-visible) .hub-case__media img{scale:1}
+.hub-case__link--static .hub-case__media img{scale:1}
+/* Velo del lado del texto (mismo recetario que ImageSection §3.9: .92 → 0 al 60 %) */
+.hub-case__shade{z-index:-1;background:linear-gradient(90deg,rgb(3 4 11 / .94) 0%,rgb(3 4 11 / .78) 26%,rgb(3 4 11 / .25) 48%,rgb(3 4 11 / 0) 62%)}
+.hub-case--r .hub-case__shade{background:linear-gradient(270deg,rgb(3 4 11 / .94) 0%,rgb(3 4 11 / .78) 26%,rgb(3 4 11 / .25) 48%,rgb(3 4 11 / 0) 62%)}
+.hub-case__frame{padding:var(--s-9) 0}
+.hub-case__copy{grid-column:1 / span 6;display:flex;flex-direction:column;align-items:flex-start}
+.hub-case--r .hub-case__copy{grid-column:7 / span 6}
+.hub-case__label{display:flex;align-items:center;gap:10px;color:var(--text-2)}
+.hub-case__fig{margin-top:var(--s-4)}
+.hub-case__fig .metric__v{font-size:clamp(4rem,1.6rem + 6.4vw,9.5rem);line-height:.86;
+  background:linear-gradient(92deg,#fff 0%,var(--cyan-soft) 45%,var(--cyan) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hub-case__what{margin-top:10px;font:300 clamp(1.125rem,.95rem + .6vw,1.5rem)/1.25 var(--f-display);letter-spacing:-.01em;color:var(--soft)}
+.hub-case__title{margin:var(--s-5) 0 0;font:500 clamp(1.375rem,1rem + 1.1vw,2rem)/1.1 var(--f-display);letter-spacing:-.02em;color:#fff;text-wrap:balance}
+.hub-case__line{display:block;margin-top:10px;max-width:42ch;font:400 1.0625rem/1.55 var(--f-body);color:var(--text-2);text-wrap:pretty}
+.hub-case__go{display:inline-flex;align-items:center;gap:8px;margin-top:var(--s-5);color:var(--cyan)}
+.hub-case__go .icon{transition:translate .6s var(--ease-cine,ease)}
+.hub-case__link:is(:hover,:focus-visible) .hub-case__go .icon{translate:4px 0}
+.hub-case__link:focus-visible{outline:2px solid var(--cyan);outline-offset:-6px}
+.hub-case__illus{position:absolute;right:var(--action-x);bottom:22%;color:rgb(158 176 199 / .7);pointer-events:none}
+.hub-case--r .hub-case__illus{right:auto;left:var(--action-x)}
+.hub-cases__empty{width:var(--frame);margin:0 auto;padding-top:var(--s-6);color:var(--muted)}
+[data-hub-empty][hidden]{display:none!important}
+/* Ultra ancho: la escena no pasa de ~2200 px y funde sus lados (como la placa de ImageSection) */
+@media (min-width:1800px){
+  .hub-case__media{left:max(0px,(100% - 2200px) / 2);right:max(0px,(100% - 2200px) / 2);
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%),linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%),linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-composite:intersect}
+}
+@media (max-width:1023px) and (min-width:768px) and (min-aspect-ratio:5/6){
+  .hub-case__copy,.hub-case--r .hub-case__copy{grid-column:1 / span 5}
+  .hub-case--r .hub-case__copy{grid-column:4 / span 5}
+}
+/* Móvil: placa vertical propia del caso (4:5); la cifra en su penumbra superior y el título, la línea y el enlace nacen en
+   su disolución inferior. Una sola pieza: la placa y su texto comparten la misma celda (nunca imagen arriba + caja abajo). */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .hub-case + .hub-case{margin-top:var(--s-6)}
+  .hub-case__link{display:grid;grid-template-columns:minmax(0,1fr);min-height:0;overflow:visible}
+  .hub-case__media,.hub-case__shade{position:relative;inset:auto;grid-area:1 / 1}
+  .hub-case__media{width:100%;aspect-ratio:4 / 5;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 82%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 12%,#000 82%,transparent 100%)}
+  .hub-case__media img{object-position:calc(var(--oxm) * 100%) 100%;scale:1}
+  .hub-case--r .hub-case__media img{transform:none}
+  .hub-case__shade,.hub-case--r .hub-case__shade{align-self:stretch;
+    background:linear-gradient(180deg,rgb(3 4 11 / .72) 0,rgb(3 4 11 / .42) calc(var(--subj-top) * 100% - 10%),transparent calc(var(--subj-top) * 100%))}
+  .hub-case__frame,.hub-case__copy,.hub-case--r .hub-case__copy{display:contents}
+  .hub-case__top{grid-area:1 / 1;align-self:start;position:relative;z-index:1;padding:var(--s-6) var(--safe-x) 0}
+  .hub-case__fig .metric__v{font-size:clamp(3.5rem,2.2rem + 8vw,5.25rem)}
+  .hub-case__bottom{grid-area:2 / 1;position:relative;z-index:1;padding:0 var(--safe-x);margin-top:calc(var(--s-8) * -1)}
+  .hub-case__title{margin-top:0}
+  .hub-case__illus,.hub-case--r .hub-case__illus{grid-area:3 / 1;position:static;justify-self:end;margin:var(--s-4) var(--safe-x) 0}
+}
+.hub-case__top,.hub-case__bottom{display:flex;flex-direction:column;align-items:flex-start}
+
+/* ── casos · Registro de resultados ─────────────────────────────────────────────────────────────────────────────── */
+.hub-reg .it__body{grid-column:1 / -1}
+.hub-reg__head{display:flex;flex-direction:column;align-items:flex-start;max-width:min(100%,46rem)}
+.hub-reg__head > .t-label + *{margin-top:var(--s-4)}
+.hub-reg__head > .t-lede{margin-top:var(--s-5)}
+.hub-reg .it__body > .hub-reg__ledger{align-self:stretch;margin-top:var(--s-7)}
+
+/* ── casos · Cómo medimos (nota de método) ──────────────────────────────────────────────────────────────────────── */
+.hub-method .it__body > .hub-method__note{width:100%;align-self:stretch}
+.hub-method__list{margin:0}
+.hub-method__row{display:grid;grid-template-columns:7.5rem minmax(0,1fr);column-gap:var(--s-5);padding:14px 0 15px;border-top:1px solid var(--hair)}
+.hub-method__row:first-child{border-top:0;padding-top:0}
+.hub-method__k{color:var(--cyan);padding-top:.35em}
+.hub-method__v{margin:0;color:var(--text-2)}
+@media (min-width:1024px){.hub-method .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}}
+@media (max-width:767px){.hub-method__row{grid-template-columns:minmax(0,1fr);row-gap:6px}}
+
+/* ── blog · Índice de guías ─────────────────────────────────────────────────────────────────────────────────────── */
+.hub-cats{padding-bottom:var(--s-6)}
+.hub-guides{padding-top:var(--s-5)}
+.hub-guides__list{grid-column:1 / -1;grid-row:1;margin:0;padding:0;list-style:none;border-top:1px solid var(--hair)}
+.hub-guides__still{display:none}
+@media (min-width:1024px){
+  .hub-guides__list{grid-column:1 / span 8}
+  .hub-guides__still{display:block;grid-column:9 / span 4;grid-row:1;align-self:start;position:sticky;top:calc(50svh - 120px);margin:var(--s-8) 0 0;
+    aspect-ratio:4 / 5;overflow:hidden;pointer-events:none;
+    -webkit-mask-image:radial-gradient(closest-side,#000 42%,rgb(0 0 0 / .6) 70%,transparent 100%);mask-image:radial-gradient(closest-side,#000 42%,rgb(0 0 0 / .6) 70%,transparent 100%)}
+  .hub-guides__still img{width:100%;height:100%;object-fit:cover;object-position:72% 40%;opacity:.9;transition:opacity .25s var(--ease-ui,ease),scale 1.2s var(--ease-cine,ease)}
+  .hub-guides__still.is-swap img{opacity:0;scale:1.03}
+}
+.hub-guide{position:relative;display:grid;grid-template-columns:clamp(5.5rem,3rem + 8vw,12rem) minmax(0,1fr);column-gap:clamp(20px,3vw,48px);
+  padding:var(--s-7) 0 calc(var(--s-7) + 2px);border-bottom:1px solid var(--hair)}
+.hub-guide[hidden]{display:none}
+.hub-guide::before{content:"";position:absolute;left:0;top:-1px;height:1px;width:100%;pointer-events:none;
+  background:linear-gradient(90deg,var(--cyan),rgb(0 229 255 / .2) 40%,transparent 75%);transform:scaleX(0);transform-origin:left;transition:transform .8s var(--ease-cine,ease)}
+.hub-guide:is(:hover,:focus-within)::before{transform:scaleX(1)}
+/* El número lleva DENTRO la portada de su artículo (como el Montage); sin placa, la luz de la marca */
+.hub-guide__n{font:200 clamp(4.5rem,2.4rem + 6vw,9.5rem)/.82 var(--f-display);letter-spacing:-.06em;font-variant-numeric:tabular-nums;
+  background:linear-gradient(92deg,#fff 0%,var(--cyan-soft) 40%,var(--cyan) 75%,var(--indigo) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hub-guide__n.has-img{font-weight:500;background:linear-gradient(rgb(255 255 255 / .1),rgb(255 255 255 / .1)),var(--img) 70% 38% / cover,linear-gradient(92deg,#fff,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1px rgb(0 229 255 / .28)}
+.hub-guide__body{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.hub-guide__cat{margin:0;color:var(--cyan)}
+.hub-guide__t{margin:var(--s-3) 0 0;font:500 clamp(1.375rem,1rem + 1.1vw,2.125rem)/1.12 var(--f-display);letter-spacing:-.022em;color:#fff;text-wrap:balance;max-width:30ch}
+.hub-guide__a{color:inherit;text-decoration:none;background:linear-gradient(var(--cyan),var(--cyan)) 0 100% / 0 1px no-repeat;transition:background-size .5s var(--ease-cine,ease)}
+.hub-guide__a:hover,.hub-guide__a:focus-visible{background-size:100% 1px}
+.hub-guide__l{margin:12px 0 0;max-width:62ch;font:400 1.0625rem/1.55 var(--f-body);color:var(--text-2);text-wrap:pretty}
+.hub-guide__meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin:var(--s-5) 0 0;font:400 .75rem/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hub-guide__status{display:inline-flex;align-items:center;gap:8px;color:var(--text-2)}
+.hub-guide__dot{width:6px;height:6px;border-radius:1.5px;background:var(--cyan);box-shadow:0 0 10px rgb(0 229 255 / .6);animation:hub-blink 3.2s ease-in-out infinite}
+@keyframes hub-blink{0%,100%{opacity:1}50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.hub-guide__dot{animation:none}}
+html[data-motion="reduced"] .hub-guide__dot{animation:none}
+.hub-guide__acts{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin:var(--s-4) 0 0}
+.hub-guide__ask{display:inline-flex;align-items:center;gap:10px;min-height:40px;padding:0 16px 0 14px;border:0;border-radius:var(--r-pill);cursor:pointer;
+  background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 1px var(--hair-cyan);color:var(--text);font:500 14px/1 var(--f-display);
+  transition:background var(--d-ui,.3s) var(--ease-ui,ease),box-shadow var(--d-ui,.3s) var(--ease-ui,ease)}
+.hub-guide__ask:hover{background:rgb(0 229 255 / .08);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .6)}
+.hub-guide__ask .icon{color:var(--cyan)}
+html.no-js .hub-guide__ask{display:none}
+.hub-guide__rel{display:inline;font-size:14px;line-height:1.6;padding:2px 0}
+.hub-guide__rel .icon{display:inline-block;vertical-align:-.2em;margin-left:6px}
+.hub-guide__rel-k{color:var(--muted);font-weight:400}
+.hub-guides__empty{grid-column:1 / -1;padding-top:var(--s-5);color:var(--muted)}
+.hub-guides__note{grid-column:1 / span 8;margin-top:var(--s-9)}
+.hub-links{grid-column:1 / -1}
+@media (pointer:coarse){.hub-guide__ask{min-height:44px}}
+@media (max-width:1023px){.hub-guides__note{grid-column:1 / -1}}
+@media (max-width:767px){
+  .hub-guide{grid-template-columns:minmax(0,1fr);row-gap:var(--s-3);padding:var(--s-6) 0}
+  .hub-guide__n{font-size:clamp(3.5rem,2.4rem + 6vw,4.5rem)}
+}
+
+/* ── Preguntas frecuentes ───────────────────────────────────────────────────────────────────────────────────────── */
+.hub-faq .it__head{display:flex;flex-direction:column;align-items:flex-start}
+.hub-faq__foot{margin-top:var(--s-6);max-width:34ch;color:var(--text-2)}
+.hub-faq__foot a{color:var(--text);text-decoration:none;background:linear-gradient(var(--hair-cyan),var(--hair-cyan)) 0 100% / 100% 1px no-repeat}
+.hub-faq__cta{margin-top:var(--s-5)}
+.hub-faq .it__body > .faq{width:100%;align-self:stretch}
+@media (min-width:1024px){.hub-faq .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}}
+
+/* ── Cierre ─────────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* La microcopia del copy (más larga que la del botón) no ensancha la columna: ocupa el ancho del primario (QA #36 de industria) */
+body.hub #cta-final .is__text{min-width:0}
+/* El bloque completo (titular, lede, CTA y microcopia) termina arriba del filo del horizonte (zona segura y ≤ .70 de la
+   placa, check:escenas): el titular del cierre baja un escalón y el lede se queda en dos renglones */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  body.hub #cta-final .t-h2{font-size:clamp(2.25rem,1rem + 3.3vw,4.75rem)}
+  body.hub #cta-final .is__text > .t-lede{margin-top:var(--s-4)}
+  body.hub #cta-final .is__text > .ctas{margin-top:var(--s-6)}
+}
+body.hub #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-width:none;white-space:normal;text-wrap:balance}
+
+@media (forced-colors:active){
+  .hub-case__fig .metric__v,.hub-guide__n,.hub-guide__n.has-img{background:none;color:CanvasText;-webkit-text-stroke:0}
+  .hub-case__media{opacity:.35}
+}
+/* ===== fin HubTemplate ===== */

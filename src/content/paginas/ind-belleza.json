@@ -1,0 +1,155 @@
+{
+  "pageId": "ind-belleza",
+  "url": "/industrias/belleza-estetica/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos de belleza, spa o salón que podamos mencionar por tipo de negocio (sin nombre)? La página no afirma que los haya: solo dice que el promedio de salud incluye medicina estética (confirmado el 2026-10-19). Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
+    "PREGUNTA AL CLIENTE · kain-sector: el brief de D pedía 'clienta pregunta por un facial en Instagram'. La página usa el guion ya existente de src/data/chats/belleza.json (uñas y pedicure por WhatsApp, dos profesionales, lista de precios, recordatorio) y el lede lo describe tal cual. Si prefieres el facial por Instagram, hay que cambiar el guion (área copy/orquestador) y el lede de kain-sector.",
+    "PREGUNTA AL CLIENTE · anticipos: definicion.body dice que Kain explica 'tus políticas de anticipo y cancelación'. No afirma que cobre anticipos ni que mande ligas de pago. Confirma si en belleza Kain manda liga de pago del anticipo; si sí, se puede decir.",
+    "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas E01–E04 (Instagram, agenda por profesional o cabina, tratamientos, faltas a la cita) con su texto en materiales/v2/build/peticiones.md → 'Construcción · industrias (copy)'. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-belleza.faq.",
+    "FAQ · N11 sigue en validar: true en el banco; mientras no se apruebe, el acordeón muestra G02, N12 y G07 (las tres aprobadas de D).",
+    "CAMBIO DE TEXTO · automatizamos.items[5] ('Campañas a tus clientas'): D decía 'campañas a clientas registradas en el CRM'; se acota a quienes aceptaron recibir mensajes (política de mensajes de WhatsApp Business y aviso de privacidad).",
+    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dos cifras de salud con su origen; el promedio de citas se presenta como el más cercano porque incluye clínicas de medicina estética. Enlaza al caso dental y a /industrias/salud/."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (ind-belleza-hero, Kain en el salón + persona del sector desenfocada) + Breadcrumbs. Sin chip de prueba: el sector no tiene caso.",
+      "rail": "Portada",
+      "eyebrow": "Industria · Belleza y estética",
+      "h1": { "text": "Agentes de IA", "soft": "para estéticas, spas y salones de belleza", "lit": "IA" },
+      "lede": "Responde, agenda y confirma en WhatsApp e Instagram mientras tú atiendes a tus clientas. Kain contesta con tu lista de precios y aparta el lugar con la profesional o la cabina que toca.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo una estética o spa y quiero que me ayudes a llenar la agenda por WhatsApp."
+      },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio de la página, citable; no hay pregunta del banco para belleza)",
+      "rail": "Cómo ayuda",
+      "eyebrow": "IA en belleza",
+      "definition": {
+        "heading": "¿Cómo ayuda la IA en estéticas, spas y salones?",
+        "text": "Un agente de IA atiende los mensajes de tu estética, spa o salón en WhatsApp e Instagram: responde con tu lista de servicios y precios aprobados, ofrece horarios con la profesional o la cabina disponible, agenda, confirma, reagenda y da seguimiento a quien preguntó y no reservó. Cada clienta queda registrada en tu CRM con su historial.",
+        "_nota": "57 palabras. Armado con lo que ya dicen G02 y N12 (aprobadas) y el brief de D; sin cifras."
+      },
+      "body": [
+        "Funciona igual en un salón de barrio que en un spa con varias cabinas: Kain trabaja con tus servicios, la agenda de cada profesional y tus políticas de anticipo y cancelación. Lo que no está en tu lista, no lo inventa: se lo pasa a tu equipo con la conversación completa."
+      ]
+    },
+    "dolores": {
+      "_componente": "DayTimeline vertical (aguja con scrub, sin pin). Horas ilustrativas; la última es la del HUD del sector (SALÓN · 20:30, ESPEC §5.3).",
+      "rail": "La jornada",
+      "eyebrow": "La jornada",
+      "h2": { "text": "Un día en tu salón,", "soft": "de la primera clienta al cierre." },
+      "lede": "Horas de ejemplo. En ámbar, lo que hoy se te escapa entre clienta y clienta; en cian, lo que resuelve Kain mientras trabajas.",
+      "entries": [
+        {
+          "time": "09:30",
+          "pain": "Abres el salón con mensajes de Instagram de anoche. Casi todos preguntan cuánto cuesta algo y ninguno terminó en cita.",
+          "fix": "Kain contestó cada mensaje con tu lista de precios y ofreció horarios. Las que reservaron ya aparecen en tu agenda."
+        },
+        {
+          "time": "12:00",
+          "pain": "Tienes las manos en un tinte y el WhatsApp no deja de sonar. Contestas una hora después y esa clienta ya reservó en otro lado.",
+          "fix": "Kain resuelve servicio, precio, profesional y horario en el mismo chat, sin que sueltes la brocha."
+        },
+        {
+          "time": "16:15",
+          "pain": "La clienta de las cuatro no llegó. La cabina se queda vacía el resto de la tarde y nadie lo vio venir.",
+          "fix": "Kain confirmó un día antes. Cuando alguien cancela, le propone otra fecha y el espacio regresa a tu agenda a tiempo."
+        },
+        {
+          "time": "18:15",
+          "pain": "Le pasaste precio a una novia para peinado y maquillaje. No volvió a escribir y nadie le dio seguimiento.",
+          "fix": "Kain la retoma días después con el mensaje que tú apruebes, y la conversación sigue registrada en tu CRM."
+        },
+        {
+          "time": "20:30",
+          "pain": "Bajas la cortina y siguen llegando mensajes directos que piden lugar para el fin de semana.",
+          "fix": "Kain sigue agendando el sábado con la profesional disponible y manda la confirmación en el momento."
+        }
+      ]
+    },
+    "automatizamos": {
+      "_componente": "ScriptList (6 filas)",
+      "rail": "Qué automatizamos",
+      "eyebrow": "Qué automatizamos",
+      "h2": { "text": "Lo que Kain hace", "soft": "mientras tú tienes las manos ocupadas." },
+      "items": [
+        { "n": "01", "title": "Precios y servicios aprobados", "line": "Responde cuánto cuesta, cuánto dura y qué incluye cada servicio, con tu lista y nada más." },
+        { "n": "02", "title": "Agenda por profesional o cabina", "line": "Ofrece horarios según quién atiende y qué cabina está libre, sin empalmar citas." },
+        { "n": "03", "title": "Recordatorios", "line": "Avisa antes de la cita con la hora, la dirección y lo que la clienta debe saber antes de llegar." },
+        { "n": "04", "title": "Reagendado sin perder el lugar", "line": "Si la clienta no puede, le propone otra fecha y libera el espacio para alguien más." },
+        { "n": "05", "title": "Seguimiento a quien no reservó", "line": "Retoma la conversación con quien pidió precio y se quedó en silencio, con el mensaje que tú apruebes." },
+        { "n": "06", "title": "Campañas a tus clientas", "line": "Desde tu CRM, mensajes a quienes ya vinieron y aceptaron recibirlos: temporada de novias, servicios nuevos o espacios libres." }
+      ]
+    },
+    "kain-sector": {
+      "_componente": "ImageSection mid (ind-belleza-kain-sector, Kain a la izquierda, push; respaldo home-sistema-2-atender en espejo) + ChatSim registrado (script belleza). Fijada +100 % en escritorio",
+      "rail": "Kain en tu salón",
+      "eyebrow": "Kain en tu salón",
+      "h2": { "text": "Así agenda Kain", "soft": "con el salón ya cerrado." },
+      "lede": "Una clienta escribe en la noche para pedir uñas y pedicure el sábado. Kain le ofrece dos horarios con dos profesionales, le comparte tu lista de precios y deja la cita con su recordatorio.",
+      "chat": { "mode": "registered", "script": "belleza" },
+      "limite": "Kain no recomienda tratamientos ni da indicaciones de cuidado de la piel. Si una clienta pregunta qué le conviene o comenta una alergia o una reacción, Kain se lo pasa a tu especialista con la conversación completa.",
+      "note": "Ejemplo ilustrativo: la conversación, los nombres y las horas no son datos de un caso."
+    },
+    "cifras": {
+      "_componente": "EditorNote + Montage (2 filas, sin caso del sector) con enlace al caso más cercano",
+      "rail": "Resultados",
+      "eyebrow": "Resultados",
+      "h2": { "text": "Cifras de negocios de agenda,", "soft": "con su sector a la vista." },
+      "lede": "Aún no publicamos un caso de un salón o un spa. Estas dos cifras vienen de salud, el negocio de agenda más parecido al tuyo, y cada una dice de dónde sale.",
+      "noteLabel": "Nota del editor",
+      "note": "Las dos cifras son de clientes de salud: una clínica dental en Monterrey y el promedio de nuestros clientes de odontología, medicina estética, quiropráctica y gastroenterología. Cuando un negocio de belleza nos autorice publicar su caso, lo verás aquí.",
+      "rows": [
+        { "metricId": "dental-respuesta", "context": "Tiempo de respuesta en WhatsApp · Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
+        { "metricId": "salud-citas-mes", "context": "Clientes de salud: odontología, medicina estética, quiropráctica y gastroenterología" }
+      ],
+      "sourceNote": true,
+      "links": [
+        { "label": "Lee el caso de la clínica dental", "href": "/casos/clinica-dental-monterrey/" },
+        { "label": "Ve cómo trabaja Kain en clínicas", "href": "/industrias/salud/" }
+      ]
+    },
+    "servicios": {
+      "_componente": "Still ×3",
+      "rail": "Servicios",
+      "eyebrow": "Servicios recomendados",
+      "h2": { "text": "Con qué se arma", "soft": "el sistema de tu salón." },
+      "items": [
+        { "href": "/servicios/agentes-ia-whatsapp/", "label": "Atender", "title": "Agentes de IA para WhatsApp", "line": "Kain contesta, cotiza con tu lista y agenda en el chat." },
+        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo para salones y spas", "line": "WhatsApp e Instagram en una sola bandeja, con cada clienta en su etapa." },
+        { "href": "/servicios/paid-media/", "label": "Atraer", "title": "Paid media conectado a tu CRM", "line": "Anuncios en Meta que llevan directo al chat donde Kain ya está contestando." }
+      ]
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas de estéticas,", "soft": "spas y salones." },
+      "faqIds": ["N11", "G02", "N12", "G07"],
+      "_nota": "Ids de sitemap.json → ind-belleza.faq, en su orden. N11 en validar: no se publica hasta aprobarse. Propuestas propias del sector (E01–E04) en peticiones.md.",
+      "footer": "¿Tienes otra pregunta sobre tu salón? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Tu siguiente paso",
+      "h2": { "text": "¿Cuántas clientas preguntan y no reservan?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "En la llamada revisamos tu agenda real: por dónde te escriben, quién contesta y en qué punto se cae la reserva. Sales con claro qué conviene automatizar primero.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo una estética o spa y quiero que me ayudes a llenar la agenda por WhatsApp."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

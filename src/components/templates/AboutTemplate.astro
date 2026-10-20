@@ -1,0 +1,360 @@
+---
+// AboutTemplate · T-ABOUT (ESPEC-v2 §5.9, §12.2 R1/R3/R6/R7/R11, §8.5) · /nosotros/
+// Data-driven: recorre page.sections (src/data/sitemap.json) en su orden; el texto sale de src/content/paginas/<page.id>.json.
+// Secciones condicionales (historia) o con `_omitir` no se pintan. Ninguna sección pinta fondo (§3.11): la luz la ponen
+// placas, auras (Aura.astro), la luz de base .tpl-glow y los nodos.
+//   hero        SharedTake + ImageSection hero. Placa de sitemap.json (equipo-real, requiere la sesión de fotos de R6); sin
+//               ella, el respaldo de R6 es nosotros-manifiesto (Kain sobre Guadalajara) y, si aún no se exporta, home-kain.
+//               Sin Fig. 01: el pie caía sobre la red de luz del piso (contraste AA) junto al botón de WhatsApp.
+//   ficha       Intertitle sobre la toma desenfocada de la portada + EntitySheet (filas del copy = mismos datos del JSON-LD)
+//   manifiesto  ImageSection mid con nosotros-manifiesto si la portada NO la usa; si la usa (R6), con servicios-hero (la
+//               estructura de luz que conecta las piezas); sin placa, Intertitle con revelado palabra por palabra (R5)
+//   valores     Intertitle + ScriptList (4 filas)
+//   equipo      Reparto: fotos reales en duotono (mismo encuadre de TEAM[].crop) + rol, nombre y una línea; sin tarjetas
+//   presencia   Intertitle + CountryList (Credits countries, de metrics.ts) + sectores (enlaces solo a páginas construidas)
+//   alianzas    Kommo (único partner, sello oficial) + kain (sub-marca)
+//   faq         Intertitle + FAQAccordion (el FAQPage lo emite SEOHead con las mismas ids del copy)
+//   cta-final   Dawn (placa de sitemap.json)
+// JSON-LD (§8.5 T-ABOUT): AboutPage + Organization + BreadcrumbList + FAQPage los arma SEOHead desde page.jsonLd; aquí se
+// agregan las 6 Person (worksFor #organization) con el cargo de esta página. Sin sameAs hasta tener los LinkedIn.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/tpl/AboutTemplate.css';
+import ImageSection from '../cine/ImageSection.astro';
+import SharedTake from '../cine/SharedTake.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Dawn from '../cine/Dawn.astro';
+import { resolvePlate, plateReady } from '../cine/plate';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import ScriptList from '../ui/ScriptList.astro';
+import EntitySheet from '../ui/EntitySheet.astro';
+import Credits from '../ui/Credits.astro';
+import KommoBadge from '../ui/KommoBadge.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import Icon from '../ui/Icon.astro';
+import { annotateFigures, esc, TEAM } from '../ui/ui-data';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
+import { waHref, linkTarget, isBuilt, SITE, type Page } from '../../lib/site';
+import { ORG_ID } from '../layout/jsonld';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C = copy?.sections ?? {};
+const dev = import.meta.env.DEV;
+
+/* ── utilidades ─────────────────────────────────────────────────────────── */
+const sec = (id: string) => (P.sections as any[]).find((s) => s.id === id);
+const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
+/** Titular de dos voces ({text, soft, lit?}) → HTML con tokens resueltos; `lit` envuelve su subcadena en .lit (UNA por página). */
+/** Tokens del copy → HTML; la puntuación que sigue a una cifra o a "30 minutos" entra en su nodo (SplitText no la deja
+ *  sola al principio de un renglón: ", con tu operación…"). El texto visible no cambia. */
+const ann = (s: string) => annotateFigures(s).replace(/<\/span>([,.;:!?…]+)/g, '$1</span>');
+function headHtml(h: any, lit?: string | null): string {
+  if (!h) return '';
+  let first = ann(h.text ?? '');
+  if (lit && (h.text ?? '').includes(lit)) {
+    const i = (h.text as string).lastIndexOf(lit);
+    first = ann(h.text.slice(0, i)) + `<span class="lit">${esc(lit)}</span>` + ann(h.text.slice(i + lit.length));
+  }
+  return h.soft ? `${first} <span class="soft">${ann(h.soft)}</span>` : first;
+}
+const wa = P.secondaryCta?.href ?? waHref(C.hero?.ctaSecondary?.waMessage ?? 'Hola Kain');
+const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
+/** Enlaces del copy que ya llevan a una página construida (R12: nunca un enlace a una ruta sin construir). */
+const builtLinks = (list?: any[]) => (list ?? []).filter((l) => l?.href && isBuilt(l.href));
+const firstReady = (...ids: (string | null | undefined)[]) => ids.find((id) => !!id && plateReady(id)) ?? null;
+
+/* ── 01 · portada (R6) ──────────────────────────────────────────────────── */
+const hero = cp('hero');
+const heroPl = sec('hero')?.plate ?? { id: 'equipo-real' };
+const manPl = sec('manifiesto')?.plate ?? { id: 'nosotros-manifiesto', layout: 'subject-right' };
+const teamReady = plateReady(heroPl.id);
+// Respaldo de R6: Kain sobre Guadalajara; mientras esa placa no se exporte, Kain saluda (home-kain, con el texto a la derecha).
+const heroFb: string | null = teamReady ? null : firstReady(heroPl.launchFallback, manPl.id, 'home-kain');
+const heroUsed: string | null = teamReady ? heroPl.id : heroFb;
+// El lado del sujeto lo decide la placa realmente usada (nunca el layout de sitemap.json sobre otra placa)
+const rHero = resolvePlate(heroPl.id, { fallbackPlate: heroFb, layout: teamReady ? heroPl.layout : undefined, where: '#hero' });
+const heroLayout = teamReady ? heroPl.layout : undefined;
+const heroLeft = rHero.layout === 'subject-left';
+const heroLit: string | null = hero?.h1?.lit ?? null;
+const heroEyebrow: string = hero?.eyebrow ?? 'Nosotros';
+const heroLede = ledeParts(hero?.lede, 20);
+const heroEyebrowDup = eyebrowRepeatsCrumbs(heroEyebrow, P.breadcrumbs);
+
+/* ── 03 · manifiesto: escena con su placa (nosotros-manifiesto) si la portada no la usa. Si la usa (R6), el respaldo es
+       servicios-hero (Kain junto a la estructura de luz que conecta todas las piezas: "construimos el sistema completo"),
+       nunca la misma placa dos veces en la página (R5); sin placa disponible, intertítulo con revelado palabra por palabra. ── */
+const man = cp('manifiesto');
+const manKey: string | null = heroUsed !== manPl.id && plateReady(manPl.id) ? manPl.id : firstReady('servicios-hero');
+const manScene = !!man && !!manKey;
+const manOwn = manKey === manPl.id;
+// Móvil `split`: el resto del manifiesto empieza bajo el piso iluminado a los pies de Kain (caja subject.m + reflejo)
+const manSb: number = (() => {
+  if (!manKey) return 1;
+  const b = resolvePlate(manKey, { mirror: manOwn ? !!manPl.mirror : false, where: '#manifiesto' }).subject?.m?.[3];
+  return typeof b === 'number' && b > 0.5 ? Math.min(1, b + 0.07) : 1;
+})();
+
+/* ── 06 · equipo: fotos reales (TEAM de ui-data: foto y encuadre) + rol/nombre/línea del copy ── */
+const eq = cp('equipo');
+const cast = (eq?.credits ?? []).map((c: any) => {
+  const t = TEAM.find((x) => x.slug === c.slug || x.name === c.name);
+  return t ? { ...t, role: c.role ?? t.role, name: c.name ?? t.name, line: c.line, linkedin: c.linkedin } : null;
+}).filter(Boolean) as any[];
+
+/* ── resto ──────────────────────────────────────────────────────────────── */
+const ficha = cp('ficha');
+const val = cp('valores');
+const pres = cp('presencia');
+const ali = cp('alianzas');
+const faq = cp('faq');
+const cta = cp('cta-final');
+const ctaPlate = sec('cta-final')?.plate;
+const order: string[] = (P.sections as any[]).filter((s) => s.status !== 'conditional').map((s) => s.id);
+if (dev) {
+  const known = new Set(['hero', 'ficha', 'manifiesto', 'valores', 'equipo', 'presencia', 'alianzas', 'faq', 'cta-final']);
+  for (const id of order) {
+    if (!known.has(id)) console.warn(`[AboutTemplate] ${P.id}: sección "${id}" sin componente en la plantilla`);
+    else if (!C[id]) console.warn(`[AboutTemplate] ${P.id}: falta el copy de la sección "${id}"`);
+  }
+  if (!teamReady) console.warn(`[AboutTemplate] R6: sin "${heroPl.id}" → portada con "${heroUsed ?? 'aura'}"; el manifiesto va como ${manScene ? `escena con "${manKey}"` : 'intertítulo'}`);
+}
+
+/* ── JSON-LD: 6 Person (worksFor #organization) ── */
+const personLd = cast.map((p) => ({
+  '@type': 'Person',
+  '@id': `${SITE.url}${P.url}#${p.slug}`,
+  name: p.name,
+  jobTitle: p.role,
+  image: `${SITE.url}${p.photo}`,
+  worksFor: { '@id': ORG_ID },
+  ...(p.linkedin ? { sameAs: [p.linkedin] } : {}),
+}));
+---
+<BaseLayout page={page} lcpPlate={rHero.id ?? undefined} lcpSrcsetMax={2752} bodyClass="ab" jsonLd={personLd}>
+  {order.map((id) => {
+    /* ── 01 + 02 · portada y ficha en la misma toma (SharedTake) ── */
+    if (id === 'hero' && hero) return (
+      <SharedTake plate={heroPl.id} fallbackPlate={heroFb}>
+        <ImageSection
+          id="hero"
+          plate={heroPl.id}
+          fallbackPlate={heroFb}
+          layout={heroLayout}
+          height="hero"
+          mobile="split"
+          priority
+          take
+          encendido
+          class="ab-hero tpl-hero"
+        >
+          <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
+          <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>
+          <h1 id="hero-t" class="t-display-2 ab-h1" data-split set:html={headHtml(hero.h1, heroLit)} />
+          {hero.lede && (
+            <p class="t-lede t-lede--2 ab-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
+          )}
+          <HeroCtas href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+            waHref={wa} waLabel={waLabel(hero)} />
+          {/* R3 · móvil: después de la placa (misma sección) va la cola del lede */}
+          {heroLede.rest && (
+            <Fragment slot="more">
+              <Copy as="p" class="t-lede t-lede--2 ab-hero__rest tpl-dhide" text={heroLede.rest} />
+            </Fragment>
+          )}
+        </ImageSection>
+
+        {ficha && order.includes('ficha') && (
+          <Intertitle id="ficha" rack aura="none" class={heroLeft ? 'ab-ficha ab-ficha--r tpl-glow' : 'ab-ficha tpl-glow'}>
+            <Aura kind="ondas" x={heroLeft ? '70%' : '30%'} y="104%" o={1} only="d" />
+            <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+            <div class="ab-ficha__head">
+              <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ficha.eyebrow}</p>
+              <h2 id="ficha-t" class="t-h2" data-split set:html={headHtml(ficha.h2)} />
+              {ficha.lede && <Copy as="p" class="t-lede t-lede--2" text={ficha.lede} data-reveal />}
+            </div>
+            <EntitySheet variant="about" rows={(ficha.entity ?? []).map((r: any) => (!r.href && /whatsapp|tel[eé]fono/i.test(r.term) ? { ...r, href: wa } : r))} title={false} class="ab-sheet" />
+          </Intertitle>
+        )}
+      </SharedTake>
+    );
+    if (id === 'ficha') return null; // va dentro de la toma compartida de la portada
+
+    /* ── 03 · manifiesto ── */
+    if (id === 'manifiesto' && man) {
+      const body = (man.body ?? []) as string[];
+      return manScene ? (
+        <ImageSection id="manifiesto" plate={manKey!} mirror={manOwn ? !!manPl.mirror : false} layout={manOwn ? manPl.layout : undefined}
+          height="mid" align="start" mobile="split" alt="" class="ab-man ab-man--scene tpl-glow-m">
+          <span class="tpl-introglow" aria-hidden="true"></span>
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{man.eyebrow}</p>
+          <h2 id="manifiesto-t" class="t-h2" data-split set:html={headHtml(man.h2)} />
+          {body[0] && <Copy as="p" class="t-lede t-lede--2" text={body[0]} />}
+          <div slot="more" class="ab-man__more" style={`--sb:${manSb}`}>
+            {body.slice(1).map((b) => <Copy as="p" class="ab-man__body" text={b} data-reveal />)}
+            {man.firma && <p class="ab-firma" data-reveal><span class="node" aria-hidden="true"></span><Copy text={man.firma} /></p>}
+          </div>
+        </ImageSection>
+      ) : (
+        <Intertitle id="manifiesto" aura="none" class="ab-man ab-man--it tpl-glow">
+          <Aura kind="isotipo" x="80%" y="38%" w="min(60vw,900px)" o={0.85} only="d" />
+          <Aura kind="ondas" x="36%" y="96%" o={1} only="d" />
+          <Aura kind="isotipo" x="72%" o={0.7} only="m" sticky />
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{man.eyebrow}</p>
+          <h2 id="manifiesto-t" class="t-h2 ab-man__h" data-words set:html={headHtml(man.h2)} />
+          <div class="ab-man__cols" data-reveal="stagger">
+            {body.map((b) => <Copy as="p" class="ab-man__body" text={b} />)}
+          </div>
+          {man.firma && <p class="ab-firma" data-reveal><span class="node" aria-hidden="true"></span><Copy text={man.firma} /></p>}
+        </Intertitle>
+      );
+    }
+
+    /* ── 05 · valores ── */
+    if (id === 'valores' && val?.items?.length) return (
+      <Intertitle id="valores" aura="none" class="ab-val tpl-glow">
+        <Aura kind="ondas" x="62%" y="16%" w="min(110vw,1600px)" o={1} only="d" />
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        <div class="ab-head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{val.eyebrow}</p>
+          <h2 id="valores-t" class="t-h2" data-split set:html={headHtml(val.h2)} />
+          {val.lede && <Copy as="p" class="t-lede t-lede--2" text={val.lede} data-reveal />}
+        </div>
+        <ScriptList rows={val.items.map((r: any) => ({ title: r.title, line: r.line }))} label={val.eyebrow} class="ab-val__list" />
+      </Intertitle>
+    );
+
+    /* ── 06 · equipo (reparto con fotos reales; nunca dice cuántas personas son) ── */
+    if (id === 'equipo' && eq && cast.length) return (
+      <section id="equipo" class="ab-team tpl-glow" aria-labelledby="equipo-t">
+        <Aura kind="isotipo" x="18%" y="64%" w="min(56vw,820px)" o={0.8} only="d" />
+        <Aura kind="ondas" x="70%" y="10%" o={1} only="d" />
+        <div class="frame ab-team__frame">
+          <div class="ab-team__head">
+            <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{eq.eyebrow}</p>
+            <h2 id="equipo-t" class="t-h2" data-split set:html={headHtml(eq.h2)} />
+            {eq.lede && <Copy as="p" class="t-lede t-lede--2" text={eq.lede} data-reveal />}
+            {eq.note && <Copy as="p" class="t-micro ab-team__note" text={eq.note} data-reveal />}
+          </div>
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <ol class="ab-cast" role="list" data-ui-stagger>
+            {cast.map((p, i) => (
+              <li class="ab-cast__row" style={`--i:${i}`}>
+                <span class="ab-cast__ph" style={`--fx:${p.crop?.fx ?? 0.5};--ey:${p.crop?.ey ?? 0.36};--hw:${p.crop?.hw ?? 0.19}`}>
+                  <img src={p.photo} alt={`Retrato de ${p.name}, ${p.role} de Ingeniak`} width="600" height="600" loading="lazy" decoding="async" />
+                </span>
+                <div class="ab-cast__txt">
+                  <p class="ab-cast__role">{p.role}</p>
+                  <h3 class="ab-cast__name">{p.name}</h3>
+                  {p.line && <Copy as="p" class="ab-cast__line" text={p.line} />}
+                  {p.linkedin && <a class="lnk--mono ab-cast__in" href={p.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    );
+
+    /* ── 07 · presencia (países tipográficos, sin mapa con pines) ── */
+    if (id === 'presencia' && pres) return (
+      <Intertitle id="presencia" aura="none" layout="split" class="ab-pres tpl-glow">
+        <Aura kind="isotipo" x="74%" y="46%" w="min(64vw,960px)" o={0.75} only="d" />
+        <Fragment slot="head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{pres.eyebrow}</p>
+          <h2 id="presencia-t" class="t-h2" data-split set:html={headHtml(pres.h2)} />
+          {pres.lede && <Copy as="p" class="t-lede t-lede--2" text={pres.lede} data-reveal />}
+        </Fragment>
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        <Credits variant="countries" class="ab-pres__countries" />
+        {pres.sectores?.items?.length > 0 && (
+          <div class="ab-sectors" data-reveal>
+            <p class="t-label ab-sectors__h">{pres.sectores.label}</p>
+            <ul class="ab-sectors__list" role="list">
+              {pres.sectores.items.map((s: any) => {
+                const href = s.href ? linkTarget(s.href) : null;
+                return <li>{href ? <a class="chip-spec ab-sector ab-sector--a" href={href} data-still>{s.label}<Icon name="arrow" size={14} /></a> : <span class="chip-spec ab-sector">{s.label}</span>}</li>;
+              })}
+            </ul>
+          </div>
+        )}
+      </Intertitle>
+    );
+
+    /* ── 08 · alianzas y marcas (Kommo = único partner; kain = sub-marca) ── */
+    if (id === 'alianzas' && ali) return (
+      <section id="alianzas" class="ab-ali tpl-glow" aria-labelledby="alianzas-t">
+        <Aura kind="ondas" x="50%" y="60%" o={1} only="d" />
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        <div class="frame ab-ali__frame">
+          <div class="ab-head ab-ali__head">
+            <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ali.eyebrow}</p>
+            <h2 id="alianzas-t" class="t-h2" data-split set:html={headHtml(ali.h2)} />
+          </div>
+          <div class="ab-ali__pair" data-reveal="stagger">
+            {ali.kommo && (
+              <article class="ab-ally ab-ally--kommo" aria-labelledby="ali-kommo-t">
+                <div class="ab-ally__mark"><KommoBadge size="md" /></div>
+                <h3 id="ali-kommo-t" class="ab-ally__t">{ali.kommo.title}</h3>
+                <Copy as="p" class="ab-ally__b" text={ali.kommo.body} />
+                {builtLinks(ali.kommo.links).length > 0 && (
+                  <p class="ab-ally__links">{builtLinks(ali.kommo.links).map((l: any) => <a class="lnk" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>)}</p>
+                )}
+              </article>
+            )}
+            <span class="ab-ali__pillar" aria-hidden="true"><span class="node"></span></span>
+            {ali.kain && (
+              <article class="ab-ally ab-ally--kain" aria-labelledby="ali-kain-t">
+                <div class="ab-ally__mark"><span class="kain-mark ab-kain-mark" aria-hidden="true">kain</span></div>
+                <h3 id="ali-kain-t" class="ab-ally__t"><span class="sr-only">kain: </span>{ali.kain.title}</h3>
+                <Copy as="p" class="ab-ally__b" text={ali.kain.body} />
+                {builtLinks(ali.kain.links).length > 0 && (
+                  <p class="ab-ally__links">{builtLinks(ali.kain.links).map((l: any) => <a class="lnk" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>)}</p>
+                )}
+              </article>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+
+    /* ── 09 · preguntas frecuentes ── */
+    if (id === 'faq' && faq?.faqIds?.length) return (
+      <Intertitle id="faq" aura="ondas" layout="split" class="ab-faq tpl-glow">
+        <Fragment slot="head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{faq.eyebrow}</p>
+          <h2 id="faq-t" class="t-h2" data-split set:html={headHtml(faq.h2)} />
+          {faq.footer && <Copy as="p" class="t-lede t-lede--2 ab-faq__foot" text={faq.footer} data-reveal />}
+          {faq.footer && <div class="ab-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} /></div>}
+        </Fragment>
+        <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
+        <FAQAccordion ids={faq.faqIds} glass id="faq-list" label={faq.eyebrow} />
+      </Intertitle>
+    );
+
+    /* ── 10 · cierre ── */
+    if (id === 'cta-final' && cta) return (
+      <Dawn id="cta-final" plate={ctaPlate?.id ?? 'cta-amanecer'} mirror={!!ctaPlate?.mirror} fallbackPlate={ctaPlate?.launchFallback} layout={ctaPlate?.layout} class="ab-dawn tpl-glow-m">
+        {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
+        <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
+        {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
+        <div class="ctas">
+          {cta.micro ? (
+            <div class="cta-p">
+              <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+              <Copy as="p" class="t-micro btn-micro" text={cta.micro} data-allow-number />
+            </div>
+          ) : (
+            <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+          )}
+          <Btn variant="ghost" href={wa} label={waLabel(cta)} />
+        </div>
+      </Dawn>
+    );
+    return null;
+  })}
+</BaseLayout>

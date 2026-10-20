@@ -11,9 +11,14 @@
 // título hace de etiqueta. La UI registrada y la tarjeta de lead caen DENTRO de la caja de su superficie (anclas de caja).
 // Movimiento reducido: 5 bloques apilados con su estado final.
 // Slots: default (eyebrow + H2 con id "<id>-t") · `ui-<step.id>` (UI registrada de cada estación, en el stage de su placa)
-//        · `metric-<step.id>` (cifras de la estación con <Metric>; alternativa a metricIds).
+//        · `metric-<step.id>` (cifras de la estación con <Metric>; va dentro de un <p>: solo elementos en línea)
+//        · `extra-<step.id>` (bloque libre de la estación DESPUÉS de las cifras y fuera del <p>: listas, mini demos, "qué
+//          sale / con quién"; Astro no admite nombres de slot dinámicos en un map: declara un slot fijo por paso).
+// Cámara de `phases` (§0.1-5 manda sobre el empuje): --cam de cada fase = min(1.14 + i × .05, tope del sujeto con origen
+// en su escalón) estimado aquí y recalculado en sequence.ts con las medidas reales: Kain nunca sale del cuadro.
+// ghost: palabra fantasma de `phases` ('VKTOR' o { text, x, y, size } en fracciones de la placa, como GhostWord).
 import Metric from '../ui/Metric.astro';
-import { resolvePlate, boxPoint, type Fallback } from './plate';
+import { resolvePlate, boxPoint, camCap, type Fallback } from './plate';
 import PlatePicture from './PlatePicture.astro';
 import GhostWord from './GhostWord.astro';
 import type { MetricId } from '../../lib/metrics';
@@ -31,14 +36,15 @@ interface Props {
   fallbackPlate?: Fallback;
   figLabel?: string;
   note?: string;
-  ghost?: string;            // phases: palabra fantasma (VKTOR)
+  ghost?: string | { text: string; x?: number; y?: number; size?: number };  // phases: palabra fantasma (VKTOR)
   skipLabel?: string;
   class?: string;
 }
 const {
   id, preset, steps, plate, fallbackPlate, pin = preset === 'runtime' ? '+=280%' : '+=250%',
-  figLabel, note, ghost = preset === 'phases' ? 'VKTOR' : undefined, skipLabel = 'Saltar escena', class: cls,
+  figLabel, note, ghost: ghostProp = preset === 'phases' ? 'VKTOR' : undefined, skipLabel = 'Saltar escena', class: cls,
 } = Astro.props;
+const ghost = typeof ghostProp === 'string' ? { text: ghostProp } : ghostProp;
 
 const single = preset === 'phases' ? resolvePlate(plate ?? steps[0]?.plate ?? '', { fallbackPlate, alt: '', srcsetMax: 2752, where: `#${id}` }) : null;
 const plates = steps.map((s) => single ?? resolvePlate(s.plate ?? '', { fallbackPlate: s.fallbackPlate, mirror: s.mirror, alt: '', srcsetMax: 1920, where: `#${id} ${s.id}` }));
@@ -68,7 +74,9 @@ const slotStyle = (k: number) => {
 };
 const uis = await Promise.all(steps.map((s) => (Astro.slots.has(`ui-${s.id}`) ? Astro.slots.render(`ui-${s.id}`) : Promise.resolve(''))));
 const mets = await Promise.all(steps.map((s) => (Astro.slots.has(`metric-${s.id}`) ? Astro.slots.render(`metric-${s.id}`) : Promise.resolve(''))));
-const camFor = (i: number) => (preset === 'phases' ? 1.14 + i * 0.05 : 1);
+const extras = await Promise.all(steps.map((s) => (Astro.slots.has(`extra-${s.id}`) ? Astro.slots.render(`extra-${s.id}`) : Promise.resolve(''))));
+// Tope del sujeto (camCap: cabeza ≥ 4 % del borde superior, 1.5 % a los lados, pies dentro) con el origen en el escalón.
+const camFor = (i: number) => (preset === 'phases' ? Math.round(Math.max(1, Math.min(1.14 + i * 0.05, camCap(r0.subject.d, slots[i]?.d ?? null))) * 1000) / 1000 : 1);
 const pad = (n: number) => String(n).padStart(2, '0');
 const stageOf = (s: Step) => s.stage ?? s.title;
 const stepData = steps.map((s, i) => ({ id: s.id, title: stageOf(s), ox: slots[i].d[0], oy: slots[i].d[1], cam: camFor(i) }));
@@ -97,7 +105,7 @@ const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
         <div class="stage"><PlatePicture r={r0} alt="" /><span class="is__vignette"></span><span class="is__leak"></span></div>
       </div>
       {ghost && r0.cut && (
-        <div class="is__layer is__layer--ghost seq__ghost" data-own style={r0.vars + `--ox:${slots[0].d[0]};--oy:${slots[0].d[1]};--cam:${camFor(0)};`}><div class="stage"><GhostWord text={ghost} mode="outline-fill" registered /></div></div>
+        <div class="is__layer is__layer--ghost seq__ghost" data-own style={r0.vars + `--ox:${slots[0].d[0]};--oy:${slots[0].d[1]};--cam:${camFor(0)};`}><div class="stage"><GhostWord text={ghost.text} mode="outline-fill" x={ghost.x} y={ghost.y} size={ghost.size} registered /></div></div>
       )}
       {ghost && r0.cut && (
         <div class="is__layer is__layer--cutout" data-own data-mirror={r0.mirror || undefined} style={r0.vars + `--ox:${slots[0].d[0]};--oy:${slots[0].d[1]};--cam:${camFor(0)};`}><div class="stage"><picture><source media="(max-width: 767px), (max-aspect-ratio: 5/6)" srcset={BLANK} /><img class="is__cut" src={r0.cut} alt="" width={r0.d.w} height={r0.d.h} loading="lazy" decoding="async" /></picture></div></div>
@@ -156,6 +164,7 @@ const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
                 {mets[i] && <Fragment set:html={mets[i]} />}
               </p>
             )}
+            {extras[i] && <div class="seq__extra"><Fragment set:html={extras[i]} /></div>}
             {s.href && <a class="lnk seq__go" href={s.href}>{s.hrefLabel ?? 'Ver el servicio'} <span aria-hidden="true">→</span></a>}
           </div>
         </div>

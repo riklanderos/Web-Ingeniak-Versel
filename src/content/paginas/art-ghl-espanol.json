@@ -1,0 +1,483 @@
+{
+  "_schema": {
+    "_nota": "Esquema T-ARTICLE (ArticleTemplate.astro · ESPEC §5.10, §8.5, R1, R8). Todo campo que empieza con _ es nota y no se imprime. Tokens de cifra y precio: _ESQUEMA.md §5 ({{metric:ID}}, |full, |prose, {{price}}, {{Price}}, {{source}}). Nunca cifras ni precios de Ingeniak escritos a mano; tarifas de terceros: se describen y se enlazan, no se copian (check-cifras solo admite PRICE_FROM).",
+    "raiz": "pageId, url, estado (borrador|revisión|aprobado), autor, aprobadoPor, publicado y actualizado (AAAA-MM-DD reales: datePublished/dateModified, R8), pendientes[] (paquete de aprobación, no se imprime).",
+    "articulo": "categoria (etiqueta de la portada y articleSection), about[] ({type, name, url} → BlogPosting.about en el JSON-LD; una ruta interna construida vale como Service).",
+    "hero": "eyebrow (categoría visible), h1 {text, soft, lit} (text + ' ' + soft = sitemap.h1; lit = subcadena con la única .lit de la página), deck (entradilla .t-standfirst, ≤ 40 palabras; en móvil las primeras ~22 palabras van arriba y el resto baja junto a la firma), byline (crédito visible: 'Equipo de Ingeniak' mientras no se confirme autor, R8), jump (texto del enlace a la respuesta corta), ui? {label, title, items[]} (figura registrada en la superficie de cristal de la placa; si la placa no tiene superficie, no se pinta).",
+    "respuesta": "label (eyebrow), heading (h2, sin tokens), text (40–60 palabras, la respuesta en la primera oración, citable).",
+    "indice": "label (título del índice). Los renglones salen de cuerpo.blocks con variant 'h2' (campo rail = texto corto del índice) más la respuesta, el FAQ y las fuentes.",
+    "cuerpo": "blocks[]: un string = párrafo. Objetos por variant → 'h2' {id, text, rail} · 'h3' {text} · 'ul'/'ol' {items[]} · 'note' {label, text} · 'table' {caption, head[], rows[][], note} (la primera celda de cada fila es su encabezado) · 'steps' {items[{title, text}]} · 'calc' {id, eyebrow, title, lede, formula{terms[], result}, fields[{id, label, hint, mode: count|percent|money}], result{month, year, empty}, note} · 'scene' {id, plate{id, layout, mirror, launchFallback}, eyebrow, title, metricId, text, links[{label, href}], illus} (ImageSection mid a sangre dentro del artículo) · 'cta-medio' (posición del CTA intermedio). En texto: [etiqueta](/ruta/ o https://…) = enlace (las rutas sin construir se pintan como texto), **negritas**, [^n] = llamada a la fuente n de fuentes.items.",
+    "cta-medio": "label, text, link {label, href} (página comercial del tema; sin construir = no se pinta), ctaPrimary {label, href}, ctaSecondary {label, waMessage = sitemap.secondaryCta.waMessage}.",
+    "faq": "eyebrow, h2 {text, soft}, faqIds[] (banco src/data/faq.json; las 'validar' no se publican y vuelven solas al aprobarse).",
+    "autor": "bio (una o dos oraciones; la tarjeta firma 'Equipo de Ingeniak' hasta que haya autor confirmado, R8).",
+    "fuentes": "eyebrow, h2 {text}, lede, items[{title, publisher, href, consultado AAAA-MM-DD, nota}] (numeradas en orden; [^n] apunta a items[n-1]), internas (línea de cifras propias con {{source}}).",
+    "relacionados": "eyebrow, items[{href, label, title, line, plate?}] (solo se pintan rutas construidas; si faltan, se completan con páginas construidas).",
+    "cta-final": "eyebrow, h2 {text, soft}, ctaPrimary, ctaSecondary {label, waMessage}, micro."
+  },
+  "pageId": "art-ghl-espanol",
+  "url": "/blog/gohighlevel-en-espanol/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "publicado": "2026-10-19",
+  "actualizado": "2026-10-19",
+  "articulo": {
+    "categoria": "CRM",
+    "about": [
+      {
+        "type": "SoftwareApplication",
+        "name": "GoHighLevel (HighLevel)",
+        "url": "https://www.gohighlevel.com/"
+      },
+      {
+        "type": "Service",
+        "name": "Implementación de GoHighLevel en español",
+        "url": "/gohighlevel/"
+      }
+    ]
+  },
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Marcos González como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
+    "PREGUNTA AL CLIENTE · suscripción de GoHighLevel: ¿el cliente la contrata a su nombre o va desde la cuenta de agencia de Ingeniak? ¿Los cargos por uso (SMS, correo, IA, WhatsApp) se le pasan a costo? El texto solo recomienda preguntárselo a quien implemente; no afirma cómo lo hace Ingeniak.",
+    "PREGUNTA AL CLIENTE · agente de IA en GoHighLevel: ¿usan Conversation AI de HighLevel, su propio agente (Kain) conectado a GoHighLevel, o según el caso? El texto describe los dos caminos y de Ingeniak solo afirma lo que ya dice H03 (aprobada): conectamos un agente que atiende los canales confirmados, califica y agenda en el calendario de GoHighLevel.",
+    "FAQ · N15 y H04 siguen en 'validar' en el banco: se listan en faqIds pero no se publican hasta su aprobación. Mientras tanto la página publica H01, H02 y H03 (H03 no estaba en el brief de D; es la respuesta aprobada sobre conectar un agente de IA a GoHighLevel). Pedido a copy: sumar esta URL a faq.json → H03.pages (este encargo no edita faq.json).",
+    "DATO DE TERCEROS · funciones, planes, idioma de la plataforma, snapshots, WhatsApp (conexión y cobro) y Conversation AI de HighLevel consultados el 2026-10-19 en su sitio y su centro de ayuda oficiales (fuentes 1 a 8). No se copian precios (check-cifras y la regla de D: 'enlace oficial'). Revisar cada trimestre y actualizar 'actualizado'.",
+    "CAMBIO DE TEXTO · el brief de D no pedía 'La respuesta corta' dentro del cuerpo; la respuesta es la caja AnswerBox y encabeza el índice. Las siete secciones del cuerpo de D están completas y en orden. Se suman una escena a sangre con el caso dental (CRM GoHighLevel confirmado el 2026-10-19, RESPUESTAS-CLIENTE #14 y #15) y una nota final sobre la relación con HighLevel (nunca 'partner').",
+    "CIFRAS · la escena usa dental-citas (cifra grande) y dental-respuesta (|prose), una vez cada una. Nada más del artículo lleva cifras de Ingeniak; el precio solo como {{price}} y el plazo confirmado de 7 a 30 días, según el alcance.",
+    "PLACA · portada gohighlevel-hero (la misma de /gohighlevel/, corte por coincidencia), escena caso-dental-hero y cierre cta-duena-tranquila, como pide sitemap.json. hero.ui queda escrito, pero la plantilla solo pinta la figura sobre una superficie telefono/pantalla/tableta y esta placa registra 'calendario' (pedido en peticiones.md · Construcción · artículos)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (gohighlevel-hero: Kain toca una casilla del calendario de cristal) + figura registrada si la plantilla acepta la superficie calendario",
+      "eyebrow": "CRM",
+      "h1": {
+        "text": "GoHighLevel en español:",
+        "soft": "qué es, para quién es y cómo se implementa",
+        "lit": "español"
+      },
+      "deck": "Qué junta en una sola cuenta, cómo se pone en español de verdad, a quién le conviene y los seis pasos para implementarlo sin rehacer nada. Con el sitio y el centro de ayuda de HighLevel en la mano.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta",
+      "ui": {
+        "label": "Fig. 01",
+        "title": "Lo que junta en una cuenta",
+        "items": [
+          "CRM y pipelines",
+          "Embudos y páginas",
+          "Calendarios",
+          "Correo y SMS",
+          "Automatizaciones"
+        ]
+      }
+    },
+    "respuesta": {
+      "_componente": "Intertitle (rack sobre la portada desenfocada) + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "Una plataforma, configurada en tu idioma",
+      "text": "GoHighLevel, también llamado HighLevel o GHL, es una plataforma que junta CRM, embudos, páginas, calendarios, campañas y automatizaciones en una sola cuenta, y cada subcuenta puede usarse en español. Implementarlo en español va más allá del idioma: es configurar pipelines, mensajes, automatizaciones y agente de IA con tu proceso, y capacitar a tu equipo."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con escena a sangre (caso dental) y CTA intermedio",
+      "blocks": [
+        {
+          "variant": "h2",
+          "id": "que-es-gohighlevel",
+          "text": "Qué es GoHighLevel (HighLevel o GHL)",
+          "rail": "Qué es"
+        },
+        "GoHighLevel es una plataforma de software que junta en una sola cuenta lo que muchos negocios tienen repartido en cinco o seis herramientas: el CRM, las páginas y embudos para captar prospectos, los calendarios de citas, el correo y los SMS, la bandeja de conversaciones y las automatizaciones que conectan todo eso.[^1] La empresa detrás se llama HighLevel; por eso vas a encontrar tres nombres para lo mismo: GoHighLevel, HighLevel y GHL.",
+        "Nació pensando en agencias de marketing, y se nota en su estructura: hay una cuenta de agencia y cada negocio vive en una subcuenta propia, con sus contactos, sus embudos y sus calendarios.[^1] Eso no la hace exclusiva de agencias. HighLevel describe su plan de entrada, con hasta tres subcuentas, como adecuado para el dueño de un solo negocio o para una agencia que empieza.[^1] Si eres una empresa, piensa en la subcuenta como tu GoHighLevel: ahí trabaja tu equipo y ahí entra cada prospecto.",
+        {
+          "variant": "h3",
+          "text": "Lo que no es"
+        },
+        "GoHighLevel no es una estrategia ni un agente de IA que funciona solo al contratarlo. Es la infraestructura donde viven tus prospectos, tus citas y tus seguimientos. Dos empresas con la misma suscripción pueden tener resultados opuestos: la diferencia está en cómo se configuró y en si el equipo la usa todos los días.",
+        {
+          "variant": "note",
+          "label": "En corto",
+          "text": "GoHighLevel es el lugar donde se ordena tu venta. Lo que pase adentro depende de cómo lo configures y de quién lo opere."
+        },
+        {
+          "variant": "h2",
+          "id": "que-junta",
+          "text": "Qué junta en una sola plataforma",
+          "rail": "Qué junta"
+        },
+        "La lista oficial de funciones es larga. Estas son las piezas que más pesan cuando una empresa la usa para vender y agendar. Según HighLevel, la mayoría de sus usuarios reemplaza con la plataforma su CRM, su constructor de embudos, su herramienta de correo, su agenda, sus SMS y su gestión de reseñas.[^1]",
+        {
+          "variant": "table",
+          "caption": "Las piezas de GoHighLevel, una por una",
+          "head": [
+            "Pieza",
+            "Para qué la usas",
+            "Lo que suele reemplazar"
+          ],
+          "rows": [
+            [
+              "CRM y pipelines",
+              "Cada contacto y cada oportunidad en su etapa, con su historial",
+              "El CRM aparte o la hoja de cálculo de prospectos"
+            ],
+            [
+              "Sitios, embudos y formularios",
+              "Captar prospectos y mandarlos al CRM con su origen",
+              "El constructor de páginas y la herramienta de formularios"
+            ],
+            [
+              "Calendarios de reservas",
+              "Que el prospecto aparte su cita sin llamadas de ida y vuelta",
+              "La app de agenda"
+            ],
+            [
+              "Correo y SMS",
+              "Seguimientos, recordatorios y campañas",
+              "La plataforma de email marketing y la de SMS"
+            ],
+            [
+              "Conversaciones unificadas",
+              "Responder WhatsApp, Instagram, Facebook, el chat de tu sitio y el correo desde una bandeja",
+              "Contestar desde cada app por separado"
+            ],
+            [
+              "Automatizaciones (workflows)",
+              "Asignar, avisar, recordar y mover etapas sin hacerlo a mano",
+              "Integraciones sueltas entre herramientas"
+            ],
+            [
+              "Reputación",
+              "Pedir y responder reseñas",
+              "La herramienta de reseñas"
+            ]
+          ],
+          "note": "Funciones publicadas en la página de precios de HighLevel y en su centro de ayuda, consultados el 19 de octubre de 2026 (fuentes 1 y 8)."
+        },
+        "Además trae pagos y facturas, cursos, comunidades, publicación en redes sociales, un administrador de anuncios y una app móvil.[^1] La IA aparece en varias piezas: Conversation AI para responder mensajes, Voice AI para llamadas y asistentes para escribir contenido y armar embudos. La IA de conversación, la de voz y la de reseñas se cobran por uso, aparte de la suscripción.[^1]",
+        "Que la plataforma lo tenga todo no significa que debas encender todo el primer día. Las implementaciones que funcionan empiezan por las dos o tres piezas que resuelven el problema más caro, que casi siempre es el seguimiento de prospectos y las citas, y suman las demás cuando el equipo ya usa las primeras.",
+        {
+          "variant": "h2",
+          "id": "en-espanol",
+          "text": "¿Se puede usar GoHighLevel en español?",
+          "rail": "¿En español?"
+        },
+        "Sí. Cada subcuenta elige el idioma de la plataforma en su configuración (Settings › Business Profile › Platform Language), y cada usuario puede cambiarlo para sí mismo desde su perfil.[^2] El español está entre los idiomas disponibles, junto con alemán, francés, portugués, italiano y varios idiomas nórdicos.",
+        "La traducción no se queda en el menú. La tabla oficial de cobertura incluye en español el tablero, los contactos, las oportunidades, las conversaciones, los calendarios, los formularios, el widget de chat, los embudos, los sitios y los reportes, entre otras áreas. Las notificaciones y los correos de aviso llegan en el idioma de cada destinatario, y si a algún texto todavía le falta traducción, aparece en inglés.[^2]",
+        {
+          "variant": "h3",
+          "text": "Lo que el idioma de la plataforma no traduce"
+        },
+        "Cambiar el idioma traduce los botones, no tu negocio. Los nombres de las etapas, los campos personalizados, los formularios, las páginas, los correos, los SMS, las plantillas de WhatsApp y las instrucciones del agente de IA son contenido tuyo, y salen en el idioma en que se escribieron. Si partes de una plantilla en inglés, así se queda hasta que alguien la reescriba.",
+        "Por eso GoHighLevel en español significa dos cosas. La interfaz, que se resuelve en un menú. Y la implementación, que es el trabajo de escribir, probar y ajustar en español cada pieza que usa tu equipo y cada mensaje que reciben tus clientes, con el tono de tu marca y las palabras con las que tus clientes preguntan.",
+        {
+          "variant": "h2",
+          "id": "para-quien",
+          "text": "Para quién sí y para quién no",
+          "rail": "Para quién es"
+        },
+        "GoHighLevel rinde más cuando tu venta tiene varios pasos fuera del chat: un anuncio, una página, un formulario, una cita, un recordatorio y un seguimiento. Estas señales ayudan a decidir.",
+        {
+          "variant": "h3",
+          "text": "Te conviene si…"
+        },
+        {
+          "variant": "ul",
+          "items": [
+            "**Vendes con citas:** clínicas, consultorios, estética, bienes raíces, servicios profesionales o educación, donde una cita bien agendada ya es media venta.",
+            "**Pagas varias herramientas sueltas** para páginas, formularios, agenda, correo y CRM, y ninguna le pasa datos a la otra.",
+            "**Quieres medir de punta a punta:** del anuncio al formulario, del formulario a la cita y de la cita a la venta, en el mismo lugar.",
+            "**Tu equipo va a crecer:** HighLevel incluye usuarios y contactos ilimitados en todos sus planes, así que sumar personas no cambia la suscripción.[^1]"
+          ]
+        },
+        {
+          "variant": "h3",
+          "text": "Quizá no es para ti si…"
+        },
+        {
+          "variant": "ul",
+          "items": [
+            "**Casi toda tu venta se cierra dentro de WhatsApp o Instagram.** Ahí un CRM conversacional como Kommo suele encajar mejor; los comparamos en [Kommo vs GoHighLevel](/blog/kommo-vs-gohighlevel/).",
+            "**Solo necesitas un CRM sencillo** para un equipo chico y no vas a usar páginas, calendarios ni campañas: pagarías una plataforma completa para usar una pieza.",
+            "**Nadie en tu equipo va a ser responsable de la herramienta.** Tiene mucho que configurar y, sin alguien que la cuide, se queda a medias.",
+            "**Esperas que la plataforma ordene un proceso que todavía no existe.** Primero se define cómo vendes; después se configura."
+          ]
+        },
+        {
+          "variant": "cta-medio"
+        },
+        {
+          "variant": "h2",
+          "id": "como-se-implementa",
+          "text": "Cómo se implementa GoHighLevel en seis pasos",
+          "rail": "Seis pasos"
+        },
+        "Este es el orden que seguimos. Cambiarlo casi siempre sale caro: si construyes las páginas antes de definir el pipeline, terminas rehaciendo los formularios y los reportes.",
+        {
+          "variant": "steps",
+          "items": [
+            {
+              "title": "Cuenta y subcuenta en español",
+              "text": "Datos del negocio, idioma de la plataforma, usuarios y permisos. Si partes de un snapshot, que es una plantilla que copia flujos, embudos, calendarios y formularios de otra subcuenta, revísalo pieza por pieza: copia una configuración, no tu forma de vender.[^3]"
+            },
+            {
+              "title": "Pipelines y campos",
+              "text": "Las etapas salen de tu proceso real, desde que alguien escribe hasta que paga. Define qué datos necesitas en cada etapa y quién es responsable de mover a cada prospecto."
+            },
+            {
+              "title": "Embudos, páginas y formularios",
+              "text": "Cada página y cada formulario mandan al prospecto a su etapa con su origen registrado: qué anuncio, qué página, qué campaña. Los textos se escriben en español desde el principio."
+            },
+            {
+              "title": "Calendarios y recordatorios",
+              "text": "Horarios disponibles, tipos de cita, quién atiende cada una y los recordatorios antes de la cita. Aquí se gana o se pierde la asistencia."
+            },
+            {
+              "title": "WhatsApp y campañas",
+              "text": "WhatsApp se conecta desde la subcuenta de tres formas: con tu app de WhatsApp Business actual (coexistencia), con un número nuevo o migrando desde otro proveedor. Con la coexistencia puedes importar tus contactos y hasta seis meses de historial.[^4] Después se conectan tus campañas y las secuencias de correo y SMS."
+            },
+            {
+              "title": "Agente de IA y capacitación",
+              "text": "El agente responde, califica y agenda en tus canales, y pasa a una persona lo que lo necesita. Se prueba con conversaciones reales antes de encenderlo, y tu equipo aprende a usar la plataforma con ejemplos de su propio día."
+            }
+          ]
+        },
+        "Para el agente de IA hay dos caminos. El primero es Conversation AI, el agente de HighLevel: atiende WhatsApp, Instagram, Facebook, SMS, el chat de tu sitio y el correo;[^8] puede recoger datos, responder preguntas, ayudar a agendar y pasar la conversación a una persona,[^7] y tiene un modo de sugerencias en el que alguien de tu equipo aprueba cada respuesta antes de enviarla.[^6] El segundo es un agente construido aparte y conectado a GoHighLevel, útil cuando tiene que consultar otros sistemas o seguir reglas de negocio más finas. En Ingeniak conectamos un agente que atiende WhatsApp, Instagram, Facebook Messenger, el chat de tu web o el correo, califica al prospecto y le agenda la cita en tu calendario de GoHighLevel. En los dos caminos, el agente rinde tanto como la información y las reglas que le das.",
+        {
+          "variant": "scene",
+          "id": "escena-caso-dental",
+          "plate": {
+            "id": "caso-dental-hero",
+            "layout": "subject-right",
+            "mirror": false
+          },
+          "eyebrow": "Caso real · Salud · Monterrey",
+          "title": "Una clínica dental que agenda con GoHighLevel.",
+          "metricId": "dental-citas",
+          "text": "Su CRM es GoHighLevel. El agente de IA contesta, califica, agenda directo en el calendario, confirma, da seguimiento y avisa al doctor en tiempo real cuando hay una urgencia. Su tiempo de respuesta bajó {{metric:dental-respuesta|prose}}.",
+          "links": [
+            {
+              "label": "Ver el caso completo",
+              "href": "/casos/clinica-dental-monterrey/"
+            }
+          ],
+          "illus": "Imagen ilustrativa del sector"
+        },
+        "El resultado no es de la plataforma sola, sino del sistema completo: GoHighLevel ordena el calendario y el seguimiento, y el agente atiende a cualquier hora. No te prometemos esos números para tu negocio; dependen de tu volumen, de tu oferta y de tu equipo. Lo que el caso sí muestra es el orden: primero el proceso, luego la plataforma y al final el agente que la alimenta.",
+        {
+          "variant": "h2",
+          "id": "errores-comunes",
+          "text": "Errores comunes al implementarlo",
+          "rail": "Errores comunes"
+        },
+        "Casi ningún proyecto se cae por la plataforma; se cae por cómo se configuró. Estos son los errores más comunes y cómo evitarlos:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Empezar por las páginas.** Sin un pipeline definido, los formularios no saben a qué etapa mandar a nadie y los reportes no cuadran.",
+            "**Cargar un snapshot y dejarlo así.** Una plantilla ahorra horas, pero trae etapas, textos y automatizaciones pensadas para otro negocio, muchas veces en inglés.",
+            "**Creer que cambiar el idioma es implementarlo en español.** El menú se traduce; tus correos, formularios, plantillas y las instrucciones del agente, no.",
+            "**Encender el agente en piloto automático sin probarlo.** Empieza con el modo de sugerencias y revisa conversaciones reales antes de dejarlo contestar solo.[^6]",
+            "**Olvidar los cargos por uso.** Teléfono, SMS, correo e IA se cobran según lo que consumas,[^1] y WhatsApp suma su propia cuota y su consumo;[^5] inclúyelos en el presupuesto desde el principio.",
+            "**Automatizar sin responsable.** Cada flujo necesita a alguien que sepa qué hace y que lo revise cuando cambia el proceso.",
+            "**No capacitar al equipo.** Si tu equipo sigue contestando desde su celular personal, el CRM nunca se entera de la venta."
+          ]
+        },
+        {
+          "variant": "note",
+          "label": "Una regla",
+          "text": "Configura primero lo que tu equipo va a usar todos los días. Lo demás puede esperar a que eso funcione."
+        },
+        {
+          "variant": "h2",
+          "id": "precio",
+          "text": "Precio: cómo cobra GoHighLevel y dónde consultarlo",
+          "rail": "Precio"
+        },
+        "No copiamos aquí las tarifas porque cambian; la fuente vigente es [la página oficial de precios de HighLevel](https://www.gohighlevel.com/pricing). Lo que sí conviene entender es cómo cobra, porque de eso depende cuánto vas a pagar en realidad.",
+        {
+          "variant": "table",
+          "caption": "Lo que se paga al usar GoHighLevel",
+          "head": [
+            "Concepto",
+            "Quién lo cobra",
+            "Cómo se calcula"
+          ],
+          "rows": [
+            [
+              "Suscripción",
+              "HighLevel",
+              "Mensual o anual, por cuenta. Los planes cambian sobre todo en el número de subcuentas; usuarios y contactos son ilimitados en todos"
+            ],
+            [
+              "Uso",
+              "HighLevel",
+              "Números de teléfono, SMS, correos enviados e IA, según lo que consumas"
+            ],
+            [
+              "WhatsApp",
+              "HighLevel",
+              "Complemento con cuota mensual por subcuenta, más el uso de mensajes y llamadas"
+            ],
+            [
+              "Implementación y operación",
+              "Quien lo implementa",
+              "En Ingeniak, {{price}}, según el alcance"
+            ]
+          ],
+          "note": "Condiciones de HighLevel consultadas el 19 de octubre de 2026 en sus páginas oficiales (fuentes 1 y 5)."
+        },
+        "Dos detalles antes de decidir. HighLevel no pide contrato de largo plazo: se paga mes a mes, se puede cambiar de plan o cancelar desde el tablero, y ofrece una prueba gratis de 14 días.[^1] Y una agencia puede revender el uso de WhatsApp con su propio margen, así que pregunta a quien te implemente si ese uso se cobra a costo o con margen.[^5]",
+        "En Ingeniak los proyectos empiezan {{price}}, e implementar un sistema toma de 7 a 30 días, según el alcance. Qué piezas configuramos, qué canales conectamos y qué hará el agente lo definimos contigo en una Discovery Session de 30 minutos, sin costo.",
+        {
+          "variant": "note",
+          "label": "Para que quede claro",
+          "text": "GoHighLevel es una herramienta que implementamos completa en español; no usamos la etiqueta de partner con HighLevel. Nuestra única alianza oficial es con Kommo, como partner en Latinoamérica."
+        }
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Quieres ver cómo se vería GoHighLevel con tu proceso? Mira lo que configuramos o escríbele a Kain y cuéntale cómo captas y agendas hoy.",
+      "link": {
+        "label": "GoHighLevel en español con Ingeniak",
+        "href": "/gohighlevel/"
+      },
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí la guía de GoHighLevel en español y quiero implementarlo en mi empresa."
+      }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json; N15 y H04 en validar: no se publican)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "GoHighLevel en español,",
+        "soft": "en pocas palabras."
+      },
+      "faqIds": [
+        "H01",
+        "N15",
+        "H02",
+        "H04",
+        "H03"
+      ]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo que implementa GoHighLevel en español en Ingeniak, con agentes de IA conectados a sus calendarios. Lo actualizamos cuando HighLevel cambia funciones, idiomas o su forma de cobrar."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": {
+        "text": "Fuentes y fecha de consulta"
+      },
+      "lede": "Todo lo que decimos de GoHighLevel sale de su sitio y su centro de ayuda oficiales, consultados el 19 de octubre de 2026. Funciones, idiomas y precios cambian: revisa la versión vigente antes de contratar.",
+      "items": [
+        {
+          "title": "HighLevel Pricing",
+          "publisher": "HighLevel",
+          "href": "https://www.gohighlevel.com/pricing",
+          "consultado": "2026-10-19",
+          "nota": "Planes por cuenta y subcuentas, usuarios y contactos ilimitados, funciones incluidas, cargos por uso, complementos (WhatsApp), prueba de 14 días y pago mes a mes."
+        },
+        {
+          "title": "The Internationalization of HighLevel",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/155000000566-the-internationalization-of-highlevel-has-begun-",
+          "consultado": "2026-10-19",
+          "nota": "Idioma de la plataforma por subcuenta y por usuario, áreas traducidas al español, notificaciones por destinatario y respaldo en inglés."
+        },
+        {
+          "title": "Snapshots · Overview",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/48000982511-snapshots-overview",
+          "consultado": "2026-10-19",
+          "nota": "Plantillas reutilizables que copian flujos, embudos, calendarios, formularios y tableros entre subcuentas."
+        },
+        {
+          "title": "How to Set Up WhatsApp for a Sub-Account",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/155000001980-how-to-set-up-whatsapp-for-a-sub-account",
+          "consultado": "2026-10-19",
+          "nota": "Tres formas de conectar WhatsApp: coexistencia con la app de WhatsApp Business, número nuevo o migración desde otro proveedor; importación de contactos y hasta seis meses de historial."
+        },
+        {
+          "title": "WhatsApp Pricing, Billing and Rebilling Guide",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/155000001428-whatsapp-pricing-billing-and-rebilling-guide",
+          "consultado": "2026-10-19",
+          "nota": "Cuota mensual por subcuenta con WhatsApp, cobro del uso de mensajes y llamadas, y reventa con margen por parte de la agencia."
+        },
+        {
+          "title": "Conversation AI Bot Explained",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/155000001335-conversation-ai-bot-explained",
+          "consultado": "2026-10-19",
+          "nota": "Modos de respuesta: apagado, sugerencias (una persona aprueba) y piloto automático."
+        },
+        {
+          "title": "How to Set Up a Conversation AI Bot",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/155000004401-how-to-set-up-a-conversation-ai-bot",
+          "consultado": "2026-10-19",
+          "nota": "Qué hace el agente (responder, recoger datos, ayudar a agendar) y acciones como pasar la conversación a una persona y dar seguimiento."
+        },
+        {
+          "title": "Conversation AI · Primary vs Non-Primary Bots",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/155000004414-conversation-ai-primary-vs-non-primary-bots",
+          "consultado": "2026-10-19",
+          "nota": "Canales compatibles: WhatsApp, Instagram, Facebook, SMS, widget de chat, chat en vivo y correo."
+        }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}. Los nombres de los clientes están anonimizados."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "items": [
+        {
+          "href": "/gohighlevel/",
+          "label": "Plataforma",
+          "title": "GoHighLevel en español",
+          "line": "Implementación completa para tu equipo, con agente de IA."
+        },
+        {
+          "href": "/blog/kommo-vs-gohighlevel/",
+          "label": "Blog",
+          "title": "Kommo vs GoHighLevel",
+          "line": "Cuál conviene según cómo vendes."
+        },
+        {
+          "href": "/servicios/crm-con-ia/",
+          "label": "Servicio",
+          "title": "CRM con IA",
+          "line": "Un agente que atiende y un CRM que no deja a nadie sin seguimiento."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila, sujeto a la izquierda)",
+      "eyebrow": "Tu caso",
+      "h2": {
+        "text": "¿Quieres GoHighLevel en español, listo para tu equipo?",
+        "soft": "Lo vemos en 30 minutos."
+      },
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí la guía de GoHighLevel en español y quiero implementarlo en mi empresa."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

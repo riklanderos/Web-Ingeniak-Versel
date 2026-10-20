@@ -5,7 +5,8 @@
 //   01 hero          ImageSection hero (persona a la derecha) + Breadcrumbs + H1 en 3 voces (kicker · cifra mega · texto)
 //   02 ficha         entradilla (.t-standfirst) + EntitySheet variant="case" (Quick Jump: el riel muestra etiquetas en casos)
 //   03 punto-partida Prose + nota al margen en ámbar
-//   04 cifra         CaseFigure (variante de §5.4.1; fijada +100 % en escritorio)
+//   04 cifra         CaseFigure (variante de §5.4.1; fijada +100 % en escritorio). index/multiplier/nodes: en escritorio la
+//                    escena va a la derecha del texto (pages.css); envuelta en case/CaseFigureLocal (el "$" de multiplier)
 //   05 implementacion SystemFlow (los nodos con confirmed:false no se publican)
 //   06 resultado     ImageSection mid (Kain del lado opuesto) + agenda registrada sobre el panel de cristal (SIMULACIÓN)
 //   07 vktor         VktorRail (hitos confirmados → "milestones"; si no, fases genéricas)
@@ -18,6 +19,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ImageSection from '../cine/ImageSection.astro';
 import CaseFigure from '../cine/CaseFigure.astro';
+import CaseFigureLocal from './case/CaseFigureLocal.astro';
 import Dawn from '../cine/Dawn.astro';
 import { resolvePlate, AURA_ISOTIPO, AURA_ONDAS, type Resolved } from '../cine/plate';
 import Breadcrumbs from '../nav/Breadcrumbs.astro';
@@ -35,10 +37,10 @@ import Still from '../ui/Still.astro';
 import Icon from '../ui/Icon.astro';
 import Prose from '../content/Prose.astro';
 import Quote from '../content/Quote.astro';
-import { getCopy, getPage, getPlate, waHref, SITE, linkTarget, type Page } from '../../lib/site';
+import { getCopy, getPage, getPlate, waHref, resolveTokens, SITE, linkTarget, type Page } from '../../lib/site';
 import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 
-interface Props { page: Page }
+interface Props { page: Page; devCompleto?: boolean }
 const page = Astro.props.page as any;
 const copy = getCopy(page.id);
 const C: Record<string, any> = copy.sections ?? {};
@@ -58,7 +60,11 @@ const shows = (s: any) => {
 // Caso breve (QA #54): mientras ficha, punto de partida e implementación no estén confirmados por escrito, la página solo
 // pinta portada, ficha (filas confirmadas), CaseFigure, qué puedes replicar, relacionados y cierre — y sale en noindex.
 // Lo no confirmado no llega al HTML público (no basta con noindex).
-const breve = !!page.publishGate && copy.publishGate?.ok !== true;
+// Solo en desarrollo: /casos/<slug>--completo/ (casos/[slug].astro) pinta la versión completa de un caso breve para revisar
+// su maqueta (implementación, resultado y VKTOR con sus placas o su launchFallback) antes de que el cliente abra la puerta.
+// Esa ruta no existe en el build y sale en noindex.
+const devCompleto = import.meta.env.DEV && Astro.props.devCompleto === true;
+const breve = !!page.publishGate && copy.publishGate?.ok !== true && !devCompleto;
 const BREVE = ['hero', 'ficha', 'cifra', 'replicar', 'relacionados', 'cta-final'];
 const order: string[] = sitemapSecs.filter(shows).map((s) => s.id).filter((id) => !breve || BREVE.includes(id));
 
@@ -66,7 +72,9 @@ const order: string[] = sitemapSecs.filter(shows).map((s) => s.id).filter((id) =
 // Etiqueta del primario: la del copy (o la compartida de _comun), nunca la variante de sitemap.json (regla de un azul, §0.1)
 const comun = (() => { try { return getCopy('_comun'); } catch { return null; } })();
 const primaryLabel = (c: any): string => c?.ctaPrimary?.label ?? comun?.cta?.discovery ?? 'Agenda tu Discovery Session';
-const wa = (msg?: string) => (msg ? waHref(msg) : page.secondaryCta?.href ?? waHref('Hola Kain, quiero información.'));
+// El mensaje de WhatsApp acepta los mismos tokens que el copy ({{metric:ID}}, |full, |prose): una cifra del mensaje sale de
+// metrics.ts, nunca escrita a mano (§0.1-2)
+const wa = (msg?: string) => (msg ? waHref(resolveTokens(msg)) : page.secondaryCta?.href ?? waHref('Hola Kain, quiero información.'));
 /** Enlaces del cuerpo (R12 · QA enlaces): solo rutas construidas; una planeada se pinta como texto (nunca '#'). */
 const hrefOr = (h?: string) => (h ? linkTarget(h) ?? undefined : undefined);
 const TOKEN = /\{\{metric:([a-z0-9-]+)(?:\|full)?\}\}/g;
@@ -186,7 +194,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
   page={page}
   lcpPlate={heroR?.id ?? undefined}
   lcpSrcsetMax={heroPlate?.srcsetMax}
-  noindex={breve}
+  noindex={breve || devCompleto}
   articleAbout={articleAbout}
   rail={rail.length > 1 ? rail : false}
   railMode="labels"
@@ -293,12 +301,14 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
 
     /* ───────────── 04 · La cifra (CaseFigure) ───────────── */
     if (id === 'cifra' && cifraIds.length) return (
-      <CaseFigure id="cifra" variant={cifraVariant} metricIds={cifraIds} labels={{ before: cifra.figure?.before, after: cifra.figure?.after }} class="case-cifra tpl-glow">
-        {cifra.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cifra.eyebrow}</p>}
-        <h2 id="cifra-t" class="t-h2" data-split>{H2(cifra.h2).text}{cifra.h2?.soft && <> <span class="soft">{cifra.h2.soft}</span></>}</h2>
-        {cifra.figure?.caption && <p class="t-micro case-cifra__cap" data-reveal>{cifra.figure.caption}</p>}
-        {cifra.line && <Fragment slot="foot"><Copy as="p" class="t-lede t-lede--2 case-cifra__line" text={cifra.line} /></Fragment>}
-      </CaseFigure>
+      <CaseFigureLocal>
+        <CaseFigure id="cifra" variant={cifraVariant} metricIds={cifraIds} labels={{ before: cifra.figure?.before, after: cifra.figure?.after }} class="case-cifra tpl-glow">
+          {cifra.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cifra.eyebrow}</p>}
+          <h2 id="cifra-t" class="t-h2" data-split>{H2(cifra.h2).text}{cifra.h2?.soft && <> <span class="soft">{cifra.h2.soft}</span></>}</h2>
+          {cifra.figure?.caption && <p class="t-micro case-cifra__cap" data-reveal>{cifra.figure.caption}</p>}
+          {cifra.line && <Fragment slot="foot"><Copy as="p" class="t-lede t-lede--2 case-cifra__line" text={cifra.line} /></Fragment>}
+        </CaseFigure>
+      </CaseFigureLocal>
     );
 
     /* ───────────── 05 · Qué implementamos (SystemFlow) ───────────── */

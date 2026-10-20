@@ -1,0 +1,8 @@
+---
+// /preguntas-frecuentes/ · T-FAQ (ESPEC-v2 §5.14). Texto: src/content/paginas/faq.json; preguntas: src/data/faq.json.
+import FaqTemplate from '../../components/templates/FaqTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+const page = getPage('/preguntas-frecuentes/');
+const copy = getCopy(page.id);
+---
+<FaqTemplate page={page} copy={copy} />

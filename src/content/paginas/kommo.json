@@ -1,0 +1,299 @@
+{
+  "_schema": "T-PLATFORM (PlatformTemplate.astro). Mismo esquema que T-SERVICE (_ESQUEMA.md §2–§6) más: hero.badge (texto del sello KommoBadge anclado a la placa), hero.ui.pipeline (embudo genérico registrado en la superficie de cristal: stages[], lead, status), licencias (credencial: badge, items de pasos para ScriptList steps, note), agente-chat.chat.lines (guion de ChatSim en línea, ChatLine[] de _ESQUEMA §8) y fit.links. Los campos con _ no se imprimen.",
+  "pageId": "kommo",
+  "url": "/kommo/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · URL de la ficha de Ingeniak en el directorio de partners de Kommo (D la pide en #licencias, '[VALIDAR URL]'). Mientras no la tengamos, #licencias no enlaza al directorio: solo el sello, que enlaza a kommo.com como pide el programa de partners.",
+    "PREGUNTA AL CLIENTE · TikTok: la página v1 decía 'Conectamos WhatsApp Business, Instagram y TikTok'. Los canales confirmados el 2026-10-19 son WhatsApp, Instagram, Facebook Messenger, el chat de la web y el correo, así que esta página no promete TikTok. ¿Lo conectan a Kommo? Si sí, se agrega a #que-hacemos y #como-funciona.",
+    "PREGUNTA AL CLIENTE · licencias: ¿se publican los planes de Kommo o algún rango? Por defecto no (ESPEC §11-7): la página dice que se cotizan aparte, según plan y usuarios (texto de la FAQ K04 aprobada).",
+    "PREGUNTA AL CLIENTE · #agente-chat: el guion de ejemplo termina pasando la venta a una persona de ventas ('Ana', nombre genérico) con la conversación completa. ¿Así lo operan en Kommo (asignación de responsable y tarea)?",
+    "CAMBIO DE AFIRMACIÓN · hero.lede: D decía 'un solo CRM que vende 24/7'. Como en la operación sí intervienen personas (RESPUESTAS-CLIENTE 2026-10-19 #6), queda 'un solo CRM que atiende y da seguimiento 24/7'.",
+    "CAMBIO DE AFIRMACIÓN · que-hacemos.h2: v1 decía 'De la licencia al CRM que vende solo'. Queda 'De la licencia al CRM que trabaja con tu equipo' (misma razón: personas en la operación).",
+    "CAMBIO DE AFIRMACIÓN · definicion.metricRow: D pedía +340 %, 8 min → 12 s, +73 sistemas y 7 países. Sale dental-respuesta: la clínica dental opera con GoHighLevel (RESPUESTAS-CLIENTE 2026-10-19 #15), no con Kommo, y bajo '¿Qué es Kommo?' se leería como resultado de Kommo. Queda retail-conversiones (el caso de Kommo), sistemas y paises, con el título 'Ingeniak en datos'.",
+    "CAMBIO DE AFIRMACIÓN · casos: la cifra de la clínica dental sí aparece (D la pide), pero el lede aclara que es el mismo tipo de agente de IA y que esa clínica usa GoHighLevel como CRM. v1 la ponía bajo 'Kommo con IA' y decía 'sin intervención humana': esa frase sale.",
+    "CAMBIO DE TEXTO · que-hacemos #06: v1 'Un tablero con prospectos, citas, ventas y costo por cliente en tiempo real' pasa a 'Reportes claros' con datos del propio CRM (sin 'tiempo real' ni 'costo por cliente', que dependen de cada implementación).",
+    "RESUELTO 2026-10-19 · cliente en chat · (16) plazo de implementación general de Ingeniak: de 7 a 30 días según el alcance. Va en inversion.remate, nunca como plazo de un caso.",
+    "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (#que-hacemos, #como-funciona, #inversion).",
+    "RESUELTO 2026-10-19 · cliente en chat · (1) retail-conversiones sin periodo: la cifra sale tal como está en metrics.ts."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (kommo-hero; respaldo home-sistema-3-organizar en espejo) + embudo registrado en la superficie + KommoBadge anclado (ancla 'sello', en móvil en línea) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Plataforma · Organizar",
+      "h1": { "text": "Partner oficial de Kommo", "soft": "en México y LATAM", "lit": "oficial" },
+      "lede": "Licencias, implementación y automatización de Kommo con agentes de IA en WhatsApp. Conectamos tus chats, tu embudo y tu seguimiento en un solo CRM que atiende y da seguimiento 24/7.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, vengo de la página de Kommo de Ingeniak y quiero información sobre licencias e implementación de Kommo."
+      },
+      "badge": "Partner oficial de Kommo en LATAM",
+      "ui": {
+        "_nota": "Embudo genérico (ESPEC §5.2.1: nunca copia de la UI de Kommo) registrado en la superficie de cristal; el lead entra en Nuevo y llega a Cita agendada. SIMULACIÓN + data-nosnippet.",
+        "pipeline": {
+          "title": "Embudo de ventas",
+          "stages": ["Nuevo", "Calificado", "Cita agendada", "Ganado"],
+          "active": 2,
+          "lead": "Lead · WhatsApp",
+          "status": "Registrado en tu CRM"
+        }
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio: el banco no trae '¿Qué es Kommo?') + MetricRow",
+      "rail": "Qué es",
+      "eyebrow": "Kommo en una frase",
+      "definition": {
+        "heading": "¿Qué es Kommo?",
+        "text": "Kommo es un CRM pensado para vender por mensajería. Junta en un solo lugar las conversaciones de WhatsApp, Instagram y Facebook Messenger, las organiza en embudos de venta y automatiza el seguimiento dentro del chat. Como partner oficial de Kommo en Latinoamérica, te ayudamos con las licencias, la implementación y los agentes de IA que atienden por ti."
+      },
+      "body": [
+        "Un CRM tradicional espera a que alguien capture los datos. Kommo parte del chat: cada conversación ya es un lead, con su historial, su etapa y su siguiente paso. Por eso encaja cuando tu venta pasa por WhatsApp o por redes sociales, y por eso le sumamos un agente de IA: el CRM ordena y el agente atiende."
+      ],
+      "metricRow": {
+        "title": "Ingeniak en datos",
+        "metricIds": ["retail-conversiones", "sistemas", "paises"],
+        "sourceNote": true
+      }
+    },
+    "senales": {
+      "_componente": "ImageSection mid (dolor-crm en espejo, persona a la derecha, tone=dolor, móvil split) + lista de señales (dolor ámbar → salida cian) + Fig. 02",
+      "rail": "Señales",
+      "eyebrow": "Señales de que lo necesitas",
+      "h2": { "text": "Tus ventas viven en el chat.", "soft": "Tu CRM, todavía no." },
+      "lede": "Si reconoces dos o más, el problema no es la herramienta: es cómo está implementada.",
+      "fig": { "label": "Seguimiento en notas sueltas" },
+      "items": [
+        {
+          "pain": "Pagas Kommo, pero las etapas no se mueven.",
+          "painLine": "Los leads se quedan en «Nuevo» y nadie sabe cuál sigue vivo.",
+          "fix": "Configuramos el embudo con las etapas reales de tu venta."
+        },
+        {
+          "pain": "Los chats viven fuera del CRM.",
+          "painLine": "Cada vendedor atiende desde su teléfono y el historial se va con él.",
+          "fix": "Cada conversación de WhatsApp entra sola a Kommo, con su historial."
+        },
+        {
+          "pain": "El seguimiento depende de la memoria.",
+          "painLine": "Si nadie se acuerda de escribir, el prospecto se enfría.",
+          "fix": "Tareas, recordatorios y mensajes de seguimiento que salen solos."
+        },
+        {
+          "pain": "Los reportes no cuadran.",
+          "painLine": "Cada quien lleva su cuenta en una hoja aparte y nadie confía en el número.",
+          "fix": "Reportes que salen de los datos del CRM, no de una hoja aparte."
+        }
+      ]
+    },
+    "que-hacemos": {
+      "_componente": "ScriptList agrupada por etapa del sistema (Organizar · Atender · Automatizar · Medir), sin aside",
+      "rail": "Qué hacemos",
+      "eyebrow": "Qué hacemos con Kommo",
+      "h2": { "text": "De la licencia", "soft": "al CRM que trabaja con tu equipo." },
+      "groups": [
+        {
+          "label": "Organizar",
+          "glyph": "organizar",
+          "items": [
+            { "title": "Licencias de Kommo", "line": "Te ayudamos a elegir y contratar las licencias que tu equipo necesita, como partner oficial." },
+            { "title": "Implementación del CRM", "line": "Embudos, etapas, campos y usuarios configurados según cómo vende tu equipo." }
+          ]
+        },
+        {
+          "label": "Atender",
+          "glyph": "atender",
+          "items": [
+            { "title": "Tus canales en una bandeja", "line": "Conectamos WhatsApp Business, Instagram y Facebook Messenger para que cada chat llegue a Kommo como lead." },
+            { "title": "Agente de IA en el chat", "line": "Responde en segundos, califica al prospecto y agenda la cita, 24/7, con todo registrado en Kommo.", "href": "/servicios/agentes-ia-whatsapp/" }
+          ]
+        },
+        {
+          "label": "Automatizar",
+          "glyph": "automatizar",
+          "items": [
+            { "title": "Seguimiento automático", "line": "Recordatorios, tareas y mensajes que salen solos. Con n8n conectamos Kommo con tus otros sistemas.", "href": "/servicios/automatizacion-n8n/" }
+          ]
+        },
+        {
+          "label": "Medir",
+          "glyph": "medir",
+          "items": [
+            { "title": "Reportes claros", "line": "Prospectos por etapa, citas y ventas con los datos del propio CRM, para decidir con números y no con corazonadas." }
+          ]
+        }
+      ],
+      "body": [
+        "Antes de configurar nada, revisamos cómo vende tu equipo hoy: quién atiende, por qué canal, qué pregunta el cliente y en qué momento se pierde un prospecto. Kommo se adapta a ese proceso, no al revés."
+      ]
+    },
+    "como-funciona": {
+      "_componente": "SystemFlow sobre la placa riel-servicios (sin sujeto, sin pin): nodos registrados sobre los 5 nodos del riel",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": { "text": "Del chat al cierre,", "soft": "todo dentro de Kommo." },
+      "lede": "El cliente escribe por donde ya te busca. Kommo lo ordena, Kain lo atiende y tu equipo cierra.",
+      "nodes": [
+        { "label": "Tus canales", "line": "WhatsApp, Instagram y Facebook Messenger llegan a una sola bandeja.", "logos": ["whatsapp", "instagram", "facebook"], "confirmed": true },
+        { "label": "Kommo, tu embudo", "line": "Cada chat se vuelve lead y entra a su etapa.", "logos": ["kommo"], "confirmed": true },
+        { "label": "Kain, dentro del chat", "line": "Responde, califica y agenda con tu información.", "confirmed": true },
+        { "label": "Seguimiento automático", "line": "Tareas y mensajes que salen solos; n8n conecta tus otros sistemas.", "logos": ["n8n"], "confirmed": true },
+        { "label": "Tu equipo y tus reportes", "line": "Tu vendedor recibe el lead calificado; tú ves cada etapa.", "confirmed": true }
+      ],
+      "note": "Las herramientas exactas se definen en la fase Koncept de VKTOR™, con lo que tu equipo ya usa."
+    },
+    "licencias": {
+      "_componente": "Credencial de partner: KommoBadge (sello oficial, enlazado a kommo.com) + ScriptList variant=steps (3 pasos) + nota de precios; sin precios publicados",
+      "rail": "Licencias",
+      "eyebrow": "Licencias con un partner oficial",
+      "h2": { "text": "Tus licencias de Kommo,", "soft": "con quien también las implementa." },
+      "lede": "Contratar con un partner oficial significa que un solo equipo responde por la herramienta y por que funcione con tu proceso de venta desde el primer día.",
+      "badge": "Partner oficial de Kommo en LATAM",
+      "credential": [
+        { "term": "Alianza", "value": "Partner oficial y distribuidor de Kommo en Latinoamérica" },
+        { "term": "Incluye", "value": "Licencias, implementación, agentes de IA y capacitación" },
+        { "term": "Atención", "value": "En español, por Google Meet, desde Guadalajara" }
+      ],
+      "items": [
+        { "n": "01", "title": "Vemos quién lo usará", "line": "Revisamos tu equipo, tus canales y cuántas conversaciones atiendes." },
+        { "n": "02", "title": "Elegimos tu plan", "line": "Te recomendamos el plan de Kommo y los usuarios que necesitas, sin licencias de más." },
+        { "n": "03", "title": "Lo dejamos operando", "line": "Contratas con nosotros y configuramos tu cuenta para que tu equipo venda ahí desde el inicio." }
+      ],
+      "note": "No publicamos precios de licencias: dependen del plan de Kommo y de cuántas personas de tu equipo lo usarán. Te los explicamos por separado, sin sorpresas.",
+      "links": [{ "label": "Cómo verificar un partner oficial de Kommo", "href": "/blog/como-verificar-partner-oficial-kommo/" }]
+    },
+    "agente-chat": {
+      "_componente": "ImageSection mid (regreso al set: kommo-hero empujada hacia la superficie, cam 1.35 → 1.6; respaldo home-sistema-2-atender en espejo) + ChatSim registrado en la superficie; en móvil, ChatSim en línea en 'more'",
+      "rail": "Agente en el chat",
+      "eyebrow": "Agente de IA dentro del chat",
+      "h2": { "text": "Kommo organiza.", "soft": "Kain atiende." },
+      "lede": "Kain, el agente de IA de Ingeniak, contesta cada chat que llega a Kommo, hace las preguntas que haría tu equipo y deja al prospecto en su etapa, con la conversación completa.",
+      "items": [
+        "Responde en segundos, a cualquier hora, con la información de tu negocio.",
+        "Califica: pregunta lo que tu vendedor necesita saber antes de tomar el lead.",
+        "Mueve al prospecto de etapa y crea la tarea para la persona indicada.",
+        "Pasa la conversación a una persona cuando hace falta, con todo el historial."
+      ],
+      "chat": {
+        "mode": "registered",
+        "title": "Agente de IA de tu tienda",
+        "tab": "WhatsApp",
+        "lines": [
+          { "who": "cliente", "text": "Hola, ¿tienen la chamarra negra del anuncio en talla M?", "delay": 800, "time": "10:14 p. m." },
+          { "who": "kain", "text": "¡Hola! Sí, la tenemos en talla M. ¿La quieres con envío a domicilio o prefieres recoger en tienda?", "delay": 1000, "event": "Lead creado en Kommo · etapa Nuevo" },
+          { "who": "cliente", "text": "A domicilio, en Zapopan. ¿Me la pueden apartar?", "delay": 1400 },
+          { "who": "kain", "text": "Claro. Te paso con Ana, de ventas, para cerrar tu pedido; ya tiene toda la conversación.", "delay": 1100, "event": "Calificado · tarea asignada a ventas" }
+        ]
+      }
+    },
+    "casos": {
+      "_componente": "Montage (2 filas) + ResultsLedger filtrado",
+      "rail": "Casos",
+      "eyebrow": "Sistemas reales, cifras medidas",
+      "h2": { "text": "Kommo con IA,", "soft": "operando hoy mismo." },
+      "lede": "El retail multimarca opera con Kommo y calificación de leads por IA. La clínica dental usa el mismo tipo de agente, con GoHighLevel como CRM: el agente se conecta a cualquiera de los dos.",
+      "rows": [
+        { "metricId": "retail-conversiones", "context": "Kommo con calificación de leads por IA · Retail multimarca", "href": "/casos/retail-multimarca-kommo/", "linkLabel": "Ver el caso" },
+        { "metricId": "dental-respuesta", "context": "Agente de IA en WhatsApp · Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" }
+      ],
+      "ledger": { "metricIds": ["retail-conversiones", "dental-respuesta", "dental-citas"], "caption": "Resultados de CRM y agentes de IA" },
+      "sourceNote": true,
+      "note": "Nombres de clientes anonimizados."
+    },
+    "fit": {
+      "_componente": "TwoColumnScript variant=fit (el 'no' en ámbar) + enlaces",
+      "rail": "¿Es para ti?",
+      "eyebrow": "Antes de implementar",
+      "h2": { "text": "¿Kommo es el CRM", "soft": "correcto para ti?" },
+      "lede": "Preferimos decirlo antes de que inviertas: Kommo brilla cuando tu venta pasa por el chat.",
+      "left": {
+        "title": "Kommo es para ti si…",
+        "tone": "cian",
+        "items": [
+          "Vendes por WhatsApp, Instagram o Facebook Messenger y los chats se quedan sin seguimiento.",
+          "Tu equipo atiende desde varios teléfonos y nadie ve el embudo completo.",
+          "Ya tienes Kommo, pero nadie lo usa como debería.",
+          "Quieres que un agente de IA responda, califique y registre cada lead por ti."
+        ]
+      },
+      "right": {
+        "title": "Quizá no es para ti si…",
+        "tone": "ambar",
+        "items": [
+          "Tu venta no pasa por mensajería: ahí suele encajar mejor GoHighLevel.",
+          "Buscas configurarlo por tu cuenta, sin acompañamiento ni capacitación.",
+          "Esperas que la herramienta resuelva sola un proceso de venta que nadie ha definido."
+        ]
+      },
+      "links": [
+        { "label": "Conoce GoHighLevel en español", "href": "/gohighlevel/" },
+        { "label": "Kommo vs GoHighLevel, punto por punto", "href": "/blog/kommo-vs-gohighlevel/" }
+      ]
+    },
+    "vktor": {
+      "_componente": "ImageSection mid (metodologia-hero: Kain sobre cinco losas, letra registrada por losa) + VktorRail variant=phases en la disolución",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": { "text": "Así implementamos Kommo,", "soft": "en cinco fases." },
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Revisamos tus chats, tu embudo actual y en qué momento se enfrían los prospectos." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Definimos etapas, campos, usuarios, automatizaciones y lo que hará el agente." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Configuramos Kommo, conectamos tus canales y el agente, y probamos todo antes de encenderlo." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Capacitamos a tus vendedores y ajustamos en producción con conversaciones reales." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Medimos etapas, tiempos de respuesta y ventas, y optimizamos cada mes." }
+      ],
+      "links": [{ "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }]
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": { "text": "{{Price}}." },
+      "lede": "La implementación depende de tres cosas, no de un paquete:",
+      "items": [
+        { "title": "Canales", "line": "Cuántos canales conectamos a Kommo: WhatsApp, Instagram, Facebook Messenger, el chat de tu web o el correo." },
+        { "title": "Integraciones", "line": "Lo que vive alrededor del CRM: el agente de IA, tu calendario y tus otros sistemas con n8n." },
+        { "title": "Volumen", "line": "Cuántas conversaciones entran y cuántas personas de tu equipo trabajan en Kommo." }
+      ],
+      "remate": "Las licencias de Kommo se cotizan aparte, según plan y usuarios. El alcance exacto lo definimos en tu Discovery Session; según lo que incluya, la implementación toma de 7 a 30 días."
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas", "soft": "sobre Kommo." },
+      "faqIds": ["G04", "K01", "K02", "G05", "K03", "K04"],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": { "text": "Otras piezas", "soft": "del mismo sistema." },
+      "items": [
+        { "href": "/gohighlevel/", "label": "Plataforma", "title": "GoHighLevel en español", "line": "CRM, embudos, calendarios y automatizaciones con IA, configurados en español." },
+        { "href": "/servicios/agentes-ia-whatsapp/", "label": "Servicio", "title": "Agentes de IA para WhatsApp", "line": "Responden, califican y agendan 24/7, conectados a tu CRM." },
+        { "href": "/agentes-ia-guadalajara/", "label": "Guadalajara", "title": "Agentes de IA en Guadalajara", "line": "Agencia de IA con oficina en Tlajomulco de Zúñiga, para empresas de Jalisco y de toda Latinoamérica." },
+        { "href": "/blog/kommo-vs-gohighlevel/", "label": "Guía", "title": "Kommo vs GoHighLevel", "line": "Cuál conviene según cómo vendes, punto por punto.", "_nota": "Respaldo: solo se pinta mientras alguna de las tres de D no esté construida (máximo 3 stills)." }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Tu siguiente paso",
+      "h2": { "text": "¿Kommo es para tu operación?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "En la Discovery Session revisamos cómo vendes y operas hoy, y te decimos si Kommo encaja, qué licencias necesitas y qué conviene automatizar primero.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, vengo de la página de Kommo de Ingeniak y quiero información sobre licencias e implementación de Kommo."
+      }
+    }
+  }
+}

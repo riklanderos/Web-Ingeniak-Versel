@@ -1,0 +1,157 @@
+{
+  "pageId": "ind-retail",
+  "url": "/industrias/retail-ecommerce/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "APROBACIÓN DE PREGUNTAS · R2 pide al menos cuatro preguntas propias por industria y el banco no tiene ninguna de retail y e-commerce (K03 es de Kommo). Propuesta en materiales/v2/build/peticiones.md (Construcción · industrias · copy): T01 '¿El agente sabe qué tengo en existencia?', T02 '¿Funciona en Instagram además de WhatsApp?', T03 '¿Cómo sé qué campaña generó cada venta?', T04 '¿Sirve para tienda física y tienda en línea al mismo tiempo?'. Al aprobarse, entran a faq.json y a faq.faqIds de esta página, delante de las compartidas.",
+    "CAMBIO DE AFIRMACIÓN · portada: el brief decía 'Que cada chat de Instagram y WhatsApp termine en una venta registrada' (no todo chat termina en venta). Ahora: 'Que cada chat de Instagram y WhatsApp tenga respuesta y seguimiento hasta la venta.'",
+    "CAMBIO DE AFIRMACIÓN · jornada: el brief hablaba de 'carritos olvidados'. La página no promete recuperar carritos conectándose a la tienda en línea (no está confirmado): el seguimiento que describe es dentro del chat, con el mensaje que aprueba el equipo. Tampoco escribe 'siete lugares' (sería la cifra ecom-tablero redactada con letra fuera de su fila).",
+    "CAMBIO DE TEXTO · definicion: texto propio de la página (no hay pregunta del banco para este sector). Canales confirmados por RESPUESTAS-CLIENTE #19 (WhatsApp, Instagram, Facebook Messenger y chat web; el correo no se nombra aquí porque la página habla de chats).",
+    "CHAT · #kain-sector usa src/data/chats/retail.json (ya existía, sin cambios): tenis del anuncio en talla 26, envío a Guadalajara, enlace de pago, 'Pedido registrado en tu CRM · origen: anuncio' y la política de cambios. El lede de la sección describe ese guion.",
+    "PREGUNTA AL CLIENTE · ¿El tablero '1 vista · 7 fuentes' es del mismo e-commerce de la Ciudad de México del costo por lead? La página no lo afirma: los presenta como dos cifras de e-commerce y la fila del tablero dice solo 'E-commerce'.",
+    "PREGUNTA AL CLIENTE · ¿Con qué tiendas en línea o puntos de venta se integran (Shopify, WooCommerce, Tiendanube, Mercado Libre u otros)? Hoy la página dice 'tu tienda en línea' y 'tu catálogo', sin marcas.",
+    "PREGUNTA AL CLIENTE · ¿Kain consulta existencias en tiempo real o responde con un catálogo que se actualiza cada cierto tiempo? La página solo dice 'con tu catálogo' y que no inventa existencias.",
+    "PREGUNTA AL CLIENTE · ¿Las alertas automáticas (fila 06) existen hoy como servicio? Vienen de la descripción del tablero en el sitio actual ('alertas por IA'); si no, se cambia la fila."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (ind-retail-hero: Kain con teléfono en una boutique cerrada; el dueño dobla ropa al fondo) + chip anclado al teléfono (retail-conversiones) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Industria · Retail y e-commerce",
+      "h1": { "text": "IA y CRM", "soft": "para retail y e-commerce", "lit": "IA" },
+      "lede": "Que cada chat de Instagram y WhatsApp tenga respuesta y seguimiento hasta la venta. Kain contesta con tu catálogo, Kommo ordena a cada cliente por etapa y tus campañas se miden en ventas, no en clics.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo un retail o e-commerce y quiero vender más por chat."
+      },
+      "chip": { "metricId": "retail-conversiones", "context": "Retail multimarca · Kommo + IA" },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio de la página)",
+      "rail": "Cómo ayuda",
+      "eyebrow": "IA en retail y e-commerce",
+      "definition": {
+        "heading": "¿Cómo ayuda la IA a un retail o a un e-commerce?",
+        "text": "Une tus chats, tu CRM, tus campañas y tus datos de venta en un solo sistema. Un agente de IA atiende WhatsApp, Instagram, Facebook Messenger y el chat de tu web con tu catálogo, califica a cada cliente y lo registra en tu CRM. Así cada conversación tiene seguimiento y cada peso de pauta se mide en ventas.",
+        "_nota": "Texto de la página (58 palabras), armado con G03, G05 y K03 (aprobadas) y los canales confirmados (RESPUESTAS-CLIENTE #19)."
+      },
+      "body": [
+        "Funciona igual en una tienda física con varias marcas que en una tienda en línea: cambian el catálogo, las políticas de envío y cambios y el momento en que entra una persona a cerrar. Somos partner oficial de Kommo, el CRM pensado para vender por chat; si tu proceso pide otra plataforma, también implementamos GoHighLevel."
+      ]
+    },
+    "dolores": {
+      "_componente": "DayTimeline vertical (aguja con scrub, sin pin) sobre la toma desenfocada que vira a ámbar o cian por tramo",
+      "rail": "La jornada",
+      "eyebrow": "Un día de tienda",
+      "h2": { "text": "Un día en tu tienda,", "soft": "del primer chat al último carrito." },
+      "lede": "En ámbar, las ventas que hoy se escapan entre chats, cotizaciones y hojas de cálculo; en cian, lo que pasa cuando cada conversación tiene dueño y seguimiento.",
+      "entries": [
+        {
+          "time": "09:10",
+          "pain": "Abres Instagram y hay mensajes de anoche preguntando por tallas y envíos. Para cuando contestas, algunos ya compraron en otro lado.",
+          "fix": "Kain contestó cada mensaje con tu catálogo y mandó el enlace de pago a quien estaba listo para comprar."
+        },
+        {
+          "time": "12:40",
+          "pain": "Mandaste una cotización de mayoreo por WhatsApp hace tres días. Nadie le volvió a escribir.",
+          "fix": "El seguimiento sale el día que tu equipo definió y, si el cliente contesta, Kommo avisa a quien le toca cerrar."
+        },
+        {
+          "time": "15:20",
+          "pain": "La misma clienta pregunta por Instagram, por Messenger y por WhatsApp, y tres personas le contestan distinto.",
+          "fix": "Todas las conversaciones llegan al mismo CRM con su historial: una sola respuesta y una sola persona a cargo."
+        },
+        {
+          "time": "18:00",
+          "pain": "Para saber si la campaña de la semana vendió, alguien junta datos de la tienda en línea, de Meta, de Google, del punto de venta y de dos hojas de cálculo.",
+          "fix": "Tráfico, conversión y ROAS en un solo tablero que se actualiza sin que nadie copie y pegue."
+        },
+        {
+          "time": "22:30",
+          "pain": "Una clienta deja tres prendas en el carrito y pregunta por el envío en el chat. La respuesta llega al día siguiente, cuando ya no le interesa.",
+          "fix": "Kain le contesta en el momento y, si no compra, el seguimiento sale al día siguiente con el mensaje que tu equipo aprobó."
+        }
+      ]
+    },
+    "automatizamos": {
+      "_componente": "ScriptList (6 filas)",
+      "rail": "Qué automatizamos",
+      "eyebrow": "Qué automatizamos",
+      "h2": { "text": "Del anuncio a la venta,", "soft": "seis tareas que dejan de hacerse a mano." },
+      "items": [
+        { "n": "01", "title": "Agente de IA en Instagram y WhatsApp", "line": "Responde tallas, colores, envíos y cambios con tu catálogo y tus políticas; también en Messenger y en el chat de tu web." },
+        { "n": "02", "title": "Kommo con calificación por IA", "line": "Cada conversación entra a Kommo con su etapa y su calificación, para que tu equipo atienda primero a quien está por comprar." },
+        { "n": "03", "title": "Seguimiento a cotizaciones", "line": "Mayoreo, pedidos especiales y conversaciones a medias reciben su seguimiento a tiempo, con el mensaje que tu equipo aprobó." },
+        { "n": "04", "title": "Campañas medidas por venta", "line": "Cada venta queda ligada al anuncio del que vino, para juzgar la pauta por lo que vende y no por los clics." },
+        { "n": "05", "title": "Tablero único", "line": "Tráfico, conversión y ROAS de todas tus fuentes en una sola vista, sin armar reportes a mano." },
+        { "n": "06", "title": "Alertas automáticas", "line": "Si una campaña se encarece o un canal deja de vender, el aviso llega a tiempo para corregir, no en el corte del mes." }
+      ]
+    },
+    "kain-sector": {
+      "_componente": "ImageSection mid (ind-retail-kain-sector; respaldo de lanzamiento home-sistema-2-atender en espejo) + ChatSim registrado (guion retail). Fijada +100 % en escritorio",
+      "rail": "Kain en tu tienda",
+      "eyebrow": "Kain en tu tienda",
+      "h2": { "text": "De la talla al pago,", "soft": "en el mismo chat." },
+      "lede": "Casi a las once de la noche, alguien pregunta por los tenis que vio en un anuncio. Kain confirma la talla con tu catálogo, manda el enlace de pago y registra el pedido en tu CRM con su origen.",
+      "chat": { "mode": "registered", "script": "retail" },
+      "limite": "Kain no inventa existencias, precios ni promociones: contesta solo con lo que está en tu catálogo y en tus políticas. Si un cliente pide algo que no está ahí, la conversación pasa a una persona de tu equipo.",
+      "note": "Ejemplo ilustrativo: la conversación, los productos y las horas no son datos de un caso."
+    },
+    "cifras": {
+      "_componente": "Montage (3 filas) con enlaces a los casos",
+      "rail": "Resultados",
+      "eyebrow": "Resultados",
+      "h2": { "text": "Ventas, costo por lead", "soft": "y una sola vista para decidir." },
+      "lede": "Tres cifras con su fuente: un retail multimarca con Kommo e IA, un e-commerce de la Ciudad de México que bajó su costo por lead y un tablero de e-commerce que junta sus fuentes en una vista.",
+      "rows": [
+        { "metricId": "retail-conversiones", "context": "Retail multimarca · Kommo + IA", "href": "/casos/retail-multimarca-kommo/", "linkLabel": "Ver el caso" },
+        { "metricId": "ecom-cpl", "context": "E-commerce · Ciudad de México", "href": "/casos/ecommerce-cdmx-costo-por-lead/", "linkLabel": "Ver el caso" },
+        { "metricId": "ecom-tablero", "context": "E-commerce · tablero unificado de tráfico, conversión y ROAS" }
+      ],
+      "sourceNote": true,
+      "links": [
+        { "label": "Lee el caso del retail multimarca", "href": "/casos/retail-multimarca-kommo/" },
+        { "label": "Lee el caso del e-commerce en CDMX", "href": "/casos/ecommerce-cdmx-costo-por-lead/" }
+      ]
+    },
+    "servicios": {
+      "_componente": "Still ×3",
+      "rail": "Servicios",
+      "eyebrow": "Servicios recomendados",
+      "h2": { "text": "Lo que usa", "soft": "una tienda que vende por chat." },
+      "items": [
+        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo para vender por chat", "line": "Embudos, etapas y automatizaciones dentro de cada conversación." },
+        { "href": "/servicios/paid-media/", "label": "Atraer", "title": "Paid media medido por ventas", "line": "Meta, Google y TikTok conectados a tu CRM." },
+        { "href": "/servicios/desarrollo-software/", "label": "Medir", "title": "Software y tablero unificado", "line": "Todas tus fuentes de venta en una vista, con avisos cuando algo cambia." }
+      ]
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas de tiendas", "soft": "y e-commerce." },
+      "faqIds": ["K03", "G08", "G05", "G07"],
+      "_nota": "Las cuatro están aprobadas. Cuando existan T01–T04 (propuestas en peticiones.md), van primero.",
+      "footer": "¿Vendes en un canal que no aparece aquí? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Antes de tu próxima campaña",
+      "h2": { "text": "¿Cuántas ventas se quedan en el chat?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "En la Discovery Session seguimos el camino que hoy recorre un cliente de tu tienda, del anuncio o el chat hasta la venta, y te decimos qué conectar primero para que ninguna conversación se quede sin seguimiento.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo un retail o e-commerce y quiero vender más por chat."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

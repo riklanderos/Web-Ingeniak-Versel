@@ -1,0 +1,8 @@
+---
+// /contacto/ · T-CONTACT (ESPEC-v2 §5.12). Texto: src/content/paginas/contacto.json; datos: sitemap.json y SITE.
+import ContactTemplate from '../../components/templates/ContactTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+const page = getPage('/contacto/');
+const copy = getCopy(page.id);
+---
+<ContactTemplate page={page} copy={copy} />

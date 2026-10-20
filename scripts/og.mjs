@@ -65,13 +65,49 @@ function masterOf(id) {
 /** Titular de la página: { kicker?, metric?, a, b? } con el texto real del H1. */
 function headlineOf(page) {
   const h = copyOf(page.id)?.sections?.hero?.h1;
-  if (h?.kicker || h?.metricId) return { kicker: plain(h.kicker), metric: metricValue(h.metricId), a: plain(h.text) };
+  if (h?.metricId) return { kicker: plain(h.kicker), metric: metricValue(h.metricId), a: plain(h.text) };
+  // Firma + titular sin cifra (T-METHOD: "Metodología VKTOR™:" + "tu crecimiento tiene un protocolo")
+  if (h?.kicker) return { kicker: plain(h.kicker), a: plain(h.text) };
   if (h?.text) return { a: plain(h.text), b: plain(h.soft) };
   return { a: plain(page.h1) };
 }
 
-function html({ plate, mirror, fx, head, chip, label = LABEL, illus = false }) {
-  const big = head.metric ? 46 : (head.a.length + (head.b?.length ?? 0) > 70 ? 50 : 58);
+/** Composición según el lado del sujeto (plates.json → layout, con espejo):
+ *  - sujeto a la derecha (por defecto, como las seis primeras tarjetas): texto a la izquierda;
+ *  - sujeto a la izquierda: texto a la derecha, velo y rótulo de imagen ilustrativa en espejo;
+ *  - sujeto al centro: la placa entra a su alto completo (cuerpo completo, R: Kain nunca recortado), corrida para que el
+ *    sujeto quede en el 74 % del ancho, con su borde izquierdo fundido al fondo;
+ *  - sin placa (T-LEGAL): isotipo de cristal sobre el fondo, del lado derecho.
+ *  El ancho de la columna de texto se acota al borde del sujeto (subject.d) para no pisarlo. */
+function layoutOf({ plate, mirror, meta }) {
+  if (!plate) return { side: 'l', copyW: 560 };
+  let lay = meta?.layout ?? 'subject-right';
+  if (mirror) lay = lay === 'subject-left' ? 'subject-right' : lay === 'subject-right' ? 'subject-left' : lay;
+  let s = meta?.subject?.d;
+  if (s && mirror) s = [1 - s[2], s[1], 1 - s[0], s[3]];
+  const ar = meta?.d?.ar ?? W / H;
+  if (lay === 'subject-center' && s) {
+    const pw = H * ar, shift = Math.round(0.74 * W - ((s[0] + s[2]) / 2) * pw);
+    const x0 = shift + s[0] * pw;
+    return { side: 'l', center: { shift, pw: Math.round(pw) }, copyW: Math.max(420, Math.min(600, Math.round(x0 - 48 - 64))) };
+  }
+  // cover: la placa (ar ≈ 1.79) llena 1200 de ancho, así que x del sujeto en la tarjeta ≈ x de la placa
+  if (lay === 'subject-left') return { side: 'r', copyW: s && s[2] > 0.5 ? Math.max(420, Math.min(600, Math.round(W - 64 - (s[2] + 0.03) * W))) : 600 };
+  // Solo se acota cuando el sujeto entra a la mitad izquierda (x < .50): así las seis tarjetas aprobadas no cambian.
+  return { side: 'l', copyW: s && s[0] < 0.5 ? Math.max(420, Math.min(600, Math.round((s[0] - 0.03) * W - 64))) : 600 };
+}
+
+function html({ plate, mirror, fx, head, chip, label = LABEL, illus = false, meta }) {
+  const L = layoutOf({ plate, mirror, meta });
+  const narrow = L.copyW < 560;
+  const big = head.metric ? 46 : (head.a.length + (head.b?.length ?? 0) > 70 || narrow ? 50 : 58);
+  const veil = (deg) => `linear-gradient(${deg}deg,rgba(3,4,11,.92) 0%,rgba(3,4,11,.78) 34%,rgba(3,4,11,.25) 58%,rgba(3,4,11,0) 72%),linear-gradient(0deg,rgba(3,4,11,.55) 0%,rgba(3,4,11,0) 26%)`;
+  const plateCss = !plate
+    ? `.plate{position:absolute;top:-40px;bottom:-40px;right:-30px;width:${H + 80}px;background:url("${fileUrl(join(ROOT, 'public/img/marca/isotipo-cristal-1100.webp'))}") 50% 50% / cover no-repeat;-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent 100%)}
+.aura{position:absolute;inset:0;background:url("${fileUrl(join(ROOT, 'public/img/marca/fondo-ondas-1600.webp'))}") 30% 60% / cover no-repeat;opacity:.38}`
+    : L.center
+      ? `.plate{position:absolute;top:0;bottom:0;left:${L.center.shift}px;width:${L.center.pw}px;background:url("${fileUrl(plate)}") 0 0 / 100% 100% no-repeat;${mirror ? 'transform:scaleX(-1);' : ''}-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 240px,#000 calc(100% - 120px),transparent 100%)}`
+      : `.plate{position:absolute;inset:0;background:url("${fileUrl(plate)}") ${Math.round((fx ?? 0.5) * 100)}% 42% / cover no-repeat;${mirror ? 'transform:scaleX(-1);' : ''}}`;
   return `<!doctype html><html lang="es-MX"><head><meta charset="utf-8"><style>
 @font-face{font-family:Lexend;src:url(${FONT('lexend-var-latin.woff2')}) format("woff2");font-weight:100 900}
 @font-face{font-family:Lexend;src:url(${FONT('lexend-var-latin-ext.woff2')}) format("woff2");font-weight:100 900;unicode-range:U+0100-02BA,U+1E00-1EFF}
@@ -79,9 +115,9 @@ function html({ plate, mirror, fx, head, chip, label = LABEL, illus = false }) {
 @font-face{font-family:Mono;src:url(${FONT('jetbrains-mono-var-latin.woff2')}) format("woff2");font-weight:400 600}
 *{margin:0;box-sizing:border-box}
 html,body{width:${W}px;height:${H}px;overflow:hidden;background:#03040B}
-.plate{position:absolute;inset:0;background:url("${fileUrl(plate)}") ${Math.round((fx ?? 0.5) * 100)}% 42% / cover no-repeat;${mirror ? 'transform:scaleX(-1);' : ''}}
-.veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,4,11,.92) 0%,rgba(3,4,11,.78) 34%,rgba(3,4,11,.25) 58%,rgba(3,4,11,0) 72%),linear-gradient(0deg,rgba(3,4,11,.55) 0%,rgba(3,4,11,0) 26%)}
-.copy{position:absolute;left:64px;top:56px;bottom:56px;width:600px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
+${plateCss}
+.veil{position:absolute;inset:0;background:${veil(L.side === 'r' ? 270 : 90)}}
+.copy{position:absolute;${L.side === 'r' ? 'right' : 'left'}:64px;top:56px;bottom:56px;width:${L.copyW}px;display:flex;flex-direction:column;justify-content:space-between;color:#fff}
 .logo svg{height:30px;width:auto;display:block}
 .mid{display:flex;flex-direction:column;gap:22px}
 .label{font:500 15px/1 Mono,monospace;letter-spacing:.16em;text-transform:uppercase;color:#00E5FF;display:flex;align-items:center;gap:12px}
@@ -94,14 +130,14 @@ h1{font-family:Lexend,sans-serif;letter-spacing:-.025em;text-wrap:balance}
 .foot{display:flex;align-items:center;gap:16px;font:500 14px/1 Mono,monospace;letter-spacing:.14em;text-transform:uppercase;color:#9EB0C7}
 .chip{padding:10px 14px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(0,229,255,.35);color:#DCE6F2;background:rgba(255,255,255,.04)}
 .src{font:400 13px/1.3 Inter,sans-serif;letter-spacing:0;text-transform:none;color:#9EB0C7}
-.illus{position:absolute;right:28px;bottom:24px;font:500 12px/1 Mono,monospace;letter-spacing:.16em;text-transform:uppercase;color:#C9D6E6;padding:7px 10px;border-radius:999px;background:rgba(3,4,11,.62);box-shadow:inset 0 0 0 1px rgba(158,176,199,.32)}
+.illus{position:absolute;${L.side === 'r' ? 'left' : 'right'}:28px;bottom:24px;font:500 12px/1 Mono,monospace;letter-spacing:.16em;text-transform:uppercase;color:#C9D6E6;padding:7px 10px;border-radius:999px;background:rgba(3,4,11,.62);box-shadow:inset 0 0 0 1px rgba(158,176,199,.32)}
 </style></head><body>
-<div class="plate"></div><div class="veil"></div>
+${plate ? '' : '<div class="aura"></div>'}<div class="plate"></div><div class="veil"></div>
 <div class="copy">
   <div class="logo">${LOGO}</div>
   <div class="mid">
     <p class="label"><i></i>${esc(label)}</p>
-    <h1>${head.metric ? `<span class="k">${esc(head.kicker)}</span><span class="m">${esc(head.metric)}</span><span class="a" style="font-size:40px;margin-top:10px">${esc(head.a)}</span>` : `<span class="a">${esc(head.a)}</span>${head.b ? `<span class="b">${esc(head.b)}</span>` : ''}`}</h1>
+    <h1>${head.metric ? `<span class="k">${esc(head.kicker)}</span><span class="m">${esc(head.metric)}</span><span class="a" style="font-size:40px;margin-top:10px">${esc(head.a)}</span>` : `${head.kicker ? `<span class="k">${esc(head.kicker)}</span>` : ''}<span class="a">${esc(head.a)}</span>${head.b ? `<span class="b">${esc(head.b)}</span>` : ''}`}</h1>
   </div>
   <div class="foot"><span>ingeniak.mx</span>${chip ? `<span class="chip">${esc(chip)}</span>` : ''}${head.metric && SOURCE_NOTE ? `<span class="src">Fuente: ${esc(SOURCE_NOTE.charAt(0).toLowerCase() + SOURCE_NOTE.slice(1))}.</span>` : ''}</div>
 </div>
@@ -125,7 +161,7 @@ async function render(name, opts) {
   writeFileSync(out, buf);
   rmSync(dir, { recursive: true, force: true });
   if (/cierran/i.test(JSON.stringify(opts.head))) throw new Error(`[og] ${name}: el texto contiene "cierran"`);
-  console.log(`[og] ${name}.jpg · ${Math.round(buf.length / 1024)} KB · q${q + 4} · placa ${opts.plate.split('/').pop()}`);
+  console.log(`[og] ${name}.jpg · ${Math.round(buf.length / 1024)} KB · q${q + 4} · placa ${opts.plate ? opts.plate.split('/').pop() : '(isotipo, sin placa)'}`);
 }
 
 const only = process.argv.slice(2);
@@ -138,10 +174,12 @@ for (const p of sitemap) {
   const fb = hero?.plate?.launchFallback;
   const id = pid && masterOf(pid) ? pid : (typeof fb === 'string' ? fb : fb?.plate);
   const master = id && masterOf(id);
+  // Página sin placa de portada en sitemap.json (T-LEGAL: intertítulo sobre aura) → tarjeta con el isotipo de cristal
+  if (!hero?.plate) { jobs.push([p.id, { plate: null, head: headlineOf(p), label: labelOf(p) }]); continue; }
   if (!master) { console.warn(`[og] ${p.id}: sin placa de portada; se omite (usa la genérica)`); continue; }
   const meta = plates[id] ?? {};
   const mirror = id === pid ? !!hero?.plate?.mirror : !!fb?.mirror;
-  jobs.push([p.id, { plate: master, mirror, fx: meta.d?.fx, head: headlineOf(p), label: labelOf(p), illus: /imagen ilustrativa/i.test(meta.alt ?? '') }]);
+  jobs.push([p.id, { plate: master, mirror, fx: meta.d?.fx, meta, head: headlineOf(p), label: labelOf(p), illus: /imagen ilustrativa/i.test(meta.alt ?? '') }]);
 }
 if (!only.length || only.includes('ingeniak')) {
   jobs.push(['ingeniak', { plate: masterOf('home-hero'), fx: plates['home-hero']?.d?.fx, head: { a: 'Agentes de IA, CRM y automatización', b: 'en un solo sistema.' }, chip: 'Partner oficial de Kommo en LATAM' }]);

@@ -1,0 +1,207 @@
+{
+  "_schema": "Texto de /agentes-ia-guadalajara/ (T-LOCAL · src/components/templates/LocalTemplate.astro). Mismo formato de _ESQUEMA.md §2–§6 (tokens {{metric:ID}}, {{metric:ID|full}}, {{Price}}, {{source}}; titulares {text, soft, lit}; campos con _ nunca se imprimen). Campos propios de T-LOCAL: hero.trust (línea mono de confianza) · que-es.definition {heading, text} (párrafo citable de 40–60 palabras) + body[] + metricRow {title, metricIds} · ficha.entity {term, value, href?}[] = EntitySheet local (NAP: mismos datos que el JSON-LD ProfessionalService) · que-hacemos.items {title, line, href, metricId?}[] = ScriptList · local-alcance.columns {title, items[]}[] (dos listas sobre la placa; admiten tokens) · casos.items {href, label, title, metricId, line}[] = Still · mapa {eyebrow, h2, lede, address, map {aria, note, office}, links[]} = esquema ilustrativo (no a escala) + enlace a Google Maps, sin iframe · vktor.phases {letter, name, verb, line}[] = VktorRail (verb = texto oficial) · faq y cta-final como en _ESQUEMA.md.",
+  "pageId": "guadalajara",
+  "url": "/agentes-ia-guadalajara/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'. Nadie del equipo de construcción cambia ese campo.",
+    "PREGUNTA AL CLIENTE · horario de atención de la oficina (v1 usaba L–V 09:00–18:00 sin confirmar): no se publica en la ficha ni en el JSON-LD (openingHoursSpecification) hasta confirmarlo por escrito.",
+    "PREGUNTA AL CLIENTE · coordenadas de la oficina (geo del JSON-LD) y, si se quiere, un mapa estático real exportado en el build. Mientras, la sección 'Cómo llegar' usa un esquema ilustrativo, no a escala, con la ubicación relativa de los municipios, y el enlace a Google Maps busca la dirección.",
+    "PREGUNTA AL CLIENTE · ¿reciben visitas en la oficina? El texto solo pide escribir antes por WhatsApp para coordinar la cita.",
+    "PREGUNTA AL CLIENTE · ¿Ingeniak tiene perfil de Google Business? Si existe, su enlace (hasMap / sameAs del JSON-LD y la ficha local deben ser idénticos a ese perfil).",
+    "CAMBIO DE TEXTO · cierre: el brief de sitemap.json ('30 minutos para ver tu operación como es, estés en Guadalajara o fuera de Jalisco.') se parece al H1 de /discovery/ (RESPUESTAS-CLIENTE 2026-10-19 #8 pide que los cierres sean distintos). Ahora: 'Tu sistema puede empezar en Guadalajara con una llamada de 30 minutos.'",
+    "CAMBIO DE TEXTO · casos: H2 de v1 ('Desde Jalisco, operando hoy mismo.'); la fila de logística solo dice lo de metrics.ts (n8n), sin herramientas ni ciudad que no estén confirmadas. Los cinco sistemas siguen activos (RESPUESTAS-CLIENTE #3).",
+    "CAMBIO DE TEXTO · canales del agente: 'WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo' (RESPUESTAS-CLIENTE #19); v1 decía 'WhatsApp, Instagram y tu web'.",
+    "CAMBIO DE TEXTO · vktor.phases[2]: el plazo de implementación es el general de Ingeniak (de 7 a 30 días según el alcance, RESPUESTAS-CLIENTE #16), nunca el de un caso.",
+    "DATO PENDIENTE · zona que atendemos (ficha): Guadalajara, Zapopan, Tlajomulco y el resto de la zona metropolitana; fuera de Jalisco, a distancia. Es lo mismo que decía v1."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (guadalajara-hero, empresario tapatío) + Breadcrumbs + línea de confianza + IMAGEN ILUSTRATIVA",
+      "rail": "Portada",
+      "eyebrow": "Agencia de IA · Guadalajara, Jalisco",
+      "h1": {
+        "text": "Agentes de IA",
+        "soft": "para empresas de Guadalajara",
+        "lit": "IA"
+      },
+      "lede": "Agentes de IA para WhatsApp, CRM y automatización para empresas de Guadalajara, Zapopan y Tlajomulco. Oficina en Tlajomulco de Zúñiga y clientes en {{metric:paises|full}}.",
+      "trust": "Partner oficial de Kommo en LATAM · {{metric:sistemas|full}}",
+      "illus": "Imagen ilustrativa",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, vengo de la página de Ingeniak en Guadalajara y quiero información sobre agentes de IA para mi empresa."
+      }
+    },
+    "que-es": {
+      "_componente": "Intertitle (toma desenfocada de la portada) + DefinitionBlock + MetricRow",
+      "rail": "Qué hacemos aquí",
+      "eyebrow": "Ingeniak en Guadalajara",
+      "definition": {
+        "heading": "¿Qué hace Ingeniak en Guadalajara?",
+        "text": "Ingeniak es una consultoría de inteligencia artificial con sede en Guadalajara, Jalisco. Desde nuestra oficina en Tlajomulco de Zúñiga diseñamos e implementamos agentes de IA para WhatsApp, CRM con Kommo y GoHighLevel y automatizaciones con n8n para empresas de Guadalajara, Zapopan y Tlajomulco, y trabajamos con clientes en {{metric:paises|full}}."
+      },
+      "body": [
+        "Para empezar no tienes que venir a la oficina: la primera conversación es una Discovery Session de 30 minutos por Google Meet. Si tu empresa está en la zona metropolitana, trabajas con un equipo en tu mismo horario y a una llamada de distancia."
+      ],
+      "metricRow": {
+        "title": "Ingeniak en datos",
+        "metricIds": ["sistemas", "paises", "dental-citas", "ecom-cpl"]
+      }
+    },
+    "ficha": {
+      "_componente": "Intertitle + EntitySheet variant=local (NAP)",
+      "rail": "Ficha local",
+      "eyebrow": "Ficha local",
+      "h2": {
+        "text": "Dónde estamos",
+        "soft": "y cómo escribirnos."
+      },
+      "lede": "Los mismos datos que aparecen en todo el sitio. En WhatsApp te contesta Kain, nuestro agente de IA; en el correo, el equipo.",
+      "entity": [
+        { "term": "Nombre", "value": "Ingeniak" },
+        { "term": "Dirección", "value": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, México" },
+        { "term": "Teléfono y WhatsApp", "value": "+52 33 2101 7799" },
+        { "term": "Correo", "value": "contacto@ingeniak.mx" },
+        { "term": "Atendemos", "value": "Guadalajara, Zapopan, Tlajomulco de Zúñiga y el resto de la zona metropolitana; fuera de Jalisco, a distancia" },
+        { "term": "Alianza", "value": "Partner oficial de Kommo en LATAM" },
+        { "term": "Primer paso", "value": "Discovery Session: 30 min · 1:1 · Google Meet · sin costo" }
+      ]
+    },
+    "que-hacemos": {
+      "_componente": "Intertitle + ScriptList (6 filas con enlace a su página)",
+      "rail": "Servicios",
+      "eyebrow": "Qué hacemos en Guadalajara",
+      "h2": {
+        "text": "Todo tu sistema comercial con IA,",
+        "soft": "desde Guadalajara."
+      },
+      "lede": "Seis piezas que conectamos entre sí. Puedes empezar por una y sumar las demás cuando tu operación lo pida.",
+      "items": [
+        { "title": "Agentes de IA para WhatsApp", "line": "Atienden, califican y agendan a cualquier hora en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo.", "href": "/servicios/agentes-ia-whatsapp/" },
+        { "title": "Kommo, como partner oficial", "line": "Licencias, implementación y automatización del CRM para vender por mensajería.", "href": "/kommo/" },
+        { "title": "GoHighLevel en español", "line": "CRM, embudos, páginas, calendarios y campañas en una sola plataforma.", "href": "/gohighlevel/" },
+        { "title": "Automatización con n8n", "line": "Flujos que conectan tu CRM, WhatsApp, formularios y sistemas internos. En un caso de logística:", "metricId": "logistica-procesos", "href": "/servicios/automatizacion-n8n/" },
+        { "title": "Paid media", "line": "Campañas en Meta, Google y TikTok conectadas a tu CRM: medimos ventas, no clics.", "href": "/servicios/paid-media/" },
+        { "title": "Web y software a la medida", "line": "Sitios de alta conversión y, cuando ninguna herramienta encaja, el sistema que tu operación necesita.", "href": "/servicios/desarrollo-software/" }
+      ]
+    },
+    "local-alcance": {
+      "_componente": "ImageSection mid (nosotros-manifiesto en espejo, Kain a la izquierda) + dos listas; móvil split",
+      "rail": "Alcance",
+      "eyebrow": "Local y con alcance",
+      "h2": {
+        "text": "Un equipo de Guadalajara,",
+        "soft": "con clientes fuera de Jalisco."
+      },
+      "lede": "Trabajamos con empresas de la zona metropolitana y de otros estados y países, con el mismo método y el mismo equipo.",
+      "columns": [
+        {
+          "title": "En Guadalajara y Jalisco",
+          "items": [
+            "Oficina en Tlajomulco de Zúñiga, en la zona metropolitana de Guadalajara.",
+            "Empresas de Guadalajara, Zapopan y Tlajomulco.",
+            "Primer paso: una Discovery Session 1:1 de 30 minutos por Google Meet."
+          ]
+        },
+        {
+          "title": "Fuera de Jalisco",
+          "items": [
+            "Clínica dental en Monterrey: {{metric:dental-citas|full}}.",
+            "E-commerce en la Ciudad de México: {{metric:ecom-cpl|full}}.",
+            "Empresas en {{metric:paises|full}}: México, Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador."
+          ]
+        }
+      ]
+    },
+    "casos": {
+      "_componente": "Still ×2 (texto dentro de la penumbra del fotograma, R7)",
+      "rail": "Casos",
+      "eyebrow": "Casos",
+      "h2": {
+        "text": "Desde Jalisco,",
+        "soft": "operando hoy mismo."
+      },
+      "lede": "Dos de los sistemas que construimos desde Guadalajara y que siguen activos. Cada cifra trae su sector y su fuente.",
+      "items": [
+        { "href": "/casos/clinica-dental-monterrey/", "label": "Caso · Salud · Monterrey", "title": "Clínica dental en Monterrey", "metricId": "dental-citas", "line": "Agente de IA en WhatsApp que contesta, agenda y confirma citas." },
+        { "href": "/casos/logistica-n8n/", "label": "Caso · Logística", "title": "Operación logística con n8n", "metricId": "logistica-procesos", "line": "Procesos de la operación automatizados con n8n." }
+      ],
+      "note": "{{source}}. Nombres de clientes anonimizados."
+    },
+    "mapa": {
+      "_componente": "Esquema ilustrativo de la zona metropolitana (SVG, sin iframe ni terceros) + dirección + enlace a Google Maps",
+      "rail": "Cómo llegar",
+      "eyebrow": "Cómo llegar",
+      "h2": {
+        "text": "Oficina en Tlajomulco,",
+        "soft": "al sur de la zona metropolitana."
+      },
+      "lede": "Si quieres visitarnos, escríbenos antes por WhatsApp para coordinar la cita. Para empezar a trabajar juntos no hace falta: todo arranca con una llamada por Google Meet.",
+      "address": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, México",
+      "map": {
+        "aria": "Esquema de la zona metropolitana de Guadalajara: Zapopan al noroeste, Guadalajara al centro, Tlaquepaque y Tonalá al sureste y Tlajomulco de Zúñiga al sur, donde está la oficina de Ingeniak.",
+        "note": "Esquema ilustrativo, no a escala.",
+        "office": "Ingeniak · Av. Punto Sur 312"
+      },
+      "links": [
+        { "label": "Abrir en Google Maps", "href": "https://www.google.com/maps/search/?api=1&query=Av.+Punto+Sur+312%2C+Tlajomulco+de+Z%C3%BA%C3%B1iga%2C+Jalisco+45640", "external": true }
+      ]
+    },
+    "vktor": {
+      "_componente": "Intertitle + VktorRail (verbos oficiales + una línea por fase)",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": {
+        "text": "Cómo trabajamos,",
+        "soft": "en cinco fases."
+      },
+      "lede": "El mismo protocolo para cualquier empresa de Jalisco, del diagnóstico a la operación: primero entendemos cómo vendes y después construimos.",
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Revisamos con números cómo vendes, atiendes y operas hoy." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Definimos qué se automatiza, con qué herramientas y en qué orden." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Implementamos agentes, CRM, automatizaciones y campañas conectados, de 7 a 30 días según el alcance." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Capacitamos a tu gente, monitoreamos y ajustamos el sistema en producción." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Optimizamos cada mes con tableros y métricas claras." }
+      ],
+      "links": [{ "label": "Conoce el protocolo completo", "href": "/metodologia/" }]
+    },
+    "faq": {
+      "_componente": "FAQAccordion (L01, G10, L02, G04, G11, G07)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Preguntas de empresas",
+        "soft": "de Guadalajara."
+      },
+      "faqIds": ["L01", "G10", "L02", "G04", "G11", "G07"],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila en espejo)",
+      "rail": "Cierre",
+      "eyebrow": "El primer paso no cuesta nada",
+      "h2": {
+        "text": "Tu sistema puede empezar en Guadalajara",
+        "soft": "con una llamada de 30 minutos."
+      },
+      "lede": "Revisamos cómo vendes y operas hoy, estés en la zona metropolitana o fuera de Jalisco, y te decimos qué conviene automatizar primero.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, vengo de la página de Ingeniak en Guadalajara y quiero información sobre agentes de IA para mi empresa."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

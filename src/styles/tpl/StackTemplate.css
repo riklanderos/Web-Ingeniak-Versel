@@ -1,0 +1,182 @@
+/* ===== StackTemplate · T-STACK (/tecnologias/) =====
+   ESPEC-v2 §5.8. Portada a sangre en toma compartida → criterios sobre su copia desenfocada → StackHub (isotipo de cristal
+   fijo con el pilar y las ramas hacia las cinco capas; cada capa = créditos de logo + nombre + función) → aviso de marcas →
+   FAQ → amanecer. Solo clases .stk-*; ninguna sección pinta fondo (la luz la dan placas, auras, nodos y .tpl-glow).
+   Se importa en StackTemplate.astro después de los componentes (manda sobre cine/ui con la misma especificidad). */
+
+/* Auras de los intertítulos con la intensidad de las plantillas aprobadas (pages.css · compartido no incluye body.stk) */
+body.stk .it__aura--ondas{opacity:1}
+body.stk .it__aura--isotipo{opacity:.9}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.stk .it__aura{width:max(130vw,520px)}
+  body.stk .it__aura--ondas{width:max(200vw,780px)}
+}
+
+/* ── 01 · Portada ─────────────────────────────────────────────────────────────────────────────────────────────── */
+.stk-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),9.4svh);max-width:12ch}
+.stk-hero .is__text > .t-lede{max-width:40ch}
+/* Escritorios bajos: el titular de cuatro renglones baja de tamaño para que CTA y sello quepan en el primer pantallazo */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){.stk-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),8.2svh)}}
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:760px){
+  .stk-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),7.3svh);line-height:.98}
+  .stk-hero .is__text > .t-lede{margin-top:var(--s-4)}
+  .stk-hero .is__text > .ctas{margin-top:var(--s-5)}
+  .stk-hero .stk-trust{margin-top:var(--s-4)}
+}
+@media (min-width:768px) and (min-aspect-ratio:5/6){.stk-hero > .is__more{display:none}}
+/* Sello de Kommo anclado al piso de la placa (§2.12: cristal sobre imagen, nunca sobre cara ni torso). El ancla `fig` es
+   su esquina superior derecha; en proporciones estrechas la placa se recorta y el sello vuelve al texto. */
+.stk-badge{translate:-100% 0;width:max-content}
+.stk-badge__in{display:flex;align-items:center;gap:12px;padding:10px 14px 10px 10px}
+.stk-badge__in .kommo-badge{border:0;padding:0}
+.stk-badge__t{font:500 10.5px/1.45 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--text-2);max-width:24ch}
+.stk-trust{display:flex;align-items:center;gap:12px;margin-top:var(--s-5)}
+.stk-trust .t-label{color:var(--text-2);line-height:1.4}
+.stk-trust--m{margin:0 0 var(--s-5)}
+/* El sello anclado solo donde hay aire junto a los CTA; si no, va en línea bajo ellos (.stk-trust--alt) */
+.stk-trust--alt{display:none}
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-width:1359px),(min-width:768px) and (min-aspect-ratio:5/6) and (max-aspect-ratio:3/2){
+  .stk-hero .stk-badge{display:none}
+  .stk-trust--alt{display:flex}
+}
+.stk-hero__rest{margin:0 0 var(--s-5);max-width:40ch}
+/* F10 · logos registrados sobre las cinco placas de cristal vacías de la portada (anclas de caja placa-1…5, en la capa
+   registrada: se mueven con la placa y se apagan con el rack de la toma compartida). Blanco al 78 % con brillo cian. */
+.stk-plaque{display:grid;place-items:center;color:rgb(255 255 255 / .8)}
+.stk-plaque .logo-mask{width:40cqi;height:40cqi;filter:drop-shadow(0 0 8px rgb(0 229 255 / .55))}
+.stk-plaque .logo-mask--wide{width:66cqi!important;height:auto!important}
+.stk-plaque--seal img{display:block;width:74cqi;height:auto;opacity:.92;filter:drop-shadow(0 0 8px rgb(0 229 255 / .4))}
+html.js:not([data-motion="reduced"]) .stk-plaque > *{animation:stk-plaque .9s cubic-bezier(.2,.7,.2,1) calc(1.1s + var(--i) * .16s) both}
+@keyframes stk-plaque{from{opacity:0;scale:.82}to{opacity:1;scale:1}}
+@media (prefers-reduced-motion:reduce){.stk-plaque > *{animation:none!important}}
+
+/* ── 02 · Criterios (Intertitle sobre la copia desenfocada de la portada): el sujeto sigue a la derecha durante el rack;
+   el bloque vive en las columnas 1–8 ── */
+.stk-crit .it__body{grid-column:1 / span 8}
+.stk-crit__head{display:flex;flex-direction:column;align-items:flex-start;max-width:min(100%,44rem)}
+.stk-crit__head > .t-label + *{margin-top:var(--s-4)}
+.stk-crit__lede{margin-top:var(--s-5);max-width:46ch}
+.stk-crit__list{list-style:none;margin:var(--s-7) 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-7) var(--s-7);width:100%}
+.stk-crit__item{position:relative;display:grid;grid-template-columns:auto 1fr;column-gap:var(--s-5);row-gap:var(--s-3);align-content:start;padding-top:var(--s-5);
+  border-top:1px solid var(--hair-2)}
+.stk-crit__item::before{content:"";position:absolute;left:0;top:-3.5px;width:6px;height:6px;border-radius:1.5px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+.stk-crit__n{grid-row:1 / span 2;font:200 clamp(2.75rem,1.6rem + 2.2vw,4.25rem)/.82 var(--f-display);letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1px rgb(0 229 255 / .55)}
+.stk-crit__t{margin:0;font:500 clamp(1.25rem,1rem + .8vw,1.75rem)/1.12 var(--f-display);letter-spacing:-.02em;color:var(--text)}
+.stk-crit__l{margin:0;font:400 1rem/1.55 var(--f-body);color:var(--text-2);max-width:40ch}
+@media (max-width:1023px){
+  .stk-crit .it__body{grid-column:1 / -1}
+  .stk-crit__list{grid-template-columns:1fr;gap:var(--s-6)}
+}
+
+/* ── 03–07 · StackHub ─────────────────────────────────────────────────────────────────────────────────────────
+   Escritorio: a la izquierda, fijo, el isotipo de cristal; de su nodo baja el pilar con una rama a 45° hacia cada capa del
+   índice (la capa en pantalla se enciende). A la derecha, las cinco capas como créditos: logo, nombre y función. */
+.stk-hub{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0 calc(var(--beat) + var(--s-6))}
+/* Titular del StackHub a todo lo ancho: titular a la izquierda, lede a la derecha alineado a su base */
+.stk-hub__head{align-items:end;margin-bottom:var(--s-9)}
+.stk-hub__intro{grid-column:1 / span 6;display:flex;flex-direction:column;align-items:flex-start}
+.stk-hub__intro > .t-label + *{margin-top:var(--s-4)}
+.stk-hub__h2{max-width:12ch}
+.stk-hub__lede{grid-column:8 / span 5;margin:0;max-width:44ch}
+.stk-hub__frame{align-items:start}
+.stk-hub__aside{grid-column:1 / span 4;align-self:stretch}
+.stk-hub__sticky{position:sticky;top:calc(var(--hdr) + var(--s-7));display:flex;flex-direction:column;align-items:flex-start;padding-bottom:var(--s-6)}
+.stk-hub__iso{position:relative;width:clamp(150px,13vw,210px);aspect-ratio:1;margin:0 0 0 -28px}
+.stk-hub__iso::before{content:"";position:absolute;inset:-40%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgb(0 229 255 / .22),rgb(69 93 255 / .1) 52%,transparent)}
+.stk-hub__iso img{position:relative;display:block;width:100%;height:100%;-webkit-mask-image:radial-gradient(closest-side,#000 50%,transparent 98%);mask-image:radial-gradient(closest-side,#000 50%,transparent 98%)}
+/* Nodo del isotipo: de aquí nace el pilar que baja al índice */
+.stk-hub__core{position:absolute;left:calc(28px + 4px - 4.5px);bottom:-14px;width:9px;height:9px;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+/* Índice = pilar + ramas (la geometría del isotipo); la capa en pantalla se enciende y el pilar se llena hasta ella */
+.stk-idx{position:relative;margin-top:var(--s-6);padding-left:34px;width:100%}
+.stk-idx ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.stk-idx::before{content:"";position:absolute;left:4px;top:calc(var(--s-6) * -1);bottom:22px;width:1px;background:var(--hair-2)}
+.stk-idx::after{content:"";position:absolute;left:4px;top:calc(var(--s-6) * -1);width:1px;background:var(--cyan);box-shadow:0 0 10px rgb(0 229 255 / .6);
+  height:calc(var(--s-6) + (100% - 22px) * (var(--on,0) * 2 + 1) / 10);transition:height .6s cubic-bezier(.2,.7,.2,1)}
+.stk-idx__i{position:relative}
+/* Rama a 45° del pilar a cada capa */
+.stk-idx__i::before{content:"";position:absolute;left:-30px;top:calc(50% - 11.5px);width:20px;height:12px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'%3E%3Cpath d='M.5 0v.5l11 11H20' fill='none' stroke='%239EB0C7' stroke-opacity='.45'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat}
+.stk-idx__i::after{content:"";position:absolute;left:-10px;top:50%;width:7px;height:7px;translate:0 -50%;border-radius:1.5px;background:var(--ink);
+  box-shadow:inset 0 0 0 1px var(--hair-cyan);transition:background .4s,box-shadow .4s}
+.stk-idx__i a{display:flex;align-items:center;gap:14px;min-height:44px;padding:6px 0;text-decoration:none;color:rgb(158 176 199 / .72);transition:color .4s}
+.stk-idx__n{font:500 10.5px/1 var(--f-mono);letter-spacing:.14em;color:inherit}
+.stk-idx__t{font:500 1.125rem/1.2 var(--f-display);letter-spacing:-.01em}
+.stk-idx__i a:hover,.stk-idx__i a:focus-visible{color:var(--text)}
+.stk-idx__i.is-on a{color:var(--text)}
+.stk-idx__i.is-on .stk-idx__n{color:var(--cyan)}
+.stk-idx__i.is-on::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12' viewBox='0 0 20 12'%3E%3Cpath d='M.5 0v.5l11 11H20' fill='none' stroke='%2300E5FF' stroke-opacity='1'/%3E%3C/svg%3E")}
+.stk-idx__i.is-on::after{background:var(--cyan);box-shadow:var(--glow-cyan)}
+
+.stk-hub__groups{grid-column:6 / span 7;display:grid;row-gap:var(--s-10)}
+.stk-g{position:relative;scroll-margin-top:calc(var(--hdr) + var(--s-5));padding-top:var(--s-6);border-top:1px solid var(--hair-2)}
+.stk-g__branch{position:absolute;left:0;top:-4px;width:7px;height:7px;border-radius:1.5px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+/* Número de capa gigante en contorno (como la palabra fantasma de las escenas): profundidad sin caja */
+.stk-g__ghost{position:absolute;right:0;top:calc(var(--s-6) * -.2);z-index:-1;pointer-events:none;user-select:none;
+  font:200 clamp(6rem,2.5rem + 6.5vw,11.5rem)/.8 var(--f-display);letter-spacing:-.07em;color:transparent;-webkit-text-stroke:1px rgb(0 229 255 / .16)}
+.stk-g__label{display:flex;align-items:center;gap:12px}
+.stk-g__n{color:var(--text-2)}
+.stk-g__title{margin:var(--s-4) 0 0;font:600 clamp(2rem,1rem + 2.5vw,3.5rem)/1 var(--f-display);letter-spacing:-.04em;color:var(--text);max-width:15ch;text-wrap:balance}
+.stk-g__line{margin-top:var(--s-5);max-width:50ch}
+.stk-tools{list-style:none;margin:var(--s-7) 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-7)}
+.stk-tool{position:relative;display:grid;grid-template-columns:56px minmax(0,1fr);column-gap:16px;align-items:center;min-height:88px;padding:16px 0;
+  border-bottom:1px solid var(--hair);color:rgb(255 255 255 / .6);transition:color .45s cubic-bezier(.2,.7,.2,1)}
+.stk-tool::after{content:"";position:absolute;left:0;bottom:-1px;width:100%;height:1px;background:var(--cyan);box-shadow:0 0 8px rgb(0 229 255 / .6);
+  scale:0 1;transform-origin:0 50%;transition:scale .6s cubic-bezier(.2,.7,.2,1)}
+.stk-tool:hover,.stk-tool:focus-within{color:#fff}
+.stk-tool:hover::after,.stk-tool:focus-within::after{scale:1 1}
+.stk-tool__mark{display:grid;place-items:center start;min-height:36px}
+.stk-tool__mark .logo-mask{width:34px;height:34px}
+.stk-tool__mark .logo-mask--wide{height:18px!important;width:auto!important}
+/* Herramienta sin logo publicado: monograma en el nodo del isotipo (nunca un cuadro vacío ni el logo inventado) */
+.stk-tool__mono{display:grid;place-items:center;width:34px;height:34px;border-radius:var(--r-node);box-shadow:inset 0 0 0 1px currentColor;
+  font:600 15px/1 var(--f-display);color:currentColor}
+.stk-tool--partner{grid-column:1 / -1;grid-template-columns:minmax(0,auto) minmax(0,1fr);column-gap:var(--s-6);padding:var(--s-5) 0}
+.stk-tool--partner .kommo-badge{color:#fff}
+.stk-tool__body{display:grid;gap:4px;min-width:0}
+.stk-tool__name{font:500 1.25rem/1.2 var(--f-display);letter-spacing:-.015em;color:var(--text)}
+.stk-tool__a{display:inline-flex;align-items:baseline;gap:8px;text-decoration:none;
+  background:linear-gradient(var(--hair-cyan),var(--hair-cyan)) 0 100% / 100% 1px no-repeat;width:fit-content;padding-bottom:2px}
+.stk-tool__a:hover{background-image:linear-gradient(var(--cyan),var(--cyan))}
+.stk-tool__go{font:400 .85em/1 var(--f-body);color:var(--cyan)}
+.stk-tool__role{font:400 .9375rem/1.45 var(--f-body);color:var(--muted)}
+.stk-g__links{display:flex;flex-wrap:wrap;gap:4px var(--s-6);margin:var(--s-5) 0 0}
+@media (max-width:1279px){.stk-tools{grid-template-columns:1fr}}
+@media (max-width:1023px){
+  .stk-hub__intro,.stk-hub__lede,.stk-hub__aside,.stk-hub__groups{grid-column:1 / -1}
+  .stk-hub__head{margin-bottom:var(--s-7);row-gap:var(--s-5)}
+  .stk-hub__sticky{position:relative;top:auto;padding-bottom:0}
+  .stk-idx{display:none}
+  .stk-hub__core{display:none}
+  .stk-hub__groups{row-gap:var(--s-9);padding-top:var(--s-6)}
+}
+@media (max-width:767px){
+  .stk-hub__iso{width:120px;margin-left:-18px}
+  .stk-g__title{font-size:clamp(1.875rem,1.2rem + 3vw,2.375rem)}
+  .stk-g__ghost{font-size:5.5rem}
+  .stk-tools{margin-top:var(--s-6)}
+  .stk-tool{grid-template-columns:46px minmax(0,1fr);min-height:72px;padding:14px 0}
+  .stk-tool__mark .logo-mask,.stk-tool__mono{width:28px;height:28px}
+  .stk-tool__name{font-size:1.125rem}
+  .stk-tool--partner{grid-template-columns:1fr;row-gap:12px}
+}
+
+/* ── 08 · Aviso de marcas ── */
+.stk-sec{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0}
+.stk-aviso__note{grid-column:1 / span 7}
+.stk-aviso__body{display:flex;align-items:center;gap:var(--s-6)}
+.stk-aviso__body p{margin:0;font:400 1.0625rem/1.6 var(--f-body);color:var(--text-2);max-width:48ch}
+@media (max-width:1023px){.stk-aviso__note{grid-column:1 / -1}}
+@media (max-width:767px){.stk-aviso__body{flex-direction:column;align-items:flex-start;gap:var(--s-4)}}
+
+/* ── 09 · FAQ ── */
+.stk-faq__foot{margin-top:var(--s-5);max-width:34ch}
+.stk-faq__cta{margin-top:var(--s-5)}
+
+/* ── 10 · Cierre: la microcopia ya trae "30\u00a0minutos"; se parte bajo el primario y el WhatsApp queda a su lado ── */
+body.stk #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-width:none;white-space:normal;text-wrap:balance}
+
+@media (forced-colors:active){
+  .stk-crit__n{color:CanvasText;-webkit-text-stroke:0}
+  .stk-idx::after,.stk-tool::after{display:none}
+}
+/* ===== fin StackTemplate ===== */

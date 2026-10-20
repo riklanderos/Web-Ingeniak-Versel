@@ -50,6 +50,8 @@ export function localBusiness(areaServed?: string[]) {
     url: `${SITE.url}/`,
     image: abs('/img/og-ingeniak.jpg'),
     email: SITE.email,
+    // Teléfono del negocio local (peticiones · nosotros-local #1 y faq-contacto-legal #5): el mismo número de la ficha visible.
+    telephone: SITE.phoneE164,
     address,
     parentOrganization: { '@id': ORG_ID },
     areaServed: (areaServed ?? ['México', 'Latinoamérica']).map((n) => ({ '@type': 'Place', name: n })),
@@ -100,6 +102,15 @@ const VKTOR = [
   ['Rise', 'Hacemos crecer los resultados.'],
 ];
 
+/** Entidad con la que la página hija ya se describe en su propio @graph (el ItemList del hub la enlaza por @id). */
+function childEntity(p: Page): { type: string; frag: string } {
+  const t = ((p.jsonLd as string[]) ?? []).map((x) => x.split(/[\s(×]/)[0]);
+  if (t.includes('BlogPosting')) return { type: 'BlogPosting', frag: 'article' };
+  if (t.includes('Article')) return { type: 'Article', frag: 'article' };
+  if (t.includes('Service')) return { type: 'Service', frag: 'service' };
+  return { type: 'WebPage', frag: 'webpage' };
+}
+
 /** Hijos directos de un hub (páginas cuyo penúltimo breadcrumb es el hub). */
 function childrenOf(url: string) {
   return pages.filter((p) => {
@@ -120,6 +131,11 @@ export type GraphOptions = {
   datePublished?: string;
   dateModified?: string;
   extra?: Record<string, any>[];
+  /** Propiedades extra del nodo Article/BlogPosting (wordCount, articleSection, keywords, citation, timeRequired…), que se
+   *  mezclan en el MISMO nodo #article (peticiones · artículos #2). No cambian su @type ni su @id. */
+  articleExtra?: Record<string, any>;
+  /** Pasos del HowTo con su texto completo (MethodTemplate: fases.steps[].line), en el orden V·K·T·O·R. Por defecto, los verbos. */
+  howToSteps?: { name: string; text: string }[];
 };
 
 /** Arma el @graph de una página a partir de page.jsonLd. */
@@ -146,6 +162,8 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
   };
   if (crumbs.length) main.breadcrumb = { '@id': `${url}#breadcrumb` };
   if (page.primaryKeyword) main.keywords = page.primaryKeyword;
+  // AboutPage → la entidad de la que trata (peticiones · nosotros-local #1).
+  if (pageType === 'AboutPage') main.about = { '@id': ORG_ID };
   graph.push(main);
 
   graph.push(organization(), website());
@@ -183,7 +201,13 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
       graph.push({
         '@type': 'ItemList',
         '@id': `${url}#itemlist`,
-        itemListElement: kids.map((k, i) => ({ '@type': 'ListItem', position: i + 1, url: abs(k.url), name: (k.breadcrumbs as any[])?.at(-1)?.name ?? k.h1 })),
+        // Cada elemento apunta por @id a la entidad que la hija ya publica (Service · BlogPosting · Article): /servicios/ es un
+        // ItemList de Service y /blog/ uno de BlogPosting, como pide sitemap.json (peticiones · hubs #5).
+        itemListElement: kids.map((k, i) => {
+          const name = (k.breadcrumbs as any[])?.at(-1)?.name ?? k.h1;
+          const e = childEntity(k);
+          return { '@type': 'ListItem', position: i + 1, item: { '@type': e.type, '@id': `${abs(k.url)}#${e.frag}`, name, url: abs(k.url) } };
+        }),
       });
   }
   if (has('Blog')) graph.push({ '@type': 'Blog', '@id': `${url}#blog`, url, name: o.title, inLanguage: 'es-MX', publisher: { '@id': ORG_ID } });
@@ -204,7 +228,8 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
       '@type': 'HowTo',
       '@id': `${url}#howto`,
       name: 'Metodología VKTOR™',
-      step: VKTOR.map(([n, t], i) => ({ '@type': 'HowToStep', position: i + 1, name: n, text: t })),
+      step: (o.howToSteps?.length === VKTOR.length && o.howToSteps.every((x) => x?.name && x?.text) ? o.howToSteps.map((x) => [x.name, x.text]) : VKTOR)
+        .map(([n, t], i) => ({ '@type': 'HowToStep', position: i + 1, name: n, text: t })),
     });
   if (has('Article') || has('BlogPosting')) {
     const art: Record<string, any> = {
@@ -221,6 +246,12 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
     if (o.articleAbout) art.about = o.articleAbout;
     if (o.datePublished) art.datePublished = o.datePublished;
     if (o.dateModified ?? o.datePublished) art.dateModified = o.dateModified ?? o.datePublished;
+    if (o.articleExtra) {
+      for (const [k, v] of Object.entries(o.articleExtra)) {
+        if (k.startsWith('@') || v === undefined || v === null || v === '') continue;
+        art[k] = v;
+      }
+    }
     graph.push(art);
   }
   if (o.faqNode) graph.push(o.faqNode);

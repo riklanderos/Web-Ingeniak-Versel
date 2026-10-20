@@ -1,0 +1,197 @@
+{
+  "pageId": "branding",
+  "url": "/servicios/branding/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "FAQ DISTINTA DE D · N10: agrega 'Lo hace el mismo equipo que construye la parte técnica, así el anuncio, la página y la conversación con Kain dicen lo mismo.' Sigue en validar: true, así que no sale en el acordeón ni en el FAQPage hasta que se apruebe. La página no repite 'el mismo equipo' en el cuerpo: dice que la marca se trabaja junto con la web, las campañas y los agentes.",
+    "FAQ DISTINTA DE D · G14: agrega 'medido hasta la venta' y la cifra como token (horeca-roas, 'sostenido').",
+    "FAQ DISTINTA DE D · G07: agrega por qué no hay paquetes cerrados.",
+    "PREGUNTA AL CLIENTE · #kain-ejemplo (D lo dejó en [VALIDAR]): ¿el personaje de Kain lo diseñó el equipo de Ingeniak? Mientras no se confirme, la sección presenta a Kain como ejemplo de un personaje de marca que trabaja en varios canales, sin decir quién lo creó ni presentarlo como portafolio. Si lo diseñaron ustedes, se agrega 'Lo diseñamos nosotros'.",
+    "PREGUNTA AL CLIENTE · #que-hacemos: los seis bloques salen del brief de D (estrategia, identidad visual, personaje o mascota, contenido para redes, video y motion graphics, creativos para pauta). ¿Los seis se ofrecen hoy? ¿El video incluye producción presencial (foto o grabación en tu negocio) o solo animación y edición? ¿Usan avatares o voces generadas con IA (HeyGen, ElevenLabs) en proyectos de clientes? No se menciona.",
+    "PREGUNTA AL CLIENTE · 'branding sistémico' como nombre del enfoque (#definicion, del brief de D). ¿Lo quieren usar como término propio?",
+    "CAMBIO DE TEXTO · cta-final: D pedía la variante del equipo real (cta-equipo); sitemap.json usa cta-amanecer hasta la sesión de fotos (R6). El texto no menciona al equipo, así sirve con cualquiera de las dos placas. Sin 'micro' (repetiría la microcopia del botón primario).",
+    "CAMBIO DE TEXTO · hero.ui (tablero de identidad: isotipo, paleta, tipografía, voz; ESPEC §5.2.1) y kain-ejemplo.ui (canales donde aparece el personaje): textos de la UI registrada con VISTA DEMO. La plantilla de servicio todavía no los pinta; no cuentan para las palabras mínimas.",
+    "DATO PENDIENTE · senales usa la placa de respaldo dolor-operacion mientras no exista dolor-anuncios; el pie de foto funciona con las dos."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (branding-hero: Kain posando en un set fotográfico junto a un tablero de identidad de cristal) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Servicio · Atraer",
+      "h1": { "text": "Branding y contenido", "soft": "con estrategia", "lit": "Branding" },
+      "lede": "Identidad y contenido que posicionan tu marca como la opción premium. Y que se usan igual en tus anuncios, tu web y la voz de tu agente de IA.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de branding y contenido y quiero posicionar mi marca como premium."
+      },
+      "ui": {
+        "_nota": "Tablero de identidad registrado sobre el tablero de cristal de la placa (ancla 'superficie'): cuatro módulos que se encienden en orden (isotipo genérico, paleta de muestras, especimen tipográfico, una línea de voz). VISTA DEMO y data-nosnippet; no es la marca de ningún cliente.",
+        "label": "VISTA DEMO",
+        "modules": ["Isotipo", "Paleta", "Tipografía", "Voz"],
+        "voiceSample": "Hablamos claro, de tú y con datos."
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio, citable; N10 sigue en validar)",
+      "rail": "Branding sistémico",
+      "eyebrow": "Branding sistémico",
+      "definition": {
+        "heading": "¿Qué es el branding sistémico?",
+        "text": "El branding sistémico trata tu marca como un sistema de uso, no como un logo: identidad visual, tono de voz y reglas de contenido que se aplican igual en tus campañas, tu sitio web, tus redes y las respuestas de tu agente de IA. Así cada punto de contacto se ve y suena como la misma empresa.",
+        "_nota": "Texto propio de la página (40–60 palabras), del brief de D: la marca como sistema que se usa en campañas, web, contenido y en la voz del agente de IA."
+      },
+      "body": [
+        "Una marca premium no se decide con un logo nuevo. Se construye cuando el anuncio, la página y la conversación por WhatsApp prometen lo mismo y lo cumplen. Por eso trabajamos tu marca junto con tu web, tus campañas y tus agentes, no en un cajón aparte."
+      ]
+    },
+    "senales": {
+      "_componente": "ImageSection mid (persona en luz ámbar, tone=dolor, móvil split; placa dolor-anuncios con respaldo dolor-operacion) + lista de señales (dolor ámbar → salida cian)",
+      "rail": "Señales",
+      "eyebrow": "Señales de que lo necesitas",
+      "h2": { "text": "Tu marca no está", "soft": "a la altura de tu servicio." },
+      "lede": "Si te reconoces en dos o más, tu cliente te está comparando por precio porque nada más te distingue.",
+      "fig": { "label": "Tu anuncio, tu web y tu WhatsApp: tres marcas distintas." },
+      "items": [
+        {
+          "pain": "Tu marca se ve como cualquier otra.",
+          "painLine": "Mismos colores, mismas fotos de banco, el mismo “somos líderes”.",
+          "fix": "Una identidad propia, que se reconoce aunque no se vea el logo."
+        },
+        {
+          "pain": "Publicas sin constancia.",
+          "painLine": "Una semana tres publicaciones, luego un mes sin nada; cada pieza con otro estilo.",
+          "fix": "Un sistema de contenido con pilares, formatos y calendario."
+        },
+        {
+          "pain": "Tu imagen no sostiene tu precio.",
+          "painLine": "Cobras como premium, pero tu web y tus redes dicen otra cosa.",
+          "fix": "Una marca que se percibe premium antes de la primera llamada."
+        },
+        {
+          "pain": "Cada canal habla distinto.",
+          "painLine": "El anuncio promete una cosa, la web otra y el WhatsApp contesta con otro tono.",
+          "fix": "Una sola voz, escrita en reglas que siguen tu equipo y tu agente de IA."
+        }
+      ]
+    },
+    "que-hacemos": {
+      "_componente": "ScriptList (6 filas) sobre aura del isotipo",
+      "rail": "Qué hacemos",
+      "eyebrow": "Qué hacemos",
+      "h2": { "text": "De la estrategia", "soft": "a la pieza que se publica." },
+      "lede": "Seis entregables que se apoyan entre sí: la estrategia decide la identidad, y la identidad decide cada pieza.",
+      "items": [
+        { "n": "01", "title": "Estrategia de marca", "line": "A quién le hablas, contra quién compites y por qué te eligen: posicionamiento, promesa y mensajes clave, por escrito." },
+        { "n": "02", "title": "Identidad visual", "line": "Logotipo, isotipo, paleta, tipografía, estilo de imagen y reglas de uso para web, redes, anuncios y documentos." },
+        { "n": "03", "title": "Personaje o mascota de marca", "line": "Un personaje con diseño, personalidad y reglas de uso, que puede ser la cara de tu marca y de tu agente de IA." },
+        { "n": "04", "title": "Contenido para redes", "line": "Publicaciones y carruseles con pilares y calendario, pensados para tu cliente y no para la tendencia de la semana." },
+        { "n": "05", "title": "Video y motion graphics", "line": "Reels, videos de producto y animaciones con tu identidad, para redes, anuncios y tu sitio." },
+        { "n": "06", "title": "Creativos para pauta", "line": "Piezas para Meta Ads, Google Ads y TikTok Ads en varias versiones, listas para probar cuál convierte.", "href": "/servicios/paid-media/" }
+      ],
+      "body": [
+        "La voz de tu marca también se escribe para tu agente de IA: cómo saluda, qué palabras usa y cuáles nunca. Así Kain atiende tus mensajes con el mismo tono que tus anuncios y tu web."
+      ]
+    },
+    "como-funciona": {
+      "_componente": "riel-servicios a sangre con 5 nodos registrados sobre los nodos de la placa (respaldo: SystemFlow sobre aura)",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": { "text": "De la identidad a la venta,", "soft": "con la misma voz." },
+      "lede": "Tu marca no termina en el manual: recorre cinco tramos hasta que alguien te compra.",
+      "nodes": [
+        { "label": "Tu identidad", "line": "Estrategia, sistema visual y voz, escritos en un solo manual.", "confirmed": true },
+        { "label": "El sistema de contenido", "line": "Pilares, formatos y calendario; cada pieza sale de la misma guía.", "confirmed": true },
+        { "label": "Tus canales", "line": "Redes, anuncios, tu web y tu correo, con la misma cara.", "logos": ["instagram", "facebook"], "confirmed": true },
+        { "label": "La conversación", "line": "Quien responde a tu contenido llega a WhatsApp, y Kain le contesta con tu voz.", "logos": ["whatsapp"], "confirmed": true },
+        { "label": "La medición", "line": "Tu CRM dice qué pieza trajo conversaciones y cuáles terminaron en venta.", "logos": ["kommo", "gohighlevel"], "confirmed": true }
+      ],
+      "note": "Así tu contenido deja de medirse en “me gusta” y se mide en conversaciones."
+    },
+    "kain-ejemplo": {
+      "_componente": "ImageSection mid (regreso al set: branding-hero con push hacia la superficie, 1.35 → 1.6) + canales del personaje registrados (VISTA DEMO)",
+      "rail": "Un personaje que trabaja",
+      "eyebrow": "Un personaje que trabaja",
+      "h2": { "text": "Kain no es una mascota de adorno:", "soft": "atiende, agenda y vende." },
+      "lede": "Kain es la cara de nuestra marca de agentes de IA. Aparece en este sitio, en nuestros videos y en WhatsApp, siempre con el mismo diseño, el mismo tono y las mismas reglas.",
+      "items": [
+        "Un diseño que no cambia: robot blanco, siempre de cuerpo completo, con los mismos rasgos en cada imagen.",
+        "Una voz escrita: habla en primera persona, te tutea y nunca da consejo médico ni legal.",
+        "Un trabajo real: responde en WhatsApp, Instagram, Facebook Messenger, el chat de la web y el correo.",
+        "Un nombre que también es producto: kain, en minúsculas, es nuestra plataforma de agentes, app.kain.mx."
+      ],
+      "slogan": "Eso es un personaje de marca: reglas que se cumplen en cada canal.",
+      "links": [{ "label": "Conoce a Kain", "href": "/kain/" }],
+      "ui": {
+        "_nota": "Chips de los canales donde aparece el personaje, registrados sobre el tablero de cristal al acercarse la cámara (distinta UI que la portada, R5). VISTA DEMO y data-nosnippet.",
+        "label": "VISTA DEMO",
+        "channels": ["Web", "Video", "WhatsApp"]
+      }
+    },
+    "contenido": {
+      "_componente": "ScriptList (4 filas) + enlaces al blog y a SEO",
+      "rail": "Contenido",
+      "eyebrow": "Contenido con estrategia",
+      "h2": { "text": "Contenido que se planea,", "soft": "se publica y se mide." },
+      "lede": "Antes de producir una pieza decidimos para qué existe y cómo se conecta con tus anuncios y con lo que la gente busca en Google.",
+      "items": [
+        { "n": "01", "title": "Pilares", "line": "Los temas de los que tu marca habla con autoridad, sacados de las preguntas reales de tus clientes." },
+        { "n": "02", "title": "Formatos", "line": "Qué va en carrusel, qué en video corto, qué en artículo y qué en anuncio, según dónde se consume." },
+        { "n": "03", "title": "Calendario", "line": "Qué se publica, cuándo y en qué canal, con tiempo para producir sin prisas y aprobar sin perseguir a nadie." },
+        { "n": "04", "title": "Conexión con pauta y SEO", "line": "Las piezas que mejor funcionan se vuelven anuncios, y las preguntas de tus clientes se vuelven artículos que Google y los asistentes pueden citar.", "href": "/servicios/seo/" }
+      ],
+      "links": [
+        { "label": "Lee nuestro blog", "href": "/blog/" },
+        { "label": "SEO y visibilidad en IA", "href": "/servicios/seo/" }
+      ]
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": { "text": "{{Price}}." },
+      "lede": "No cobramos por logo ni por publicación suelta. El precio depende de esto:",
+      "items": [
+        { "title": "Canales", "line": "En qué redes y plataformas publicas, y si incluye piezas para pauta." },
+        { "title": "Integraciones", "line": "Con qué se conecta tu marca: tu web, tus campañas, tu CRM y la voz de tu agente de IA." },
+        { "title": "Volumen", "line": "Cuántas piezas al mes, cuánto video y si partimos de una identidad nueva o de la que ya tienes." }
+      ],
+      "remate": "El alcance lo definimos contigo en tu Discovery Session, a partir de tu marca actual y de lo que ya funciona."
+    },
+    "faq": {
+      "_componente": "FAQAccordion (N10 sale cuando se apruebe)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas sobre", "soft": "branding y contenido." },
+      "faqIds": ["N10", "G14", "G07"],
+      "footer": "¿Quieres una segunda opinión sobre tu marca? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": { "text": "Donde tu marca", "soft": "se pone a trabajar." },
+      "items": [
+        { "href": "/servicios/paginas-web/", "label": "Servicio", "title": "Páginas web de alta conversión", "line": "Tu identidad aplicada a un sitio que convierte visitas en conversaciones." },
+        { "href": "/servicios/paid-media/", "label": "Servicio", "title": "Paid media", "line": "Tus creativos en campañas medidas por venta, no por clics." },
+        { "href": "/kain/", "label": "Kain", "title": "Conoce a Kain", "line": "El personaje que atiende por nosotros, de cuerpo completo y en primera persona." }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Una segunda mirada",
+      "h2": { "text": "¿Tu marca se ve", "soft": "como la opción premium?" },
+      "lede": "Lo vemos en la Discovery Session: revisamos tu marca, tus redes y tu web, y te decimos qué sostiene tu precio y qué lo está bajando.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de branding y contenido y quiero posicionar mi marca como premium."
+      }
+    }
+  }
+}

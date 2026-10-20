@@ -1,0 +1,156 @@
+{
+  "pageId": "caso-ecommerce",
+  "url": "/casos/ecommerce-cdmx-costo-por-lead/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "publishGate": {
+    "ok": false,
+    "fuente": null,
+    "_nota": "Puerta R2 cerrada: la página sale como caso breve (noindex,follow; solo portada, ficha con filas confirmed:true, cifra, replicar, relacionados y cierre). Lo publicable hoy: la cifra de metrics.ts (ecom-cpl, 'costo por lead en 60 días', contexto 'E-commerce · CDMX') y que el sistema sigue operando (RESPUESTAS-CLIENTE 2026-10-19 #3). A diferencia de los otros casos, aquí NO hay descripción publicada de lo que se implementó (D: 'Página bloqueada hasta confirmar con el cliente qué se implementó'): la página no dice qué servicio ni qué herramientas se usaron. Para abrir la puerta hace falta, por escrito: ficha (servicio, herramientas, plazo), punto de partida e implementación."
+  },
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · puerta R2: ¿autorizas publicar este caso completo e indexable? Necesitamos por escrito ficha, punto de partida e implementación. Mientras tanto sale como caso breve en noindex, enlazado desde /casos/, el inicio, /servicios/paid-media/ y /industrias/retail-ecommerce/.",
+    "PREGUNTA AL CLIENTE · implementación (lo más urgente: sin esto el caso no puede contar cómo se logró): ¿qué implementó Ingeniak en este e-commerce? ¿Paid media (en qué plataformas: Meta Ads, Google Ads, TikTok Ads), CRM (Kommo o GoHighLevel), agente de IA en WhatsApp, página o tienda en línea, tablero de datos? Cada pieza confirmada se vuelve un nodo del diagrama.",
+    "PREGUNTA AL CLIENTE · ¿el tablero '{{metric:ecom-tablero}}' es de este mismo cliente? Si sí, se suma a la ficha, a la implementación y a la escena de la cifra (ESPEC §5.4.1); si no, se queda solo en /servicios/desarrollo-software/ y /industrias/retail-ecommerce/.",
+    "PREGUNTA AL CLIENTE · ficha: (1) ¿qué vende la tienda? (basta la categoría, sin nombre); (2) ¿qué cuenta como 'lead' en este caso? (formulario, mensaje de WhatsApp, registro, carrito); (3) ¿cuánto tardó la implementación? Si no se confirma, solo se usa el rango general de Ingeniak (de 7 a 30 días según el alcance), rotulado como general.",
+    "PREGUNTA AL CLIENTE · punto de partida: ¿cómo conseguían leads antes y por qué canales? ¿cómo medían su costo? Si se pueden publicar el costo por lead inicial o el presupuesto, van; si no, se cuenta en cualitativo y la cifra se queda en índice (base 100 = antes), como hoy.",
+    "RESUELTO 2026-10-19 · cliente en chat · (3) los cinco sistemas siguen activos: chip 'En operación' en la portada y fila 'Estado' en la ficha.",
+    "RESUELTO 2026-10-19 · cliente en chat · (1) la cifra se publica tal como está en metrics.ts; ecom-cpl ya trae su ventana ('en 60 días'), que la ficha repite como 'Ventana de medición'.",
+    "BORRADOR SIN PUBLICAR · resultado y vktor existen para cuando se abra la puerta, pero CaseTemplate no los pinta en el caso breve. punto-partida e implementacion van con _omitir: no hay nada confirmado que contar. resultado no lleva UI simulada sobre el panel, para no sugerir una herramienta que no está confirmada.",
+    "CAMBIO DE AFIRMACIÓN · el texto nunca dice que la cifra viene de paid media (el brief de replicar y el enlace a /servicios/paid-media/ son ideas y lecturas relacionadas, no la implementación del caso). La misma pregunta está abierta en paid-media.json.",
+    "CAMBIO DE TEXTO · ficha.deckBreve es la entradilla del caso breve; ficha.deck queda para la versión completa. ficha.note dice 'Reportaje breve…': al abrir la puerta se cambia por la nota de anonimato del caso dental.",
+    "CAMBIO DE TEXTO · CTA primario de portada y cierre: 'Agenda tu Discovery Session' (regla de un solo azul, §0.1-4; sitemap.primaryCta dice 'Quiero un sistema así: agenda tu Discovery').",
+    "CAMBIO DE TEXTO · relacionados: el brief pide /servicios/paid-media/, /industrias/retail-ecommerce/ y el caso HoReCa. Van paid media, la industria y /servicios/desarrollo-software/ (internalLinks); el caso HoReCa es el 'Siguiente reportaje' (cadena dental → retail → e-commerce → HoReCa → logística → dental).",
+    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (caso-ecommerce-hero, persona a la derecha) + Breadcrumbs + fila .chip-spec",
+      "rail": "Portada",
+      "h1": { "kicker": "E-commerce en la Ciudad de México:", "metricId": "ecom-cpl", "text": "en costo por lead en 60 días" },
+      "chips": ["E-commerce", "Ciudad de México", "60 días", "En operación"],
+      "lede": "Una tienda en línea de la Ciudad de México redujo lo que paga por cada lead, es decir, por cada persona interesada que llega a su embudo. El sistema que lo logró sigue operando.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso del e-commerce de CDMX y quiero bajar mi costo por lead." },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "ficha": {
+      "_componente": "EntitySheet variant=case + .t-standfirst + crédito + SceneRail mode=labels (Quick Jump)",
+      "rail": "Contexto",
+      "eyebrow": "Ficha del caso",
+      "entity": [
+        { "term": "Sector", "value": "E-commerce", "confirmed": true },
+        { "term": "Ciudad", "value": "Ciudad de México", "confirmed": true },
+        { "term": "Ventana de medición", "value": "60 días", "confirmed": true },
+        { "term": "Estado", "value": "Sigue en operación", "confirmed": true },
+        { "term": "Cifra", "value": "{{metric:ecom-cpl|full}}" }
+      ],
+      "deckBreve": "Para una tienda en línea, el costo por lead es la cuenta que decide si crecer es negocio: lo que inviertes para atraer interesados, dividido entre los que de verdad llegan. Este e-commerce de la Ciudad de México lo bajó en sesenta días. Aquí está la cifra, con su fuente y sin redondeos.",
+      "deck": "Un e-commerce de la Ciudad de México bajó su costo por lead en sesenta días. Este reportaje cuenta qué se midió, desde dónde partió y qué piezas del sistema lo hicieron posible.",
+      "byline": "Por el equipo de Ingeniak",
+      "note": "Reportaje breve: publicamos la cifra, la ciudad y la ventana de medición. El nombre de la tienda está anonimizado."
+    },
+    "punto-partida": {
+      "_componente": "Prose + nota al margen (ámbar)",
+      "_omitir": true,
+      "_nota": "D: 'Situación inicial con números del cliente [POR CONFIRMAR]… No hay borrador publicable.' Se escribe cuando el cliente confirme por escrito canales, forma de medir y, si se puede, el costo por lead inicial (ver pendientes)."
+    },
+    "cifra": {
+      "_componente": "CaseFigure variant=index-down (fijada +100 % en escritorio; en móvil, al entrar). Solo inicio y final, sin curva.",
+      "rail": "La cifra",
+      "eyebrow": "La cifra",
+      "h2": { "text": "Lo que costaba un lead", "soft": "y lo que costó al cerrar la medición." },
+      "figure": {
+        "variant": "index-down",
+        "before": "Antes",
+        "after": "A los sesenta días",
+        "caption": "Costo por lead en índice. E-commerce, Ciudad de México.",
+        "aria": "Dos barras: el costo por lead antes, tomado como base, y el costo por lead medido a los sesenta días."
+      },
+      "line": "El costo inicial vale cien y la barra de la derecha es el costo medido al cerrar la ventana. Hay solo dos puntos porque solo publicamos lo que se midió: ninguna curva dibujada a mano entre uno y otro.",
+      "metricIds": ["ecom-cpl"],
+      "sourceNote": true
+    },
+    "implementacion": {
+      "_componente": "SystemFlow",
+      "_omitir": true,
+      "_nota": "D: '[POR CONFIRMAR CON CLIENTE: servicios implementados]'. No hay descripción publicada de este caso (a diferencia de retail, HoReCa y logística). Ningún nodo se escribe hasta que el cliente confirme qué se implementó; si el tablero ecom-tablero es del mismo cliente, entra aquí."
+    },
+    "resultado": {
+      "_componente": "ImageSection mid (home-sistema-1-atraer en espejo). Sin UI sobre el panel. No se pinta mientras el caso sea breve.",
+      "rail": "Resultado",
+      "eyebrow": "Resultado",
+      "h2": { "text": "La cifra,", "soft": "dicha en una frase." },
+      "quote": "Un e-commerce de la Ciudad de México logró {{metric:ecom-cpl}} en su costo por lead en 60 días.",
+      "sourceNote": true
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sin hitos del proyecto: fases genéricas aplicadas a una tienda en línea). No se pinta mientras el caso sea breve.",
+      "rail": "VKTOR",
+      "eyebrow": "Cómo lo hacemos con VKTOR™",
+      "h2": { "text": "El protocolo,", "soft": "aplicado a lo que te cuesta crecer." },
+      "lede": "Así se verían las cinco fases en tu tienda en línea. Una implementación de Ingeniak toma de 7 a 30 días, según el alcance del proyecto.",
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "De dónde llegan hoy tus leads, cuánto te cuesta cada uno y cuántos terminan en compra." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Qué cuenta como lead en tu tienda, cómo se mide cada canal contra la venta y qué se apaga primero." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Conectamos lo necesario para que cada lead llegue a tu CRM con su origen y su costo." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Revisamos el costo por lead contigo cada semana y movemos la inversión con datos." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Medimos costo por lead y ventas cada mes, y escalamos lo que sí trae compradores." }
+      ],
+      "links": [{ "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }]
+    },
+    "replicar": {
+      "_componente": "ScriptList (3 filas) + enlace a /servicios/paid-media/",
+      "rail": "Replicar",
+      "eyebrow": "Qué puedes replicar en tu e-commerce",
+      "h2": { "text": "Tres ideas para pagar menos", "soft": "por cada cliente potencial." },
+      "items": [
+        {
+          "n": "01",
+          "title": "Mide el costo por lead desde tu CRM",
+          "line": "La plataforma de anuncios cuenta formularios y clics; tu CRM sabe quién era una persona real y quién contestó. Divide lo que inviertes entre los leads que de verdad entraron a tu CRM y tendrás el costo que importa, no el que reporta el anuncio."
+        },
+        {
+          "n": "02",
+          "title": "Corta lo que no convierte",
+          "line": "Con el costo de cada campaña a la vista, las que traen leads caros, repetidos o que nunca compran se notan en días. Apágalas o rehazlas, y mueve ese presupuesto a las que sí terminan en un carrito pagado."
+        },
+        {
+          "n": "03",
+          "title": "Decide con un solo tablero",
+          "line": "Si la inversión vive en una pantalla, los leads en otra y las ventas en una hoja de cálculo, cada decisión llega tarde. Junta las tres en un tablero y revisa el costo por lead con la misma frecuencia con la que inviertes."
+        }
+      ],
+      "links": [{ "label": "Conoce el servicio de paid media", "href": "/servicios/paid-media/" }]
+    },
+    "testimonio": {
+      "_componente": "Quote (condicional)",
+      "_omitir": true,
+      "_nota": "Solo con aprobación escrita del cliente (frase, nombre, cargo y empresa). Sin ella, la sección no existe en el HTML. No usar los borradores de testimonios de v1."
+    },
+    "relacionados": {
+      "_componente": "ScriptList (servicios e industria) + Still variant=next (Siguiente reportaje)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "items": [
+        { "title": "Paid media", "line": "Campañas en Meta, Google y TikTok conectadas a tu CRM y medidas por ventas, no por clics.", "href": "/servicios/paid-media/" },
+        { "title": "Retail y e-commerce", "line": "IA y CRM para tiendas que venden por chat: atención, seguimiento y medición.", "href": "/industrias/retail-ecommerce/" },
+        { "title": "Software a la medida", "line": "Tableros que juntan tus fuentes de datos en una sola pantalla.", "href": "/servicios/desarrollo-software/" }
+      ],
+      "next": { "label": "Siguiente reportaje", "title": "Hoteles y restaurantes: paid media medido en ventas", "metricId": "horeca-roas", "href": "/casos/horeca-roas/" }
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila)",
+      "rail": "Cierre",
+      "eyebrow": "Tu costo por lead, con tus números",
+      "h2": { "text": "¿Cuánto te cuesta hoy cada lead?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "En la Discovery Session sacamos esa cuenta contigo: cuánto inviertes, cuántos leads te llegan y cuántos terminan en compra. Si hoy no lo tienes medido, ese ya es el primer hallazgo.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso del e-commerce de CDMX y quiero bajar mi costo por lead." },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

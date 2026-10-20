@@ -1,0 +1,266 @@
+---
+// ContactTemplate · T-CONTACT (ESPEC-v2 §5.12, §8.5; §12.2 R3/R4/R11) · /contacto/
+// Data-driven: recorre page.sections (src/data/sitemap.json) en su orden; el texto sale de src/content/paginas/<page.id>.json.
+//   hero        ImageSection hero (home-kain: Kain saluda junto a un teléfono de cristal; texto a la derecha) · H1 · 3 rutas:
+//               .btn Discovery (recomendada) · .btn--ghost WhatsApp con Kain · correo · ChatSim registrado en la pantalla del
+//               teléfono (SIMULACIÓN; en móvil la pantalla mide < 180 px → miniatura encendida, §3.7). Móvil `split` (R3).
+//   rutas       Intertitle + <table> semántica de 3 rutas (filas con filete y barrido cian, sin tarjetas; bloques en móvil).
+//               Sin tiempos de respuesta hasta confirmarlos (pendientes del copy).
+//   formulario  condicional: no existe hasta que el cliente apruebe el webform de Kommo (copy con _omitir).
+//   oficina     Intertitle split · dirección en grande sobre un faro de luz (esquema tipográfico: sin mapa con pines y sin
+//               terceros al cargar) + Google Maps + ficha NAP (EntitySheet) + países (CountryList).
+//   redes       Intertitle split · tres filas tipográficas (logo en máscara currentColor + nombre + usuario).
+//   cta-final   Dawn (placa de sitemap.json)
+// JSON-LD (§8.5 + sitemap.json): ContactPage + Organization (contactPoint) + ProfessionalService + BreadcrumbList (buildGraph);
+// aquí se suma al mismo @id #localbusiness el teléfono y el enlace al mapa (los mismos datos visibles de la ficha).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageSection from '../cine/ImageSection.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Dawn from '../cine/Dawn.astro';
+import { resolvePlate, anchorStyle } from '../cine/plate';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import Icon from '../ui/Icon.astro';
+import ChatSim from '../ui/ChatSim.astro';
+import Credits from '../ui/Credits.astro';
+import EntitySheet from '../ui/EntitySheet.astro';
+import { annotateFigures, esc, publicExists } from '../ui/ui-data';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
+import { SITE, waHref, linkTarget, type Page } from '../../lib/site';
+import { LOCAL_ID } from '../layout/jsonld';
+import '../../styles/tpl/ContactTemplate.css';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C = copy?.sections ?? {};
+const dev = import.meta.env.DEV;
+
+/* ── utilidades ─────────────────────────────────────────────────────────── */
+const sec = (id: string) => (P.sections as any[]).find((s) => s.id === id);
+const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
+function headHtml(h: any, lit?: string | null): string {
+  if (!h) return '';
+  let first = annotateFigures(h.text ?? '');
+  const l = lit ?? h.lit;
+  if (l && (h.text ?? '').includes(l)) {
+    const i = (h.text as string).lastIndexOf(l);
+    first = annotateFigures(h.text.slice(0, i)) + `<span class="lit">${esc(l)}</span>` + annotateFigures(h.text.slice(i + l.length));
+  }
+  return h.soft ? `${first} <span class="soft">${annotateFigures(h.soft)}</span>` : first;
+}
+const waMsg: string = P.secondaryCta?.waMessage ?? C.hero?.ctaSecondary?.waMessage ?? 'Hola Kain, quiero hablar con el equipo de Ingeniak.';
+const wa = P.secondaryCta?.href ?? waHref(waMsg);
+const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
+const plateOf = (id: string) => sec(id)?.plate ?? null;
+const mailto = `mailto:${SITE.email}`;
+const pad = (n: number) => String(n).padStart(2, '0');
+
+/* ── 01 · portada ───────────────────────────────────────────────────────── */
+const hero = cp('hero');
+const heroPlate = plateOf('hero');
+const heroKey: string = heroPlate?.id ?? 'home-kain';
+const heroFallback = heroPlate?.launchFallback ?? { plate: 'kain-si-no', note: 'respaldo de home-kain' };
+const rHero = resolvePlate(heroKey, { mirror: !!heroPlate?.mirror, layout: heroPlate?.layout, fallbackPlate: heroFallback, srcsetMax: 2752, mobileMax: 1536, where: '#hero' });
+const lcpPlate = rHero.id ?? undefined;
+const heroLede = ledeParts(hero?.lede, 20);
+const heroEyebrowDup = eyebrowRepeatsCrumbs(hero?.eyebrow, P.breadcrumbs);
+// F10 · el teléfono de cristal de la placa (ancla de caja `telefono`): ahí corre el primer mensaje con Kain (SIMULACIÓN).
+// En la placa vertical también existe (< 180 px a 390 → ChatSim pinta la miniatura encendida, §3.7).
+const telD = !rHero.aura ? rHero.anchors.telefono?.box?.d ?? null : null;
+const telM = !rHero.aura ? rHero.anchors.telefono?.box?.m ?? null : null;
+const chatLines = (hero?.chat?.lines ?? []).filter((l: any) => l?.text);
+
+/* ── 02 · rutas ─────────────────────────────────────────────────────────── */
+const rutas = cp('rutas');
+const routeHref = (id: string): { href: string; ext?: boolean; wa?: boolean } =>
+  id === 'discovery' ? { href: linkTarget('/discovery/') ?? SITE.agenda, ext: !linkTarget('/discovery/') }
+  : id === 'whatsapp' ? { href: wa, ext: true, wa: true }
+  : { href: mailto };
+
+/* ── 04 · oficina ───────────────────────────────────────────────────────── */
+const of = cp('oficina');
+const mapsHref: string | null = of?.mapsHref && /^https:\/\/www\.google\.[a-z.]+\/maps/.test(of.mapsHref) ? of.mapsHref : null;
+
+/* ── 05 · redes ─────────────────────────────────────────────────────────── */
+const redes = cp('redes');
+const socialItems = (redes?.items ?? [])
+  .map((it: any) => ({ ...it, href: (SITE.social as any)[it.slug] as string | undefined, logo: `/img/logos/${it.slug}.svg` }))
+  .filter((it: any) => it.href);
+
+/* ── cierre ─────────────────────────────────────────────────────────────── */
+const cta = cp('cta-final');
+const ctaPlate = plateOf('cta-final');
+
+const order: string[] = (P.sections as any[]).filter((s) => s.status !== 'conditional').map((s) => s.id);
+if (dev) {
+  const known = new Set(['hero', 'rutas', 'formulario', 'oficina', 'redes', 'cta-final']);
+  for (const id of order) {
+    if (!known.has(id)) console.warn(`[ContactTemplate] ${P.id}: sección "${id}" sin componente en la plantilla`);
+    else if (!C[id]) console.warn(`[ContactTemplate] ${P.id}: falta el copy de la sección "${id}"`);
+  }
+}
+const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: SITE.phoneE164, ...(mapsHref ? { hasMap: mapsHref } : {}) }];
+---
+<BaseLayout page={page} lcpPlate={lcpPlate} lcpSrcsetMax={2752} jsonLd={localLd} bodyClass="ctc">
+  {order.map((id) => {
+    /* ── 01 · portada: tres rutas sobre la escena "Escríbele a Kain" ── */
+    if (id === 'hero' && hero) return (
+      <ImageSection id="hero" plate={heroKey} fallbackPlate={heroFallback} mirror={!!heroPlate?.mirror} layout={heroPlate?.layout}
+        height="hero" mobile="split" priority srcsetMax={2752} class="ct-hero tpl-hero">
+        <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
+        {hero.eyebrow && <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{hero.eyebrow}</p>}
+        <h1 id="hero-t" class="t-display-2 ct-h1" data-split set:html={headHtml(hero.h1)} />
+        {hero.lede && (
+          <p class="t-lede t-lede--2 ct-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
+        )}
+        <HeroCtas href={linkTarget(hero.ctaPrimary?.href ?? '/discovery/') ?? SITE.agenda} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+          waHref={wa} waLabel={waLabel(hero)} />
+        {hero.mail && (
+          <p class="ct-mail tpl-mhide">
+            <Icon name="mail" size={16} class="ct-mail__i" />
+            <span class="ct-mail__l">{hero.mail.line}</span>
+            <a class="lnk ct-mail__a" href={mailto}>{hero.mail.label ?? SITE.email}</a>
+          </p>
+        )}
+        {(heroLede.rest || hero.mail) && (
+          <Fragment slot="more">
+            {heroLede.rest && <Copy as="p" class="t-lede t-lede--2 ct-hero__rest tpl-dhide" text={heroLede.rest} />}
+            {hero.mail && (
+              <p class="ct-mail ct-mail--m tpl-dhide">
+                <Icon name="mail" size={16} class="ct-mail__i" />
+                <span class="ct-mail__l">{hero.mail.line}</span>
+                <a class="lnk ct-mail__a" href={mailto}>{hero.mail.label ?? SITE.email}</a>
+              </p>
+            )}
+          </Fragment>
+        )}
+        {telD && chatLines.length > 0 && (
+          <div slot="anchors" class="anchor anchor--panel ct-phone" data-anchor="telefono" data-m={telM ? undefined : 'none'} data-lock style={anchorStyle('telefono')}>
+            <ChatSim mode="registered" scripts={{ contacto: chatLines }} script="contacto" title={hero.chat?.title ?? 'Agente de IA de Ingeniak'} note={false} prefill={1} id="ct-chat" />
+          </div>
+        )}
+      </ImageSection>
+    );
+
+    /* ── 02 · rutas ── */
+    if (id === 'rutas' && rutas) return (
+      <Intertitle id="rutas" aura="none" class="ct-rutas tpl-glow">
+        <Aura kind="isotipo" x="82%" y="24%" w="min(50vw,760px)" o={0.75} only="d" />
+        <Aura kind="ondas" x="34%" y="100%" o={1} only="d" />
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        <div class="ct-head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{rutas.eyebrow}</p>
+          <h2 id="rutas-t" class="t-h2" data-split set:html={headHtml(rutas.h2)} />
+          {rutas.lede && <Copy as="p" class="t-lede t-lede--2 ct-head__lede" text={rutas.lede} data-reveal />}
+        </div>
+        <table class="ct-routes" data-reveal>
+          <caption class="sr-only">{rutas.caption}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{rutas.cols?.route ?? 'Ruta'}</th>
+              <th scope="col">{rutas.cols?.when ?? 'Úsala si…'}</th>
+              <th scope="col">{rutas.cols?.then ?? 'Qué pasa después'}</th>
+              <th scope="col"><span class="sr-only">Acción</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {(rutas.routes ?? []).map((r: any, i: number) => {
+              const go = routeHref(r.id);
+              return (
+                <tr class:list={['ct-route', `ct-route--${r.id}`]}>
+                  <th scope="row" class="ct-route__head">
+                    <span class="ct-route__n" aria-hidden="true">{pad(i + 1)}</span>
+                    <span class="ct-route__name">{r.name}</span>
+                    {r.tag && <span class="chip-spec ct-route__tag"><span class="node" aria-hidden="true"></span>{r.tag}</span>}
+                    {r.contact && <span class="ct-route__contact" data-allow-number>{r.contact}</span>}
+                  </th>
+                  <td class="ct-route__when" data-label={rutas.cols?.when ?? 'Úsala si…'}><Copy text={r.when} /></td>
+                  <td class="ct-route__then" data-label={rutas.cols?.then ?? 'Qué pasa después'}><Copy text={r.then} /></td>
+                  <td class="ct-route__act">
+                    <a class="ct-route__go" href={go.href} target={go.ext && !go.wa ? '_blank' : undefined} rel={go.ext ? 'noopener' : undefined} data-wa={go.wa ? '' : undefined}>
+                      <span>{r.action}</span><span class="sr-only">: {r.name}</span>
+                      <span class="ct-route__arr" aria-hidden="true">{go.wa ? <Icon name="whatsapp" size={16} /> : r.id === 'correo' ? <Icon name="mail" size={16} /> : '→'}</span>
+                    </a>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Intertitle>
+    );
+
+    /* ── 04 · oficina ── */
+    if (id === 'oficina' && of) return (
+      <Intertitle id="oficina" aura="none" layout="split" class="ct-of tpl-glow">
+        <Aura kind="ondas" x="66%" y="58%" o={1} only="d" />
+        <Fragment slot="head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{of.eyebrow}</p>
+          <h2 id="oficina-t" class="t-h2" data-split set:html={headHtml(of.h2)} />
+          {of.lede && <Copy as="p" class="t-lede t-lede--2 ct-of__lede" text={of.lede} data-reveal />}
+          {of.visit && <Copy as="p" class="ct-of__visit" text={of.visit} data-reveal />}
+          <div class="ctas ct-of__ctas" data-reveal><Btn variant="ghost" href={wa} label={waLabel(of)} /></div>
+        </Fragment>
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        <div class="ct-place" data-reveal>
+          <span class="ct-beacon" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+          <address class="ct-place__addr" data-allow-number>
+            <span class="ct-place__street">{of.address}</span>
+            <span class="ct-place__city">{of.addressLine}</span>
+          </address>
+          {mapsHref && (
+            <a class="lnk ct-place__maps" href={mapsHref} target="_blank" rel="noopener">{of.mapsLabel ?? 'Abrir en Google Maps'}<Icon name="external" size={16} /></a>
+          )}
+        </div>
+        {of.nap?.length > 0 && <EntitySheet variant="local" rows={of.nap} title={of.napLabel ?? 'Datos de contacto'} class="ct-nap" />}
+        <Credits variant="countries" label={of.countriesLabel} class="ct-countries" />
+      </Intertitle>
+    );
+
+    /* ── 05 · redes ── */
+    if (id === 'redes' && redes && socialItems.length) return (
+      <Intertitle id="redes" aura="none" layout="split" class="ct-redes tpl-glow">
+        <Aura kind="isotipo" x="20%" y="50%" w="min(44vw,640px)" o={0.7} only="d" />
+        <Fragment slot="head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{redes.eyebrow}</p>
+          <h2 id="redes-t" class="t-h2" data-split set:html={headHtml(redes.h2)} />
+          {redes.lede && <Copy as="p" class="t-lede t-lede--2 ct-redes__lede" text={redes.lede} data-reveal />}
+        </Fragment>
+        <ul class="ct-social" role="list" data-reveal="stagger">
+          {socialItems.map((s: any) => (
+            <li>
+              <a class="ct-social__a" href={s.href} target="_blank" rel="noopener">
+                <span class="ct-social__logo" aria-hidden="true" style={publicExists(s.logo) ? `--logo:url(${s.logo})` : undefined}></span>
+                <span class="ct-social__name">{s.name}</span>
+                <span class="ct-social__handle">{s.handle}</span>
+                <span class="ct-social__go" aria-hidden="true"><Icon name="external" size={16} /></span>
+                <span class="sr-only"> (abre en otra pestaña)</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Intertitle>
+    );
+
+    /* ── 06 · cierre ── */
+    if (id === 'cta-final' && cta) return (
+      <Dawn id="cta-final" plate={ctaPlate?.id ?? 'cta-amanecer'} mirror={!!ctaPlate?.mirror} fallbackPlate={ctaPlate?.launchFallback} layout={ctaPlate?.layout} class="ct-dawn tpl-glow-m">
+        {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
+        <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
+        {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
+        <div class="ctas">
+          <div class="cta-p">
+            <Btn variant="primary" href={linkTarget(cta.ctaPrimary?.href ?? '/discovery/') ?? SITE.agenda} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+            <Copy as="p" class="t-micro btn-micro" text={cta.micro ?? '30 min · 1:1 · Google Meet · sin costo'} data-allow-number />
+          </div>
+          <Btn variant="ghost" href={wa} label={waLabel(cta)} />
+        </div>
+      </Dawn>
+    );
+    return null;
+  })}
+</BaseLayout>

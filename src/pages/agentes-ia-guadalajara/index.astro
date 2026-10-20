@@ -1,0 +1,9 @@
+---
+// /agentes-ia-guadalajara/ · T-LOCAL (ESPEC-v2 §5.14). Texto: src/content/paginas/guadalajara.json (la página existe cuando
+// hay copy + ruta). Conserva la URL de v1 (landing local que ya posiciona).
+import LocalTemplate from '../../components/templates/LocalTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+const page = getPage('/agentes-ia-guadalajara/');
+const copy = getCopy(page.id);
+---
+<LocalTemplate page={page} copy={copy} />

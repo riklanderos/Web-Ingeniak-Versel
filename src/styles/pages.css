@@ -258,6 +258,26 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
     radial-gradient(34% 46% at 26% 56%,rgb(255 181 71 / .2),rgb(255 140 40 / .06) 50%,transparent 74%),
     radial-gradient(40% 52% at 70% 50%,rgb(0 229 255 / .2),rgb(69 93 255 / .08) 50%,transparent 74%)}
 .case-cifra__cap{margin-top:var(--s-5)}
+/* multiplier: el "$" de "$1 → $4.8" lo dibuja el CSS (CaseFigureLocal lo saca del texto: check-cifras, peticiones casos #1) */
+.case-cifra .cf-mx__eq [data-cur]::before{content:attr(data-cur)}
+/* nodes: con vector-effect:non-scaling-stroke Chrome mide el trazo discontinuo (pathLength=1) en px de pantalla y las ramas
+   salían punteadas y rotas; en unidades del viewBox (el SVG escala uniforme: 9 × 3 celdas cuadradas) se dibujan completas */
+.case-cifra .cf-nd__wires path{vector-effect:none;stroke-width:.22}
+/* Escenas compactas (index-up, index-down, multiplier, nodes) en escritorio: la escena va a la derecha, sobre el aura, y el
+   texto (titular, línea y nota de fuente) a la izquierda. Fijada (+100 %), la escena completa cabe en una pantalla y la
+   mitad derecha deja de ser aura sola. El cronómetro (stopwatch, a lo ancho) no cambia. */
+@media (min-width:1024px) and (min-aspect-ratio:5/6){
+  .case-cifra:not(.cf--stopwatch) .cf__frame{grid-template-rows:auto auto 1fr;align-items:start;row-gap:var(--s-6)}
+  .case-cifra:not(.cf--stopwatch) :is(.cf__head,.cf__foot,.cf__caption){grid-column:1 / span 6}
+  .case-cifra:not(.cf--stopwatch) .cf__head{grid-row:1}
+  .case-cifra:not(.cf--stopwatch) .cf__foot{grid-row:2}
+  .case-cifra:not(.cf--stopwatch) .cf__caption{grid-row:3}
+  .case-cifra:not(.cf--stopwatch) .cf__stage{grid-column:8 / -1;grid-row:1 / span 3;align-self:center;min-width:0}
+  .case-cifra:not(.cf--stopwatch) .cf__aura{left:78%}
+  .case-cifra.cf--multiplier .cf-mx__eq{font-size:clamp(3.5rem,1rem + 5.2vw,8.5rem)}
+  .case-cifra.cf--multiplier .cf-mx__cols{height:min(32svh,280px)}
+  .case-cifra:is(.cf--index-up,.cf--index-down) .cf-ix{column-gap:var(--s-7);height:min(52svh,440px)}
+}
 
 /* 05 · Implementación */
 .case-impl__flow{grid-column:1 / -1;margin-top:var(--s-8);min-width:0}
@@ -313,6 +333,9 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .case-rel{padding-bottom:0}
 .case-rel__list{margin-top:var(--s-6)}
 .case-next{position:relative;margin-top:var(--s-8)}
+/* Siguiente reportaje: la disolución inferior del still dura el 42 % (en ui, 22 %). Con portadas que traen un objeto claro
+   abajo (la laptop de e-commerce, la mesa de HoReCa) el corte se leía como borde de la imagen; así se funde con el cierre */
+.t-case .case-next .still--next{--mask-y:linear-gradient(180deg,transparent 0,#000 20%,#000 58%,transparent 100%)}
 .case-testi__q{grid-column:3 / span 8;margin-top:var(--s-6)}
 /* 11 · Cierre: la microcopia del copy (más larga que la del botón) ocupa el ancho del primario y se parte en dos
    líneas equilibradas; no ensancha .cta-p, así el WhatsApp sigue en la misma fila */
@@ -369,6 +392,9 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 /* 01 · Portada: H1 de página interna; en escritorios bajos manda la altura (el CTA queda en el primer pantallazo) */
 .ind-hero h1.t-display-2{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),9.4svh);max-width:14ch}
 .ind-hero .is__text > .t-lede{max-width:40ch}
+/* H1 largos (> 48 caracteres: industrial, HoReCa, belleza…): un paso menos de tamaño y una medida más ancha, así el bloque
+   completo (crumbs, H1, lede y CTA) cabe en el primer pantallazo sin entrar al lado del sujeto */
+.ind-hero h1.ind-h1--long{font-size:min(clamp(2.25rem,.9rem + 3.3vw,4.25rem),7.2svh);max-width:16ch}
 /* IMAGEN ILUSTRATIVA DEL SECTOR: esquina inferior derecha de la portada (action-safe); se apaga con el rack focus de la toma */
 .ind-illus{position:absolute;z-index:2;right:var(--action-x);bottom:16px;margin:0;color:rgb(158 176 199 / .72);pointer-events:none;opacity:calc(1 - var(--rack,0) * 3)}
 /* Chip de prueba anclado a la tableta (§3.8): cristal en la zona de piso + línea guía que nace en la tableta */
@@ -376,6 +402,8 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .ind-proof__chip{width:max-content;max-width:250px;min-width:180px;z-index:1}
 .ind-proof--left .ind-proof__chip{translate:-100% 0}
 .ind-proof__chip .metric__v{font-size:2.25rem}
+/* AA (check-contraste, 1920 × 1080): el contexto mono del chip pasa de muted a soft sobre el cristal (4.37:1 → AA) */
+.ind-proof__chip .metric__c{color:var(--soft)}
 .ind-leader{opacity:.9}
 /* Móvil: la prueba baja al texto como una línea (sin tarjeta), así el sujeto entra en el primer pantallazo */
 .ind-proof-m{margin-top:var(--s-5);gap:10px;align-items:baseline;font:400 .875rem/1.45 var(--f-body);color:var(--text-2)}
@@ -389,6 +417,7 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
   .ind-proof-43.ind-proof-m{display:flex;margin-top:var(--s-4)}
   /* el bloque completo (con la prueba) cabe en el primer pantallazo: titular un poco más bajo y menos aire entre piezas */
   .ind-hero h1.t-display-2{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),8.2svh)}
+  .ind-hero h1.ind-h1--long{font-size:min(clamp(2.25rem,.9rem + 3.3vw,4.25rem),6.6svh)}
   .ind-hero .is__text > .t-lede{margin-top:var(--s-4)}
   .ind-hero .is__text > .ctas{margin-top:var(--s-5);row-gap:var(--s-3)}
 }
@@ -433,20 +462,50 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 .ind-auto .ind-auto__list .script__list{border-bottom:0}
 
 /* 05 · Kain en el sector: el texto empieza donde termina la zona segura (sujeto + panel ocupan el otro lado) */
-/* La placa trae su panel de cristal entre Kain y la penumbra: el texto arranca en la columna 9 (≥ 100 px de aire con el panel) */
-@media (min-width:1024px){.is.ind-kain--c8[data-layout] .is__text{grid-column:9 / span 4}}
+/* La columna depende de la placa usada (IndustryTemplate: borde del panel y zona segura). Por defecto 7 / span 6 (salud).
+   --c7: panel hasta x ≈ .48 (inmobiliario) → 8 / span 5. --c8: panel o zona segura más allá de .5 (HoReCa, respaldo
+   home-sistema-2-atender) → 9 / span 4. Con ≥ 100 px de aire con el panel aun con el zoom del pin. */
+@media (min-width:1024px){
+  .is.ind-kain--c7[data-layout] .is__text{grid-column:8 / span 5}
+  .is.ind-kain--c8[data-layout] .is__text{grid-column:9 / span 4}
+}
+/* Panorámicos anchos (1920 × 1080): la placa se encuadra más a la izquierda (el panel termina en x ≈ .5 de la pantalla) →
+   la columna angosta arranca en la 8 y el titular deja de partirse en 6 renglones */
+@media (min-width:1760px) and (min-aspect-ratio:16/9){.is.ind-kain--c8[data-layout] .is__text{grid-column:8 / span 5}}
+/* Titular largo o columna angosta: el H2 baja un paso (no se parte en 5–6 renglones ni empuja el bloque fuera del pin) */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .is.ind-kain--long .is__text > .t-h2{font-size:clamp(2.25rem,.8rem + 3.4vw,5rem)}
+  .is.ind-kain:is(.ind-kain--c7,.ind-kain--c8) .is__text > .t-h2{font-size:clamp(2rem,.6rem + 3vw,4.25rem)}
+}
+/* Escritorios bajos (1280 × 720): la escena fijada no puede dejar texto fuera de la pantalla mientras dura el pin → con
+   titular largo o columna angosta se aprieta la tipografía (H2, lede y límite) para que el bloque quepa bajo el encabezado */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){
+  .is.ind-kain--long .is__text > .t-h2{font-size:min(clamp(2.25rem,.8rem + 3.4vw,5rem),7svh)}
+  .is.ind-kain:is(.ind-kain--c7,.ind-kain--c8) .is__text > .t-h2{font-size:min(clamp(2rem,.6rem + 3vw,4.25rem),6svh)}
+  .is.ind-kain:is(.ind-kain--long,.ind-kain--c7,.ind-kain--c8) .is__text > .t-lede{font-size:1.0625rem;line-height:1.5}
+  .is.ind-kain:is(.ind-kain--long,.ind-kain--c7,.ind-kain--c8) .is__more{margin-top:var(--s-5)}
+  .is.ind-kain:is(.ind-kain--long,.ind-kain--c7,.ind-kain--c8) .ind-limit{font-size:.9375rem;line-height:1.5}
+}
 .ind-kain .is__more{margin-top:var(--s-6)}
 /* Escritorios estrechos (4:3, iPad horizontal): la placa se recorta por la izquierda para que el panel no invada la penumbra */
 @media (min-width:768px) and (max-aspect-ratio:3/2) and (min-aspect-ratio:5/6){.is.ind-kain[data-layout="subject-left"]{--fx-d:.64 !important}}
-@media (min-width:768px) and (max-width:1023px) and (min-aspect-ratio:5/6){.is.ind-kain--c8[data-layout] .is__text{grid-column:5 / span 4}}
+@media (min-width:768px) and (max-width:1023px) and (min-aspect-ratio:5/6){.is.ind-kain:is(.ind-kain--c7,.ind-kain--c8)[data-layout] .is__text{grid-column:5 / span 4}}
 .ind-panel{overflow:hidden;border-radius:clamp(10px,1.5cqw,24px);
-  background:linear-gradient(180deg,rgb(6 10 24 / .74),rgb(6 10 24 / .58) 60%,rgb(6 10 24 / .7));
+  background:linear-gradient(180deg,rgb(6 10 24 / .82),rgb(6 10 24 / .7) 60%,rgb(6 10 24 / .78)); /* AA del sello "Hora ilustrativa" sobre placas con vitrinas encendidas detrás del panel (retail) */
   box-shadow:inset 0 0 0 1px rgb(0 229 255 / .32),inset 0 1px 0 rgb(255 255 255 / .22),0 0 60px rgb(0 229 255 / .16)}
 .ind-panel .chat--registered .chat__bar{padding-top:.35em}
-.ind-limit{display:flex;gap:12px;align-items:baseline;margin:0;padding-top:var(--s-4);border-top:1px solid var(--hair);
+.ind-limit{display:flex;gap:16px;align-items:baseline;margin:0;padding-top:var(--s-4);border-top:1px solid var(--hair);
   font:400 1rem/1.55 var(--f-body);color:var(--text-2);max-width:46ch}
-.ind-limit .node{translate:0 -2px}
+.ind-limit .node{translate:0 -2px} /* gap 16 px: el resplandor del nodo no toca la primera letra (AA a 360 px) */
 .ind-kain__note{margin-top:var(--s-4);max-width:50ch}
+/* Columna angosta: según el largo del copy, el límite o la nota caen sobre la línea de luz del piso de la placa (respaldo
+   home-sistema-2-atender: y ≈ .78; 2.6:1 a 1920 × 1080) → penumbra de tinta difuminada detrás del bloque (sin bordes ni
+   caja: la línea de luz se apaga al pasar detrás del texto, como en la placa) */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .ind-kain--c8 .ind-kain__more{position:relative;isolation:isolate}
+  .ind-kain--c8 .ind-kain__more::before{content:"";position:absolute;z-index:-1;inset:-14px -28px -14px -28px;pointer-events:none;
+    border-radius:48px;background:rgb(3 4 11 / .74);filter:blur(22px)}
+}
 .ind-kain__more{align-self:stretch;display:flex;flex-direction:column;align-items:flex-start}
 .ind-kain__chat{margin-bottom:var(--s-6);width:100%}
 @media (max-width:767px), (max-aspect-ratio:5/6){
@@ -506,7 +565,12 @@ html.js:not([data-motion="reduced"]):not([data-vt]) .case-h1__fig{animation:case
 /* 10 · Cierre (QA #36): la microcopia del copy (más larga que la del botón) no ensancha la columna: ocupa el ancho del
    primario y se parte en renglones equilibrados (con nowrap medía 436 px dentro de una columna de 328 px y se recortaba). */
 body.ind #cta-final .is__text{min-width:0}
-body.ind #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-width:none;white-space:normal;text-wrap:balance}
+/* AA: con copy más largo el secundario cae sobre el horizonte encendido del amanecer (belleza a 1280 × 720: 4.0:1) →
+   el contorno lleva debajo una tinta translúcida (sigue leyéndose como secundario, nunca como un segundo azul) */
+body.ind #cta-final .ctas .btn--ghost{background:linear-gradient(rgb(255 255 255 / .04),rgb(255 255 255 / .04)),rgb(4 8 20 / .5)}
+body.ind #cta-final .ctas .btn--ghost:is(:hover,:focus-visible){background:linear-gradient(rgb(0 229 255 / .08),rgb(0 229 255 / .08)),rgb(4 8 20 / .5)}
+body.ind #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-width:none;white-space:normal;text-wrap:balance;
+  color:var(--text)} /* AA: con titulares largos la microcopia queda junto al resplandor del horizonte (4.18:1 en text-2) */
 /* ===== fin IndustryTemplate ===== */
 
 /* ===== ConversionTemplate ===== */
@@ -1096,7 +1160,7 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
 /* El borde de la columna llega a .465 de la placa (antes .44): los dos CTA caben en una fila con la microcopia bajo el
    primario; el teléfono empieza en .48, así que el texto nunca lo toca */
 .svc-hero{--svc-safe-r:.465}
-.svc-hero .svc-h1{max-width:13ch}
+.svc-hero .svc-h1{max-width:calc(13ch / var(--h1-fit,1));font-size:calc(clamp(2.5rem,1rem + 4.6vw,6rem) * var(--h1-fit,1))}
 /* La columna de texto termina donde empieza la superficie de cristal (borde derecho de la penumbra, --svc-safe-r en
    fracción de la placa; .44 en la serie de estaciones). Se calcula con la misma caja "cover" del escenario registrado,
    así en 4:3 (1024 × 768) el texto tampoco entra al teléfono. El titular escala con esa columna. */
@@ -1104,7 +1168,7 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
   .svc-hero{--svc-h:max(100svh,680px);--svc-lw:100vw;--svc-sw:max(var(--svc-lw), var(--svc-h) * var(--ar-d));
     --svc-col:calc((100vw - var(--svc-lw)) / 2 + (var(--svc-lw) - var(--svc-sw)) * var(--fx-d) + var(--svc-safe-r,.44) * var(--svc-sw) - (100vw - var(--frame)) / 2 - 8px)}
   .svc-hero .is__text{max-width:var(--svc-col)}
-  .svc-hero .svc-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),var(--svc-col) / 7.1,9.4svh)}
+  .svc-hero .svc-h1{font-size:calc(min(clamp(2.5rem,1rem + 4.6vw,6rem),var(--svc-col) / 7.1,9.4svh) * var(--h1-fit,1))}
 }
 @media (min-width:1800px){.svc-hero{--svc-lw:min(100vw,2200px,var(--svc-h) * var(--ar-d) * 1.08)}}
 .svc-hero .svc-h1 .soft{display:block}
@@ -1136,7 +1200,11 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
   .svc-hero .is__text > .crumbs{margin-bottom:var(--s-4)}
   .svc-hero .is__text > :is(.t-deck,.t-lede){margin-top:var(--s-4)}
   .svc-hero .is__text > .ctas{margin-top:var(--s-6);row-gap:var(--s-3)}
-  .svc-hero .svc-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),var(--svc-col) / 7.1,8.8svh)}
+  .svc-hero .svc-h1{font-size:calc(min(clamp(2.5rem,1rem + 4.6vw,6rem),var(--svc-col) / 7.1,8.8svh) * var(--h1-fit,1))}
+  /* Titular largo en escritorio bajo: la etiqueta cede su renglón a los crumbs y el titular baja un paso más, así los CTA y
+     los pies de Kain siguen en el primer pantallazo */
+  .svc-hero--long .is__text > .crumbs ~ .eyebrow{display:none}
+  .svc-hero--long .svc-h1{font-size:calc(min(clamp(2.5rem,1rem + 4.6vw,6rem),var(--svc-col) / 7.1,8.8svh) * var(--h1-fit,1) * max(var(--h1-fit,1), .86))}
 }
 @media (min-width:768px) and (min-aspect-ratio:5/6) and (max-aspect-ratio:3/2){
   .svc-hero .svc-hero__lede{font-size:1.0625rem}       /* 4:3: columna estrecha junto al teléfono → lede en cuerpo 17 px */
@@ -1238,6 +1306,15 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
   .svc-signals__line{margin:4px 0 0 21px;font-size:.8125rem;line-height:1.42}
   .svc-signals .pain__fix{margin-top:6px;font-size:.875rem;line-height:1.38}
   .svc-pain .pain__remate{margin-top:var(--s-5)}
+  /* Placa de dolor con la persona a la DERECHA (cuando llegue una así, p. ej. dolor-anuncios): el texto va a la izquierda y
+     termina 3 % antes del sujeto (--sx0); el velo se invierte. A ≥ 1800 px la placa se apoya en el borde derecho. */
+  .svc-pain[data-layout="subject-right"]{--pain-off:calc(100vw - var(--pain-w));
+    --pain-xr:calc(var(--pain-off) + (var(--pain-w) - var(--pain-sw)) * var(--fx-d) + (var(--sx0,.56) - .03) * var(--pain-sw))}
+  .is.svc-pain[data-layout="subject-right"] > :is(.is__copy,.is__more) .is__text{margin-left:0;
+    max-width:min(calc(var(--pain-xr) - (100vw - var(--frame)) / 2), 46rem)}
+  .svc-pain[data-layout="subject-right"] > .is__fx{background:
+    linear-gradient(90deg,rgb(3 4 11 / var(--veil-a)) 0%,rgb(3 4 11 / .8) 34%,rgb(3 4 11 / .35) 52%,rgb(3 4 11 / 0) 64%),
+    linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent calc(var(--fade-from) * 100% - 8%),var(--ink) 100%)}
 }
 /* Escritorios bajos (≤ 820 px de alto): la lista llega al piso de la placa → el pie "Fig. 02" y su guía se retiran
    (nunca cruzan una señal; contraste AA medido sobre el píxel más claro) */
@@ -1324,6 +1401,13 @@ body.svc :is(h1,h2)[data-split]{text-wrap:balance}
   .svc-node__l{max-width:none}
   .svc-bead{left:calc(var(--b0xm) * 100%);top:calc(var(--b0ym) * 100%);width:2px;height:9cqh;
     translate:-50% calc(-100% + (var(--b1ym) - var(--b0ym)) * var(--svc-p) * 100cqh);background:linear-gradient(180deg,transparent,rgb(168 243 255 / .85) 70%,#fff)}
+}
+/* Teléfonos angostos (360 px): la línea de cada nodo baja a 3 renglones y se encimaba con el número y los logos del
+   siguiente → la placa vertical crece (los nodos quedan a ~108 px) y la tarjeta gana ancho y una línea más compacta */
+@media (max-width:379px){
+  .is.svc-flow{--plate-h:max(var(--plate-w) / var(--ar-m), min(200vw, 780px))}
+  .svc-node__card{width:calc(100vw - 92px);gap:4px}
+  .svc-node__l{font-size:.78rem;line-height:1.38}
 }
 
 /* ── 06 · Agente vs. chatbot (tabla por criterio, sin bordes de tabla) ── */
@@ -1518,8 +1602,200 @@ a.svc-ind__link:is(:hover,:focus-visible){background:linear-gradient(90deg,rgb(0
 .svc-rel__grid{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
 @media (max-width:1023px){.svc-rel__grid{grid-template-columns:minmax(0,1fr)}}
 
-/* ── Escena genérica con placa ── */
-.svc-bullets{display:grid;gap:12px;max-width:44ch;color:var(--text-2)}
+/* ── Escena con placa (crm-vivo, este-sitio, dashboard, como-medimos, kain-ejemplo, caso con imagen) ── */
+.svc-bullets{display:grid;gap:12px;max-width:44ch;margin:0;padding:0;list-style:none;color:var(--text-2)}
 .svc-bullets li{display:flex;gap:12px;align-items:baseline}
+.svc-bullets .node{flex:none;translate:0 -2px}
 .svc-slogan{margin-top:var(--s-6)}
+.svc-scene .is__more .svc-links{margin-top:var(--s-5)}
+.svc-two .it__body > .svc-two__links{margin-top:var(--s-6)}
+/* Borde de la columna de texto en la placa (fracción de su ancho), ya con el sujeto y la UI empujados: lo calcula sceneGeo */
+.svc-e-30{--sc-e:.30}.svc-e-32{--sc-e:.32}.svc-e-34{--sc-e:.34}.svc-e-36{--sc-e:.36}.svc-e-38{--sc-e:.38}.svc-e-40{--sc-e:.40}.svc-e-42{--sc-e:.42}
+.svc-e-44{--sc-e:.44}.svc-e-46{--sc-e:.46}.svc-e-48{--sc-e:.48}.svc-e-50{--sc-e:.50}.svc-e-52{--sc-e:.52}.svc-e-54{--sc-e:.54}.svc-e-56{--sc-e:.56}
+.svc-e-58{--sc-e:.58}.svc-e-60{--sc-e:.60}.svc-e-62{--sc-e:.62}.svc-e-64{--sc-e:.64}.svc-e-66{--sc-e:.66}.svc-e-68{--sc-e:.68}.svc-e-70{--sc-e:.70}
+/* Escritorio: la placa mide una pantalla (no se agranda con el texto, así el sujeto no se corre hacia la columna) y la
+   columna se acota con la misma caja "cover" del escenario (también a ≥ 1800 px, donde la placa se apoya del lado del sujeto) */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .svc-scene{--sc-h:min(max(90svh,620px), 100vw / var(--ar-d) * 1.1);--sc-lw:100vw;--sc-off:0px;--sc-sw:max(var(--sc-lw), var(--sc-h) * var(--ar-d));
+    --sc-x:calc(var(--sc-off) + (var(--sc-lw) - var(--sc-sw)) * var(--fx-d) + var(--sc-e,.46) * var(--sc-sw) - (100vw - var(--frame)) / 2)}
+  .svc-scene > .is__stagebox{bottom:auto;height:var(--sc-h);overflow:hidden}
+  .is.svc-scene[data-layout="subject-right"] > :is(.is__copy,.is__more) .is__text{grid-column:1 / -1;max-width:min(var(--sc-x), 40rem)}
+  .is.svc-scene[data-layout="subject-left"] > :is(.is__copy,.is__more) .is__text{grid-column:1 / -1;margin-left:max(0px, var(--sc-x));
+    max-width:min(calc(var(--frame) - max(0px, var(--sc-x))), 40rem)}
+  .svc-scene .is__text > .t-h2{font-size:min(clamp(2rem,1rem + 2.6vw,4rem),6.4svh)}
+  .svc-scene .is__text > .t-lede{max-width:46ch;margin-top:var(--s-4);font-size:1.0625rem;line-height:1.5}
+  .svc-scene > .is__more{margin-top:var(--s-5)}
+  .svc-scene .svc-slogan{margin-top:var(--s-5)}
+  /* "Imagen ilustrativa del sector" al pie de la persona (dentro de la placa, no al pie del texto) */
+  .svc-illus{position:absolute;z-index:2;top:calc(var(--sc-h) * .84);right:var(--action-x);margin:0;color:rgb(158 176 199 / .72);pointer-events:none}
+  .svc-scene[data-layout="subject-left"] > .svc-illus{right:auto;left:var(--action-x)}
+}
+/* Con el riel de escenas (≥ 1280 px, nav) la etiqueta se corre hacia dentro: nunca se cruza con sus marcas */
+@media (min-width:1280px) and (min-aspect-ratio:5/6){.svc-scene[data-layout="subject-right"] > .svc-illus{right:calc(var(--action-x) + 56px)}}
+@media (min-width:1800px){
+  .svc-scene{--sc-lw:min(100vw, var(--cap))}
+  .svc-scene[data-layout="subject-right"]{--sc-off:calc(100vw - var(--sc-lw))}
+}
+
+/* ── UI registrada de cada servicio (§5.2.1): cristal oscuro sobre la parte libre de la superficie de la placa; escala con el
+   ancho de su ancla (cqi). En móvil (R4) la misma pieza va en el flujo, después de la placa (.svc-hud--inline). ── */
+.svc-hud{display:flex;align-items:center;justify-content:center;pointer-events:none}
+.svc-hud__card{width:100%;display:flex;flex-direction:column;gap:clamp(6px,3.8cqi,12px);padding:clamp(10px,6cqi,18px) clamp(10px,6.5cqi,20px) clamp(11px,6.5cqi,20px);
+  border-radius:clamp(10px,5cqi,18px);font:400 clamp(10.5px,5.4cqi,14px)/1.35 var(--f-body);color:var(--text);
+  background:linear-gradient(165deg,rgb(12 20 46 / .8),rgb(6 10 24 / .7));-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);
+  box-shadow:inset 0 0 0 1px rgb(168 243 255 / .22),inset 0 1px 0 rgb(255 255 255 / .14),0 24px 60px rgb(3 4 11 / .45),0 0 48px rgb(0 229 255 / .1)}
+.svc-hud__card p{margin:0}
+/* La tarjeta de cristal de la placa queda debajo: más densa para que su filo no se lea a través del texto */
+:is(.svc-hud--answer,.svc-hud--report,.svc-hud--wire,.svc-hud--layers) .svc-hud__card{background:linear-gradient(165deg,rgb(12 20 46 / .9),rgb(6 10 24 / .84))}
+.svc-hud__top{display:flex;align-items:center;justify-content:space-between;gap:.6em}
+.svc-hud__k{display:flex;align-items:center;gap:.55em;min-width:0;font:500 .72em/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+.svc-hud__k .node{width:5px;height:5px;flex:none}
+.svc-hud__top .chip-sim{flex:none;font-size:max(8px,.66em)}
+.svc-hud__evt{display:flex;align-items:center;gap:.6em;font:500 .72em/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+.svc-hud__ok{width:.9em;height:.9em;flex:none;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--cyan),0 0 10px rgb(0 229 255 / .5)}
+.svc-hud__note{font:400 .7em/1.3 var(--f-mono);letter-spacing:.06em;color:var(--muted)}
+.svc-hud--inline{container-type:inline-size;width:22rem;max-width:100%;margin:0 0 var(--s-6)}
+/* Un hijo con container-type no aporta ancho intrínseco: si la UI va sola en el slot, la columna se estira (nunca 0 px) */
+.is__more .is__text:has(> .svc-hud--inline){justify-self:stretch}
+.svc-hud--inline .svc-hud__card{gap:10px;padding:16px 18px 18px;font-size:14px}
+.svc-hud--inline.svc-lead{width:min(100%,21rem)}
+.svc-hero > .is__more .svc-hud--inline{margin:var(--s-5) 0 0}
+/* Roadmap (consultoría): leyenda bajo la ruta + nodos de la ruta numerados en la placa */
+.svc-hud--roadmap{align-items:flex-start}
+.svc-rm__steps{list-style:none;margin:0;padding:0;display:grid;gap:.2em}
+.svc-rm__st{display:flex;align-items:baseline;gap:.75em;padding:.4em .6em;border-radius:.6em;color:var(--muted)}
+.svc-rm__st b{font:500 .78em/1 var(--f-mono);letter-spacing:.08em;color:rgb(0 229 255 / .5)}
+.svc-rm__st.is-on{color:#fff;background:linear-gradient(160deg,rgb(0 229 255 / .18),rgb(69 93 255 / .14));box-shadow:inset 0 0 0 1px rgb(0 229 255 / .5),0 0 20px rgb(0 229 255 / .22)}
+.svc-rm__st.is-on b{color:var(--cyan)}
+.svc-rm__st.is-done{color:var(--text-2)}
+.svc-rm__dot{display:grid;place-items:center;translate:-50% -50%;pointer-events:none}
+.svc-rm__dot b{display:grid;place-items:center;min-width:2em;height:2em;padding:0 .3em;border-radius:.5em;font:500 clamp(9px,.9cqw,14px)/1 var(--f-mono);color:var(--text-2);
+  background:rgb(3 4 11 / .72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:inset 0 0 0 1px rgb(168 243 255 / .35)}
+.svc-rm__dot.is-on b{color:#fff;box-shadow:inset 0 0 0 1px rgb(0 229 255 / .75),0 0 18px rgb(0 229 255 / .45);text-shadow:0 0 10px rgb(0 229 255 / .8)}
+/* Embudo (CRM): columnas por etapa, el lead encendido en su etapa */
+.svc-kb__cols{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:.4em}
+.svc-kb__col{display:flex;flex-direction:column;gap:.4em;min-width:0;padding:.5em .35em .6em;border-radius:.6em;box-shadow:inset 0 0 0 1px var(--hair-2)}
+.svc-kb__col.is-on{background:linear-gradient(180deg,rgb(0 229 255 / .08),transparent 70%);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .45)}
+.svc-kb__h{min-height:2.6em;font:500 .64em/1.25 var(--f-mono);letter-spacing:.02em;text-transform:uppercase;color:var(--muted)}
+.svc-kb__col.is-on .svc-kb__h{color:var(--cyan)}
+.svc-kb__sk{display:block;height:2.4em;border-radius:.4em;background:rgb(255 255 255 / .05);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .06)}
+.svc-kb__lead{display:flex;align-items:flex-start;gap:.4em;padding:.5em .4em;border-radius:.45em;font:500 .74em/1.25 var(--f-body);color:#fff;
+  background:linear-gradient(160deg,rgb(0 229 255 / .22),rgb(69 93 255 / .18));box-shadow:inset 0 0 0 1px rgb(0 229 255 / .6),0 0 18px rgb(0 229 255 / .3)}
+.svc-kb__lead i{width:.55em;height:.55em;margin-top:.3em;flex:none;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+/* Lienzo de nodos (n8n): cadena vertical con un pulso que la recorre */
+.svc-cv__wrap{position:relative}
+.svc-cv__nodes{position:relative;list-style:none;margin:0;padding:0;display:grid;gap:.7em}
+.svc-cv__nodes::before{content:"";position:absolute;left:calc(1.1em - .5px);top:1.1em;bottom:1.1em;width:1px;background:linear-gradient(180deg,rgb(0 229 255 / .6),rgb(0 229 255 / .22))}
+.svc-cv__n{position:relative;display:flex;align-items:center;gap:.7em}
+.svc-cv__sq{position:relative;z-index:1;display:grid;place-items:center;width:2.2em;height:2.2em;flex:none;border-radius:.45em;color:#fff;
+  background:rgb(6 12 30 / .94);box-shadow:inset 0 0 0 1px rgb(168 243 255 / .42)}
+.svc-cv__n:not(.is-tool) .svc-cv__sq::after{content:"";width:.55em;height:.55em;border-radius:2px;background:rgb(0 229 255 / .75);box-shadow:0 0 8px rgb(0 229 255 / .5)}
+.svc-cv__n.is-tool .svc-cv__sq{box-shadow:inset 0 0 0 1px rgb(0 229 255 / .7),0 0 16px rgb(0 229 255 / .3)}
+.svc-cv__sq .logo-mask{width:1.25em;height:1.25em}
+.svc-cv__t{font:500 .86em/1.25 var(--f-body);color:var(--text)}
+.svc-cv__pulse{position:absolute;z-index:2;left:calc(1.1em - 3px);top:1.1em;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#fff;box-shadow:0 0 10px 2px rgb(0 229 255 / .8);opacity:0}
+/* Paneles de anuncio + curva abstracta (paid media) */
+.svc-ads__rows{list-style:none;margin:0;padding:0;display:grid;gap:.75em}
+.svc-ads__rows li{display:grid;gap:.4em}
+.svc-ads__h{display:flex;align-items:center;gap:.55em;font:500 .82em/1.2 var(--f-body);color:var(--text)}
+.svc-ads__h .logo-mask{width:1.15em;height:1.15em;flex:none;color:#fff}
+.svc-ads__h .logo-mask--wide{width:auto;height:.95em!important}
+.svc-ads__rows b{position:relative;display:block;height:4px;border-radius:2px;background:rgb(255 255 255 / .08);overflow:hidden}
+.svc-ads__rows b::after{content:"";position:absolute;inset:0 auto 0 0;width:calc(var(--w) * 100%);border-radius:inherit;background:linear-gradient(90deg,rgb(69 93 255 / .85),var(--cyan));box-shadow:0 0 10px rgb(0 229 255 / .45)}
+.svc-ads__curve{padding-top:.5em;border-top:1px solid var(--hair)}
+.svc-ads__curve svg{display:block;width:100%;height:3.2em;overflow:visible}
+.svc-ads__area{fill:rgb(0 229 255 / .08)}
+.svc-ads__line{fill:none;stroke:var(--cyan);stroke-width:1.6;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 4px rgb(0 229 255 / .6))}
+.svc-ads__k{display:block;margin-top:.35em;font:500 .68em/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+/* Wireframe que se arma (páginas web) */
+.svc-wire__bar{display:flex;align-items:center;gap:.35em;padding-bottom:.5em;border-bottom:1px solid var(--hair)}
+.svc-wire__bar i{width:.5em;height:.5em;border-radius:50%;background:rgb(255 255 255 / .2)}
+.svc-wire__bar .chip-sim{margin-left:auto;font-size:max(8px,.66em)}
+.svc-wire__bl{list-style:none;margin:0;padding:0;display:grid;gap:.4em}
+.svc-wire__b{display:flex;align-items:center;gap:.6em;padding:.42em .5em;border-radius:.5em;color:var(--text-2);box-shadow:inset 0 0 0 1px var(--hair-2)}
+.svc-wire__sk{flex:none;width:2.4em;height:1em;border-radius:.25em;background:rgb(255 255 255 / .12)}
+.svc-wire__b--0 .svc-wire__sk{height:1.2em;background:rgb(255 255 255 / .2)}
+.svc-wire__b--1 .svc-wire__sk{background:linear-gradient(90deg,rgb(255 255 255 / .14) 0 28%,transparent 28% 36%,rgb(255 255 255 / .14) 36% 64%,transparent 64% 72%,rgb(255 255 255 / .14) 72%)}
+.svc-wire__b--2 .svc-wire__sk{height:.95em;border-radius:1em;background:none;box-shadow:inset 0 0 0 1.5px rgb(168 243 255 / .6)}
+.svc-wire__b--3 .svc-wire__sk{height:1.3em;background:linear-gradient(180deg,rgb(255 255 255 / .14) 0 30%,transparent 30% 42%,rgb(255 255 255 / .14) 42% 72%,transparent 72%)}
+.svc-wire__t{font:500 .82em/1.2 var(--f-body)}
+.svc-wire__b.is-on{color:#fff;background:linear-gradient(160deg,rgb(0 229 255 / .18),rgb(69 93 255 / .14));box-shadow:inset 0 0 0 1px rgb(0 229 255 / .55),0 0 20px rgb(0 229 255 / .22)}
+/* Respuesta de un motor de IA (SEO) */
+.svc-ans__q{align-self:flex-end;max-width:92%;padding:.55em .75em;border-radius:.9em .9em .3em .9em;font-size:.88em;background:rgb(255 255 255 / .08);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .06)}
+.svc-ans__a{font-size:.88em;color:var(--text-2);text-wrap:pretty}
+.svc-hud__card .svc-ans__cite{display:flex;align-items:center;gap:.55em;align-self:flex-start;padding:.45em .7em;border-radius:99px;font:500 .7em/1.25 var(--f-mono);letter-spacing:.05em;color:var(--cyan);
+  box-shadow:inset 0 0 0 1px rgb(0 229 255 / .5),0 0 16px rgb(0 229 255 / .2)}
+/* Tablero de identidad (branding): isotipo genérico, paleta, especimen, voz */
+.svc-idb__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5em}
+.svc-idb__m{display:flex;flex-direction:column;justify-content:space-between;gap:.5em;min-width:0;min-height:4.4em;padding:.6em;border-radius:.6em;box-shadow:inset 0 0 0 1px var(--hair-2)}
+.svc-idb__k{font:500 .64em/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.svc-idb__iso{position:relative;width:1.9em;height:1.9em;border-radius:.5em;box-shadow:inset 0 0 0 1.5px rgb(168 243 255 / .8)}
+.svc-idb__iso i{position:absolute;inset:32%;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+.svc-idb__sw{display:flex;gap:.3em}
+.svc-idb__sw i{width:1.05em;height:1.05em;border-radius:.3em;box-shadow:inset 0 0 0 1px rgb(255 255 255 / .2)}
+.svc-idb__sw i:nth-child(1){background:#00E5FF} .svc-idb__sw i:nth-child(2){background:#455DFF} .svc-idb__sw i:nth-child(3){background:#EAF2FF} .svc-idb__sw i:nth-child(4){background:#1B2A4A}
+.svc-idb__aa{font:600 1.7em/1 var(--f-display);letter-spacing:-.03em;color:#fff}
+.svc-idb__v{font:400 .76em/1.3 var(--f-body);font-style:italic;color:var(--text-2);text-wrap:pretty}
+/* Capas de este sitio (páginas web · este-sitio): la base abajo */
+.svc-lay__l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column-reverse;gap:.35em}
+.svc-lay__l li{display:flex;align-items:center;gap:.65em;padding:.48em .65em;border-radius:.5em;
+  background:linear-gradient(90deg,rgb(0 229 255 / calc(.05 + var(--i) * .03)),transparent);box-shadow:inset 0 0 0 1px rgb(168 243 255 / .2)}
+.svc-lay__l b{font:500 .72em/1 var(--f-mono);letter-spacing:.06em;color:var(--cyan)}
+.svc-lay__l span{font:500 .84em/1.2 var(--f-body)}
+/* Tablero unificado (software · dashboard) */
+.svc-dash__ps{display:grid;gap:.45em}
+.svc-dash__p{display:grid;grid-template-columns:minmax(0,1fr) 46%;align-items:end;gap:.6em;padding:.5em .6em;border-radius:.55em;box-shadow:inset 0 0 0 1px var(--hair-2)}
+.svc-dash__k{font:500 .78em/1.2 var(--f-body);color:var(--text-2)}
+.svc-dash__bars{display:flex;align-items:flex-end;gap:3px;height:2.1em}
+.svc-dash__bars i{flex:1;height:calc(var(--h) * 100%);border-radius:2px 2px 0 0;background:linear-gradient(180deg,var(--cyan),rgb(69 93 255 / .45))}
+.svc-dash__src{display:flex;align-items:center;justify-content:space-between;gap:.6em;font:500 .66em/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.svc-dash__dots{display:flex;gap:.4em}
+.svc-dash__dots i{width:.6em;height:.6em;border-radius:2px;background:rgb(0 229 255 / .55);box-shadow:0 0 6px rgb(0 229 255 / .5)}
+/* Reporte mensual (SEO · como-medimos) */
+.svc-rep__rows{list-style:none;margin:0;padding:0;display:grid}
+.svc-rep__rows li{display:grid;grid-template-columns:minmax(0,1fr) 3.4em;grid-template-areas:"k s" "src s";column-gap:.6em;row-gap:.15em;padding:.5em 0;border-top:1px solid var(--hair)}
+.svc-rep__k{grid-area:k;font:500 .84em/1.2 var(--f-body)}
+.svc-rep__src{grid-area:src;font:400 .64em/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.svc-rep__sp{grid-area:s;align-self:center;width:100%;height:1.3em;overflow:visible}
+.svc-rep__sp path{fill:none;stroke:var(--cyan);stroke-width:1.5;vector-effect:non-scaling-stroke}
+/* Canales del personaje (branding · kain-ejemplo) */
+.svc-chn .kain-mark{font-size:1.25em;letter-spacing:0;text-transform:none;color:#fff}
+.svc-chn__l{list-style:none;margin:0;padding:0;display:grid;gap:.5em}
+.svc-chn__l li{display:flex;align-items:center;gap:.6em;padding:.55em .75em;border-radius:99px;font:500 .9em/1 var(--f-body);color:#fff;
+  background:rgb(0 229 255 / .07);box-shadow:inset 0 0 0 1px rgb(0 229 255 / .45),0 0 16px rgb(0 229 255 / .16)}
+.svc-chn__l .icon{width:1em;height:1em;color:var(--cyan)}
+.svc-chn__sq{width:.6em;height:.6em;flex:none;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+.svc-hero__badge{margin-top:var(--s-5)}
+/* Entrada: la portada al cargar (después de la mini firma); las escenas al entrar (scroll). Sin JS o con movimiento
+   reducido: estado final, todo visible y quieto. */
+@media (prefers-reduced-motion:no-preference){
+  html.js:not([data-motion="reduced"]) .svc-hero .svc-hud--reg > .svc-hud__card{animation:svc-hud-in .7s cubic-bezier(.2,.7,.2,1) .6s both}
+  html.js:not([data-motion="reduced"]) .svc-hero .svc-hud--reg :is(.svc-rm__st,.svc-kb__col,.svc-cv__n,.svc-ads__rows li,.svc-wire__b,.svc-idb__m){
+    animation:svc-hud-item .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.9s + var(--i,0) * .14s)}
+  html.js:not([data-motion="reduced"]) .svc-hero .svc-rm__dot{animation:svc-fade .5s ease-out both;animation-delay:calc(.9s + var(--i,0) * .14s)}
+  html.js:not([data-motion="reduced"]) .svc-hero .svc-ads__line{stroke-dasharray:1;animation:svc-draw 1.4s ease-out 1.2s both}
+  html.js:not([data-motion="reduced"]) .svc-cv__pulse{animation:svc-cv-pulse 3.2s cubic-bezier(.45,0,.55,1) 1.8s infinite}
+}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    html:not([data-motion="reduced"]) .svc-scene .svc-hud--reg{view-timeline-name:--hud}
+    html:not([data-motion="reduced"]) .svc-scene .svc-hud--reg :is(.svc-lay__l li,.svc-dash__p,.svc-rep__rows li,.svc-chn__l li){
+      animation:svc-hud-item linear both;animation-timeline:--hud;animation-range:entry 30% entry 90%}
+  }
+}
+@keyframes svc-hud-in{from{opacity:0;translate:0 14px}}
+@keyframes svc-hud-item{from{opacity:0;translate:0 6px}}
+@keyframes svc-fade{from{opacity:0}}
+@keyframes svc-draw{from{stroke-dashoffset:1}}
+@keyframes svc-cv-pulse{0%{top:1.1em;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:calc(100% - 1.1em);opacity:0}}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .svc-rm__dot b{min-width:0;width:9px;height:9px;padding:0;font-size:0;border-radius:2px}
+  .svc-illus-m{margin:var(--s-5) 0 0;color:rgb(158 176 199 / .72)}
+  .svc-scene > .is__more .svc-hud--inline{margin-bottom:var(--s-6)}
+  /* Móvil: la placa vertical ya trae su encuadre (sin push: Kain de cuerpo completo, pies en la disolución) y el resto de la
+     escena empieza DEBAJO de los pies, nunca encima (la UI en línea es opaca) */
+  .svc-scene.is[data-push]{--cam:1!important}
+  .svc-scene.is[data-m="split"] > .is__more{margin-top:0}
+}
+@media (forced-colors:active){.svc-hud__card{-webkit-backdrop-filter:none;backdrop-filter:none;border:1px solid CanvasText}}
 /* ===== fin ServiceTemplate ===== */

@@ -1,0 +1,225 @@
+{
+  "_schema": "Hub /casos/ · HubTemplate (T-HUB, ESPEC §5.5). Campos de _ESQUEMA.md §3–§6 y, propios del hub: hero.sumario.metricIds[3] (SumarioCover en la portada, del lado del texto) · datos.definition {heading, text} + datos.metricRow · filtros {eyebrow, sectorLabel, serviceLabel, all, status} (chips que filtran las escenas de #grid ya renderizadas; status usa {n}) · grid.items[] {href, label, title, metricId, line, sector, services[]} (una escena a sangre por caso con la portada del caso; sector y services son slugs de filtro: salud, retail, ecommerce, horeca, logistica · agentes, crm, automatizacion, paid-media, datos) · grid.sectors / grid.services (rótulo de cada slug) · registro.ledger.caption (ResultsLedger con las 9 cifras de caso) · metodo.items[] {title, text} (EditorNote 'Nota de método'). testimonios lleva _omitir hasta tener aprobación escrita.",
+  "pageId": "casos",
+  "url": "/casos/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "CAMBIO DE TEXTO · datos: D pedía las 10 cifras en oraciones; la ESPEC §5.5 pide una fila de datos (sistemas, países, tiempo operativo). Va una definición citable con las cifras de los casos y la fila de la ESPEC.",
+    "CAMBIO DE TEXTO · registro: D pedía 3 bloques (salud, tiempo operativo, tablero); la ESPEC §5.5 pide el registro completo (ResultsLedger con las 9 cifras de caso). Los 3 bloques quedan dentro del registro.",
+    "PREGUNTA AL CLIENTE · grid.items[ecommerce].services: no hay servicio confirmado para el caso e-commerce (costo por lead); no aparece en ningún filtro de servicio. ¿Fue paid media, CRM o ambos? Tampoco está confirmado si el tablero '1 vista · 7 fuentes' es del mismo cliente (ESPEC §11-6).",
+    "PREGUNTA AL CLIENTE · grid.items[retail].services: el caso retail se filtra solo como CRM (Kommo con calificación de leads por IA). Si también usa un agente de IA en WhatsApp, se suma al filtro 'Agentes de IA'.",
+    "PREGUNTA AL CLIENTE · testimonios: la sección no se publica hasta tener un testimonio aprobado por escrito (frase, nombre, cargo y empresa).",
+    "RESUELTO 2026-10-19 · cliente en chat · (3) los cinco sistemas siguen activos: lede de la portada 'Sistemas reales, operando hoy mismo.' y metodo.items[nombres].",
+    "RESUELTO 2026-10-19 · cliente en chat · (14, 15) caso dental: agente que contesta, agenda, confirma y avisa al doctor cuando hay una urgencia, con GoHighLevel como CRM (grid.items[dental])."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (casos-hero, subject-left; respaldo: home-sistema-5-medir) + SumarioCover del lado del texto + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Casos · Resultados medidos",
+      "h1": {
+        "text": "Casos de éxito",
+        "soft": "con IA y automatización",
+        "lit": "éxito"
+      },
+      "lede": "Sistemas reales, operando hoy mismo. Cada cifra trae su sector y su fuente; los nombres de los clientes van anonimizados.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vi los casos de éxito de Ingeniak y quiero resultados así en mi empresa."
+      },
+      "sumario": {
+        "metricIds": [
+          "dental-citas",
+          "retail-conversiones",
+          "horeca-roas"
+        ]
+      }
+    },
+    "datos": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio, citable) + MetricRow",
+      "rail": "En datos",
+      "eyebrow": "Ingeniak en datos",
+      "definition": {
+        "heading": "¿Qué resultados ha logrado Ingeniak con IA y automatización?",
+        "text": "Ingeniak tiene {{metric:sistemas|full}} en {{metric:paises|full}}. Entre sus casos: una clínica dental de Monterrey con {{metric:dental-citas|full}}, un retail multimarca con {{metric:retail-conversiones}} en conversiones con Kommo e IA, un e-commerce de la Ciudad de México con {{metric:ecom-cpl|full}} y un cliente de hoteles y restaurantes con {{metric:horeca-roas|full}}."
+      },
+      "metricRow": {
+        "title": "Ingeniak en datos",
+        "metricIds": [
+          "sistemas",
+          "paises",
+          "tiempo-operativo"
+        ],
+        "sourceNote": true
+      }
+    },
+    "filtros": {
+      "_componente": "Chips de sector y servicio (botones aria-pressed) que filtran #grid sin recargar; sin JS no se muestran y se ven todos los casos",
+      "rail": "Filtrar",
+      "eyebrow": "Filtra los casos",
+      "sectorLabel": "Sector",
+      "serviceLabel": "Servicio",
+      "all": "Todos",
+      "status": "{n} de 5 casos",
+      "empty": "Ningún caso combina ese sector y ese servicio todavía. Quita un filtro o pregúntale a Kain."
+    },
+    "grid": {
+      "_componente": "Escenas a sangre (una por caso) con la portada del caso, la cifra en Lexend 200 y el texto en su penumbra; alternan lado",
+      "rail": "Casos",
+      "eyebrow": "Cinco casos",
+      "h2": {
+        "text": "Cinco sistemas,",
+        "soft": "cinco sectores distintos."
+      },
+      "lede": "Cada escena es un negocio real con su cifra confirmada. Las fotografías son imágenes ilustrativas del sector, no de los clientes.",
+      "linkLabel": "Ver el caso",
+      "illus": "Imagen ilustrativa del sector",
+      "items": [
+        {
+          "href": "/casos/clinica-dental-monterrey/",
+          "label": "Caso · Salud · Monterrey",
+          "title": "Clínica dental en Monterrey",
+          "metricId": "dental-citas",
+          "line": "Un agente de IA en WhatsApp conectado a GoHighLevel contesta, agenda, confirma y avisa al doctor cuando hay una urgencia.",
+          "sector": "salud",
+          "services": [
+            "agentes",
+            "crm"
+          ]
+        },
+        {
+          "href": "/casos/retail-multimarca-kommo/",
+          "label": "Caso · Retail",
+          "title": "Retail multimarca",
+          "metricId": "retail-conversiones",
+          "line": "Kommo con calificación de leads por IA: cada conversación entra a su etapa del embudo.",
+          "sector": "retail",
+          "services": [
+            "crm"
+          ]
+        },
+        {
+          "href": "/casos/ecommerce-cdmx-costo-por-lead/",
+          "label": "Caso · E-commerce · CDMX",
+          "title": "E-commerce en la Ciudad de México",
+          "metricId": "ecom-cpl",
+          "line": "Un e-commerce de la Ciudad de México que hoy paga menos por cada lead que le llega.",
+          "sector": "ecommerce",
+          "services": []
+        },
+        {
+          "href": "/casos/horeca-roas/",
+          "label": "Caso · HoReCa",
+          "title": "Hoteles y restaurantes",
+          "metricId": "horeca-roas",
+          "line": "Paid media en Meta Ads con un retorno sostenido, no el pico de una sola campaña.",
+          "sector": "horeca",
+          "services": [
+            "paid-media"
+          ]
+        },
+        {
+          "href": "/casos/logistica-n8n/",
+          "label": "Caso · Logística",
+          "title": "Empresa de logística",
+          "metricId": "logistica-procesos",
+          "line": "Flujos en n8n que conectan sus sistemas y sacan el trabajo repetitivo de las manos de su equipo.",
+          "sector": "logistica",
+          "services": [
+            "automatizacion"
+          ]
+        }
+      ],
+      "sectors": {
+        "salud": "Salud",
+        "retail": "Retail",
+        "ecommerce": "E-commerce",
+        "horeca": "HoReCa",
+        "logistica": "Logística"
+      },
+      "services": {
+        "agentes": "Agentes de IA",
+        "crm": "CRM",
+        "automatizacion": "Automatización",
+        "paid-media": "Paid media",
+        "datos": "Datos"
+      }
+    },
+    "registro": {
+      "_componente": "Intertitle + ResultsLedger (#registro) con las 9 cifras de caso y la nota de fuente",
+      "rail": "Registro",
+      "eyebrow": "Registro de resultados",
+      "h2": {
+        "text": "Todas las cifras,",
+        "soft": "en una sola tabla."
+      },
+      "lede": "Las nueve cifras de caso con lo que cambió, el sector, el plazo cuando lo hay y el servicio. Para comparar y para citar.",
+      "ledger": {
+        "caption": "Registro de resultados de Ingeniak"
+      }
+    },
+    "metodo": {
+      "_componente": "EditorNote 'Nota de método' (fuente, plazos, promedios, nombres e imágenes)",
+      "rail": "Cómo medimos",
+      "eyebrow": "Cómo medimos",
+      "h2": {
+        "text": "Lo que significa",
+        "soft": "cada cifra."
+      },
+      "noteLabel": "Nota de método",
+      "items": [
+        {
+          "title": "Fuente",
+          "text": "Todas las cifras de esta página son {{source}}. Salen de la operación de cada cliente, no de una demo ni de una proyección."
+        },
+        {
+          "title": "Plazos",
+          "text": "Cuando una cifra trae plazo, es la ventana en la que se midió: noventa días en la clínica dental y sesenta en el e-commerce. Las demás se publican sin ventana; no les ponemos una que no podamos respaldar."
+        },
+        {
+          "title": "Promedios",
+          "text": "Dos cifras son promedios: las citas al mes de nuestros clientes de salud (odontología, medicina estética, quiropráctica y gastroenterología) y el tiempo operativo de los primeros noventa días."
+        },
+        {
+          "title": "Nombres",
+          "text": "No publicamos el nombre de un cliente sin su autorización por escrito; por eso cada caso va con su sector y, cuando se puede, su ciudad. Los cinco sistemas siguen operando."
+        },
+        {
+          "title": "Imágenes",
+          "text": "Las fotografías de los casos son imágenes ilustrativas del sector, generadas para este sitio. No muestran a los clientes ni a sus equipos."
+        }
+      ]
+    },
+    "testimonios": {
+      "_omitir": true,
+      "_nota": "Condicional (sitemap status: conditional). Solo con testimonios aprobados por escrito: frase, nombre, cargo y empresa. Hoy no hay ninguno."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-equipo; respaldo: cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "El siguiente caso",
+      "h2": {
+        "text": "¿Quieres un sistema así?",
+        "soft": "Empecemos por ver tu operación."
+      },
+      "lede": "Revisamos cómo atiendes y das seguimiento hoy, y te decimos qué conviene implementar primero.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vi los casos de éxito de Ingeniak y quiero resultados así en mi empresa."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

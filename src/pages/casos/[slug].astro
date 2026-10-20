@@ -1,16 +1,25 @@
 ---
 // /casos/<slug>/ · T-CASE (ESPEC §5.4). Una página por caso de sitemap.json cuyo texto ya existe en src/content/paginas/.
-// Hoy: /casos/clinica-dental-monterrey/. Los demás casos aparecen solos en cuanto el área copy publique su <page.id>.json.
+// Hoy: los cinco casos (dental completo; retail, e-commerce, HoReCa y logística como caso breve, R2).
+// Solo en desarrollo, cada caso breve tiene además /casos/<slug>--completo/ (noindex): la versión completa, para revisar la
+// maqueta de implementación, resultado y VKTOR antes de que el cliente confirme. En el build esas rutas no existen.
 import CaseTemplate from '../../components/templates/CaseTemplate.astro';
 import { pages } from '../../lib/site';
 
 export function getStaticPaths() {
-  const copies = import.meta.glob('../../content/paginas/*.json');
-  const hasCopy = (id: string) => Object.keys(copies).some((k) => k.endsWith(`/${id}.json`));
-  return pages
-    .filter((p: any) => p.template === 'T-CASE' && hasCopy(p.id))
-    .map((p: any) => ({ params: { slug: p.url.split('/').filter(Boolean).pop() }, props: { page: p } }));
+  const copies = import.meta.glob('../../content/paginas/*.json', { eager: true }) as Record<string, any>;
+  const copyOf = (id: string) => Object.entries(copies).find(([k]) => k.endsWith(`/${id}.json`))?.[1];
+  const cases = pages.filter((p: any) => p.template === 'T-CASE' && copyOf(p.id));
+  const slug = (p: any) => p.url.split('/').filter(Boolean).pop();
+  const paths: any[] = cases.map((p: any) => ({ params: { slug: slug(p) }, props: { page: p } }));
+  if (import.meta.env.DEV) {
+    for (const p of cases) {
+      const c = copyOf(p.id);
+      if (p.publishGate && (c?.default ?? c)?.publishGate?.ok !== true) paths.push({ params: { slug: `${slug(p)}--completo` }, props: { page: p, devCompleto: true } });
+    }
+  }
+  return paths;
 }
-const { page } = Astro.props;
+const { page, devCompleto } = Astro.props as any;
 ---
-<CaseTemplate page={page} />
+<CaseTemplate page={page} devCompleto={devCompleto} />

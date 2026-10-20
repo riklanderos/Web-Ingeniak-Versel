@@ -1,0 +1,195 @@
+{
+  "pageId": "software",
+  "url": "/servicios/desarrollo-software/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "FAQ DISTINTA DE D · N08: el banco cambia '7 fuentes' escrito a mano por el token ecom-tablero y agrega 'tráfico, conversión y retorno de campañas en la misma pantalla, sin exportar reportes a mano'. Sigue en validar: true, así que no sale en el acordeón ni en el FAQPage; #definicion usa un texto propio armado con N08 de D y las tres señales del brief.",
+    "FAQ DISTINTA DE D · G09: agrega el criterio de elección (calidad, velocidad y costo de uso) y 'Si más adelante conviene otro modelo, lo evaluamos con tus propias conversaciones.'",
+    "FAQ DISTINTA DE D · G08: ya no promete '60 a 90 días'; dice el rango confirmado de implementación (7 a 30 días, según el alcance).",
+    "FAQ DISTINTA DE D · G07: agrega por qué no hay paquetes cerrados.",
+    "PREGUNTA AL CLIENTE · stack de front (D lo dejó en [VALIDAR]): la página solo nombra Supabase (base de datos y acceso de usuarios), Stripe (cobros) y los modelos de IA de G09. ¿Con qué construyen las pantallas (por ejemplo React, Next.js o Astro) y se puede decir?",
+    "PREGUNTA AL CLIENTE · los cinco tipos de sistema de #construimos (tableros, portales para clientes, integraciones con ERP, apps internas y agentes de IA propios) salen del brief de D. Confirma que los cinco se ofrecen hoy y, si quieres, con qué ERP ya han trabajado (no se nombra ninguno).",
+    "PREGUNTA AL CLIENTE · tablero del e-commerce (#dashboard): ¿cuáles son las 7 fuentes y lleva alertas con IA, como dice el brief de D? El texto usa solo lo confirmado (la cifra ecom-tablero) y el contenido del brief (tráfico, conversión y retorno de campañas); las alertas no se mencionan. ¿Es el mismo cliente del caso de costo por lead (ESPEC §11-6)? 'Sigue explorando' enlaza ese caso sin decir que sea el mismo.",
+    "PREGUNTA AL CLIENTE · plazo: aquí NO se usa el rango de 7 a 30 días porque un sistema a la medida puede ser más grande; inversion.remate dice que el plazo queda por escrito en la propuesta. ¿Aplica el mismo rango también a software?",
+    "CAMBIO DE TEXTO · el chip de la portada del brief ('+73 sistemas en producción') va como token en el lede ({{metric:sistemas|full}}): la plantilla de servicio no pinta chips en la portada. La cifra sale 1 vez en el cuerpo (más la meta description).",
+    "CAMBIO DE TEXTO · #dashboard: el titular usa la cifra como token ({{metric:ecom-tablero}}) y ninguna otra parte de la página la repite con letra. dashboard.ui son los textos del tablero demo registrado sobre la pantalla de la placa (VISTA DEMO, sin cifras, fuentes sin nombre como pide la ESPEC §5.2.1); la plantilla todavía no los pinta.",
+    "CAMBIO DE TEXTO · cta-final sin 'micro' del brief (repetiría la microcopia del botón primario)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (home-sistema-5-medir: Kain en la estación Medir, subject-right) + Breadcrumbs. Sin UI registrada en la portada: el tablero demo vive en #dashboard (misma placa con push, R5).",
+      "rail": "Portada",
+      "eyebrow": "Servicio · Automatizar",
+      "h1": { "text": "Desarrollo de software a la medida,", "soft": "con IA integrada", "lit": "medida" },
+      "lede": "Cuando ninguna herramienta encaja, construimos el sistema que tu operación necesita. Lo hacemos con la experiencia de {{metric:sistemas|full}}.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de software a la medida y necesito un sistema para mi operación."
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio, citable; N08 sigue en validar)",
+      "rail": "Cuándo conviene",
+      "eyebrow": "Cuándo conviene",
+      "definition": {
+        "heading": "¿Cuándo conviene el software a la medida?",
+        "text": "El software a la medida conviene cuando ninguna herramienta del mercado encaja con tu forma de operar, cuando tu equipo salta entre demasiadas aplicaciones sueltas o cuando tus datos viven en sistemas que no se hablan. En esos casos, adaptar tu operación a una herramienta te cuesta más que construir la tuya.",
+        "_nota": "Texto propio (40–60 palabras) con la respuesta de N08 en D y las tres señales del brief: procesos únicos, demasiadas herramientas sueltas, datos dispersos."
+      },
+      "body": [
+        "Antes de proponerte código, revisamos si una herramienta que ya existe, bien configurada y conectada, resuelve el problema. Muchas veces alcanza con Kommo, GoHighLevel o una automatización con n8n. Construimos cuando eso ya no alcanza, y lo que construimos se conecta con lo que ya usas."
+      ]
+    },
+    "senales": {
+      "_componente": "ImageSection mid (dolor-operacion: dueño de noche entre dos teléfonos y papeles, tone=dolor, móvil split) + lista de señales (dolor ámbar → salida cian)",
+      "rail": "Señales",
+      "eyebrow": "Señales de que lo necesitas",
+      "h2": { "text": "Tu operación ya creció", "soft": "más que tus herramientas." },
+      "lede": "Si reconoces dos o más, tu equipo está trabajando para el sistema, cuando debería ser al revés.",
+      "fig": { "label": "Cierre de mes: tres sistemas y una hoja de cálculo." },
+      "items": [
+        {
+          "pain": "Las hojas de cálculo ya no alcanzan.",
+          "painLine": "Versiones duplicadas, fórmulas que se rompen y una sola persona que sabe cómo funcionan.",
+          "fix": "Una aplicación a la medida, con permisos y un solo dato correcto."
+        },
+        {
+          "pain": "Tus datos viven en sistemas que no se hablan.",
+          "painLine": "Ventas en uno, inventario en otro, pagos en un tercero, y alguien los cruza a mano.",
+          "fix": "Una sola vista, conectada a cada fuente."
+        },
+        {
+          "pain": "Un proceso que ninguna herramienta resuelve.",
+          "painLine": "Probaste varias plataformas y todas te obligan a cambiar cómo trabajas.",
+          "fix": "Software construido para ese proceso, no al revés."
+        },
+        {
+          "pain": "Tus clientes te lo piden todo por WhatsApp.",
+          "painLine": "Estatus, facturas, documentos: tu equipo los busca y los manda uno por uno.",
+          "fix": "Un portal donde cada cliente consulta lo suyo."
+        }
+      ]
+    },
+    "construimos": {
+      "_componente": "ScriptList (5 filas) + línea de stack, sobre aura del isotipo",
+      "rail": "Qué construimos",
+      "eyebrow": "Qué construimos",
+      "h2": { "text": "Cinco tipos de sistema,", "soft": "hechos para tu operación." },
+      "lede": "Todos parten del mismo principio: un dato se captura una vez, vive en un solo lugar y le llega a quien lo necesita.",
+      "items": [
+        { "n": "01", "title": "Tableros unificados", "line": "Ventas, campañas, inventario y cobranza en una sola vista, con cada fuente conectada y sin exportar reportes." },
+        { "n": "02", "title": "Portales para clientes", "line": "Tus clientes consultan pedidos, documentos, citas o pagos con su propio acceso, sin escribirle a tu equipo." },
+        { "n": "03", "title": "Integraciones con tu ERP", "line": "Conectamos tu ERP o sistema administrativo con tu CRM, tu tienda en línea o tus formularios, para que nadie capture dos veces." },
+        { "n": "04", "title": "Apps internas", "line": "Herramientas para tu equipo: cotizadores, control de pedidos, inventarios, listas de verificación o aprobaciones." },
+        { "n": "05", "title": "Agentes de IA propios", "line": "Agentes que consultan tu base de datos y resumen, clasifican o redactan dentro de tu proceso, con el modelo que mejor lo resuelve." }
+      ],
+      "body": [
+        "Construimos sobre Supabase para la base de datos y el acceso de usuarios, Stripe cuando hay cobros en línea y modelos de OpenAI, Anthropic (Claude) o Google (Gemini) cuando el sistema necesita entender, clasificar o redactar."
+      ],
+      "links": [
+        { "label": "Conoce las tecnologías que usamos", "href": "/tecnologias/" },
+        { "label": "Automatización con n8n", "href": "/servicios/automatizacion-n8n/" }
+      ]
+    },
+    "como-funciona": {
+      "_componente": "riel-servicios a sangre con 5 nodos registrados sobre los nodos de la placa (respaldo: SystemFlow sobre aura)",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": { "text": "De tus fuentes a una decisión,", "soft": "en un solo sistema." },
+      "lede": "El recorrido de un dato, desde donde se genera hasta la persona que lo usa.",
+      "nodes": [
+        { "label": "Tus fuentes de datos", "line": "Tu CRM, tu tienda en línea, tus campañas, tu ERP y las hojas de cálculo que hoy cruzas a mano.", "confirmed": true },
+        { "label": "La integración", "line": "Conectores y flujos, con n8n cuando conviene, traen cada dato a un solo lugar.", "logos": ["n8n"], "confirmed": true },
+        { "label": "Tu base de datos", "line": "Una base propia, con permisos por usuario, donde cada dato tiene una sola versión.", "logos": ["supabase"], "confirmed": true },
+        { "label": "El tablero o la aplicación", "line": "Lo que usan tu equipo o tus clientes, con IA donde ahorra trabajo.", "confirmed": true },
+        { "label": "Tu equipo", "line": "Decide con datos al día, sin pedirle un reporte a nadie.", "confirmed": true }
+      ],
+      "note": "Cada sistema es distinto: el flujo exacto lo dibujamos contigo en la fase Koncept de VKTOR™, a partir de lo que ya usas."
+    },
+    "dashboard": {
+      "_componente": "ImageSection mid (regreso al set: home-sistema-5-medir con push hacia la superficie, 1.35 → 1.6) + tablero demo registrado (VISTA DEMO)",
+      "rail": "Tablero unificado",
+      "eyebrow": "Caso · Tablero unificado",
+      "h2": { "text": "{{metric:ecom-tablero}}", "soft": "en un solo tablero de e-commerce." },
+      "lede": "Para un e-commerce juntamos sus fuentes de datos en una sola pantalla: tráfico, conversión y retorno de campañas, sin armar reportes a mano.",
+      "items": [
+        "Una sola definición de cada número: venta, lead y costo significan lo mismo para todo el equipo.",
+        "Cada fuente se conecta una vez; nadie vuelve a exportar ni a copiar.",
+        "Permisos por persona: dirección, marketing y operación ven lo que les toca."
+      ],
+      "slogan": "Decidir con un tablero, no con pestañas abiertas.",
+      "links": [{ "label": "IA para retail y e-commerce", "href": "/industrias/retail-ecommerce/" }],
+      "ui": {
+        "_nota": "Tablero demo registrado sobre la pantalla de la placa: tres paneles con barras abstractas sin números y una columna de fuentes conectadas sin nombre (puntos que se encienden). Lleva VISTA DEMO y data-nosnippet; no son datos del cliente.",
+        "label": "VISTA DEMO",
+        "title": "Tablero unificado",
+        "panels": ["Tráfico", "Conversión", "Retorno de campañas"],
+        "sourcesLabel": "Fuentes conectadas",
+        "note": "Maqueta ilustrativa"
+      }
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sobre metodologia-hero a sangre si la placa está lista)",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": { "text": "Así construimos tu sistema,", "soft": "por fases y con tus datos reales." },
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Mapeamos tu proceso, tus sistemas y tus datos: de dónde sale cada número y quién lo captura hoy." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Decidimos qué se construye y qué se resuelve con herramientas existentes, y diseñamos pantallas, datos y permisos contigo." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Construimos, conectamos tus fuentes y probamos con tus datos antes de que tu equipo dependa del sistema." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Capacitamos a quien lo va a usar, acompañamos el arranque y corregimos lo que revele la operación diaria." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Medimos cuánto se usa y cuánto trabajo ahorra, y cada mes sumamos lo que la operación pida." }
+      ],
+      "links": [{ "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }]
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": { "text": "{{Price}}." },
+      "lede": "Un sistema a la medida no tiene precio de catálogo. Lo que lo mueve:",
+      "items": [
+        { "title": "Canales", "line": "Dónde se usa: en el navegador, en el celular, en un portal para tus clientes o desde WhatsApp." },
+        { "title": "Integraciones", "line": "Cuántas fuentes de datos hay que conectar y qué tan abiertas están: tu CRM, tu ERP, tu tienda, tus pagos." },
+        { "title": "Volumen", "line": "Cuántos usuarios, registros y procesos maneja, y cuánta IA lleva dentro." }
+      ],
+      "remate": "En tu Discovery Session vemos qué conviene construir y qué no. El alcance y el plazo de entrega quedan por escrito en la propuesta."
+    },
+    "faq": {
+      "_componente": "FAQAccordion (N08 sale cuando se apruebe)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas sobre", "soft": "software a la medida." },
+      "faqIds": ["N08", "G09", "G08", "G07"],
+      "footer": "¿Tienes un proceso que ninguna herramienta resuelve? Cuéntaselo a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": { "text": "Antes de construir,", "soft": "conecta lo que ya tienes." },
+      "items": [
+        { "href": "/servicios/automatizacion-n8n/", "label": "Servicio", "title": "Automatización con n8n", "line": "Flujos entre tus sistemas, para lo que no necesita una aplicación propia." },
+        { "href": "/tecnologias/", "label": "Stack", "title": "Tecnologías", "line": "Las herramientas con las que construimos y conectamos cada sistema." },
+        { "href": "/casos/ecommerce-cdmx-costo-por-lead/", "label": "Caso de estudio", "title": "E-commerce en la Ciudad de México", "line": "Otro sistema medido en e-commerce: el costo por lead, antes y después." }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo)",
+      "rail": "Cierre",
+      "eyebrow": "Construir o conectar",
+      "h2": { "text": "¿Ninguna herramienta encaja?", "soft": "Diseñemos la tuya." },
+      "lede": "En la Discovery Session revisamos tu proceso y tus sistemas, y te decimos si conviene construir o si basta con conectar lo que ya tienes.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de software a la medida y necesito un sistema para mi operación."
+      }
+    }
+  }
+}

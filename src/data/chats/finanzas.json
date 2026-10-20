@@ -1,0 +1,12 @@
+[
+  { "who": "cliente", "text": "Hola, vi su anuncio. Me interesa un crédito para mi negocio.", "delay": 900, "time": "9:26 p. m." },
+  { "who": "kain", "text": "¡Hola! Con gusto. Para pasarte con el asesor indicado, ¿cuánto tiempo lleva operando tu negocio?", "delay": 1100 },
+  { "who": "cliente", "text": "Tres años. Es una cafetería.", "delay": 1400 },
+  { "who": "kain", "text": "Gracias. ¿Para qué usarías el crédito: equipo, capital de trabajo u otra cosa?", "delay": 1000 },
+  { "who": "cliente", "text": "Para abrir otra sucursal. ¿Me lo van a aprobar?", "delay": 1500 },
+  { "who": "kain", "text": "Eso lo decide el área de crédito con tu solicitud; yo no puedo prometerte una aprobación ni darte una tasa. Última pregunta: ¿facturas a nombre del negocio?", "delay": 1200 },
+  { "who": "cliente", "text": "Sí. Soy Ricardo.", "delay": 1300 },
+  { "who": "kain", "text": "Gracias, Ricardo. Te agendo una llamada con un asesor mañana a las 10:00 o a las 16:30. ¿Cuál prefieres?", "delay": 1100 },
+  { "who": "cliente", "text": "A las 10.", "delay": 1100 },
+  { "who": "kain", "text": "Listo: llamada mañana a las 10:00. Te dejo aquí la lista de documentos para que los tengas a la mano.", "delay": 1000, "event": "Prospecto calificado · llamada agendada en tu CRM" }
+]

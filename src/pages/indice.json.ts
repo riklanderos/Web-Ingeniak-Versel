@@ -43,11 +43,15 @@ export const GET: APIRoute = () => {
       f: p.folio ?? '',
       d: p.metaDescription ?? '',
     }));
-  // Cada pregunta abre una página construida que la tiene (la de preguntas frecuentes si ya existe); sin ninguna, no se indexa.
+  // Cada pregunta abre su respuesta. Con /preguntas-frecuentes/ construida (pinta TODO el banco publicable, el mismo filtro
+  // de faqBank), el destino es la pregunta misma: /preguntas-frecuentes/#G07 la abre y la lleva a la vista (FaqTemplate,
+  // peticiones · faq-contacto-legal #3). Sin esa página: la primera página construida que la tiene (#faq). Sin ninguna, no se indexa.
+  const faqHome = isBuilt('/preguntas-frecuentes/');
   const faq = bank().flatMap((f) => {
+    if (faqHome) return [{ id: f.id, q: f.q, a: f.a, u: `/preguntas-frecuentes/#${f.id}` }];
     const built = (f.pages ?? []).filter((u) => isBuilt(u));
     if (!built.length) return [];
-    const target = built.includes('/preguntas-frecuentes/') ? '/preguntas-frecuentes/' : built[0];
+    const target = built[0];
     return [{ id: f.id, q: f.q, a: f.a, u: hasFaqSection(target) ? `${target}#faq` : target }];
   });
   return new Response(JSON.stringify({ v: 1, pages: list, faq }), {

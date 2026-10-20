@@ -1,0 +1,8 @@
+---
+// /tecnologias/ · T-STACK (ESPEC-v2 §5.8). Texto: src/content/paginas/tecnologias.json; datos: sitemap.json.
+import StackTemplate from '../../components/templates/StackTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+const page = getPage('/tecnologias/');
+const copy = getCopy(page.id);
+---
+<StackTemplate page={page} copy={copy} />

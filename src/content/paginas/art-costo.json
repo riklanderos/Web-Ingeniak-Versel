@@ -1,0 +1,212 @@
+{
+  "_schema": {
+    "_nota": "Esquema T-ARTICLE (ArticleTemplate.astro · ESPEC §5.10, §8.5, R1, R8). Todo campo que empieza con _ es nota y no se imprime. Tokens de cifra y precio: _ESQUEMA.md §5 ({{metric:ID}}, |full, |prose, {{price}}, {{Price}}, {{source}}). Nunca cifras ni precios de Ingeniak escritos a mano; tarifas de terceros: se describen y se enlazan, no se copian (check-cifras solo admite PRICE_FROM).",
+    "raiz": "pageId, url, estado (borrador|revisión|aprobado), autor, aprobadoPor, publicado y actualizado (AAAA-MM-DD reales: datePublished/dateModified, R8), pendientes[] (paquete de aprobación, no se imprime).",
+    "articulo": "categoria (etiqueta de la portada y articleSection), about[] ({type, name, url} → BlogPosting.about en el JSON-LD; una ruta interna construida vale como Service).",
+    "hero": "eyebrow (categoría visible), h1 {text, soft, lit} (text + ' ' + soft = sitemap.h1; lit = subcadena con la única .lit de la página), deck (entradilla .t-standfirst, ≤ 40 palabras; en móvil las primeras ~22 palabras van arriba y el resto baja junto a la firma), byline (crédito visible: 'Equipo de Ingeniak' mientras no se confirme autor, R8), jump (texto del enlace a la respuesta corta), ui? {label, title, items[]} (figura registrada en la superficie de cristal de la placa; si la placa no tiene superficie, no se pinta).",
+    "respuesta": "label (eyebrow), heading (h2, sin tokens), text (40–60 palabras, la respuesta en la primera oración, citable).",
+    "indice": "label (título del índice). Los renglones salen de cuerpo.blocks con variant 'h2' (campo rail = texto corto del índice) más la respuesta, el FAQ y las fuentes.",
+    "cuerpo": "blocks[]: un string = párrafo. Objetos por variant → 'h2' {id, text, rail} · 'h3' {text} · 'ul'/'ol' {items[]} · 'note' {label, text} · 'table' {caption, head[], rows[][], note} (la primera celda de cada fila es su encabezado) · 'steps' {items[{title, text}]} · 'calc' {id, eyebrow, title, lede, formula{terms[], result}, fields[{id, label, hint, mode: count|percent|money}], result{month, year, empty}, note} · 'scene' {id, plate{id, layout, mirror, launchFallback}, eyebrow, title, metricId, text, links[{label, href}], illus} (ImageSection mid a sangre dentro del artículo) · 'cta-medio' (posición del CTA intermedio). En texto: [etiqueta](/ruta/ o https://…) = enlace (las rutas sin construir se pintan como texto), **negritas**, [^n] = llamada a la fuente n de fuentes.items.",
+    "cta-medio": "label, text, link {label, href} (página comercial del tema; sin construir = no se pinta), ctaPrimary {label, href}, ctaSecondary {label, waMessage = sitemap.secondaryCta.waMessage}.",
+    "faq": "eyebrow, h2 {text, soft}, faqIds[] (banco src/data/faq.json; las 'validar' no se publican y vuelven solas al aprobarse).",
+    "autor": "bio (una o dos oraciones; la tarjeta firma 'Equipo de Ingeniak' hasta que haya autor confirmado, R8).",
+    "fuentes": "eyebrow, h2 {text}, lede, items[{title, publisher, href, consultado AAAA-MM-DD, nota}] (numeradas en orden; [^n] apunta a items[n-1]), internas (línea de cifras propias con {{source}}).",
+    "relacionados": "eyebrow, items[{href, label, title, line, plate?}] (solo se pintan rutas construidas; si faltan, se completan con páginas construidas).",
+    "cta-final": "eyebrow, h2 {text, soft}, ctaPrimary, ctaSecondary {label, waMessage}, micro."
+  },
+  "pageId": "art-costo",
+  "url": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "publicado": "2026-10-19",
+  "actualizado": "2026-10-19",
+  "articulo": {
+    "categoria": "Precios y decisiones",
+    "about": [
+      { "type": "Service", "name": "Agentes de IA para WhatsApp", "url": "/servicios/agentes-ia-whatsapp/" }
+    ]
+  },
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Rik Landeros como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
+    "PREGUNTA AL CLIENTE · consumo del modelo de IA: ¿la mensualidad de Ingeniak incluye los tokens del modelo, o se facturan aparte? El texto solo dice que depende de cómo se construya el agente.",
+    "PREGUNTA AL CLIENTE · costos de terceros: ¿la propuesta separa las licencias de Kommo/GoHighLevel y los cargos de Meta, o alguno va incluido? El texto dice que el alcance y la inversión se definen en la propuesta, sin afirmar qué incluye.",
+    "PREGUNTA AL CLIENTE · ¿Ingeniak revende las licencias de Kommo en pesos? Kommo dice que algunos partners revenden en moneda local; no lo afirmamos de Ingeniak hasta confirmarlo.",
+    "DATO DE TERCEROS · tarifas y reglas de Meta, Kommo y HighLevel consultadas el 2026-10-19 (fuentes 1 a 4). Meta solo cambia precios el 1 de enero, abril, julio u octubre: revisar el artículo en cada cambio de trimestre y actualizar 'actualizado'.",
+    "CAMBIO DE TEXTO · el brief de D pedía una sección 'La respuesta corta' dentro del cuerpo; es la caja de respuesta corta (AnswerBox) y encabeza el índice. Las otras siete secciones de D están completas y en orden.",
+    "FAQ · W03 y G07 abren con la misma oración (banco aprobado); se dejan las dos porque así lo pide D. Si se prefiere variar, la opción es quitar G07 de esta página.",
+    "PLACA · la portada usa home-sistema-2-atender (como pide sitemap.json, mismo encuadre que el servicio de agentes para el corte por coincidencia). El cierre pide cta-duena-tranquila; mientras no esté exportada, sale cta-amanecer en espejo (respaldo local de la plantilla).",
+    "CALCULADORA · no guarda ni envía datos; no imprime cifras en el HTML (todo se calcula en el navegador con los números de quien lee)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (home-sistema-2-atender, Kain junto al teléfono de cristal) + figura registrada en el teléfono",
+      "eyebrow": "Precios y decisiones",
+      "h1": { "text": "¿Cuánto cuesta un agente de IA", "soft": "para WhatsApp en México?", "lit": "cuesta" },
+      "deck": "Qué mueve el precio, qué cobran Meta y tu CRM por su lado, cuánto te cuesta responder tarde y una cuenta que puedes hacer con tus propios números.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta",
+      "ui": {
+        "label": "Fig. 01",
+        "title": "Qué mueve el precio",
+        "items": ["Canales", "Volumen de conversaciones", "Integraciones", "Procesos", "Modelo de IA"]
+      }
+    },
+    "respuesta": {
+      "_componente": "Intertitle (rack sobre la portada desenfocada) + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "Depende de cinco cosas, no de un paquete",
+      "text": "Un agente de IA para WhatsApp no tiene un precio único: depende de los canales que atiende, del volumen de conversaciones, de sus integraciones con tu CRM y tu agenda, de los procesos que automatiza y del modelo de IA. En Ingeniak los proyectos empiezan {{price}}; el alcance exacto se define en una Discovery Session gratuita."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con escenas a sangre y CTA intermedio",
+      "blocks": [
+        { "variant": "h2", "id": "que-mueve-el-precio", "text": "Qué determina el precio de un agente de IA", "rail": "Qué mueve el precio" },
+        "Cuando alguien pregunta cuánto cuesta un agente de IA para WhatsApp, casi siempre espera una cifra de catálogo. El problema es que dos negocios del mismo tamaño pueden necesitar agentes muy distintos: una clínica que agenda citas no se parece a una tienda que cotiza pedidos, ni a una inmobiliaria que califica prospectos para una visita. Antes de hablar de precio conviene entender las cinco variables que lo mueven.",
+        { "variant": "h3", "text": "Canales: dónde te escriben tus clientes" },
+        "WhatsApp suele ser el canal principal, pero muchos negocios también reciben mensajes por Instagram, Facebook Messenger, el chat de su web o el correo. Un agente puede atender todos esos canales con la misma información; cada canal adicional suma configuración, pruebas y, a veces, permisos de la plataforma. No es lo mismo un número de WhatsApp que tres sucursales, cada una con el suyo.",
+        { "variant": "h3", "text": "Volumen de conversaciones" },
+        "El volumen mueve dos costos: lo que cobra la plataforma de WhatsApp por los mensajes que envía tu negocio y lo que consume el modelo de IA en cada respuesta. Un consultorio que recibe unas cuantas decenas de mensajes al día y una marca que recibe miles después de una campaña necesitan arquitecturas distintas, aunque el agente haga lo mismo.",
+        { "variant": "h3", "text": "Integraciones con tu CRM y tu agenda" },
+        "Un agente que solo contesta preguntas frecuentes es sencillo. Uno que registra cada conversación en tu CRM, consulta horarios disponibles, aparta la cita y avisa a la persona correcta ya es un sistema. Las integraciones son la parte que más tiempo de implementación pide y la que más valor genera, porque ahí la conversación se convierte en un registro que tu equipo puede seguir.",
+        { "variant": "h3", "text": "Procesos que automatiza" },
+        "Responder es apenas el primer proceso. Después vienen calificar al prospecto, agendar, confirmar, enviar recordatorios, dar seguimiento a quien dejó de contestar y pasar a una persona los casos que lo necesitan. Cada proceso trae reglas propias de tu negocio que hay que diseñar, probar y documentar.",
+        { "variant": "h3", "text": "Modelo de IA y nivel de autonomía" },
+        "No todas las respuestas necesitan el mismo modelo. Una pregunta de horario se resuelve con un modelo ligero; una conversación de venta con objeciones, catálogo y excepciones pide uno más capaz. También cuenta cuánta autonomía le das: un agente que solo sugiere respuestas a tu equipo cuesta distinto que uno que conversa, agenda y registra por su cuenta.",
+        { "variant": "note", "label": "En corto", "text": "Si alguien te da un precio sin preguntarte por tus canales, tu volumen, tu CRM y tus procesos, te está vendiendo un paquete, no un agente para tu negocio." },
+
+        { "variant": "h2", "id": "costos-de-terceros", "text": "Los costos de terceros que debes considerar", "rail": "Costos de terceros" },
+        "Además de lo que cobra quien diseña y opera el agente, hay costos que paga cualquier empresa, contrate a quien contrate. Conviene conocerlos para comparar propuestas en igualdad de condiciones.",
+        { "variant": "h3", "text": "Mensajes de WhatsApp: lo que cobra Meta" },
+        "Si el agente funciona sobre la plataforma oficial de WhatsApp Business (la API), Meta cobra por mensaje entregado desde el 1 de julio de 2025. La tarifa depende de la categoría del mensaje (marketing, utilidad, autenticación o servicio) y del país del número que lo recibe; los mensajes que tus clientes te envían no se cobran.[^1]",
+        "El cambio más reciente importa mucho para un agente de IA: desde el 1 de octubre de 2026, Meta volvió a cobrar los mensajes de servicio, que son las respuestas que tu negocio envía dentro de la ventana de 24 horas que abre cada mensaje del cliente. Cada número de negocio tiene mil mensajes de servicio gratis al mes; a partir del siguiente, se cobran.[^1] Las conversaciones que empiezan en un anuncio que lleva a WhatsApp abren una ventana gratuita de hasta siete días.[^1]",
+        "Meta publica sus tarifas por país y por categoría, y solo las actualiza el primer día de cada trimestre. No las copiamos aquí porque cambian: consúltalas en [la página oficial de precios de WhatsApp Business](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing) antes de hacer números.",
+        { "variant": "h3", "text": "Licencias de tu CRM" },
+        "El agente necesita un lugar donde dejar cada conversación, y ese lugar tiene su propia licencia. Los dos CRM con los que trabajamos cobran de forma muy distinta. Kommo cobra por usuario al mes, en dólares y con un periodo mínimo de seis meses; sus funciones de IA consumen créditos que vienen incluidos por usuario según el plan.[^3] GoHighLevel cobra una cuota mensual por cuenta, con usuarios y contactos ilimitados, más cargos por uso de teléfono, mensajes, correo e IA; WhatsApp se activa como complemento.[^4]",
+        { "variant": "h3", "text": "Consumo del modelo de IA" },
+        "Cada respuesta que genera un modelo de lenguaje consume tokens, y los proveedores los cobran por volumen. Según cómo se construya el agente, ese costo lo paga tu empresa directo al proveedor, viene dentro de los créditos de tu CRM o lo absorbe quien opera el agente. Meta también ofrece su propio agente, Meta Business Agent, y lo cobra con una tarifa por tokens que incluye el procesamiento y la entrega de cada mensaje.[^1]",
+        "Una regla reciente que conviene conocer: desde el 15 de enero de 2026, los términos de WhatsApp Business limitan que los proveedores de IA ofrezcan asistentes de propósito general en la plataforma. Según Meta, esa política está dirigida a esos proveedores y no cambia cómo se cobra a las demás empresas.[^2]",
+        { "variant": "table", "caption": "Quién te cobra qué", "head": ["Concepto", "Quién lo cobra", "Cómo se calcula"], "rows": [
+          ["Mensajes de WhatsApp", "Meta", "Por mensaje entregado, según categoría y país; mil mensajes de servicio gratis al mes por número"],
+          ["Licencia del CRM", "Kommo o GoHighLevel", "Kommo, por usuario al mes. GoHighLevel, cuota por cuenta más cargos por uso"],
+          ["Modelo de IA", "El proveedor del modelo o tu CRM", "Por tokens o créditos consumidos"],
+          ["Diseño, implementación y operación del agente", "Quien lo construye", "En Ingeniak, {{price}}, según el alcance"]
+        ], "note": "Condiciones de terceros consultadas el 19 de octubre de 2026 en sus páginas oficiales (fuentes 1 a 4)." },
+
+        { "variant": "h2", "id": "generico-vs-a-la-medida", "text": "Agente genérico vs agente a la medida conectado a tu CRM", "rail": "Genérico vs a la medida" },
+        "En el mercado vas a encontrar dos tipos de oferta. Por un lado, herramientas de autoservicio: pagas una suscripción, cargas tus preguntas frecuentes y el bot responde. Por otro, agentes diseñados para tu operación: se conectan a tu CRM y a tu agenda, siguen tus reglas comerciales y alguien los mide y los ajusta. Ninguno es mejor en abstracto; la pregunta es qué necesita tu negocio.",
+        { "variant": "table", "caption": "Dos maneras de tener un agente en WhatsApp", "head": ["Criterio", "Agente genérico de autoservicio", "Agente a la medida conectado a tu CRM"], "rows": [
+          ["Puesta en marcha", "Lo configuras tú, con plantillas de la herramienta", "Se diseña con tu equipo; implementar un sistema toma de 7 a 30 días, según el alcance"],
+          ["Qué responde", "Preguntas frecuentes y guiones", "Conversaciones abiertas, con la información y las reglas de tu negocio"],
+          ["CRM y agenda", "Integraciones limitadas o manuales", "Registra cada lead, aparta citas y mueve etapas en tu CRM"],
+          ["Cuando no sabe", "Te avisa o deja el chat abierto", "Pasa a la persona correcta con el historial completo"],
+          ["Medición", "Las métricas de la herramienta", "De punta a punta: del primer mensaje a la venta"],
+          ["Quién lo ajusta", "Tú", "El equipo que lo opera, contigo"],
+          ["Cuándo conviene", "Poco volumen, preguntas repetitivas, sin CRM", "Ventas o citas por WhatsApp, varios procesos y un equipo comercial"]
+        ] },
+        "Si hoy recibes pocos mensajes y casi todos preguntan lo mismo, una herramienta genérica puede bastarte. Si tus ventas o tus citas dependen de WhatsApp, lo caro no es la herramienta: es cada conversación que se pierde entre el chat y tu CRM.",
+        { "variant": "cta-medio" },
+
+        { "variant": "h2", "id": "costo-de-responder-tarde", "text": "El costo que no se ve: responder tarde", "rail": "El costo de responder tarde" },
+        "La cuenta que casi nadie hace es la de las conversaciones que llegan y no se atienden a tiempo. Alguien escribe a las once de la noche, otro pregunta en hora pico mientras tu equipo atiende el mostrador, un tercero escribe el domingo. Si nadie contesta, puede escribirle a otro negocio, y tú ni te enteras.",
+        { "variant": "scene", "id": "escena-caso-dental",
+          "plate": { "id": "caso-dental-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Caso real · Salud · Monterrey",
+          "title": "Una clínica dental dejó de contestar en minutos.",
+          "metricId": "dental-respuesta",
+          "text": "Su agente de IA contesta, califica y agenda por WhatsApp a cualquier hora, y registra a cada paciente en su CRM. En el mismo proyecto, la clínica logró {{metric:dental-citas|full}}.",
+          "links": [ { "label": "Ver el caso completo", "href": "/casos/clinica-dental-monterrey/" } ],
+          "illus": "Imagen ilustrativa del sector" },
+        "No te prometemos esos números para tu negocio: dependen de tu volumen, de tu oferta y de tu equipo. Lo que el caso sí muestra es dónde vive el costo oculto: en el tiempo que pasa entre que alguien te escribe y alguien le contesta.",
+
+        { "variant": "h2", "id": "calcula-si-te-conviene", "text": "Cómo calcular si te conviene, con tus números", "rail": "Haz la cuenta" },
+        "Para saber si un agente se paga solo no necesitas nuestras cifras, sino las tuyas. La fórmula básica multiplica tres datos que tu equipo comercial ya conoce o puede estimar en una semana.",
+        { "variant": "calc", "id": "calculadora",
+          "eyebrow": "Tus números, no los nuestros",
+          "title": "Ventas que se te escapan al mes",
+          "formula": { "terms": ["Leads que no se atienden a tiempo", "Tasa de cierre", "Ticket promedio"], "result": "Ventas en juego" },
+          "fields": [
+            { "id": "leads", "label": "Leads que recibes al mes", "hint": "Conversaciones nuevas, sumando todos tus canales", "mode": "count" },
+            { "id": "perdidos", "label": "Porcentaje sin respuesta a tiempo", "hint": "De noche, en hora pico o en fin de semana", "mode": "percent" },
+            { "id": "cierre", "label": "Tasa de cierre", "hint": "De cada cien leads bien atendidos, cuántos compran", "mode": "percent" },
+            { "id": "ticket", "label": "Ticket promedio, en pesos", "hint": "Lo que deja una venta o una cita", "mode": "money" }
+          ],
+          "result": { "month": "Ventas en juego al mes", "year": "En un año", "empty": "Escribe tus cuatro datos" },
+          "note": "La calculadora no guarda ni envía lo que escribes. Es una estimación tuya, no una promesa de resultados." },
+        "Compara el resultado con lo que costaría atender a tiempo cada conversación, ya sea con más personas en más horarios o con un agente que trabaje 24/7. Si quieres afinarla, suma lo que vale tu tiempo: cada hora que pasas contestando lo mismo es una hora que no dedicas a vender ni a operar.",
+        "Tres consejos para que la cuenta sea honesta: usa los datos de un mes normal, no los del mejor; cuenta solo los leads que de verdad eran clientes potenciales; y usa tu tasa de cierre real, no la que te gustaría tener.",
+
+        { "variant": "h2", "id": "mas-que-un-agente", "text": "¿Y si quiero más que un agente?", "rail": "Más que un agente" },
+        "El agente atiende. Pero una venta perdida rara vez se pierde solo en la respuesta: también se pierde en el seguimiento que nadie dio, en el lead que nunca entró al CRM o en la campaña que se mide por clics y no por ventas. Cuando implementas IA en toda la operación, el presupuesto deja de ser el de un bot y pasa a ser el de un sistema.",
+        { "variant": "ul", "items": [
+          "**Atraer:** anuncios y sitio web conectados al CRM, para saber qué campaña trae ventas y no solo mensajes.",
+          "**Atender:** un agente que responde, califica y agenda en tus canales, y pasa a tu equipo lo que necesita una persona.",
+          "**Organizar:** cada lead en su etapa, con tareas y recordatorios automáticos en Kommo o GoHighLevel.",
+          "**Automatizar:** flujos con n8n o Make que mueven datos entre tus sistemas sin capturas a mano.",
+          "**Medir:** un tablero con lo que importa: conversaciones, citas, ventas y costo por venta."
+        ] },
+        "No tienes que hacerlo todo al mismo tiempo. Lo habitual es empezar donde más se pierde, que casi siempre es la atención, y sumar piezas cuando la primera ya da resultados que se pueden medir. Puedes ver cómo funciona esa primera pieza en [nuestra página de agentes de IA para WhatsApp](/servicios/agentes-ia-whatsapp/).",
+
+        { "variant": "h2", "id": "cuanto-cuesta-con-ingeniak", "text": "Cuánto cuesta con Ingeniak", "rail": "Con Ingeniak" },
+        "En Ingeniak los proyectos empiezan {{price}}. No publicamos paquetes cerrados porque el precio sale de las cinco variables de arriba, y cada negocio las combina distinto. Así llegamos al alcance:",
+        { "variant": "ol", "items": [
+          "**Discovery Session.** Una llamada de 30 minutos, 1:1 por Google Meet y sin costo, para entender cómo te llegan los clientes, qué pasa con cada conversación y dónde se pierden.",
+          "**Propuesta.** Con lo que vimos, te proponemos el alcance: canales, integraciones, procesos y lo que vamos a medir. Ahí defines con nosotros la inversión mensual.",
+          "**Implementación.** Implementar un sistema toma de 7 a 30 días, según el alcance. Configuramos el agente con la información de tu negocio, lo conectamos a tu CRM y lo probamos con tu equipo.",
+          "**Operación.** Operamos el sistema junto con tu equipo: lo medimos, lo ajustamos y te contamos cómo va, con datos y sin humo."
+        ] },
+        "Kain, nuestro agente de IA, atiende WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo. Qué canales activa en tu caso, y con qué reglas, es parte del alcance que definimos juntos."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Quieres saber cuánto costaría en tu caso? Mira cómo trabaja un agente de IA en WhatsApp o escríbele a Kain y cuéntale cómo te llegan tus clientes.",
+      "link": { "label": "Agentes de IA para WhatsApp", "href": "/servicios/agentes-ia-whatsapp/" },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí cuánto cuesta un agente de IA para WhatsApp y quiero saber cuánto costaría en mi caso." }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Lo que más nos preguntan", "soft": "sobre el precio." },
+      "faqIds": ["W03", "G07", "G02", "G08"]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo que diseña, implementa y opera agentes de IA, CRM y automatizaciones en Ingeniak. Lo revisamos cada vez que Meta o los CRM que citamos cambian sus condiciones."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": { "text": "Fuentes y fecha de consulta" },
+      "lede": "Las tarifas y condiciones de terceros cambian. Las consultamos en sus páginas oficiales el 19 de octubre de 2026; antes de decidir, revisa la versión vigente.",
+      "items": [
+        { "title": "Pricing on the WhatsApp Business Platform", "publisher": "Meta for Developers", "href": "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing", "consultado": "2026-10-19", "nota": "Cobro por mensaje entregado, categorías, ventana de servicio, mil mensajes de servicio gratis al mes por número (desde el 1 de octubre de 2026), ventana gratuita desde anuncios y Meta Business Agent." },
+        { "title": "New pricing policy for AI Providers leveraging the WhatsApp Business Platform", "publisher": "Meta for Developers", "href": "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/ai-providers", "consultado": "2026-10-19", "nota": "Términos del 15 de enero de 2026 para proveedores de IA de propósito general." },
+        { "title": "Pricing", "publisher": "Kommo", "href": "https://www.kommo.com/pricing/", "consultado": "2026-10-19", "nota": "Cobro por usuario al mes en dólares, periodo mínimo de seis meses y créditos de IA por usuario." },
+        { "title": "HighLevel Pricing", "publisher": "HighLevel", "href": "https://www.gohighlevel.com/pricing", "consultado": "2026-10-19", "nota": "Cuota por cuenta, usuarios y contactos ilimitados, cargos por uso y complemento de WhatsApp." }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}. Los nombres de los clientes están anonimizados."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "items": [
+        { "href": "/servicios/agentes-ia-whatsapp/", "label": "Servicio", "title": "Agentes de IA para WhatsApp", "line": "Cómo atiende, califica y agenda un agente conectado a tu CRM.", "plate": "home-kain" },
+        { "href": "/blog/agente-ia-whatsapp-vs-chatbot/", "label": "Blog", "title": "Agente de IA vs chatbot", "line": "Qué cambia y cuándo conviene cada uno." },
+        { "href": "/kain/", "label": "kain", "title": "Conoce a Kain", "line": "El agente de IA de Ingeniak." }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila; respaldo cta-amanecer en espejo)",
+      "eyebrow": "Tu caso",
+      "h2": { "text": "¿Cuánto costaría en tu caso?", "soft": "Lo calculamos en 30 minutos." },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí cuánto cuesta un agente de IA para WhatsApp y quiero saber cuánto costaría en mi caso." },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

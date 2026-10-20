@@ -1,0 +1,138 @@
+/* ContactTemplate.css · T-CONTACT (/contacto/) · ESPEC-v2 §5.12. Solo clases .ct-* (y el body.ctc).
+   Portada "Escríbele a Kain" (tres rutas + chat simulado en el teléfono de cristal de la placa) → tabla de rutas →
+   oficina (faro de luz + ficha + países) → redes → amanecer. Ninguna sección pinta fondo (§3.11). */
+
+/* ── 01 · Portada ─────────────────────────────────────────────────────────── */
+.ct-hero h1.ct-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),9.6svh);max-width:11ch}
+.ct-hero .is__text > .ct-hero__lede{max-width:38ch}
+/* Tercera ruta: el correo, en línea con la microcopia (sin otro botón: un azul y un contorno por pantalla) */
+.ct-mail{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:var(--s-5);font:400 .9375rem/1.4 var(--f-body);color:var(--text-2)}
+.ct-mail__i{color:var(--cyan);flex:none}
+.ct-mail__a{padding:4px 0;font-size:.9375rem}
+@media (min-width:768px) and (min-aspect-ratio:5/6){.ct-hero > .is__more{display:none}}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .ct-hero h1.ct-h1{max-width:none}
+  .ct-hero__rest{margin:0;max-width:40ch}
+  .ct-mail--m{margin-top:var(--s-4)}
+}
+/* Pantalla del teléfono de cristal: se enciende en oscuro para que el chat se lea sobre la superficie de la placa */
+.ct-phone{overflow:hidden;border-radius:1.6cqw;
+  background:linear-gradient(180deg,rgb(6 10 24 / .9),rgb(6 10 24 / .8) 55%,rgb(6 10 24 / .9));
+  box-shadow:inset 0 0 0 1px rgb(0 229 255 / .42),inset 0 1px 0 rgb(255 255 255 / .25),0 0 50px rgb(0 229 255 / .22)}
+.ct-phone .chat--registered .chat__bar{padding-top:.35em}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .ct-phone{border-radius:16%/8%;background:linear-gradient(180deg,rgb(6 10 24 / .82),rgb(6 10 24 / .68))}
+}
+
+/* ── 02 · Rutas: tabla semántica con filas de filete (sin tarjetas) ───────── */
+.ct-rutas .it__body{grid-column:1 / -1}
+.ct-head{display:flex;flex-direction:column;align-items:flex-start;max-width:48rem}
+.ct-head > .t-label + *{margin-top:var(--s-4)}
+.ct-head__lede{margin-top:var(--s-5);max-width:44ch}
+.ct-routes{width:100%;margin-top:var(--s-8)!important;border-collapse:collapse;text-align:left}
+.ct-routes thead th{padding:0 var(--s-5) var(--s-4) 0;font:500 .6875rem/1.4 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--hair-2)}
+.ct-routes thead th:first-child{width:30%}
+.ct-routes thead th:last-child{width:1%}
+.ct-route{position:relative;border-bottom:1px solid var(--hair)}
+.ct-route > *{padding:var(--s-6) var(--s-5) var(--s-6) 0;vertical-align:top;font:400 1rem/1.6 var(--f-body);color:var(--text-2)}
+/* Barrido cian por fila en hover/foco (como el registro de resultados) */
+.ct-route::after{content:"";position:absolute;left:0;bottom:-1px;width:100%;height:1px;transform:scaleX(0);transform-origin:left;pointer-events:none;
+  background:linear-gradient(90deg,var(--cyan),rgb(0 229 255 / .25) 55%,transparent 90%);transition:transform .8s var(--ease-cine)}
+.ct-route:hover::after,.ct-route:focus-within::after{transform:scaleX(1)}
+.ct-route__head{display:grid;grid-template-columns:2.4em minmax(0,1fr);align-content:start;column-gap:8px;row-gap:10px;font-weight:400}
+.ct-route__n{grid-row:1;font:500 .6875rem/2.6 var(--f-mono);letter-spacing:.12em;color:var(--cyan)}
+.ct-route__name{grid-column:2;font:500 clamp(1.375rem,1rem + 1.1vw,2rem)/1.1 var(--f-display);letter-spacing:-.02em;color:#fff}
+.ct-route__tag{grid-column:2;justify-self:start;display:inline-flex;align-items:center;gap:8px;color:var(--cyan);border-color:var(--hair-cyan)}
+.ct-route__contact{grid-column:2;font:400 .8125rem/1.4 var(--f-mono);letter-spacing:.04em;color:var(--soft)}
+.ct-route__when{color:#fff;max-width:30ch}
+.ct-route__then{max-width:40ch}
+.ct-route__act{padding-right:0;white-space:nowrap}
+.ct-route__go{display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:0 6px 0 20px;border-radius:var(--r-pill);
+  font:500 .9375rem/1 var(--f-display);color:#fff;text-decoration:none;background:rgb(255 255 255 / .04);box-shadow:inset 0 0 0 1px var(--hair-cyan);
+  transition:background var(--d-ui),box-shadow var(--d-ui)}
+.ct-route__arr{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:var(--cyan);background:rgb(0 229 255 / .08);
+  transition:translate .45s var(--ease-cine)}
+.ct-route__go:hover,.ct-route__go:focus-visible{background:rgb(0 229 255 / .1);box-shadow:inset 0 0 0 1px var(--cyan)}
+.ct-route__go:hover .ct-route__arr{translate:3px 0}
+/* La ruta recomendada lleva el nodo del isotipo encendido a la izquierda de su fila */
+.ct-route--discovery .ct-route__n{color:#fff;text-shadow:none}
+.ct-route--discovery::before{content:"";position:absolute;left:-18px;top:calc(var(--s-6) + .7em);width:7px;height:7px;border-radius:1.5px;
+  background:var(--cyan);box-shadow:var(--glow-cyan)}
+@media (max-width:1023px){
+  .ct-routes,.ct-routes tbody,.ct-route,.ct-route > *{display:block;width:100%}
+  .ct-routes thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .ct-routes{margin-top:var(--s-6)!important;border-top:1px solid var(--hair-2)}
+  .ct-route{padding:var(--s-6) 0 var(--s-5)}
+  .ct-route > *{padding:0}
+  .ct-route > * + *{margin-top:var(--s-4)}
+  .ct-route > .ct-route__head{display:grid}
+  .ct-route::before{display:none}
+  .ct-route__when,.ct-route__then{max-width:none}
+  .ct-route__when::before,.ct-route__then::before{content:attr(data-label);display:block;margin-bottom:4px;
+    font:500 .625rem/1.4 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .ct-route__act{white-space:normal}
+}
+
+/* ── 04 · Oficina: dirección en grande sobre un faro (esquema tipográfico, sin mapa) ── */
+.ct-of__lede{margin-top:var(--s-5);max-width:40ch}
+.ct-of__visit{margin-top:var(--s-4);max-width:40ch;font:400 .9375rem/1.55 var(--f-body);color:var(--text-2)}
+.ct-of__ctas{margin-top:var(--s-6)}
+.ct-of .it__body > * + *{margin-top:var(--s-7)}
+.ct-place{position:relative;width:100%;padding:var(--s-6) 0 var(--s-5) clamp(88px,9vw,150px);isolation:isolate}
+.ct-beacon{position:absolute;left:clamp(30px,3.2vw,56px);top:50%;width:0;height:0;z-index:-1;pointer-events:none}
+.ct-beacon i{position:absolute;left:0;top:0;border-radius:50%;translate:-50% -50%;border:1px solid rgb(0 229 255 / .22)}
+.ct-beacon i:nth-child(1){width:110px;height:110px;border-color:rgb(0 229 255 / .35)}
+.ct-beacon i:nth-child(2){width:230px;height:230px;border-color:rgb(0 229 255 / .18)}
+.ct-beacon i:nth-child(3){width:380px;height:380px;border-color:rgb(0 229 255 / .09);
+  background:radial-gradient(closest-side,rgb(0 229 255 / .14),rgb(69 93 255 / .08) 45%,transparent 75%)}
+.ct-beacon b{position:absolute;left:0;top:0;width:12px;height:12px;border-radius:2.5px;translate:-50% -50%;background:var(--cyan);box-shadow:var(--glow-cyan),0 0 40px rgb(0 229 255 / .6)}
+@media (prefers-reduced-motion:no-preference){
+  html:not([data-motion="reduced"]) .ct-beacon i:nth-child(1){animation:ct-pulse 6s var(--ease-cine) infinite}
+}
+@keyframes ct-pulse{0%,70%,100%{scale:1;opacity:1}85%{scale:1.18;opacity:.4}}
+.ct-place__addr{display:flex;flex-direction:column;gap:var(--s-3);font-style:normal}
+.ct-place__street{font:200 clamp(2.25rem,1rem + 3vw,4.5rem)/1 var(--f-display);letter-spacing:-.045em;color:#fff}
+.ct-place__city{font:500 .75rem/1.5 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
+.ct-place__maps{margin-top:var(--s-4)}
+.ct-nap{width:100%}
+.ct-countries{width:100%}
+
+/* ── 05 · Redes: tres filas tipográficas ─────────────────────────────────── */
+.ct-redes__lede{margin-top:var(--s-5);max-width:40ch}
+.ct-social{width:100%;border-top:1px solid var(--hair)}
+.ct-social__a{position:relative;display:grid;grid-template-columns:32px minmax(0,1fr) auto 40px;align-items:center;column-gap:var(--s-5);
+  padding:var(--s-5) 0;border-bottom:1px solid var(--hair);color:var(--text);text-decoration:none}
+.ct-social__a::after{content:"";position:absolute;left:0;bottom:-1px;width:100%;height:1px;transform:scaleX(0);transform-origin:left;
+  background:linear-gradient(90deg,var(--cyan),rgb(0 229 255 / .2) 55%,transparent 90%);transition:transform .7s var(--ease-cine)}
+.ct-social__a:hover::after,.ct-social__a:focus-visible::after{transform:scaleX(1)}
+.ct-social__logo{width:28px;height:28px;background:currentColor;opacity:.55;transition:opacity var(--d-ui);
+  -webkit-mask:var(--logo) center / contain no-repeat;mask:var(--logo) center / contain no-repeat}
+.ct-social__a:hover .ct-social__logo,.ct-social__a:focus-visible .ct-social__logo{opacity:1}
+.ct-social__name{font:500 clamp(1.5rem,1rem + 1.6vw,2.5rem)/1.1 var(--f-display);letter-spacing:-.03em}
+.ct-social__handle{font:400 .8125rem/1 var(--f-mono);letter-spacing:.06em;color:var(--muted)}
+.ct-social__go{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--cyan);box-shadow:inset 0 0 0 1px var(--hair-2);
+  transition:box-shadow var(--d-ui),background var(--d-ui)}
+.ct-social__a:hover .ct-social__go,.ct-social__a:focus-visible .ct-social__go{box-shadow:inset 0 0 0 1px var(--cyan);background:rgb(0 229 255 / .1)}
+@media (max-width:767px){
+  .ct-social__a{grid-template-columns:24px minmax(0,1fr) 40px;row-gap:4px}
+  .ct-social__logo{width:22px;height:22px;grid-row:1 / span 2}
+  .ct-social__handle{grid-column:2;grid-row:2}
+  .ct-social__go{grid-column:3;grid-row:1 / span 2}
+  .ct-place{padding-left:72px}
+  .ct-beacon{left:22px}
+  .ct-beacon i:nth-child(3){width:300px;height:300px}
+}
+
+/* ── 06 · Cierre ──────────────────────────────────────────────────────────── */
+.ct-dawn h2.t-h2{max-width:14ch}
+/* La microcopia del cierre (más larga que el botón) no ensancha la columna: ocupa el ancho del primario y se parte en
+   renglones equilibrados (con nowrap se salía de la pantalla a 390 px). Misma regla que las plantillas aprobadas. */
+.ct-dawn .is__text{min-width:0}
+.ct-dawn .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-width:none;white-space:normal;text-wrap:balance}
+
+@media (forced-colors:active){
+  .ct-beacon{display:none}
+  .ct-route__go,.ct-social__go{border:1px solid ButtonText}
+  .ct-social__logo{background:CanvasText}
+}

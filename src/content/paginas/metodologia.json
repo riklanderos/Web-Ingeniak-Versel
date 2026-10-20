@@ -1,0 +1,165 @@
+{
+  "_schema": "Texto publicable de /metodologia/ (T-METHOD, MethodTemplate). Forma general: _ESQUEMA.md §2–§6. Campos propios de esta plantilla: hero.h1 = {kicker, text, lit} (el H1 es kicker + ' ' + text = sitemap.h1); hero.deck = segunda voz fuera del H1; hero.phases[] = {letter, name, verb} (etiquetas registradas en las losas y lista móvil). fases.steps[] = {id, letter, name, verb, line, out, who}. tabla = {caption, cols[4], rows[{letter, name, does, out, who}]}. tiempos.timeline[] = {letter, name, when, line}; tiempos.metricRow = {heading, metricIds}. correccion = {label, words[5], text}. Los campos que empiezan con _ no se imprimen.",
+  "pageId": "metodologia",
+  "url": "/metodologia/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · qué sale de cada fase (fases.steps[].out y tabla): el texto usa solo lo que ya está confirmado (diagnóstico de qué automatizar primero, propuesta con alcance, tiempos y costo, sistema conectado, equipo capacitado, tableros y métricas cada mes). ¿Alguno de esos entregables tiene nombre propio o formato fijo (documento, mapa, reporte) que convenga decir?",
+    "PREGUNTA AL CLIENTE · quién participa en cada fase (fases.steps[].who y columna 'Quién participa'): hoy dice en general 'tú y nuestro equipo'. ¿Hay roles fijos del lado del cliente (dueño, responsable de ventas, recepción) o del lado de Ingeniak que quieras nombrar? No se nombra a nadie del equipo sin confirmación.",
+    "PREGUNTA AL CLIENTE · cuánto dura Verify después de la Discovery Session: el texto solo dice que empieza ahí (30 minutos). No se promete un plazo para Verify ni para Koncept.",
+    "CAMBIO DE AFIRMACIÓN · 'resultados medibles en 60 a 90 días' (brief de D para que-es y tiempos) NO se publica: el cliente no lo ha confirmado (RESPUESTAS-CLIENTE 2026-10-19 solo confirma la implementación de 7 a 30 días según el alcance). En su lugar: el plazo confirmado de implementación, la aclaración de G08 (los resultados dependen de qué se implemente) y tres cifras de metrics.ts como referencia, con su fuente.",
+    "CAMBIO DE TEXTO · fases y tabla usan las líneas de v1 (HowTo de la v1: 'Revisamos con números cómo vendes, atiendes y operas hoy', 'Definimos qué se automatiza, con qué herramientas y en qué orden', 'Implementamos agentes de IA, CRM, automatizaciones y campañas conectados entre sí', 'Capacitamos, monitoreamos y ajustamos el sistema en producción', 'Optimizamos cada mes con dashboards y métricas claras') ampliadas con lo confirmado en G11 (propuesta con alcance, tiempos y costo) y en la portada del inicio (la Discovery Session es la fase V).",
+    "DATO PENDIENTE · el HowTo del JSON-LD (src/components/layout/jsonld.ts, del área nav) usa los verbos oficiales como texto de cada paso; esos verbos están visibles en la página. Si se quiere que cada paso lleve la línea completa de fases.steps[].line, es un cambio de nav (pedido en peticiones.md)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (metodologia-hero, subject-right, cutout) + VKTOR gigante detrás del recorte (se rellena letra por letra al cargar) + 5 etiquetas registradas en las losas",
+      "rail": "Portada",
+      "eyebrow": "Metodología VKTOR™",
+      "h1": { "kicker": "Metodología VKTOR™:", "text": "tu crecimiento tiene un protocolo", "lit": "protocolo" },
+      "deck": "Nosotros lo activamos.",
+      "lede": "Cinco fases para llevar la IA de tu operación real a producción. Siempre en el mismo orden: entender cómo vendes hoy, diseñar, implementar, operar con tu equipo y medir cada mes.",
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación" },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto" },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos" },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo" },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados" }
+      ],
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de la metodología VKTOR y quiero empezar el protocolo en mi empresa."
+      }
+    },
+    "que-es": {
+      "_componente": "Intertitle sobre la copia desenfocada de la portada (SharedTake) + DefinitionBlock (G12)",
+      "rail": "Qué es",
+      "eyebrow": "Qué es VKTOR™",
+      "definition": { "heading": "¿Qué es la metodología VKTOR™?", "faqId": "G12" },
+      "body": [
+        "No es un curso ni una plantilla. Es el orden en que trabajamos cada proyecto, sea un agente de IA para WhatsApp, un CRM con Kommo o GoHighLevel, una automatización con n8n o una campaña: lo que cambia es lo que se construye en cada fase, no el orden.",
+        "Por eso no empezamos por la herramienta. Empezamos por tu operación: cómo llega hoy un cliente, quién le contesta, dónde se pierde y qué se puede medir. Con eso decidimos qué conviene automatizar primero."
+      ]
+    },
+    "fases": {
+      "_componente": "PlateSequence preset phases (VktorSequence): una placa (metodologia-hero), la cámara sube losa por losa; fijada +250 % en escritorio; móvil: cinco bloques apilados sobre la placa vertical",
+      "rail": "Las 5 fases",
+      "eyebrow": "Las cinco fases",
+      "h2": { "text": "Del diagnóstico a la operación,", "soft": "una fase a la vez." },
+      "lede": "Cada fase tiene un objetivo, una forma de trabajo y algo concreto que te llevas al terminarla.",
+      "outLabel": "Qué sale de la fase",
+      "whoLabel": "Con quién",
+      "steps": [
+        {
+          "id": "verify",
+          "letter": "V",
+          "name": "Verify",
+          "verb": "Verificamos tu operación",
+          "line": "Revisamos con números cómo vendes, atiendes y operas hoy: por dónde llegan tus clientes, cuánto esperan una respuesta, qué pasa con cada prospecto y qué se mide. Empieza en la Discovery Session.",
+          "out": "Un diagnóstico claro: qué conviene automatizar primero y qué todavía no.",
+          "who": "Tú o quien dirige la operación, con nuestro equipo."
+        },
+        {
+          "id": "koncept",
+          "letter": "K",
+          "name": "Koncept",
+          "verb": "Diseñamos el concepto",
+          "line": "Definimos qué se automatiza, con qué herramientas y en qué orden: los agentes, el CRM, las automatizaciones y las campañas que necesita tu proceso, conectados entre sí desde el plano.",
+          "out": "La propuesta por escrito, con alcance, tiempos y costo.",
+          "who": "Nuestro equipo la diseña; tú la revisas y decides."
+        },
+        {
+          "id": "transform",
+          "letter": "T",
+          "name": "Transform",
+          "verb": "Transformamos",
+          "line": "Implementamos agentes de IA, CRM, automatizaciones y campañas conectados entre sí, con tu información, tus horarios y tus reglas. La implementación toma de 7 a 30 días, según el alcance.",
+          "out": "El sistema construido y conectado a tus canales y a tu CRM.",
+          "who": "Nuestro equipo implementa; el tuyo valida respuestas, horarios y reglas."
+        },
+        {
+          "id": "operate",
+          "letter": "O",
+          "name": "Operate",
+          "verb": "Operamos junto con tu equipo",
+          "line": "Activamos el sistema con clientes reales. Capacitamos a tu equipo, monitoreamos cada conversación y cada flujo, y ajustamos lo que haga falta ya en producción.",
+          "out": "Tu equipo operando el sistema, con reglas claras de qué atiende Kain y qué pasa a una persona.",
+          "who": "Tu equipo y el nuestro, en la operación diaria."
+        },
+        {
+          "id": "rise",
+          "letter": "R",
+          "name": "Rise",
+          "verb": "Hacemos crecer los resultados",
+          "line": "Optimizamos cada mes con tableros y métricas claras: qué se respondió, qué se agendó, qué se vendió y qué conviene ajustar o automatizar después.",
+          "out": "Un tablero con tus métricas y la lista de mejoras del siguiente mes.",
+          "who": "Tú y nuestro equipo, mes con mes."
+        }
+      ]
+    },
+    "tabla": {
+      "_componente": "<table> semántica (fase · qué hacemos · qué sale de la fase · quién participa); bloques en móvil",
+      "rail": "Cada fase",
+      "eyebrow": "Qué pasa en cada fase",
+      "h2": { "text": "Todo el protocolo,", "soft": "en una sola vista." },
+      "caption": "Metodología VKTOR™: qué hacemos, qué sale y quién participa en cada fase.",
+      "cols": ["Fase", "Qué hacemos", "Qué sale de la fase", "Quién participa"],
+      "rows": [
+        { "letter": "V", "name": "Verify", "does": "Diagnóstico con números de cómo vendes, atiendes y operas hoy.", "out": "Prioridades: qué automatizar primero.", "who": "Tú y nuestro equipo" },
+        { "letter": "K", "name": "Koncept", "does": "Diseño del sistema: herramientas, flujos y orden de implementación.", "out": "Propuesta con alcance, tiempos y costo.", "who": "Nuestro equipo propone; tú decides" },
+        { "letter": "T", "name": "Transform", "does": "Implementación de agentes, CRM, automatizaciones y campañas conectados.", "out": "Sistema construido y conectado.", "who": "Nuestro equipo, con la validación del tuyo" },
+        { "letter": "O", "name": "Operate", "does": "Activación con clientes reales, capacitación y monitoreo.", "out": "Sistema en producción y equipo capacitado.", "who": "Tu equipo y el nuestro" },
+        { "letter": "R", "name": "Rise", "does": "Optimización mensual con tableros y métricas.", "out": "Tablero de métricas y siguientes mejoras.", "who": "Tú y nuestro equipo, cada mes" }
+      ]
+    },
+    "tiempos": {
+      "_componente": "Intertitle (split) con la línea de tiempo de las cinco fases + MetricRow de referencia con su fuente",
+      "rail": "Tiempos",
+      "eyebrow": "Tiempos",
+      "h2": { "text": "De 7 a 30 días para implementar.", "soft": "Después, mes con mes." },
+      "lede": "El plazo depende del alcance: no es lo mismo un agente para WhatsApp que un sistema con CRM, automatizaciones y campañas. Lo dejamos por escrito en la propuesta.",
+      "timeline": [
+        { "letter": "V", "name": "Verify", "when": "Discovery Session", "line": "Treinta minutos por Google Meet, sin costo. Ahí empieza el diagnóstico." },
+        { "letter": "K", "name": "Koncept", "when": "La propuesta", "line": "Con alcance, tiempos y costo, antes de implementar nada." },
+        { "letter": "T", "name": "Transform", "when": "De 7 a 30 días", "line": "Según el alcance del sistema." },
+        { "letter": "O", "name": "Operate", "when": "En producción", "line": "Desde el primer día, con tu equipo y el nuestro." },
+        { "letter": "R", "name": "Rise", "when": "Cada mes", "line": "Tableros, métricas y ajustes." }
+      ],
+      "metricRow": { "heading": "Como referencia, en sistemas que ya operan", "metricIds": ["dental-citas", "ecom-cpl", "tiempo-operativo"] },
+      "note": "Son resultados de proyectos concretos, no una promesa de plazo: cuándo se notan depende de qué se implemente y de tu operación."
+    },
+    "correccion": {
+      "_componente": "EditorNote 'Nota de consistencia' + las cinco palabras de la expansión oficial",
+      "rail": "Nota",
+      "label": "Nota de consistencia",
+      "words": ["Verify", "Koncept", "Transform", "Operate", "Rise"],
+      "text": "VKTOR™ significa Verify · Koncept · Transform · Operate · Rise. Si en algún lugar viste otra expansión de las siglas, no es la correcta: esta página es la referencia."
+    },
+    "faq": {
+      "_componente": "FAQAccordion (G12, G08, G11)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas", "soft": "sobre el protocolo." },
+      "faqIds": ["G12", "G08", "G11"],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo)",
+      "rail": "Cierre",
+      "eyebrow": "Fase V · Verify",
+      "h2": { "text": "El protocolo empieza", "soft": "con 30 minutos de diagnóstico." },
+      "lede": "En la Discovery Session revisamos tu operación contigo y te decimos qué conviene automatizar y en qué orden.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de la metodología VKTOR y quiero empezar el protocolo en mi empresa."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

@@ -22,6 +22,9 @@ const LINES = (secId) => `(() => {
   const s = document.getElementById(${JSON.stringify(secId)}); if (!s) return [];
   const parse = (c) => { const m = c.match(/rgba?\\(([^)]+)\\)/); if (!m) return null; const p = m[1].split(/[ ,/]+/).filter(Boolean).map(Number); return [p[0], p[1], p[2], p[3] ?? 1]; };
   const out = [];
+  // algo fijo o pegajoso de fuera de la sección (barra móvil, encabezado) sobre el borde de arriba o de abajo del renglón
+  const fixedOut = (hit) => { if (!hit || s.contains(hit)) return false; for (let x = hit; x && x !== document.documentElement; x = x.parentElement) { const p = getComputedStyle(x).position; if (p === 'fixed' || p === 'sticky') return true; } return false; };
+  const edgeFixed = (b) => [b.top + 1.5, b.bottom - 1.5].some((py) => [b.left + 2, (b.left + b.right) / 2, b.right - 2].some((px) => fixedOut(document.elementFromPoint(px, py))));
   const w = document.createTreeWalker(s, NodeFilter.SHOW_TEXT);
   let n;
   while ((n = w.nextNode())) {
@@ -36,9 +39,10 @@ const LINES = (secId) => `(() => {
     if (!col || col[3] === 0 || clip) col = [0, 229, 255, 1]; // texto con degradado (background-clip:text): se mide como cian
     let op = 1; for (let x = el; x && x !== document.body; x = x.parentElement) op *= parseFloat(getComputedStyle(x).opacity);
     const fs = parseFloat(cs.fontSize), fw = parseInt(cs.fontWeight, 10) || 400;
-    // recorte de los contenedores con overflow (un chat con scroll, una ventana): solo cuenta la parte visible
+    // recorte de los contenedores con overflow (un chat con scroll, una ventana): solo cuenta la parte visible. Empieza en el
+    // propio elemento: un renglón con overflow:hidden y alto 0 (filas inactivas de LocationSwitcher) no es visible.
     let clipR = { l: -1e9, t: -1e9, r: 1e9, b: 1e9 };
-    for (let x = el.parentElement; x && x !== document.body; x = x.parentElement) { const xs = getComputedStyle(x); if (xs.overflowX !== 'visible' || xs.overflowY !== 'visible' || xs.clipPath !== 'none') { const q = x.getBoundingClientRect(); clipR = { l: Math.max(clipR.l, q.left), t: Math.max(clipR.t, q.top), r: Math.min(clipR.r, q.right), b: Math.min(clipR.b, q.bottom) }; } }
+    for (let x = el; x && x !== document.body; x = x.parentElement) { const xs = x === el ? cs : getComputedStyle(x); if (xs.overflowX !== 'visible' || xs.overflowY !== 'visible' || xs.clipPath !== 'none') { const q = x.getBoundingClientRect(); clipR = { l: Math.max(clipR.l, q.left), t: Math.max(clipR.t, q.top), r: Math.min(clipR.r, q.right), b: Math.min(clipR.b, q.bottom) }; } }
     const rg = document.createRange(); rg.selectNodeContents(n);
     for (const b0 of rg.getClientRects()) {
       const l0 = Math.max(b0.left, clipR.l), t0 = Math.max(b0.top, clipR.t), r0 = Math.min(b0.right, clipR.r), bb = Math.min(b0.bottom, clipR.b);
@@ -48,7 +52,7 @@ const LINES = (secId) => `(() => {
       if (b.top < 0 || b.bottom > innerHeight) continue; // se mide en la pantalla donde cabe completa
       // tapada por algo fijo de fuera de la sección (encabezado, barra móvil, píldora de Kain): no se mide aquí
       const pts = [[b.left + 2, (b.top + b.bottom) / 2], [(b.left + b.right) / 2, (b.top + b.bottom) / 2], [b.right - 2, (b.top + b.bottom) / 2]];
-      if (pts.some(([px, py]) => { const hit = document.elementFromPoint(px, py); return hit && !s.contains(hit); })) continue;
+      if (pts.some(([px, py]) => { const hit = document.elementFromPoint(px, py); return hit && !s.contains(hit); }) || edgeFixed(b)) continue;
       out.push({ x: b.left, y: b.top, w: b.width, h: b.height, absY: Math.round(b.top + scrollY), t: t.slice(0, 48), col, a: col[3] * op, large: fs >= 24 || (fs >= 18.66 && fw >= 600), fs });
     }
   }

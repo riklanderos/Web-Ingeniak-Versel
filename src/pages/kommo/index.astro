@@ -1,0 +1,10 @@
+---
+// /kommo/ · T-PLATFORM (ESPEC §5.2 "Variantes T-PLATFORM"). Partner oficial de Kommo: URL de primer nivel (D §2), breadcrumb
+// bajo CRM con IA. Texto: src/content/paginas/kommo.json (R1). Plantilla: PlatformTemplate.
+import PlatformTemplate from '../../components/templates/PlatformTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+
+const page = getPage('/kommo/');
+const copy = getCopy(page.id);
+---
+<PlatformTemplate page={page} copy={copy} />

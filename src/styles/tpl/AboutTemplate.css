@@ -1,0 +1,198 @@
+/* ===== AboutTemplate · T-ABOUT (/nosotros/) ===== */
+/* ESPEC-v2 §5.9 · clases .ab-* de src/components/templates/AboutTemplate.astro (body.ab).
+   Reglas: ninguna sección pinta fondo (§3.11); la luz viene de la placa, de las auras (Aura.astro) y de .tpl-glow;
+   sin cajas detrás del texto; todo visible sin JS. */
+
+/* Auras de los intertítulos de plantilla (misma regla que el bloque compartido de pages.css para hm/svc/ind/t-case/cv) */
+body.ab .it__aura--ondas{opacity:1}
+body.ab .it__aura--isotipo{opacity:.9}
+body.ab :is(h1,h2)[data-split]{text-wrap:balance}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.ab .it__aura{width:max(130vw,520px)}
+  body.ab .it__aura--ondas{width:max(200vw,780px)}
+}
+/* Costuras entre escenas sin placa: la luz de base sale 140 px de su sección y se funde en 280 px (las dos luces se suman a
+   la mitad en cada costura: sin franja oscura ni filo) — igual que servicio, industria y caso */
+body.ab main .tpl-glow:not(.is)::before{inset:-140px 0;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 280px,#000 calc(100% - 280px),transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 280px,#000 calc(100% - 280px),transparent 100%)}
+
+/* Cabecera común (eyebrow · H2 · lede) */
+.ab-head{display:flex;flex-direction:column;align-items:flex-start;max-width:min(100%,52rem)}
+.ab-head > .t-label + *{margin-top:var(--s-4)}
+.ab-head > .t-lede{margin-top:var(--s-5)}
+
+/* ── 01 · Portada ───────────────────────────────────────────────────────────── */
+.ab-hero h1.t-display-2{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),9.2svh);max-width:13ch}
+.ab-hero .ab-h1 .soft{display:block}
+.ab-hero .is__text > .t-lede{max-width:40ch}
+/* R3: `more` de la portada solo lleva contenido móvil (cola del lede) */
+@media (min-width:768px) and (min-aspect-ratio:5/6){.ab-hero > .is__more{display:none}}
+.ab-hero__rest{margin:0;max-width:40ch}
+/* Escritorios bajos (1280 × 720, 1366 × 768): el bloque completo cabe en el primer pantallazo */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){
+  .is.ab-hero{padding-top:calc(var(--hdr) + var(--s-5));padding-bottom:var(--s-6)}
+  .ab-hero .is__text > .crumbs{margin-bottom:var(--s-4)}
+  .ab-hero .is__text > .t-lede{margin-top:var(--s-4)}
+  .ab-hero .is__text > .ctas{margin-top:var(--s-6);row-gap:var(--s-3)}
+  .ab-hero h1.t-display-2{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),8.6svh)}
+}
+/* Escritorios estrechos (< 1200 px): crumbs O etiqueta sobre el H1, nunca dos renglones mono */
+@media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){.ab-hero .is__text > .crumbs ~ .eyebrow{display:none}}
+
+/* Móvil y tableta vertical: "Escríbele a Kain" se lee (botón fantasma a todo el ancho bajo la microcopia), como en servicio,
+   industria y caso (QA #29); tope de ancho en tableta vertical */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.ab .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
+  body.ab .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px 0 20px;gap:12px;justify-content:center;border-radius:var(--r-pill);margin-top:2px}
+  body.ab .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+  body.ab .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
+  .ab-hero h1.t-display-2{max-width:none}
+}
+@media (max-width:767px) and (max-height:780px){
+  body.ab .tpl-hero.is[data-m="split"]{--hero-gap:16px}
+  body.ab .tpl-hero .is__text > .ctas:has(> .cta-p){margin-top:var(--s-5);row-gap:8px}
+  body.ab .tpl-hero .is__text > .ctas > .cta-p > .btn{height:48px}
+  body.ab .tpl-hero .is__text > .ctas > .btn--wa{height:44px;margin-top:0}
+}
+@media (min-width:600px) and (max-aspect-ratio:5/6){body.ab .tpl-hero .is__text > .ctas:has(> .cta-p){max-width:26.25rem}}
+
+/* ── 02 · Ficha (sobre la copia desenfocada de la portada; el texto nunca cruza al sujeto desenfocado) ── */
+.ab-ficha .it__body{grid-column:1 / span 7}
+.ab-ficha--r .it__body{grid-column:6 / span 7}
+.ab-ficha__head{display:flex;flex-direction:column;align-items:flex-start;max-width:40rem}
+.ab-ficha__head > .t-label + *{margin-top:var(--s-4)}
+.ab-ficha__head > .t-lede{margin-top:var(--s-5)}
+.ab-ficha .it__body > .ab-sheet{align-self:stretch;max-width:46rem;margin-top:var(--s-7)}
+.ab-sheet .sheet__row dd{color:var(--text-2)}
+.ab-sheet .sheet__row:first-child dd{font:500 1.25rem/1.3 var(--f-display);letter-spacing:-.01em;color:var(--text)}
+@media (max-width:1023px){.ab-ficha .it__body,.ab-ficha--r .it__body{grid-column:1 / -1}}
+
+/* ── 03 · Manifiesto ── */
+/* Intertítulo: titular grande con revelado palabra por palabra; dos párrafos en columnas; la firma con su nodo */
+.ab-man--it .it__body{grid-column:1 / span 10}
+.ab-man__h{font-size:clamp(2.5rem,1rem + 4.4vw,6.25rem);max-width:15ch}
+.ab-man--it .it__body > .ab-man__h{margin-top:var(--s-5)}
+.ab-man__cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-8);max-width:62rem;margin-top:var(--s-8) !important}
+.ab-man__body{margin:0;font:400 clamp(1.0625rem,1rem + .25vw,1.25rem)/1.62 var(--f-body);color:var(--text-2);text-wrap:pretty}
+.ab-firma{display:inline-flex;align-items:baseline;gap:14px;margin:var(--s-8) 0 0 !important;padding-top:var(--s-5);border-top:1px solid var(--hair-cyan);
+  font:300 clamp(1.375rem,1rem + 1.2vw,2.25rem)/1.2 var(--f-display);letter-spacing:-.02em;color:var(--text)}
+.ab-firma .node{flex:none;translate:0 -.3em}
+/* Escena (cuando la portada usa la placa del equipo): el texto en la penumbra izquierda */
+.ab-man--scene .is__text{max-width:36rem}
+.ab-man--scene .t-h2{font-size:min(clamp(2.25rem,1rem + 3.4vw,5rem),8.4svh)}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .ab-man--scene{--fit-h:max(100svh,680px);--is-h:var(--fit-h);padding-top:calc(var(--hdr) + var(--s-6))}
+  .ab-man--scene > .is__stagebox{bottom:auto;height:var(--fit-h)}
+  .ab-man--scene > .is__more{margin-top:var(--s-5)}
+  /* la columna termina donde termina la penumbra de la placa (x ≤ .46, misma caja "cover" del escenario registrado) */
+  .ab-man--scene{--sw:max(100vw, var(--fit-h) * var(--ar-d));--col:calc((100vw - var(--sw)) * var(--fx-d) + .46 * var(--sw) - (100vw - var(--frame)) / 2 - 16px)}
+  .ab-man--scene .is__text{max-width:min(36rem, var(--col))}
+  .ab-man--scene .t-h2{font-size:min(clamp(2.25rem,1rem + 3.4vw,5rem),8.4svh,var(--col) / 6.6)}
+}
+.ab-man--scene .is__more .ab-man__body{max-width:44ch}
+.ab-man__more{display:flex;flex-direction:column;align-items:flex-start;align-self:stretch}
+.ab-man__more > .ab-man__body + .ab-man__body{margin-top:var(--s-4)}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .is.ab-man--scene[data-m="split"] > .is__more{margin-top:0}
+  .is.ab-man--scene[data-m="split"] .ab-man__more{margin-top:calc(var(--plate-h) * (var(--sb,1) - 1) + var(--s-3))}
+}
+.ab-man--scene .is__more .ab-firma{margin-top:var(--s-6) !important}
+@media (max-width:767px){
+  .ab-man__cols{grid-template-columns:minmax(0,1fr);row-gap:var(--s-5);margin-top:var(--s-6) !important}
+  .ab-firma{margin-top:var(--s-7) !important}
+}
+
+/* ── 05 · Valores (filas de guion a todo el ancho) ── */
+.ab-val .it__body{grid-column:1 / -1}
+.ab-val .it__body > .ab-val__list{align-self:stretch;margin-top:var(--s-7)}
+.ab-val .ab-val__list .script__name{font-size:clamp(1.375rem,1rem + 1.3vw,2.25rem)}
+
+/* ── 06 · Equipo: reparto (sin tarjetas). Cabecera fija a la izquierda; filas de créditos a la derecha ── */
+.ab-team{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0}
+.ab-team__frame{row-gap:var(--s-7)}
+.ab-team__head{grid-column:1 / span 4;display:flex;flex-direction:column;align-items:flex-start;align-self:start}
+.ab-team__head > .t-label + *{margin-top:var(--s-4)}
+.ab-team__head > .t-lede{margin-top:var(--s-5)}
+.ab-team__note{margin-top:var(--s-5)}
+.ab-cast{grid-column:6 / -1;margin:0;padding:0;list-style:none;border-top:1px solid var(--hair)}
+.ab-cast__row{position:relative;display:grid;grid-template-columns:clamp(96px,8.4vw,128px) minmax(0,1fr);column-gap:clamp(20px,2.4vw,40px);align-items:center;
+  padding:clamp(14px,1.6vw,22px) 0;border-bottom:1px solid var(--hair);transition:opacity var(--d-ui) var(--ease-ui)}
+.ab-cast__row::before{content:"";position:absolute;left:0;top:-1px;height:1px;width:100%;pointer-events:none;
+  background:linear-gradient(90deg,var(--cyan),rgb(0 229 255 / .2) 40%,transparent 75%);transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease-cine)}
+.ab-cast__row:hover::before,.ab-cast__row:focus-within::before{transform:scaleX(1)}
+@media (hover:hover){.ab-cast:has(.ab-cast__row:hover) .ab-cast__row:not(:hover){opacity:.42}}
+/* Retrato: mismo encuadre de cabeza y hombros que la línea de reparto del inicio (TEAM[].crop), duotono tinta → cian,
+   viñeta que se disuelve a --ink por los cuatro lados (nunca un rectángulo ni un círculo con filo) */
+.ab-cast__ph{position:relative;z-index:0;display:block;aspect-ratio:4 / 5;overflow:hidden;isolation:isolate;container-type:size;background:#8AF0FF;
+  -webkit-mask-image:radial-gradient(50% 47% at 50% 45%,#000 52%,rgb(0 0 0 / .5) 76%,transparent 100%);mask-image:radial-gradient(50% 47% at 50% 45%,#000 52%,rgb(0 0 0 / .5) 76%,transparent 100%)}
+.ab-cast__ph img{--k:calc(.44 / var(--hw));position:absolute;max-width:none;width:calc(100cqw * var(--k));height:calc(100cqw * var(--k));
+  left:calc(50cqw - var(--fx) * 100cqw * var(--k));top:calc(40cqh - var(--ey) * 100cqw * var(--k));
+  filter:grayscale(1) contrast(1.25) brightness(1.1);mix-blend-mode:multiply;transition:scale .9s var(--ease-cine)}
+.ab-cast__ph::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 55% at 50% 40%,rgb(10 31 76 / .9),rgb(6 10 24) 75%);mix-blend-mode:lighten;pointer-events:none}
+.ab-cast__row:hover .ab-cast__ph img{scale:1.04}
+.ab-cast__txt{min-width:0;display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);column-gap:clamp(20px,2.4vw,40px);row-gap:6px;align-items:baseline}
+.ab-cast__role{grid-column:1;margin:0;font:500 10.5px/1.45 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);text-wrap:balance}
+.ab-cast__name{grid-column:1;margin:0;font:500 clamp(1.375rem,1rem + 1.1vw,2.125rem)/1.08 var(--f-display);letter-spacing:-.025em;color:var(--text)}
+.ab-cast__line{grid-column:2;grid-row:1 / span 3;margin:0;font:400 1rem/1.55 var(--f-body);color:var(--text-2);max-width:46ch;text-wrap:pretty}
+.ab-cast__in{grid-column:1;margin-top:4px}
+@media (min-width:1024px){.ab-team__head{position:sticky;top:calc(var(--hdr) + var(--s-6))}}
+@media (max-width:1279px){
+  .ab-cast__txt{grid-template-columns:minmax(0,1fr)}
+  .ab-cast__line{grid-column:1;grid-row:auto;margin-top:6px}
+}
+@media (max-width:1023px){
+  .ab-team__head,.ab-cast{grid-column:1 / -1}
+}
+@media (max-width:767px){
+  .ab-cast__row{grid-template-columns:76px minmax(0,1fr);column-gap:16px;align-items:start;padding:var(--s-5) 0}
+  .ab-cast__ph{margin-top:-6px}
+  .ab-cast__name{font-size:1.375rem}
+  .ab-cast__line{font-size:.9375rem}
+}
+
+/* ── 07 · Presencia: países tipográficos + sectores ── */
+.ab-pres .it__body > .ab-pres__countries{align-self:stretch}
+.ab-pres .it__head > .t-lede{margin-top:var(--s-5)}
+.ab-pres .credits__count{margin-bottom:var(--s-5)}
+.ab-pres .credits__countries{row-gap:10px}
+.ab-pres .country__name{font-size:clamp(1.625rem,1rem + 2vw,3.25rem)}
+.ab-sectors{align-self:stretch;margin-top:var(--s-8) !important;padding-top:var(--s-5);border-top:1px solid var(--hair)}
+.ab-sectors__h{margin:0 0 var(--s-4)}
+.ab-sectors__list{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
+.ab-sector{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--text-2)}
+.ab-sector--a{color:var(--text);border-color:var(--hair-cyan)}
+.ab-sector--a .icon{width:14px;height:14px;color:var(--cyan)}
+.ab-sector--a:hover{border-color:var(--cyan);color:#fff}
+@media (min-width:1024px){.ab-pres .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}}
+
+/* ── 08 · Alianzas: dos créditos unidos por el pilar del isotipo (no tarjetas) ── */
+.ab-ali{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0}
+.ab-ali__head{grid-column:1 / -1}
+.ab-ali__pair{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1fr);column-gap:clamp(32px,5vw,96px);margin-top:var(--s-8)}
+.ab-ali__pillar{position:relative;display:block;width:1px;background:linear-gradient(180deg,transparent,var(--hair-cyan) 18%,var(--hair-cyan) 82%,transparent)}
+.ab-ali__pillar .node{position:absolute;left:50%;top:50%;translate:-50% -50%}
+.ab-ally{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.ab-ally__mark{min-height:64px;display:flex;align-items:center}
+.ab-kain-mark{font-size:clamp(3rem,2rem + 2.6vw,4.75rem);line-height:.9;letter-spacing:-.05em}
+.ab-ally__t{margin:var(--s-6) 0 0;font:500 clamp(1.375rem,1rem + 1.1vw,2rem)/1.15 var(--f-display);letter-spacing:-.02em;color:var(--text);max-width:22ch}
+.ab-ally__b{margin:var(--s-4) 0 0;font:400 1.0625rem/1.62 var(--f-body);color:var(--text-2);max-width:52ch;text-wrap:pretty}
+.ab-ally__links{display:flex;flex-wrap:wrap;gap:var(--s-2) var(--s-6);margin:var(--s-5) 0 0}
+.ab-ally__links .lnk .icon{width:16px;height:16px}
+@media (max-width:767px){
+  .ab-ali__pair{grid-template-columns:minmax(0,1fr);row-gap:var(--s-7)}
+  .ab-ali__pillar{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--hair-cyan) 18%,var(--hair-cyan) 82%,transparent)}
+}
+
+/* ── 09 · Preguntas: titular fijo a la izquierda mientras corre la lista (escritorio) ── */
+.ab-faq .it__head > .t-lede{margin-top:var(--s-5)}
+.ab-faq .faq{width:100%;align-self:stretch}
+.ab-faq__cta{margin-top:var(--s-6)}
+@media (min-width:1024px){.ab-faq .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}}
+
+/* ── 10 · Cierre: la microcopia del copy no ensancha la columna (igual que industria, QA #36) ── */
+body.ab #cta-final .is__text{min-width:0}
+body.ab #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-width:none;white-space:normal;text-wrap:balance}
+
+@media (forced-colors:active){.ab-cast__ph::after{display:none}.ab-ali__pillar{background:CanvasText}}
+/* ===== fin AboutTemplate ===== */

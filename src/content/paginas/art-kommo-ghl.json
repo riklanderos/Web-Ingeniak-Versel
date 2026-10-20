@@ -1,0 +1,186 @@
+{
+  "_schema": {
+    "_nota": "Esquema T-ARTICLE (ArticleTemplate.astro · ESPEC §5.10, §8.5, R1, R8). Todo campo que empieza con _ es nota y no se imprime. Tokens de cifra y precio: _ESQUEMA.md §5 ({{metric:ID}}, |full, |prose, {{price}}, {{Price}}, {{source}}). Nunca cifras ni precios de Ingeniak escritos a mano; tarifas de terceros: se describen y se enlazan, no se copian (check-cifras solo admite PRICE_FROM).",
+    "raiz": "pageId, url, estado (borrador|revisión|aprobado), autor, aprobadoPor, publicado y actualizado (AAAA-MM-DD reales: datePublished/dateModified, R8), pendientes[] (paquete de aprobación, no se imprime).",
+    "articulo": "categoria (etiqueta de la portada y articleSection), about[] ({type, name, url} → BlogPosting.about en el JSON-LD; una ruta interna construida vale como Service).",
+    "hero": "eyebrow (categoría visible), h1 {text, soft, lit} (text + ' ' + soft = sitemap.h1; lit = subcadena con la única .lit de la página), deck (entradilla .t-standfirst, ≤ 40 palabras; en móvil las primeras ~22 palabras van arriba y el resto baja junto a la firma), byline (crédito visible: 'Equipo de Ingeniak' mientras no se confirme autor, R8), jump (texto del enlace a la respuesta corta), ui? {label, title, items[]} (figura registrada en la superficie de cristal de la placa; si la placa no tiene superficie, no se pinta).",
+    "respuesta": "label (eyebrow), heading (h2, sin tokens), text (40–60 palabras, la respuesta en la primera oración, citable).",
+    "indice": "label (título del índice). Los renglones salen de cuerpo.blocks con variant 'h2' (campo rail = texto corto del índice) más la respuesta, el FAQ y las fuentes.",
+    "cuerpo": "blocks[]: un string = párrafo. Objetos por variant → 'h2' {id, text, rail} · 'h3' {text} · 'ul'/'ol' {items[]} · 'note' {label, text} · 'table' {caption, head[], rows[][], note} (la primera celda de cada fila es su encabezado) · 'steps' {items[{title, text}]} · 'calc' {id, eyebrow, title, lede, formula{terms[], result}, fields[{id, label, hint, mode: count|percent|money}], result{month, year, empty}, note} · 'scene' {id, plate{id, layout, mirror, launchFallback}, eyebrow, title, metricId, text, links[{label, href}], illus} (ImageSection mid a sangre dentro del artículo) · 'cta-medio' (posición del CTA intermedio). En texto: [etiqueta](/ruta/ o https://…) = enlace (las rutas sin construir se pintan como texto), **negritas**, [^n] = llamada a la fuente n de fuentes.items.",
+    "cta-medio": "label, text, link {label, href} (página comercial del tema; sin construir = no se pinta), ctaPrimary {label, href}, ctaSecondary {label, waMessage = sitemap.secondaryCta.waMessage}.",
+    "faq": "eyebrow, h2 {text, soft}, faqIds[] (banco src/data/faq.json; las 'validar' no se publican y vuelven solas al aprobarse).",
+    "autor": "bio (una o dos oraciones; la tarjeta firma 'Equipo de Ingeniak' hasta que haya autor confirmado, R8).",
+    "fuentes": "eyebrow, h2 {text}, lede, items[{title, publisher, href, consultado AAAA-MM-DD, nota}] (numeradas en orden; [^n] apunta a items[n-1]), internas (línea de cifras propias con {{source}}).",
+    "relacionados": "eyebrow, items[{href, label, title, line, plate?}] (solo se pintan rutas construidas; si faltan, se completan con páginas construidas).",
+    "cta-final": "eyebrow, h2 {text, soft}, ctaPrimary, ctaSecondary {label, waMessage}, micro."
+  },
+  "pageId": "art-kommo-ghl",
+  "url": "/blog/kommo-vs-gohighlevel/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "publicado": "2026-10-19",
+  "actualizado": "2026-10-19",
+  "articulo": {
+    "categoria": "CRM",
+    "about": [
+      { "type": "SoftwareApplication", "name": "Kommo", "url": "https://www.kommo.com/" },
+      { "type": "SoftwareApplication", "name": "GoHighLevel (HighLevel)", "url": "https://www.gohighlevel.com/" }
+    ]
+  },
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Rik Landeros como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
+    "PREGUNTA AL CLIENTE · ¿Ingeniak implementa HubSpot? El texto no lo afirma ni lo niega: solo dice que, si otra herramienta conviene más, lo decimos en la Discovery Session.",
+    "PREGUNTA AL CLIENTE · ¿Ingeniak revende las licencias de Kommo en pesos? Kommo dice que algunos partners oficiales revenden en moneda local; no lo afirmamos de Ingeniak hasta confirmarlo.",
+    "FAQ · H04 (¿Ingeniak es partner de GoHighLevel?) sigue en 'validar' en el banco: se lista en faqIds pero no se publica hasta su aprobación. Mientras tanto la página publica G05, G04, K01 y H03 (H03 no estaba en el brief de D; es una respuesta aprobada sobre conectar un agente de IA a GoHighLevel). Pedido a copy: sumar esta URL a faq.json → H03.pages.",
+    "DATO DE TERCEROS · funciones, planes, idioma y modelos de cobro de Kommo, HighLevel y HubSpot consultados el 2026-10-19 (fuentes 1 a 5). No se copian precios (check-cifras y la regla de precios de D: 'enlace a precios oficiales vigentes'). Revisar cada trimestre y actualizar 'actualizado'.",
+    "CAMBIO DE TEXTO · el brief de D pedía una sección 'La respuesta corta' dentro del cuerpo; es la caja de respuesta corta (AnswerBox) y encabeza el índice. Las otras seis secciones de D están completas y en orden.",
+    "CASOS · la escena del cuerpo usa dos cifras confirmadas de metrics.ts: retail-conversiones (Retail multimarca · Kommo + IA; la descripción 'calificación de leads por IA' viene de la respuesta K03 aprobada) y dental-citas (la clínica usa GoHighLevel, confirmado el 2026-10-19). El caso retail no tiene página construida: su nombre se pinta sin enlace.",
+    "PLACA · la portada pide servicios-no-se en espejo; mientras no esté exportada, sale home-sistema-3-organizar (Kain con la tarjeta del lead frente a los carriles del embudo; respaldo local de la plantilla)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (servicios-no-se en espejo: Kain señala entre tres opciones de cristal)",
+      "eyebrow": "CRM",
+      "h1": { "text": "Kommo vs GoHighLevel:", "soft": "cuál conviene a tu empresa", "lit": "conviene" },
+      "deck": "Uno nació para vender por chat; el otro junta embudos, páginas, calendarios y campañas en una sola cuenta. Los comparamos criterio por criterio, con sus páginas oficiales en la mano.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta"
+    },
+    "respuesta": {
+      "_componente": "Intertitle (rack sobre la portada desenfocada) + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "Depende de cómo vendes",
+      "text": "Kommo conviene si tu venta pasa por WhatsApp, Instagram u otros chats y quieres el embudo dentro de la conversación. GoHighLevel conviene si vendes con embudos, páginas, calendarios y campañas, y quieres todo en una sola plataforma. Somos partner oficial de Kommo e implementamos GoHighLevel en español: te recomendamos según tu proceso."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con escena a sangre y CTA intermedio",
+      "blocks": [
+        { "variant": "h2", "id": "que-es-cada-uno", "text": "Qué es Kommo y qué es GoHighLevel", "rail": "Qué es cada uno" },
+        "Los dos se venden como CRM, pero resuelven problemas distintos. Antes de comparar funciones, vale la pena entender de dónde viene cada uno, porque eso explica casi todas sus diferencias.",
+        { "variant": "h3", "text": "Kommo: un CRM pensado para vender por mensajería" },
+        "Kommo junta en una sola bandeja las conversaciones de WhatsApp (con la API oficial), Instagram, Facebook, TikTok, Telegram, el chat de tu web y el correo, y convierte cada una en un lead dentro de tu embudo de ventas.[^1] Su fuerte es que el seguimiento pasa dentro del chat: plantillas de WhatsApp, bots sin código (Salesbot), difusiones y agentes de IA que responden con tus fuentes de conocimiento, según el plan.[^1]",
+        { "variant": "h3", "text": "GoHighLevel: una plataforma todo en uno para captar, dar seguimiento y agendar" },
+        "GoHighLevel, también llamado HighLevel o GHL, combina CRM y pipelines con un constructor de sitios y embudos, calendarios de reservas, correo y SMS, redes sociales, automatizaciones, pagos, reputación e IA conversacional.[^3] Su modelo también está pensado para agencias: los planes se miden por subcuentas y el más alto permite revender la plataforma como software propio.[^3]",
+        { "variant": "note", "label": "En corto", "text": "Kommo organiza tu venta alrededor de la conversación. GoHighLevel organiza tu marketing y tu venta alrededor del embudo." },
+
+        { "variant": "h2", "id": "comparativa-por-criterio", "text": "Comparativa por criterio", "rail": "Comparativa" },
+        "Esta tabla resume lo que publican Kommo y HighLevel en sus páginas oficiales, consultadas el 19 de octubre de 2026, y lo que vemos al implementarlos. Abajo explicamos cada criterio.",
+        { "variant": "table", "caption": "Kommo y GoHighLevel, lado a lado", "head": ["Criterio", "Kommo", "GoHighLevel"], "rows": [
+          ["Canal de venta", "Mensajería: WhatsApp, Instagram, Facebook, TikTok y Telegram en una bandeja", "Embudos, formularios y campañas; conversaciones unificadas, con WhatsApp como complemento"],
+          ["Embudos y páginas", "Embudos por etapas dentro del CRM, formularios web y botón de chat para tu sitio", "Constructor de sitios, embudos, formularios y encuestas incluido"],
+          ["Calendarios y citas", "Calendario de reservas; página de reservas y agenda con IA en el plan Pro", "Calendarios de reservas incluidos en todos los planes"],
+          ["Automatización", "Salesbot sin código y automatización del embudo desde el plan Advanced", "Flujos de trabajo (workflows) incluidos"],
+          ["IA", "Sugerencias y resúmenes con IA en todos los planes; agentes de IA desde Advanced, con créditos mensuales por usuario", "IA conversacional, de voz y de contenido; varias funciones se cobran por uso"],
+          ["Idioma", "Interfaz en español (LATAM), inglés, portugués y ruso", "Español configurable como idioma de la plataforma; lo no traducido aparece en inglés"],
+          ["Modelo de cobro", "Por usuario al mes, en dólares, con un mínimo de seis meses", "Cuota mensual o anual por cuenta, usuarios y contactos ilimitados, más cargos por uso"],
+          ["Prueba gratis", "14 días", "14 días"],
+          ["Con Ingeniak", "Partner oficial: licencias, implementación y agentes de IA", "Herramienta que implementamos completa en español"]
+        ], "note": "Fuentes 1 a 4, consultadas el 19 de octubre de 2026. Las funciones por plan cambian: revisa la versión vigente antes de contratar." },
+        { "variant": "h3", "text": "Canal de venta" },
+        "Si la mayoría de tus ventas empieza con un «hola, ¿precio?» en WhatsApp o en un mensaje directo de Instagram, Kommo te da ventaja: cada chat es un lead, el historial queda en su ficha y tu equipo responde desde el mismo lugar. GoHighLevel también unifica conversaciones, pero su centro de gravedad es el embudo: anuncios, páginas, formularios y secuencias de correo y SMS.",
+        { "variant": "h3", "text": "Embudos, páginas y calendarios" },
+        "GoHighLevel incluye el constructor de sitios y embudos y los calendarios de reservas en todos sus planes, así que un negocio de citas puede tener página, formulario, agenda y recordatorios en una sola cuenta.[^3] En Kommo la agenda de reservas existe, pero la página de reservas y la programación de citas con IA están en su plan Pro.[^1]",
+        { "variant": "h3", "text": "Automatización e IA" },
+        "Los dos automatizan. En Kommo, el Salesbot y la automatización del embudo aparecen desde el plan Advanced, junto con hasta tres agentes de IA; el plan Pro sube a cincuenta. Los créditos de IA vienen por usuario cada mes y no se acumulan.[^1] En GoHighLevel, la IA conversacional y la de voz son parte de la plataforma, pero se cobran por uso.[^3] En ambos casos el agente rinde tanto como la información y las reglas que le das, y ahí está el trabajo de implementación.",
+        { "variant": "h3", "text": "Idioma y acompañamiento" },
+        "Kommo tiene interfaz en español para Latinoamérica.[^2] En GoHighLevel, cada subcuenta puede elegir el español como idioma de la plataforma; si a una parte le falta traducción, aparece en inglés.[^4] Más allá de la interfaz, lo que suele faltar en español es la implementación: textos de embudos, plantillas, automatizaciones y la capacitación de tu equipo.",
+        { "variant": "h3", "text": "Precio" },
+        "Kommo cobra por usuario al mes, en dólares y con un periodo mínimo de seis meses: si tu equipo crece, crece la factura.[^1] GoHighLevel cobra una cuota fija por cuenta, con usuarios y contactos ilimitados, y suma cargos por uso de teléfono, SMS, correo e IA, además de complementos como WhatsApp.[^3] Por eso no publicamos una comparación de precios: con un equipo chico puede convenir uno y con uno grande, el otro. Revisa las tarifas vigentes en [la página de precios de Kommo](https://www.kommo.com/pricing/) y en [la de HighLevel](https://www.gohighlevel.com/pricing).",
+        { "variant": "cta-medio" },
+
+        { "variant": "h2", "id": "segun-tu-industria", "text": "Qué conviene según tu industria", "rail": "Según tu industria" },
+        "La industria pesa menos que tu proceso de venta, pero hay patrones que se repiten por sector:",
+        { "variant": "ul", "items": [
+          "**Salud y bienestar (clínicas, consultorios, estética):** si vives de la agenda, GoHighLevel resuelve calendarios, recordatorios y reseñas en un solo lugar. Si tus pacientes llegan sobre todo por WhatsApp e Instagram y la cita se cierra en el chat, Kommo con un agente que agenda funciona muy bien.",
+          "**Retail y e-commerce:** las ventas por chat, los catálogos y las difusiones de WhatsApp juegan a favor de Kommo.",
+          "**Inmobiliario:** si el prospecto llega por anuncios y formularios y hay que nutrirlo durante semanas, GoHighLevel ordena el embudo; si la conversación por WhatsApp es la que mueve la visita, Kommo.",
+          "**Servicios profesionales y educación:** páginas, formularios, calendarios y secuencias de correo son el terreno natural de GoHighLevel.",
+          "**Restaurantes y hoteles:** depende de dónde se cierra la reserva. Si se cierra en el chat, Kommo; si se cierra en una página con calendario, GoHighLevel."
+        ] },
+        { "variant": "scene", "id": "escena-dos-casos",
+          "plate": { "id": "caso-retail-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Dos casos, dos plataformas",
+          "title": "Elegimos por proceso, no por marca.",
+          "metricId": "retail-conversiones",
+          "text": "Un retail multimarca vende por chat con Kommo y calificación de leads por IA. Una clínica dental en Monterrey agenda con GoHighLevel y logró {{metric:dental-citas|full}}.",
+          "links": [ { "label": "Ver el caso de la clínica dental", "href": "/casos/clinica-dental-monterrey/" }, { "label": "Ver el caso del retail multimarca", "href": "/casos/retail-multimarca-kommo/" } ],
+          "illus": "Imagen ilustrativa del sector" },
+        "En los dos casos, lo que movió el resultado no fue el logo del CRM, sino que cada conversación entró al sistema y alguien, o algo, le dio seguimiento a tiempo.",
+
+        { "variant": "h2", "id": "y-hubspot", "text": "¿Y HubSpot? Cuándo entra en la conversación", "rail": "¿Y HubSpot?" },
+        "HubSpot aparece seguido en esta comparación. Ofrece herramientas gratuitas y planes de pago por asiento, organizados en módulos (hubs) de marketing, ventas, servicio, contenido y datos.[^5] Suele tener sentido cuando tu empresa tiene ciclos de venta B2B más largos, varios equipos que trabajan sobre la misma base de datos y alguien que administre la herramienta.",
+        "Si tu venta es rápida y conversacional, o si lo que necesitas es agenda y embudos sin armar un stack completo, Kommo o GoHighLevel suelen ser una entrada más directa. Y si al revisar tu operación vemos que otra herramienta te conviene más, te lo decimos.",
+
+        { "variant": "h2", "id": "cinco-preguntas", "text": "5 preguntas para decidir", "rail": "5 preguntas" },
+        "Antes de pedir una demo, contesta estas preguntas con tu equipo. Casi siempre la respuesta aparece sola.",
+        { "variant": "steps", "items": [
+          { "title": "¿Dónde empieza tu venta?", "text": "Si empieza en un chat, inclínate por Kommo. Si empieza en un anuncio, un formulario o una página, GoHighLevel te da más piezas en una sola cuenta." },
+          { "title": "¿Cuántas personas van a usar el CRM?", "text": "Kommo cobra por usuario; GoHighLevel, por cuenta. Haz la cuenta con tu equipo de hoy y con el que piensas tener en un año." },
+          { "title": "¿Necesitas sitio, embudos y calendario, o ya los tienes?", "text": "Si ya tienes sitio y agenda que funcionan, quizá solo necesitas ordenar el chat. Si no tienes nada de eso, GoHighLevel lo junta." },
+          { "title": "¿Cuánto vas a automatizar con IA?", "text": "Revisa en qué plan están los agentes de IA y cómo se cobran: créditos por usuario en Kommo, cargos por uso en GoHighLevel." },
+          { "title": "¿Quién lo va a implementar y operar?", "text": "La herramienta es la mitad. La otra mitad es quien configura los embudos, conecta WhatsApp, escribe las reglas del agente y capacita a tu equipo, en tu idioma." }
+        ] },
+
+        { "variant": "h2", "id": "como-te-ayudamos", "text": "Cómo te ayudamos", "rail": "Cómo te ayudamos" },
+        "En Ingeniak trabajamos con las dos plataformas y te recomendamos una según tu proceso comercial, no según lo que nos convenga vender.",
+        { "variant": "ul", "items": [
+          "**Kommo:** somos partner oficial de Kommo en Latinoamérica. Te ayudamos a contratar las licencias que necesitas, implementamos el CRM, conectamos WhatsApp y ponemos agentes de IA que responden, califican y agendan.",
+          "**GoHighLevel:** lo implementamos completo en español: configuración de la cuenta, embudos, calendarios, mensajes, automatizaciones, agente de IA y capacitación de tu equipo. Es una herramienta que implementamos; nuestra única alianza oficial es con Kommo."
+        ] },
+        "En la Discovery Session revisamos cómo vendes hoy y te decimos cuál conviene, con qué plan y qué costos de terceros considerar. Nuestros proyectos empiezan {{price}}, y implementar un sistema toma de 7 a 30 días, según el alcance."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Todavía no sabes cuál te conviene? Lo vemos con tu proceso real, o escríbele a Kain y cuéntale cómo vendes hoy.",
+      "link": { "label": "CRM con IA", "href": "/servicios/crm-con-ia/" },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí la comparativa Kommo vs GoHighLevel y quiero ayuda para elegir." }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Kommo, GoHighLevel", "soft": "y lo que hacemos con cada uno." },
+      "faqIds": ["G05", "G04", "H04", "K01", "H03"]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo que implementa Kommo y GoHighLevel en Ingeniak, con agentes de IA conectados a cada uno. Lo actualizamos cuando cambian los planes o las funciones que citamos."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": { "text": "Fuentes y fecha de consulta" },
+      "lede": "Comparamos con lo que cada empresa publica en sus páginas oficiales, consultadas el 19 de octubre de 2026. Planes y funciones cambian: revisa la versión vigente antes de contratar.",
+      "items": [
+        { "title": "Pricing", "publisher": "Kommo", "href": "https://www.kommo.com/pricing/", "consultado": "2026-10-19", "nota": "Planes Base, Advanced, Pro y Enterprise; cobro por usuario en dólares con mínimo de seis meses; canales, Salesbot, agentes y créditos de IA, reservas y prueba de 14 días." },
+        { "title": "Cambia el idioma en Kommo", "publisher": "Centro de ayuda de Kommo", "href": "https://support.kommo.com/docs/es/change-your-language", "consultado": "2026-10-19", "nota": "Idiomas de la interfaz: inglés, portugués (Brasil), español (LATAM) y ruso." },
+        { "title": "HighLevel Pricing", "publisher": "HighLevel", "href": "https://www.gohighlevel.com/pricing", "consultado": "2026-10-19", "nota": "Planes por cuenta con subcuentas, usuarios y contactos ilimitados, funciones incluidas, cargos por uso, complemento de WhatsApp y prueba de 14 días." },
+        { "title": "The Internationalization of HighLevel", "publisher": "Centro de ayuda de HighLevel", "href": "https://help.gohighlevel.com/support/solutions/articles/155000000566-the-internationalization-of-highlevel-has-begun-", "consultado": "2026-10-19", "nota": "Español como idioma de la plataforma por subcuenta y por usuario, con respaldo en inglés." },
+        { "title": "Free Tools · pricing", "publisher": "HubSpot", "href": "https://www.hubspot.com/pricing/crm", "consultado": "2026-10-19", "nota": "Herramientas gratuitas y planes de pago por asiento por hub." }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}. Los nombres de los clientes están anonimizados."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "items": [
+        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con Ingeniak", "line": "Licencias, implementación y agentes de IA." },
+        { "href": "/gohighlevel/", "label": "Plataforma", "title": "GoHighLevel en español", "line": "Implementación completa para tu equipo." },
+        { "href": "/servicios/crm-con-ia/", "label": "Servicio", "title": "CRM con IA", "line": "Cada conversación en su etapa, sin capturas a mano." }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo)",
+      "eyebrow": "Tu caso",
+      "h2": { "text": "¿Kommo o GoHighLevel en tu caso?", "soft": "Lo decidimos en 30 minutos." },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí la comparativa Kommo vs GoHighLevel y quiero ayuda para elegir." },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

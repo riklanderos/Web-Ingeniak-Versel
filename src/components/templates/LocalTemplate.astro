@@ -1,0 +1,408 @@
+---
+// LocalTemplate · T-LOCAL (ESPEC-v2 §5.14, §12.2 R1/R3/R5/R7/R12, §8.5) · /agentes-ia-guadalajara/
+// Data-driven: recorre page.sections (src/data/sitemap.json) en su orden; el texto sale de src/content/paginas/<page.id>.json.
+// Ninguna sección pinta fondo (§3.11): la luz la ponen placas, auras (Aura.astro), la luz de base .tpl-glow y los nodos.
+//   hero           SharedTake + ImageSection hero (empresario tapatío, guadalajara-hero) + línea de confianza + IMAGEN ILUSTRATIVA
+//   que-es         Intertitle sobre la toma desenfocada + DefinitionBlock (párrafo citable del copy) + MetricRow
+//   ficha          Intertitle + EntitySheet local (NAP: mismos datos que el ProfessionalService del JSON-LD; sin horario ni geo)
+//   que-hacemos    Intertitle + ScriptList (6 filas; enlaces solo a páginas construidas)
+//   local-alcance  ImageSection mid (nosotros-manifiesto en espejo: Kain a la izquierda) + dos listas; móvil `split`
+//   casos          Still ×2 (texto dentro de la penumbra del fotograma, R7)
+//   mapa           Esquema ilustrativo de la zona metropolitana (SVG + rótulos HTML, sin iframe ni terceros) + enlace a Google Maps
+//   vktor          Intertitle + VktorRail (verbos oficiales + una línea por fase)
+//   faq            Intertitle + FAQAccordion (el FAQPage lo emite SEOHead con las mismas ids del copy)
+//   cta-final      Dawn (placa de sitemap.json)
+// Respaldos mientras las placas nuevas no se exportan (R5): portada → ind-finanzas-hero (persona + ciudad, sujeto a la
+// derecha); alcance → home-kain (Kain a la izquierda); cierre → cta-amanecer (Kain a la derecha, sin espejo).
+// JSON-LD (§8.5 T-LOCAL): WebPage + ProfessionalService (address, areaServed) + Service + BreadcrumbList + FAQPage los arma
+// SEOHead desde page.jsonLd; aquí se suma al mismo @id #localbusiness el teléfono y el enlace al mapa (peticiones.md).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/tpl/LocalTemplate.css';
+import ImageSection from '../cine/ImageSection.astro';
+import SharedTake from '../cine/SharedTake.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Dawn from '../cine/Dawn.astro';
+import { plateReady, resolvePlate } from '../cine/plate';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Metric from '../ui/Metric.astro';
+import Copy from '../ui/Copy.astro';
+import ScriptList from '../ui/ScriptList.astro';
+import Still from '../ui/Still.astro';
+import DefinitionBlock from '../ui/DefinitionBlock.astro';
+import EntitySheet from '../ui/EntitySheet.astro';
+import VktorRail from '../ui/VktorRail.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import Icon from '../ui/Icon.astro';
+import { annotateFigures, esc } from '../ui/ui-data';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
+import { waHref, isBuilt, SITE, type Page } from '../../lib/site';
+import { METRICS, type MetricId } from '../../lib/metrics';
+import { LOCAL_ID } from '../layout/jsonld';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C = copy?.sections ?? {};
+const dev = import.meta.env.DEV;
+
+/* ── utilidades ─────────────────────────────────────────────────────────── */
+const sec = (id: string) => (P.sections as any[]).find((s) => s.id === id);
+const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
+/** Tokens del copy → HTML; la puntuación que sigue a una cifra o a "30 minutos" entra en su nodo (SplitText no la deja
+ *  sola al principio de un renglón: ", con tu operación…"). El texto visible no cambia. */
+const ann = (s: string) => annotateFigures(s).replace(/<\/span>([,.;:!?…]+)/g, '$1</span>');
+function headHtml(h: any, lit?: string | null): string {
+  if (!h) return '';
+  let first = ann(h.text ?? '');
+  if (lit && (h.text ?? '').includes(lit)) {
+    const i = (h.text as string).lastIndexOf(lit);
+    first = ann(h.text.slice(0, i)) + `<span class="lit">${esc(lit)}</span>` + ann(h.text.slice(i + lit.length));
+  }
+  return h.soft ? `${first} <span class="soft">${ann(h.soft)}</span>` : first;
+}
+const wa = P.secondaryCta?.href ?? waHref(C.hero?.ctaSecondary?.waMessage ?? 'Hola Kain');
+const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
+const builtLinks = (list?: any[]) => (list ?? []).filter((l) => l?.href && isBuilt(l.href));
+const firstReady = (...ids: (string | null | undefined)[]) => ids.find((id) => !!id && plateReady(id)) ?? null;
+/** Placa de una sección (sitemap.json) + respaldo: el de sitemap.json o el primero exportado de la lista local (R5). */
+function plateFor(id: string, local: { plate: string; mirror?: boolean }[]) {
+  const pl = sec(id)?.plate;
+  if (!pl) return null;
+  const fb = pl.launchFallback ?? local.find((x) => plateReady(x.plate)) ?? null;
+  return { ...pl, fb };
+}
+
+/* ── 01 · portada ───────────────────────────────────────────────────────── */
+const hero = cp('hero');
+const heroPl = plateFor('hero', [{ plate: 'ind-finanzas-hero' }, { plate: 'discovery-hero' }]);
+const heroUsed = heroPl ? (plateReady(heroPl.id) ? heroPl.id : (typeof heroPl.fb === 'string' ? heroPl.fb : heroPl.fb?.plate) ?? null) : null;
+const heroLit: string | null = hero?.h1?.lit ?? null;
+const heroEyebrow: string = hero?.eyebrow ?? 'Agencia de IA · Guadalajara';
+const heroLede = ledeParts(hero?.lede, 20);
+const heroEyebrowDup = eyebrowRepeatsCrumbs(heroEyebrow, P.breadcrumbs);
+// Línea de confianza en grupos que no se parten por dentro ("Partner oficial de Kommo en LATAM" / "+73 sistemas en producción")
+const trustGroups: string[] = String(hero?.trust ?? "").split(/\s+·\s+/).filter(Boolean);
+
+/* ── 02 · qué es (párrafo citable del copy; el banco de FAQ no tiene esta pregunta) ── */
+const qe = cp('que-es');
+const qeRow: MetricId[] = (qe?.metricRow?.metricIds ?? []).filter((m: string) => (METRICS as any)[m]);
+
+/* ── 05 · local y con alcance ───────────────────────────────────────────── */
+const reach = cp('local-alcance');
+const reachPl = plateFor('local-alcance', [{ plate: 'home-kain', mirror: false }]);
+// Móvil `split`: las listas empiezan DEBAJO del piso iluminado bajo los pies de Kain (caja subject.m + el reflejo), nunca encima
+const reachSb: number = (() => {
+  if (!reachPl) return 1;
+  const r = resolvePlate(reachPl.id, { mirror: !!reachPl.mirror, fallbackPlate: reachPl.fb, where: '#local-alcance' });
+  const b = r.subject?.m?.[3];
+  return typeof b === 'number' && b > 0.5 ? Math.min(1, b + 0.07) : 1;
+})();
+
+/* ── mapa: esquema ilustrativo (no a escala). Posiciones relativas reales de los municipios de la zona metropolitana
+       (centro de cada municipio, norte arriba) en un lienzo de 1000 × 900; la oficina, en Tlajomulco al suroeste del centro. ── */
+const mapa = cp('mapa');
+const MAP_W = 1000, MAP_H = 900;
+const places = [
+  { id: 'zap', name: 'Zapopan', x: 364, y: 92, r: 150, side: 'r' },
+  { id: 'gdl', name: 'Guadalajara', x: 476, y: 214, r: 210, side: 'r' },
+  { id: 'tlq', name: 'Tlaquepaque', x: 580, y: 318, r: 130, side: 'r' },
+  { id: 'ton', name: 'Tonalá', x: 792, y: 368, r: 110, side: 'l' },
+  { id: 'tlj', name: 'Tlajomulco de Zúñiga', x: 222, y: 796, r: 120, side: 'r' },
+];
+const office = { x: 286, y: 528 };
+/** Rama del isotipo (horizontal → diagonal a 45° → horizontal) de la oficina a un municipio. */
+function branch(to: { x: number; y: number }) {
+  const dx = to.x - office.x, dy = to.y - office.y;
+  const d = Math.min(Math.abs(dx), Math.abs(dy)) * 0.9;
+  const sx = Math.sign(dx) || 1, sy = Math.sign(dy) || 1;
+  const run = (Math.abs(dx) - d) / 2;
+  const x1 = office.x + sx * run;
+  const x2 = x1 + sx * d;
+  return `M${office.x},${office.y} H${x1.toFixed(1)} L${x2.toFixed(1)},${(office.y + sy * d).toFixed(1)} V${to.y} H${to.x}`;
+}
+const mapsHref: string | null = (mapa?.links ?? []).find((l: any) => /google\.[a-z.]+\/maps/.test(l?.href ?? ''))?.href ?? null;
+
+/* ── resto ──────────────────────────────────────────────────────────────── */
+const ficha = cp('ficha');
+const qh = cp('que-hacemos');
+const casos = cp('casos');
+const vk = cp('vktor');
+const faq = cp('faq');
+const cta = cp('cta-final');
+const ctaPl = plateFor('cta-final', [{ plate: 'cta-amanecer', mirror: false }]);
+const order: string[] = (P.sections as any[]).filter((s) => s.status !== 'conditional').map((s) => s.id);
+if (dev) {
+  const known = new Set(['hero', 'que-es', 'ficha', 'que-hacemos', 'local-alcance', 'casos', 'mapa', 'vktor', 'faq', 'cta-final']);
+  for (const id of order) {
+    if (!known.has(id)) console.warn(`[LocalTemplate] ${P.id}: sección "${id}" sin componente en la plantilla`);
+    else if (!C[id]) console.warn(`[LocalTemplate] ${P.id}: falta el copy de la sección "${id}"`);
+  }
+}
+
+/* ── JSON-LD: teléfono y mapa del mismo nodo #localbusiness (los mismos datos de la ficha) ── */
+const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: SITE.phoneE164, ...(mapsHref ? { hasMap: mapsHref } : {}) }];
+---
+<BaseLayout page={page} lcpPlate={heroUsed ?? undefined} lcpSrcsetMax={2752} bodyClass="lc" jsonLd={localLd}>
+  {order.map((id) => {
+    /* ── 01 + 02 · portada y "qué hace Ingeniak en Guadalajara" en la misma toma ── */
+    if (id === 'hero' && hero && heroPl) return (
+      <SharedTake plate={heroPl.id} fallbackPlate={heroPl.fb} mirror={!!heroPl.mirror}>
+        <ImageSection
+          id="hero"
+          plate={heroPl.id}
+          fallbackPlate={heroPl.fb}
+          mirror={!!heroPl.mirror}
+          height="hero"
+          mobile="split"
+          priority
+          take
+          encendido
+          class="lc-hero tpl-hero"
+        >
+          <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
+          <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>
+          <h1 id="hero-t" class="t-display-2 lc-h1" data-split set:html={headHtml(hero.h1, heroLit)} />
+          {hero.lede && (
+            <p class="t-lede t-lede--2 lc-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
+          )}
+          <HeroCtas href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+            waHref={wa} waLabel={waLabel(hero)} />
+          {trustGroups.length > 0 && <p class="t-label trust lc-trust tpl-mhide">{trustGroups.map((g, i) => <><span class="tpl-nw"><Copy text={g} />{i < trustGroups.length - 1 && " ·"}</span>{i < trustGroups.length - 1 && " "}</>)}</p>}
+          {hero.illus && <p slot="over" class="chip-illus lc-illus tpl-mhide">{hero.illus}</p>}
+          {(heroLede.rest || hero.trust || hero.illus) && (
+            <Fragment slot="more">
+              {hero.illus && <p class="chip-illus tpl-illus-m tpl-dhide" aria-hidden="true">{hero.illus}</p>}
+              {heroLede.rest && <Copy as="p" class="t-lede t-lede--2 lc-hero__rest tpl-dhide" text={heroLede.rest} />}
+              {trustGroups.length > 0 && <p class="t-label trust lc-trust tpl-dhide">{trustGroups.map((g, i) => <><span class="tpl-nw"><Copy text={g} />{i < trustGroups.length - 1 && " ·"}</span>{i < trustGroups.length - 1 && " "}</>)}</p>}
+            </Fragment>
+          )}
+        </ImageSection>
+
+        {qe && order.includes('que-es') && (
+          <Intertitle id="que-es" rack aura="none" class="lc-def tpl-glow" labelledby={qe.definition?.text ? 'que-es-d-q' : 'que-es-t'}>
+            <Aura kind="ondas" x="40%" y="106%" o={1} only="d" />
+            {qe.definition?.text ? (
+              <DefinitionBlock heading={qe.definition.heading} text={qe.definition.text} label={qe.eyebrow ?? 'Definición'} headingLevel={2} id="que-es-d" />
+            ) : (
+              <p class="t-label t-label--cyan eyebrow" id="que-es-t"><span class="node" aria-hidden="true"></span>{qe.eyebrow}</p>
+            )}
+            {(qe.body ?? []).map((b: string) => <Copy as="p" class="t-lede t-lede--2 lc-def__body" text={b} data-reveal />)}
+            {qeRow.length > 0 && <Metric variant="row" ids={qeRow} heading={qe.metricRow?.title} link class="lc-def__row" />}
+          </Intertitle>
+        )}
+      </SharedTake>
+    );
+    if (id === 'que-es') return null; // va dentro de la toma compartida de la portada
+
+    /* ── 03 · ficha local (NAP) ── */
+    if (id === 'ficha' && ficha) return (
+      <Intertitle id="ficha" aura="none" layout="split" class="lc-nap tpl-glow">
+        <Aura kind="isotipo" x="20%" y="74%" w="min(48vw,720px)" o={0.75} only="d" />
+        <Fragment slot="head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ficha.eyebrow}</p>
+          <h2 id="ficha-t" class="t-h2" data-split set:html={headHtml(ficha.h2)} />
+          {ficha.lede && <Copy as="p" class="t-lede t-lede--2" text={ficha.lede} data-reveal />}
+        </Fragment>
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        <EntitySheet variant="local" rows={(ficha.entity ?? []).map((r: any) => (!r.href && /whatsapp|tel[eé]fono/i.test(r.term) ? { ...r, href: wa } : r))} title={false} class="lc-sheet" />
+      </Intertitle>
+    );
+
+    /* ── 04 · qué hacemos en Guadalajara ── */
+    if (id === 'que-hacemos' && qh?.items?.length) return (
+      <Intertitle id="que-hacemos" aura="none" class="lc-svc tpl-glow">
+        <Aura kind="isotipo" x="78%" y="16%" w="min(58vw,880px)" o={0.85} only="d" />
+        <div class="lc-head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{qh.eyebrow}</p>
+          <h2 id="que-hacemos-t" class="t-h2" data-split set:html={headHtml(qh.h2)} />
+          {qh.lede && <Copy as="p" class="t-lede t-lede--2" text={qh.lede} data-reveal />}
+        </div>
+        <Aura kind="ondas" x="40%" y="104%" o={1} only="d" />
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        <ScriptList rows={qh.items.map((r: any) => ({ title: r.title, line: r.line, href: r.href, metricId: (METRICS as any)[r.metricId] ? r.metricId : undefined }))} label={qh.eyebrow} class="lc-svc__list" />
+      </Intertitle>
+    );
+
+    /* ── 05 · local y con alcance (Kain a la izquierda, las dos listas en la penumbra derecha) ── */
+    if (id === 'local-alcance' && reach && reachPl) return (
+      <ImageSection id="local-alcance" plate={reachPl.id} fallbackPlate={reachPl.fb} mirror={!!reachPl.mirror} layout={reachPl.layout ?? 'subject-left'}
+        height="mid" align="start" mobile="split" alt="" class="lc-reach tpl-glow-m">
+        <span class="tpl-introglow" aria-hidden="true"></span>
+        <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{reach.eyebrow}</p>
+        <h2 id="local-alcance-t" class="t-h2" data-split set:html={headHtml(reach.h2)} />
+        {reach.lede && <Copy as="p" class="t-lede t-lede--2" text={reach.lede} />}
+        <Fragment slot="more">
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <div class="lc-cols" data-reveal="stagger" style={`--sb:${reachSb}`}>
+            {(reach.columns ?? []).map((col: any, i: number) => (
+              <div class:list={['lc-col', i === 0 ? 'lc-col--local' : 'lc-col--far']}>
+                <h3 class="lc-col__t"><span class="lc-col__node" aria-hidden="true"></span>{col.title}</h3>
+                <ul class="lc-col__list" role="list">
+                  {(col.items ?? []).map((t: string) => <li><Copy text={t} /></li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </Fragment>
+      </ImageSection>
+    );
+
+    /* ── 06 · casos (Still ×2) ── */
+    if (id === 'casos' && casos?.items?.length) return (
+      <section id="casos" class="lc-sec lc-cases tpl-glow" aria-labelledby="casos-t">
+        <Aura kind="isotipo" x="84%" y="14%" o={0.8} clip />
+        <div class="frame">
+          <div class="lc-head lc-sec__head">
+            <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{casos.eyebrow}</p>
+            <h2 id="casos-t" class="t-h2" data-split set:html={headHtml(casos.h2)} />
+            {casos.lede && <Copy as="p" class="t-lede t-lede--2" text={casos.lede} data-reveal />}
+          </div>
+        </div>
+        <div class="frame lc-cases__grid" data-reveal="stagger">
+          {casos.items.slice(0, 2).map((it: any) => {
+            const pg = (METRICS as any)[it.metricId]?.href as string | undefined;
+            const plate = it.plate ?? (pg?.includes('clinica-dental') ? 'caso-dental-hero' : pg?.includes('logistica') ? 'caso-logistica-hero' : undefined);
+            return <Still href={it.href} plate={plate} label={it.label} title={it.title} line={it.line} metricId={(METRICS as any)[it.metricId] ? it.metricId : undefined} variant="plana" />;
+          })}
+        </div>
+        {casos.note && <div class="frame"><Copy as="p" class="t-micro lc-cases__note" text={casos.note} data-reveal /></div>}
+      </section>
+    );
+
+    /* ── 07 · cómo llegar (esquema ilustrativo, sin terceros al cargar) ── */
+    if (id === 'mapa' && mapa) return (
+      <section id="mapa" class="lc-sec lc-map tpl-glow" aria-labelledby="mapa-t">
+        <div class="frame lc-map__frame">
+          <div class="lc-head lc-map__text">
+            <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{mapa.eyebrow}</p>
+            <h2 id="mapa-t" class="t-h2" data-split set:html={headHtml(mapa.h2)} />
+            {mapa.address && (
+              <address class="lc-addr" data-reveal>
+                <span class="lc-addr__k t-label"><Icon name="location" size={16} />Oficina</span>
+                <span class="lc-addr__v" data-allow-number>{mapa.address}</span>
+              </address>
+            )}
+            {mapa.lede && <Copy as="p" class="t-lede t-lede--2 lc-map__lede" text={mapa.lede} data-reveal />}
+            <div class="lc-map__ctas" data-reveal>
+              {builtLinks(mapa.links).map((l: any) => (
+                <a class="lnk" href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}<Icon name={l.external ? 'external' : 'arrow'} size={16} /></a>
+              ))}
+              <Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} />
+            </div>
+          </div>
+          <figure class="lc-plan" role="img" aria-label={mapa.map?.aria ?? 'Esquema de la zona metropolitana de Guadalajara'} data-reveal
+            style={`--mw:${MAP_W};--mh:${MAP_H}`}>
+            <svg class="lc-plan__svg" viewBox={`0 0 ${MAP_W} ${MAP_H}`} preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+              <defs>
+                <radialGradient id="lc-glow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0" stop-color="#455DFF" stop-opacity=".34" />
+                  <stop offset=".45" stop-color="#0A1F4C" stop-opacity=".42" />
+                  <stop offset="1" stop-color="#03040B" stop-opacity="0" />
+                </radialGradient>
+                <radialGradient id="lc-glow-o" cx="50%" cy="50%" r="50%">
+                  <stop offset="0" stop-color="#00E5FF" stop-opacity=".42" />
+                  <stop offset=".4" stop-color="#455DFF" stop-opacity=".16" />
+                  <stop offset="1" stop-color="#03040B" stop-opacity="0" />
+                </radialGradient>
+                <radialGradient id="lc-urb" cx="50%" cy="50%" r="50%">
+                  <stop offset="0" stop-color="#fff" stop-opacity=".95" />
+                  <stop offset=".55" stop-color="#fff" stop-opacity=".35" />
+                  <stop offset="1" stop-color="#fff" stop-opacity="0" />
+                </radialGradient>
+                <pattern id="lc-dots" width="13" height="13" patternUnits="userSpaceOnUse">
+                  <circle cx="3" cy="3" r="1.5" fill="#A8F3FF" />
+                  <circle cx="9.5" cy="9.5" r="1" fill="#455DFF" />
+                </pattern>
+                <mask id="lc-urban" maskUnits="userSpaceOnUse" x="0" y="0" width={MAP_W} height={MAP_H}>
+                  {places.map((p) => <ellipse cx={p.x} cy={p.y} rx={p.r * 1.3} ry={p.r * 1.05} fill="url(#lc-urb)" />)}
+                </mask>
+              </defs>
+              {/* manchas urbanas: luz y una trama de puntos (la ciudad de noche vista desde arriba), sin fronteras dibujadas */}
+              {places.map((p) => <ellipse cx={p.x} cy={p.y} rx={p.r * 1.25} ry={p.r} fill="url(#lc-glow)" />)}
+              <rect x="0" y="0" width={MAP_W} height={MAP_H} fill="url(#lc-dots)" mask="url(#lc-urban)" class="lc-plan__lights" />
+              <circle cx={office.x} cy={office.y} r="230" fill="url(#lc-glow-o)" class="lc-plan__halo" />
+              {/* retícula de orientación */}
+              <g class="lc-plan__grid">
+                {[150, 300, 450, 600, 750].map((y) => <line x1="40" x2="960" y1={y} y2={y} />)}
+                {[200, 400, 600, 800].map((x) => <line y1="30" y2="870" x1={x} x2={x} />)}
+              </g>
+              {/* anillos de alcance alrededor de la oficina */}
+              <g class="lc-plan__rings">
+                {[90, 180, 300].map((r) => <circle cx={office.x} cy={office.y} r={r} />)}
+              </g>
+              {/* ramas del isotipo: de la oficina a cada municipio */}
+              <g class="lc-plan__branches">
+                {places.map((p, i) => <path d={branch(p)} pathLength="1" style={`--i:${i}`} />)}
+              </g>
+              {places.map((p) => <rect class="lc-plan__node" x={p.x - 5} y={p.y - 5} width="10" height="10" rx="2" />)}
+              <rect class="lc-plan__office" x={office.x - 9} y={office.y - 9} width="18" height="18" rx="3" />
+              <rect class="lc-plan__pulse" x={office.x - 9} y={office.y - 9} width="18" height="18" rx="3" />
+              {/* norte */}
+              <g class="lc-plan__north" transform="translate(930 70)"><path d="M0 26 L0 -18 M-8 -8 L0 -18 L8 -8" /></g>
+            </svg>
+            <span class="lc-plan__labels" aria-hidden="true">
+              {places.map((p) => (
+                <span class:list={['lc-plan__lbl', `lc-plan__lbl--${p.side}`]} style={`--x:${p.x / MAP_W};--y:${p.y / MAP_H}`}>{p.name}</span>
+              ))}
+              <span class="lc-plan__lbl lc-plan__lbl--office" style={`--x:${office.x / MAP_W};--y:${office.y / MAP_H}`}>{mapa.map?.office ?? 'Ingeniak'}</span>
+              <span class="lc-plan__n" style={`--x:${930 / MAP_W};--y:${118 / MAP_H}`}>N</span>
+            </span>
+          </figure>
+          {mapa.map?.note && <p class="t-micro lc-plan__note" data-reveal>{mapa.map.note}</p>}
+        </div>
+      </section>
+    );
+
+    /* ── 08 · metodología VKTOR™ ── */
+    if (id === 'vktor' && vk) return (
+      <Intertitle id="vktor" aura="none" class="lc-vk tpl-glow">
+        <Aura kind="ondas" x="38%" y="58%" o={1} only="d" />
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        <div class="lc-head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{vk.eyebrow}</p>
+          <h2 id="vktor-t" class="t-h2" data-split set:html={headHtml(vk.h2)} />
+          {vk.lede && <Copy as="p" class="t-lede t-lede--2" text={vk.lede} data-reveal />}
+        </div>
+        <VktorRail variant="phases" lines={(vk.phases ?? []).map((f: any) => f.line ?? '')} href={vk.links?.[0]?.href ?? '/metodologia/'} linkLabel={vk.links?.[0]?.label} class="lc-vk__rail" />
+      </Intertitle>
+    );
+
+    /* ── 09 · preguntas frecuentes ── */
+    if (id === 'faq' && faq?.faqIds?.length) return (
+      <Intertitle id="faq" aura="ondas" layout="split" class="lc-faq tpl-glow">
+        <Fragment slot="head">
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{faq.eyebrow}</p>
+          <h2 id="faq-t" class="t-h2" data-split set:html={headHtml(faq.h2)} />
+          {faq.footer && <Copy as="p" class="t-lede t-lede--2 lc-faq__foot" text={faq.footer} data-reveal />}
+          {faq.footer && <div class="lc-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} /></div>}
+        </Fragment>
+        <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
+        <FAQAccordion ids={faq.faqIds} glass id="faq-list" label={faq.eyebrow} />
+      </Intertitle>
+    );
+
+    /* ── 10 · cierre ── */
+    if (id === 'cta-final' && cta) return (
+      <Dawn id="cta-final" plate={ctaPl?.id ?? 'cta-amanecer'} mirror={!!ctaPl?.mirror} fallbackPlate={ctaPl?.fb} layout={ctaPl?.layout} class="lc-dawn tpl-glow-m">
+        {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
+        <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
+        {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
+        <div class="ctas">
+          {cta.micro ? (
+            <div class="cta-p">
+              <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+              <Copy as="p" class="t-micro btn-micro" text={cta.micro} data-allow-number />
+            </div>
+          ) : (
+            <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+          )}
+          <Btn variant="ghost" href={wa} label={waLabel(cta)} />
+        </div>
+      </Dawn>
+    );
+    return null;
+  })}
+</BaseLayout>

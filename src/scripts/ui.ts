@@ -466,15 +466,26 @@ function initPrimaryRule() {
   root.dataset.primaryIo = 'ui';                     // nav (persist.ts) cede la regla a ui y no duplica el observador
   const inter = new Set<HTMLElement>();
   const watched = new WeakSet<Element>();
+  // Un primario en pantalla que todavía está entrando (opacidad < .5 por su revelado) se vuelve a medir cada 250 ms hasta
+  // 3 s después del último evento: con la página quieta, el CTA del encabezado no se queda azul junto al primario que
+  // termina de aparecer (cierre Dawn, portada con la CPU cargada).
+  let retry = 0, tries = 0;
   const evaluate = () => {
-    let on = false;
-    for (const el of inter) if (seen(el)) { on = true; break; }
+    let on = false, fading = false;
+    for (const el of inter) {
+      if (seen(el)) { on = true; break; }
+      if (!el.closest('[inert],[data-primary-hidden]')) fading = true;
+    }
     if (on !== root.hasAttribute('data-primary-visible')) root.toggleAttribute('data-primary-visible', on);
+    clearTimeout(retry);
+    if (!on && fading && tries < 12) { tries++; retry = window.setTimeout(schedule, 250); }
   };
   let raf = 0;
   const schedule = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; evaluate(); }); };
+  const kick = () => { tries = 0; schedule(); };
   const io = new IntersectionObserver((entries) => {
     for (const en of entries) en.isIntersecting ? inter.add(en.target as HTMLElement) : inter.delete(en.target as HTMLElement);
+    tries = 0;
     evaluate();
   });
   const scan = () => $$('[data-primary]').forEach((p) => {
@@ -483,9 +494,9 @@ function initPrimaryRule() {
   });
   scan();
   // Mientras haya un primario en pantalla, su opacidad puede cambiar con el scroll (tomas compartidas, salidas con parallax).
-  addEventListener('scroll', () => { if (inter.size) schedule(); }, { passive: true });
-  document.addEventListener('cine:primary-change', schedule);
-  addEventListener('load', () => { scan(); schedule(); }, { once: true });
+  addEventListener('scroll', () => { if (inter.size) kick(); }, { passive: true });
+  document.addEventListener('cine:primary-change', kick);
+  addEventListener('load', () => { scan(); kick(); }, { once: true });
 }
 
 /* ───────────── Atribución R10 ───────────── */
@@ -643,16 +654,26 @@ function initToc() {
     const links = $$<HTMLAnchorElement>('[data-toc-link]', toc);
     const details = toc.querySelector('details');
     if (details && matchMedia('(max-width: 1023px)').matches) details.open = false;
-    const map = new Map<Element, HTMLAnchorElement>();
-    links.forEach((l) => { const t = document.getElementById(decodeURIComponent(l.hash.slice(1))); if (t) map.set(t, l); });
-    if (!map.size) continue;
-    const io = new IntersectionObserver((entries) => {
-      for (const en of entries) if (en.isIntersecting) {
-        links.forEach((l) => l.removeAttribute('aria-current'));
-        map.get(en.target)?.setAttribute('aria-current', 'true');
-      }
-    }, { rootMargin: '-20% 0px -70% 0px' });
-    map.forEach((_, t) => io.observe(t));
+    // Renglón activo por POSICIÓN: la última sección cuyo inicio ya pasó el 32 % superior de la pantalla. Un observador de
+    // intersección no marcaba nada cuando la sección se saltaba (ancla, Lenis inmediato, scroll rápido) y dejaba activa una
+    // anterior. Se mide una vez por cuadro con scroll, cambio de tamaño o de ancla.
+    const targets = links.map((l) => document.getElementById(decodeURIComponent(l.hash.slice(1))));
+    if (!targets.some(Boolean)) continue;
+    let queued = false, last = -2;
+    const mark = () => {
+      queued = false;
+      let cur = -1;
+      const line = innerHeight * 0.32;
+      targets.forEach((t, i) => { if (t && t.getBoundingClientRect().top < line) cur = i; });
+      if (cur === last) return;
+      last = cur;
+      links.forEach((l, i) => (i === cur ? l.setAttribute('aria-current', 'true') : l.removeAttribute('aria-current')));
+    };
+    const queue = () => { if (!queued) { queued = true; requestAnimationFrame(mark); } };
+    addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', queue, { passive: true });
+    addEventListener('hashchange', queue);
+    mark();
     if (details && matchMedia('(max-width: 1023px)').matches) links.forEach((l) => l.addEventListener('click', () => (details.open = false)));
   }
 }

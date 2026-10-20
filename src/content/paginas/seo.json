@@ -1,0 +1,205 @@
+{
+  "pageId": "seo",
+  "url": "/servicios/seo/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "FAQ N04 (¿Qué es la visibilidad en IA o GEO?) sigue en validar: true en faq.json: no sale en el acordeón ni en el FAQPage hasta que se apruebe. #definicion usa un texto propio que dice lo mismo que N04 de D (sin depender del banco).",
+    "FAQ DISTINTA DE D · G14: agrega 'medido hasta la venta' y la cifra como token (horeca-roas, 'sostenido').",
+    "FAQ DISTINTA DE D · G08: ya no promete '60 a 90 días'; dice el rango confirmado de implementación (7 a 30 días, según el alcance). En SEO los resultados tardan más que la implementación: la página no promete plazos de posiciones ni de tráfico.",
+    "FAQ DISTINTA DE D · G07: agrega por qué no hay paquetes cerrados.",
+    "VALIDACIÓN · fuente de #definicion (D pide 'fuente: Vercel'): Vercel y MERJ, 'The rise of the AI crawler', 17 de diciembre de 2024 (https://vercel.com/blog/the-rise-of-the-ai-crawler). Encontraron que los rastreadores de OpenAI, Anthropic, Meta, ByteDance y Perplexity no ejecutan JavaScript. Revisar que siga vigente antes de publicar; si cambia, se ajusta la oración.",
+    "PREGUNTA AL CLIENTE · ¿podemos contar como ejemplo propio que el sitio anterior de Ingeniak era una aplicación de JavaScript sin H1 en el HTML inicial (A-sitio-actual)? Sería una prueba honesta del problema; hoy la página no lo menciona.",
+    "PREGUNTA AL CLIENTE · #como-medimos: confirma los cuatro indicadores del brief y que el reporte es mensual. ¿Usan alguna herramienta de posiciones además de Google Search Console (por ejemplo Semrush o Ahrefs)? No se nombra ninguna.",
+    "PREGUNTA AL CLIENTE · #que-hacemos: ¿Ingeniak administra el Perfil de Empresa en Google de sus clientes o solo lo deja alineado? ¿El servicio incluye redactar artículos cada mes (cuántos depende del alcance)? El texto no promete un número de piezas.",
+    "CAMBIO DE TEXTO · hero.ui (tarjeta de 'respuesta de un motor de IA' con la cita a la marca, ESPEC §5.2.1) y como-medimos.ui (reporte con los cuatro indicadores, sin números): textos de la UI registrada con SIMULACIÓN / VISTA DEMO. La plantilla de servicio todavía no los pinta; no cuentan para las palabras mínimas.",
+    "CAMBIO DE TEXTO · cta-final sin 'micro' del brief (repetiría la microcopia del botón primario).",
+    "DATO PENDIENTE · senales usa la placa de respaldo dolor-operacion mientras no exista dolor-anuncios; el pie de foto funciona con las dos."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (seo-hero: Kain bajo un haz de luz junto a una tarjeta de cristal en blanco) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Servicio · Atraer",
+      "h1": { "text": "SEO y visibilidad en IA:", "soft": "que te encuentre Google y te citen los asistentes", "lit": "visibilidad" },
+      "lede": "Que te encuentren en Google y te citen ChatGPT, Gemini, Perplexity y Claude.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de SEO y quiero que mi empresa aparezca en Google y en ChatGPT."
+      },
+      "ui": {
+        "_nota": "Tarjeta de 'respuesta de un motor de IA' registrada sobre la tarjeta de cristal de la placa (ancla 'tarjeta'): la pregunta, la respuesta que se escribe sola y el chip de la fuente citada que se enciende al final. SIMULACIÓN y data-nosnippet; no es una respuesta real de ningún asistente.",
+        "label": "SIMULACIÓN",
+        "engine": "Asistente de IA",
+        "question": "¿Qué clínica cerca de mí atiende por WhatsApp en la noche?",
+        "answer": "Tu marca aparece entre las opciones, con un resumen tomado de tu propia página.",
+        "cite": "Fuente citada: tu sitio web"
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio, citable; N04 sigue en validar) + párrafo con la fuente de Vercel",
+      "rail": "Qué es",
+      "eyebrow": "Visibilidad en IA",
+      "definition": {
+        "heading": "¿Qué es la visibilidad en IA o GEO?",
+        "text": "La visibilidad en IA, o GEO, es lograr que asistentes como ChatGPT, Gemini, Perplexity y Claude, y los resúmenes con IA de Google, encuentren tu empresa, entiendan qué haces y la citen como fuente. Se trabaja con contenido claro en HTML, datos estructurados que coinciden con el texto visible y perfiles consistentes en toda la web.",
+        "_nota": "Texto propio (40–60 palabras), equivalente a N04 de D, que sigue en validar: true."
+      },
+      "body": [
+        "Un análisis de Vercel publicado en diciembre de 2024 encontró que los rastreadores de OpenAI, Anthropic y Perplexity leen el HTML de una página, pero no ejecutan su JavaScript. Si tu sitio arma el texto con JavaScript después de cargar, para esos asistentes tu página llega casi vacía.",
+        "Por eso el SEO de hoy empieza en el código: el texto tiene que llegar escrito en el HTML, no aparecer después en el navegador."
+      ]
+    },
+    "senales": {
+      "_componente": "ImageSection mid (persona en luz ámbar, tone=dolor, móvil split; placa dolor-anuncios con respaldo dolor-operacion) + lista de señales (dolor ámbar → salida cian)",
+      "rail": "Señales",
+      "eyebrow": "Señales de que lo necesitas",
+      "h2": { "text": "Te buscan,", "soft": "pero encuentran a otro." },
+      "lede": "Si reconoces dos o más, alguien está contestando por ti la pregunta que tu cliente hizo.",
+      "fig": { "label": "Le preguntaron por tu sector. No te nombró." },
+      "items": [
+        {
+          "pain": "No apareces cuando te buscan.",
+          "painLine": "Escriben tu servicio y tu ciudad en Google, y lo primero que sale es tu competencia.",
+          "fix": "Páginas pensadas para lo que buscan tus clientes, una por tema."
+        },
+        {
+          "pain": "Los asistentes de IA recomiendan a tu competencia.",
+          "painLine": "Le preguntan a ChatGPT quién hace lo que tú haces, y tu nombre no sale.",
+          "fix": "Contenido y datos estructurados que un asistente puede citar."
+        },
+        {
+          "pain": "Publicas sin estrategia.",
+          "painLine": "Artículos sueltos, sin enlaces entre sí y sin saber si alguien los lee.",
+          "fix": "Un plan de temas medido, conectado a tus servicios."
+        },
+        {
+          "pain": "Tus datos no coinciden de un sitio a otro.",
+          "painLine": "Horario, teléfono o dirección distintos en tu web, tu ficha de Google y tus redes.",
+          "fix": "Una sola versión de tu empresa en todas partes."
+        }
+      ]
+    },
+    "que-hacemos": {
+      "_componente": "ScriptList (6 filas) sobre aura del isotipo",
+      "rail": "Qué hacemos",
+      "eyebrow": "Qué hacemos",
+      "h2": { "text": "Seis frentes,", "soft": "para Google y para los asistentes." },
+      "lede": "Lo que hace que un buscador te muestre y lo que hace que un asistente te cite es, casi siempre, el mismo trabajo bien hecho.",
+      "items": [
+        { "n": "01", "title": "SEO técnico y HTML estático", "line": "Que cada página cargue rápido y llegue con su texto escrito en el HTML: títulos, encabezados, mapa del sitio y redirecciones en orden.", "href": "/servicios/paginas-web/" },
+        { "n": "02", "title": "Arquitectura y enlazado", "line": "Una página por tema y por intención de búsqueda, enlazadas entre sí para que Google entienda qué es lo importante." },
+        { "n": "03", "title": "Contenido con respuestas citables", "line": "Cada página abre con una respuesta corta y clara, de las que un asistente puede tomar y atribuirle a tu marca." },
+        { "n": "04", "title": "Datos estructurados", "line": "Tu organización, tus servicios, tus preguntas frecuentes y tus migas de pan en JSON-LD, siempre iguales al texto visible." },
+        { "n": "05", "title": "llms.txt y robots para bots de IA", "line": "Un resumen de tu empresa para los modelos de lenguaje y permisos claros para que sus rastreadores lean lo que sí quieres." },
+        { "n": "06", "title": "Ficha de Google y perfiles consistentes", "line": "Tu Perfil de Empresa en Google y tus perfiles externos con el mismo nombre, dirección, teléfono y descripción." }
+      ],
+      "body": [
+        "Si tu negocio depende de una ciudad, sumamos páginas locales, como la que tenemos para agentes de IA en Guadalajara: el mismo servicio, explicado para quien lo busca ahí."
+      ],
+      "links": [{ "label": "Ve nuestra página local de Guadalajara", "href": "/agentes-ia-guadalajara/" }]
+    },
+    "como-funciona": {
+      "_componente": "riel-servicios a sangre con 5 nodos registrados sobre los nodos de la placa (respaldo: SystemFlow sobre aura)",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": { "text": "De la pregunta a la conversación,", "soft": "sin perder el rastro." },
+      "lede": "Aparecer es la mitad. La otra mitad es que esa visita termine hablando contigo y quede registrada.",
+      "nodes": [
+        { "label": "La búsqueda", "line": "Alguien le pregunta a Google o a un asistente de IA por lo que tú vendes.", "confirmed": true },
+        { "label": "Contenido citable", "line": "Una respuesta clara y datos estructurados que coinciden con el texto.", "confirmed": true },
+        { "label": "Tu página", "line": "Carga rápido, se entiende en segundos y pide una sola acción.", "confirmed": true },
+        { "label": "La conversación", "line": "El clic termina en WhatsApp, en un formulario o con Kain en el chat de tu web.", "logos": ["whatsapp"], "confirmed": true },
+        { "label": "Tu CRM: Kommo o GoHighLevel", "line": "El lead entra marcado como orgánico, con la página por la que llegó.", "logos": ["kommo", "gohighlevel"], "confirmed": true }
+      ],
+      "note": "Sin ese último tramo, el SEO solo trae visitas. Por eso lo conectamos con tu CRM desde el primer día."
+    },
+    "como-medimos": {
+      "_componente": "ImageSection mid (regreso al set: seo-hero con push hacia la superficie, 1.35 → 1.6) + reporte demo registrado (VISTA DEMO)",
+      "rail": "Cómo lo medimos",
+      "eyebrow": "Cómo lo medimos",
+      "h2": { "text": "Cuatro indicadores,", "soft": "un reporte cada mes." },
+      "lede": "No te prometemos posiciones ni cifras de tráfico. Te mostramos cada mes cómo se mueven estos cuatro indicadores, con la fuente de cada uno.",
+      "items": [
+        "Páginas indexadas: cuántas de tus páginas ya están en Google.",
+        "Posiciones por palabra clave, en los temas que de verdad te traen clientes.",
+        "Clics e impresiones, tal como los reporta Google Search Console.",
+        "Menciones de tu marca en respuestas de ChatGPT, Gemini, Perplexity y Claude, con un muestreo manual cada mes."
+      ],
+      "slogan": "Y la pregunta que importa: cuántas de esas visitas terminaron en una conversación.",
+      "ui": {
+        "_nota": "Reporte demo registrado sobre la tarjeta de cristal al acercarse la cámara (distinta UI que la portada, R5): cuatro filas con su indicador y su fuente, sin números. VISTA DEMO y data-nosnippet.",
+        "label": "VISTA DEMO",
+        "title": "Reporte mensual",
+        "rows": [
+          { "k": "Páginas indexadas", "src": "Search Console" },
+          { "k": "Posiciones", "src": "Por palabra clave" },
+          { "k": "Clics", "src": "Search Console" },
+          { "k": "Menciones en IA", "src": "Muestreo manual" }
+        ]
+      }
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sobre metodologia-hero a sangre si la placa está lista)",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": { "text": "Así trabajamos tu visibilidad,", "soft": "mes con mes." },
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Revisamos cómo te ven hoy Google y los asistentes de IA: qué páginas existen, cuáles están indexadas y qué responden cuando preguntan por tu sector." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Definimos los temas, la estructura del sitio y las preguntas que tu empresa debe responder mejor que nadie." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Corregimos lo técnico, publicamos contenido, datos estructurados y llms.txt, y alineamos tu ficha de Google y tus perfiles." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Publicamos y actualizamos contigo, con la voz de tu marca y los datos que solo tu equipo conoce." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Cada mes revisamos los indicadores y decidimos qué reforzar, qué actualizar y qué tema sigue." }
+      ],
+      "links": [{ "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }]
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": { "text": "{{Price}}." },
+      "lede": "El SEO no se cobra por palabra clave. Lo que mueve el precio es esto:",
+      "items": [
+        { "title": "Canales", "line": "Dónde quieres aparecer: la búsqueda de Google, su mapa local, los asistentes de IA o todos." },
+        { "title": "Integraciones", "line": "Tu sitio actual y lo que se puede corregir en él, más tu CRM y tu analítica para medir hasta la conversación." },
+        { "title": "Volumen", "line": "Cuántos servicios, ciudades y temas hay que cubrir, y cuánto contenido nuevo hace falta cada mes." }
+      ],
+      "remate": "El plan lo armamos en tu Discovery Session, a partir de lo que ya tienes publicado y de lo que tus clientes buscan."
+    },
+    "faq": {
+      "_componente": "FAQAccordion (N04 sale cuando se apruebe)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas sobre SEO", "soft": "y visibilidad en IA." },
+      "faqIds": ["N04", "G14", "G08", "G07"],
+      "footer": "¿Quieres saber qué dice hoy un asistente de tu empresa? Pregúntale a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": { "text": "Aparecer es el principio:", "soft": "luego hay que convencer." },
+      "items": [
+        { "href": "/servicios/paginas-web/", "label": "Servicio", "title": "Páginas web de alta conversión", "line": "La página a la que llega quien te encontró, hecha para que te escriba." },
+        { "href": "/servicios/branding/", "label": "Servicio", "title": "Branding y contenido", "line": "La voz y los temas que hacen que tu contenido se reconozca y se cite." },
+        { "href": "/blog/", "label": "Recursos", "title": "Blog", "line": "Guías sobre agentes de IA, CRM y automatización, escritas para responder preguntas reales." }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo)",
+      "rail": "Cierre",
+      "eyebrow": "Lo revisamos juntos",
+      "h2": { "text": "¿Qué responde ChatGPT", "soft": "cuando preguntan por tu sector?" },
+      "lede": "En la Discovery Session revisamos qué encuentra Google de tu empresa, qué dicen los asistentes y por dónde conviene empezar.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de SEO y quiero que mi empresa aparezca en Google y en ChatGPT."
+      }
+    }
+  }
+}

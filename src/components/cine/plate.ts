@@ -3,6 +3,7 @@
 //   resolvePlate(key, { mirror, layout, fallbackPlate, srcsetMax, mobileMax }) → Resolved
 //   anchorStyle(name, { side? })  → style="…" para colocar UI propia en un ancla de la placa de su sección
 //   AURA_ISOTIPO, AURA_ONDAS      → auras ya desenfocadas (sin filter en vivo)
+//   safeEdge(r)                   → borde de la zona segura de texto del lado del texto (también --safe-edge-d en r.vars)
 // Reglas: si la placa no está en plates.json o sus archivos aún no se exportan, se usa `fallbackPlate`
 // (respaldo de lanzamiento) y, si tampoco existe, un aura del isotipo de cristal con la misma penumbra y retícula.
 import { existsSync } from 'node:fs';
@@ -50,6 +51,7 @@ export interface Resolved {
   cut: string | null;         // recorte con alfa (-cut-1920.webp), mismas dimensiones que la placa
   vars: string;               // variables CSS del escenario registrado
   mnull: string;              // anclas sin coordenadas móviles (data-mnull)
+  safeEdge: number | null;    // borde de la zona segura de texto del lado del texto (fracción de la placa; también --safe-edge-d)
 }
 
 const PUB = join(process.cwd(), 'public');
@@ -161,11 +163,13 @@ export function resolvePlate(key: string, o: ResolveOpts = {}): Resolved {
   // Caja del sujeto (las máscaras laterales del ultra ancho nunca lo tocan, §3.5) y su franja en la placa vertical.
   const sd = fbox(p?.subject?.d, mirror), sm = fbox(p?.subject?.m, mirror);
   const subjVars = (sd ? `--sx0:${sd[0]};--sx1:${sd[2]};--sy0:${sd[1]};--sy1:${sd[3]};` : '') + (sm ? `--sx0-m:${sm[0]};--sx1-m:${sm[2]};--sy0-m:${sm[1]};--sy1-m:${sm[3]};` : '');
+  // Borde de la zona segura de texto (safe.d) del lado del texto, ya espejado: --safe-edge-d (ImageSection safeCol).
+  const edge = safeEdgeOf(p?.safe?.d, mirror, layout);
   const vars =
     `--ar-d:${d.ar};--fx-d:${d.fx};--fy-d:${d.fy};--ar-m:${m.ar};--fx-m:${m.fx};--fy-m:${m.fy};` +
     `--fade-from:${d.fadeFrom};--subj-top-m:${m.subjTop};--cx-d:${cxd[0]};--cy-d:${cxd[1]};--cx-m:${cxm[0]};--cy-m:${cxm[1]};` +
     `--lx-d:${r4(leakD[0])};--ly-d:${r4(leakD[1])};--lx-m:${r4(leakM[0])};--ly-m:${r4(leakM[1])};--grade:${p ? (p.grade ?? 0.28) : 0};` +
-    `--scr-w:${pecho.scrW ?? 0.03};` + subjVars + anchorVars;
+    `--scr-w:${pecho.scrW ?? 0.03};` + (edge !== null ? `--safe-edge-d:${edge};` : '') + subjVars + anchorVars;
 
   return {
     requested: key, id, aura, usedFallback, mirror, layout,
@@ -173,8 +177,28 @@ export function resolvePlate(key: string, o: ResolveOpts = {}): Resolved {
     d, m, anchors,
     subject: { d: fbox(p?.subject?.d, mirror), m: fbox(p?.subject?.m, mirror) },
     leak: { d: leakD, m: leakM }, grade: p?.grade ?? 0.28,
-    srcset, rack, still, cut, vars, mnull: mnull.join(' '),
+    srcset, rack, still, cut, vars, mnull: mnull.join(' '), safeEdge: edge,
   };
+}
+
+/** Borde de la zona segura de texto de escritorio (safe.d de plates.json) del lado del TEXTO, en fracción del ancho de la
+ *  placa y ya espejado: con el sujeto a la derecha (o al centro), el borde derecho de la zona que nace en el margen
+ *  izquierdo; con el sujeto a la izquierda, el borde izquierdo de la zona que llega al margen derecho. Sin una zona pegada
+ *  a ese margen se usa la primera (mismo criterio que hubKit.safeEdge). null si la placa no trae zonas. */
+function safeEdgeOf(zones: any, mirror: boolean, layout: Layout): number | null {
+  const list: Box[] = (Array.isArray(zones) ? zones : []).filter((z: any) => Array.isArray(z) && z.length >= 4).map((z: Box) => fbox(z, mirror)!);
+  if (!list.length) return null;
+  if (layout === 'subject-left') {
+    const right = list.filter((z) => z[2] >= 0.88);
+    return r4(Math.min(...(right.length ? right : [list[0]]).map((z) => z[0])));
+  }
+  const left = list.filter((z) => z[0] <= 0.12);
+  return r4(Math.max(...(left.length ? left : [list[0]]).map((z) => z[2])));
+}
+
+/** Borde de la zona segura de texto de una placa ya resuelta (ver safeEdgeOf); .5 si no hay dato. */
+export function safeEdge(r: Pick<Resolved, 'safeEdge'> | null | undefined): number {
+  return r?.safeEdge ?? 0.5;
 }
 
 /** Estilo para colocar UI propia en un ancla con nombre de la placa de su sección (desktop y vertical).

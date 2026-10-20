@@ -1,5 +1,7 @@
 ---
 // IndustryTemplate · T-INDUSTRY (ESPEC-v2 §5.3, §12.2 R2/R3/R4/R5/R7/R11) · ejemplo /industrias/salud/
+// Misma plantilla para las 8 industrias (salud es el modelo aprobado): todo sale de la placa usada (o su launchFallback),
+// del copy y de sitemap.json; nada depende del sector salvo los guiones locales de ChatSim (respaldo mientras falte su JSON).
 // Data-driven: recorre page.sections (src/data/sitemap.json) en su orden y pinta cada id con su componente;
 // el texto sale de src/content/paginas/<page.id>.json (área copy). Secciones sin copy o con `_omitir` no se pintan.
 //   hero          SharedTake + ImageSection hero (persona/Kain del sector) + chip de prueba anclado a la tableta + IMAGEN ILUSTRATIVA
@@ -91,6 +93,9 @@ const rHero = resolveSec('hero', { srcsetMax: 2752, mobileMax: 1536 });
 const lcpPlate = rHero?.id ?? undefined;
 // Una sola .lit por página (§2.3): la del copy; si el copy no la marca, la última palabra de la primera voz del H1.
 const heroLit: string | null = hero?.h1?.lit ?? (hero?.h1?.text ? (hero.h1.text as string).trim().split(/\s+/).pop()!.replace(/[.,:;]$/, '') : null);
+// H1 largos (D: industrial 63 caracteres, HoReCa 59, belleza 55): un paso menos de tamaño para que el bloque completo
+// (crumbs, H1, lede y CTA) quepa en el primer pantallazo de 1280 × 720 a 1920 × 1080 sin invadir el lado del sujeto.
+const heroH1Long = `${hero?.h1?.text ?? ''} ${hero?.h1?.soft ?? ''}`.trim().length > 48;
 const heroEyebrow: string = hero?.eyebrow ?? `Industria · ${(P.breadcrumbs as any[])?.at(-1)?.name ?? ''}`;
 // R3 · intro móvil: lede ≤ 20 palabras (el resto baja a `more`); la etiqueta repite los crumbs → solo en móvil
 const heroLede = ledeParts(hero?.lede, 20);
@@ -100,7 +105,7 @@ const heroEyebrowDup = eyebrowRepeatsCrumbs(heroEyebrow, P.breadcrumbs);
 // con una línea guía (§3.8); nunca sobre cara ni torso. Posición: anchors.chip de la placa (plates.json); si la placa aún
 // no lo trae, el ancla `fig`.
 const chipMetric: MetricId | null = hero?.chip?.metricId && (METRICS as any)[hero.chip.metricId] ? hero.chip.metricId : null;
-let chip: null | { x: number; y: number; side: 'right' | 'left'; tx: number; ty: number; target: string } = null;
+let chip: null | { x: number; y: number; side: 'right' | 'left'; tx: number; ty: number; target: string; leader: boolean } = null;
 if (chipMetric && rHero && !rHero.aura) {
   const rawChip = rHero.id ? getPlate(rHero.id)?.anchors?.chip?.d : null;
   const fig = pointAnchor(rHero, 'fig');
@@ -110,7 +115,11 @@ if (chipMetric && rHero && !rHero.aura) {
     : fig ? { d: fig, side: 'left' } : null;
   const tb = boxAnchor(rHero, ['tableta', 'telefono', 'pantalla']);
   const tp = tb ? ([tb.d[0] + tb.d[2] * 0.5, tb.d[1] + tb.d[3] * 0.62] as [number, number]) : pointAnchor(rHero, 'mano');
-  if (at && tp) chip = { x: at.d[0], y: at.d[1], side: at.side, tx: tp[0], ty: tp[1], target: tb?.name ?? 'mano' };
+  // La línea guía nunca cruza el cuerpo del sujeto: si el punto de origen (sin tableta/teléfono, la mano) queda del otro
+  // lado del pecho respecto al chip (HoReCa: mano izquierda, chip a la derecha), el chip va solo, sin línea.
+  const cx = pointAnchor(rHero, 'pecho')?.[0];
+  const crosses = !!(!tb && at && tp && typeof cx === 'number' && (tp[0] - cx) * (at.d[0] - cx) < 0);
+  if (at && tp) chip = { x: at.d[0], y: at.d[1], side: at.side, tx: tp[0], ty: tp[1], target: tb?.name ?? 'mano', leader: !crosses };
 }
 
 /* ── 02 · definición (texto del banco de FAQ; si la pregunta aún está en "validar", el texto de la página igual se muestra
@@ -147,8 +156,67 @@ const ksSubjBottomM: number = (() => {
   return typeof b === 'number' && b > 0.5 && b <= 1 ? b : 1;
 })();
 const ksLayout = rKs?.layout ?? ksPlate?.layout ?? 'subject-left';
-const ksCol = ksLayout === 'subject-left' && ksSafeX > 0.55 ? 'ind-kain--c8' : '';
-const chatScript: string = ks?.chat?.script ?? (Array.isArray(ks?.chat?.scripts) ? ks.chat.scripts[0] : null) ?? 'default';
+// Columna del texto según la placa realmente usada: el borde derecho del panel (con el zoom del pin crece hacia el texto) y
+// el inicio de la zona segura. Salud (panel .43, safe .49) queda en la columna por defecto (7 / span 6); inmobiliario (panel
+// .48) en la 8 / span 5; HoReCa (panel .52) y el respaldo home-sistema-2-atender (safe .56) en la 9 / span 4.
+const ksPanelR: number = panel ? panel.d[0] + panel.d[2] : 0;
+const ksCol = ksLayout !== 'subject-left' ? '' : ksSafeX > 0.55 || ksPanelR > 0.5 ? 'ind-kain--c8' : ksPanelR > 0.47 ? 'ind-kain--c7' : '';
+// Titulares de escena largos (> 36 caracteres; salud tiene 31): un paso menos para que el bloque quepa mientras está fijado
+const ksLong = `${ks?.h2?.text ?? ''} ${ks?.h2?.soft ?? ''}`.trim().length > 36;
+// Guion del sector (R2: uno propio por industria). Manda src/data/chats/<guion>.json (área copy); mientras el archivo no
+// exista, el respaldo local de abajo (los guiones que el área copy dejó en peticiones.md) evita que ChatSim caiga al guion
+// de salud (limpieza dental) en otra industria. Si no hay ninguno de los dos, el guion general (default), nunca el de salud.
+const chatFiles = import.meta.glob('../../data/chats/*.json', { eager: true, import: 'default' }) as Record<string, any>;
+const hasChatFile = (k: string) => Object.keys(chatFiles).some((x) => x.endsWith(`/${k}.json`));
+const LOCAL_CHATS: Record<string, any[]> = {
+  nutricion: [
+    { who: 'cliente', text: 'Hola, tengo mi consulta de seguimiento mañana a las 9:00, pero no voy a poder llegar. ¿La puedo mover?', delay: 900, time: '7:52 p. m.' },
+    { who: 'kain', text: '¡Hola! Claro. Para tu seguimiento tengo el jueves a las 8:30 o el viernes a las 18:00. ¿Cuál te acomoda?', delay: 1100 },
+    { who: 'cliente', text: 'El viernes. Oye, mientras, ¿puedo cenar fruta o mejor no?', delay: 1600 },
+    { who: 'kain', text: 'Eso te lo tiene que indicar tu nutrióloga; yo no puedo darte recomendaciones de alimentación. Si quieres, le dejo tu pregunta para que la revise contigo el viernes.', delay: 1200 },
+    { who: 'cliente', text: 'Sí, porfa. Soy Ana.', delay: 1300 },
+    { who: 'kain', text: 'Listo, Ana: tu seguimiento quedó el viernes a las 18:00, con tu pregunta en la nota para tu nutrióloga. El jueves te mando un recordatorio.', delay: 1000, event: 'Cita reagendada en tu CRM · horario anterior liberado' },
+    { who: 'cliente', text: 'Gracias.', delay: 1100 },
+    { who: 'kain', text: 'A ti, Ana. Que tengas buena noche.', delay: 800 },
+  ],
+  finanzas: [
+    { who: 'cliente', text: 'Hola, vi su anuncio. Me interesa un crédito para mi negocio.', delay: 900, time: '9:26 p. m.' },
+    { who: 'kain', text: '¡Hola! Con gusto. Para pasarte con el asesor indicado, ¿cuánto tiempo lleva operando tu negocio?', delay: 1100 },
+    { who: 'cliente', text: 'Tres años. Es una cafetería.', delay: 1400 },
+    { who: 'kain', text: 'Gracias. ¿Para qué usarías el crédito: equipo, capital de trabajo u otra cosa?', delay: 1000 },
+    { who: 'cliente', text: 'Para abrir otra sucursal. ¿Me lo van a aprobar?', delay: 1500 },
+    { who: 'kain', text: 'Eso lo decide el área de crédito con tu solicitud; yo no puedo prometerte una aprobación ni darte una tasa. Última pregunta: ¿facturas a nombre del negocio?', delay: 1200 },
+    { who: 'cliente', text: 'Sí. Soy Ricardo.', delay: 1300 },
+    { who: 'kain', text: 'Gracias, Ricardo. Te agendo una llamada con un asesor mañana a las 10:00 o a las 16:30. ¿Cuál prefieres?', delay: 1100 },
+    { who: 'cliente', text: 'A las 10.', delay: 1100 },
+    { who: 'kain', text: 'Listo: llamada mañana a las 10:00. Te dejo aquí la lista de documentos para que los tengas a la mano.', delay: 1000, event: 'Prospecto calificado · llamada agendada en tu CRM' },
+  ],
+  industrial: [
+    { who: 'cliente', text: 'Buenas tardes. ¿Me ayudas con el estatus del pedido 4512? Lo necesitamos en planta esta semana.', delay: 900, time: '4:37 p. m.' },
+    { who: 'kain', text: '¡Hola! Soy Kain, de servicio a clientes. Ya lo revisé: el pedido 4512 salió de almacén hoy a las 13:20 y va en ruta. Entrega estimada: el jueves por la mañana.', delay: 1100, event: 'Estatus consultado en tu ERP' },
+    { who: 'cliente', text: 'Perfecto. ¿Me mandas la guía y la factura?', delay: 1500 },
+    { who: 'kain', text: 'Claro. Aquí tienes la guía de rastreo y la factura en PDF del pedido 4512.', delay: 1000, event: 'Documentos enviados · conversación registrada en tu CRM' },
+    { who: 'cliente', text: 'Una más: ¿cuántas piezas les quedan de ese código? Quiero pedir otras doscientas.', delay: 1600 },
+    { who: 'kain', text: 'Las existencias no las puedo compartir por aquí. Le paso tu solicitud a tu ejecutivo de cuenta, con el código y la cantidad, para que te confirme y te cotice.', delay: 1200, event: 'Tarea creada para tu ejecutivo · cotización' },
+    { who: 'cliente', text: 'Va, gracias.', delay: 1100 },
+    { who: 'kain', text: 'A ti. En cuanto se entregue el pedido, te aviso por este chat.', delay: 900 },
+  ],
+  horeca: [
+    { who: 'cliente', text: 'Hola, ¿tienen mesa para cuatro este viernes a las 9 de la noche?', delay: 900, time: '8:46 p. m.' },
+    { who: 'kain', text: '¡Hola! Soy Kain, del restaurante. El viernes a las 21:00 tengo mesa para cuatro en la terraza o en el salón. ¿Cuál prefieres?', delay: 1100 },
+    { who: 'cliente', text: 'Terraza. Es el cumpleaños de mi esposa, ¿le pueden preparar algo?', delay: 1600 },
+    { who: 'kain', text: '¡Qué gusto! Lo anoto para el equipo. Lo del postre te lo confirma el gerente mañana antes de las 13:00, porque depende de la cocina. ¿A nombre de quién dejo la reserva?', delay: 1200 },
+    { who: 'cliente', text: 'De Daniel.', delay: 1100 },
+    { who: 'kain', text: 'Listo, Daniel: terraza para cuatro, viernes a las 21:00, con nota de cumpleaños. El jueves te escribo para confirmar.', delay: 1000, event: 'Reserva registrada en tu CRM · origen: campaña de Meta' },
+    { who: 'cliente', text: 'Perfecto, gracias.', delay: 1300 },
+    { who: 'kain', text: 'Gracias a ti, Daniel. Nos vemos el viernes.', delay: 800 },
+  ],
+};
+const wantedScript: string = ks?.chat?.script ?? (Array.isArray(ks?.chat?.scripts) ? ks.chat.scripts[0] : null) ?? 'default';
+const localChat = !hasChatFile(wantedScript) ? LOCAL_CHATS[wantedScript] : undefined;
+const chatScript: string = hasChatFile(wantedScript) || localChat || wantedScript === 'salud' ? wantedScript : 'default';
+const chatScripts: Record<string, any[]> | undefined = localChat ? { [chatScript]: localChat } : undefined;
+if (dev && localChat) console.warn(`[IndustryTemplate] ${P.id}: falta src/data/chats/${wantedScript}.json → guion local de la plantilla (peticiones.md)`);
 
 /* ── 06 · cifras ────────────────────────────────────────────────────────── */
 const cif = cp('cifras');
@@ -165,8 +233,11 @@ for (const id of cifIds) stillFor[id] = caseHero((METRICS as any)[id].href) ?? h
 const svc = cp('servicios');
 // Fotogramas distintos (R7/R13): la portada del destino si ya existe; si no, un suplente con el mismo tema que no se repita
 // en la fila (GoHighLevel → la estación Organizar); Kommo sin placa propia → aura con el sello oficial (Still de ui).
-const STAND_IN: Record<string, string> = { 'gohighlevel-hero': 'home-sistema-3-organizar', 'crm-ia-hero': 'home-sistema-3-organizar', 'n8n-hero': 'home-sistema-4-automatizar' };
-const svcTaken = new Set<string>([heroPlate?.id, sec('kain-sector')?.plate?.id].filter(Boolean));
+// Las placas que la página YA pinta cuentan como tomadas: la planeada y la realmente usada (respaldo de lanzamiento). Sin
+// ind-<sector>-kain-sector, la escena 05 usa home-sistema-2-atender en espejo: el still de "Agentes de IA para WhatsApp"
+// (cuya portada es esa misma placa) pasa a home-kain (Kain con su teléfono de cristal flotante), nunca la misma toma dos veces.
+const STAND_IN: Record<string, string> = { 'gohighlevel-hero': 'home-sistema-3-organizar', 'crm-ia-hero': 'home-sistema-3-organizar', 'n8n-hero': 'home-sistema-4-automatizar', 'home-sistema-2-atender': 'home-kain' };
+const svcTaken = new Set<string>([heroPlate?.id, rHero?.id, sec('kain-sector')?.plate?.id, rKs?.id, sec('cta-final')?.plate?.id].filter(Boolean) as string[]);
 const svcItems = (svc?.items ?? []).slice(0, 3).map((it: any) => {
   const own = caseHero(it.href);
   const cand = [own, own ? STAND_IN[own] : undefined].find((id) => id && plateReady(id) && !svcTaken.has(id));
@@ -208,7 +279,7 @@ if (dev) {
           {/* Crumbs en escritorio; la etiqueta "Industria · Salud" los repite → solo en móvil, donde los crumbs se ocultan (R3) */}
           <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
           <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>
-          <h1 id="hero-t" class="t-display-2" data-split set:html={headHtml(hero.h1, heroLit)} />
+          <h1 id="hero-t" class:list={['t-display-2', heroH1Long && 'ind-h1--long']} data-split set:html={headHtml(hero.h1, heroLit)} />
           {hero.lede && (
             <p class="t-lede t-lede--2"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
           )}
@@ -238,10 +309,10 @@ if (dev) {
           )}
           {chip && (
             <Fragment slot="anchors">
-              <span class="leader ind-leader" data-anchor={`${chip.target} chip`} data-lock aria-hidden="true"
-                style={`--ax:${chip.tx};--ay:${chip.ty};--bx:${chip.x};--by:${chip.y};`}></span>
-              <span class="anchor leader-node ind-leader-node" data-anchor={chip.target} data-lock aria-hidden="true"
-                style={`--ax:${chip.tx};--ay:${chip.ty};`}></span>
+              {chip.leader && <span class="leader ind-leader" data-anchor={`${chip.target} chip`} data-lock aria-hidden="true"
+                style={`--ax:${chip.tx};--ay:${chip.ty};--bx:${chip.x};--by:${chip.y};`}></span>}
+              {chip.leader && <span class="anchor leader-node ind-leader-node" data-anchor={chip.target} data-lock aria-hidden="true"
+                style={`--ax:${chip.tx};--ay:${chip.ty};`}></span>}
               <div class:list={['ind-proof', `ind-proof--${chip.side}`]} data-anchor="chip" style={`--ax:${chip.x};--ay:${chip.y};`}>
                 <Metric id={chipMetric!} variant="chip" link class="anchor ind-proof__chip" />
               </div>
@@ -311,13 +382,13 @@ if (dev) {
           mobile={ksPlate.mobile === 'below' ? 'below' : 'split'}
           push={{ anchor: panel?.name ?? 'pantalla', to: 1.6 }}
           pin="+=100%"
-          class={['ind-kain', ksCol].filter(Boolean).join(' ')}
+          class={['ind-kain', ksCol, ksLong && 'ind-kain--long'].filter(Boolean).join(' ')}
         >
           <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ks.eyebrow}</p>
           <h2 id="kain-sector-t" class="t-h2" data-split set:html={headHtml(ks.h2)} />
           {ks.lede && <Copy as="p" class="t-lede t-lede--2" text={ks.lede} />}
           <div slot="more" class="ind-kain__more" style={`--sb:${ksSubjBottomM}`}>
-            {!panelInPlateM && <div class="only-m ind-kain__chat"><ChatSim mode="inline" script={chatScript} aura={false} note={false} id="ks-chat-m" /></div>}
+            {!panelInPlateM && <div class="only-m ind-kain__chat"><ChatSim mode="inline" script={chatScript} scripts={chatScripts} aura={false} note={false} id="ks-chat-m" /></div>}
             {ks.limite && (
               <p class="ind-limit"><span class="node" aria-hidden="true"></span><Copy text={ks.limite} /></p>
             )}
@@ -328,7 +399,7 @@ if (dev) {
             <div slot="anchors" class:list={['anchor anchor--panel ind-panel', !panelInPlateM && 'ind-panel--mini']} data-anchor={panel.name} data-lock
               data-m={panel.m ? undefined : 'none'} style={panelStyle}>
               {/* Escritorio: el guion avanza con el scroll de la escena fijada (una burbuja por tramo); móvil: miniatura */}
-              <ChatSim mode="registered" script={chatScript} note={false} control="external" id="ks-chat" />
+              <ChatSim mode="registered" script={chatScript} scripts={chatScripts} note={false} control="external" id="ks-chat" />
             </div>
           )}
         </ImageSection>
@@ -447,3 +518,15 @@ if (dev) {
     return null;
   })}
 </BaseLayout>
+<script>
+  // Regla de un azul (respaldo local; pedido en peticiones.md · "Construcción · industrias (plantilla)"): ui.ts vuelve a medir
+  // el primario visible en cada evento de scroll, pero la entrada del cierre (Dawn) termina DESPUÉS del último scroll → el CTA
+  // del encabezado se quedaba azul junto al primario del amanecer. Cuando el scroll se asienta, se piden re-mediciones
+  // mientras dura la entrada (≈ 3 s). Sin efecto si nada cambió (ui.ts solo alterna el atributo cuando hace falta).
+  let settle: number[] = [];
+  const ping = () => document.dispatchEvent(new CustomEvent('cine:primary-change', { detail: { source: 'industria' } }));
+  addEventListener('scroll', () => {
+    settle.forEach((t) => clearTimeout(t));
+    settle = [180, 520, 950, 1500, 2200, 3000].map((ms) => window.setTimeout(ping, ms));
+  }, { passive: true });
+</script>

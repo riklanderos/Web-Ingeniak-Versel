@@ -184,6 +184,15 @@ const stations = [
       <p class="t-lede t-lede--2">Misma penumbra, misma retícula y el mismo lado del sujeto. En desarrollo, la consola avisa qué placa falta.</p>
     </ImageSection>
 
+    {/* safeCol + blend="light" + palabra fantasma con posición (peticiones · Construcción): la columna termina en el borde de
+        la zona segura de la placa (blog-hero: x .40) y el velo se funde arriba y abajo sobre la luz de la página. */}
+    <ImageSection id="zona-segura" plate="blog-hero" fallbackPlate={HH} height="mid" safeCol blend="light" class="tpl-glow"
+      ghost={{ text: 'GUÍA', mode: 'outline-fill', x: 0.84, y: 0.13, size: 9 }}>
+      <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>SAFECOL · BLEND LIGHT · GHOST X/Y</p>
+      <h2 id="zona-segura-t" class="t-h2" data-split>Guías de automatización e inteligencia artificial <span class="soft">para decidir sin humo.</span></h2>
+      <p class="t-lede t-lede--2">La columna de texto nunca entra a la parte iluminada de la placa, a cualquier ancho y también con su respaldo o en espejo.</p>
+    </ImageSection>
+
     {/* Escena fijada (§5.3 industria 05): pin +100 % en escritorio, --cam 1 → 1.6 hacia el centro del panel, una burbuja por tramo */}
     <ImageSection id="fijada" plate="ind-salud-kain-sector" height="mid" mobile="split" pin="+=100%" push={{ anchor: 'pantalla', to: 1.6 }}>
       <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>ESCENA FIJADA · KAIN EN TU CLÍNICA</p>

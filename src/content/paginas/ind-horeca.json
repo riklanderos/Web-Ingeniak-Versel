@@ -1,0 +1,154 @@
+{
+  "pageId": "ind-horeca",
+  "url": "/industrias/horeca/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "APROBACIÓN DE PREGUNTAS · R2 pide al menos cuatro preguntas propias por industria y el banco no tiene ninguna de HoReCa. Propuesta en materiales/v2/build/peticiones.md (Construcción · industrias · copy): R01 '¿El agente puede tomar reservas?', R02 '¿Cómo sé cuántas reservas trajo una campaña?', R03 '¿Sirve para hoteles y para restaurantes?', R04 '¿Pueden ayudarme a que mis clientes regresen?'. Al aprobarse, entran a faq.json y a faq.faqIds de esta página, delante de las compartidas.",
+    "CAMBIO DE TEXTO · faq: se suma W02 (aprobada: el agente registra cada conversación en tu CRM) porque N02 sigue en validar: true y el acordeón se quedaba con tres preguntas. Orden: G14, N02, G02, W02, G07. Mientras N02 no se apruebe, se muestran G14, G02, W02 y G07.",
+    "CAMBIO DE AFIRMACIÓN · portada: el brief decía 'Mesas y habitaciones llenas con campañas que se miden en reservas'. 'Llenas' es una promesa que no podemos sostener; el lede abre con 'Campañas que se miden en reservas, no en alcance.'",
+    "CAMBIO DE TEXTO · automatizamos: D pedía cinco tareas y R2 pide seis por industria. La sexta ('Grupos y eventos, a tu equipo') es el paso a una persona con la conversación completa, que ya está aprobado en N01/W02 como comportamiento de Kain.",
+    "CAMBIO DE TEXTO · cifras: HoReCa tiene una sola cifra confirmada (horeca-roas). Debajo, en 'Más resultados', va ecom-cpl con su sector escrito (E-commerce · CDMX) como otra cifra de adquisición; el lede lo dice para que no se lea como dato de HoReCa.",
+    "CHAT · BLOQUEA #kain-sector: falta src/data/chats/horeca.json (src/data es compartido; el guion listo para pegar está en peticiones.md → Construcción · industrias · copy: ind-industrial, ind-retail, ind-horeca). Mientras no exista, ChatSim cae al guion de salud (limpieza dental) y la escena no coincide con su lede. El guion propuesto (SIMULACIÓN): mesa para cuatro el viernes a las 21:00, terraza, nota de cumpleaños, lo especial lo confirma el gerente y 'Reserva registrada en tu CRM · origen: campaña de Meta'.",
+    "PREGUNTA AL CLIENTE · ¿Con qué sistemas de reservas se integra Kain (OpenTable, SevenRooms, el motor de reservas o el PMS de un hotel) o se usa el calendario del CRM? Hoy la página dice 'tu sistema de reservas' sin marcas, y en hoteles Kain deja la solicitud para que recepción la confirme.",
+    "PREGUNTA AL CLIENTE · El cliente del caso HoReCa, ¿es restaurante, hotel o ambos? metrics.ts dice 'HoReCa' y la ficha del caso, 'hoteles y restaurantes'; la página usa esa última forma.",
+    "PREGUNTA AL CLIENTE · En el caso, ¿las campañas fueron solo en Meta Ads (lo confirmado en la ficha) o también en Google o TikTok? La página nombra Meta, Google y TikTok solo como servicio general (G14), nunca como parte del caso.",
+    "PREGUNTA AL CLIENTE · ¿Hacen campañas de reactivación a la base de clientes (fechas especiales, temporada, menú nuevo)? Aparecen en la jornada (10:00) y en la fila 05 como capacidad; si no las ofrecen, se cambian."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (ind-horeca-hero: Kain con mandil de mesero en el lobby de un hotel boutique; la gerente desenfocada al fondo) + chip anclado (horeca-roas) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Industria · HoReCa",
+      "h1": { "text": "IA, paid media", "soft": "y automatización para restaurantes y hoteles", "lit": "IA" },
+      "lede": "Campañas que se miden en reservas, no en alcance. Kain contesta y reserva por WhatsApp en plena hora pico, y cada reserva queda en tu CRM con su origen.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo un restaurante u hotel y quiero más reservas medidas por campaña."
+      },
+      "chip": { "metricId": "horeca-roas", "context": "Hoteles y restaurantes · paid media" },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio de la página)",
+      "rail": "Cómo ayuda",
+      "eyebrow": "IA en restaurantes y hoteles",
+      "definition": {
+        "heading": "¿Cómo ayuda la IA a un restaurante o a un hotel?",
+        "text": "Conecta tus campañas, tus reservas y tus conversaciones. Un agente de IA contesta por WhatsApp, Instagram y Facebook Messenger, ofrece los horarios o las fechas disponibles y deja cada reserva en tu CRM con la campaña o el canal del que llegó. Así sabes qué anuncio llenó qué mesa o qué habitación, y nadie se queda esperando respuesta.",
+        "_nota": "Texto de la página (58 palabras), armado con G02, G14 y W02 (aprobadas), la implementación confirmada del caso (atribución multicanal) y los canales confirmados (RESPUESTAS-CLIENTE #19)."
+      },
+      "body": [
+        "Sirve igual para un restaurante, una cafetería o un hotel boutique: cambian el guion, los horarios y quién confirma lo especial, como grupos, eventos o peticiones de cocina. Además de la IA, llevamos tus campañas en Meta, Google y TikTok, para que la pauta y las reservas se lean en el mismo lugar."
+      ]
+    },
+    "dolores": {
+      "_componente": "DayTimeline vertical (aguja con scrub, sin pin) sobre la toma desenfocada que vira a ámbar o cian por tramo",
+      "rail": "La jornada",
+      "eyebrow": "Un día de servicio",
+      "h2": { "text": "Un día de servicio,", "soft": "visto desde el WhatsApp." },
+      "lede": "En ámbar, lo que se pierde cuando el teléfono suena en plena hora pico y nadie sabe de dónde vienen las reservas; en cian, lo que cambia con el sistema.",
+      "entries": [
+        {
+          "time": "10:00",
+          "pain": "Revisas la semana: hay clientes que vinieron una vez y no regresaron, porque nadie les volvió a escribir.",
+          "fix": "Tu base de clientes vive en el CRM y recibe, en las fechas que tú eliges, los mensajes que tu equipo aprueba."
+        },
+        {
+          "time": "12:00",
+          "pain": "Nadie sabe cuántas de las reservas del fin de semana vinieron de la campaña que pagaste.",
+          "fix": "Cada reserva quedó registrada con su origen: anuncio, red social, búsqueda o cliente que regresa."
+        },
+        {
+          "time": "14:30",
+          "pain": "Hora de comida: el WhatsApp acumula preguntas por menú, horarios y estacionamiento mientras el equipo atiende mesas.",
+          "fix": "Kain contesta con tu información y tu equipo se queda en el piso, con los comensales."
+        },
+        {
+          "time": "20:45",
+          "pain": "Hora pico: alguien pide mesa para seis y nadie contesta a tiempo. Reserva en otro lado.",
+          "fix": "Kain revisa la disponibilidad, ofrece opciones y confirma la reserva en el mismo chat."
+        },
+        {
+          "time": "23:10",
+          "pain": "Un huésped pregunta por una habitación para el puente mientras la recepción hace un check-in.",
+          "fix": "Kain le ofrece las fechas disponibles y deja la solicitud registrada para que recepción la confirme a primera hora."
+        }
+      ]
+    },
+    "automatizamos": {
+      "_componente": "ScriptList (6 filas)",
+      "rail": "Qué automatizamos",
+      "eyebrow": "Qué automatizamos",
+      "h2": { "text": "De la pauta a la mesa,", "soft": "seis tareas conectadas." },
+      "items": [
+        { "n": "01", "title": "Creativos dinámicos y audiencias predictivas", "line": "Campañas en Meta, Google y TikTok que muestran el platillo, la fecha o la habitación correcta a quien tiene más probabilidad de reservar." },
+        { "n": "02", "title": "Atribución multicanal", "line": "Sabes qué anuncio, qué red o qué búsqueda terminó en una mesa ocupada o una habitación reservada." },
+        { "n": "03", "title": "Agente que responde y reserva", "line": "Kain contesta por WhatsApp, Instagram y Messenger, ofrece horarios y confirma lo que tu sistema de reservas permite." },
+        { "n": "04", "title": "Confirmación y recordatorios", "line": "Un mensaje antes de la fecha para confirmar o mover la reserva; si alguien cancela, el lugar vuelve a estar disponible." },
+        { "n": "05", "title": "Clientes que regresan", "line": "Cada comensal o huésped queda en tu CRM con su historial, listo para invitarlo de nuevo en la fecha correcta." },
+        { "n": "06", "title": "Grupos y eventos, a tu equipo", "line": "Cumpleaños, grupos grandes y peticiones de cocina pasan a una persona con la conversación completa." }
+      ]
+    },
+    "kain-sector": {
+      "_componente": "ImageSection mid (ind-horeca-kain-sector; respaldo de lanzamiento home-sistema-2-atender en espejo) + ChatSim registrado (guion horeca). Fijada +100 % en escritorio",
+      "rail": "Kain en tu servicio",
+      "eyebrow": "Kain en tu restaurante u hotel",
+      "h2": { "text": "Mesa para cuatro,", "soft": "reservada en hora pico." },
+      "lede": "Mientras tu equipo atiende el salón, alguien pide mesa por WhatsApp. Kain revisa la disponibilidad, ofrece terraza o salón, confirma y deja la reserva en tu CRM con la campaña de la que llegó.",
+      "chat": { "mode": "registered", "script": "horeca" },
+      "limite": "Kain solo confirma lo que tu sistema de reservas permite. Si no hay lugar, ofrece otro horario; lo especial, como un pastel, un grupo grande o un evento, lo confirma una persona de tu equipo.",
+      "note": "Ejemplo ilustrativo: la conversación, los nombres y las horas no son datos de un caso."
+    },
+    "cifras": {
+      "_componente": "Montage (1 fila con enlace al caso) + 'Más resultados' transversal (ecom-cpl, con su sector)",
+      "rail": "Resultados",
+      "eyebrow": "Resultados",
+      "h2": { "text": "Un retorno sostenido,", "soft": "no un mes con suerte." },
+      "lede": "La cifra de HoReCa es de un cliente de hoteles y restaurantes con campañas de paid media en Meta Ads. Debajo, otra cifra de adquisición, de un e-commerce, con su sector escrito.",
+      "rows": [
+        { "metricId": "horeca-roas", "context": "HoReCa · hoteles y restaurantes · paid media en Meta Ads", "href": "/casos/horeca-roas/", "linkLabel": "Ver el caso" }
+      ],
+      "transversal": ["ecom-cpl"],
+      "sourceNote": true,
+      "links": [{ "label": "Lee el caso HoReCa", "href": "/casos/horeca-roas/" }]
+    },
+    "servicios": {
+      "_componente": "Still ×3",
+      "rail": "Servicios",
+      "eyebrow": "Servicios recomendados",
+      "h2": { "text": "Atraer, atender", "soft": "y hacer que regresen." },
+      "items": [
+        { "href": "/servicios/paid-media/", "label": "Atraer", "title": "Paid media medido por reservas", "line": "Campañas que se juzgan por reservas y ventas, no por clics." },
+        { "href": "/servicios/agentes-ia-whatsapp/", "label": "Atender", "title": "Agentes de IA para WhatsApp", "line": "Kain contesta, reserva y confirma mientras tu equipo atiende." },
+        { "href": "/servicios/crm-con-ia/", "label": "Organizar", "title": "CRM con IA", "line": "Tus comensales y huéspedes, con su historial y su siguiente visita." }
+      ]
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas de restaurantes", "soft": "y hoteles." },
+      "faqIds": ["G14", "N02", "G02", "W02", "G07"],
+      "_nota": "N02 sigue en validar: true (no se publica hasta que el cliente la apruebe). W02 se suma para que el acordeón tenga cuatro preguntas. Cuando existan R01–R04 (propuestas en peticiones.md), van primero y W02 puede salir.",
+      "footer": "¿Tu duda es sobre tu sistema de reservas o tus campañas? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Antes del próximo fin de semana",
+      "h2": { "text": "¿Cuántas reservas trae cada peso de tu pauta?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "En la Discovery Session revisamos tus campañas, tus canales de reserva y tu base de clientes, y te decimos qué medir y qué automatizar primero.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo un restaurante u hotel y quiero más reservas medidas por campaña."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

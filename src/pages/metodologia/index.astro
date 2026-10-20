@@ -1,0 +1,8 @@
+---
+// /metodologia/ · T-METHOD (ESPEC-v2 §5.7). Texto: src/content/paginas/metodologia.json; datos: sitemap.json.
+import MethodTemplate from '../../components/templates/MethodTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+const page = getPage('/metodologia/');
+const copy = getCopy(page.id);
+---
+<MethodTemplate page={page} copy={copy} />

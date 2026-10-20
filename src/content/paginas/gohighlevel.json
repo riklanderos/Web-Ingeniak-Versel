@@ -1,0 +1,264 @@
+{
+  "_schema": "T-PLATFORM (PlatformTemplate.astro). Mismo esquema que T-SERVICE (_ESQUEMA.md §2–§6) más: hero.chip (chip de cristal anclado a la placa, en lugar del sello: GoHighLevel nunca es partner), hero.legal (nota de marca bajo los CTA), hero.ui.event (tarjeta de cita registrada junto a la casilla del calendario), definicion.junta (lo que GoHighLevel junta en un solo lugar: items {title, line}), que-hacemos.chat.lines (guion de ChatSim en línea), calendario (escena con steps {n, title, line}, proof y ui.agenda registrada) y fit.links. Los campos con _ no se imprimen.",
+  "pageId": "gohighlevel",
+  "url": "/gohighlevel/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "APROBACIÓN · FAQ H04 '¿Ingeniak es partner de GoHighLevel?' está en 'validar' en el banco: no se publica (ni en el acordeón ni en el FAQPage) hasta que la apruebes. Hoy la página muestra cinco preguntas.",
+    "PREGUNTA AL CLIENTE · suscripción de GoHighLevel: ¿el cliente la contrata a su nombre o Ingeniak la da desde su cuenta de agencia? La página no lo dice (#inversion solo habla del alcance de la implementación).",
+    "PREGUNTA AL CLIENTE · campañas de TikTok en #que-hacemos (texto de v1: 'Conectamos WhatsApp y tus campañas de Meta, Google y TikTok'). TikTok Ads es herramienta de Ingeniak según LOGOS.md; confirma que se conecta a GoHighLevel.",
+    "CAMBIO DE AFIRMACIÓN · hero.lede y #calendario: la cifra dental-citas va con su contexto real confirmado (clínica dental de Monterrey cuyo CRM es GoHighLevel, RESPUESTAS-CLIENTE 2026-10-19 #15, y agente de IA que contesta, agenda directo en el calendario, confirma y da seguimiento, #14). Se atribuye al sistema completo, no a GoHighLevel sola.",
+    "CAMBIO DE AFIRMACIÓN · definicion.metricRow: título 'Resultados con distintas herramientas' (v1) con salud-citas-mes, sistemas y paises; dental-citas ya aparece en la portada y en #calendario (máximo dos veces fuera del FAQ).",
+    "CAMBIO DE AFIRMACIÓN · v1 traía la FAQ '¿En cuánto tiempo veo resultados?' con 'resultados medibles en 60 a 90 días' (sin confirmar). No se usa; el plazo confirmado de implementación (7 a 30 días según el alcance) va en inversion.remate.",
+    "CAMBIO DE TEXTO · hero.chip 'En español · implementación completa' (ESPEC §5.2.1) en el lugar del chip de la portada. Nunca 'partner', 'certificado' ni 'oficial' junto a GoHighLevel (D, nota de la página).",
+    "RESUELTO 2026-10-19 · cliente en chat · (15) CRM de la clínica dental de Monterrey: GoHighLevel. Habilita la prueba de #calendario y el enlace al caso.",
+    "RESUELTO 2026-10-19 · cliente en chat · (16) plazo de implementación general: de 7 a 30 días según el alcance (inversion.remate).",
+    "RESUELTO 2026-10-19 · cliente en chat · (19) canales de Kain: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo (#inversion y FAQ H02/H03 del banco)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (gohighlevel-hero; respaldo home-sistema-5-medir) + pulso en la casilla del calendario y tarjeta de cita registrada + chip de cristal anclado + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Plataforma · Organizar",
+      "h1": { "text": "Implementación de GoHighLevel", "soft": "en español", "lit": "Implementación" },
+      "lede": "Configuramos GoHighLevel en español: CRM, embudos, calendarios y automatizaciones con IA para que tu equipo venda más sin perseguir leads. En una clínica dental de Monterrey que trabaja con GoHighLevel, el sistema con agente de IA logró {{metric:dental-citas}} más citas en 90 días.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, vengo de la página de GoHighLevel de Ingeniak y quiero implementar GoHighLevel en mi empresa."
+      },
+      "chip": "En español · implementación completa",
+      "legal": "GoHighLevel es una marca de su dueño; en Ingeniak la implementamos.",
+      "ui": {
+        "_nota": "Tarjeta de cita registrada junto a la casilla que toca Kain (ancla 'casilla'); con la placa de respaldo, agenda completa en la superficie libre. Hora ilustrativa, SIMULACIÓN, data-nosnippet.",
+        "event": {
+          "title": "Cita confirmada",
+          "when": "Jueves · 10:30",
+          "what": "Valoración · paciente nuevo",
+          "status": "Recordatorio programado"
+        },
+        "days": ["Lun", "Mar", "Mié", "Jue", "Vie"],
+        "timeLabel": "Hora ilustrativa"
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (H01) + 'Lo que junta en un solo lugar' (cinco ramas que convergen en un nodo) + MetricRow",
+      "rail": "Qué es",
+      "eyebrow": "GoHighLevel en una frase",
+      "definition": { "heading": "¿Qué es GoHighLevel?", "faqId": "H01" },
+      "junta": {
+        "title": "Lo que junta en un solo lugar",
+        "node": "Una sola cuenta",
+        "items": [
+          { "title": "CRM", "line": "Tus contactos y oportunidades, cada uno en su etapa." },
+          { "title": "Embudos y páginas", "line": "Para captar prospectos y mandarlos al CRM." },
+          { "title": "Calendarios", "line": "Para que el prospecto agende sin llamadas de ida y vuelta." },
+          { "title": "Campañas", "line": "Correos y mensajes de seguimiento a cada lead." },
+          { "title": "Automatizaciones", "line": "Flujos que trabajan solos, a los que sumamos agentes de IA." }
+        ]
+      },
+      "body": [
+        "En Ingeniak lo implementamos en español: configuramos tu cuenta, conectamos WhatsApp y tus formularios y automatizamos el seguimiento con IA. Tu equipo trabaja en una sola plataforma, en su idioma, en lugar de saltar entre cinco."
+      ],
+      "metricRow": {
+        "title": "Resultados con distintas herramientas",
+        "metricIds": ["salud-citas-mes", "sistemas", "paises"],
+        "sourceNote": true
+      }
+    },
+    "senales": {
+      "_componente": "ImageSection mid (dolor-crm, persona a la izquierda, tone=dolor, móvil split) + lista de señales (dolor ámbar → salida cian) + Fig. 02",
+      "rail": "Señales",
+      "eyebrow": "Señales de que lo necesitas",
+      "h2": { "text": "Tu operación", "soft": "vive en cinco herramientas." },
+      "lede": "Si reconoces dos o más, GoHighLevel bien implementado te devuelve el control del seguimiento.",
+      "fig": { "label": "Cinco herramientas, ningún seguimiento" },
+      "items": [
+        {
+          "pain": "Agenda, embudos y correos, cada uno por su lado.",
+          "painLine": "Cada herramienta con su acceso, sus datos y su factura.",
+          "fix": "Todo en una plataforma: CRM, páginas, calendario y campañas."
+        },
+        {
+          "pain": "Citas que nadie confirma.",
+          "painLine": "El cliente olvida, el horario se pierde y nadie lo vuelve a llenar.",
+          "fix": "Confirmaciones y recordatorios automáticos antes de cada cita."
+        },
+        {
+          "pain": "Una plataforma en inglés que tu equipo no adopta.",
+          "painLine": "La pagas cada mes, pero casi nadie la abre.",
+          "fix": "Implementación y capacitación en español, con tus textos y tu proceso."
+        },
+        {
+          "pain": "Automatizaciones a medias.",
+          "painLine": "Flujos que se rompen sin aviso y nadie sabe en qué paso.",
+          "fix": "Flujos probados de punta a punta antes de encenderlos."
+        }
+      ]
+    },
+    "que-hacemos": {
+      "_componente": "ScriptList (6 filas) + ChatSim mode=inline con guion propio (agenda una valoración) en teléfono de cristal sobre aura",
+      "rail": "Qué hacemos",
+      "eyebrow": "Qué hacemos con GoHighLevel",
+      "h2": { "text": "GoHighLevel listo para tu equipo,", "soft": "no solo instalado." },
+      "items": [
+        { "n": "01", "title": "Tu cuenta en español", "line": "Usuarios, pipelines, campos y permisos configurados en español, según tu proceso comercial." },
+        { "n": "02", "title": "Embudos y páginas", "line": "Páginas y formularios conectados al CRM para que cada prospecto entre a su etapa.", "href": "/servicios/paginas-web/" },
+        { "n": "03", "title": "Calendarios y citas", "line": "Calendarios para tu equipo y recordatorios automáticos para que nadie falte." },
+        { "n": "04", "title": "WhatsApp y campañas", "line": "Conectamos WhatsApp y tus campañas de Meta, Google y TikTok para medir ventas, no clics.", "href": "/servicios/paid-media/" },
+        { "n": "05", "title": "Agente de IA conectado", "line": "Un agente de IA atiende, califica y agenda, y deja todo registrado en GoHighLevel.", "href": "/servicios/agentes-ia-whatsapp/" },
+        { "n": "06", "title": "Capacitación y ajuste", "line": "Capacitamos a tu equipo, revisamos cómo se usa la plataforma y ajustamos el sistema en producción." }
+      ],
+      "body": [
+        "Antes de configurar, dibujamos contigo el recorrido de tu cliente: de dónde llega, qué pregunta, cuándo agenda y qué pasa después de la cita. GoHighLevel se arma sobre ese recorrido, no sobre una plantilla."
+      ],
+      "chat": {
+        "mode": "inline",
+        "title": "Agente de IA de tu negocio",
+        "tab": "WhatsApp",
+        "lines": [
+          { "who": "cliente", "text": "Hola, vi su anuncio. ¿Cómo agendo una valoración?", "delay": 800, "time": "9:41 p. m." },
+          { "who": "kain", "text": "¡Hola! Con gusto te ayudo. ¿Es tu primera visita con nosotros?", "delay": 1000 },
+          { "who": "cliente", "text": "Sí, es la primera.", "delay": 1200 },
+          { "who": "kain", "text": "Perfecto. Tengo dos horarios para tu valoración: jueves a las 10:30 o viernes a las 16:00. ¿Cuál prefieres?", "delay": 1100 },
+          { "who": "cliente", "text": "El jueves a las 10:30.", "delay": 1200 },
+          { "who": "kain", "text": "Listo, quedó el jueves a las 10:30. Un día antes te mando un recordatorio por aquí.", "delay": 1000, "event": "Cita registrada en tu calendario de GoHighLevel" }
+        ]
+      }
+    },
+    "como-funciona": {
+      "_componente": "SystemFlow sobre la placa riel-servicios (sin sujeto, sin pin): nodos registrados sobre los 5 nodos del riel",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": { "text": "Del anuncio a la cita,", "soft": "en una sola plataforma." },
+      "lede": "Cada prospecto entra con su origen, recibe respuesta y llega a tu agenda sin que nadie lo persiga.",
+      "nodes": [
+        { "label": "Anuncios y tu web", "line": "Meta, Google o tu página: el prospecto llega y deja sus datos.", "logos": ["meta", "googleads"], "confirmed": true },
+        { "label": "Embudo de GoHighLevel", "line": "Entra a su etapa con su origen registrado.", "logos": ["gohighlevel"], "confirmed": true },
+        { "label": "Tu calendario", "line": "El agente o el propio prospecto apartan la cita.", "confirmed": true },
+        { "label": "Recordatorios", "line": "Confirmación y recordatorio automáticos antes de la cita.", "confirmed": true },
+        { "label": "Tu equipo", "line": "Recibe al prospecto con su historial y el motivo de la cita.", "confirmed": true }
+      ],
+      "note": "Las herramientas exactas se definen en la fase Koncept de VKTOR™, con lo que tu equipo ya usa."
+    },
+    "calendario": {
+      "_componente": "ImageSection mid (regreso al set: gohighlevel-hero empujada hacia la superficie, cam 1.35 → 1.6; respaldo home-sistema-3-organizar) + agenda registrada en el calendario + 4 pasos + prueba dental-citas",
+      "rail": "Citas",
+      "eyebrow": "Citas en piloto automático",
+      "h2": { "text": "Citas que se agendan", "soft": "y se confirman solas." },
+      "lede": "Así trabaja el sistema dentro de GoHighLevel, de la primera pregunta al recordatorio.",
+      "steps": [
+        { "n": "01", "title": "El lead entra", "line": "Desde un anuncio, tu web o WhatsApp, directo a su etapa." },
+        { "n": "02", "title": "El agente califica", "line": "Pregunta lo que tu equipo necesita saber antes de agendar." },
+        { "n": "03", "title": "Agenda en tu calendario", "line": "Ofrece horarios libres y aparta la cita en GoHighLevel." },
+        { "n": "04", "title": "Recordatorio", "line": "Confirma y recuerda la cita para que nadie falte." }
+      ],
+      "proof": "En una clínica dental de Monterrey que trabaja con GoHighLevel, el agente contesta, agenda directo en el calendario, confirma y da seguimiento: {{metric:dental-citas}} más citas en 90 días.",
+      "links": [{ "label": "Ver el caso de la clínica dental", "href": "/casos/clinica-dental-monterrey/" }],
+      "ui": {
+        "_nota": "Agenda de un día registrada sobre el calendario de cristal (otra UI que la portada, R5). Horas ilustrativas, SIMULACIÓN, data-nosnippet.",
+        "title": "Agenda · jueves",
+        "slots": [
+          { "time": "09:00", "label": "Ocupado" },
+          { "time": "10:30", "label": "Valoración · agendada por Kain", "on": true },
+          { "time": "12:00", "label": "Libre" },
+          { "time": "16:00", "label": "Seguimiento" }
+        ],
+        "status": "Recordatorio programado"
+      }
+    },
+    "fit": {
+      "_componente": "TwoColumnScript variant=fit (el 'no' en ámbar) + enlaces",
+      "rail": "¿Es para ti?",
+      "eyebrow": "Antes de implementar",
+      "h2": { "text": "¿GoHighLevel es la plataforma", "soft": "correcta para ti?" },
+      "lede": "Trabajamos con GoHighLevel y con Kommo. Te decimos cuál conviene según cómo vendes, no según lo que nos convenga vender.",
+      "left": {
+        "title": "GoHighLevel es para ti si…",
+        "tone": "cian",
+        "items": [
+          "Usas varias herramientas sueltas para captar, dar seguimiento y agendar.",
+          "Vendes con embudos, páginas y calendarios, no solo por chat.",
+          "Quieres GoHighLevel configurado en español para tu equipo.",
+          "Necesitas que cada lead reciba seguimiento sin que nadie lo persiga."
+        ]
+      },
+      "right": {
+        "title": "Quizá no es para ti si…",
+        "tone": "ambar",
+        "items": [
+          "Casi toda tu venta ocurre dentro de WhatsApp o Instagram: ahí suele encajar mejor Kommo.",
+          "Buscas configurarlo por tu cuenta, sin acompañamiento ni capacitación.",
+          "Esperas que la plataforma resuelva sola un proceso de venta que nadie ha definido."
+        ]
+      },
+      "links": [
+        { "label": "Conoce Kommo con un partner oficial", "href": "/kommo/" },
+        { "label": "Kommo vs GoHighLevel, punto por punto", "href": "/blog/kommo-vs-gohighlevel/" }
+      ]
+    },
+    "vktor": {
+      "_componente": "ImageSection mid (metodologia-hero: Kain sobre cinco losas, letra registrada por losa) + VktorRail variant=phases en la disolución",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": { "text": "Así implementamos GoHighLevel,", "soft": "en cinco fases." },
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Revisamos tus herramientas actuales, tu agenda y por dónde llegan tus prospectos." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Diseñamos pipelines, calendarios, embudos y automatizaciones, y lo que hará el agente." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Configuramos tu cuenta en español, conectamos canales y agente, y probamos cada flujo." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Capacitamos a tu equipo en su idioma y ajustamos en producción." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Medimos citas agendadas, asistencia y ventas, y optimizamos cada mes." }
+      ],
+      "links": [{ "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }]
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": { "text": "{{Price}}." },
+      "lede": "Lo que mueve el precio de la implementación son tres cosas:",
+      "items": [
+        { "title": "Canales", "line": "Por dónde llegan y te escriben tus prospectos: WhatsApp, Instagram, Facebook Messenger, el chat de tu web o el correo." },
+        { "title": "Integraciones", "line": "Embudos, calendarios, campañas y los sistemas que deben hablar con GoHighLevel." },
+        { "title": "Volumen", "line": "Cuántos leads, citas y personas de tu equipo pasan por la plataforma." }
+      ],
+      "remate": "El alcance exacto lo definimos en tu Discovery Session, por Google Meet. Según lo que incluya, la implementación toma de 7 a 30 días."
+    },
+    "faq": {
+      "_componente": "FAQAccordion (H04 en 'validar': no se publica)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas", "soft": "sobre GoHighLevel." },
+      "faqIds": ["H01", "H02", "G05", "H03", "H04", "G07"],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": { "text": "Otras piezas", "soft": "del mismo sistema." },
+      "items": [
+        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con agentes de IA", "line": "Licencias, implementación y agentes dentro de Kommo." },
+        { "href": "/blog/gohighlevel-en-espanol/", "label": "Guía", "title": "GoHighLevel en español", "line": "Qué es, para quién sirve y cómo se implementa bien." },
+        { "href": "/servicios/agentes-ia-whatsapp/", "label": "Servicio", "title": "Agentes de IA para WhatsApp", "line": "Responden, califican y agendan 24/7, conectados a tu CRM." },
+        { "href": "/blog/kommo-vs-gohighlevel/", "label": "Guía", "title": "Kommo vs GoHighLevel", "line": "Cuál conviene según cómo vendes, punto por punto.", "_nota": "Respaldo: solo se pinta mientras alguna de las tres de D no esté construida (máximo 3 stills)." }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo: Kain a la izquierda)",
+      "rail": "Cierre",
+      "eyebrow": "Tu siguiente paso",
+      "h2": { "text": "¿GoHighLevel es para tu operación?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "En la Discovery Session revisamos cómo vendes y agendas hoy, y te decimos si GoHighLevel encaja y qué conviene automatizar primero.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, vengo de la página de GoHighLevel de Ingeniak y quiero implementar GoHighLevel en mi empresa."
+      }
+    }
+  }
+}

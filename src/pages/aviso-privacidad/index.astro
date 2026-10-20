@@ -1,0 +1,8 @@
+---
+// /aviso-privacidad/ · T-LEGAL (ESPEC-v2 §5.14). Texto: src/content/paginas/aviso.json (texto legal de v1, 1 de agosto de 2026).
+import LegalTemplate from '../../components/templates/LegalTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+const page = getPage('/aviso-privacidad/');
+const copy = getCopy(page.id);
+---
+<LegalTemplate page={page} copy={copy} />

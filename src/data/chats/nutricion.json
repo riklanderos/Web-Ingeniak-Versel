@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hola, tengo mi consulta de seguimiento mañana a las 9:00, pero no voy a poder llegar. ¿La puedo mover?", "delay": 900, "time": "7:52 p. m." },
+  { "who": "kain", "text": "¡Hola! Claro. Para tu seguimiento tengo el jueves a las 8:30 o el viernes a las 18:00. ¿Cuál te acomoda?", "delay": 1100 },
+  { "who": "cliente", "text": "El viernes. Oye, mientras, ¿puedo cenar fruta o mejor no?", "delay": 1600 },
+  { "who": "kain", "text": "Eso te lo tiene que indicar tu nutrióloga; yo no puedo darte recomendaciones de alimentación. Si quieres, le dejo tu pregunta para que la revise contigo el viernes.", "delay": 1200 },
+  { "who": "cliente", "text": "Sí, porfa. Soy Ana.", "delay": 1300 },
+  { "who": "kain", "text": "Listo, Ana: tu seguimiento quedó el viernes a las 18:00, con tu pregunta en la nota para tu nutrióloga. El jueves te mando un recordatorio.", "delay": 1000, "event": "Cita reagendada en tu CRM · horario anterior liberado" },
+  { "who": "cliente", "text": "Gracias.", "delay": 1100 },
+  { "who": "kain", "text": "A ti, Ana. Que tengas buena noche.", "delay": 800 }
+]

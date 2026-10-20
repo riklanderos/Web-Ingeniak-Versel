@@ -1,0 +1,9 @@
+---
+// /blog/ · T-HUB (ESPEC-v2 §5.5). Estructura: sitemap.json (secciones, placas, CTA, FAQ); texto: src/content/paginas/blog.json.
+import HubTemplate from '../../components/templates/HubTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+
+const page = getPage('/blog/');
+const copy = getCopy(page.id);
+---
+<HubTemplate page={page} copy={copy} />

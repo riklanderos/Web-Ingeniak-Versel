@@ -1,6 +1,6 @@
 // scripts/check-contenido.mjs — puertas de contenido (ESPEC-v2 §12.2 R1–R2).
 // 1) Palabras visibles ≥ sitemap.json → copy.minWords de la página (en un caso breve con la puerta R2 pendiente es puerta del cliente, ◇) (texto de <main>, sin menú, footer, decorados
-//    aria-hidden ni las preguntas FAQ compartidas con otras páginas).
+//    aria-hidden ni las preguntas FAQ compartidas con otras páginas, salvo en /preguntas-frecuentes/ (T-FAQ), donde viven todas).
 // 2) Similitud entre páginas hermanas (servicios/plataformas entre sí, industrias entre sí, casos entre sí, artículos
 //    entre sí): shingles de 5 palabras, Jaccard ≤ 0.35, sin contar FAQ compartidas ni cifras (nodos data-metric).
 // Uso: node scripts/check-contenido.mjs [--url http://127.0.0.1:4321] [--release]
@@ -62,7 +62,8 @@ export async function run(opts) {
   for (const pg of pages) {
     if (!pg.page || pg.route === '/404') continue;
     const root = parseHTML(pg.html);
-    const n = words(mainText(root, shared, { dropFigures: false })).length;
+    // T-FAQ es la casa del banco completo de preguntas: ahí las compartidas sí cuentan (peticiones · faq-contacto-legal #2)
+    const n = words(mainText(root, pg.page.template === 'T-FAQ' ? new Set() : shared, { dropFigures: false })).length;
     const min = pg.page.copy?.minWords ?? 0;
     // Caso breve (R2, noindex hasta que el cliente confirme): lo corto es la puerta del cliente, no un defecto del build
     if (n < min) (gatePending(pg.page) ? R.gate : R.fail)(pg.route, `${n} palabras visibles < ${min} (copy.minWords, plantilla ${pg.page.template})${gatePending(pg.page) ? ' · caso breve con noindex: el texto completo vuelve con la confirmación escrita (R2)' : ''}`);

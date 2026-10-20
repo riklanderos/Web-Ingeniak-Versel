@@ -1,0 +1,164 @@
+{
+  "_schema": "Texto publicable de /aviso-privacidad/ (T-LEGAL, LegalTemplate). Forma general: _ESQUEMA.md §2–§6. Campos propios de esta plantilla: encabezado = {eyebrow, h1, deck, updatedLabel, updated, rights: {label, text}} (rights enlaza a la cláusula de contacto); indice = {label, mobileLabel} (las entradas salen de texto.clauses en su orden); texto.clauses[] = {id, title, blocks[]} donde cada bloque es {p} (párrafo), {h3} (subtítulo), {ul: string[]} (lista) o {dl: {term, value}[]} (ficha). Las menciones 'Cláusula N' dentro del texto se enlazan solas a la cláusula N. texto.closing = línea final del documento; texto.help = {title, text, mailLabel, contactLabel} (bloque de ayuda al pie, fuera del texto legal). El texto legal es el de la versión del 1 de agosto de 2026 (materiales/v1/aviso-privacidad), sin cambios de redacción; solo se retiró la nota pública de 'modelo estándar' (ESPEC §5.14). Los campos que empiezan con _ no se imprimen.",
+  "pageId": "aviso",
+  "url": "/aviso-privacidad/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (texto legal de la versión v1 del 1 de agosto de 2026; formato redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. El texto legal es el de v1 (1 de agosto de 2026) sin cambios de redacción; lo nuevo es el encabezado, el índice y el bloque de ayuda del pie.",
+    "PREGUNTA AL CLIENTE · Razón social y domicilio del responsable. El aviso conserva lo de v1: 'Ingeniak Technology, LLC', 131 Continental Drive, Newark, DE 19713, Estados Unidos, representada en México por Ricardo Alejandro Gutiérrez Landeros. ESPEC §12.5-3 la tiene sin confirmar (el sitio actual dice 'Radik Soluciones'). Confírmala por escrito o dinos cuál va.",
+    "VALIDACIÓN LEGAL · Revisión del aviso por un abogado especializado en protección de datos. v1 lo publicaba con la nota 'este documento es un modelo estándar… No sustituye la revisión de un abogado especializado…, particularmente en lo relativo a transferencias internacionales de datos y al régimen aplicable por operar Ingeniak Technology, LLC como entidad constituida en Estados Unidos'. ESPEC §5.14 retira esa nota de la página pública; la revisión sigue pendiente.",
+    "VALIDACIÓN LEGAL · R10 pide que el aviso liste las herramientas de medición y las cookies (Vercel Web Analytics sin cookies desde el día 1; GA4, Meta, Google Ads y TikTok solo con consentimiento). El texto de v1 no tiene esa cláusula; la redacción la debe aprobar el abogado antes de publicar el banner de consentimiento.",
+    "VALIDACIÓN LEGAL · El sitio v2 recibe datos por canales que v1 no menciona de forma expresa: la conversación de WhatsApp con Kain (agente de IA) y el formulario de siete preguntas de la Discovery Session en agenda.ingeniak.tech. Confirmar si las finalidades y transferencias actuales los cubren.",
+    "PREGUNTA AL CLIENTE · ¿Cambia la fecha de 'Última actualización' (1 de agosto de 2026) con la revisión legal? Hoy se publica la de v1."
+  ],
+  "sections": {
+    "encabezado": {
+      "_componente": "Intertitle de encabezado sobre aura (sin placa: excepción legal de D) · breadcrumb · H1 · fecha · acceso a derechos ARCO",
+      "rail": "Encabezado",
+      "eyebrow": "Legal",
+      "h1": {
+        "text": "Aviso de privacidad",
+        "lit": "privacidad"
+      },
+      "deck": "Cómo tratamos los datos personales que nos compartes, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP).",
+      "updatedLabel": "Última actualización",
+      "updated": "1 de agosto de 2026",
+      "rights": {
+        "label": "Derechos ARCO",
+        "text": "Cómo ejercerlos"
+      }
+    },
+    "indice": {
+      "_componente": "TOC lateral fijo con pilar de luz (escritorio) · plegable (móvil)",
+      "rail": "Índice",
+      "label": "Índice",
+      "mobileLabel": "Índice del aviso"
+    },
+    "texto": {
+      "_componente": "Prose (68ch) con cláusulas numeradas; ficha de contacto como <dl>",
+      "rail": "Texto legal",
+      "clauses": [
+        {
+          "id": "responsable",
+          "title": "Responsable del tratamiento de datos personales",
+          "blocks": [
+            { "p": "Ingeniak Technology, LLC (en adelante, “Ingeniak”), con domicilio en 131 Continental Drive, Newark, DE 19713, Estados Unidos, y representada en México por Ricardo Alejandro Gutiérrez Landeros, es responsable del tratamiento de los datos personales que recaba con motivo de la prestación de sus servicios de consultoría, implementación de sistemas CRM, automatización y publicidad de performance." }
+          ]
+        },
+        {
+          "id": "datos",
+          "title": "Datos personales que se recaban",
+          "blocks": [
+            { "p": "Para las finalidades señaladas en este Aviso de Privacidad, Ingeniak podrá recabar las siguientes categorías de datos personales:" },
+            { "ul": [
+              "Datos de identificación y contacto: nombre, cargo, empresa, correo electrónico, teléfono y domicilio de las personas de contacto del Cliente.",
+              "Datos de facturación: razón social, RFC o identificador fiscal equivalente, domicilio fiscal y datos bancarios necesarios para procesar pagos y emitir comprobantes.",
+              "Datos de acceso a plataformas: credenciales y accesos que el Cliente proporciona a Ingeniak para ejecutar la migración, configuración y soporte de sistemas CRM, cuentas de Meta Business, WhatsApp Business y herramientas de automatización.",
+              "Datos personales de terceros (leads y clientes finales del Cliente): nombre, teléfono, correo electrónico y datos de la interacción comercial, contenidos dentro del CRM u otras plataformas que Ingeniak configura, opera o a las que brinda soporte por cuenta del Cliente."
+            ] },
+            { "p": "Ingeniak no recaba de forma intencional datos personales sensibles (origen étnico o racial, estado de salud, creencias religiosas, filiación sindical, preferencias sexuales u otros de naturaleza análoga). En caso de que dichos datos existan dentro de la información que el Cliente aloja en sus propias plataformas, su tratamiento es responsabilidad del Cliente como responsable original de dichos datos; Ingeniak actúa únicamente como encargado técnico de dicha información conforme a la Cláusula 3." }
+          ]
+        },
+        {
+          "id": "calidad",
+          "title": "Calidad en que Ingeniak trata los datos",
+          "blocks": [
+            { "p": "Respecto de los datos de identificación, contacto y facturación del propio Cliente, Ingeniak actúa como responsable del tratamiento. Respecto de los datos personales de los leads y clientes finales del Cliente que residen dentro de los sistemas CRM que Ingeniak implementa, configura u opera por encargo del Cliente, Ingeniak actúa como encargado del tratamiento, y trata dicha información únicamente conforme a las instrucciones del Cliente y para los fines del contrato de servicios correspondiente." }
+          ]
+        },
+        {
+          "id": "finalidades",
+          "title": "Finalidades del tratamiento",
+          "blocks": [
+            { "h3": "Finalidades primarias (necesarias para la relación contractual)" },
+            { "ul": [
+              "Prestar los servicios de migración, implementación, configuración, soporte y mantenimiento de sistemas CRM y automatización contratados por el Cliente.",
+              "Procesar pagos, emitir comprobantes fiscales y dar seguimiento administrativo a la relación comercial.",
+              "Dar cumplimiento a las obligaciones establecidas en el contrato de prestación de servicios correspondiente.",
+              "Brindar soporte técnico, atención de incidencias y comunicación operativa relacionada con los servicios contratados."
+            ] },
+            { "h3": "Finalidades secundarias (no necesarias, pero que generan un beneficio adicional)" },
+            { "ul": [
+              "Enviar comunicaciones sobre nuevos servicios, mejoras o contenido relevante para el Cliente.",
+              "Solicitar retroalimentación sobre los servicios prestados con fines de mejora continua.",
+              "Fines estadísticos internos sobre el desempeño de los proyectos implementados."
+            ] },
+            { "p": "El Cliente podrá oponerse al tratamiento de sus datos para finalidades secundarias sin que ello afecte la prestación de los servicios contratados, siguiendo el procedimiento señalado en la Cláusula 6." }
+          ]
+        },
+        {
+          "id": "transferencia",
+          "title": "Transferencia de datos personales",
+          "blocks": [
+            { "p": "Para la prestación de sus servicios, Ingeniak podrá compartir datos personales con los siguientes terceros, exclusivamente para las finalidades aquí descritas:" },
+            { "ul": [
+              "Proveedores de infraestructura tecnológica y plataformas CRM (por ejemplo, GoHighLevel/Somos Scala, Kommo), para la operación del sistema contratado.",
+              "Meta Platforms, Inc., para la conexión y verificación de cuentas de WhatsApp Business, Instagram y Meta Ads.",
+              "Proveedores de servicios de hospedaje (hosting), procesamiento de pagos y facturación.",
+              "Autoridades competentes, cuando exista un requerimiento legal válido."
+            ] },
+            { "p": "Ingeniak no vende, renta ni comercializa datos personales con fines distintos a los aquí señalados. Dado que Ingeniak Technology, LLC es una entidad constituida en Estados Unidos, el tratamiento de datos personales puede implicar su almacenamiento y procesamiento fuera del territorio mexicano; Ingeniak adopta medidas contractuales y técnicas razonables para que dicho tratamiento mantenga un nivel de protección acorde con los principios de la LFPDPPP." }
+          ]
+        },
+        {
+          "id": "arco",
+          "title": "Derechos ARCO y su ejercicio",
+          "blocks": [
+            { "p": "El titular de los datos personales tiene en todo momento derecho a Acceder a sus datos personales, Rectificarlos en caso de ser inexactos, Cancelarlos cuando considere que no son tratados conforme a los principios y obligaciones de la ley, así como Oponerse al tratamiento de los mismos para fines específicos (derechos “ARCO”). Asimismo, podrá revocar el consentimiento otorgado para el tratamiento de sus datos." },
+            { "p": "Para ejercer cualquiera de estos derechos, el titular deberá enviar una solicitud por correo electrónico a la dirección señalada en la Cláusula 9, indicando: (i) nombre completo y datos de contacto del titular; (ii) documento que acredite su identidad o representación legal; (iii) descripción clara y precisa de los datos personales sobre los que se busca ejercer el derecho correspondiente; y (iv) cualquier otro elemento que facilite la localización de los datos. Ingeniak responderá a la solicitud dentro de un plazo máximo de 20 (veinte) días hábiles, prorrogable en términos de la ley aplicable." }
+          ]
+        },
+        {
+          "id": "limitar",
+          "title": "Medios para limitar el uso o divulgación de datos",
+          "blocks": [
+            { "p": "El titular podrá limitar el uso o divulgación de sus datos personales enviando su solicitud al correo electrónico señalado en la Cláusula 9. Adicionalmente, el titular puede inscribirse en el Registro Público para Evitar Publicidad (REPEP) de la PROFECO, en caso de que dicho registro le resulte aplicable, para limitar la recepción de publicidad de terceros." }
+          ]
+        },
+        {
+          "id": "seguridad",
+          "title": "Medidas de seguridad",
+          "blocks": [
+            { "p": "Ingeniak ha implementado medidas de seguridad administrativas, técnicas y físicas razonables para proteger los datos personales que trata contra daño, pérdida, alteración, destrucción, uso, acceso o divulgación no autorizados, incluyendo el uso de credenciales de acceso restringido, control de accesos por rol dentro de las plataformas configuradas y acuerdos de confidencialidad con su equipo y colaboradores." }
+          ]
+        },
+        {
+          "id": "contacto",
+          "title": "Contacto y procedimiento de solicitudes",
+          "blocks": [
+            { "dl": [
+              { "term": "Responsable", "value": "Ingeniak Technology, LLC" },
+              { "term": "Representante en México", "value": "Ricardo Alejandro Gutiérrez Landeros" },
+              { "term": "Correo de contacto", "value": "contacto@ingeniak.mx" },
+              { "term": "Sitio web", "value": "ingeniak.mx" }
+            ] }
+          ]
+        },
+        {
+          "id": "modificaciones",
+          "title": "Modificaciones al Aviso de Privacidad",
+          "blocks": [
+            { "p": "Ingeniak podrá modificar o actualizar el presente Aviso de Privacidad en cualquier momento, derivado de nuevos requerimientos legales, de nuestras propias necesidades por los servicios que ofrecemos, de cambios en nuestro modelo de negocio, o por otras causas. Cualquier modificación será publicada en ingeniak.mx y, en su caso, comunicada directamente al Cliente por correo electrónico." }
+          ]
+        },
+        {
+          "id": "consentimiento",
+          "title": "Consentimiento",
+          "blocks": [
+            { "p": "Al proporcionar sus datos personales a Ingeniak, ya sea de forma directa, a través de un contrato de prestación de servicios, o mediante el uso de las plataformas que Ingeniak implementa y opera, el titular manifiesta que ha leído, entendido y otorga su consentimiento a los términos del presente Aviso de Privacidad." }
+          ]
+        }
+      ],
+      "closing": "Ingeniak Technology, LLC · ingeniak.mx · Este Aviso de Privacidad forma parte de la relación contractual entre Ingeniak y sus Clientes y complementa, sin sustituir, los términos y condiciones pactados en los contratos de prestación de servicios correspondientes.",
+      "help": {
+        "title": "¿Dudas sobre este aviso?",
+        "text": "Para ejercer tus derechos ARCO o limitar el uso de tus datos, escribe al correo de la Cláusula 9. Para cualquier otra pregunta, también puedes escribirnos por WhatsApp.",
+        "mailLabel": "contacto@ingeniak.mx",
+        "contactLabel": "Todas las formas de contacto"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Buenas tardes. ¿Me ayudas con el estatus del pedido 4512? Lo necesitamos en planta esta semana.", "delay": 900, "time": "4:37 p. m." },
+  { "who": "kain", "text": "¡Hola! Soy Kain, de servicio a clientes. Ya lo revisé: el pedido 4512 salió de almacén hoy a las 13:20 y va en ruta. Entrega estimada: el jueves por la mañana.", "delay": 1100, "event": "Estatus consultado en tu ERP" },
+  { "who": "cliente", "text": "Perfecto. ¿Me mandas la guía y la factura?", "delay": 1500 },
+  { "who": "kain", "text": "Claro. Aquí tienes la guía de rastreo y la factura en PDF del pedido 4512.", "delay": 1000, "event": "Documentos enviados · conversación registrada en tu CRM" },
+  { "who": "cliente", "text": "Una más: ¿cuántas piezas les quedan de ese código? Quiero pedir otras doscientas.", "delay": 1600 },
+  { "who": "kain", "text": "Las existencias no las puedo compartir por aquí. Le paso tu solicitud a tu ejecutivo de cuenta, con el código y la cantidad, para que te confirme y te cotice.", "delay": 1200, "event": "Tarea creada para tu ejecutivo · cotización" },
+  { "who": "cliente", "text": "Va, gracias.", "delay": 1100 },
+  { "who": "kain", "text": "A ti. En cuanto se entregue el pedido, te aviso por este chat.", "delay": 900 }
+]

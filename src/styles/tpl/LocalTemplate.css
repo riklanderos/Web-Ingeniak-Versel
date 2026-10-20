@@ -1,0 +1,197 @@
+/* ===== LocalTemplate · T-LOCAL (/agentes-ia-guadalajara/) ===== */
+/* ESPEC-v2 §5.14 · clases .lc-* de src/components/templates/LocalTemplate.astro (body.lc).
+   Reglas: ninguna sección pinta fondo (§3.11); la luz viene de la placa, de las auras (Aura.astro) y de .tpl-glow;
+   sin cajas detrás del texto; todo visible sin JS. */
+
+body.lc .it__aura--ondas{opacity:1}
+body.lc .it__aura--isotipo{opacity:.9}
+body.lc :is(h1,h2)[data-split]{text-wrap:balance}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.lc .it__aura{width:max(130vw,520px)}
+  body.lc .it__aura--ondas{width:max(200vw,780px)}
+}
+/* Costuras entre escenas sin placa: la luz de base sale 140 px y se funde en 280 px (igual que servicio, industria y caso) */
+body.lc main .tpl-glow:not(.is)::before{inset:-140px 0;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 280px,#000 calc(100% - 280px),transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 280px,#000 calc(100% - 280px),transparent 100%)}
+
+.lc-head{display:flex;flex-direction:column;align-items:flex-start;max-width:min(100%,52rem)}
+.lc-head > .t-label + *{margin-top:var(--s-4)}
+.lc-head > .t-lede{margin-top:var(--s-5)}
+.lc-sec{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0}
+.lc-sec__head{grid-column:1 / span 8}
+
+/* ── 01 · Portada ───────────────────────────────────────────────────────────── */
+.lc-hero h1.t-display-2{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),9.4svh);max-width:13ch}
+.lc-hero .lc-h1 .soft{display:block}
+.lc-hero .is__text > .t-lede{max-width:40ch}
+.lc-hero .is__text > .lc-trust{margin-top:var(--s-6);max-width:none;line-height:1.6}
+/* IMAGEN ILUSTRATIVA: esquina inferior derecha de la portada (action-safe); se apaga con el rack focus de la toma */
+.lc-illus{position:absolute;z-index:2;right:var(--action-x);bottom:16px;margin:0;color:rgb(158 176 199 / .72);pointer-events:none;opacity:calc(1 - var(--rack,0) * 3)}
+@media (min-width:768px) and (min-aspect-ratio:5/6){.lc-hero > .is__more{display:none}}
+.lc-hero__rest{margin:0;max-width:40ch}
+.lc-hero > .is__more .lc-trust{margin-top:var(--s-5);line-height:1.6}
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:820px){
+  .is.lc-hero{padding-top:calc(var(--hdr) + var(--s-5));padding-bottom:var(--s-6)}
+  .lc-hero .is__text > .crumbs{margin-bottom:var(--s-4)}
+  .lc-hero .is__text > .t-lede{margin-top:var(--s-4)}
+  .lc-hero .is__text > .ctas{margin-top:var(--s-6);row-gap:var(--s-3)}
+  .lc-hero .is__text > .lc-trust{margin-top:var(--s-5)}
+  .lc-hero h1.t-display-2{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),8.6svh)}
+}
+@media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6){.lc-hero .is__text > .crumbs ~ .eyebrow{display:none}}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.lc .tpl-hero .is__text > .ctas:has(> .cta-p){grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px}
+  body.lc .tpl-hero .is__text > .ctas > .btn--wa{width:100%;height:52px;padding:0 24px 0 20px;gap:12px;justify-content:center;border-radius:var(--r-pill);margin-top:2px}
+  body.lc .tpl-hero .is__text > .ctas > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+  body.lc .tpl-hero .is__text > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
+  .lc-hero h1.t-display-2{max-width:none}
+}
+@media (max-width:767px) and (max-height:780px){
+  body.lc .tpl-hero.is[data-m="split"]{--hero-gap:16px}
+  body.lc .tpl-hero .is__text > .ctas:has(> .cta-p){margin-top:var(--s-5);row-gap:8px}
+  body.lc .tpl-hero .is__text > .ctas > .cta-p > .btn{height:48px}
+  body.lc .tpl-hero .is__text > .ctas > .btn--wa{height:44px;margin-top:0}
+}
+@media (min-width:600px) and (max-aspect-ratio:5/6){body.lc .tpl-hero .is__text > .ctas:has(> .cta-p){max-width:26.25rem}}
+
+/* ── 02 · Qué hace Ingeniak en Guadalajara (sobre la copia desenfocada; el sujeto sigue a la derecha) ── */
+.lc-def .it__body{grid-column:1 / -1}
+.lc-def .defn,.lc-def__body{max-width:min(100%,40rem)}
+.lc-def .defn__q{max-width:22ch}
+.lc-def .it__body > .lc-def__body{margin-top:var(--s-6)}
+.lc-def .it__body > .lc-def__row{align-self:stretch;margin-top:var(--s-8)}
+@media (max-width:1023px){.lc-def .it__body{grid-column:1 / -1}}
+
+/* ── 03 · Ficha local ── */
+.lc-nap .it__head > .t-lede{margin-top:var(--s-5)}
+.lc-nap .it__body > .lc-sheet{align-self:stretch}
+.lc-sheet .sheet__row:first-child dd{font:500 1.25rem/1.3 var(--f-display);letter-spacing:-.01em}
+.lc-sheet .sheet__row dd{color:var(--text-2)}
+@media (min-width:1024px){.lc-nap .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}}
+
+/* ── 04 · Qué hacemos (filas de guion a todo el ancho) ── */
+.lc-svc .it__body{grid-column:1 / -1}
+.lc-svc .it__body > .lc-svc__list{align-self:stretch;margin-top:var(--s-7)}
+.lc-svc{padding-bottom:calc(var(--beat) + var(--s-8))}
+.lc-svc .lc-svc__list .script__list{border-bottom:0}
+.lc-svc .lc-svc__list .script__row:last-child{border-bottom:0}
+
+/* ── 05 · Local y con alcance: dos listas apiladas en la penumbra derecha (escritorio); en móvil, después de la placa ── */
+.lc-reach .is__text{max-width:38rem}
+.lc-cols{display:grid;grid-template-columns:minmax(0,1fr);row-gap:var(--s-6);width:100%}
+.lc-col__t{display:flex;align-items:center;gap:12px;margin:0;padding-bottom:var(--s-3);border-bottom:1px solid var(--hair-cyan);
+  font:500 clamp(1.125rem,.95rem + .4vw,1.3125rem)/1.2 var(--f-display);letter-spacing:-.01em;color:var(--text)}
+.lc-col__node{flex:none;width:8px;height:8px;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+.lc-col--far .lc-col__node{background:transparent;box-shadow:inset 0 0 0 1.5px var(--cyan)}
+.lc-col__list{margin:0;padding:0;list-style:none}
+.lc-col__list li{position:relative;padding:11px 0 12px 22px;border-bottom:1px solid var(--hair);font:400 1rem/1.5 var(--f-body);color:var(--text-2);text-wrap:pretty}
+.lc-col__list li::before{content:"";position:absolute;left:2px;top:calc(11px + .75em - 2px);width:4px;height:4px;border-radius:1px;background:var(--hair-cyan)}
+.lc-col__list li:last-child{border-bottom:0}
+.lc-col__list .metric--inline b{color:var(--cyan);font-weight:500}
+/* El escenario no crece con el texto (como /discovery/#para-quien): la placa ocupa un plano y, si la columna es más larga, sigue
+   sobre su disolución; así Kain nunca se agranda hasta quedar debajo de las listas (1280 × 720) */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .lc-reach{--fit-h:max(100svh,680px);--is-h:var(--fit-h);padding-top:calc(var(--hdr) + var(--s-5))}
+  .lc-reach > .is__stagebox{bottom:auto;height:var(--fit-h)}
+  .lc-reach > .is__more{margin-top:var(--s-6)}
+  .lc-reach .t-h2{font-size:min(clamp(2.25rem,1rem + 3vw,4.5rem),8svh)}
+}
+@media (min-width:1024px) and (min-aspect-ratio:5/6){.is.lc-reach[data-layout="subject-left"] :is(.is__copy,.is__more) .is__text{grid-column:7 / -1}}
+/* Pantallas anchas: las dos listas lado a lado dentro de la columna (la escena cabe en un plano) */
+@media (min-width:1400px) and (min-aspect-ratio:5/6){
+  .lc-reach .is__text{max-width:44rem}
+  .lc-cols{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-6)}
+}
+
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .is.lc-reach[data-m="split"] > .is__more{margin-top:0}
+  .is.lc-reach[data-m="split"] .lc-cols{margin-top:calc(var(--plate-h) * (var(--sb,1) - 1) + var(--s-3))}
+}
+
+/* ── 06 · Casos (Still plana ×2: la cifra y el título dentro de la penumbra del fotograma) ── */
+.lc-cases__grid{margin-top:var(--s-7);row-gap:var(--gap)}
+.lc-cases__grid > .still{grid-column:span 6}
+.lc-cases__note{grid-column:1 / -1;margin-top:var(--s-5)}
+@media (max-width:1023px){.lc-sec__head,.lc-cases__grid > .still{grid-column:1 / -1}}
+
+/* ── 07 · Cómo llegar: texto a la izquierda, esquema a la derecha (sin caja: bordes disueltos a --ink) ── */
+.lc-map__frame{align-items:center;row-gap:var(--s-7)}
+.lc-map__text{grid-column:1 / span 5}
+.lc-addr{display:flex;flex-direction:column;gap:8px;margin-top:var(--s-6);font-style:normal}
+.lc-addr__k{display:inline-flex;align-items:center;gap:8px;color:var(--cyan)}
+.lc-addr__k .icon{width:16px;height:16px}
+.lc-addr__v{font:400 clamp(1.25rem,1rem + .8vw,1.75rem)/1.3 var(--f-display);letter-spacing:-.015em;color:var(--text);max-width:24ch}
+.lc-map__lede{margin-top:var(--s-5) !important}
+.lc-map__ctas{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-6);margin-top:var(--s-6)}
+.lc-map__ctas .lnk .icon{width:16px;height:16px}
+.lc-plan{position:relative;grid-column:6 / -1;margin:0;aspect-ratio:var(--mw) / var(--mh);width:100%;max-height:min(78svh,760px);justify-self:center;
+  -webkit-mask-image:radial-gradient(62% 60% at 50% 50%,#000 58%,transparent 100%);mask-image:radial-gradient(62% 60% at 50% 50%,#000 58%,transparent 100%)}
+.lc-plan__svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.lc-plan__lights{opacity:.5}
+.lc-plan__grid line{stroke:rgb(158 176 199 / .07);stroke-width:1;vector-effect:non-scaling-stroke}
+.lc-plan__rings circle{fill:none;stroke:rgb(0 229 255 / .16);stroke-width:1;stroke-dasharray:2 6;vector-effect:non-scaling-stroke}
+.lc-plan__branches path{fill:none;stroke:var(--cyan);stroke-opacity:.55;stroke-width:1.3;stroke-linejoin:round;vector-effect:non-scaling-stroke;
+  stroke-dasharray:1;stroke-dashoffset:0}
+.lc-plan__node{fill:#03040B;stroke:var(--cyan);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.lc-plan__office{fill:var(--cyan);filter:drop-shadow(0 0 6px var(--cyan)) drop-shadow(0 0 18px rgb(0 229 255 / .6))}
+.lc-plan__pulse{fill:none;stroke:var(--cyan);stroke-width:1.5;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center;opacity:0}
+.lc-plan__north path{fill:none;stroke:rgb(158 176 199 / .6);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.lc-plan__labels{position:absolute;inset:0;pointer-events:none}
+.lc-plan__lbl{position:absolute;left:calc(var(--x) * 100%);top:calc(var(--y) * 100%);translate:16px -50%;white-space:nowrap;
+  font:500 clamp(9.5px,.62rem + .15vw,11.5px)/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.lc-plan__lbl--l{translate:calc(-100% - 16px) -50%}
+.lc-plan__lbl--office{translate:22px -50%;padding:8px 12px;border-radius:var(--r-chip);color:var(--text);
+  background:linear-gradient(150deg,rgb(255 255 255 / .12),rgb(255 255 255 / .04) 50%,rgb(69 93 255 / .10));box-shadow:inset 0 0 0 1px rgb(0 229 255 / .4),var(--e-1);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.lc-plan__n{position:absolute;left:calc(var(--x) * 100%);top:calc(var(--y) * 100%);translate:-50% 0;font:500 11px/1 var(--f-mono);letter-spacing:.16em;color:var(--muted)}
+.lc-plan__note{grid-column:6 / -1;justify-self:end;margin:calc(var(--s-7) * -1) 8% 0 0;color:rgb(158 176 199 / .8)}
+@media (prefers-reduced-motion:no-preference){
+  html:not([data-motion="reduced"]) .lc-plan__pulse{animation:lc-pulse 3.2s var(--ease-cine) infinite}
+}
+/* Las ramas se dibujan con el scroll (CSS, sin JS): de la oficina hacia cada municipio, una tras otra */
+@supports (animation-timeline:view()){
+  .lc-plan{view-timeline-name:--lcplan}
+  @media (prefers-reduced-motion:no-preference){
+    html:not([data-motion="reduced"]) .lc-plan__branches path{animation:lc-draw linear both;animation-timeline:--lcplan;
+      animation-range:entry calc(10% + var(--i) * 6%) cover calc(42% + var(--i) * 4%)}
+  }
+}
+@keyframes lc-pulse{0%{opacity:.9;scale:1}70%{opacity:0;scale:3.2}100%{opacity:0;scale:3.2}}
+@keyframes lc-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@media (max-width:1023px){
+  .lc-map__text,.lc-plan,.lc-plan__note{grid-column:1 / -1}
+  .lc-plan{max-height:none}
+}
+@media (max-width:767px){
+  .lc-plan{width:calc(100% + 2 * var(--safe-x));margin-inline:calc(var(--safe-x) * -1);
+    -webkit-mask-image:radial-gradient(70% 62% at 50% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(70% 62% at 50% 50%,#000 60%,transparent 100%)}
+  .lc-plan__lbl{font-size:9.5px;letter-spacing:.1em;translate:12px -50%}
+  .lc-plan__lbl--l{translate:calc(-100% - 12px) -50%}
+  .lc-plan__lbl--office{padding:6px 9px;translate:16px -50%}
+  .lc-plan__note{justify-self:start;margin:calc(var(--s-5) * -1) 0 0}
+}
+
+/* ── 08 · VKTOR™ ── */
+.lc-vk .it__body{grid-column:1 / -1}
+.lc-vk .it__body > .lc-vk__rail{align-self:stretch;margin-top:var(--s-7)}
+
+/* ── 09 · Preguntas ── */
+.lc-faq .it__head > .t-lede{margin-top:var(--s-5)}
+.lc-faq .faq{width:100%;align-self:stretch}
+.lc-faq__cta{margin-top:var(--s-6)}
+@media (min-width:1024px){.lc-faq .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}}
+
+/* ── 10 · Cierre ── */
+body.lc #cta-final .is__text{min-width:0}
+body.lc #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-width:none;white-space:normal;text-wrap:balance}
+
+@media (forced-colors:active){.lc-plan__office{fill:CanvasText}.lc-plan__lbl--office{background:Canvas;-webkit-backdrop-filter:none;backdrop-filter:none}}
+/* ===== fin LocalTemplate ===== */
+/* §3.10-2 · velo de esta escena reforzado desde la derecha (la ciudad desenfocada de la placa cruza bajo las listas) */
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .is.lc-reach[data-layout="subject-left"] > .is__fx{background:
+    linear-gradient(270deg,rgb(3 4 11 / .94) 0%,rgb(3 4 11 / .86) 30%,rgb(3 4 11 / .5) 47%,rgb(3 4 11 / 0) 62%),
+    linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent calc(var(--fade-from) * 100% - 8%),var(--ink) 100%),
+    radial-gradient(40% 50% at 78% 50%,rgb(0 229 255 / .06),transparent 70%)}
+}

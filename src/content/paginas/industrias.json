@@ -1,0 +1,299 @@
+{
+  "_schema": "Hub /industrias/ · HubTemplate (T-HUB, ESPEC §5.5). Campos de _ESQUEMA.md §3–§6 y, propios del hub: hero.fig {label,text} (pie de foto anclado, solo si la placa trae fig y mano) · definicion.split {same {title, items[]}, changes {title, items[]}} (lo que se queda igual / lo que cambia por sector) · grid.sectors[] (LocationSwitcher, mismo formato que home.industrias: slug, name, line, href, metricId?, bubbles[2]) · cifras.rows[] {metricId, context} + cifras.transversal[] + cifras.note/noteLabel (EditorNote) · cifras.links[]. Los href a páginas sin construir se pintan como texto (linkTarget).",
+  "pageId": "industrias",
+  "url": "/industrias/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "CAMBIO DE TEXTO · grid: D pedía 8 tarjetas grandes con imagen; la ESPEC §5.5 y R7 piden el mismo LocationSwitcher del inicio (lista de 8 sectores y la escena del sector activo a sangre, sin tarjetas). Las líneas y las conversaciones de ejemplo son distintas a las del inicio para no duplicar texto.",
+    "CAMBIO DE TEXTO · cifras: D pedía una tabla por sector; la ESPEC §5.5 pide EditorNote + Montage. Los cuatro sectores con caso (salud, retail, HoReCa y logística) llevan su cifra; belleza, nutrición, finanzas e inmobiliario se nombran en la nota del editor, sin cifra.",
+    "PREGUNTA AL CLIENTE · grid.sectors[].bubbles: conversaciones de ejemplo (SIMULACIÓN) escritas para esta página. Revisa que el tono y los ejemplos (urgencia en salud, documentos en finanzas, entrega en logística) sean los que quieres mostrar.",
+    "PREGUNTA AL CLIENTE · grid.sectors[industrial].line ('conectados a tu ERP'): sale de la meta de /industrias/industrial-logistica/ (D). Confirma que la integración con ERP se puede prometer en general.",
+    "FAQ · N11 sigue en validar: true en el banco; no se publica en esta página hasta que la apruebes (la página muestra G10, G08 y G11)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (industrias-hero; respaldo: home-sistema-3-organizar) + FigCaption + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Industrias · Mismo sistema",
+      "h1": {
+        "text": "Agentes de IA y automatización",
+        "soft": "para tu industria",
+        "lit": "IA"
+      },
+      "lede": "Cada sector vende distinto. El sistema se adapta a tu operación, no al revés.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de industrias de Ingeniak y quiero saber cómo aplicaría la IA en mi sector."
+      },
+      "fig": {
+        "label": "Fig. 01 · Kain",
+        "text": "El agente de IA de Ingeniak (render). En cada sector cambia su guion; las piezas del sistema son las mismas."
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio, citable) + lo que se queda igual / lo que cambia",
+      "rail": "Lo que comparten",
+      "eyebrow": "Lo que todas comparten",
+      "definition": {
+        "heading": "¿Qué cambia de una industria a otra?",
+        "text": "Todo negocio que vende por conversación necesita lo mismo: atender a cualquier hora, agendar o vender en el chat, registrar a cada cliente en un CRM y darle seguimiento sin capturas a mano. Lo que cambia de un sector a otro es el lenguaje, los horarios, los datos que se piden y las reglas de cada negocio."
+      },
+      "split": {
+        "same": {
+          "title": "Lo que se queda igual",
+          "items": [
+            "Atención en WhatsApp, Instagram, Facebook Messenger, tu web y el correo",
+            "Agenda o venta dentro de la conversación",
+            "Cada cliente registrado en tu CRM, con su historial",
+            "Seguimiento y recordatorios sin capturas a mano"
+          ]
+        },
+        "changes": {
+          "title": "Lo que cambia con tu sector",
+          "items": [
+            "El guion de Kain y las preguntas que hace",
+            "Las etapas de tu CRM y lo que cuenta como venta",
+            "Tus horarios, tus precios y tus reglas",
+            "Lo que conviene automatizar primero"
+          ]
+        }
+      },
+      "note": "Kain no da consejo médico, legal ni financiero: cuando una pregunta lo necesita, pasa la conversación a una persona de tu equipo."
+    },
+    "grid": {
+      "_componente": "LocationSwitcher (8 sectores, escena del sector activo a sangre, SIMULACIÓN con 2 burbujas)",
+      "rail": "Elige tu sector",
+      "eyebrow": "Elige tu sector",
+      "h2": {
+        "text": "Ocho sectores,",
+        "soft": "una escena para cada uno."
+      },
+      "lede": "Elige tu sector y mira cómo trabaja Kain ahí. Donde ya hay un caso publicado, la cifra va con su fuente; donde no, no inventamos una.",
+      "sectors": [
+        {
+          "slug": "salud",
+          "name": "Salud",
+          "line": "Citas agendadas, confirmadas y recordadas por WhatsApp.",
+          "href": "/industrias/salud/",
+          "metricId": "dental-citas",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "Se me rompió un diente, ¿me pueden ver hoy?"
+            },
+            {
+              "who": "kain",
+              "text": "Ya le avisé a la doctora. Te aparto el primer espacio libre de hoy."
+            }
+          ]
+        },
+        {
+          "slug": "belleza",
+          "name": "Belleza y estética",
+          "line": "Precios, horarios y citas resueltos en el mismo chat.",
+          "href": "/industrias/belleza-estetica/",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "¿Cuánto cuesta el facial y qué días tienes?"
+            },
+            {
+              "who": "kain",
+              "text": "Te comparto el precio de tu lista. Tengo jueves 12:00 o viernes 17:00."
+            }
+          ]
+        },
+        {
+          "slug": "nutricion",
+          "name": "Nutrición",
+          "line": "Consultas de seguimiento que no se quedan en el olvido.",
+          "href": "/industrias/nutricion/",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "Ya me toca mi revisión del mes, ¿qué horarios hay?"
+            },
+            {
+              "who": "kain",
+              "text": "Martes 9:00 o jueves 18:30. ¿Te lo aparto y te recuerdo un día antes?"
+            }
+          ]
+        },
+        {
+          "slug": "finanzas",
+          "name": "Finanzas",
+          "line": "Prospectos calificados y documentos listos antes de la cita.",
+          "href": "/industrias/finanzas/",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "Quiero información de un crédito."
+            },
+            {
+              "who": "kain",
+              "text": "Claro. ¿Es personal o para tu negocio? Con eso te agendo con el asesor indicado."
+            }
+          ]
+        },
+        {
+          "slug": "inmobiliario",
+          "name": "Inmobiliario",
+          "line": "Leads de portales calificados por zona y presupuesto.",
+          "href": "/industrias/inmobiliario/",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "Vi la casa del anuncio, ¿se puede visitar el sábado?"
+            },
+            {
+              "who": "kain",
+              "text": "Sí. ¿Te acomoda a las 11:00 o a las 13:00? ¿Ya cuentas con crédito o sería de contado?"
+            }
+          ]
+        },
+        {
+          "slug": "industrial",
+          "name": "Industrial y logística",
+          "line": "Pedidos, rastreo y avisos conectados a tu ERP.",
+          "href": "/industrias/industrial-logistica/",
+          "metricId": "logistica-procesos",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "¿Me confirmas la entrega de mañana?"
+            },
+            {
+              "who": "kain",
+              "text": "Sí: va en ruta para mañana entre 9:00 y 13:00. Te aviso cuando salga."
+            }
+          ]
+        },
+        {
+          "slug": "retail",
+          "name": "Retail y e-commerce",
+          "line": "Ventas por chat con el inventario a la mano.",
+          "href": "/industrias/retail-ecommerce/",
+          "metricId": "retail-conversiones",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "¿Tienen esta chamarra en talla M?"
+            },
+            {
+              "who": "kain",
+              "text": "Sí, en negro y en verde olivo. ¿Te mando el link de pago?"
+            }
+          ]
+        },
+        {
+          "slug": "horeca",
+          "name": "HoReCa",
+          "line": "Reservas por WhatsApp y campañas medidas por mesa.",
+          "href": "/industrias/horeca/",
+          "metricId": "horeca-roas",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "¿Tienen terraza para ocho el sábado?"
+            },
+            {
+              "who": "kain",
+              "text": "Sí: a las 14:00 o a las 20:30. ¿A nombre de quién la reservo?"
+            }
+          ]
+        }
+      ],
+      "footer": "¿Tu sector no aparece? Si vendes por conversación, lo revisamos contigo en la Discovery Session.",
+      "links": [
+        {
+          "label": "Ver todos los casos",
+          "href": "/casos/"
+        }
+      ]
+    },
+    "cifras": {
+      "_componente": "EditorNote + Montage (4 filas, una por sector con caso) + transversal",
+      "rail": "Resultados",
+      "eyebrow": "Resultados por sector",
+      "h2": {
+        "text": "Cifras con sector y fuente,",
+        "soft": "no promesas por industria."
+      },
+      "lede": "Cuatro sectores ya tienen un caso publicado, y cada cifra dice de dónde sale.",
+      "noteLabel": "Nota del editor",
+      "note": "Belleza, nutrición, finanzas e inmobiliario todavía no tienen un caso publicado. En sus páginas, cualquier cifra viene de otro sector y lo dice. No publicamos el caso de un cliente sin su autorización.",
+      "rows": [
+        {
+          "metricId": "dental-citas",
+          "context": "Salud · Clínica dental · Monterrey"
+        },
+        {
+          "metricId": "retail-conversiones",
+          "context": "Retail y e-commerce · Retail multimarca"
+        },
+        {
+          "metricId": "horeca-roas",
+          "context": "HoReCa · Hoteles y restaurantes"
+        },
+        {
+          "metricId": "logistica-procesos",
+          "context": "Industrial y logística · Empresa de logística"
+        }
+      ],
+      "transversal": [
+        "salud-citas-mes",
+        "tiempo-operativo"
+      ],
+      "sourceNote": true,
+      "links": [
+        {
+          "label": "Ver el registro de resultados",
+          "href": "/casos/#registro"
+        }
+      ]
+    },
+    "faq": {
+      "_componente": "Intertitle split + FAQAccordion (N11 en validar: no se publica)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Preguntas",
+        "soft": "por industria."
+      },
+      "faqIds": [
+        "N11",
+        "G10",
+        "G08",
+        "G11"
+      ],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila; respaldo: cta-amanecer en espejo)",
+      "rail": "Cierre",
+      "eyebrow": "Tu sector, tu guion",
+      "h2": {
+        "text": "¿Tu sector no está en la lista?",
+        "soft": "Igual lo vemos en 30 minutos."
+      },
+      "lede": "En la Discovery Session revisamos cómo vendes hoy y te decimos qué pieza del sistema conviene encender primero en tu negocio.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de industrias de Ingeniak y quiero saber cómo aplicaría la IA en mi sector."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

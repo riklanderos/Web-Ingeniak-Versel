@@ -10,6 +10,8 @@
 //   datePublished?, dateModified?  ISO, para Article/BlogPosting
 //   jsonLd?       nodos extra para el @graph (Person, etc.)
 //   articleAbout? Article/BlogPosting → about (casos: el Service; CaseTemplate #9)
+//   articleExtra? propiedades extra del MISMO nodo Article/BlogPosting (wordCount, articleSection, keywords, citation, timeRequired)
+//   howToSteps?   [{ name, text }] × 5: texto completo de cada fase del HowTo (T-METHOD); por defecto, los verbos de VKTOR™
 // FAQPage: faqPageLd() de src/components/ui/ui-data.ts (la misma fuente, filtro y texto que FAQAccordion; una sola implementación).
 import fs from 'node:fs';
 import path from 'node:path';
@@ -31,6 +33,8 @@ interface Props {
   dateModified?: string;
   jsonLd?: Record<string, any>[];
   articleAbout?: Record<string, any> | Record<string, any>[];
+  articleExtra?: Record<string, any>;
+  howToSteps?: { name: string; text: string }[];
 }
 const p = Astro.props;
 const page = p.page as any;
@@ -69,7 +73,7 @@ const ids = p.faq ? undefined : p.faqIds ?? (autoIds?.length ? autoIds : undefin
 const faq: FaqItem[] | undefined = p.faq?.map((f) => ({ ...f, q: tokensToText(f.q), a: tokensToText(f.a) }));
 const faqNode = ids?.length ? faqPageLd(ids, canonical) : null;
 
-const graph = is404 ? [] : buildGraph(page, { faq, faqNode, title, description, ogImage, datePublished: p.datePublished, dateModified: p.dateModified, extra: p.jsonLd, articleAbout: p.articleAbout });
+const graph = is404 ? [] : buildGraph(page, { faq, faqNode, title, description, ogImage, datePublished: p.datePublished, dateModified: p.dateModified, extra: p.jsonLd, articleAbout: p.articleAbout, articleExtra: p.articleExtra, howToSteps: p.howToSteps });
 const isArticle = page.template === 'T-ARTICLE' || page.template === 'T-CASE';
 const ld = graph.length ? JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c') : '';
 ---

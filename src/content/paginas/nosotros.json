@@ -1,0 +1,328 @@
+{
+  "_schema": "Texto de /nosotros/ (T-ABOUT · src/components/templates/AboutTemplate.astro). Mismo formato de _ESQUEMA.md §2–§6 (tokens {{metric:ID}}, {{metric:ID|full}}, {{Price}}, {{source}}; titulares {text, soft, lit}; campos con _ nunca se imprimen). Campos propios de T-ABOUT: ficha.entity {term, value, href?}[] = EntitySheet (mismos datos que el JSON-LD; sin razón social) · manifiesto {eyebrow, h2, body[], firma} = ImageSection mid con nosotros-manifiesto, o Intertitle con revelado palabra por palabra si la portada ya usa esa placa (R6, sin sesión de fotos) · valores.items {title, line}[] = ScriptList · equipo.credits {slug, role, name, line, linkedin?}[] = reparto con fotos reales en duotono (slug = public/img/equipo/<slug>.webp; el texto nunca dice cuántas personas son) · presencia {eyebrow, h2, lede, sectores {label, items {label, href}[]}} = CountryList de metrics.ts + sectores · alianzas.kommo / alianzas.kain {title, body, links[]} · faq y cta-final como en _ESQUEMA.md.",
+  "pageId": "nosotros",
+  "url": "/nosotros/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'. Nadie del equipo de construcción cambia ese campo.",
+    "PREGUNTA AL CLIENTE · portada (ESPEC §12.2 R6): sin la sesión de fotos del equipo, la portada usa la escena de Kain sobre Guadalajara (nosotros-manifiesto) y el equipo vive en la sección 'El equipo' con sus fotos reales. ¿Fecha de la sesión de fotos? Y mientras tanto: ¿una persona de Ingeniak aprueba por escrito la composición cta-equipo (los retratos actuales sobre el horizonte del amanecer) como 'no se ve collage' para usarla de portada?",
+    "PREGUNTA AL CLIENTE · cargos y líneas del equipo (tomados del sitio actual y de v1; cada persona confirma el suyo): Rik Landeros (Director de Estrategia Comercial), Alonso Vega (Arquitecto de IA y Automatización), César Ovalle (Director Creativo), Richard Vela (Medios de Performance; el sitio actual dice 'Especialista en medios de performance'), Andy Pizano (Administración y Finanzas), Marcos González (Líder Comercial). El texto no dice cuántas personas son (RESPUESTAS-CLIENTE 2026-10-19 #7).",
+    "PREGUNTA AL CLIENTE · LinkedIn de cada persona (equipo.credits[].linkedin y sameAs del JSON-LD). Hoy no se publica ninguno.",
+    "PREGUNTA AL CLIENTE · razón social ('Ingeniak Technology, LLC' en el aviso de privacidad actual, 'Radik Soluciones' en la ficha del sitio actual). No se imprime en la ficha ni en el JSON-LD (legalName) hasta confirmarla por escrito.",
+    "PREGUNTA AL CLIENTE · 'Cómo empezamos' (historia): año de fundación, origen e hitos. La sección existe con _omitir y no se publica (el sitio actual dice 'fundada en 2022' sin confirmar).",
+    "PREGUNTA AL CLIENTE · valores.items[3] 'estratega asignado y acceso directo al equipo después del lanzamiento' (del sitio actual y de D): ¿sigue siendo así para todos los clientes?",
+    "PREGUNTA AL CLIENTE · horario de la oficina: no se publica (v1 usaba L–V 09:00–18:00 sin confirmar).",
+    "CAMBIO DE TEXTO · manifiesto: sin 'sistema de dominación comercial' ni 'automáticamente' (RESPUESTAS-CLIENTE #5 y #6). Ahora: 'El marketing es una pieza. Nosotros construimos el sistema completo.' + 'lo operamos con IA y con nuestro equipo' + la firma aprobada (#20) 'Construimos empresarios libres, no héroes cansados.'",
+    "CAMBIO DE TEXTO · presencia: sin mapa con pines (ESPEC §5.9): los países van tipográficos y salen de metrics.ts. Los sectores son las ocho industrias del sitio (el sitio actual lista seis 'estratégicos': salud, belleza, nutrición, finanzas, inmobiliario e industrial). ¿De acuerdo con la lista de ocho?",
+    "CAMBIO DE TEXTO · ficha.lede dice que los datos son los mismos del pie de página y del marcado que leen los buscadores (no menciona Google Business Profile porque no está confirmado que exista).",
+    "DATO PENDIENTE · Person ×6 en el JSON-LD: nombre, cargo (el de esta página), foto y worksFor; sin sameAs hasta tener los LinkedIn."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (equipo-real → respaldo R6: nosotros-manifiesto) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Equipo de Ingeniak · Guadalajara",
+      "h1": {
+        "text": "Estrategas que construyen,",
+        "soft": "operan y miden.",
+        "lit": "construyen"
+      },
+      "lede": "No somos una agencia tradicional: somos especialistas que construimos tu sistema de crecimiento y nos quedamos a operarlo contigo. Desde Guadalajara, para empresas de {{metric:paises|full}}.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página Nosotros de Ingeniak y quiero platicar con el equipo."
+      }
+    },
+    "ficha": {
+      "_componente": "Intertitle (toma desenfocada de la portada) + EntitySheet variant=about",
+      "rail": "Ficha",
+      "eyebrow": "Ingeniak en datos",
+      "h2": {
+        "text": "Lo que puedes",
+        "soft": "verificar de nosotros."
+      },
+      "lede": "Los mismos datos que publicamos en el pie de cada página y en el marcado que leen Google y los motores de IA. Si alguno cambia, cambia en todos lados.",
+      "entity": [
+        {
+          "term": "Nombre comercial",
+          "value": "Ingeniak"
+        },
+        {
+          "term": "Qué hacemos",
+          "value": "Agentes de IA, CRM y automatización conectados en un solo sistema, con paid media, sitios web, software a la medida y SEO"
+        },
+        {
+          "term": "Sede",
+          "value": "Guadalajara, Jalisco, México"
+        },
+        {
+          "term": "Oficina",
+          "value": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640"
+        },
+        {
+          "term": "Alianza",
+          "value": "Partner oficial de Kommo en LATAM"
+        },
+        {
+          "term": "En producción",
+          "value": "{{metric:sistemas|full}}"
+        },
+        {
+          "term": "Presencia",
+          "value": "{{metric:paises|full}}: México (sede), Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador"
+        },
+        {
+          "term": "Metodología",
+          "value": "VKTOR™: Verify · Koncept · Transform · Operate · Rise"
+        },
+        {
+          "term": "Sub-marca",
+          "value": "kain, nuestros agentes de IA · app.kain.mx",
+          "href": "https://app.kain.mx/"
+        },
+        {
+          "term": "Implementación",
+          "value": "De 7 a 30 días, según el alcance"
+        },
+        {
+          "term": "Inversión",
+          "value": "{{Price}}"
+        },
+        {
+          "term": "Correo",
+          "value": "contacto@ingeniak.mx"
+        },
+        {
+          "term": "WhatsApp",
+          "value": "+52 33 2101 7799"
+        },
+        {
+          "term": "Primer paso",
+          "value": "Discovery Session: 30 min · 1:1 · Google Meet · sin costo"
+        }
+      ]
+    },
+    "manifiesto": {
+      "_componente": "ImageSection mid (nosotros-manifiesto, subject-right) o Intertitle con revelado palabra por palabra (si la portada usa esa placa)",
+      "rail": "Manifiesto",
+      "eyebrow": "Manifiesto",
+      "h2": {
+        "text": "El marketing es una pieza.",
+        "soft": "Nosotros construimos el sistema completo."
+      },
+      "body": [
+        "Creamos el tráfico, lo convertimos y lo operamos con IA y con nuestro equipo. El anuncio, la conversación, el CRM y el seguimiento dejan de ser proveedores sueltos: se vuelven un solo sistema que se mide de punta a punta.",
+        "Por eso no entregamos un proyecto y desaparecemos. Lo diseñamos contigo, lo implementamos de 7 a 30 días según el alcance y nos quedamos a operarlo y a mejorarlo cada mes."
+      ],
+      "firma": "Construimos empresarios libres, no héroes cansados."
+    },
+    "historia": {
+      "_omitir": true,
+      "_nota": "Condicional en sitemap.json: no se publica hasta confirmar por escrito año de fundación, origen, hitos y razón social (ver pendientes)."
+    },
+    "valores": {
+      "_componente": "Intertitle + ScriptList",
+      "rail": "Valores",
+      "eyebrow": "Por qué Ingeniak",
+      "h2": {
+        "text": "Cuatro reglas",
+        "soft": "que no negociamos."
+      },
+      "lede": "Valen igual para un agente de WhatsApp que para un CRM completo o una campaña.",
+      "items": [
+        {
+          "title": "Todo conectado",
+          "line": "No trabajamos en silos: tu CRM habla con tus anuncios y tus agentes atienden, califican y agendan o venden según tu negocio."
+        },
+        {
+          "title": "Velocidad con estrategia",
+          "line": "Ejecutamos rápido porque pensamos antes: cada sistema empieza por entender cómo vendes hoy, no por una plantilla."
+        },
+        {
+          "title": "Datos primero",
+          "line": "Todo se conecta a tableros con los datos de tu operación, para que decidas con números y no con corazonadas."
+        },
+        {
+          "title": "Soporte real",
+          "line": "Tienes un estratega asignado y acceso directo al equipo después del lanzamiento. El sistema no se queda solo."
+        }
+      ]
+    },
+    "equipo": {
+      "_componente": "Reparto (fotos reales en duotono, R6 interino) · rol, nombre y una línea por persona",
+      "rail": "Equipo",
+      "eyebrow": "El equipo",
+      "h2": {
+        "text": "Las personas",
+        "soft": "detrás de tu sistema."
+      },
+      "lede": "Estrategia, inteligencia artificial, creatividad, medios, finanzas y ventas en la misma mesa. Cada quien responde por una parte del sistema y todos lo ven completo.",
+      "note": "Fotos reales del equipo, en duotono.",
+      "credits": [
+        {
+          "slug": "rik-landeros",
+          "role": "Director de Estrategia Comercial",
+          "name": "Rik Landeros",
+          "line": "Construye el sistema comercial completo: oferta, embudo, CRM y métricas claras de crecimiento. Conecta tu objetivo de negocio con la tecnología correcta para escalar."
+        },
+        {
+          "slug": "alonso-vega",
+          "role": "Arquitecto de IA y Automatización",
+          "name": "Alonso Vega",
+          "line": "Diseña e implementa los agentes de IA y las automatizaciones que atienden, califican y dan seguimiento a tus leads, para que tu equipo se dedique a cerrar."
+        },
+        {
+          "slug": "cesar-ovalle",
+          "role": "Director Creativo",
+          "name": "César Ovalle",
+          "line": "Convierte la identidad de tu marca en piezas visuales que la posicionan como la opción premium y generan confianza desde el primer contacto."
+        },
+        {
+          "slug": "richard-vela",
+          "role": "Medios de Performance",
+          "name": "Richard Vela",
+          "line": "Escala oportunidades reales con paid media, creatividad orientada a conversión y reportes de atribución."
+        },
+        {
+          "slug": "andy-pizano",
+          "role": "Administración y Finanzas",
+          "name": "Andy Pizano",
+          "line": "Revisa la parte numérica de tu proyecto y cuida que cada inversión que hagas con Ingeniak sea medible y sostenible."
+        },
+        {
+          "slug": "marcos-gonzalez",
+          "role": "Líder Comercial",
+          "name": "Marcos González",
+          "line": "Diagnostica tu operación de ventas, califica las oportunidades reales y la convierte en un proceso que escala."
+        }
+      ]
+    },
+    "presencia": {
+      "_componente": "Intertitle + CountryList (Credits variant=countries, de metrics.ts) + sectores",
+      "rail": "Presencia",
+      "eyebrow": "Presencia",
+      "h2": {
+        "text": "Sede en Guadalajara.",
+        "soft": "Clientes en {{metric:paises|full}}."
+      },
+      "lede": "Trabajamos por Google Meet, WhatsApp y correo con empresas dentro y fuera de México. El método y el equipo son los mismos, estés donde estés.",
+      "sectores": {
+        "label": "Sectores con los que trabajamos",
+        "items": [
+          {
+            "label": "Salud",
+            "href": "/industrias/salud/"
+          },
+          {
+            "label": "Belleza y estética",
+            "href": "/industrias/belleza-estetica/"
+          },
+          {
+            "label": "Nutrición",
+            "href": "/industrias/nutricion/"
+          },
+          {
+            "label": "Finanzas",
+            "href": "/industrias/finanzas/"
+          },
+          {
+            "label": "Inmobiliario",
+            "href": "/industrias/inmobiliario/"
+          },
+          {
+            "label": "Industrial y logística",
+            "href": "/industrias/industrial-logistica/"
+          },
+          {
+            "label": "Retail y e-commerce",
+            "href": "/industrias/retail-ecommerce/"
+          },
+          {
+            "label": "HoReCa",
+            "href": "/industrias/horeca/"
+          }
+        ]
+      }
+    },
+    "alianzas": {
+      "_componente": "KommoBadge + kain (sub-marca)",
+      "rail": "Alianzas",
+      "eyebrow": "Alianzas y marcas",
+      "h2": {
+        "text": "Una alianza oficial",
+        "soft": "y un agente con nombre propio."
+      },
+      "kommo": {
+        "title": "Partner oficial de Kommo en LATAM",
+        "body": "Somos partner oficial y distribuidor de Kommo en Latinoamérica: licencias, implementación del CRM y conexión de WhatsApp con el mismo equipo. Es nuestra única alianza oficial; GoHighLevel, n8n, Make, OpenAI y las demás son herramientas que usamos e integramos.",
+        "links": [
+          {
+            "label": "Kommo con Ingeniak",
+            "href": "/kommo/"
+          }
+        ]
+      },
+      "kain": {
+        "title": "Nuestra sub-marca de agentes de IA",
+        "body": "Kain es el agente de IA que construimos para tu empresa: responde, califica y agenda en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo, y registra cada conversación en tu CRM.",
+        "links": [
+          {
+            "label": "Conoce a Kain",
+            "href": "/kain/"
+          },
+          {
+            "label": "app.kain.mx",
+            "href": "https://app.kain.mx/",
+            "external": true
+          }
+        ]
+      }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (G01, G10, L01, G04)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Lo que nos preguntan",
+        "soft": "antes de conocernos."
+      },
+      "faqIds": [
+        "G01",
+        "G10",
+        "L01",
+        "G04"
+      ],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo)",
+      "rail": "Cierre",
+      "eyebrow": "El primer paso no cuesta nada",
+      "h2": {
+        "text": "Conócenos en 30 minutos,",
+        "soft": "con tu operación sobre la mesa."
+      },
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página Nosotros de Ingeniak y quiero platicar con el equipo."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet",
+      "_lede": {
+        "_omitir": true,
+        "_nota": "Fuera del cierre: con Kain a la izquierda (cta-amanecer en espejo) el filo del horizonte pasa a la altura de la microcopia en movimiento reducido (contraste AA). La promesa ya está en el H2 y en la microcopia.",
+        "text": "En la Discovery Session revisamos contigo cómo vendes y operas hoy, y te decimos qué conviene automatizar primero y en qué orden."
+      }
+    }
+  }
+}

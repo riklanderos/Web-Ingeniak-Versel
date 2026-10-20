@@ -1,0 +1,157 @@
+{
+  "_schema": "Texto publicable de /tecnologias/ (T-STACK, StackTemplate). Forma general: _ESQUEMA.md §2–§6. Campos propios de esta plantilla: hero.badge (rótulo del sello de Kommo anclado a la placa). criterios.items[] = {n, title, line}. Las cinco secciones del stack (modelos, crm, automatizacion, canales-ads, datos-software) se pintan como UN solo StackHub; cada una trae {rail, label, title, line, tools[], links[]} y la primera trae además intro = {eyebrow, h2, lede} (titular del StackHub). tools[] = {slug, name, role, href?, partner?}: slug = archivo de public/img/logos (vía TOOLS de ui-data); sin logo publicado se pinta solo el nombre; partner:true = sello oficial de Kommo (único partner). aviso-marcas = {label, text}. Los campos que empiezan con _ no se imprimen.",
+  "pageId": "tecnologias",
+  "url": "/tecnologias/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · lista de herramientas: la página muestra las del brief de D y del sitio actual (OpenAI, Claude, Gemini, Kommo, GoHighLevel, HubSpot, n8n, Make, Zapier, WhatsApp Business, Instagram, Facebook Messenger, Meta Ads, Google Ads, TikTok Ads, Google Analytics, Supabase, Stripe, Notion, ElevenLabs y HeyGen). ¿Sobra alguna o falta alguna que sí usen hoy (por ejemplo, Pinterest o LinkedIn Ads, que el sitio actual menciona en paid media)?",
+    "PREGUNTA AL CLIENTE · HubSpot: el brief dice 'integramos'. ¿Lo integran cuando el cliente ya lo usa (así lo dice la página) o también lo implementan desde cero?",
+    "PREGUNTA AL CLIENTE · Notion, ElevenLabs y HeyGen: ¿se usan en proyectos de clientes (contenido, voces, video) o solo dentro de Ingeniak? Hoy la página los pone en 'Datos, pagos y contenido' con su función general, sin decir en qué proyectos.",
+    "FAQ PENDIENTE · H04 (¿Ingeniak es partner de GoHighLevel?) está en validar: true en faq.json; mientras no se apruebe no sale en el acordeón ni en el FAQPage. El aviso de marcas ya dice lo mismo en una línea.",
+    "CAMBIO DE TEXTO · las funciones de cada herramienta (tools[].role) describen para qué sirve la herramienta dentro del sistema, sin decir 'certificado', 'oficial' ni 'partner' (salvo Kommo) y sin atribuir a ningún modelo de IA un uso fijo: la regla confirmada es la de G09 (elegimos el modelo según la calidad de sus respuestas, su velocidad y su costo de uso)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (tecnologias-hero; respaldo: home-sistema-4-automatizar) + sello de Kommo anclado al piso",
+      "rail": "Portada",
+      "eyebrow": "El stack de Ingeniak",
+      "h1": { "text": "Tecnologías", "soft": "con las que construimos tu sistema", "lit": "Tecnologías" },
+      "lede": "Elegimos la herramienta según el proceso, no al revés. Conectamos lo que ya usas y sumamos solo lo que falta.",
+      "badge": "Partner oficial de Kommo en Latinoamérica",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de tecnologías y quiero conectar las herramientas que ya uso."
+      }
+    },
+    "criterios": {
+      "_componente": "Intertitle sobre la copia desenfocada de la portada (SharedTake) + cuatro criterios en filas numeradas",
+      "rail": "Cómo elegimos",
+      "eyebrow": "Cómo elegimos",
+      "h2": { "text": "Cuatro preguntas", "soft": "antes de recomendarte una herramienta." },
+      "lede": "La herramienta correcta es la que resuelve tu proceso y tu equipo puede sostener. Por eso, antes de recomendar una, respondemos estas cuatro preguntas contigo.",
+      "items": [
+        { "n": "01", "title": "¿Qué resuelve en tu proceso?", "line": "Partimos del problema: contestar más rápido, no perder prospectos, dejar de capturar a mano. Si una herramienta no mueve eso, no entra." },
+        { "n": "02", "title": "¿Con qué ya trabaja tu equipo?", "line": "Si tu CRM, tu calendario o tu hoja de cálculo ya funcionan, los conectamos en lugar de reemplazarlos. Cambiar de herramienta también cuesta." },
+        { "n": "03", "title": "¿Cuánto cuesta de verdad?", "line": "Sumamos licencias, el costo de uso de los modelos de IA y el tiempo de tu equipo, no solo el precio de lista." },
+        { "n": "04", "title": "¿Quién la opera después?", "line": "Elegimos lo que tu equipo puede usar sin depender de nosotros para cada cambio, y lo dejamos capacitado en la fase Operate de VKTOR™." }
+      ]
+    },
+    "modelos": {
+      "_componente": "StackHub (grupo 1 de 5): isotipo de cristal con ramas hacia cada grupo; cada grupo = créditos de logo + función",
+      "rail": "Modelos de IA",
+      "intro": {
+        "eyebrow": "El stack",
+        "h2": { "text": "Cinco capas,", "soft": "un solo sistema." },
+        "lede": "Cada herramienta tiene un trabajo. Lo que importa es que estén conectadas: lo que pasa en una conversación llega al CRM, dispara una automatización y se ve en tus métricas."
+      },
+      "label": "Modelos de IA",
+      "title": "Los que entienden y responden",
+      "line": "Entienden lo que escribe tu cliente, responden con tu información, clasifican y resumen. Elegimos el modelo que mejor resuelve cada proceso por la calidad de sus respuestas, su velocidad y su costo de uso.",
+      "tools": [
+        { "slug": "openai", "name": "OpenAI", "role": "Modelos GPT" },
+        { "slug": "claude", "name": "Claude", "role": "Modelos de Anthropic" },
+        { "slug": "gemini", "name": "Gemini", "role": "Modelos de Google" }
+      ],
+      "links": []
+    },
+    "crm": {
+      "_componente": "StackHub (grupo 2 de 5) + sello oficial de Kommo enlazado a kommo.com",
+      "rail": "CRM",
+      "label": "CRM",
+      "title": "Donde vive cada cliente",
+      "line": "Cada conversación y cada lead quedan registrados con su etapa, para que tu equipo vea todo en un solo lugar.",
+      "tools": [
+        { "slug": "kommo", "name": "Kommo", "role": "CRM pensado para conversaciones de chat. Somos partner oficial en Latinoamérica.", "href": "/kommo/", "partner": true },
+        { "slug": "gohighlevel", "name": "GoHighLevel", "role": "CRM, embudos, calendarios y recordatorios en una sola plataforma. Lo implementamos en español.", "href": "/gohighlevel/" },
+        { "slug": "hubspot", "name": "HubSpot", "role": "Si tu equipo ya lo usa, lo integramos al sistema." }
+      ],
+      "links": []
+    },
+    "automatizacion": {
+      "_componente": "StackHub (grupo 3 de 5)",
+      "rail": "Automatización",
+      "label": "Automatización",
+      "title": "Lo que pasa después de la conversación",
+      "line": "Flujos que mueven la información entre tus sistemas sin captura manual: seguimientos, recordatorios, reportes y avisos a tu equipo.",
+      "tools": [
+        { "slug": "n8n", "name": "n8n", "role": "Flujos a la medida entre tus sistemas, incluidos los que usan IA.", "href": "/servicios/automatizacion-n8n/" },
+        { "slug": "make", "name": "Make", "role": "Integraciones visuales entre aplicaciones." },
+        { "slug": "zapier", "name": "Zapier", "role": "Conexiones rápidas entre aplicaciones." }
+      ],
+      "links": [
+        { "label": "Automatización con n8n", "href": "/servicios/automatizacion-n8n/" },
+        { "label": "n8n vs Zapier vs Make", "href": "/blog/n8n-vs-zapier-vs-make/" }
+      ]
+    },
+    "canales-ads": {
+      "_componente": "StackHub (grupo 4 de 5)",
+      "rail": "Canales y publicidad",
+      "label": "Canales y publicidad",
+      "title": "Donde te encuentran y te escriben",
+      "line": "Kain atiende en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo. Las campañas que traen a esos clientes van conectadas al CRM, para saber cuáles terminan en venta.",
+      "tools": [
+        { "slug": "whatsapp", "name": "WhatsApp Business", "role": "Donde Kain atiende, agenda y da seguimiento.", "href": "/servicios/agentes-ia-whatsapp/" },
+        { "slug": "instagram", "name": "Instagram", "role": "Mensajes directos de tu cuenta." },
+        { "slug": "facebook", "name": "Facebook Messenger", "role": "Mensajes de tu página." },
+        { "slug": "meta", "name": "Meta Ads", "role": "Campañas en Facebook e Instagram.", "href": "/servicios/paid-media/" },
+        { "slug": "googleads", "name": "Google Ads", "role": "Campañas en el buscador de Google.", "href": "/servicios/paid-media/" },
+        { "slug": "tiktok", "name": "TikTok Ads", "role": "Campañas en TikTok.", "href": "/servicios/paid-media/" },
+        { "slug": "analytics", "name": "Google Analytics", "role": "Medición de tu sitio y de tus campañas." }
+      ],
+      "links": [
+        { "label": "Agentes de IA para WhatsApp", "href": "/servicios/agentes-ia-whatsapp/" },
+        { "label": "Paid media", "href": "/servicios/paid-media/" }
+      ]
+    },
+    "datos-software": {
+      "_componente": "StackHub (grupo 5 de 5)",
+      "rail": "Datos y contenido",
+      "label": "Datos, pagos y contenido",
+      "title": "Lo que sostiene al sistema",
+      "line": "Para lo que un CRM no cubre: software a la medida con su propia base de datos, cobros conectados y herramientas para producir contenido.",
+      "tools": [
+        { "slug": "supabase", "name": "Supabase", "role": "Base de datos y autenticación.", "href": "/servicios/desarrollo-software/" },
+        { "slug": "stripe", "name": "Stripe", "role": "Cobros en línea.", "href": "/servicios/desarrollo-software/" },
+        { "slug": "notion", "name": "Notion", "role": "Documentación y procesos." },
+        { "slug": "elevenlabs", "name": "ElevenLabs", "role": "Voces generadas con IA.", "href": "/servicios/branding/" },
+        { "slug": "heygen", "name": "HeyGen", "role": "Video con avatares de IA.", "href": "/servicios/branding/" }
+      ],
+      "links": [
+        { "label": "Software a la medida", "href": "/servicios/desarrollo-software/" },
+        { "label": "Branding y contenido", "href": "/servicios/branding/" }
+      ]
+    },
+    "aviso-marcas": {
+      "_componente": "EditorNote 'Aviso de marcas' + sello de Kommo",
+      "rail": "Aviso de marcas",
+      "label": "Aviso de marcas",
+      "text": "Las marcas mostradas son de sus dueños. Solo Kommo es alianza oficial; las demás son herramientas que usamos o integramos."
+    },
+    "faq": {
+      "_componente": "FAQAccordion (G09, W02, H04; H04 sale cuando se apruebe)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas", "soft": "sobre el stack." },
+      "faqIds": ["G09", "W02", "H04"],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo)",
+      "rail": "Cierre",
+      "eyebrow": "Conecta lo que ya tienes",
+      "h2": { "text": "¿Ya usas alguna de estas herramientas?", "soft": "Conectémoslas." },
+      "lede": "En la Discovery Session revisamos qué usas hoy, qué se queda, qué se conecta y qué falta, antes de recomendarte nada.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de tecnologías y quiero conectar las herramientas que ya uso."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

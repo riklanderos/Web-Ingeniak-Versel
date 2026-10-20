@@ -1,0 +1,449 @@
+{
+  "_schema": {
+    "_nota": "Esquema T-ARTICLE (ArticleTemplate.astro · ESPEC §5.10, §8.5, R1, R8). Todo campo que empieza con _ es nota y no se imprime. Tokens de cifra y precio: _ESQUEMA.md §5 ({{metric:ID}}, |full, |prose, {{price}}, {{Price}}, {{source}}). Nunca cifras ni precios de Ingeniak escritos a mano; tarifas de terceros: se describen y se enlazan, no se copian (check-cifras solo admite PRICE_FROM).",
+    "raiz": "pageId, url, estado (borrador|revisión|aprobado), autor, aprobadoPor, publicado y actualizado (AAAA-MM-DD reales: datePublished/dateModified, R8), pendientes[] (paquete de aprobación, no se imprime).",
+    "articulo": "categoria (etiqueta de la portada y articleSection), about[] ({type, name, url} → BlogPosting.about en el JSON-LD; una ruta interna construida vale como Service).",
+    "hero": "eyebrow (categoría visible), h1 {text, soft, lit} (text + ' ' + soft = sitemap.h1; lit = subcadena con la única .lit de la página), deck (entradilla .t-standfirst, ≤ 40 palabras; en móvil las primeras ~22 palabras van arriba y el resto baja junto a la firma), byline (crédito visible: 'Equipo de Ingeniak' mientras no se confirme autor, R8), jump (texto del enlace a la respuesta corta), ui? {label, title, items[]} (figura registrada en la superficie de cristal de la placa; si la placa no tiene superficie, no se pinta).",
+    "respuesta": "label (eyebrow), heading (h2, sin tokens), text (40–60 palabras, la respuesta en la primera oración, citable).",
+    "indice": "label (título del índice). Los renglones salen de cuerpo.blocks con variant 'h2' (campo rail = texto corto del índice) más la respuesta, el FAQ y las fuentes.",
+    "cuerpo": "blocks[]: un string = párrafo. Objetos por variant → 'h2' {id, text, rail} · 'h3' {text} · 'ul'/'ol' {items[]} · 'note' {label, text} · 'table' {caption, head[], rows[][], note} (la primera celda de cada fila es su encabezado) · 'steps' {items[{title, text}]} · 'calc' {id, eyebrow, title, lede, formula{terms[], result}, fields[{id, label, hint, mode: count|percent|money}], result{month, year, empty}, note} · 'scene' {id, plate{id, layout, mirror, launchFallback}, eyebrow, title, metricId, text, links[{label, href}], illus} (ImageSection mid a sangre dentro del artículo) · 'cta-medio' (posición del CTA intermedio). En texto: [etiqueta](/ruta/ o https://…) = enlace (las rutas sin construir se pintan como texto), **negritas**, [^n] = llamada a la fuente n de fuentes.items.",
+    "cta-medio": "label, text, link {label, href} (página comercial del tema; sin construir = no se pinta), ctaPrimary {label, href}, ctaSecondary {label, waMessage = sitemap.secondaryCta.waMessage}.",
+    "faq": "eyebrow, h2 {text, soft}, faqIds[] (banco src/data/faq.json; las 'validar' no se publican y vuelven solas al aprobarse).",
+    "autor": "bio (una o dos oraciones; la tarjeta firma 'Equipo de Ingeniak' hasta que haya autor confirmado, R8).",
+    "fuentes": "eyebrow, h2 {text}, lede, items[{title, publisher, href, consultado AAAA-MM-DD, nota}] (numeradas en orden; [^n] apunta a items[n-1]), internas (línea de cifras propias con {{source}}).",
+    "relacionados": "eyebrow, items[{href, label, title, line, plate?}] (solo se pintan rutas construidas; si faltan, se completan con páginas construidas).",
+    "cta-final": "eyebrow, h2 {text, soft}, ctaPrimary, ctaSecondary {label, waMessage}, micro."
+  },
+  "pageId": "art-n8n",
+  "url": "/blog/n8n-vs-zapier-vs-make/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "publicado": "2026-10-19",
+  "actualizado": "2026-10-19",
+  "articulo": {
+    "categoria": "Automatización",
+    "about": [
+      {
+        "type": "SoftwareApplication",
+        "name": "n8n",
+        "url": "https://n8n.io/"
+      },
+      {
+        "type": "SoftwareApplication",
+        "name": "Zapier",
+        "url": "https://zapier.com/"
+      },
+      {
+        "type": "SoftwareApplication",
+        "name": "Make",
+        "url": "https://www.make.com/"
+      },
+      {
+        "type": "Service",
+        "name": "Automatización de procesos con n8n",
+        "url": "/servicios/automatizacion-n8n/"
+      }
+    ]
+  },
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Alonso Vega como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
+    "PREGUNTA AL CLIENTE · regla de elección (misma que /servicios/automatizacion-n8n/ #comparativa): 'Zapier para conexiones simples que necesitas hoy; Make para escenarios visuales que tu equipo quiera ajustar; n8n cuando el proceso es central y va a crecer'. ¿Coincide con cómo eligen ustedes? Sale en la respuesta corta, la tabla (fila 'Con Ingeniak') y #cuando-elegimos.",
+    "PREGUNTA AL CLIENTE · ¿instalan n8n en la infraestructura del cliente (autoalojado)? El texto lo presenta solo como capacidad de n8n, con su documentación como fuente; no afirma que Ingeniak lo ofrezca.",
+    "PREGUNTA AL CLIENTE · ¿usan Zapier Agents o Make AI Agents en algún proyecto? El texto los describe como producto de cada empresa y solo dice que, para agentes que actúan en varios sistemas, Ingeniak prefiere n8n (coherente con la página de servicio).",
+    "FAQ · N05 sigue en 'validar' en el banco: se lista en faqIds pero no se publica hasta su aprobación. Hoy la página publica G06 y G09 (las dos aprobadas y con esta URL en pages).",
+    "DATO DE TERCEROS · modelo de cobro, planes gratuitos, autoalojamiento, conectores, agentes de IA y conexión con sistemas locales de n8n, Zapier y Make consultados el 2026-10-19 en sus páginas oficiales (fuentes 1 a 8; la 6 es una entrada del blog de Zapier publicada el 6 de noviembre de 2025). No se copian precios ni límites numéricos de planes (check-cifras y la regla de D: 'según documentación oficial vigente'). Revisar cada trimestre y actualizar 'actualizado'.",
+    "CAMBIO DE TEXTO · el brief de D pedía 'La respuesta corta' como sección 1 del cuerpo; es la caja AnswerBox y encabeza el índice. Las otras cinco secciones de D están completas y en orden.",
+    "CAMBIO DE TEXTO · #caso-logistica: el H2 no lleva '27 procesos' escrito a mano (check-cifras); la cifra sale con <Metric> en la escena a sangre (logistica-procesos, una vez fuera del FAQ). Del caso solo se usa lo confirmado en sitemap.json: logística, n8n y agentes de IA, CRM, WhatsApp, ERP y modelos de IA con disparadores en tiempo real. No se describe punto de partida (no confirmado).",
+    "ENLACES · /casos/logistica-n8n/ ya existe como caso breve (noindex mientras su puerta R2 siga pendiente); la escena y 'Sigue explorando' la enlazan. Si se retira, la plantilla pinta el texto sin enlace y completa con páginas construidas.",
+    "PLACA · portada home-sistema-4-automatizar en espejo (la misma de /servicios/automatizacion-n8n/, corte por coincidencia), escena caso-logistica-hero y cierre cta-amanecer, como pide sitemap.json. hero.ui queda escrito, pero la plantilla solo pinta la figura sobre una superficie telefono/pantalla/tableta y esta placa registra 'constelacion' (pedido en peticiones.md · Construcción · artículos)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (home-sistema-4-automatizar en espejo: Kain toca un nodo de la constelación) + figura registrada si la plantilla acepta la superficie constelacion",
+      "eyebrow": "Automatización",
+      "h1": {
+        "text": "n8n vs Zapier vs Make:",
+        "soft": "cuál elegir para automatizar tu empresa",
+        "lit": "elegir"
+      },
+      "deck": "Cómo cobra cada una, dónde corren tus flujos, qué tan lejos llegan con agentes de IA y cuánto cuesta aprenderlas. Con sus páginas oficiales en la mano y la regla con la que elegimos.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta",
+      "ui": {
+        "label": "Fig. 01",
+        "title": "Lo que decide la herramienta",
+        "items": [
+          "Modelo de cobro",
+          "Dónde corre",
+          "Conectores",
+          "Agentes de IA",
+          "Curva de aprendizaje"
+        ]
+      }
+    },
+    "respuesta": {
+      "_componente": "Intertitle (rack sobre la portada desenfocada) + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "Depende del flujo, no de la marca",
+      "text": "Zapier conviene para conectar aplicaciones populares con flujos cortos que necesitas hoy; Make, para escenarios más elaborados que tu equipo quiera ver y ajustar en un lienzo visual; y n8n, para procesos centrales con lógica compleja, agentes de IA o datos que deben quedarse en tu infraestructura. En Ingeniak elegimos n8n cuando el flujo va a crecer."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con escena a sangre (caso logística) y CTA intermedio",
+      "blocks": [
+        {
+          "variant": "h2",
+          "id": "que-es-cada-una",
+          "text": "Qué es cada una",
+          "rail": "Qué es cada una"
+        },
+        "Las tres resuelven lo mismo en el fondo: cuando pasa algo en una aplicación (llega un formulario, entra un pago, alguien escribe por WhatsApp), otra aplicación hace algo sin que una persona copie los datos. La diferencia está en cómo lo hacen, en cuánto cobran y en dónde corre el trabajo.",
+        {
+          "variant": "h3",
+          "text": "n8n: flujos a fondo, en la nube o en tu servidor"
+        },
+        "n8n es una plataforma de automatización con un editor visual de nodos en el que, cuando hace falta, puedes meter código en JavaScript o Python y llamar a cualquier API.[^1] Se usa en n8n Cloud, administrada por la propia n8n,[^2] o se instala en tu infraestructura: tus servidores o una nube privada.[^3] Su edición Community, la que instalas tú, es gratuita y trae casi todas las funciones.[^2] Para agentes de IA tiene un nodo propio: le conectas un modelo y las herramientas que puede usar, y el agente decide cuál llamar para completar la tarea.[^4]",
+        {
+          "variant": "h3",
+          "text": "Zapier: la entrada más rápida"
+        },
+        "Zapier es la más conocida. Cada automatización es un Zap: un disparador y una o más acciones. Conecta más de nueve mil aplicaciones, tiene un plan gratuito con Zaps de dos pasos y, en sus planes de pago, Zaps de varios pasos, tablas, formularios y un asistente con IA, Copilot, que ayuda a armarlos.[^5]",
+        {
+          "variant": "h3",
+          "text": "Make: escenarios visuales con más control"
+        },
+        "Make arma cada automatización como un escenario en un lienzo, donde ves los módulos conectados y por dónde pasa cada dato. Conecta más de tres mil quinientas aplicaciones, tiene plan gratuito y cobra con créditos: la mayoría de las acciones de un escenario consume uno. Sus agentes de IA, todavía en beta, están en todos los planes.[^7]",
+        {
+          "variant": "note",
+          "label": "En corto",
+          "text": "Zapier es la entrada más rápida. Make da más control sin escribir código. n8n llega más lejos, pero pide a alguien que sepa construir y mantener los flujos."
+        },
+        {
+          "variant": "h2",
+          "id": "comparativa",
+          "text": "Comparativa: cobro, autoalojamiento, conectores, IA y curva de aprendizaje",
+          "rail": "Comparativa"
+        },
+        "Esta tabla resume lo que publican n8n, Zapier y Make en sus páginas oficiales, consultadas el 19 de octubre de 2026, y lo que vemos al construir con cada una. Abajo explicamos cada criterio.",
+        {
+          "variant": "table",
+          "caption": "n8n, Zapier y Make, lado a lado",
+          "head": [
+            "Criterio",
+            "n8n",
+            "Zapier",
+            "Make"
+          ],
+          "rows": [
+            [
+              "Qué cobra",
+              "Ejecuciones: cada corrida completa de un flujo, sin importar cuántos pasos tenga",
+              "Tareas: cada acción que se completa con éxito",
+              "Créditos: la mayoría de las acciones consume uno; algunas funciones de IA, más"
+            ],
+            [
+              "Plan gratuito",
+              "Edición Community, instalada por ti; en la nube, prueba gratis",
+              "Plan gratis con Zaps de dos pasos",
+              "Plan gratis con créditos mensuales y dos escenarios activos"
+            ],
+            [
+              "Dónde corre",
+              "En n8n Cloud o en tu infraestructura: tus servidores o una nube privada",
+              "En la nube de Zapier; conectar sistemas locales requiere su plan Enterprise",
+              "En la nube de Make; su agente para sistemas locales es del plan Enterprise"
+            ],
+            [
+              "Conectores",
+              "Catálogo más corto, con nodos de HTTP y de código para cualquier API",
+              "Más de nueve mil aplicaciones",
+              "Más de tres mil quinientas aplicaciones"
+            ],
+            [
+              "Agentes de IA",
+              "Nodo AI Agent con modelo, herramientas y aprobación humana de acciones",
+              "Zapier Agents, con planes propios por actividades; los pasos de IA consumen tareas",
+              "Make AI Agents (beta) en todos los planes, con su proveedor de IA o tu propia llave"
+            ],
+            [
+              "Curva de aprendizaje",
+              "La más técnica, sobre todo si la instalas tú",
+              "La más baja",
+              "Intermedia: visual, con más lógica que Zapier"
+            ],
+            [
+              "Con Ingeniak",
+              "La elegimos cuando el proceso es central y va a crecer",
+              "Para conexiones simples que necesitas hoy",
+              "Para escenarios visuales que tu equipo quiera ajustar"
+            ]
+          ],
+          "note": "Fuentes 1 a 8, consultadas el 19 de octubre de 2026. Planes, límites y funciones cambian: revisa la versión vigente antes de contratar."
+        },
+        {
+          "variant": "h3",
+          "text": "Modelo de cobro"
+        },
+        "Es la diferencia que más pesa en la factura. Zapier cobra una tarea por cada acción que se completa con éxito; el disparador no cuenta, ni sus herramientas internas de filtros, formato y rutas.[^5] Make cobra créditos: cada acción de módulo consume uno, y algunas funciones de IA consumen más.[^7] n8n cobra por ejecución: una corrida completa del flujo cuenta una vez, tenga tres pasos o treinta.[^1]",
+        "Un ejemplo: llega un formulario, se limpian los datos, se crea el contacto en el CRM, se avisa por WhatsApp al vendedor y se actualiza una hoja de cálculo. En Zapier son al menos tres tareas, una por acción, porque el disparador y la limpieza con su formateador no cuentan. En Make, cada módulo que actúa consume créditos. En n8n es una ejecución. Con pocos flujos la diferencia es chica; con miles de corridas al mes, decide la factura.",
+        {
+          "variant": "h3",
+          "text": "Autoalojamiento: dónde viven tus datos"
+        },
+        "Si tus datos no deben salir de tu infraestructura, o necesitas tocar sistemas que viven dentro de tu red, n8n es la única de las tres que puedes instalar en tus servidores, on-premises o en una nube privada, con Docker u otros métodos.[^3] Zapier y Make funcionan en su propia nube. Para alcanzar sistemas de tu red, Zapier indica que necesitas su plan Enterprise y tener tu infraestructura en AWS,[^6] y Make ofrece un agente on-premise solo para clientes Enterprise.[^8]",
+        "Autoalojar no sale gratis aunque la licencia lo sea: alguien tiene que instalar, actualizar, respaldar y vigilar el servidor. La propia documentación de n8n lo recomienda cuando tienes la infraestructura y los recursos técnicos para administrarlo; si no, recomienda su nube.[^2]",
+        {
+          "variant": "h3",
+          "text": "Conectores"
+        },
+        "Zapier tiene el catálogo más grande: si tus aplicaciones son populares, lo más probable es que ya estén ahí con disparadores y acciones listos.[^5] Make le sigue.[^7] n8n tiene un catálogo más corto, pero cualquier sistema con API se integra con sus nodos de HTTP o de código, y en la versión que instalas tú puedes crear nodos propios.[^1] Para un ERP local o un sistema hecho a la medida, eso pesa más que el tamaño del catálogo.",
+        {
+          "variant": "h3",
+          "text": "Agentes de IA"
+        },
+        "Las tres ya traen agentes de IA, pero no con el mismo nivel de control. En n8n el agente es un nodo más del flujo: eliges el modelo y le das herramientas (consultar el CRM, registrar un pedido, mandar un mensaje),[^4] y puedes pedir que una persona apruebe antes de que ejecute una acción.[^1] Zapier vende sus agentes como producto aparte, con planes por número de actividades, y sus pasos de IA consumen tareas del plan.[^5] Make incluye sus agentes, todavía en beta, en todos sus planes, y puedes usarlos con su proveedor de IA o con tu propia llave.[^7]",
+        "Para un agente que solo resume o clasifica un texto, cualquiera sirve. Para uno que tiene que consultar varios sistemas, decidir y actuar dentro de tu operación, preferimos n8n: el flujo completo queda a la vista, en un solo lugar y bajo tu control.",
+        {
+          "variant": "h3",
+          "text": "Curva de aprendizaje"
+        },
+        "Zapier se aprende rápido: un Zap es un disparador y sus acciones. Make pide entender cómo viajan los datos entre módulos, rutas y filtros, y a cambio da más control. n8n es la más técnica: se aprovecha mejor con alguien que entienda de APIs y de datos y, si la instalas tú, de servidores. Esa curva explica por qué muchas empresas prefieren que alguien les construya y les opere sus flujos en n8n.",
+        {
+          "variant": "cta-medio"
+        },
+        {
+          "variant": "h2",
+          "id": "cuando-elegimos",
+          "text": "Cuándo elegimos n8n y cuándo Make o Zapier",
+          "rail": "Cuándo elegimos cada una"
+        },
+        "En Ingeniak trabajamos con las tres y la regla es sencilla: decide el proceso, no la marca. Antes de elegir, dibujamos el flujo como está hoy: qué lo dispara, por qué sistemas pasa, qué decisiones toma y qué pasa si falla.",
+        {
+          "variant": "ul",
+          "items": [
+            "**Zapier,** cuando necesitas conectar dos o tres aplicaciones populares con un flujo corto, sin lógica complicada, y lo quieres funcionando hoy. Por ejemplo: cada prospecto nuevo de un formulario va a una hoja de cálculo y el equipo recibe un aviso.",
+            "**Make,** cuando el escenario tiene rutas, filtros y transformaciones de datos, y tu equipo quiere verlo en un lienzo y ajustarlo sin escribir código.",
+            "**n8n,** cuando el proceso es central para tu operación y va a crecer: muchos sistemas a la vez, volumen alto, agentes de IA que actúan dentro de tus sistemas o datos que deben quedarse en tu infraestructura."
+          ]
+        },
+        "Hay una señal práctica: si un flujo en Zapier o en Make empieza a necesitar parches para cada excepción, o la factura de tareas o créditos crece cada mes, probablemente ya es un flujo de n8n. Y al revés: no tiene sentido montar un servidor de n8n para mandar un correo cada vez que alguien llena un formulario.",
+        {
+          "variant": "note",
+          "label": "Ojo con el costo total",
+          "text": "Compara el costo total, no el precio del plan: la suscripción, el consumo en tareas, créditos o ejecuciones, el servidor si lo hay y las horas de quien construye y mantiene los flujos."
+        },
+        {
+          "variant": "h2",
+          "id": "caso-logistica",
+          "text": "Caso: una empresa de logística con sus sistemas conectados en n8n",
+          "rail": "Caso logística"
+        },
+        "Este es el tipo de proyecto en el que elegimos n8n sin dudar: varios sistemas que tienen que hablar entre sí, procesos que se repiten todos los días y decisiones que un modelo de IA puede tomar dentro del flujo.",
+        {
+          "variant": "scene",
+          "id": "escena-caso-logistica",
+          "plate": {
+            "id": "caso-logistica-hero",
+            "layout": "subject-right",
+            "mirror": false
+          },
+          "eyebrow": "Caso real · Logística · n8n",
+          "title": "Su CRM, WhatsApp y su ERP, hablando entre sí.",
+          "metricId": "logistica-procesos",
+          "text": "Conectamos su CRM, WhatsApp, su ERP y modelos de IA en n8n, con disparadores en tiempo real: cada flujo arranca en cuanto pasa algo en la operación, sin que nadie copie datos de un sistema a otro.",
+          "links": [
+            {
+              "label": "Ver el caso completo",
+              "href": "/casos/logistica-n8n/"
+            },
+            {
+              "label": "Cómo automatizamos con n8n",
+              "href": "/servicios/automatizacion-n8n/"
+            }
+          ],
+          "illus": "Imagen ilustrativa del sector"
+        },
+        "Por qué n8n aquí: eran varios sistemas a la vez, con disparadores en tiempo real y modelos de IA dentro de los flujos. Con muchos pasos por corrida, cobrar por ejecución y no por acción cambia la cuenta; y tener toda la lógica en un solo lugar permite revisarla y ajustarla cuando la operación cambia.",
+        "No te prometemos esa cifra para tu empresa: depende de tus procesos y de tus sistemas. Lo que el caso sí muestra es un orden que funciona: conectar lo que ya tienes antes de pensar en reemplazar sistemas.",
+        {
+          "variant": "h2",
+          "id": "que-automatizar-primero",
+          "text": "Qué automatizar primero: cinco ideas",
+          "rail": "Qué automatizar primero"
+        },
+        "El mejor primer flujo no es el más vistoso, sino el que se repite más veces, sigue reglas claras y cuesta caro cuando falla. Estas cinco ideas cumplen las tres condiciones en casi cualquier empresa:",
+        {
+          "variant": "steps",
+          "items": [
+            {
+              "title": "Formularios y anuncios, directo al CRM",
+              "text": "Cada prospecto entra a su etapa con su origen (qué anuncio, qué página) y alguien recibe el aviso al momento. Es sencillo y evita el prospecto olvidado en una bandeja de correo."
+            },
+            {
+              "title": "Conversaciones de WhatsApp registradas",
+              "text": "Cada chat crea o actualiza el contacto en tu CRM. Si además tienes un agente de IA, el flujo le da acceso a tu agenda y a tus datos para que responda con información real."
+            },
+            {
+              "title": "Recordatorios y confirmaciones",
+              "text": "Citas, pagos, renovaciones y entregas: el aviso sale a tiempo todos los días, sin depender de que alguien se acuerde."
+            },
+            {
+              "title": "Reportes que llegan solos",
+              "text": "Ventas, citas o pedidos de la semana, armados y enviados a quien los necesita, sin juntar números de cinco lugares cada lunes."
+            },
+            {
+              "title": "Alertas en tiempo real",
+              "text": "Un pedido atorado, una queja o un prospecto caliente avisan a la persona correcta en el momento, por el canal que sí revisa."
+            }
+          ]
+        },
+        "Para elegir el primero, haz una lista de las tareas que tu equipo repite cada semana y anota tres cosas de cada una: cuántas veces pasa, cuánto tarda y qué cuesta un error. La que gane en las tres es tu primer flujo, y casi siempre conviene construirla con la herramienta más sencilla que la resuelva.",
+        "En Ingeniak los proyectos empiezan {{price}}, e implementar un sistema toma de 7 a 30 días, según el alcance. En la Discovery Session revisamos tus procesos y te decimos cuál automatizar primero y con qué herramienta. Si basta con Zapier, te lo decimos."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿No sabes cuál conviene para tu proceso? Mira cómo automatizamos con n8n o escríbele a Kain y cuéntale qué tarea repite tu equipo cada semana.",
+      "link": {
+        "label": "Automatización con n8n",
+        "href": "/servicios/automatizacion-n8n/"
+      },
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí la comparativa n8n vs Zapier vs Make y quiero automatizar mi empresa."
+      }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json; N05 en validar: no se publica)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "n8n, Zapier y Make,",
+        "soft": "y cómo trabajamos con ellas."
+      },
+      "faqIds": [
+        "N05",
+        "G06",
+        "G09"
+      ]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo que construye y opera flujos con n8n, Make y Zapier en Ingeniak. Lo revisamos cuando cambian los planes, los límites o las funciones de IA que citamos."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": {
+        "text": "Fuentes y fecha de consulta"
+      },
+      "lede": "Comparamos con lo que cada empresa publica en sus páginas oficiales, consultadas el 19 de octubre de 2026. Planes, límites y funciones cambian: revisa la versión vigente antes de contratar.",
+      "items": [
+        {
+          "title": "Plans and Pricing",
+          "publisher": "n8n",
+          "href": "https://n8n.io/pricing/",
+          "consultado": "2026-10-19",
+          "nota": "Cobro por ejecución completa del flujo, planes en la nube, edición Community, pasos de código (JavaScript y Python) y peticiones HTTP, nodos propios en la versión autoalojada, agentes y aprobación humana de llamadas a herramientas."
+        },
+        {
+          "title": "Choose how to use n8n",
+          "publisher": "Documentación de n8n",
+          "href": "https://docs.n8n.io/choose-how-to-use-n8n",
+          "consultado": "2026-10-19",
+          "nota": "n8n Cloud o autoalojado; edición Community gratuita con casi todas las funciones; autoalojar requiere conocimientos técnicos e infraestructura propia."
+        },
+        {
+          "title": "Host n8n",
+          "publisher": "Documentación de n8n",
+          "href": "https://docs.n8n.io/deploy/host-n8n",
+          "consultado": "2026-10-19",
+          "nota": "Instalación en infraestructura propia, on-premises o en una nube privada, con Docker Compose y otros métodos."
+        },
+        {
+          "title": "AI Agent node",
+          "publisher": "Documentación de n8n",
+          "href": "https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.agent",
+          "consultado": "2026-10-19",
+          "nota": "El agente se conecta a un modelo y a una o más herramientas, y decide cuál llamar para completar la tarea."
+        },
+        {
+          "title": "Plans & Pricing",
+          "publisher": "Zapier",
+          "href": "https://zapier.com/pricing",
+          "consultado": "2026-10-19",
+          "nota": "Cobro por tareas (cada acción exitosa; el disparador y las herramientas internas no cuentan), pasos de IA con el mismo modelo de tareas, plan gratuito con Zaps de dos pasos, más de nueve mil aplicaciones, Copilot y planes de Zapier Agents por actividades."
+        },
+        {
+          "title": "Can Zapier connect to on-premises services?",
+          "publisher": "Blog de Zapier",
+          "href": "https://zapier.com/blog/can-zapier-connect-to-on-premises/",
+          "consultado": "2026-10-19",
+          "nota": "Conexión con servicios locales: plan Enterprise e infraestructura en AWS (entrada publicada el 6 de noviembre de 2025)."
+        },
+        {
+          "title": "Pricing & Subscription Packages",
+          "publisher": "Make",
+          "href": "https://www.make.com/en/pricing",
+          "consultado": "2026-10-19",
+          "nota": "Cobro por créditos, plan gratuito con dos escenarios activos, más de tres mil quinientas aplicaciones, Make AI Agents (beta) en todos los planes y agente on-premise en Enterprise."
+        },
+        {
+          "title": "On-premise agent",
+          "publisher": "Centro de ayuda de Make",
+          "href": "https://help.make.com/on-premise-agent",
+          "consultado": "2026-10-19",
+          "nota": "Disponible para clientes Enterprise: permite que los escenarios accedan a aplicaciones y bases de datos de la red local."
+        }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}. Los nombres de los clientes están anonimizados."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "items": [
+        {
+          "href": "/servicios/automatizacion-n8n/",
+          "label": "Servicio",
+          "title": "Automatización con n8n",
+          "line": "Flujos que conectan tus sistemas y quitan el trabajo repetitivo."
+        },
+        {
+          "href": "/casos/logistica-n8n/",
+          "label": "Caso de estudio",
+          "title": "Logística con n8n",
+          "line": "CRM, WhatsApp, ERP y modelos de IA conectados."
+        },
+        {
+          "href": "/tecnologias/",
+          "label": "Tecnologías",
+          "title": "Las herramientas con las que construimos",
+          "line": "Kommo, GoHighLevel, n8n, Make y los modelos de IA que usamos."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "eyebrow": "Empieza por uno",
+      "h2": {
+        "text": "¿Qué automatizarías primero?",
+        "soft": "Lo priorizamos en 30 minutos."
+      },
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí la comparativa n8n vs Zapier vs Make y quiero automatizar mi empresa."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

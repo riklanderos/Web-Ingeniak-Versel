@@ -1,0 +1,217 @@
+{
+  "_schema": {
+    "_nota": "Esquema T-ARTICLE (ArticleTemplate.astro · ESPEC §5.10, §8.5, R1, R8). Todo campo que empieza con _ es nota y no se imprime. Tokens de cifra y precio: _ESQUEMA.md §5 ({{metric:ID}}, |full, |prose, {{price}}, {{Price}}, {{source}}). Nunca cifras ni precios de Ingeniak escritos a mano; tarifas de terceros: se describen y se enlazan, no se copian (check-cifras solo admite PRICE_FROM).",
+    "raiz": "pageId, url, estado (borrador|revisión|aprobado), autor, aprobadoPor, publicado y actualizado (AAAA-MM-DD reales: datePublished/dateModified, R8), pendientes[] (paquete de aprobación, no se imprime).",
+    "articulo": "categoria (etiqueta de la portada y articleSection), about[] ({type, name, url} → BlogPosting.about en el JSON-LD; una ruta interna construida vale como Service).",
+    "hero": "eyebrow (categoría visible), h1 {text, soft, lit} (text + ' ' + soft = sitemap.h1; lit = subcadena con la única .lit de la página), deck (entradilla .t-standfirst, ≤ 40 palabras; en móvil las primeras ~22 palabras van arriba y el resto baja junto a la firma), byline (crédito visible: 'Equipo de Ingeniak' mientras no se confirme autor, R8), jump (texto del enlace a la respuesta corta), ui? {label, title, items[]} (figura registrada en la superficie de cristal de la placa; si la placa no tiene superficie, no se pinta).",
+    "respuesta": "label (eyebrow), heading (h2, sin tokens), text (40–60 palabras, la respuesta en la primera oración, citable).",
+    "indice": "label (título del índice). Los renglones salen de cuerpo.blocks con variant 'h2' (campo rail = texto corto del índice) más la respuesta, el FAQ y las fuentes.",
+    "cuerpo": "blocks[]: un string = párrafo. Objetos por variant → 'h2' {id, text, rail} · 'h3' {text} · 'ul'/'ol' {items[]} · 'note' {label, text} · 'table' {caption, head[], rows[][], note} (la primera celda de cada fila es su encabezado) · 'steps' {items[{title, text}]} · 'calc' {id, eyebrow, title, lede, formula{terms[], result}, fields[{id, label, hint, mode: count|percent|money}], result{month, year, empty}, note} · 'scene' {id, plate{id, layout, mirror, launchFallback}, eyebrow, title, metricId, text, links[{label, href}], illus} (ImageSection mid a sangre dentro del artículo) · 'cta-medio' (posición del CTA intermedio). En texto: [etiqueta](/ruta/ o https://…) = enlace (las rutas sin construir se pintan como texto), **negritas**, [^n] = llamada a la fuente n de fuentes.items.",
+    "cta-medio": "label, text, link {label, href} (página comercial del tema; sin construir = no se pinta), ctaPrimary {label, href}, ctaSecondary {label, waMessage = sitemap.secondaryCta.waMessage}.",
+    "faq": "eyebrow, h2 {text, soft}, faqIds[] (banco src/data/faq.json; las 'validar' no se publican y vuelven solas al aprobarse).",
+    "autor": "bio (una o dos oraciones; la tarjeta firma 'Equipo de Ingeniak' hasta que haya autor confirmado, R8).",
+    "fuentes": "eyebrow, h2 {text}, lede, items[{title, publisher, href, consultado AAAA-MM-DD, nota}] (numeradas en orden; [^n] apunta a items[n-1]), internas (línea de cifras propias con {{source}}).",
+    "relacionados": "eyebrow, items[{href, label, title, line, plate?}] (solo se pintan rutas construidas; si faltan, se completan con páginas construidas).",
+    "cta-final": "eyebrow, h2 {text, soft}, ctaPrimary, ctaSecondary {label, waMessage}, micro."
+  },
+  "pageId": "art-agente-chatbot",
+  "url": "/blog/agente-ia-whatsapp-vs-chatbot/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "publicado": "2026-10-19",
+  "actualizado": "2026-10-19",
+  "articulo": {
+    "categoria": "Agentes de IA",
+    "about": [
+      { "type": "Service", "name": "Agentes de IA para WhatsApp", "url": "/servicios/agentes-ia-whatsapp/" },
+      { "type": "SoftwareApplication", "name": "Meta Business Agent", "url": "https://whatsappbusiness.com/products/business-app-ai-agent/" }
+    ]
+  },
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Alonso Vega como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
+    "PREGUNTA AL CLIENTE · '¿Kain se presenta siempre como asistente de IA?' La sección 'Qué no debe hacer' recomienda que el agente no se haga pasar por una persona y que el cliente pueda pedir a alguien del equipo en cualquier momento. Es una recomendación general, no se afirma de Kain; si así opera Kain, se puede decir en primera persona.",
+    "FUENTE · D pedía el Centro de ayuda de WhatsApp sobre el agente de Meta (faq.whatsapp.com/291930066973116). Ese sitio no se pudo leer con nuestras herramientas el 2026-10-19 (solo cargó el título). Se citan, en su lugar, la página oficial del producto en whatsappbusiness.com (que enlaza a ese centro de ayuda) y el anuncio de Meta del 3 de junio de 2026. Si alguien del equipo lo revisa, confirmar que no contradice la sección 5.",
+    "DATO DE TERCEROS · Meta Business Agent (qué hace, de dónde aprende, controles, disponibilidad por mercado, gratis al empezar y suscripciones de pago anunciadas), la ventana de servicio de 24 horas y los límites de botones y listas de WhatsApp se consultaron el 2026-10-19 en páginas oficiales de Meta (fuentes 1 a 5). Meta está ampliando su agente por mercado: revisar el artículo cada trimestre y actualizar 'actualizado'.",
+    "CAMBIO DE TEXTO · el brief de D pedía la respuesta corta como bloque de 40–60 palabras: es la caja de respuesta corta (definición de G02 + diferencia de G03, una oración cada una) y encabeza el índice. Las siete secciones de D están completas y en orden; se sumó una octava, 'Por dónde empezar', que enlaza a la página comercial y al artículo de precios.",
+    "CIFRAS · dental-respuesta aparece dos veces fuera del FAQ (H2 del caso con el token |prose y la cifra mega de la escena); dental-citas, una (texto de la escena); sistemas, una (escena 'Un agente a la medida…'). W01 repite las dos del caso dentro del FAQ.",
+    "PLACA · la portada usa art-agente-chatbot-hero (ya exportada). No lleva figura registrada: la superficie es la pantalla de la terminal apagada (el chatbot de antes) y a 1440 px mide menos de 180 px, donde la figura solo pintaría barras cian sin texto; una figura 'viva' sobre la terminal muerta contradice la escena. Escenas del cuerpo: home-sistema-3-organizar (Kain sostiene la tarjeta del lead frente a los carriles del CRM, sujeto a la derecha) y caso-dental-hero (persona a la derecha); el cierre, cta-amanecer en espejo. Se descartó kain-si-no (sujeto a la izquierda): la prosa que sigue a una escena sube 108 px sobre su disolución y quedaba encima de los pies y la plataforma de Kain. R13: ninguna pose ni objeto de Kain se repite en escenas seguidas."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (art-agente-chatbot-hero: Kain iluminado junto a la terminal de menús apagada; sin figura registrada)",
+      "eyebrow": "Agentes de IA",
+      "h1": { "text": "Agente de IA para WhatsApp vs chatbot:", "soft": "qué cambia y cuándo conviene cada uno", "lit": "cambia" },
+      "deck": "Un chatbot te pone un menú; un agente entiende lo que le escriben, consulta tu CRM y agenda. Qué hace cada uno, qué no debe hacer un agente y cuándo te basta un chatbot.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta"
+    },
+    "respuesta": {
+      "_componente": "Intertitle (rack sobre la portada desenfocada) + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "Uno conversa y resuelve; el otro sigue un menú",
+      "text": "Un agente de IA para WhatsApp es un asistente que entiende lo que escribe tu cliente, responde con la información de tu negocio, lo califica, lo registra en tu CRM y le agenda cita. Un chatbot de menús, en cambio, sigue un árbol de opciones fijas y se atora cuando la pregunta se sale del guion."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con dos escenas a sangre y CTA intermedio",
+      "blocks": [
+        { "variant": "h2", "id": "que-es-un-agente", "text": "Qué es un agente de IA para WhatsApp", "rail": "Qué es un agente" },
+        "Un agente de IA para WhatsApp es un asistente basado en modelos de lenguaje que atiende las conversaciones de tu WhatsApp Business. Lee lo que escribe el cliente con sus propias palabras, entiende qué necesita, responde con la información de tu negocio y hace algo con esa conversación: la registra, califica al prospecto, aparta una cita o se la pasa a la persona correcta.",
+        "La palabra que importa es **agente**. Un asistente que solo contesta preguntas sigue siendo, en el fondo, un buscador amable. Un agente tiene herramientas: consulta tu catálogo, revisa tu agenda, crea el registro en tu CRM y avisa a tu equipo. Por eso la conversación no termina en una respuesta, sino en un siguiente paso.",
+        { "variant": "h3", "text": "Cómo funciona un chatbot de menús" },
+        "El chatbot tradicional es un árbol de decisiones. Saluda, muestra opciones y espera a que elijas una. En WhatsApp, esas opciones suelen llegar como botones o listas: la plataforma permite hasta tres botones de respuesta por mensaje y listas de hasta diez opciones.[^1][^2] Cada camino lo escribió alguien antes, y el bot solo puede recorrer los caminos que ya existen.",
+        "Funciona bien mientras el cliente pregunte lo que el menú prevé. El problema llega con mensajes como «¿tienen algo para mañana temprano y aceptan tarjeta?», que mezclan dos temas y no caben en ningún botón. Ahí el chatbot repite el menú, contesta otra cosa o deja al cliente esperando a que alguien lo rescate.",
+        { "variant": "note", "label": "En corto", "text": "Un chatbot recorre caminos que alguien escribió. Un agente entiende la conversación y decide el siguiente paso con tus reglas." },
+
+        { "variant": "h2", "id": "tabla-comparativa", "text": "Agente de IA vs chatbot de menús, lado a lado", "rail": "Tabla comparativa" },
+        "Esta tabla resume las diferencias que más pesan cuando WhatsApp es tu canal de venta o de citas. La columna del chatbot describe un bot de menús tradicional; la del agente, uno conectado a tu CRM y a tu agenda.",
+        { "variant": "table", "caption": "Agente de IA vs chatbot de menús", "head": ["Criterio", "Chatbot de menús", "Agente de IA"], "rows": [
+          ["Cómo entiende", "Botones, listas o palabras clave que alguien programó", "Lenguaje natural: lo que el cliente escribe, como lo escribe"],
+          ["Preguntas fuera del guion", "Repite el menú o contesta otra cosa", "Responde con tu información o pasa a una persona"],
+          ["Información que usa", "Textos fijos dentro del bot", "Tu catálogo, tus precios vigentes, tu agenda y tu CRM"],
+          ["Cómo termina la conversación", "Informa o manda un enlace", "Califica, agenda, registra el lead y avisa a tu equipo"],
+          ["Seguimiento", "Solo si alguien programa cada mensaje", "Recordatorios, confirmaciones y retomas con reglas claras"],
+          ["Cuando no sabe", "Se atora", "Lo dice y entrega la conversación con el historial"],
+          ["Puesta en marcha", "Rápida si el menú es corto", "Pide diseñar reglas, conectar sistemas y probar con tu equipo"],
+          ["Mantenimiento", "Cada cambio es un camino nuevo en el árbol", "Se actualiza la información y se ajustan las reglas"]
+        ], "note": "El chatbot no es una mala herramienta: resuelve otro problema. Más abajo te decimos cuándo te basta." },
+
+        { "variant": "h2", "id": "que-puede-hacer", "text": "Qué puede hacer un agente de IA en tu WhatsApp", "rail": "Qué puede hacer" },
+        "Un agente bien implementado cubre el recorrido completo de una conversación comercial, desde el primer «hola» hasta que alguien de tu equipo retoma el caso. Estas son las cinco tareas que más tiempo le quitan a un equipo y que un agente puede asumir:",
+        { "variant": "steps", "items": [
+          { "title": "Responder", "text": "Contesta en segundos, a cualquier hora, con la información que tú cargas y apruebas: servicios, horarios, ubicación, formas de pago y políticas." },
+          { "title": "Calificar", "text": "Hace las preguntas que haría tu mejor vendedor: qué busca la persona, para cuándo lo necesita y si encaja con lo que vendes. Así tu equipo atiende primero a quien está listo para comprar." },
+          { "title": "Agendar", "text": "Ofrece horarios disponibles y aparta la cita en el calendario de tu CRM o en el que ya usa tu equipo. También puede confirmarla y recordarla antes de la fecha." },
+          { "title": "Registrar en el CRM", "text": "Cada conversación entra a Kommo o GoHighLevel como un lead, con su historial y su etapa, sin que nadie copie datos a mano." },
+          { "title": "Dar seguimiento", "text": "Retoma a quien dejó de contestar y envía recordatorios con reglas claras. Ojo con una regla de WhatsApp: cada mensaje del cliente abre una ventana de 24 horas para responder libremente; cerrada esa ventana, solo puedes escribirle con plantillas de mensaje.[^3]" }
+        ] },
+        "Kain, el agente de IA de Ingeniak, hace estas cinco tareas en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo. Cuando un caso necesita a una persona, se lo pasa a tu equipo con toda la conversación.",
+
+        { "variant": "h2", "id": "que-no-debe-hacer", "text": "Qué no debe hacer un agente de IA", "rail": "Qué no debe hacer" },
+        "Que un agente pueda conversar no significa que deba contestarlo todo. Un buen diseño empieza por los límites, y conviene escribirlos antes de encenderlo:",
+        { "variant": "ul", "items": [
+          "**No da consejo médico ni legal.** Si un paciente describe un síntoma o un cliente pregunta algo que requiere a un profesional, el agente lo dice con claridad y pasa la conversación a tu equipo.",
+          "**No inventa precios, existencias ni promociones.** Solo responde con la información que tú cargas y apruebas. Si un dato no está, lo dice y lo consulta con tu equipo, en lugar de adivinar.",
+          "**No promete lo que tu negocio no ha decidido.** Descuentos especiales, excepciones, devoluciones o fechas de entrega fuera de política van con una persona.",
+          "**No se hace pasar por una persona.** El cliente debe saber que habla con un asistente y poder pedir a alguien de tu equipo en cualquier momento.",
+          "**No resuelve solo los temas delicados.** Quejas, urgencias y clientes molestos se escalan con el historial completo para que nadie tenga que volver a preguntar."
+        ] },
+        "Estos límites no le restan valor al agente: son lo que permite que tu equipo confíe en él. En una clínica, por ejemplo, el agente agenda, confirma y da seguimiento, pero cualquier pregunta clínica la responde un profesional. Lo explicamos con más detalle en [nuestra página de IA para salud](/industrias/salud/).",
+        { "variant": "cta-medio" },
+
+        { "variant": "h2", "id": "agente-de-meta", "text": "El agente de Meta vs un agente a la medida conectado a tu CRM", "rail": "Agente de Meta vs a la medida" },
+        "En junio de 2026, Meta presentó **Meta Business Agent**, su propio agente de IA para empresas.[^4] Se activa desde la app de WhatsApp Business; aprende de tu página de Facebook, de tus chats anteriores, de tu sitio web y de tu catálogo, y responde preguntas, recomienda productos y pide datos a tus clientes. Tú decides a quién responde (a todos, solo a clientes nuevos o a quienes llegan de tus anuncios) y qué temas te pasa.[^5]",
+        "Según Meta, también puede agendar citas y calificar leads. Al presentarlo, dijo que empezar era gratis y que en los meses siguientes lo ofrecería con suscripciones de pago; para empresas grandes anunció una plataforma que lo conecta con cientos de sistemas, como Shopify o Zendesk.[^4] Hoy está disponible para empresas elegibles en algunos mercados.[^5] En la plataforma de WhatsApp Business (la API), Meta cobra los mensajes de su agente con una tarifa por tokens.[^3]",
+        "Para un negocio pequeño que vende desde la app de WhatsApp Business, es una opción real y vale la pena probarla. La diferencia con un agente a la medida no está en que uno «tenga IA» y el otro no, sino en dónde vive, de dónde aprende y a qué se conecta.",
+        { "variant": "table", "caption": "Meta Business Agent y un agente a la medida", "head": ["Criterio", "Meta Business Agent", "Agente a la medida conectado a tu CRM"], "rows": [
+          ["Dónde vive", "En las apps de Meta: WhatsApp, Messenger y tus anuncios; Meta lo está llevando a Instagram", "En los canales que definas: WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo"],
+          ["De dónde aprende", "Tu página de Facebook, tus chats, tu sitio y tu catálogo", "La información y las reglas que defines con quien lo implementa"],
+          ["Tu CRM", "Para empresas grandes, una plataforma que conecta con sistemas como Shopify o Zendesk", "Se diseña alrededor de Kommo o GoHighLevel: cada conversación entra como lead, con su etapa"],
+          ["Reglas", "Instrucciones, temas a evitar y cuándo pasarte la conversación", "Tus criterios de calificación, agenda, seguimiento y avisos, por escrito"],
+          ["Puesta en marcha", "La haces tú desde la app; Meta dice que en minutos", "Se diseña con tu equipo; implementar un sistema toma de 7 a 30 días, según el alcance"],
+          ["Quién lo ajusta", "Tú, revisando y corrigiendo sus respuestas", "El equipo que lo opera, contigo, con datos de tus conversaciones"],
+          ["Cuándo conviene", "Negocio pequeño, sin CRM, con preguntas y recomendaciones de producto", "Ventas o citas que dependen de WhatsApp, con equipo comercial y CRM"]
+        ], "note": "Condiciones de Meta consultadas el 19 de octubre de 2026 en sus páginas oficiales (fuentes 3, 4 y 5). Meta lo está ampliando por mercado: revisa la versión vigente." },
+        "Elegir no es cuestión de marca. Si tu negocio vive de la app de WhatsApp Business y lo que necesitas es contestar preguntas de producto, empieza por lo más sencillo. Si cada conversación tiene que terminar en una cita, en una venta o en un registro que tu equipo pueda seguir, lo que necesitas es un agente diseñado alrededor de tu proceso.",
+        { "variant": "scene", "id": "escena-a-la-medida",
+          "plate": { "id": "home-sistema-3-organizar", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Ingeniak en datos",
+          "title": "Un agente a la medida es un sistema, no una app.",
+          "metricId": "sistemas",
+          "text": "Diseñamos, implementamos y operamos agentes de IA, CRM y automatizaciones para empresas de México y Latinoamérica, y los ajustamos con lo que pasa en sus conversaciones reales.",
+          "links": [ { "label": "Ver cómo trabaja un agente conectado a tu CRM", "href": "/servicios/agentes-ia-whatsapp/" } ] },
+
+        { "variant": "h2", "id": "cuando-basta-un-chatbot", "text": "Cuándo te basta un chatbot", "rail": "Cuándo basta un chatbot" },
+        "Hay negocios a los que un agente de IA les queda grande, al menos por ahora. Un chatbot de menús, o incluso las herramientas que ya trae la app de WhatsApp Business, pueden ser suficientes si:",
+        { "variant": "ul", "items": [
+          "Recibes pocos mensajes y casi todos preguntan lo mismo: horario, ubicación, precio de lista.",
+          "La conversación termina en un dato, no en una venta ni en una cita.",
+          "No tienes CRM ni agenda que conectar, y nadie de tu equipo necesita ver el historial.",
+          "Tu catálogo es corto y casi no cambia."
+        ] },
+        "En cambio, conviene un agente cuando:",
+        { "variant": "ul", "items": [
+          "Tus ventas o tus citas dependen de WhatsApp y de responder rápido.",
+          "Te escriben fuera de horario o en horas pico que tu equipo no alcanza a cubrir.",
+          "Las preguntas se mezclan: precio, disponibilidad, ubicación y forma de pago en el mismo mensaje.",
+          "Necesitas que cada conversación quede en tu CRM y que alguien le dé seguimiento."
+        ] },
+        { "variant": "note", "label": "Una prueba rápida", "text": "Revisa tus últimas cincuenta conversaciones. Si casi todas caben en un menú de tres botones, empieza con un chatbot. Si la mayoría necesitó a una persona para cerrar, lo que te falta es un agente." },
+
+        { "variant": "h2", "id": "caso-real", "text": "Caso real: {{metric:dental-respuesta|prose}}", "rail": "El caso de la clínica" },
+        "El caso que mejor muestra la diferencia es el de una clínica dental de Monterrey. Su reto no era la falta de pacientes interesados, sino el tiempo: en WhatsApp, quien busca cita muchas veces le escribe a más de un consultorio y se queda con el primero que le responde.",
+        "Un chatbot de menús habría contestado rápido, pero con botones, y la cita habría seguido dependiendo de la recepción. Lo que implementamos fue un agente de IA conectado a GoHighLevel, el CRM de la clínica: contesta, califica a cada paciente, le agenda la cita directo en el calendario, la confirma y le da seguimiento, a cualquier hora. Cuando detecta una urgencia, avisa al doctor en tiempo real.",
+        { "variant": "scene", "id": "escena-caso-dental",
+          "plate": { "id": "caso-dental-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Caso real · Salud · Monterrey",
+          "title": "Del primer mensaje a la cita, sin esperar a la recepción.",
+          "metricId": "dental-respuesta",
+          "text": "Además de responder en segundos, el agente agenda y confirma cada cita y registra a cada paciente en GoHighLevel. En el mismo proyecto, la clínica logró {{metric:dental-citas|full}}.",
+          "links": [ { "label": "Ver el caso completo", "href": "/casos/clinica-dental-monterrey/" } ],
+          "illus": "Imagen ilustrativa del sector" },
+        "Esos números son de una clínica, con su volumen y su equipo; en tu negocio dependerán de los tuyos. Lo que sí se repite es el patrón: el valor no está solo en contestar rápido, sino en que la respuesta rápida termine en una cita registrada que tu equipo puede ver.",
+
+        { "variant": "h2", "id": "por-donde-empezar", "text": "Por dónde empezar", "rail": "Por dónde empezar" },
+        "No necesitas decidirlo todo hoy. Estos cuatro pasos te dicen si te conviene un agente y qué debería hacer en tu negocio:",
+        { "variant": "ol", "items": [
+          "**Cuenta tus conversaciones.** Cuántas llegan por semana, a qué horas y cuántas terminan en venta o en cita.",
+          "**Escribe los límites.** Qué puede contestar el agente, qué datos necesita y en qué momento pasa a una persona.",
+          "**Conecta lo mínimo.** Tu WhatsApp, tu CRM y tu agenda. Lo demás se suma cuando la primera pieza ya da resultados.",
+          "**Mide antes y después.** Tiempo de respuesta, citas o ventas: los mismos indicadores, con los mismos criterios."
+        ] },
+        "En Ingeniak lo hacemos contigo. En una Discovery Session de 30 minutos revisamos cómo te llegan los clientes y te decimos si un agente tiene sentido para tu negocio o si, por ahora, te basta con algo más sencillo. Implementar un sistema toma de 7 a 30 días, según el alcance, y nuestros proyectos empiezan {{price}}. Si quieres el detalle de costos, lee [cuánto cuesta un agente de IA para WhatsApp en México](/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/)."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Quieres ver cómo conversa un agente de IA? Conoce a Kain o escríbele por WhatsApp como le escribiría uno de tus clientes.",
+      "link": { "label": "Conoce a Kain", "href": "/kain/" },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí la diferencia entre un agente de IA y un chatbot y quiero ver cómo funcionas." }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Agente de IA y chatbot,", "soft": "en cuatro respuestas." },
+      "faqIds": ["G02", "G03", "N01", "W01"]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo de Ingeniak que diseña, implementa y opera agentes de IA conectados a Kommo y GoHighLevel. Lo revisamos cuando Meta cambia las reglas de WhatsApp o de su propio agente."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": { "text": "Fuentes y fecha de consulta" },
+      "lede": "Las funciones y reglas de Meta cambian por mercado y por fecha. Las consultamos en sus páginas oficiales el 19 de octubre de 2026; antes de decidir, revisa la versión vigente.",
+      "items": [
+        { "title": "Interactive reply buttons messages", "publisher": "Meta for Developers", "href": "https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/interactive-reply-buttons-messages", "consultado": "2026-10-19", "nota": "Mensajes con hasta tres respuestas predefinidas en forma de botón." },
+        { "title": "Interactive list messages", "publisher": "Meta for Developers", "href": "https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/interactive-list-messages", "consultado": "2026-10-19", "nota": "Listas de opciones con hasta diez renglones en total." },
+        { "title": "Pricing on the WhatsApp Business Platform", "publisher": "Meta for Developers", "href": "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing", "consultado": "2026-10-19", "nota": "Ventana de servicio de 24 horas (fuera de ella, solo plantillas) y cobro por tokens de los mensajes de Meta Business Agent." },
+        { "title": "Be There for Every Customer With Meta Business Agent", "publisher": "Meta Newsroom", "href": "https://about.fb.com/news/2026/06/meta-business-agent/", "consultado": "2026-10-19", "nota": "Anuncio del 3 de junio de 2026: citas y calificación de leads, inicio gratuito y suscripciones de pago anunciadas, y plataforma para empresas grandes." },
+        { "title": "Meta Business Agent on WhatsApp", "publisher": "WhatsApp for Business (Meta)", "href": "https://whatsappbusiness.com/products/business-app-ai-agent/", "consultado": "2026-10-19", "nota": "Qué hace el agente, de dónde aprende, controles de conocimiento, tono, audiencia y traspaso a una persona, y disponibilidad para empresas elegibles en mercados seleccionados." }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}. Los nombres de los clientes están anonimizados."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "items": [
+        { "href": "/servicios/agentes-ia-whatsapp/", "label": "Servicio", "title": "Agentes de IA para WhatsApp", "line": "Cómo atiende, califica y agenda un agente conectado a tu CRM." },
+        { "href": "/kain/", "label": "kain", "title": "Conoce a Kain", "line": "El agente de IA de Ingeniak, en primera persona." },
+        { "href": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/", "label": "Blog", "title": "¿Cuánto cuesta un agente de IA?", "line": "Qué mueve el precio y cómo hacer la cuenta con tus números." }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo: Kain saluda, texto a la derecha)",
+      "eyebrow": "Tu caso",
+      "h2": { "text": "¿Qué respondería un agente en tu WhatsApp?", "soft": "Te lo mostramos." },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí la diferencia entre un agente de IA y un chatbot y quiero ver cómo funcionas." },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

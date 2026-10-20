@@ -4,7 +4,7 @@
 // Todos los enlaces están en el HTML estático; el JS (scripts/nav/mega.ts) solo abre, cierra y cambia la pantalla.
 // Props: panel ('servicios' | 'industrias' | 'casos' | 'empresa' | 'recursos'), current (URL de la página actual).
 import { METRICS, PRICE_FROM, type MetricId } from '../../lib/metrics';
-import { MEGA, STAGES, metricFor, stillOf, shortName, type NavLink } from '../layout/navData';
+import { MEGA, STAGES, metricFor, screenOf, screenFrame, plateFromStill, SCREEN_DEFAULT_PLATE, type NavLink, type ScreenFrame } from '../layout/navData';
 import { ICONS, GLYPH_LABEL } from './icons';
 import { SITE } from '../../lib/site';
 
@@ -13,20 +13,26 @@ const { panel, current = '' } = Astro.props;
 const data: any = (MEGA as any)[panel];
 const label: string = data?.label ?? panel;
 
-type Screen = { href: string; still: string; label: string; title: string; line: string; hud: string };
-const scr = (href: string, label: string, title: string, line = '', still?: string): Screen => ({
-  href, still: still ?? stillOf(href), label, title, line, hud: href.replace(/^https?:\/\//, ''),
+// Pantalla = placa de la portada destino encuadrada con su caja del sujeto (Kain de cuerpo completo; navData → screenOf).
+type Screen = ScreenFrame & { href: string; label: string; title: string; line: string; hud: string };
+const scr = (href: string, label: string, title: string, line = '', plate?: string): Screen => ({
+  ...(plate ? screenFrame(plate) : screenOf(href)), href, label, title, line, hud: href.replace(/^https?:\/\//, ''),
 });
+const fb = screenFrame(SCREEN_DEFAULT_PLATE);
+/** Atributos de un enlace que cambia la pantalla. */
+const shot = (s: ScreenFrame) => ({ 'data-still-src': s.src, 'data-frame': s.frame, 'data-copy': s.copy });
 
 // Pantalla por defecto de cada panel (§4.2)
 const defaults: Record<string, Screen> = {
-  servicios: scr(data?.feature?.href ?? '/kain/', 'Kain · Atender', data?.feature?.label ?? 'Conoce a Kain', data?.feature?.description ?? '', data?.feature?.image ? `${data.feature.image}-640` : undefined),
+  servicios: scr(data?.feature?.href ?? '/kain/', 'Kain · Atender', data?.feature?.label ?? 'Conoce a Kain', data?.feature?.description ?? '', plateFromStill(data?.feature?.image)),
   industrias: scr('/industrias/salud/', 'Industria · Salud', 'Salud y clínicas', 'Citas agendadas y confirmadas 24/7'),
   casos: scr('/casos/clinica-dental-monterrey/', 'Caso · Clínica dental · Monterrey', 'Clínica dental en Monterrey', METRICS['dental-citas'].label),
   empresa: scr('/nosotros/', 'Empresa · Guadalajara, Jalisco', 'El equipo de Ingeniak', 'Av. Punto Sur 312, Tlajomulco de Zúñiga'),
   recursos: scr('/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/', 'Artículo · Recursos', '¿Cuánto cuesta un agente de IA?', 'Guías sin humo para decidir mejor'),
 };
 const def = defaults[panel];
+// Casos: la línea de la pantalla lleva la cifra del caso (siempre como data-metric, nunca escrita a mano) + su etiqueta.
+const defFig: MetricId | undefined = panel === 'casos' ? 'dental-citas' : undefined;
 const isCur = (href: string) => href === current;
 let i = 0; // índice de escalonado (stagger 20 ms)
 const metricLine = (id?: MetricId) => (id ? METRICS[id] : undefined);
@@ -57,7 +63,7 @@ const hasFoot = footLinks.length > 0 || ['industrias', 'casos', 'empresa', 'recu
                   <li style={`--i:${i++}`} data-i>
                     <a class="mm-link" href={it.href} aria-current={isCur(it.href) ? 'page' : undefined}
                       {...(it.external ? { target: '_blank', rel: 'noopener' } : {})}
-                      data-still-src={s.still} data-screen-label={s.label} data-screen-title={s.title} data-screen-line={s.line} data-stage={c + 1}>
+                      {...shot(s)} data-screen-label={s.label} data-screen-title={s.title} data-screen-line={s.line} data-stage={c + 1}>
                       <span class="mm-link__node" aria-hidden="true"></span>
                       <span class="mm-link__name">{it.label}{it.external && <svg class="ico mm-ext" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.external} />}{it.external && <span class="sr-only"> (se abre en otra pestaña)</span>}{it.badge && <span class="mm-badge">{it.badge}</span>}</span>
                       {it.description && <span class="mm-link__line">{it.description}</span>}
@@ -80,7 +86,7 @@ const hasFoot = footLinks.length > 0 || ['industrias', 'casos', 'empresa', 'recu
             return (
               <li style={`--i:${i++}`} data-i>
                 <a class="mm-link" href={it.href} aria-current={isCur(it.href) ? 'page' : undefined}
-                  data-still-src={stillOf(it.href)} data-screen-label={`Industria · ${it.label}`} data-screen-title={it.label} data-screen-line={it.description ?? ''}>
+                  {...shot(screenOf(it.href))} data-screen-label={`Industria · ${it.label}`} data-screen-title={it.label} data-screen-line={it.description ?? ''}>
                   <span class="mm-link__node" aria-hidden="true"></span>
                   <span class="mm-link__name">{it.label}</span>
                   {it.description && <span class="mm-link__line">{it.description}</span>}
@@ -101,7 +107,7 @@ const hasFoot = footLinks.length > 0 || ['industrias', 'casos', 'empresa', 'recu
             return (
               <li style={`--i:${i++}`} data-i>
                 <a class="mm-case" href={it.href} aria-current={isCur(it.href) ? 'page' : undefined}
-                  data-still-src={stillOf(it.href)} data-screen-label={`Caso · ${caseCtx(mid)}`} data-screen-title={it.label} data-screen-line={m ? m.label : ''}>
+                  {...shot(screenOf(it.href))} data-screen-label={`Caso · ${caseCtx(mid)}`} data-screen-title={it.label} data-screen-line={m ? m.label : ''} data-screen-fig={m ? '' : undefined}>
                   <span class="mm-case__fig">{m && mid ? <span data-metric={mid}>{m.value}</span> : null}</span>
                   <span class="mm-case__txt"><span class="mm-case__name">{it.label}</span><span class="mm-case__ctx">{m ? `${m.label} · ${caseCtx(mid)}` : ''}</span></span>
                   <svg class="ico mm-case__arrow" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} />
@@ -123,7 +129,7 @@ const hasFoot = footLinks.length > 0 || ['industrias', 'casos', 'empresa', 'recu
             return (
               <li style={`--i:${i++}`} data-i>
                 <a class="mm-link" href={it.href} aria-current={isCur(it.href) ? 'page' : undefined}
-                  data-still-src={stillOf(it.href)} data-screen-label={lab} data-screen-title={it.label} data-screen-line={line}>
+                  {...shot(screenOf(it.href))} data-screen-label={lab} data-screen-title={it.label} data-screen-line={line}>
                   <span class="mm-link__node" aria-hidden="true"></span>
                   <span class="mm-link__name">{it.label}</span>
                   {line && <span class:list={['mm-link__line', isArt && !it.description && 'mm-link__line--tag']}>{line}</span>}
@@ -145,16 +151,17 @@ const hasFoot = footLinks.length > 0 || ['industrias', 'casos', 'empresa', 'recu
     )}
 
     <div class="mm-screen-col" style={`--i:${i++}`} data-i>
-      <a class="mm-screen" href={def.href} data-still data-mm-screen tabindex="-1" aria-hidden="true"
-        data-default-src={def.still} data-default-label={def.label} data-default-title={def.title} data-default-line={def.line} data-default-href={def.href}>
+      <a class="mm-screen" href={def.href} data-still data-mm-screen tabindex="-1" aria-hidden="true" data-copy={def.copy}
+        data-default-src={def.src} data-default-frame={def.frame} data-default-copy={def.copy} data-default-label={def.label} data-default-title={def.title} data-default-line={def.line} data-default-fig={defFig} data-default-href={def.href}
+        data-fb-src={fb.src} data-fb-frame={fb.frame}>
         <span class="mm-screen__media">
-          <img class="mm-screen__img is-on" data-src={def.still} alt="" width="640" height="274" decoding="async" />
-          <img class="mm-screen__img" alt="" width="640" height="274" decoding="async" />
+          <img class="mm-screen__img is-on" data-src={def.src} data-base={def.src} style={def.frame} alt="" width="1280" height="714" decoding="async" />
+          <img class="mm-screen__img" alt="" width="1280" height="714" decoding="async" />
         </span>
         <span class="mm-screen__copy">
           <span class="mm-screen__label" data-screen="label">{def.label}</span>
           <span class="mm-screen__title" data-screen="title">{def.title}</span>
-          <span class="mm-screen__line" data-screen="line">{def.line}</span>
+          <span class="mm-screen__line" data-screen="line">{defFig ? <><b class="mm-screen__fig" data-metric={defFig}>{METRICS[defFig].value}</b> {def.line}</> : def.line}</span>
         </span>
       </a>
       <p class="mm-screen__hud" aria-hidden="true"><span class="mm-screen__rec"></span><span data-screen="hud">{def.hud}</span></p>
@@ -176,10 +183,7 @@ const hasFoot = footLinks.length > 0 || ['industrias', 'casos', 'empresa', 'recu
           <li><a class="mm-foot__a" href={l.href}>{l.label}<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>
         ))}
         {panel === 'industrias' && (
-          <li class="mm-foot__note">También trabajamos con e-commerce, retail, HoReCa y logística <a class="mm-foot__a" href="/casos/">Ver casos<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>
-        )}
-        {panel === 'casos' && (
-          <li><a class="mm-foot__a" href="/casos/#grid">Registro de resultados<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>
+          <li><a class="mm-foot__a" href="/casos/">Casos por industria<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} /></a></li>
         )}
         {panel === 'empresa' && (
           <>

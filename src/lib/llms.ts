@@ -3,12 +3,23 @@
 // entidad, con la MISMA redacción que el footer (src/components/nav/Footer.astro) y el JSON-LD (layout/jsonld.ts).
 // Precio: solo PRICE_FROM. Cifras: solo metrics.ts. Un caso breve (noindex) no se enlaza; su línea de resultado se queda sin enlace.
 import { METRICS, PRICE_FROM, SOURCE_NOTE, type MetricId } from './metrics';
-import { SITE, pages, indexablePages, copyOrNull, type Page } from './site';
+import { SITE, pages, indexablePages, copyOrNull, isBuilt, type Page } from './site';
 import { tokensToText, getFaqItems, VKTOR } from '../components/ui/ui-data';
 
 const abs = (u: string) => `${SITE.url}${u}`;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-const one = (s: string) => tokensToText(String(s ?? '')).replace(/\s+/g, ' ').trim();
+/** Marcado ligero del copy (artículos, _ESQUEMA §5) a texto plano: [etiqueta](ruta) → "etiqueta (URL absoluta)" (solo si la
+ *  ruta existe; si no, la etiqueta sola), llamadas [^n] → "(fuente n)" y **negritas** → texto. */
+function plainMarkup(s: string): string {
+  return s
+    .replace(/\[\^(\d+)\]/g, ' (fuente $1)')
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, label: string, href: string) => {
+      if (/^https?:\/\//i.test(href)) return `${label} (${href})`;
+      return href.startsWith('/') && isBuilt(href) ? `${label} (${abs(href)})` : label;
+    })
+    .replace(/\*\*([^*]+)\*\*/g, '$1');
+}
+const one = (s: string) => plainMarkup(tokensToText(String(s ?? ''))).replace(/\s+/g, ' ').replace(/ ([.,;:])/g, '$1').trim();
 
 /** Ficha de la entidad: mismos datos y redacción que el footer y el JSON-LD. */
 export function entityLines(): string[] {
@@ -72,7 +83,16 @@ const SKIP = new Set([
   'rail', 'href', 'waMessage', 'metricIds', 'faqIds', 'faqId', 'src', 'id', 'slug', 'plate', 'icon', 'logo', 'logos', 'glyph', 'mode',
   'tone', 'external', 'variant', 'layout', 'script', 'scripts', 'tabs', 'hud', 'hudClock', 'ghost', 'pos', 'lit', 'confirmed', 'status',
   'sourceNote', 'aria', 'slot', 'play', 'close', 'n', 'letter', 'time', 'timeLabel', 'progressLabel', 'linkLabel', 'rowLink', 'metricId',
+  // Interfaz de las plantillas nuevas (buscador de FAQ, filtros de hubs, índice del aviso, mapas) e ids: no es contenido.
+  'search', 'placeholder', 'results', 'resultsOne', 'empty', 'emptyCta', 'clear', 'topicsLabel', 'jump', 'updatedLabel', 'mobileLabel',
+  'mapsLabel', 'mapsHref', 'sectorLabel', 'serviceLabel', 'all', 'filtros', 'tab', 'channel', 'state', 'category', 'sector',
+  'transversal',
 ]);
+/** Texto de interfaz con marcadores sin resolver ("{n} respuestas para «{q}»"): no va a llms-full.txt. */
+const UI_PLACEHOLDER = /\{[a-z]+\}/;
+/** Ids sueltos (slugs de sector, servicio, herramienta o cifra: "salud", "agentes", "n8n"): fuera, salvo como nombre visible. */
+const SLUG = /^[a-z0-9-]+$/;
+const NAME_KEYS = new Set(['name', 'title', 'label', 'text']);
 function headline(h: any): string {
   if (typeof h === 'string') return one(h);
   if (!h || typeof h !== 'object') return '';
@@ -84,11 +104,31 @@ function headline(h: any): string {
 }
 function collect(v: any, key = '', out: string[] = []): string[] {
   if (v == null || SKIP.has(key) || key.startsWith('_')) return out;
-  if (typeof v === 'string') { const t = one(v); if (t) out.push(t); return out; }
+  if (typeof v === 'string') { if (UI_PLACEHOLDER.test(v.replace(/\{\{[^}]*\}\}/g, '')) || (SLUG.test(v) && !NAME_KEYS.has(key))) return out; const t = one(v); if (t) out.push(t); return out; }
   if (typeof v === 'number' || typeof v === 'boolean') return out;
   if (Array.isArray(v)) { for (const x of v) collect(x, key, out); return out; }
   if (typeof v === 'object') {
     if (v._omitir) return out;
+    // Tabla ({caption, head|cols, rows: string[][]}): un renglón por fila, "Columna: celda · Columna: celda".
+    const head = Array.isArray(v.head) ? v.head : Array.isArray(v.cols) ? v.cols : null;
+    if (head && Array.isArray(v.rows) && v.rows.every((r: any) => Array.isArray(r))) {
+      if (v.caption) out.push(one(v.caption));
+      for (const r of v.rows as any[][]) out.push(r.map((c, i) => (head[i] ? `${one(head[i])}: ${one(c)}` : one(c))).join(' · '));
+      if (v.note) out.push(one(v.note));
+      return out;
+    }
+    // Renglón de una conversación simulada ({who, text}).
+    if ((v.who === 'kain' || v.who === 'cliente') && typeof v.text === 'string') {
+      out.push(`${v.who === 'kain' ? 'Kain' : 'Cliente'}: ${one(v.text)}`);
+      if (typeof v.event === 'string') out.push(`(${one(v.event)})`);
+      return out;
+    }
+    // Fuente consultada ({title, publisher, href, consultado, nota}).
+    if (v.publisher && v.title && typeof v.href === 'string') {
+      out.push(one(`${v.publisher}: ${v.title} (${v.href}${v.consultado ? `, consultada el ${v.consultado}` : ''})`));
+      if (v.nota) out.push(one(v.nota));
+      return out;
+    }
     if (key === 'h1' || key === 'h2' || key === 'h3') { const t = headline(v); if (t) out.push(t); return out; }
     if (v.metricId && !v.text && !v.label) { const m = (METRICS as any)[v.metricId]; if (m) out.push(one(`${m.value} ${m.label}${v.context ? ` · ${v.context}` : ''}`)); return out; }
     if (v.term && v.value) { out.push(one(`${v.term}: ${v.value}`)); return out; }
@@ -116,9 +156,8 @@ function pageText(p: Page): string {
     const t = collect(s);
     const h1At = id === 'hero' ? t.indexOf(one(p.h1)) : -1;
     if (h1At >= 0) t.splice(h1At, 1);
-    // sin duplicados consecutivos (p. ej. etiquetas de CTA repetidas)
-    const seen = new Set<string>();
-    const uniq = t.filter((x) => (seen.has(x) ? false : (seen.add(x), true)));
+    // sin duplicados consecutivos (p. ej. etiquetas de CTA repetidas); los no contiguos se quedan (celdas, pasos repetidos).
+    const uniq = t.filter((x, i) => x !== t[i - 1]);
     if (uniq.length) lines.push(...uniq, '');
   }
   return lines.join('\n');

@@ -1,0 +1,170 @@
+{
+  "pageId": "ind-nutricion",
+  "url": "/industrias/nutricion/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "DATO PENDIENTE · kain-sector.chat.script = 'nutricion': el guion src/data/chats/nutricion.json todavía no existe (src/data no es del área de este encargo). Mientras no exista, ChatSim cae al guion de salud (limpieza dental), que no corresponde a esta página. El guion propuesto (reagendar una consulta de seguimiento; Kain no da recomendaciones de alimentación) está listo para pegar en materiales/v2/build/peticiones.md → 'Construcción · industrias (copy)'. El lede de kain-sector ya lo describe.",
+    "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos de nutrición que podamos mencionar por tipo (sin nombre)? La página no afirma que los haya. Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
+    "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas U01–U04 (seguimiento, planes de alimentación, consulta en línea, pacientes inactivos) con su texto en peticiones.md. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-nutricion.faq.",
+    "FAQ · N11 sigue en validar: true en el banco; mientras no se apruebe, el acordeón muestra N01, G02 y G07 (las tres aprobadas de D).",
+    "CAMBIO DE TEXTO · automatizamos: D pedía 5 tarjetas; R2 pide 6 tareas por industria. Se suma 'Primera consulta' separada de 'Consultas de seguimiento'.",
+    "VALIDACIÓN LEGAL · sección 'Tus datos': revisar con el asesor legal del cliente antes de publicar. Presenta reglas que se definen con cada consultorio antes de encender a Kain; la única afirmación de comportamiento es la de N01 (aprobada): no da consejo médico. La frase 'los datos de salud son datos personales sensibles' sigue la sección ya escrita para /industrias/salud/.",
+    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dos cifras de salud con su origen; enlaza al caso dental y a /industrias/salud/."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (ind-nutricion-hero, Kain en el consultorio + persona del sector desenfocada) + Breadcrumbs. Sin chip de prueba: el sector no tiene caso.",
+      "rail": "Portada",
+      "eyebrow": "Industria · Nutrición",
+      "h1": { "text": "Agentes de IA", "soft": "para nutriólogos y clínicas de nutrición", "lit": "IA" },
+      "lede": "Tus pacientes agendan y confirman solos; tú te concentras en la consulta. Kain aparta la primera cita y las de seguimiento, recuerda cada una y retoma a quien dejó de venir.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, soy nutriólogo y quiero que mis pacientes agenden y confirmen por WhatsApp."
+      },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio de la página, citable)",
+      "rail": "Cómo ayuda",
+      "eyebrow": "IA en nutrición",
+      "definition": {
+        "heading": "¿Cómo ayuda la IA a un nutriólogo o a una clínica de nutrición?",
+        "text": "Un agente de IA atiende el WhatsApp de tu consulta: resuelve dudas de horarios, precios y ubicación con la información que tú apruebas, agenda consultas de primera vez y de seguimiento, manda recordatorios y retoma a los pacientes que dejaron de agendar. Nunca da recomendaciones de alimentación: esas se quedan contigo.",
+        "_nota": "51 palabras. Armado con el brief de D y lo que dicen G02 y N01 (aprobadas)."
+      },
+      "body": [
+        "En nutrición, el avance depende de que el paciente regrese. Por eso Kain no se queda en la primera cita: después de cada consulta le propone la fecha de la siguiente, sea presencial o en línea, y le avisa a tu equipo cuando alguien deja de responder."
+      ]
+    },
+    "dolores": {
+      "_componente": "DayTimeline vertical (aguja con scrub, sin pin). Horas ilustrativas; incluye la del HUD del sector (CONSULTORIO · 18:00, ESPEC §5.3).",
+      "rail": "La jornada",
+      "eyebrow": "La jornada",
+      "h2": { "text": "Entre consulta y consulta,", "soft": "el WhatsApp no espera." },
+      "lede": "Horas de ejemplo de un día cualquiera. En ámbar, lo que hoy se queda sin atender; en cian, cómo lo resuelve Kain.",
+      "entries": [
+        {
+          "time": "07:30",
+          "pain": "Antes de tu primera consulta ya hay mensajes: alguien quiere mover su cita y otra persona pregunta cuánto cuesta la primera valoración.",
+          "fix": "Kain ya movió la cita y respondió el precio con tu información. Tú llegas a consultar, no a contestar."
+        },
+        {
+          "time": "10:15",
+          "pain": "Estás tomando medidas a un paciente y el celular vibra con la pregunta de siempre: dónde están y si aceptan tarjeta.",
+          "fix": "Kain contesta ubicación, formas de pago y qué traer a la primera consulta, sin interrumpirte."
+        },
+        {
+          "time": "13:00",
+          "pain": "Un paciente de seguimiento no llega. No confirmó y nadie se lo recordó.",
+          "fix": "Kain le recordó la cita el día anterior y pidió confirmación. Como no podía, ya tiene otra fecha apartada."
+        },
+        {
+          "time": "18:00",
+          "pain": "Terminas la última consulta y piensas en los pacientes que no han vuelto. No hay tiempo de escribirles uno por uno.",
+          "fix": "Tu CRM marca a quien lleva tiempo sin agendar y Kain le escribe con el mensaje que tú apruebes para retomar su seguimiento."
+        },
+        {
+          "time": "22:10",
+          "pain": "Alguien vio tu publicación y pregunta si das consulta en línea. Le contestas al día siguiente.",
+          "fix": "Kain responde con tus modalidades y horarios, y esa misma noche le aparta su primera cita."
+        }
+      ]
+    },
+    "automatizamos": {
+      "_componente": "ScriptList (6 filas)",
+      "rail": "Qué automatizamos",
+      "eyebrow": "Qué automatizamos",
+      "h2": { "text": "Lo que Kain atiende", "soft": "para que tú solo des consulta." },
+      "items": [
+        { "n": "01", "title": "Dudas frecuentes, 24/7", "line": "Precios, ubicación, modalidades y qué traer a la primera cita, con la información que tú apruebas." },
+        { "n": "02", "title": "Primera consulta", "line": "Aparta la cita y pide solo lo necesario para recibir al paciente: nombre, teléfono y modalidad." },
+        { "n": "03", "title": "Consultas de seguimiento", "line": "Propone la siguiente fecha según la frecuencia que tú indiques para cada paciente." },
+        { "n": "04", "title": "Recordatorios y confirmación", "line": "Recuerda cada cita y pide confirmación; si el paciente no puede, le ofrece otro horario." },
+        { "n": "05", "title": "Reactivación de pacientes", "line": "Escribe a quien dejó de agendar, desde tu CRM y con el mensaje que tu equipo apruebe." },
+        { "n": "06", "title": "Registro por etapa", "line": "Cada paciente en Kommo o GoHighLevel: primera vez, en seguimiento, inactivo o dado de alta." }
+      ]
+    },
+    "kain-sector": {
+      "_componente": "ImageSection mid (ind-nutricion-kain-sector, Kain a la izquierda, push; respaldo home-sistema-2-atender en espejo) + ChatSim registrado (script nutricion: falta el archivo, ver pendientes). Fijada +100 % en escritorio",
+      "rail": "Kain en tu consulta",
+      "eyebrow": "Kain en tu consulta",
+      "h2": { "text": "Así reagenda Kain", "soft": "una consulta de seguimiento." },
+      "lede": "Una paciente no puede llegar a su seguimiento. Kain le ofrece dos horarios, mueve la cita y libera el espacio anterior; cuando pregunta qué cenar, deja la duda para su nutrióloga.",
+      "chat": { "mode": "registered", "script": "nutricion" },
+      "limite": "Kain no da planes de alimentación, dietas ni consejo médico. Cuando un paciente pregunta qué comer o menciona un síntoma, lo dice con claridad y pasa la conversación a tu equipo.",
+      "note": "Ejemplo ilustrativo: la conversación, el nombre y las horas no son datos de un caso."
+    },
+    "cifras": {
+      "_componente": "EditorNote + Montage (2 filas, sin caso del sector) con enlace al caso más cercano",
+      "rail": "Resultados",
+      "eyebrow": "Resultados",
+      "h2": { "text": "Lo que ya medimos", "soft": "en consultorios que viven de su agenda." },
+      "lede": "Todavía no publicamos un caso de nutrición. Estas cifras vienen de clientes de salud que trabajan como tu consulta: primera cita, seguimiento y recordatorios.",
+      "noteLabel": "Nota del editor",
+      "note": "Ninguna de estas cifras es de un consultorio de nutrición. El promedio de citas es de clientes de odontología, medicina estética, quiropráctica y gastroenterología; el tiempo de respuesta, de una clínica dental en Monterrey. Cuando un cliente de nutrición nos autorice publicar su caso, lo verás aquí.",
+      "rows": [
+        { "metricId": "salud-citas-mes", "context": "Clientes de salud: odontología, medicina estética, quiropráctica y gastroenterología" },
+        { "metricId": "dental-respuesta", "context": "Tiempo de respuesta en WhatsApp · Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" }
+      ],
+      "sourceNote": true,
+      "links": [
+        { "label": "Lee el caso de la clínica dental", "href": "/casos/clinica-dental-monterrey/" },
+        { "label": "Ve los agentes de IA para clínicas de salud", "href": "/industrias/salud/" }
+      ]
+    },
+    "servicios": {
+      "_componente": "Still ×3",
+      "rail": "Servicios",
+      "eyebrow": "Servicios recomendados",
+      "h2": { "text": "Tres piezas", "soft": "para una consulta que no pierde pacientes." },
+      "items": [
+        { "href": "/servicios/agentes-ia-whatsapp/", "label": "Atender", "title": "Agentes de IA para WhatsApp", "line": "Kain agenda, recuerda y reagenda tus consultas en el chat." },
+        { "href": "/gohighlevel/", "label": "Organizar", "title": "GoHighLevel en español", "line": "Calendario, recordatorios y el historial de cada paciente en una sola plataforma." },
+        { "href": "/servicios/automatizacion-n8n/", "label": "Automatizar", "title": "Automatización con n8n", "line": "Avisos, tareas y registros entre tu agenda, tu CRM y tus formularios, sin capturas a mano." }
+      ]
+    },
+    "datos": {
+      "_componente": "Intertitle (aura) con lista corta",
+      "rail": "Tus datos",
+      "eyebrow": "Tus datos",
+      "h2": { "text": "Datos de tus pacientes,", "soft": "definidos antes de encender a Kain." },
+      "lede": "El peso, los hábitos o un padecimiento son datos de salud, y en México los datos de salud son datos personales sensibles. Antes del primer mensaje acordamos contigo qué pide Kain, qué guarda y qué pasa a una persona.",
+      "items": [
+        { "title": "Consentimiento", "line": "En qué momento ve el paciente tu aviso de privacidad y qué pasa si prefiere no seguir por chat." },
+        { "title": "Solo lo necesario", "line": "Nuestra propuesta de partida para agendar: nombre, teléfono y tipo de consulta. Nada de mediciones, estudios ni planes de alimentación por el chat." },
+        { "title": "Escalamiento a una persona", "line": "Síntomas, dudas de alimentación, quejas o temas delicados pasan a tu equipo con el contexto completo." },
+        { "title": "Sin consejo médico ni nutricional", "line": "Kain agenda, recuerda y da seguimiento. Las indicaciones las das tú en consulta." },
+        { "title": "Tu aviso, tus reglas", "line": "La redacción de tu aviso y la responsabilidad sobre los datos son de tu consultorio y de tu asesor legal. Nosotros llevamos esas reglas a la configuración de Kain." }
+      ],
+      "note": "Si tu consultorio tiene requisitos propios de privacidad, los revisamos juntos en la Discovery Session. No mostramos sellos ni certificaciones que no tenemos."
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas de nutriólogos", "soft": "y clínicas de nutrición." },
+      "faqIds": ["N11", "N01", "G02", "G07"],
+      "_nota": "Ids de sitemap.json → ind-nutricion.faq, en su orden. N11 en validar: no se publica hasta aprobarse. Propuestas propias del sector (U01–U04) en peticiones.md.",
+      "footer": "¿Tienes otra duda sobre tu consulta? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila en espejo)",
+      "rail": "Cierre",
+      "eyebrow": "Tu siguiente paso",
+      "h2": { "text": "¿Cuántos pacientes dejan su seguimiento?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "Revisamos juntos cómo agenda hoy un paciente nuevo, cómo vuelve a su seguimiento y en qué punto se pierde. Te llevas claro qué conviene automatizar primero.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, soy nutriólogo y quiero que mis pacientes agenden y confirmen por WhatsApp."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

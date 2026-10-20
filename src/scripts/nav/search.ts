@@ -6,7 +6,7 @@ import { lock, unlock, track } from './overlay';
 type PageDoc = { u: string; t: string; h: string; k: string; s: string; g: string; f: string; d: string };
 type FaqDoc = { id: string; q: string; a: string; u: string };
 type Index = { pages: PageDoc[]; faq: FaqDoc[] };
-type Prepared<T> = { doc: T; fields: { toks: string[]; w: number }[]; folio?: string };
+type Prepared<T> = { doc: T; fields: { toks: string[]; w: number }[]; folio?: string; slug?: string };
 
 const STOP = new Set('a al como con de del el en es la las lo los mi mis o para por que se sin su sus tu tus un una unos y yo me te le hay qué'.split(' '));
 export const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9ñ]+/g, ' ').trim();
@@ -29,7 +29,7 @@ export function loadIndex() {
     .then((j: Index | null) => {
       if (!j) return null;
       index = j;
-      P = j.pages.map((d) => ({ doc: d, folio: d.f, fields: [{ toks: toks(d.t), w: 4 }, { toks: toks(d.h), w: 3 }, { toks: toks(d.k), w: 2.5 }, { toks: toks(d.s), w: 1.2 }, { toks: toks(d.d), w: .6 }, { toks: toks(d.u.replace(/[/-]/g, ' ')), w: 1 }] }));
+      P = j.pages.map((d) => ({ doc: d, folio: d.f, slug: norm(d.u.split('/').filter(Boolean).pop() ?? ''), fields: [{ toks: toks(d.t), w: 4 }, { toks: toks(d.h), w: 3 }, { toks: toks(d.k), w: 2.5 }, { toks: toks(d.s), w: 1.2 }, { toks: toks(d.d), w: .6 }, { toks: toks(d.u.replace(/[/-]/g, ' ')), w: 1 }] }));
       F = j.faq.map((d) => ({ doc: d, fields: [{ toks: toks(d.q), w: 3 }, { toks: toks(d.a), w: .8 }] }));
       return j;
     })
@@ -55,6 +55,8 @@ function score<T>(p: Prepared<T>, q: string[], raw: string): { s: number; hit: n
     if (best > 0) hit++;
     s += best;
   }
+  // La página cuyo slug ES lo que se escribió va primero ("kommo" → /kommo/, "seo" → /servicios/seo/, "blog" → /blog/).
+  if (p.slug && hit === q.length && p.slug === q.join(' ')) s += 2;
   return { s, hit };
 }
 

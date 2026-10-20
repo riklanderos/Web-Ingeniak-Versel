@@ -70,6 +70,23 @@ export interface Player { play: () => void; finish: () => void; prime: () => voi
  *  de 160 % (fuera de la zona ampliada) y no de 110 %.
  *  `lazy`: el estado oculto (160 %) no se aplica hasta prime() o play() (la firma deja el H1 pintado bajo el iris, §8.3). */
 const FROM = 160;
+/* Espacio duro (keepShort de las plantillas: "Y sé", "de IA"): SplitText 3.13 reduce todo \s+ a un espacio normal
+   ANTES de dividir en palabras, así que la línea podía cortarse justo ahí ("Y | sé lo que…"). Antes de dividir, cada
+     pasa a un marcador que esa reducción no toca y prepareText lo devuelve a   DENTRO de la palabra (una sola caja
+   inline-block: nunca se corta). La etiqueta aria se limpia en onSplit y, si la división se deshace sin volver a dividir
+   (cambio de movimiento), el HTML original recupera sus espacios duros. */
+const NBM = '';
+const NBM_RX = //g;
+function markNbsp(root: HTMLElement) {
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let n = w.nextNode(); n; n = w.nextNode()) if (n.nodeValue && n.nodeValue.includes(' ')) n.nodeValue = n.nodeValue.replace(/ /g, NBM);
+}
+function unmarkNbsp(root: Element) {
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let n = w.nextNode(); n; n = w.nextNode()) if (n.nodeValue && n.nodeValue.includes(NBM)) n.nodeValue = n.nodeValue.replace(NBM_RX, ' ');
+  const a = root.getAttribute('aria-label');
+  if (a && a.includes(NBM)) root.setAttribute('aria-label', a.replace(NBM_RX, ' '));
+}
 export function splitLines(el: HTMLElement, env: Env, opts: { trigger?: Element | false; start?: string; delay?: number; lazy?: boolean } = {}): Player {
   const { gsap, SplitText } = env;
   claim(el);
@@ -87,9 +104,13 @@ export function splitLines(el: HTMLElement, env: Env, opts: { trigger?: Element 
   let offset = 0;
   parts.forEach((p, k) => {
     const base = offset;
+    markNbsp(p);
     SplitText.create(p, {
       type: 'lines', mask: 'lines', autoSplit: true, linesClass: 'split-line',
+      prepareText: (t: string) => (t.includes(NBM) ? t.replace(NBM_RX, ' ') : t),
+      onRevert(self) { queueMicrotask(() => { if (!self.isSplit) self.elements.forEach((e) => unmarkNbsp(e)); }); },
       onSplit(self) {
+        self.elements.forEach((e) => { const a = e.getAttribute('aria-label'); if (a && a.includes(NBM)) e.setAttribute('aria-label', a.replace(NBM_RX, ' ')); });
         lines[k] = self.lines;
         const a = gsap.fromTo(self.lines, { yPercent: FROM }, {
           yPercent: 0, duration: 0.95, stagger: 0.08, ease: 'expo.out', delay: (opts.delay ?? 0) + base * 0.08,

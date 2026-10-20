@@ -1,0 +1,12 @@
+---
+// CaseFigureLocal · respaldo local de CaseTemplate (peticiones.md → "Construcción · casos" #1, cine/orquestador).
+// CaseFigure variant="multiplier" escribe "$1 → $4.8" (§5.4.1) en el TEXTO de .cf-mx__eq y check-cifras lo marca como
+// importe fuera de PRICE_FROM (no es un precio: es "por cada peso invertido"). Este envoltorio pinta CaseFigure tal cual
+// y solo mueve el signo de ese párrafo (aria-hidden) a data-cur; pages.css (bloque CaseTemplate) lo dibuja con ::before.
+// Mismo dibujo, y el HTML ya no lleva un importe. Si cine quita el "$" de su marcado, aquí no cambia nada (sin data-cur no
+// hay ::before) y este archivo se puede borrar: en CaseTemplate basta cambiar <CaseFigureLocal> por el CaseFigure de dentro.
+const html = await Astro.slots.render('default');
+const out = html.replace(/(<p class="cf-mx__eq"[^>]*>)([\s\S]*?)(<\/p>)/g, (_m: string, open: string, inner: string, close: string) =>
+  open + inner.replace(/<span([^>]*)>\$(?=\d)/g, (_s: string, attrs: string) => `<span${attrs} data-cur="$">`) + close);
+---
+<Fragment set:html={out} />

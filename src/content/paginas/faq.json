@@ -1,0 +1,361 @@
+{
+  "_schema": "Texto publicable de /preguntas-frecuentes/ (T-FAQ, FaqTemplate). Forma general: _ESQUEMA.md §2–§6. Las preguntas y sus respuestas NO viven aquí: salen del banco src/data/faq.json (mismo texto que el FAQPage del <head>). Campos propios de esta plantilla: hero.eyebrow admite {n} (respuestas publicadas) y {t} (temas); hero.deck = segunda línea bajo el H1 (Lexend 300, fuera del <h1>); hero.search = {label, placeholder, hint, results, resultsOne, empty, emptyCta, clear} ({n} = respuestas encontradas, {q} = lo que escribió la persona); hero.topicsLabel. Cada tema (ingeniak, agentes, crm, automatizacion, precio, empezar) = {rail, eyebrow, h2, lede, remate, faqIds[], links[]} + un elemento propio: ingeniak.proof = MetricId[] (cifras con su fuente), agentes.channels = string[] (canales confirmados), crm.badge (rótulo del sello oficial de Kommo) + crm.ghl (línea de GoHighLevel; nunca 'partner'), automatizacion.tools = slugs de public/img/logos + toolsLabel, precio.price = {figure, line} (figure admite {{Price}}) + precio.factors[] con factorsLabel (qué mueve el precio, de las respuestas G07 y W03), agentes.glossary[] = {term, def} con glossaryLabel (glosario corto, va bajo las respuestas), empezar.steps = {title, line}[] + empezar.note = {label, text} (EditorNote). faqIds lleva también las preguntas en 'validar': la plantilla las omite (y el FAQPage también) hasta que se aprueben en faq.json; una pregunta publicable del banco que no esté en ningún tema se agrega sola al tema de su categoría. links[] = {label, href, line?}: solo se pintan destinos ya construidos (linkTarget). Los campos que empiezan con _ no se imprimen.",
+  "pageId": "faq",
+  "url": "/preguntas-frecuentes/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Texto propio de la página: portada, buscador, entrada de cada tema, nota del editor y cierre. Las respuestas son las del banco src/data/faq.json (ya revisadas por copy).",
+    "APROBACIÓN · 17 preguntas del banco siguen en 'validar' y no se publican (ni en la página ni en el FAQPage): H04, N02, N03, N04, N05, N06, N08, N09, N10, N11, N14, N15, S01, S02, S03, S04 y S05. Ya están asignadas a su tema: aparecen solas cuando se aprueben en faq.json.",
+    "CAMBIO DE TEXTO · D proponía 32 preguntas en 6 temas (27 publicables hoy). La página publica las 37 preguntas aprobadas del banco: se suman G09, L02, N13, K03, H03, W03, K04, D03, D04 y D05, cada una en el tema que le corresponde.",
+    "PREGUNTA AL CLIENTE · ¿Confirmas que en el WhatsApp +52 33 2101 7799 contesta Kain y que pasa la conversación a una persona del equipo cuando hace falta? La búsqueda sin resultados invita a 'preguntarle a Kain' por ahí.",
+    "PREGUNTA AL CLIENTE · ¿Make se usa en proyectos de clientes? Aparece junto a n8n en 'Con qué lo hacemos' (también lo cita la respuesta G09)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (kain-si-no, subject-left) + buscador que filtra el HTML ya renderizado + índice de temas",
+      "rail": "Buscar",
+      "eyebrow": "{n} respuestas · {t} temas",
+      "h1": {
+        "text": "Preguntas frecuentes",
+        "lit": "frecuentes"
+      },
+      "deck": "Respuestas directas, sin humo.",
+      "lede": "Las mismas respuestas que encuentras en cada página del sitio, juntas y por tema. Escribe lo que buscas o salta directo al tema que te interesa.",
+      "search": {
+        "label": "Busca una pregunta",
+        "placeholder": "Precio, Kommo, WhatsApp, n8n…",
+        "hint": "Filtra mientras escribes. Con Enter vas a la primera respuesta.",
+        "results": "{n} respuestas para «{q}»",
+        "resultsOne": "1 respuesta para «{q}»",
+        "empty": "Ninguna respuesta habla de «{q}». Pregúntaselo a Kain por WhatsApp y te contesta con tu caso.",
+        "emptyCta": "Preguntarle a Kain",
+        "clear": "Borrar la búsqueda"
+      },
+      "topicsLabel": "Temas",
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, revisé las preguntas frecuentes de Ingeniak y tengo una duda."
+      }
+    },
+    "ingeniak": {
+      "_componente": "Intertitle split (cabeza fija en escritorio) + fila de cifras con fuente + FAQAccordion",
+      "rail": "Sobre Ingeniak",
+      "eyebrow": "Sobre Ingeniak",
+      "h2": {
+        "text": "Quiénes somos",
+        "soft": "y dónde trabajamos."
+      },
+      "lede": "Somos una consultoría de inteligencia artificial con sede en Guadalajara. Diseñamos, implementamos y operamos agentes de IA, CRM y automatizaciones como un solo sistema, para empresas que ya venden y quieren dejar de depender de su dueño para operar.",
+      "proof": [
+        "sistemas",
+        "paises"
+      ],
+      "faqIds": [
+        "G01",
+        "G10",
+        "L01",
+        "L02",
+        "G15",
+        "N07",
+        "N11"
+      ],
+      "links": [
+        {
+          "label": "Conoce al equipo",
+          "href": "/nosotros/",
+          "line": "Quién diseña, construye y opera tu sistema."
+        },
+        {
+          "label": "Agentes de IA en Guadalajara",
+          "href": "/agentes-ia-guadalajara/",
+          "line": "Qué hacemos por las empresas de la zona metropolitana."
+        },
+        {
+          "label": "Casos de éxito",
+          "href": "/casos/",
+          "line": "Cada resultado con su sector, su ciudad y su fuente."
+        }
+      ],
+      "remate": "Sede en Guadalajara; clientes donde estén."
+    },
+    "agentes": {
+      "_componente": "Intertitle split + canales confirmados + FAQAccordion",
+      "rail": "Agentes de IA y Kain",
+      "eyebrow": "Agentes de IA y Kain",
+      "h2": {
+        "text": "Qué hace un agente,",
+        "soft": "y qué deja en manos de tu equipo."
+      },
+      "lede": "Un agente de IA atiende conversaciones reales: entiende lo que te escriben, responde con la información de tu negocio, califica y agenda. Kain es la cara de esos agentes en Ingeniak, y cuando una conversación necesita a una persona, se la pasa a tu equipo con todo el contexto.",
+      "channelsLabel": "Dónde atiende Kain",
+      "channels": [
+        "WhatsApp",
+        "Instagram",
+        "Facebook Messenger",
+        "Chat de tu web",
+        "Correo"
+      ],
+      "faqIds": [
+        "G02",
+        "G03",
+        "G09",
+        "W01",
+        "W02",
+        "G13",
+        "N13",
+        "N12",
+        "N01",
+        "N14",
+        "S01",
+        "S02",
+        "S03",
+        "S04",
+        "S05"
+      ],
+      "links": [
+        {
+          "label": "Agentes de IA para WhatsApp",
+          "href": "/servicios/agentes-ia-whatsapp/",
+          "line": "El servicio completo: qué atiende, con qué se conecta y cuánto cuesta."
+        },
+        {
+          "label": "Conoce a Kain",
+          "href": "/kain/",
+          "line": "El agente de IA de Ingeniak, en primera persona."
+        },
+        {
+          "label": "Agente de IA vs. chatbot",
+          "href": "/blog/agente-ia-whatsapp-vs-chatbot/",
+          "line": "Por qué un árbol de opciones se atora y un agente no."
+        }
+      ],
+      "remate": "Kain atiende la conversación; tu equipo decide lo importante.",
+      "glossaryLabel": "Palabras que usamos",
+      "glossary": [
+        {
+          "term": "Agente de IA",
+          "def": "Un asistente basado en modelos de lenguaje que entiende lo que escribe una persona, responde con la información de tu negocio y ejecuta acciones, como registrar un lead o agendar una cita."
+        },
+        {
+          "term": "Chatbot de menús",
+          "def": "Un bot que sigue un árbol de opciones fijas: funciona mientras la pregunta cabe en el guion y se atora cuando no."
+        },
+        {
+          "term": "CRM",
+          "def": "El sistema donde vive cada cliente y cada oportunidad de venta, con su historial y su etapa. Kommo y GoHighLevel son CRM."
+        },
+        {
+          "term": "Lead",
+          "def": "Una persona que mostró interés y dejó una forma de contactarla: un mensaje, un formulario o una llamada."
+        },
+        {
+          "term": "Embudo",
+          "def": "Las etapas por las que pasa un lead hasta comprar; por ejemplo: nuevo, calificado, cita agendada y ganado."
+        }
+      ]
+    },
+    "crm": {
+      "_componente": "Intertitle split + sello oficial de Kommo + línea de GoHighLevel + FAQAccordion",
+      "rail": "Kommo y GoHighLevel",
+      "eyebrow": "CRM: Kommo y GoHighLevel",
+      "h2": {
+        "text": "Tu CRM,",
+        "soft": "según cómo vendes."
+      },
+      "lede": "Implementamos los dos. Kommo, si vendes por mensajería y quieres el embudo dentro del chat; GoHighLevel, si te conviene tener CRM, páginas, calendarios y campañas en una sola cuenta. En la Discovery Session vemos cuál encaja con tu proceso comercial.",
+      "badge": "Partner oficial de Kommo en LATAM",
+      "ghl": "GoHighLevel: lo implementamos completo y en español.",
+      "faqIds": [
+        "G04",
+        "K01",
+        "K02",
+        "K03",
+        "G05",
+        "H01",
+        "H02",
+        "H03",
+        "H04",
+        "N15",
+        "N03"
+      ],
+      "links": [
+        {
+          "label": "Kommo con Ingeniak",
+          "href": "/kommo/",
+          "line": "Licencias, implementación y agentes de IA dentro del CRM."
+        },
+        {
+          "label": "GoHighLevel en español",
+          "href": "/gohighlevel/",
+          "line": "Configuración, embudos, calendarios y capacitación en tu idioma."
+        },
+        {
+          "label": "Kommo vs. GoHighLevel",
+          "href": "/blog/kommo-vs-gohighlevel/",
+          "line": "La comparación completa para decidir con calma."
+        }
+      ],
+      "remate": "La herramienta se elige por tu proceso comercial, no al revés."
+    },
+    "automatizacion": {
+      "_componente": "Intertitle split + logos de herramientas (LogoCredits, máscara al 55 %) + FAQAccordion",
+      "rail": "Automatización y marketing",
+      "eyebrow": "Automatización, web, SEO y paid media",
+      "h2": {
+        "text": "Lo que se mueve solo,",
+        "soft": "y lo que trae clientes."
+      },
+      "lede": "Con n8n y Make conectamos tu CRM, WhatsApp, formularios y sistemas internos para que la información se mueva sola y nadie capture datos a mano. Para que lleguen prospectos, hacemos paid media, sitios web y SEO conectados al mismo sistema y medidos hasta la venta.",
+      "toolsLabel": "Con qué lo hacemos",
+      "tools": [
+        "n8n",
+        "make",
+        "meta",
+        "googleads",
+        "tiktok"
+      ],
+      "faqIds": [
+        "G06",
+        "N05",
+        "N06",
+        "N08",
+        "G14",
+        "N09",
+        "N04",
+        "N10",
+        "N02"
+      ],
+      "links": [
+        {
+          "label": "Automatización con n8n",
+          "href": "/servicios/automatizacion-n8n/",
+          "line": "Altas, avisos, seguimientos y reportes sin captura manual."
+        },
+        {
+          "label": "Paid media",
+          "href": "/servicios/paid-media/",
+          "line": "Meta, Google y TikTok Ads medidos hasta la venta."
+        },
+        {
+          "label": "Páginas web",
+          "href": "/servicios/paginas-web/",
+          "line": "Sitios conectados a tu CRM y a WhatsApp."
+        }
+      ],
+      "remate": "Si alguien de tu equipo copia datos de una pantalla a otra, eso se puede automatizar."
+    },
+    "precio": {
+      "_componente": "Intertitle split + precio en grande (PRICE_FROM) + plazo de implementación + FAQAccordion",
+      "rail": "Precio y tiempos",
+      "eyebrow": "Precio y tiempos",
+      "h2": {
+        "text": "Cuánto cuesta",
+        "soft": "y cuánto tarda."
+      },
+      "price": {
+        "figure": "{{Price}}",
+        "line": "La implementación toma de 7 a 30 días, según el alcance."
+      },
+      "lede": "No publicamos paquetes cerrados: dos empresas del mismo tamaño pueden necesitar sistemas muy distintos. El alcance y el costo exactos te los proponemos después de la Discovery Session, con tu operación a la vista y sin letra chica.",
+      "faqIds": [
+        "G07",
+        "W03",
+        "K04",
+        "G08"
+      ],
+      "links": [
+        {
+          "label": "Cuánto cuesta un agente de IA para WhatsApp",
+          "href": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+          "line": "Qué mueve el precio y qué costos no se ven."
+        },
+        {
+          "label": "Metodología VKTOR™",
+          "href": "/metodologia/",
+          "line": "Las cinco fases de cada proyecto, del diagnóstico a la operación."
+        }
+      ],
+      "remate": "Primero vemos tu operación; después hablamos de alcance y costo.",
+      "factorsLabel": "Qué mueve el precio",
+      "factors": [
+        "Los canales que atiende el agente",
+        "Las integraciones con tu CRM, tu agenda y tus sistemas",
+        "El volumen de conversaciones",
+        "Cuántos procesos quieres automatizar"
+      ]
+    },
+    "empezar": {
+      "_componente": "Intertitle split + los pasos de la Discovery Session + FAQAccordion + EditorNote",
+      "rail": "Cómo empezar",
+      "eyebrow": "Cómo empezar",
+      "h2": {
+        "text": "El primer paso",
+        "soft": "es una llamada de 30 minutos."
+      },
+      "lede": "Todo empieza con una Discovery Session: una llamada 1:1 por Google Meet, gratuita y sin compromiso, en la que revisamos tu operación y te decimos qué conviene automatizar y en qué orden. Si tiene sentido para los dos, después te enviamos una propuesta.",
+      "steps": [
+        {
+          "title": "Llenas un formulario corto",
+          "line": "Siete preguntas sobre tu negocio. Dos minutos."
+        },
+        {
+          "title": "Eliges tu horario",
+          "line": "En hora de la Ciudad de México, de lunes a viernes."
+        },
+        {
+          "title": "Nos vemos en Google Meet",
+          "line": "Media hora, 1:1 y sin costo."
+        }
+      ],
+      "faqIds": [
+        "G11",
+        "G12",
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "D05",
+        "D06"
+      ],
+      "links": [
+        {
+          "label": "Qué pasa en la Discovery Session",
+          "href": "/discovery/",
+          "line": "Qué revisamos, qué no es y para quién es."
+        },
+        {
+          "label": "Contacto",
+          "href": "/contacto/",
+          "line": "WhatsApp, correo y oficina."
+        }
+      ],
+      "note": {
+        "label": "Nota del editor",
+        "text": "Estas respuestas son las mismas que aparecen en cada página del sitio: salen de un solo banco de preguntas, así que si una cambia, cambia en todas. Las preguntas nuevas se publican cuando el equipo las revisa. Fuente de las cifras: {{source}}; los nombres de los clientes están anonimizados."
+      },
+      "remate": "Treinta minutos alcanzan para saber si tiene sentido trabajar juntos."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "¿Te quedó una duda?",
+      "h2": {
+        "text": "¿No encontraste tu pregunta?",
+        "soft": "Hazla en la Discovery Session."
+      },
+      "lede": "En 30 minutos revisamos tu operación contigo y respondemos lo que una página no alcanza a cubrir: qué te conviene a ti y en qué orden.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, revisé las preguntas frecuentes de Ingeniak y tengo una duda."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+---
+// /nosotros/ · T-ABOUT (ESPEC-v2 §5.9). Texto: src/content/paginas/nosotros.json (la página existe cuando hay copy + ruta).
+import AboutTemplate from '../../components/templates/AboutTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+const page = getPage('/nosotros/');
+const copy = getCopy(page.id);
+---
+<AboutTemplate page={page} copy={copy} />

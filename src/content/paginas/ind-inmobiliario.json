@@ -1,0 +1,154 @@
+{
+  "pageId": "ind-inmobiliario",
+  "url": "/industrias/inmobiliario/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · portales: la página dice que Kain contesta a los leads 'de tus anuncios y portales' cuando escriben por WhatsApp, Instagram, Facebook Messenger, tu web o el correo (canales confirmados el 2026-10-19). No nombra portales ni afirma una integración directa con alguno. Confirma si hay portales que conectemos directo (y cuáles) para decirlo.",
+    "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos de inmobiliarias o desarrolladoras que podamos mencionar por tipo (sin nombre)? La página no afirma que los haya. Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
+    "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas I01–I04 (portales, fichas y precios, asignación de asesor, montos de crédito) con su texto en materiales/v2/build/peticiones.md → 'Construcción · industrias (copy)'. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-inmobiliario.faq.",
+    "FAQ · N11 sigue en validar: true en el banco; mientras no se apruebe, el acordeón muestra G02, G05 y G07 (las tres aprobadas de D).",
+    "CAMBIO DE TEXTO · kain-sector: el brief de D pedía 'departamento de dos recámaras; Kain califica presupuesto'. La página usa el guion ya existente de src/data/chats/inmobiliario.json (departamento del anuncio, para vivir, crédito Infonavit, visita el sábado, Kain no da montos de crédito) y el lede lo describe tal cual.",
+    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dental-respuesta (con enlace al caso dental) y retail-conversiones (Retail multimarca · Kommo + IA). La fila y el enlace del caso retail se activan solos cuando /casos/retail-multimarca-kommo/ esté construida (hoy salen sin enlace)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (ind-inmobiliario-hero, Kain en el showroom + persona del sector desenfocada) + Breadcrumbs. Sin chip de prueba: el sector no tiene caso.",
+      "rail": "Portada",
+      "eyebrow": "Industria · Inmobiliario",
+      "h1": { "text": "Agentes de IA", "soft": "para inmobiliarias y desarrolladoras", "lit": "IA" },
+      "lede": "El lead que contestas primero es el que visita. Kain responde en segundos a cada lead de tus anuncios y portales, lo califica por zona y presupuesto, y agenda la visita antes de que se enfríe.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo una inmobiliaria y quiero responder y calificar leads al instante."
+      },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio de la página, citable)",
+      "rail": "Cómo ayuda",
+      "eyebrow": "IA en bienes raíces",
+      "definition": {
+        "heading": "¿Cómo ayuda la IA en inmobiliarias y desarrolladoras?",
+        "text": "Un agente de IA contesta en segundos a cada lead que llega por WhatsApp, Instagram, Facebook Messenger, tu web o el correo: pregunta zona, presupuesto y forma de pago, comparte la información aprobada del desarrollo o la propiedad y agenda la visita con el asesor. Cada lead queda en tu CRM, en la etapa que le toca.",
+        "_nota": "56 palabras. Brief de D + canales confirmados el 2026-10-19 + G02 (aprobada)."
+      },
+      "body": [
+        "Sirve igual para una inmobiliaria con cartera de reventa que para una desarrolladora en preventa: Kain trabaja con tus fichas, tus precios vigentes y tus reglas de asignación, y cada asesor recibe al lead con la conversación completa."
+      ]
+    },
+    "dolores": {
+      "_componente": "DayTimeline vertical (aguja con scrub, sin pin). Horas ilustrativas; cierra con la del HUD del sector (SHOWROOM · 21:10, ESPEC §5.3).",
+      "rail": "La jornada",
+      "eyebrow": "La jornada",
+      "h2": { "text": "Cinco momentos", "soft": "en los que hoy se enfría un lead." },
+      "lede": "Horas ilustrativas de una semana cualquiera. En ámbar, lo que pasa hoy con tus leads; en cian, lo que cambia cuando Kain contesta primero.",
+      "entries": [
+        {
+          "time": "08:45",
+          "pain": "Abres el CRM y hay leads del fin de semana que nadie contestó. Algunos ya agendaron visita con otra inmobiliaria.",
+          "fix": "Kain contestó cada uno en cuanto llegó, lo calificó y dejó las visitas en el calendario de tus asesores."
+        },
+        {
+          "time": "12:20",
+          "pain": "Un asesor trae decenas de chats abiertos y no distingue a quien compra este mes de quien solo está viendo.",
+          "fix": "Kain separa por presupuesto, zona y forma de pago. Tu asesor empieza por quien está listo para visitar."
+        },
+        {
+          "time": "15:00",
+          "pain": "Un lead pide la ficha del departamento y alguien le manda un PDF viejo con el precio anterior.",
+          "fix": "Kain comparte solo las fichas y los precios vigentes que tu equipo cargó y aprobó."
+        },
+        {
+          "time": "18:30",
+          "pain": "La visita de mañana sigue sin confirmar. El asesor maneja hasta el desarrollo y nadie llega.",
+          "fix": "Kain confirma un día antes, manda la ubicación y, si el lead no puede, le propone otro horario."
+        },
+        {
+          "time": "21:10",
+          "pain": "Tu anuncio sigue corriendo de noche y los mensajes llegan con el showroom cerrado.",
+          "fix": "Kain atiende, califica y aparta la visita del sábado sin que nadie del equipo tome el celular."
+        }
+      ]
+    },
+    "automatizamos": {
+      "_componente": "ScriptList (6 filas; la 06 enlaza a /servicios/crm-con-ia/)",
+      "rail": "Qué automatizamos",
+      "eyebrow": "Qué automatizamos",
+      "h2": { "text": "Del primer mensaje", "soft": "a la visita confirmada." },
+      "items": [
+        { "n": "01", "title": "Respuesta inmediata", "line": "Cada lead de tus anuncios y portales recibe respuesta en segundos, también de noche y en fin de semana." },
+        { "n": "02", "title": "Calificación por zona y presupuesto", "line": "Pregunta para qué busca, cuánto quiere invertir y cómo pagaría: crédito bancario, Infonavit o contado." },
+        { "n": "03", "title": "Fichas aprobadas", "line": "Comparte fotos, ubicación y precios vigentes solo del inventario que tu equipo cargó." },
+        { "n": "04", "title": "Agenda de visitas", "line": "Aparta la cita en el calendario del asesor que corresponde por desarrollo o por zona." },
+        { "n": "05", "title": "Recordatorios", "line": "Confirma la visita, manda la ubicación y reagenda si el lead no puede llegar." },
+        { "n": "06", "title": "Pipeline por desarrollo", "line": "Cada lead en su etapa y en su desarrollo dentro del CRM: nuevo, calificado, visitó o apartó.", "href": "/servicios/crm-con-ia/" }
+      ]
+    },
+    "kain-sector": {
+      "_componente": "ImageSection mid (ind-inmobiliario-kain-sector, Kain a la izquierda, push; respaldo home-sistema-2-atender en espejo) + ChatSim registrado (script inmobiliario). Fijada +100 % en escritorio",
+      "rail": "Kain en tu inmobiliaria",
+      "eyebrow": "Kain en tu inmobiliaria",
+      "h2": { "text": "Una visita agendada", "soft": "desde un anuncio, a las diez de la noche." },
+      "lede": "Un lead pregunta por el departamento del anuncio cuando ya cerraste. Kain confirma que sigue disponible, pregunta para qué lo busca y cómo pagaría, y le agenda la visita del sábado con un asesor.",
+      "chat": { "mode": "registered", "script": "inmobiliario" },
+      "limite": "Kain no promete precios, descuentos, montos de crédito ni condiciones que tu inmobiliaria no haya aprobado. Cuando el lead pregunta por algo así, lo dice con claridad y se lo deja al asesor.",
+      "note": "Ejemplo ilustrativo: la conversación, la zona y las horas no son datos de un caso."
+    },
+    "cifras": {
+      "_componente": "EditorNote + Montage (2 filas, sin caso del sector) con enlace al caso más cercano",
+      "rail": "Resultados",
+      "eyebrow": "Resultados",
+      "h2": { "text": "Ningún caso inmobiliario todavía.", "soft": "Estas cifras vienen de otros sectores." },
+      "lede": "Las dos miden lo que más le importa a una inmobiliaria: qué tan rápido contestas y qué pasa cuando cada conversación se trabaja en un CRM.",
+      "noteLabel": "Nota del editor",
+      "note": "El tiempo de respuesta es de una clínica dental en Monterrey; el aumento de conversiones, de un retail multimarca que vende con Kommo y un agente de IA. Las ponemos porque miden lo mismo que buscas, no porque sean de tu sector.",
+      "rows": [
+        { "metricId": "dental-respuesta", "context": "Tiempo de respuesta en WhatsApp · Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
+        { "metricId": "retail-conversiones", "context": "Retail multimarca · Kommo + IA", "href": "/casos/retail-multimarca-kommo/", "linkLabel": "Ver el caso" }
+      ],
+      "sourceNote": true,
+      "links": [
+        { "label": "Lee el caso de la clínica dental", "href": "/casos/clinica-dental-monterrey/" },
+        { "label": "Lee el caso del retail multimarca", "href": "/casos/retail-multimarca-kommo/" }
+      ]
+    },
+    "servicios": {
+      "_componente": "Still ×3",
+      "rail": "Servicios",
+      "eyebrow": "Servicios recomendados",
+      "h2": { "text": "Anuncio, agente y CRM,", "soft": "conectados en un solo sistema." },
+      "items": [
+        { "href": "/servicios/agentes-ia-whatsapp/", "label": "Atender", "title": "Agentes de IA para WhatsApp", "line": "Kain contesta cada lead en segundos y agenda la visita." },
+        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo para inmobiliarias", "line": "Un embudo por desarrollo, con cada conversación y cada asesor a la vista." },
+        { "href": "/servicios/paid-media/", "label": "Atraer", "title": "Paid media conectado a tu CRM", "line": "Campañas en Meta, Google y TikTok medidas hasta la visita, no solo hasta el clic." }
+      ]
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas de inmobiliarias", "soft": "y desarrolladoras." },
+      "faqIds": ["N11", "G02", "G05", "G07"],
+      "_nota": "Ids de sitemap.json → ind-inmobiliario.faq, en su orden. N11 en validar: no se publica hasta aprobarse. Propuestas propias del sector (I01–I04) en peticiones.md.",
+      "footer": "¿Tienes otra duda sobre tus leads? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Tu siguiente paso",
+      "h2": { "text": "¿Cuánto tarda tu equipo en contestar un lead?", "soft": "Lo medimos en 30 minutos." },
+      "lede": "Revisamos tus canales, tus anuncios y tu CRM, y te mostramos en qué paso se enfrían los leads. Te llevas qué automatizar primero para que cada uno llegue a visita.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, tengo una inmobiliaria y quiero responder y calificar leads al instante."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

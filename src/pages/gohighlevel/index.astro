@@ -1,0 +1,10 @@
+---
+// /gohighlevel/ · T-PLATFORM (ESPEC §5.2 "Variantes T-PLATFORM"). Implementación de GoHighLevel en español: herramienta que
+// implementamos, nunca "partner" (D §13.2). Texto: src/content/paginas/gohighlevel.json (R1). Plantilla: PlatformTemplate.
+import PlatformTemplate from '../../components/templates/PlatformTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+
+const page = getPage('/gohighlevel/');
+const copy = getCopy(page.id);
+---
+<PlatformTemplate page={page} copy={copy} />

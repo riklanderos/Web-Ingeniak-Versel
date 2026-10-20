@@ -1,0 +1,479 @@
+{
+  "pageId": "consultoria",
+  "url": "/servicios/consultoria-ia-empresas/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "APROBACIÓN DE PREGUNTA · N06 sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. La definición de #definicion usa un texto propio de la página (definition.text, 48 palabras) armado con lo que ya dicen N06, la meta de D y la metodología: detectar dónde la IA ahorra tiempo o trae ventas, diseñar, poner en producción con métricas; diagnóstico, roadmap, casos de uso, implementación y seguimiento mensual con VKTOR™.",
+    "CAMBIO DE AFIRMACIÓN · 'retorno medible en 90 días' (brief de la portada) y 'resultados en 60–90 días' (brief de #definicion) NO se publican: el cliente no los ha confirmado (RESPUESTAS-CLIENTE 2026-10-19 solo confirma la implementación de 7 a 30 días según el alcance). En su lugar: métricas definidas desde el inicio, la cifra tiempo-operativo (que ya trae su ventana: promedio, primeros 90 días) y el plazo confirmado de implementación.",
+    "CAMBIO DE TEXTO · portada: los chips '+73 sistemas · 7 países' del brief van dentro del lede como tokens ({{metric:sistemas|full}} y {{metric:paises}}), porque ServiceTemplate no pinta chips en la portada. Repetición de cifras: sistemas y paises salen en la portada y en la fila de #definicion (dos veces cada una); tiempo-operativo en #definicion y en el registro de #caso; logistica-procesos solo en el montaje de #caso.",
+    "CAMBIO DE TEXTO · #como-funciona y #vktor-cine contaban lo mismo (las cinco fases). Para no repetir: #como-funciona nombra cada nodo por su entregable (diagnóstico, casos de uso, roadmap, sistema en producción, tablero) y #vktor-cine cuenta qué pasa en cada fase y con quién.",
+    "PREGUNTA AL CLIENTE · ¿la consultoría se puede contratar sola (solo diagnóstico y roadmap, sin implementación) o siempre va ligada a la implementación? El texto dice que la consultoría 'termina en producción' y no ofrece un diagnóstico suelto. Si existe como producto aparte, ¿tiene nombre, formato (documento, sesión, mapa) y precio propio distinto de {{price}}?",
+    "PREGUNTA AL CLIENTE · ¿los 'casos de uso por área' (#casos-uso) se pueden presentar como ejemplos que suelen aparecer en un diagnóstico? Son ejemplos generales armados con los servicios de Ingeniak, no proyectos concretos; el lede lo aclara ('Tu lista sale de tu operación, no de esta página').",
+    "PREGUNTA AL CLIENTE · #fit, 'No es para ti si…': la última línea ('Tu operación ya está sistematizada y medida…') adapta la de /discovery/. ¿Se queda?",
+    "CAMBIO DE TEXTO · #fit usa la firma aprobada (RESPUESTAS-CLIENTE 2026-10-19 #20) como eslogan: 'Construimos empresarios libres, no héroes cansados.'"
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (consultoria-hero: Kain consultor junto a un panel de cristal con una ruta de 5 nodos) + roadmap VKTOR registrado en el panel + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Servicio · Diagnóstico y roadmap",
+      "h1": {
+        "text": "Consultoría en inteligencia artificial",
+        "soft": "para empresas",
+        "lit": "inteligencia artificial"
+      },
+      "lede": "Detectamos dónde la IA te ahorra horas o te trae ventas, y la ponemos a operar con tu equipo. Diagnóstico, roadmap, implementación y métricas, con {{metric:sistemas|full}} en {{metric:paises}} países.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de consultoría en IA y quiero saber por dónde empezar con la IA en mi empresa."
+      },
+      "ui": {
+        "_nota": "UI de la portada de Consultoría según ESPEC §5.2.1: roadmap de 5 nodos VKTOR registrado sobre la ruta del panel (anclas nodo1…nodo5 de consultoria-hero). Sin burbujas de chat a propósito: ServiceTemplate solo pinta ui.bubbles, así que hoy no se dibuja nada encima del panel (pedido a plantillas en peticiones.md). SIMULACIÓN + data-nosnippet.",
+        "roadmap": {
+          "title": "Roadmap de tu operación",
+          "steps": [
+            "Diagnóstico",
+            "Casos de uso",
+            "Roadmap",
+            "Sistema en producción",
+            "Tablero mensual"
+          ],
+          "active": 0,
+          "status": "Diagnóstico en curso"
+        }
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio; N06 en validar) + MetricRow",
+      "rail": "Qué es",
+      "eyebrow": "Definición",
+      "definition": {
+        "heading": "¿Qué hace una consultoría de inteligencia artificial?",
+        "faqId": "N06",
+        "text": "Una consultoría de inteligencia artificial revisa cómo opera tu empresa, detecta en qué procesos la IA ahorra tiempo o trae ventas, diseña cómo implementarla y la pone en producción con métricas. En Ingeniak incluye diagnóstico, roadmap, casos de uso priorizados, implementación y seguimiento mensual, con la metodología VKTOR™.",
+        "_nota": "Texto propio de la página (N06 sigue en validar: true y DefinitionBlock no lo pintaría). Al aprobarse N06, conviene que su respuesta y este texto queden idénticos."
+      },
+      "body": [
+        "Una consultoría que termina en un documento te deja la parte difícil: implementarlo. La nuestra termina en producción. El diagnóstico se convierte en agentes de IA, CRM, automatizaciones o campañas funcionando, según lo que tu negocio necesite primero, y en un tablero que te dice cada mes si valió la pena."
+      ],
+      "metricRow": {
+        "title": "Lo que respalda el diagnóstico",
+        "metricIds": [
+          "tiempo-operativo",
+          "sistemas",
+          "paises"
+        ],
+        "sourceNote": true
+      }
+    },
+    "senales": {
+      "_componente": "ImageSection mid (dolor-operacion, persona, tone=dolor, subject-left, mobile split) + lista de señales (dolor ámbar → salida cian)",
+      "rail": "Antes de empezar",
+      "eyebrow": "Lo que vemos antes de empezar",
+      "h2": {
+        "text": "Mucha IA en las noticias,",
+        "soft": "poca en tu operación."
+      },
+      "lede": "Es lo que más encontramos cuando un dueño nos busca. Si te suena, el problema no es la herramienta: es el orden.",
+      "fig": {
+        "label": "Todo pasa por ti, también de noche"
+      },
+      "items": [
+        {
+          "pain": "No sabes por dónde empezar.",
+          "painLine": "Cada semana aparece una herramienta nueva y todas prometen lo mismo.",
+          "fix": "Un diagnóstico con números te dice qué proceso atacar primero y cuál todavía no."
+        },
+        {
+          "pain": "Probaste herramientas sueltas.",
+          "painLine": "Un chatbot por aquí, una suscripción por allá, y nada habla con nada.",
+          "fix": "Un solo sistema: canales, CRM y automatizaciones sobre los mismos datos."
+        },
+        {
+          "pain": "Nadie mide el retorno.",
+          "painLine": "Pagas cada mes, pero no sabes si te ahorra horas o te trae ventas.",
+          "fix": "Métricas definidas antes de implementar y revisadas cada mes en un tablero."
+        },
+        {
+          "pain": "Todo pasa por ti.",
+          "painLine": "Ventas, cobros y seguimiento avanzan solo si tú estás encima.",
+          "fix": "Lo repetitivo pasa a la IA y a tus sistemas; tú decides con información."
+        }
+      ],
+      "remate": "La IA no se compra: se implementa en el orden correcto."
+    },
+    "entregables": {
+      "_componente": "ScriptList (6 filas) sobre aura",
+      "rail": "Qué incluye",
+      "eyebrow": "Qué incluye",
+      "h2": {
+        "text": "Seis entregables,",
+        "soft": "del primer número a producción."
+      },
+      "items": [
+        {
+          "n": "01",
+          "title": "Diagnóstico con números",
+          "line": "Cómo llegan tus clientes, cuánto tardas en responder, dónde se pierden y qué tareas repite tu equipo, medido con tus datos."
+        },
+        {
+          "n": "02",
+          "title": "Casos de uso priorizados",
+          "line": "Lo que la IA puede resolver en tu negocio, ordenado por impacto y por esfuerzo, con lo que conviene dejar para después."
+        },
+        {
+          "n": "03",
+          "title": "Roadmap por escrito",
+          "line": "Qué se implementa, con qué herramientas, en qué orden, en cuánto tiempo y cuánto cuesta."
+        },
+        {
+          "n": "04",
+          "title": "Implementación",
+          "line": "Agentes de IA, CRM, automatizaciones o campañas, construidos por nuestro equipo y conectados entre sí.",
+          "href": "/servicios/"
+        },
+        {
+          "n": "05",
+          "title": "Operación con tu equipo",
+          "line": "Capacitamos a tu gente y dejamos por escrito qué atiende la IA y qué pasa a una persona."
+        },
+        {
+          "n": "06",
+          "title": "Métricas cada mes",
+          "line": "Un tablero con lo que se respondió, se agendó y se vendió, y la lista de ajustes del mes siguiente."
+        }
+      ],
+      "body": [
+        "El diagnóstico arranca en la Discovery Session: 30 minutos por Google Meet, sin costo. Si hay sentido, recibes la propuesta con alcance, tiempos y costo antes de que se implemente nada."
+      ]
+    },
+    "como-funciona": {
+      "_componente": "riel-servicios a sangre con 5 nodos registrados (uno por entregable)",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": {
+        "text": "Del dato a la decisión,",
+        "soft": "un entregable a la vez."
+      },
+      "nodes": [
+        {
+          "label": "Diagnóstico",
+          "line": "Tu operación medida: tiempos, fugas y tareas repetidas.",
+          "confirmed": true
+        },
+        {
+          "label": "Casos de uso",
+          "line": "Lo que la IA resuelve en tu negocio, por prioridad.",
+          "confirmed": true
+        },
+        {
+          "label": "Roadmap",
+          "line": "Alcance, herramientas, orden y costo, por escrito.",
+          "confirmed": true
+        },
+        {
+          "label": "Sistema en producción",
+          "line": "Construido y conectado de 7 a 30 días, según el alcance.",
+          "confirmed": true
+        },
+        {
+          "label": "Tablero mensual",
+          "line": "Lo que funcionó, lo que no y qué sigue.",
+          "confirmed": true
+        }
+      ],
+      "note": "Cada entregable lo revisas y lo apruebas antes de pasar al siguiente."
+    },
+    "casos-uso": {
+      "_componente": "ScriptList agrupada por área (Ventas · Atención · Operación · Marketing · Datos), 3 ejemplos por área con enlace al servicio",
+      "rail": "Casos de uso",
+      "eyebrow": "Casos de uso por área",
+      "h2": {
+        "text": "Dónde suele rendir la IA",
+        "soft": "en una pyme."
+      },
+      "lede": "Ejemplos de lo que aparece en un diagnóstico. Tu lista sale de tu operación, no de esta página.",
+      "groups": [
+        {
+          "label": "Ventas",
+          "glyph": "organizar",
+          "items": [
+            {
+              "title": "Calificar cada lead al entrar",
+              "line": "Un agente hace las preguntas de tu vendedor y deja al prospecto en su etapa del CRM.",
+              "href": "/servicios/crm-con-ia/"
+            },
+            {
+              "title": "Seguimiento que no se olvida",
+              "line": "Mensajes y tareas que salen solos cuando un prospecto deja de contestar."
+            },
+            {
+              "title": "Datos sin recaptura",
+              "line": "Lo que el cliente escribe en el chat llega al CRM sin que nadie lo copie."
+            }
+          ]
+        },
+        {
+          "label": "Atención",
+          "glyph": "atender",
+          "items": [
+            {
+              "title": "Respuesta en segundos",
+              "line": "Kain contesta en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo.",
+              "href": "/servicios/agentes-ia-whatsapp/"
+            },
+            {
+              "title": "Citas y confirmaciones",
+              "line": "Aparta la cita en tu calendario, la confirma y manda el recordatorio."
+            },
+            {
+              "title": "Paso a una persona",
+              "line": "Cuando el caso lo pide, la conversación llega a tu equipo con todo el contexto."
+            }
+          ]
+        },
+        {
+          "label": "Operación",
+          "glyph": "automatizar",
+          "items": [
+            {
+              "title": "Sistemas que se hablan",
+              "line": "CRM, WhatsApp, hojas de cálculo y ERP intercambian datos sin capturas a mano.",
+              "href": "/servicios/automatizacion-n8n/"
+            },
+            {
+              "title": "Avisos a quien le toca",
+              "line": "Un pago, un pedido atorado o una urgencia avisan a la persona correcta al momento."
+            },
+            {
+              "title": "Reportes que se arman solos",
+              "line": "El resumen de la semana se genera y llega sin que alguien junte números."
+            }
+          ]
+        },
+        {
+          "label": "Marketing",
+          "glyph": "atraer",
+          "items": [
+            {
+              "title": "Campañas medidas por ventas",
+              "line": "Meta, Google y TikTok Ads conectados al CRM para saber qué anuncio vende.",
+              "href": "/servicios/paid-media/"
+            },
+            {
+              "title": "Cada lead con su origen",
+              "line": "Sabes de qué campaña llegó cada conversación y en qué terminó."
+            },
+            {
+              "title": "Creativos guiados por datos",
+              "line": "Se renuevan según lo que convierte, no según el gusto de alguien."
+            }
+          ]
+        },
+        {
+          "label": "Datos",
+          "glyph": "medir",
+          "items": [
+            {
+              "title": "Un tablero para decidir",
+              "line": "Ventas, citas y costo por cliente en el mismo lugar, sin armar reportes a mano.",
+              "href": "/servicios/desarrollo-software/"
+            },
+            {
+              "title": "Avisos cuando algo se sale",
+              "line": "Si el tiempo de respuesta sube o las citas bajan, te enteras ese mismo día."
+            },
+            {
+              "title": "Mes contra mes",
+              "line": "Qué se respondió, qué se agendó y qué se vendió, comparado con el mes anterior."
+            }
+          ]
+        }
+      ],
+      "links": [
+        {
+          "label": "Mira cómo se aplica en tu industria",
+          "href": "/industrias/"
+        }
+      ]
+    },
+    "vktor-cine": {
+      "_componente": "ImageSection mid (metodologia-hero: Kain sobre la quinta losa, push hacia la superficie) + 5 viñetas de fases + enlace a /metodologia/",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": {
+        "text": "Del diagnóstico a producción,",
+        "soft": "en cinco fases."
+      },
+      "lede": "La misma secuencia en cada proyecto. Lo que cambia es lo que encontramos en tu operación.",
+      "items": [
+        "Verify · Verificamos tu operación contigo o con quien la dirige, y sale el diagnóstico.",
+        "Koncept · Diseñamos el concepto y te lo entregamos como propuesta: tú la revisas y decides.",
+        "Transform · Nuestro equipo implementa; el tuyo valida respuestas, horarios y reglas.",
+        "Operate · Lo encendemos con clientes reales y lo operamos junto con tu equipo.",
+        "Rise · Cada mes revisamos el tablero contigo y elegimos el siguiente ajuste."
+      ],
+      "links": [
+        {
+          "label": "Conoce la metodología VKTOR™",
+          "href": "/metodologia/"
+        }
+      ]
+    },
+    "fit": {
+      "_componente": "TwoColumnScript variant=fit (el 'no' en ámbar) + eslogan",
+      "rail": "¿Es para ti?",
+      "eyebrow": "Antes de contratar",
+      "h2": {
+        "text": "¿Esta consultoría",
+        "soft": "es para tu empresa?"
+      },
+      "lede": "Preferimos decirlo antes: funciona mejor en un tipo de negocio, y no es para todos.",
+      "left": {
+        "title": "Es para ti si…",
+        "tone": "cian",
+        "items": [
+          "Diriges una pyme de 3 a 40 empleados, de cualquier sector.",
+          "El negocio depende de ti para vender, cobrar y supervisar.",
+          "Tienes procesos que se repiten todos los días y se podrían sistematizar.",
+          "Quieres una opinión seria, con números, antes de invertir en IA."
+        ]
+      },
+      "right": {
+        "title": "No es para ti si…",
+        "tone": "ambar",
+        "items": [
+          "Buscas una herramienta para instalarla por tu cuenta, sin acompañamiento.",
+          "Quieres una cotización sin que nadie revise tu operación.",
+          "Esperas que la IA arregle un proceso que nadie ha definido.",
+          "Tu operación ya está sistematizada y medida: ahí conviene ir directo a escalar."
+        ]
+      },
+      "slogan": "Construimos empresarios libres, no héroes cansados."
+    },
+    "caso": {
+      "_componente": "Montage (1 fila: logistica-procesos) + ResultsLedger filtrado (tiempo-operativo)",
+      "rail": "Caso",
+      "eyebrow": "Caso destacado",
+      "h2": {
+        "text": "Logística:",
+        "soft": "procesos que ya se mueven solos."
+      },
+      "lede": "En una empresa de logística conectamos CRM, WhatsApp, ERP y modelos de IA con n8n, con disparadores en tiempo real. El resultado se cuenta en procesos que ya no dependen de que alguien los haga a mano.",
+      "rows": [
+        {
+          "metricId": "logistica-procesos",
+          "context": "Automatización con n8n y agentes de IA · Logística",
+          "href": "/casos/logistica-n8n/",
+          "linkLabel": "Ver el caso"
+        }
+      ],
+      "ledger": {
+        "metricIds": [
+          "logistica-procesos",
+          "tiempo-operativo"
+        ],
+        "caption": "Resultados de automatización y consultoría"
+      },
+      "sourceNote": true,
+      "note": "Nombres de clientes anonimizados."
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": {
+        "text": "{{Price}}."
+      },
+      "lede": "El alcance de una consultoría lo definen tres cosas:",
+      "items": [
+        {
+          "title": "Procesos",
+          "line": "Cuántas áreas de tu operación entran en el diagnóstico y en el roadmap."
+        },
+        {
+          "title": "Integraciones",
+          "line": "Qué sistemas hay que conectar: CRM, ERP, hojas de cálculo, canales y modelos de IA."
+        },
+        {
+          "title": "Volumen",
+          "line": "Cuántas conversaciones, leads o tareas pasan cada mes por el sistema."
+        }
+      ],
+      "remate": "La Discovery Session no cuesta y ahí empieza el diagnóstico. Si avanzamos, la propuesta trae alcance, tiempos y costo por escrito, y la implementación toma de 7 a 30 días, según lo que incluya."
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Preguntas sobre consultoría",
+        "soft": "en inteligencia artificial."
+      },
+      "faqIds": [
+        "N06",
+        "G07",
+        "G08",
+        "N07",
+        "G09"
+      ],
+      "footer": "¿Tienes otra pregunta? Escríbele a Kain por WhatsApp o mándanos un correo a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": {
+        "text": "Del roadmap",
+        "soft": "a las piezas del sistema."
+      },
+      "items": [
+        {
+          "href": "/metodologia/",
+          "label": "Metodología",
+          "title": "VKTOR™, fase por fase",
+          "line": "Qué pasa en cada fase y qué te llevas al terminarla."
+        },
+        {
+          "href": "/servicios/automatizacion-n8n/",
+          "label": "Automatizar",
+          "title": "Automatización con n8n",
+          "line": "Tus sistemas conectados, sin capturas a mano."
+        },
+        {
+          "href": "/servicios/agentes-ia-whatsapp/",
+          "label": "Atender",
+          "title": "Agentes de IA para WhatsApp",
+          "line": "Kain responde, califica y agenda por ti."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila, subject-left)",
+      "rail": "Cierre",
+      "eyebrow": "Antes de invertir",
+      "h2": {
+        "text": "Antes de invertir en IA,",
+        "soft": "mira tu operación con números."
+      },
+      "lede": "En la Discovery Session revisamos cómo vendes, atiendes y operas, y te decimos qué conviene resolver primero con IA y qué todavía no.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de consultoría en IA y quiero saber por dónde empezar con la IA en mi empresa."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

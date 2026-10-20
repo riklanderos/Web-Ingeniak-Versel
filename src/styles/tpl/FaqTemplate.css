@@ -1,0 +1,204 @@
+/* FaqTemplate.css · T-FAQ (/preguntas-frecuentes/) · ESPEC-v2 §5.14. Solo clases .faq-* (y el body.faq-pg).
+   Portada a sangre con buscador → seis temas (Intertitle split: cabeza fija + acordeón de cristal sobre aura) → amanecer.
+   Ninguna sección pinta fondo (§3.11): la luz la ponen la placa, las auras, la luz de base (.tpl-glow) y los nodos. */
+
+/* ── 01 · Portada ─────────────────────────────────────────────────────────── */
+/* H1 de página interna: en escritorios bajos manda la altura (el buscador queda en el primer pantallazo) */
+.faq-hero h1.faq-h1{font-size:min(clamp(2.5rem,1rem + 4.6vw,6rem),9.2svh);max-width:12ch}
+.faq-hero .is__text > .faq-hero__eyebrow{margin-bottom:var(--s-4)}
+.faq-hero .is__text > .faq-hero__deck{margin-top:var(--s-4);max-width:22em}
+.faq-hero .is__text > .faq-hero__lede{margin-top:var(--s-4);max-width:42ch}
+
+/* Buscador: un control (no un bloque de texto): campo píldora oscuro con filete; se enciende en cian al enfocar.
+   Sin JS no existe (todo el banco queda visible y los temas funcionan como anclas). */
+html.no-js .faq-search{display:none}
+.faq-search{width:min(100%,32rem);margin-top:var(--s-6)}
+.faq-search__label{display:block;margin-bottom:var(--s-3);color:var(--soft)}
+.faq-search__field{position:relative;display:flex;align-items:center;height:60px;border-radius:var(--r-pill);
+  background:linear-gradient(180deg,rgb(6 10 24 / .78),rgb(3 4 11 / .7));
+  box-shadow:inset 0 0 0 1px var(--hair-2),inset 0 1px 0 rgb(255 255 255 / .08),0 18px 50px rgb(0 0 0 / .4);
+  transition:box-shadow .45s var(--ease-cine)}
+.faq-search__field:focus-within{box-shadow:inset 0 0 0 1px var(--cyan),inset 0 1px 0 rgb(255 255 255 / .1),0 0 0 4px rgb(0 229 255 / .12),0 18px 60px rgb(0 229 255 / .16)}
+.faq-search__i{position:absolute;left:22px;color:var(--cyan);pointer-events:none}
+.faq-search__input{flex:1;min-width:0;height:100%;padding:0 56px 0 56px;border:0;background:none;color:#fff;border-radius:inherit;
+  font:400 1.0625rem/1 var(--f-body);-webkit-appearance:none;appearance:none}
+.faq-search__input::placeholder{color:rgb(158 176 199 / .72)}
+.faq-search__input:focus{outline:none}
+.faq-search__input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.faq-search__clear{position:absolute;right:10px;width:40px;height:40px;border:0;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+  background:rgb(255 255 255 / .06);color:var(--text-2);box-shadow:inset 0 0 0 1px var(--hair-2);transition:background var(--d-ui),color var(--d-ui)}
+.faq-search__clear:hover{background:rgb(0 229 255 / .12);color:#fff}
+.faq-search__clear[hidden]{display:none}
+.faq-search__hint{margin-top:var(--s-3);color:var(--muted)}
+html[data-faq-filtering] .faq-search__hint{display:none}
+.faq-search__status{min-height:0;margin-top:var(--s-3);font:500 .8125rem/1.4 var(--f-mono);letter-spacing:.04em;color:var(--cyan)}
+.faq-search__status:empty{display:none}
+.faq-search__empty{margin-top:var(--s-4);max-width:40ch;font:400 .9375rem/1.55 var(--f-body);color:var(--text-2)}
+.faq-search__empty[hidden]{display:none}
+.faq-search__wa{gap:8px;margin-top:6px;color:var(--text)}
+/* Resaltado de la búsqueda (CSS Custom Highlight API; sin soporte no se resalta, el filtro funciona igual) */
+::highlight(faq-hit){background-color:rgb(0 229 255 / .26);color:#fff}
+
+/* Índice de temas: filas mono numeradas con su número de respuestas (anclas a cada tema) */
+.faq-topics{width:min(100%,36rem);margin-top:var(--s-6)}
+.faq-topics__h{display:flex;align-items:center;gap:10px;margin-bottom:var(--s-3);color:var(--soft)}  /* AA sobre la penumbra de la placa (el .t-label al 80 % daba 3.8:1) */
+.faq-topics__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-5);border-top:1px solid var(--hair)}
+.faq-topics__a{display:grid;grid-template-columns:2.2em minmax(0,1fr) auto;align-items:baseline;gap:10px;min-height:44px;padding:12px 0 11px;
+  border-bottom:1px solid var(--hair);color:var(--text-2);text-decoration:none;font:500 .875rem/1.3 var(--f-body);
+  background:linear-gradient(90deg,rgb(0 229 255 / .55),transparent 70%) 0 100% / 0 1px no-repeat;
+  transition:color var(--d-ui),background-size .6s var(--ease-cine),opacity var(--d-ui)}
+.faq-topics__a:hover,.faq-topics__a:focus-visible{color:#fff;background-size:100% 1px}
+.faq-topics__n{font:500 .6875rem/1 var(--f-mono);letter-spacing:.12em;color:var(--cyan)}
+.faq-topics__c{font:400 .75rem/1 var(--f-mono);letter-spacing:.06em;color:var(--muted);font-variant-numeric:tabular-nums}
+.faq-topics__a.is-off{opacity:.38}
+.faq-hero .is__text > .faq-hero__ctas{margin-top:var(--s-6)}
+
+/* Escritorio de alto medio o bajo (≤ 960 px): el buscador, los temas y WhatsApp mandan en el primer pantallazo; la entrada
+   larga se retira (la página la repite en cada tema) */
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:960px){
+  .faq-hero .is__text > .faq-hero__lede{display:none}
+}
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:860px){
+  .faq-hero .is__text > .faq-search{margin-top:var(--s-5)}
+  .faq-hero .is__text > .faq-topics{margin-top:var(--s-5)}
+  .faq-topics__a{min-height:40px;padding:10px 0 9px}
+  .faq-hero .is__text > .faq-hero__ctas{margin-top:var(--s-5)}
+}
+@media (min-width:768px) and (min-aspect-ratio:5/6) and (max-height:760px){
+  .faq-hero .faq-search__hint{display:none}
+  .faq-topics__list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .faq-topics__a{grid-template-columns:1.9em minmax(0,1fr) auto;gap:6px;font-size:.8125rem}
+}
+/* R3: `more` de la portada solo lleva contenido móvil */
+@media (min-width:768px) and (min-aspect-ratio:5/6){.faq-hero > .is__more{display:none}}
+
+/* Móvil (split): arriba H1 + buscador; después de la placa, la entrada, los temas (una columna) y WhatsApp */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .faq-hero h1.faq-h1{max-width:none}
+  .faq-hero .is__text > .faq-hero__deck{margin-top:var(--s-3)}
+  .faq-search{width:100%;margin-top:var(--s-5)}
+  .faq-search__field{height:56px}
+  .faq-search__hint{display:none}
+  .faq-hero__rest{margin:0;max-width:40ch}
+  .faq-topics--m{width:100%;margin-top:var(--s-6)}
+  .faq-topics--m .faq-topics__list{grid-template-columns:1fr}
+  .faq-hero__ctas-m{margin-top:var(--s-5)}
+  /* Aquí WhatsApp va solo (sin el primario al lado): botón completo con su nombre, no el círculo de 48 px de las portadas */
+  .faq-hero.tpl-hero .is__more .faq-hero__ctas-m > .btn--wa{width:auto;height:52px;padding:0 24px;gap:10px;border-radius:var(--r-pill)}
+  .faq-hero.tpl-hero .is__more .faq-hero__ctas-m > .btn--wa .btn__t{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto;white-space:nowrap}
+}
+
+/* ── 02–07 · Temas ────────────────────────────────────────────────────────── */
+.faq-sec[hidden],.faq-sec [data-faq-item][hidden]{display:none!important}
+.faq-sec{padding-block:calc(var(--beat) * .85)}
+.faq-sec .it__frame{row-gap:var(--s-7)}
+.faq-sec__head{display:flex;flex-direction:column;align-items:flex-start}
+.faq-sec__eyebrow{display:flex;align-items:center;gap:12px}
+.faq-sec__n{display:inline-grid;place-items:center;min-width:30px;height:22px;padding:0 6px;border-radius:var(--r-node);
+  font:500 .6875rem/1 var(--f-mono);letter-spacing:.08em;color:var(--cyan);box-shadow:inset 0 0 0 1px var(--hair-cyan)}
+/* El H2 de cada tema vive en 5 columnas: un punto menos que el H2 de escena */
+.faq-sec h2.faq-sec__h2{margin-top:var(--s-4);font-size:clamp(2.1rem,1rem + 2.7vw,4.25rem);max-width:13ch}
+.faq-sec__lede{margin-top:var(--s-5);max-width:42ch}
+.faq-sec__count{margin-top:var(--s-6);color:var(--muted);font-variant-numeric:tabular-nums}
+.faq-sec .it__body{align-self:start}
+.faq-sec .it__body > .faq{width:100%;align-self:stretch}
+.faq-sec .faq__qt{font:500 clamp(1.0625rem,.98rem + .3vw,1.25rem)/1.35 var(--f-display);letter-spacing:-.01em;color:#fff}
+/* La cabeza acompaña al acordeón en escritorios con alto suficiente (en bajos, fluye: nunca queda cortada) */
+@media (min-width:1024px) and (min-height:820px){
+  .faq-sec .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start}
+}
+
+/* Elemento propio de cada cabeza */
+.faq-proof{margin-top:var(--s-6);padding-top:var(--s-4);border-top:1px solid var(--hair)}
+.faq-proof__list{display:flex;flex-wrap:wrap;gap:var(--s-3) var(--s-6)}
+.faq-proof__list li{font:400 .9375rem/1.4 var(--f-body);color:var(--text-2)}
+.faq-proof__list .metric--inline b{display:inline-block;margin-right:6px;font:200 2.25rem/1 var(--f-display);letter-spacing:-.04em;color:#fff;font-variant-numeric:tabular-nums}
+.faq-proof__src{margin-top:var(--s-3)}
+
+.faq-chan{margin-top:var(--s-6)}
+.faq-chan__h{margin-bottom:var(--s-3)}
+.faq-chan__list{display:flex;flex-wrap:wrap;gap:var(--s-2)}
+.faq-chan__list .chip-spec{display:inline-flex;align-items:center;gap:8px}
+
+.faq-crm{margin-top:var(--s-6);display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-4)}
+.faq-crm__ghl{display:flex;align-items:baseline;gap:10px;font:400 .9375rem/1.5 var(--f-body);color:var(--text-2);max-width:40ch}
+.faq-crm__ghl::before{content:"";flex:none;width:6px;height:6px;border-radius:1.5px;background:var(--cyan);box-shadow:var(--glow-cyan);translate:0 -2px}
+
+.faq-tools{margin-top:var(--s-6)}
+
+.faq-price{margin-top:var(--s-5);display:flex;flex-direction:column;gap:var(--s-3)}
+.faq-price__fig{font:200 clamp(2.4rem,1rem + 3vw,4.5rem)/1 var(--f-display);letter-spacing:-.045em;color:#fff;text-wrap:balance}
+.faq-price__line{display:flex;align-items:baseline;gap:10px;font:500 .75rem/1.45 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+.faq-price__line::before{content:"";flex:none;width:7px;height:7px;border-radius:1.5px;background:var(--cyan);box-shadow:var(--glow-cyan);translate:0 -1px}
+
+/* Qué mueve el precio: lista corta con nodos */
+.faq-factors{margin-top:var(--s-6)}
+.faq-factors__h{margin-bottom:var(--s-3)}
+.faq-factors__list{display:grid;gap:8px}
+.faq-factors__list li{display:flex;align-items:baseline;gap:12px;font:400 .9375rem/1.45 var(--f-body);color:var(--text-2)}
+.faq-factors__list li::before{content:"";flex:none;width:6px;height:6px;border-radius:1.5px;background:var(--cyan);box-shadow:var(--glow-cyan);translate:0 -2px}
+/* Remate de cada tema: una línea en Lexend 300 (segunda voz) */
+.faq-sec__remate{margin-top:var(--s-6);max-width:26ch;font:300 clamp(1.125rem,1rem + .5vw,1.4rem)/1.35 var(--f-display);letter-spacing:-.015em;color:var(--soft)}
+/* Glosario corto (bajo las respuestas de Agentes): término mono, definición en Inter */
+.faq-gloss{width:100%;margin-top:var(--s-7)!important}
+.faq-gloss__h{display:flex;align-items:center;gap:10px;margin-bottom:var(--s-3)}
+.faq-gloss__dl{border-top:1px solid var(--hair)}
+.faq-gloss__row{display:grid;grid-template-columns:minmax(0,10rem) minmax(0,1fr);gap:var(--s-5);padding:14px 0;border-bottom:1px solid var(--hair)}
+.faq-gloss__row dt{font:500 .75rem/1.6 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--cyan)}
+.faq-gloss__row dd{margin:0;font:400 .9375rem/1.55 var(--f-body);color:var(--text-2)}
+@media (max-width:767px){.faq-gloss__row{grid-template-columns:1fr;gap:4px}}
+
+/* Pasos de la Discovery: el pilar del isotipo une sus nodos */
+.faq-steps{position:relative;margin-top:var(--s-6);display:grid;gap:var(--s-4);padding-left:22px}
+.faq-steps::before{content:"";position:absolute;left:3px;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,var(--cyan),rgb(0 229 255 / .15))}
+.faq-steps__i{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:12px;row-gap:2px;align-items:baseline}
+.faq-steps__i::before{content:"";position:absolute;left:-22px;top:.45em;width:7px;height:7px;border-radius:1.5px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+.faq-steps__n{font:500 .6875rem/1 var(--f-mono);letter-spacing:.12em;color:var(--cyan)}
+.faq-steps__t{font:500 1.0625rem/1.3 var(--f-display);letter-spacing:-.01em;color:#fff}
+.faq-steps__l{grid-column:2;font:400 .875rem/1.5 var(--f-body);color:var(--text-2)}
+
+/* Para profundizar: filas con rama (sin tarjetas) */
+.faq-more{width:100%;margin-top:var(--s-7)!important}
+.faq-more__h{display:flex;align-items:center;gap:10px;margin-bottom:var(--s-3)}
+.faq-more__list{border-top:1px solid var(--hair)}
+.faq-more__a{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 40px;column-gap:var(--s-5);row-gap:4px;align-items:center;
+  padding:18px 0 17px;border-bottom:1px solid var(--hair);color:var(--text);text-decoration:none}
+.faq-more__a::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:100%;transform:scaleX(0);transform-origin:left;
+  background:linear-gradient(90deg,var(--cyan),rgb(0 229 255 / .2) 55%,transparent 90%);transition:transform .7s var(--ease-cine)}
+.faq-more__a:hover::after,.faq-more__a:focus-visible::after{transform:scaleX(1)}
+.faq-more__t{grid-column:1;font:500 1.125rem/1.3 var(--f-display);letter-spacing:-.01em}
+.faq-more__l{grid-column:1;font:400 .875rem/1.5 var(--f-body);color:var(--muted)}
+.faq-more__go{grid-column:2;grid-row:1 / span 2;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--cyan);
+  box-shadow:inset 0 0 0 1px var(--hair-2);transition:box-shadow var(--d-ui),background var(--d-ui),translate .45s var(--ease-cine)}
+.faq-more__a:hover .faq-more__go,.faq-more__a:focus-visible .faq-more__go{box-shadow:inset 0 0 0 1px var(--cyan);background:rgb(0 229 255 / .1);translate:4px 0}
+.faq-note{width:100%;margin-top:var(--s-7)!important}
+
+/* Luz de base por tema: los centros de las tres elipses cambian de lado para que la secuencia no se vea repetida */
+.faq-sec--agentes{--g1x:70%;--g2x:26%;--g3x:68%}
+.faq-sec--automatizacion{--g1x:64%;--g2x:30%;--g3x:72%}
+.faq-sec--empezar{--g1x:76%;--g2x:24%;--g3x:60%}
+
+/* Móvil y tableta: cabeza, acordeón y enlaces en una columna */
+@media (max-width:1023px){
+  .faq-sec h2.faq-sec__h2{max-width:16ch}
+  .faq-sec .it__frame{row-gap:var(--s-6)}
+}
+@media (max-width:767px){
+  .faq-sec{padding-block:var(--s-9) var(--s-8)}
+  .faq-sec__count{margin-top:var(--s-5)}
+  .faq-proof__list .metric--inline b{font-size:2rem}
+  .faq-more__t{font-size:1.0625rem}
+  .faq-search__input{font-size:1rem}
+}
+
+/* ── 08 · Cierre ──────────────────────────────────────────────────────────── */
+.faq-dawn h2.t-h2{max-width:16ch}
+/* La microcopia del cierre (más larga que el botón) no ensancha la columna: ocupa el ancho del primario y se parte en
+   renglones equilibrados (con nowrap se salía de la pantalla a 390 px). Misma regla que las plantillas aprobadas. */
+.faq-dawn .is__text{min-width:0}
+.faq-dawn .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-width:none;white-space:normal;text-wrap:balance}
+
+@media (forced-colors:active){
+  .faq-search__field{border:1px solid CanvasText}
+  .faq-sec__n,.faq-more__go{border:1px solid ButtonText}
+}

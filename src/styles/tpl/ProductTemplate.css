@@ -1,0 +1,389 @@
+/* ===== ProductTemplate ===== */
+/* T-PRODUCT (/kain/, ESPEC §5.6) · clases .prd-* de src/components/templates/ProductTemplate.astro.
+   Reglas: ninguna sección pinta fondo (§3.11): la luz viene de la placa, del aura, de los nodos o de la UI; sin caja detrás
+   del texto; todo visible sin JS y con movimiento reducido. Móvil = misma condición por proporción que las placas (§3.6). */
+
+/* ── Base de la plantilla ─────────────────────────────────────────────────── */
+body.prd :is(h1,h2)[data-split]{text-wrap:balance}
+body.prd .it__aura--ondas{opacity:1}
+body.prd .it__aura--isotipo{opacity:.9}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  body.prd .it__aura{width:max(130vw,520px)}
+  body.prd .it__aura--ondas{width:max(200vw,780px)}
+}
+/* Costuras sin franjas (como caso, servicio e industria): la luz de base de cada escena sin placa se extiende 140 px fuera
+   de su sección y se funde en 280 px; en cada costura las dos luces se suman. */
+body.prd main .tpl-glow:not(.is)::before{inset:-140px 0;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 280px,#000 calc(100% - 280px),transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 280px,#000 calc(100% - 280px),transparent 100%)}
+/* Secciones propias entre escenas: mandan el orden del DOM y la costura (igual que .it/.mt de cine) */
+.prd-sec{position:relative;z-index:1;isolation:isolate;overflow-x:clip;padding:var(--beat) 0}
+.prd-sec + .is{margin-top:calc(-.8 * var(--beat))}
+.prd-sec__head{grid-column:1 / -1;max-width:56rem;display:flex;flex-direction:column;align-items:flex-start}
+.prd-sec__head > .eyebrow{margin-bottom:var(--s-4)}
+.prd-sec__head > .t-lede{margin-top:var(--s-5)}
+.prd-body{font:var(--t-body);color:var(--text-2);max-width:62ch;text-wrap:pretty}
+.prd-limit{display:flex;gap:10px;align-items:baseline;margin:0;color:var(--text-2);max-width:62ch;line-height:1.55}
+.prd-limit .node{flex:none;translate:0 -1px}
+
+/* ── 01 · Portada: Kain al centro; logotipo + H1 abajo a la izquierda, lede + CTAs abajo a la derecha ─────────── */
+.prd-firma{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;margin:0 0 var(--s-5)}
+.prd-firma .kain-mark{font-size:clamp(2rem,1.3rem + 1.5vw,3rem);color:#fff}
+.prd-firma__by{font:500 11px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:rgb(201 214 230 / .86)}
+.prd-h1{margin:0}
+.prd-h1 .prd-h1__a{display:block;white-space:nowrap}
+.prd-h1 .prd-h1__b{display:block;margin-top:var(--s-3);font-size:clamp(1.25rem,.85rem + 1vw,1.875rem);color:var(--soft);max-width:13em}
+.prd-channels{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:var(--s-5);line-height:1.5;color:rgb(201 214 230 / .86)}
+.prd-channels__k{color:var(--cyan);margin-right:2px}
+.prd-channels__sep{width:4px;height:4px;background:rgb(0 229 255 / .55)}
+.prd-app{display:inline-flex;align-items:center;gap:8px;min-height:24px;text-decoration:none}
+.prd-app .icon{width:14px;height:14px}
+.prd-hero .is__aside > .prd-app{margin-top:var(--s-5)}
+.prd-hero__lede{margin:0;max-width:34ch;color:var(--text-2)}
+.prd-hero .is__aside > .ctas{margin-top:var(--s-6);display:flex;flex-wrap:wrap;gap:var(--s-4);align-items:flex-start}
+
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  /* Escenario de la portada (misma cuenta que .stage: "cover" con fx .5): la caja del sujeto de la placa va de .345 a .615
+     de su ancho → el texto de la izquierda termina 32 px antes de ella y el de la derecha empieza 32 px después. */
+  .prd-hero{--p-h:max(100svh,680px);--p-sw:max(100vw, var(--p-h) * var(--ar-d));
+    --p-l:calc(var(--frame) / 2 - .155 * var(--p-sw) - 32px);
+    --p-r:calc(var(--frame) / 2 - .115 * var(--p-sw) - 32px)}
+  .prd-hero--center .is__copy{row-gap:var(--s-6)}
+  .prd-hero--center.is[data-layout] .is__text{grid-column:1 / span 6;grid-row:1;align-self:end;width:var(--p-l);max-width:100%}
+  .prd-hero--center.is[data-layout] .is__aside{grid-column:7 / -1;grid-row:1;align-self:end;justify-self:end;text-align:left;
+    width:var(--p-r);max-width:100%;display:flex;flex-direction:column;align-items:flex-start;padding-bottom:2px}
+  /* H1: la primera voz ("Soy Kain,") cabe en una línea en la columna libre; en escritorios bajos manda la altura */
+  .prd-hero .prd-h1__a{font-size:min(clamp(3rem,1rem + 6vw,8.5rem),12.4svh,var(--p-l) / 4.55)}
+  /* Velo: lateral (el texto flanquea al sujeto) en lugar del inferior de subject-center, que apagaba las piernas de Kain
+     (en la placa los pies llegan a y .92). Ambos se retiran antes de la caja del sujeto. */
+  .prd-hero--center.is[data-layout] > .is__fx{background:
+    linear-gradient(90deg,rgb(3 4 11 / .9) 0,rgb(3 4 11 / .74) 12%,rgb(3 4 11 / .34) 24%,rgb(3 4 11 / 0) 31%),
+    linear-gradient(270deg,rgb(3 4 11 / .88) 0,rgb(3 4 11 / .7) 11%,rgb(3 4 11 / .3) 23%,rgb(3 4 11 / 0) 31%),
+    radial-gradient(30% 34% at 82% 68%,rgb(3 4 11 / .86),rgb(3 4 11 / .62) 52%,rgb(3 4 11 / 0) 100%),
+    linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent 86%,var(--ink) 100%)}
+}
+@media (min-width:1800px) and (min-aspect-ratio:5/6){
+  /* Ultra ancho: el escenario se limita a --cap (cine.css) y queda centrado */
+  .prd-hero{--p-sw:min(2200px, var(--p-h) * var(--ar-d) * 1.08)}
+}
+/* Escritorios estrechos y 4:3 (la columna libre junto al sujeto mide < 300 px): el escenario se apoya en su borde izquierdo
+   (fx 0, Kain se corre a la derecha) y todo el texto va en una sola columna a la izquierda, con el velo de subject-right. */
+@media (min-width:768px) and (max-width:1199px) and (min-aspect-ratio:5/6),(min-width:768px) and (min-aspect-ratio:5/6) and (max-aspect-ratio:7/5){
+  .prd-hero--center.is{--fx:0;--p-l:calc(.345 * var(--p-sw) - (100vw - var(--frame)) / 2 - 32px)}
+  .prd-hero--center.is[data-layout] .is__text{grid-column:1 / -1;grid-row:1;justify-self:start;width:var(--p-l)}
+  .prd-hero--center.is[data-layout] .is__aside{grid-column:1 / -1;grid-row:2;justify-self:start;width:var(--p-l)}
+  .prd-hero--center .is__copy{row-gap:var(--s-5)}
+  .prd-hero .is__aside > .ctas{margin-top:var(--s-5)}
+  .prd-hero--center.is[data-layout] > .is__fx{background:
+    linear-gradient(90deg,rgb(3 4 11 / .92) 0,rgb(3 4 11 / .76) 24%,rgb(3 4 11 / .3) 38%,rgb(3 4 11 / 0) 46%),
+    linear-gradient(180deg,rgb(3 4 11 / .55) 0,transparent 16%,transparent 86%,var(--ink) 100%)}
+  .prd-hero .prd-channels{display:none}
+}
+@media (min-width:768px) and (max-height:760px) and (min-aspect-ratio:5/6){
+  .prd-hero .is__text > .crumbs{margin-bottom:var(--s-4)}
+  .prd-firma{margin-bottom:var(--s-4)}
+  .prd-hero .prd-channels{margin-top:var(--s-4)}
+}
+
+/* Respaldo sin placa exportada: escenario de luz registrado (ondas, halo, piso) y Kain de cuerpo completo */
+.prd-hero[data-aura] .stage .is__aura{display:none}
+.prd-stage__waves{position:absolute;inset:-4% -6%;opacity:.9}
+.prd-stage__waves img{display:block;width:100%;height:100%;object-fit:cover;
+  -webkit-mask-image:radial-gradient(60% 62% at 50% 46%,#000 30%,transparent 100%);mask-image:radial-gradient(60% 62% at 50% 46%,#000 30%,transparent 100%)}
+.prd-stage__halo{position:absolute;left:50%;top:38%;width:31%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;
+  background:radial-gradient(closest-side,rgb(10 31 76 / .55) 0,rgb(10 31 76 / .25) 74%,rgb(0 229 255 / .14) 90%,transparent 100%);
+  box-shadow:inset 0 0 0 2px rgb(140 240 255 / .6),inset 0 0 46px 6px rgb(0 229 255 / .42),0 0 54px 10px rgb(0 229 255 / .32),0 0 160px 40px rgb(0 85 255 / .22)}
+.prd-stage__floor{position:absolute;left:8%;right:8%;top:85.5%;height:14%;
+  background:radial-gradient(50% 60% at 50% 0,rgb(0 229 255 / .2),rgb(69 93 255 / .08) 45%,transparent 75%)}
+.prd-kain{position:absolute;display:block;pointer-events:none}
+.prd-kain--hero{left:50%;top:1%;height:94%;aspect-ratio:560 / 996;translate:-50% 0}
+.prd-kain :is(.prd-kain__img,.prd-kain__vid){position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain}
+.prd-kain__vid{opacity:0;transition:opacity .5s var(--ease-ui)}
+.prd-kain.is-playing .prd-kain__vid{opacity:1}
+.prd-kain.is-playing .prd-kain__img{opacity:0;transition:opacity .5s var(--ease-ui) .15s}
+/* Reflejo en el piso: el recorte invertido sobre la línea de los pies (y .911 del recorte) */
+.prd-kain__mirror{position:absolute;left:0;top:82.2%;width:100%;height:100%;scale:1 -1;opacity:.2;
+  -webkit-mask-image:linear-gradient(180deg,transparent 62%,#000 100%);mask-image:linear-gradient(180deg,transparent 62%,#000 100%)}
+.prd-kain.is-playing .prd-kain__mirror{opacity:.12}
+/* El rack de la toma compartida apaga la capa propia junto con la placa */
+.take > .prd-hero[data-take] > .is__stagebox > .is__layer--over{opacity:clamp(0, 1 - var(--rack,0) * 1.6, 1)}
+
+/* Móvil (R3 · split): firma, H1, lede corto y CTA arriba; Kain abajo; canales y app.kain.mx después de la placa */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .prd-firma{margin-bottom:var(--s-3)}
+  .prd-firma .kain-mark{font-size:1.75rem}
+  .prd-hero .prd-h1__a{font-size:min(clamp(3rem,.8rem + 10vw,4.75rem),8.6svh)}
+  .prd-hero .prd-h1__b{margin-top:var(--s-2);font-size:clamp(1.1875rem,.9rem + 1.4vw,1.5rem)}
+  .prd-hero.is[data-layout] .is__aside{justify-self:stretch;margin-top:var(--s-4);display:flex;flex-direction:column;align-items:flex-start}
+  .prd-hero__lede{font-size:1rem;line-height:1.5;max-width:40ch}
+  /* CTAs: primario a todo el ancho con su microcopia y "Escríbele a Kain" rotulado en su fila (decisión 5, QA #29) */
+  .prd-hero .is__aside > .ctas{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"p" "m" "w";row-gap:12px;width:100%;margin-top:var(--s-5)}
+  .prd-hero .is__aside > .ctas > .cta-p{display:contents}
+  .prd-hero .is__aside > .ctas > .cta-p > .btn{grid-area:p;width:100%;height:52px;justify-content:space-between}
+  .prd-hero .is__aside > .ctas > .cta-p > .btn-micro{grid-area:m;margin:0;white-space:nowrap;letter-spacing:.03em}
+  .prd-hero .is__aside > .ctas > .btn--wa{grid-area:w;width:100%;height:52px;padding:0 24px 0 20px;gap:12px;justify-content:center;border-radius:var(--r-pill)}
+  .prd-hero .is__aside > .ctas > .btn--wa .btn__ico{width:18px;height:18px}
+  .prd-hero > .is__more .is__text{justify-self:stretch}
+  .prd-hero__rest{margin:0 0 var(--s-4);font-size:1rem;line-height:1.5}
+  .prd-channels--m{margin:0 0 var(--s-4)}
+  .prd-app--m{margin:0}
+  /* Respaldo sin placa: Kain en la mitad inferior de la placa vertical virtual (4:5) */
+  .prd-kain--hero{top:39%;height:58%}
+  .prd-stage__halo{top:62%;width:62%}
+  .prd-stage__floor{top:91%;left:0;right:0}
+  .prd-stage__waves{inset:30% -20% 0}
+}
+@media (max-width:339px){.prd-hero .is__aside > .ctas > .cta-p > .btn-micro{white-space:normal}}
+@media (max-width:767px) and (max-height:780px){
+  .prd-hero.is[data-m="split"]{--hero-gap:16px}
+  .prd-hero .is__aside > .ctas{margin-top:var(--s-4);row-gap:8px}
+  .prd-hero .is__aside > .ctas > .cta-p > .btn{height:48px}
+  .prd-hero .is__aside > .ctas > .btn--wa{height:44px}
+}
+@media (min-width:600px) and (max-aspect-ratio:5/6){
+  .prd-hero .is__aside > .ctas{max-width:26.25rem}
+}
+
+/* ── 02 · Qué es kain: definición + tres acepciones ─────────────────────── */
+.prd-def .it__body{grid-column:1 / -1}
+.prd-def__grid{width:100%;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:clamp(40px,6vw,120px);align-items:start}
+.prd-facets{margin:0;border-top:1px solid var(--hair-2)}
+.prd-facet{display:flex;flex-direction:column;gap:10px;padding:20px 0 22px;border-bottom:1px solid var(--hair)}
+.prd-facet__t{display:flex;align-items:baseline;gap:12px;color:var(--cyan)}
+.prd-facet__n{color:rgb(201 214 230 / .7)}
+.prd-facet__l{margin:0;font:300 clamp(1.0625rem,.95rem + .35vw,1.25rem)/1.45 var(--f-display);letter-spacing:-.008em;color:var(--text);text-wrap:pretty}
+.prd-def .it__body > .prd-def__body{margin-top:var(--s-8);max-width:26em;color:var(--soft)}
+@media (max-width:1023px){
+  .prd-def__grid{grid-template-columns:minmax(0,1fr);row-gap:var(--s-7)}
+}
+
+/* ── 03 · Lo que hago: filas de guion + teléfono de cristal con pestañas (fijo junto a las filas en escritorio) ── */
+.prd-hago .it__body{grid-column:1 / -1}
+.prd-hago__grid{width:100%;display:grid;grid-template-columns:minmax(0,1fr);column-gap:clamp(40px,6vw,112px);align-items:start}
+.prd-hago__grid--chat{grid-template-columns:minmax(0,1fr) min(384px,30vw)}
+.prd-hago__main{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+.prd-hago__main > .eyebrow{margin-bottom:var(--s-4)}
+.prd-hago__main > .t-lede{margin-top:var(--s-5);max-width:48ch}
+.prd-hago__rows{width:100%;margin-top:var(--s-7)}
+.prd-hago__main > .prd-body{margin-top:var(--s-6)}
+.prd-hago__main > .prd-limit{margin-top:var(--s-5)}
+.prd-hago__aside{position:sticky;top:calc(var(--hdr) + var(--s-6));isolation:isolate;display:flex;justify-content:center;padding-top:var(--s-4)}
+.prd-hago__aside > .tpl-aura{z-index:-1}
+@media (max-width:1023px){
+  .prd-hago__grid--chat{grid-template-columns:minmax(0,1fr);row-gap:var(--s-8)}
+  .prd-hago__aside{position:relative;top:auto}
+  .prd-hago__aside > .tpl-aura{width:min(150vw,640px)}
+}
+
+/* ── 04 · Dónde trabajo: canales → Kain → sistemas (ramas del isotipo, nodos cuadrados, pulso) ─────────── */
+.prd-hub{--wire:clamp(36px,4.4vw,80px);--core-h:clamp(400px,40vw,580px);--chest:44%}
+.prd-hub__head{margin:0 auto var(--s-7);align-items:center;text-align:center;max-width:52rem}
+.prd-hub__head > .t-lede{max-width:46ch}
+.prd-hub .prd-hub__head .t-h2{font-size:clamp(2.25rem,1rem + 3.2vw,4.75rem)}
+.prd-hub__map{grid-column:1 / -1;position:relative;display:grid;grid-template-columns:minmax(0,1fr) clamp(220px,24vw,360px) minmax(0,1fr);align-items:center}
+.prd-hub__col{position:relative;min-width:0}
+.prd-hub__col--in{padding-right:var(--wire)}
+.prd-hub__col--out{padding-left:var(--wire)}
+.prd-hub__label{display:flex;align-items:center;gap:10px;margin:0 0 var(--s-3)}
+.prd-hub__col--in .prd-hub__label{justify-content:flex-end}
+.prd-hub__list{margin:0;padding:0;list-style:none}
+.prd-hub__item{position:relative}
+.prd-hub__a{display:grid;grid-template-columns:44px minmax(0,1fr);column-gap:16px;row-gap:3px;align-items:center;padding:13px 0;color:inherit;text-decoration:none}
+.prd-hub__col--in .prd-hub__a{grid-template-columns:minmax(0,1fr) 44px;text-align:right}
+.prd-hub__mark{grid-row:1 / span 2;width:44px;height:44px;display:grid;place-items:center;border-radius:var(--r-input);color:rgb(255 255 255 / .82);
+  box-shadow:inset 0 0 0 1px var(--hair-2);background:linear-gradient(150deg,rgb(255 255 255 / .07),rgb(255 255 255 / .02))}
+.prd-hub__col--in .prd-hub__mark{grid-column:2}
+.prd-hub__col--in :is(.prd-hub__name,.prd-hub__line){grid-column:1}
+.prd-hub__logo{width:22px;height:22px}
+.prd-hub__logo.logo-mask--wide{height:11px!important;width:auto!important;min-height:0}
+.prd-hub__ico{width:22px;height:22px;color:var(--text)}
+.prd-hub__name{align-self:end;font:500 clamp(1.0625rem,.95rem + .4vw,1.375rem)/1.15 var(--f-display);letter-spacing:-.015em;color:var(--text)}
+.prd-hub__line{align-self:start;font:400 .875rem/1.45 var(--f-body);color:var(--text-2);text-wrap:pretty}
+a.prd-hub__a:is(:hover,:focus-visible) .prd-hub__mark{color:#fff;box-shadow:inset 0 0 0 1px var(--hair-cyan),0 0 24px rgb(0 229 255 / .18)}
+a.prd-hub__a:is(:hover,:focus-visible) .prd-hub__name{color:var(--cyan-soft)}
+/* Ramas: tramo de cada fila → bus vertical en el borde de la columna → tramo al pecho de Kain */
+.prd-hub__stub{position:absolute;top:50%;width:var(--wire);height:1px;pointer-events:none;overflow:hidden;
+  background:linear-gradient(90deg,rgb(0 229 255 / .2),rgb(0 229 255 / .7))}
+.prd-hub__col--in .prd-hub__stub{left:100%}
+.prd-hub__col--out .prd-hub__stub{right:100%;background:linear-gradient(90deg,rgb(0 229 255 / .7),rgb(0 229 255 / .2))}
+.prd-hub__item::after{content:"";position:absolute;top:0;bottom:0;width:1px;background:rgb(0 229 255 / .5);pointer-events:none}
+.prd-hub__col--in .prd-hub__item::after{left:calc(100% + var(--wire) - 1px)}
+.prd-hub__col--out .prd-hub__item::after{right:calc(100% + var(--wire) - 1px)}
+.prd-hub__item:first-child::after{top:50%}
+.prd-hub__item:last-child::after{bottom:50%}
+.prd-hub__item::before{content:"";position:absolute;top:50%;width:5px;height:5px;translate:0 -50%;border-radius:1px;background:var(--cyan);box-shadow:var(--glow-cyan);pointer-events:none}
+.prd-hub__col--in .prd-hub__item::before{left:calc(100% + 6px)}
+.prd-hub__col--out .prd-hub__item::before{right:calc(100% + 6px)}
+/* El núcleo: Kain de pie sobre su nodo, con el isotipo de cristal desenfocado detrás */
+.prd-hub__core{position:relative;height:var(--core-h);isolation:isolate}
+.prd-hub__core::before,.prd-hub__core::after{content:"";position:absolute;top:var(--chest);height:1px;width:34%;pointer-events:none}
+.prd-hub__core::before{left:0;background:linear-gradient(90deg,rgb(0 229 255 / .55),rgb(0 229 255 / .95) 70%,transparent)}
+.prd-hub__core::after{right:0;background:linear-gradient(270deg,rgb(0 229 255 / .55),rgb(0 229 255 / .95) 70%,transparent)}
+.prd-hub__node{position:absolute;top:var(--chest);width:9px;height:9px;translate:-50% -50%;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+.prd-hub__node--l{left:0}
+.prd-hub__node--r{left:100%}
+.prd-hub__glow{position:absolute;z-index:-2;left:50%;top:44%;width:190%;aspect-ratio:1;translate:-50% -50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgb(0 120 255 / .3),rgb(10 31 76 / .42) 42%,rgb(10 31 76 / .14) 70%,transparent)}
+.prd-hub__ring{position:absolute;z-index:-1;left:50%;top:40%;width:86%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;
+  box-shadow:inset 0 0 0 1px rgb(140 240 255 / .4),inset 0 0 40px 4px rgb(0 229 255 / .2),0 0 50px 6px rgb(0 229 255 / .16)}
+.prd-hub__pad{position:absolute;z-index:-1;left:50%;bottom:4%;width:62%;height:7%;translate:-50% 0;border-radius:50%;
+  background:radial-gradient(50% 50% at 50% 50%,rgb(0 229 255 / .5),rgb(0 85 255 / .22) 45%,transparent 72%)}
+.prd-kain--hub{left:50%;bottom:0;height:106%;aspect-ratio:560 / 996;translate:-50% 0}
+/* Pulso que recorre cada rama hacia Kain (canales) y desde Kain (sistemas): solo con movimiento y en pantalla */
+@keyframes prd-pulse{from{translate:-28px 0}to{translate:calc(var(--wire) + 28px) 0}}
+html.ui-motion .prd-hub__map.is-in .prd-hub__stub::after{content:"";position:absolute;top:-1px;left:0;width:28px;height:3px;
+  background:linear-gradient(90deg,transparent,#fff,transparent);animation:prd-pulse 3.4s var(--ease-ui) infinite;animation-delay:calc(var(--i,0) * .55s + .8s)}
+html.ui-motion .prd-hub__map:not(.is-in) .prd-hub__stub{scale:0 1}
+html.ui-motion .prd-hub__map:not(.is-in) .prd-hub__item::after{scale:1 0}
+html.ui-motion .prd-hub__map:not(.is-in) .prd-hub__core::before,html.ui-motion .prd-hub__map:not(.is-in) .prd-hub__core::after{scale:0 1}
+html.ui-motion .prd-hub__stub{transition:scale .7s var(--ease-cut) calc(var(--i,0) * 90ms + 300ms)}
+html.ui-motion .prd-hub__col--in .prd-hub__stub{transform-origin:0 50%}
+html.ui-motion .prd-hub__col--out .prd-hub__stub{transform-origin:100% 50%}
+html.ui-motion .prd-hub__item::after{transition:scale .6s var(--ease-cut) .2s}
+html.ui-motion .prd-hub__core::before{transform-origin:0 50%;transition:scale .8s var(--ease-cut) .9s}
+html.ui-motion .prd-hub__core::after{transform-origin:100% 50%;transition:scale .8s var(--ease-cut) .9s}
+.prd-hub__col--in .prd-hub__item::after,.prd-hub__col--out .prd-hub__item::after{transform-origin:50% 50%}
+.prd-hub__frame > .prd-hub__handoff{grid-column:1 / -1;justify-self:center;margin:var(--s-8) 0 0;max-width:30em;text-align:center;color:var(--soft)}
+.prd-hub__note{grid-column:1 / -1;justify-self:center;display:flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:var(--s-4) var(--s-5);margin-top:var(--s-6)}
+.prd-hub__note .t-small{margin:0;max-width:56ch;color:var(--text-2)}
+@media (max-width:1023px) and (min-width:768px) and (min-aspect-ratio:5/6){
+  .prd-hub{--wire:28px}
+  .prd-hub__line{display:none}
+}
+/* Móvil: Kain arriba; canales y sistemas como dos ramas que bajan por la izquierda (bus + tramo a cada fila) */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .prd-hub{--wire:26px;--core-h:min(380px,96vw)}
+  .prd-hub__head{margin:0 0 var(--s-6);align-items:flex-start;text-align:left}
+  .prd-hub__map{grid-template-columns:minmax(0,1fr);row-gap:var(--s-6)}
+  .prd-hub__core{order:-1;width:min(100%,360px);justify-self:center}
+  .prd-hub__core::before,.prd-hub__core::after,.prd-hub__node{display:none}
+  .prd-hub__col--in,.prd-hub__col--out{padding:0 0 0 var(--wire)}
+  .prd-hub__col--in .prd-hub__label{justify-content:flex-start}
+  .prd-hub__col--in .prd-hub__a{grid-template-columns:44px minmax(0,1fr);text-align:left}
+  .prd-hub__col--in .prd-hub__mark{grid-column:1}
+  .prd-hub__col--in :is(.prd-hub__name,.prd-hub__line){grid-column:2}
+  .prd-hub__col--in .prd-hub__stub,.prd-hub__col--out .prd-hub__stub{left:auto;right:100%;background:linear-gradient(90deg,rgb(0 229 255 / .5),rgb(0 229 255 / .8))}
+  .prd-hub__col--in .prd-hub__item::after,.prd-hub__col--out .prd-hub__item::after{left:auto;right:calc(100% + var(--wire) - 1px)}
+  .prd-hub__col--in .prd-hub__item::before,.prd-hub__col--out .prd-hub__item::before{left:auto;right:calc(100% + 6px)}
+  html.ui-motion .prd-hub__col--in .prd-hub__stub{transform-origin:100% 50%}
+  .prd-hub__frame > .prd-hub__handoff{justify-self:start;text-align:left;margin-top:var(--s-7)}
+  .prd-hub__note{justify-self:start;justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){.prd-hub__stub::after{display:none}}
+
+/* ── 05 · Lo que sí / lo que no (Kain a la izquierda, todo el texto a la derecha; móvil split) ─────────── */
+.prd-sino__lists{width:100%}
+.prd-sino__lists > .tcs{margin-top:var(--s-2)}
+.prd-sino .tcs__cols{column-gap:clamp(28px,3.4vw,64px)}
+.prd-sino .tcs__title{font-size:clamp(1.125rem,.95rem + .45vw,1.375rem);margin-bottom:var(--s-4)}
+.prd-sino .tcs__list li{padding:11px 0 12px 24px;font-size:clamp(.9375rem,.9rem + .15vw,1.0625rem);line-height:1.45}
+.prd-sino .tcs__list li::before{top:calc(11px + .7em - .75px)}
+.prd-sino .tcs__col.tone-cyan .tcs__list li::before{top:calc(11px + .7em - 3px)}
+.prd-sino .tcs__col.tone-cyan .tcs__list li{color:var(--text)}
+.prd-slogan{margin:var(--s-7) 0 0;max-width:20em;text-wrap:balance}
+.prd-slogan b{font-weight:400;color:#fff}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  .prd-sino{--fit-h:max(100svh,680px);padding-top:calc(var(--hdr) + var(--s-5))}
+  /* El escenario no crece con el texto: la placa ocupa un plano y la columna sigue sobre su disolución */
+  .prd-sino > .is__stagebox{bottom:auto;height:var(--fit-h)}
+  .prd-sino > .is__more{margin-top:var(--s-6)}
+  .prd-sino .t-h2{font-size:min(clamp(2.25rem,1rem + 3vw,4.5rem),7.6svh)}
+}
+@media (min-width:768px) and (max-width:1023px) and (min-aspect-ratio:5/6){.prd-sino.is[data-layout] :is(.is__copy,.is__more) .is__text{grid-column:4 / -1}}
+/* 4:3 y escritorios bajos: la placa en "cover" crece y el sujeto llega más a la derecha; la columna (intro y listas) se corre lo
+   justo para quedar 32 px fuera de su caja (misma cuenta que .stage: x = (sx1 − fx) · sw + fx · 100vw) */
+@media (min-width:1024px) and (min-aspect-ratio:5/6){
+  .prd-sino{--sn-sw:max(100vw, var(--fit-h) * var(--ar-d))}
+  .prd-sino.is[data-layout="subject-left"] :is(.is__copy,.is__more) .is__text{
+    padding-left:max(0px, (var(--sx1,.45) - var(--fx-d)) * var(--sn-sw) + var(--fx-d) * 100vw + 32px - 50vw - var(--gap) / 2)}
+}
+@media (min-width:1024px) and (min-aspect-ratio:5/6){.prd-sino.is[data-layout] :is(.is__copy,.is__more) .is__text{grid-column:7 / -1}}
+@media (min-width:1800px) and (min-aspect-ratio:5/6){.prd-sino.is[data-layout] :is(.is__copy,.is__more) .is__text{grid-column:7 / span 5}}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .prd-sino > .is__more .is__text{justify-self:stretch}
+  .prd-sino .tcs__cols{grid-template-columns:minmax(0,1fr);row-gap:var(--s-6)}
+  .prd-sino .tcs__cols::before,.prd-sino .tcs__cols::after{display:none}
+  .prd-slogan{margin-top:var(--s-6)}
+}
+
+/* ── 06 · Kain en tu sector (LocationSwitcher) ───────────────────────────── */
+.prd-loc__lede{margin-top:var(--s-4);max-width:40ch}
+/* Móvil y tableta vertical: la lista es larga y su final cae sobre la parte alta de la placa del sector → el velo registrado
+   de la placa sube hasta la cabeza del sujeto (§3.10-2: velo, nunca caja) */
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .prd-loc .is__layer--media .stage::before{background:linear-gradient(180deg,rgb(3 4 11 / .94) 0,rgb(3 4 11 / .8) calc(var(--subj-top-m) * 100% - 14%),rgb(3 4 11 / .3) calc(var(--subj-top-m) * 100%),transparent calc(var(--subj-top-m) * 100% + 6%))}
+}
+@media (min-width:768px) and (min-aspect-ratio:5/6){
+  /* La escena de locaciones mide un plano: titular en dos líneas para que la lista y la tarjeta quepan sin agrandar la placa */
+  .prd-loc .t-h2{font-size:min(clamp(2.25rem,1rem + 2.6vw,4rem),6.4svh)}
+}
+.prd-loc__foot{max-width:44ch;color:var(--text-2)}
+/* La micro-promesa de las filas inactivas ya mide 0 de alto (cine.css); además fuera del árbol visual para que nada la lea
+   sobre la placa a media opacidad (check-contraste medía su texto recortado). La fila activa la muestra como siempre. */
+.prd-loc .loc__row:not([aria-current]) .loc__line{visibility:hidden}
+.prd-loc__all{font-size:14px}
+
+/* ── 07 · La plataforma: ventana de producto (SIMULACIÓN) sobre aura ─────────── */
+.prd-plat .it__head{align-self:center;display:flex;flex-direction:column;align-items:flex-start}
+.prd-plat .t-h2{font-size:clamp(2.25rem,1rem + 2.7vw,4.25rem)}
+.prd-plat .it__head > .eyebrow{margin-bottom:var(--s-4)}
+.prd-plat .it__head > .t-lede{margin-top:var(--s-5);max-width:40ch}
+.prd-plat .it__head > .prd-body{margin-top:var(--s-5);max-width:44ch}
+.prd-plat__cta{margin-top:var(--s-6)}
+.prd-plat .it__body{align-self:center}
+.prd-plat__win{width:100%;max-width:620px}
+.prd-appui{display:grid;grid-template-columns:150px minmax(0,1fr);grid-template-rows:1fr auto;font:400 13px/1.4 var(--f-body);color:var(--text-2)}
+.prd-appui__side{grid-row:1 / span 2;display:flex;flex-direction:column;gap:14px;padding:18px 16px;border-right:1px solid var(--hair)}
+.prd-appui__brand{margin:0}
+.prd-appui__brand .kain-mark{font-size:24px;color:#fff}
+.prd-appui__status{display:flex;align-items:center;gap:8px;margin:0;font:500 10px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--cyan)}
+.prd-appui__chans{display:grid;gap:11px;margin:8px 0 0;padding:14px 0 0;list-style:none;border-top:1px solid var(--hair)}
+.prd-appui__chans li{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-2)}
+.prd-appui__logo{width:16px;height:16px;color:rgb(255 255 255 / .75)}
+.prd-appui__logo.logo-mask--wide{height:11px!important}
+.prd-appui__ico{width:16px;height:16px;color:rgb(255 255 255 / .75)}
+.prd-appui__rows{margin:0;padding:6px 0;list-style:none}
+.prd-appui__row{display:grid;grid-template-columns:32px minmax(0,1fr) auto;column-gap:12px;row-gap:3px;align-items:center;padding:12px 18px 13px 16px;border-bottom:1px solid var(--hair)}
+.prd-appui__ch{grid-row:1 / span 2;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;box-shadow:inset 0 0 0 1px var(--hair-2);background:rgb(255 255 255 / .04)}
+.prd-appui__who{font:500 13px/1.2 var(--f-display);color:var(--text)}
+.prd-appui__msg{grid-column:2 / span 2;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-2)}
+.prd-appui__st{grid-column:3;grid-row:1;justify-self:end;padding:5px 8px;border-radius:var(--r-pill);font:500 9.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-2);box-shadow:inset 0 0 0 1px var(--hair-2);white-space:nowrap}
+.prd-appui__st.is-done{color:var(--cyan);box-shadow:inset 0 0 0 1px var(--hair-cyan);background:rgb(0 229 255 / .07)}
+.prd-appui__st.is-hand{color:var(--text);box-shadow:inset 0 0 0 1px rgb(255 255 255 / .3)}
+.prd-appui__foot{display:flex;align-items:center;gap:8px;margin:0;padding:12px 16px 14px;font:500 10.5px/1.3 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--cyan)}
+html.ui-motion .pwin:not(.is-in) .prd-appui__row{opacity:0;translate:0 10px}
+html.ui-motion .prd-appui__row{transition:opacity .6s var(--ease-cine) calc(var(--i,0) * 110ms + 350ms),translate .8s var(--ease-cine) calc(var(--i,0) * 110ms + 350ms)}
+@media (max-width:1023px){
+  .prd-plat .it__body{margin-top:var(--s-6)}
+}
+@media (max-width:767px){
+  .prd-appui{grid-template-columns:minmax(0,1fr)}
+  .prd-appui__side{display:none}
+  .prd-appui__row{padding:11px 12px}
+  .prd-appui__st{font-size:8.5px;padding:4px 6px}
+  .prd-plat__win .pwin__mark{display:none}
+}
+
+/* ── 08 · Resultados (Montage) ───────────────────────────────────────────── */
+.prd-mt .mt__intro > .t-lede{margin-top:var(--s-5)}
+
+/* ── 09 · Preguntas frecuentes (cabecera fija junto al acordeón) ─────────── */
+.prd-faq .it__head{position:sticky;top:calc(var(--hdr) + var(--s-6));align-self:start;display:flex;flex-direction:column;align-items:flex-start}
+.prd-faq .it__head > .eyebrow{margin-bottom:var(--s-4)}
+.prd-faq__foot{margin-top:var(--s-6);max-width:34ch;color:var(--text-2)}
+.prd-faq__foot a{color:var(--text);text-decoration:none;background:linear-gradient(var(--hair-cyan),var(--hair-cyan)) 0 100% / 100% 1px no-repeat}
+.prd-faq__cta{margin-top:var(--s-5)}
+.prd-faq .it__body > .faq{width:100%;align-self:stretch}
+@media (max-width:1023px){.prd-faq .it__head{position:relative;top:auto}}
+
+/* ── 10 · Cierre ─────────────────────────────────────────────────────────── */
+.prd-dawn .t-h2{font-size:clamp(2.25rem,1rem + 3.4vw,4.75rem)}
+@media (max-width:767px),(max-aspect-ratio:5/6){.prd-dawn .ctas{width:100%}}
+@media (min-width:600px) and (max-aspect-ratio:5/6){.prd-dawn .ctas{width:min(100%,420px)}}
+
+@media (forced-colors:active){
+  .prd-stage__halo,.prd-stage__floor,.prd-hub__ring,.prd-hub__pad,.prd-hub__glow{display:none}
+  .prd-hub__stub,.prd-hub__item::after,.prd-hub__core::before,.prd-hub__core::after{background:CanvasText}
+}
+/* ===== fin ProductTemplate ===== */

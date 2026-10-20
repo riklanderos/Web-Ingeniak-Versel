@@ -1,0 +1,174 @@
+{
+  "pageId": "caso-horeca",
+  "url": "/casos/horeca-roas/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "publishGate": {
+    "ok": false,
+    "fuente": null,
+    "_nota": "Puerta R2 cerrada: la página sale como caso breve (noindex,follow; solo portada, ficha con filas confirmed:true, cifra, replicar, relacionados y cierre). Lo publicable hoy: la cifra de metrics.ts (horeca-roas · 'ROAS 4.8× sostenido', contexto 'HoReCa'), lo que la ficha de D da por confirmado (hoteles y restaurantes; paid media en Meta Ads), la descripción que ya publica ingeniak.mx (creativos dinámicos, audiencias predictivas y atribución multicanal), la FAQ G14 aprobada y que el sistema sigue operando (RESPUESTAS-CLIENTE 2026-10-19 #3). Para abrirla hace falta, por escrito: ficha (tipo de negocio, ciudad, plataformas, plazo), punto de partida e implementación."
+  },
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · puerta R2: ¿autorizas publicar este caso completo e indexable? Necesitamos por escrito ficha, punto de partida e implementación. Mientras tanto sale como caso breve en noindex, enlazado desde /casos/, el inicio, /servicios/paid-media/ y /industrias/horeca/.",
+    "PREGUNTA AL CLIENTE · ficha: (1) ¿el cliente es restaurante, hotel o ambos (grupo con los dos)? La página dice 'hoteles y restaurantes', como la ficha de D y /industrias/horeca/; (2) ¿en qué ciudad? (si no se puede, se omite); (3) ¿cuánto tardó la implementación? Si no se confirma, solo se usa el rango general de Ingeniak (de 7 a 30 días según el alcance), rotulado como general.",
+    "PREGUNTA AL CLIENTE · implementación: confirma pieza por pieza lo que va en el diagrama (hoy los cuatro nodos llevan confirmed:false y no se pintan): (a) campañas en Meta Ads: ¿también hubo Google Ads o TikTok Ads?; (b) creativos dinámicos: ¿qué se rotaba (platillos, habitaciones, promociones, temporadas)?; (c) audiencias predictivas: ¿con qué datos se armaron (clientes que ya compraron, visitantes del sitio, base del CRM)?; (d) atribución multicanal: ¿con qué se conectó la venta (píxel, CRM, sistema de reservas, punto de venta)?; (e) ¿hubo agente de IA en WhatsApp o CRM conectado? Si sí, el caso entra también a esos filtros de /casos/.",
+    "PREGUNTA AL CLIENTE · cifra: ¿qué cuenta como 'venta' en el ROAS de este caso (reservaciones, consumo en mesa, noches vendidas, pedidos en línea)? Solo para explicarlo en el punto de partida; la cifra no cambia.",
+    "PREGUNTA AL CLIENTE · punto de partida: ¿cómo era la publicidad antes de Ingeniak? Si se pueden publicar el ROAS inicial o la inversión, van; si no, se cuenta en cualitativo (por ejemplo, cómo medían antes) y la escena de la cifra se queda como multiplicador.",
+    "RESUELTO 2026-10-19 · cliente en chat · (3) los cinco sistemas siguen activos: chip 'En operación' en la portada y fila 'Estado' en la ficha.",
+    "RESUELTO 2026-10-19 · cliente en chat · (1) periodo de medición de horeca-roas: 'Solo ponlo'. La cifra sale tal como está en metrics.ts ('sostenido'), sin ventana; no se inventa un plazo.",
+    "RESUELTO 2026-10-19 · cliente en chat · (16) plazo general: 'de 7 a 30 días según lo robusto del proyecto'. Va solo en vktor.lede, como rango general (la sección no se pinta mientras el caso sea breve).",
+    "BORRADOR SIN PUBLICAR · implementacion, resultado y vktor existen para cuando se abra la puerta, pero CaseTemplate no los pinta en el caso breve. Solo usan la descripción ya publicada (sitio actual, G14) y fases genéricas de VKTOR aplicadas al negocio de quien lee. punto-partida va con _omitir hasta tener el dato.",
+    "CAMBIO DE TEXTO · ficha.deckBreve es la entradilla del caso breve; ficha.deck queda para la versión completa. ficha.note dice 'Reportaje breve…': al abrir la puerta se cambia por la nota de anonimato del caso dental.",
+    "CAMBIO DE TEXTO · CTA primario de portada y cierre: 'Agenda tu Discovery Session' (regla de un solo azul, §0.1-4; sitemap.primaryCta dice 'Quiero un sistema así: agenda tu Discovery').",
+    "CAMBIO DE TEXTO · relacionados: el brief pide /servicios/paid-media/, /industrias/horeca/ y el caso e-commerce. Van los tres como filas; el 'Siguiente reportaje' es logística, para cerrar la cadena dental → retail → e-commerce → HoReCa → logística → dental (si fuera e-commerce, logística no tendría quien la anuncie).",
+    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (caso-horeca-hero, persona a la derecha) + Breadcrumbs + fila .chip-spec",
+      "rail": "Portada",
+      "h1": { "kicker": "HoReCa:", "metricId": "horeca-roas", "text": "sostenido con paid media" },
+      "chips": ["Hoteles y restaurantes", "Meta Ads", "En operación"],
+      "lede": "Campañas en Meta Ads para un cliente de hoteles y restaurantes, medidas por lo que regresan en ventas y no por los clics. El retorno se sostuvo: no fue el pico de una sola campaña.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso HoReCa con ROAS 4.8× y quiero campañas así para mi negocio." },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "ficha": {
+      "_componente": "EntitySheet variant=case + .t-standfirst + crédito + SceneRail mode=labels (Quick Jump)",
+      "rail": "Contexto",
+      "eyebrow": "Ficha del caso",
+      "entity": [
+        { "term": "Sector", "value": "HoReCa · hoteles y restaurantes", "confirmed": true },
+        { "term": "Servicio", "value": "Paid media", "href": "/servicios/paid-media/", "confirmed": true },
+        { "term": "Plataforma", "value": "Meta Ads", "confirmed": true },
+        { "term": "Enfoque", "value": "Creativos dinámicos, audiencias predictivas y atribución multicanal", "confirmed": true },
+        { "term": "Qué mide la cifra", "value": "Lo que regresa en ventas por cada peso invertido en publicidad", "confirmed": true },
+        { "term": "Estado", "value": "Sigue en operación", "confirmed": true },
+        { "term": "Cifra", "value": "{{metric:horeca-roas|full}}" }
+      ],
+      "deckBreve": "En un restaurante o en un hotel, una campaña puede llenar un fin de semana y no repetirse nunca. Este cliente sostuvo su retorno con campañas en Meta Ads que combinan creativos dinámicos, audiencias predictivas y atribución multicanal, y lo midió en ventas, no en alcance.",
+      "deck": "Un cliente de hoteles y restaurantes sostuvo su retorno publicitario con campañas en Meta Ads. Este reportaje explica qué mide ese retorno, desde dónde partió y qué piezas lo sostienen mes con mes.",
+      "byline": "Por el equipo de Ingeniak",
+      "note": "Reportaje breve con lo que ya publicamos de este cliente: sector, plataforma, enfoque y cifra. Su nombre está anonimizado."
+    },
+    "punto-partida": {
+      "_componente": "Prose + nota al margen (ámbar)",
+      "_omitir": true,
+      "_nota": "D: 'Situación inicial con números del cliente [POR CONFIRMAR]… inversión, canales y ROAS inicial'. Se escribe cuando el cliente confirme por escrito cómo era su publicidad antes (ver pendientes)."
+    },
+    "cifra": {
+      "_componente": "CaseFigure variant=multiplier ('$1 → $4.8', columnas de luz con la última al 80 %; fijada +100 % en escritorio)",
+      "rail": "La cifra",
+      "eyebrow": "La cifra",
+      "h2": { "text": "Por cada peso en anuncios,", "soft": "lo que regresa en ventas." },
+      "figure": {
+        "variant": "multiplier",
+        "caption": "Retorno sobre la inversión publicitaria (ROAS). Hoteles y restaurantes, Meta Ads.",
+        "aria": "Una columna de luz por cada peso que regresa en ventas; la última queda incompleta."
+      },
+      "line": "ROAS es lo que regresa en ventas por cada peso invertido en publicidad. Cada columna de luz es un peso que regresa; la última queda incompleta a propósito, porque la escena dibuja el valor exacto, sin redondear hacia arriba.",
+      "metricIds": ["horeca-roas"],
+      "sourceNote": true
+    },
+    "implementacion": {
+      "_componente": "SystemFlow (los nodos con confirmed=false no se publican). No se pinta mientras el caso sea breve.",
+      "rail": "Solución",
+      "eyebrow": "Qué implementamos",
+      "h2": { "text": "Tres piezas", "soft": "detrás de un mismo retorno." },
+      "lede": "Las campañas del cliente en Meta Ads combinan creativos dinámicos, audiencias predictivas y atribución multicanal.",
+      "nodes": [
+        { "label": "Meta Ads", "line": "Las campañas, en Facebook e Instagram.", "logos": ["meta"], "confirmed": false },
+        { "label": "Creativos dinámicos", "line": "Las piezas se renuevan según lo que mejor responde.", "confirmed": false },
+        { "label": "Audiencias predictivas", "line": "Públicos armados con señales de quién tiene más probabilidad de comprar.", "confirmed": false },
+        { "label": "Atribución multicanal", "line": "Cada venta se reparte entre los canales que participaron.", "confirmed": false }
+      ],
+      "body": [
+        "Los creativos dinámicos cambian la pieza que ve cada persona según lo que mejor funciona. Las audiencias predictivas buscan a quien se parece a los clientes que ya compraron. La atribución multicanal reparte cada venta entre los canales que participaron, para no darle todo el crédito al último clic.",
+        "Juntas sirven para una sola cosa: que la decisión de dónde poner el siguiente peso salga de ventas medidas y no del número de clics."
+      ]
+    },
+    "resultado": {
+      "_componente": "ImageSection mid (ind-horeca-kain-sector; respaldo home-sistema-2-atender en espejo) + panel con casillas HTML ancladas. No se pinta mientras el caso sea breve.",
+      "rail": "Resultado",
+      "eyebrow": "Resultado",
+      "h2": { "text": "Un retorno", "soft": "que se mantiene." },
+      "quote": "Un cliente de hoteles y restaurantes sostuvo un {{metric:horeca-roas}} con campañas de paid media en Meta Ads.",
+      "sourceNote": true,
+      "ui": {
+        "_nota": "Casillas que se encienden una a una sobre el panel de cristal. Llevan SIMULACIÓN y data-nosnippet: patrón ilustrativo, no un dato del caso.",
+        "title": "Ventas de la semana",
+        "days": ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+        "slot": "Venta atribuida a su campaña"
+      }
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sin hitos del proyecto: fases genéricas aplicadas a un restaurante u hotel). No se pinta mientras el caso sea breve.",
+      "rail": "VKTOR",
+      "eyebrow": "Cómo lo hacemos con VKTOR™",
+      "h2": { "text": "El mismo protocolo,", "soft": "de la campaña a la reserva." },
+      "lede": "Así se verían las cinco fases en tu restaurante o tu hotel. Una implementación de Ingeniak toma de 7 a 30 días, según el alcance del proyecto.",
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Qué mides hoy de tus anuncios, cuánto inviertes y si una reserva puede rastrearse hasta su campaña." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Qué cuenta como venta en tu negocio, qué audiencias probar y cómo se atribuye cada resultado." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Montamos campañas, creativos y medición, y conectamos la venta con su anuncio antes de escalar." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Revisamos resultados contigo y renovamos creativos con lo que dicen los datos." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Medimos el retorno cada mes y movemos la inversión hacia lo que sí regresa." }
+      ],
+      "links": [{ "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }]
+    },
+    "replicar": {
+      "_componente": "ScriptList (3 filas) + enlace a /industrias/horeca/",
+      "rail": "Replicar",
+      "eyebrow": "Qué puedes replicar en tu negocio",
+      "h2": { "text": "Tres ideas para que tu publicidad", "soft": "se cuente en mesas y en noches vendidas." },
+      "items": [
+        {
+          "n": "01",
+          "title": "Mide reservas y ventas, no clics",
+          "line": "Un anuncio con muchos clics puede no llenar una sola mesa. Define qué cuenta como resultado en tu negocio, una reservación, una noche vendida, un pedido, y mide cada campaña contra eso, no contra las visitas ni los likes."
+        },
+        {
+          "n": "02",
+          "title": "Renueva tus creativos con datos",
+          "line": "La misma foto del platillo estrella o de la mejor habitación pierde fuerza con las semanas. Prueba variantes, deja que los datos digan cuál trae más reservas y cámbiala antes de que se desgaste, no cuando ya dejó de vender. Con la temporada pasa igual: el anuncio de verano no sirve en noviembre."
+        },
+        {
+          "n": "03",
+          "title": "Atribuye cada venta a su canal",
+          "line": "Un huésped puede ver tu anuncio en Instagram, buscarte en Google y reservar por WhatsApp. Si solo cuentas el último paso, apagas la campaña que en realidad lo trajo. Reparte el crédito entre los canales que participaron y decide con eso."
+        }
+      ],
+      "links": [{ "label": "Ver soluciones para restaurantes y hoteles", "href": "/industrias/horeca/" }]
+    },
+    "testimonio": {
+      "_componente": "Quote (condicional)",
+      "_omitir": true,
+      "_nota": "Solo con aprobación escrita del cliente (frase, nombre, cargo y empresa). Sin ella, la sección no existe en el HTML. No usar los borradores de testimonios de v1."
+    },
+    "relacionados": {
+      "_componente": "ScriptList (servicio, industria y caso hermano) + Still variant=next (Siguiente reportaje)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "items": [
+        { "title": "Paid media", "line": "El servicio de este caso: Meta, Google y TikTok Ads conectados a tu CRM y medidos por ventas.", "href": "/servicios/paid-media/" },
+        { "title": "Restaurantes y hoteles", "line": "Campañas, reservas por WhatsApp y automatización para tu negocio.", "href": "/industrias/horeca/" },
+        { "title": "E-commerce en la Ciudad de México", "line": "Otra cifra de adquisición, en otro sector: el costo por lead, antes y después.", "href": "/casos/ecommerce-cdmx-costo-por-lead/" }
+      ],
+      "next": { "label": "Siguiente reportaje", "title": "Logística: procesos conectados con n8n", "metricId": "logistica-procesos", "href": "/casos/logistica-n8n/" }
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Campañas que se miden en ventas",
+      "h2": { "text": "¿Tus campañas se miden en ventas?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "En la Discovery Session revisamos qué mides hoy de tus anuncios, si una reserva puede llegar a la campaña que la trajo y qué conviene cambiar primero en tu restaurante o tu hotel. Sales con sugerencias concretas.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso HoReCa con ROAS 4.8× y quiero campañas así para mi negocio." },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

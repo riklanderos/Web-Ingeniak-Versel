@@ -1,0 +1,449 @@
+{
+  "pageId": "crm-ia",
+  "url": "/servicios/crm-con-ia/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "APROBACIÓN DE PREGUNTA · N03 sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. La definición de #definicion usa el mismo texto de N03 con sujeto explícito ('Un CRM con IA es un CRM que…') como definition.text; al aprobarse N03 conviene dejarlos idénticos.",
+    "CAMBIO DE TEXTO · #selector: el brief pedía dos tarjetas lado a lado; va como comparación por criterio (filas pareadas 'Elige Kommo si…' / 'Elige GoHighLevel si…', las dos en cian porque ninguna es dolor) para que la sección pueda llevar los enlaces a /kommo/, /gohighlevel/ y /blog/kommo-vs-gohighlevel/ (la variante de dos columnas sin filas no pinta enlaces). Mismo criterio que G05: Kommo para vender por mensajería; GoHighLevel para CRM, embudos, páginas, calendarios y campañas en una sola plataforma.",
+    "CAMBIO DE TEXTO · repetición de cifras: retail-conversiones sale en la fila de #definicion y en el montaje de #caso (dos veces). Por eso #crm-vivo no repite la cifra +340% que pedía su brief. dental-respuesta solo en #definicion y dental-citas solo en #caso.",
+    "CAMBIO DE TEXTO · #caso suma una segunda fila: la clínica dental de Monterrey, cuyo CRM es GoHighLevel (RESPUESTAS-CLIENTE 2026-10-19 #15), para que la página muestre un caso por plataforma. El brief solo pedía el de retail con Kommo.",
+    "PREGUNTA AL CLIENTE · licencias: ¿las licencias de Kommo o la suscripción de GoHighLevel van incluidas en {{price}} o se pagan aparte? El texto (#inversion.remate) solo dice que dependen del plan y de los usuarios y que se explican por separado, como en /kommo/.",
+    "PREGUNTA AL CLIENTE · ¿implementan sobre una cuenta de Kommo o GoHighLevel que el cliente ya tiene (revisión y reconfiguración)? #como-funciona.note y #implementamos.body lo dicen ('partimos de tu cuenta'), apoyados en la línea de v1 'Ya tienes Kommo, pero nadie lo usa como debería'. No se promete migración de contactos desde otro CRM.",
+    "PREGUNTA AL CLIENTE · el sello de partner de Kommo (brief de la portada) no se pinta: ServiceTemplate no tiene sello en la portada y esta página no tiene sección de integraciones. Va en _badge (sin pintar) y como pedido a plantillas en peticiones.md."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (home-sistema-3-organizar: Kain con la tarjeta de lead frente a los carriles) + kanban registrado en la superficie + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Servicio · Organizar",
+      "h1": {
+        "text": "CRM con inteligencia artificial,",
+        "soft": "implementado para vender",
+        "lit": "inteligencia artificial"
+      },
+      "lede": "Kommo o GoHighLevel con pipelines, automatizaciones y seguimiento sin capturas a mano. Un agente de IA registra y califica a cada lead; tu equipo se dedica a cerrar.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de CRM con IA y quiero saber si me conviene Kommo o GoHighLevel."
+      },
+      "ui": {
+        "_nota": "UI de la portada de CRM según ESPEC §5.2.1: kanban genérico (nunca copia de la UI de Kommo ni de GoHighLevel) registrado en la superficie libre junto a la tarjeta que sostiene Kain; el lead pasa de Nuevo a Calificado. Sin burbujas a propósito: ServiceTemplate solo pinta ui.bubbles (pedido a plantillas en peticiones.md). SIMULACIÓN + data-nosnippet.",
+        "pipeline": {
+          "title": "Embudo de ventas",
+          "stages": [
+            "Nuevo",
+            "Calificado",
+            "Cita agendada",
+            "Ganado"
+          ],
+          "active": 1,
+          "lead": "Lead · Instagram",
+          "status": "Calificado por Kain"
+        }
+      },
+      "_badge": {
+        "_omitir": true,
+        "_nota": "Brief: sello Kommo Partner en la portada. ServiceTemplate no lo pinta en la portada (pedido en peticiones.md). Texto igual al de /kommo/.",
+        "text": "Partner oficial de Kommo en LATAM"
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto de N03, en validar) + MetricRow",
+      "rail": "Qué es",
+      "eyebrow": "Definición",
+      "definition": {
+        "heading": "¿Qué es un CRM con IA?",
+        "faqId": "N03",
+        "text": "Un CRM con IA es un CRM que, además de guardar contactos y oportunidades, usa inteligencia artificial para atender, calificar y dar seguimiento: un agente responde en el chat, registra al prospecto en su etapa y dispara recordatorios y tareas sin que nadie capture datos a mano.",
+        "_nota": "Texto de N03 con sujeto explícito (N03 sigue en validar: true y DefinitionBlock no lo pintaría)."
+      },
+      "body": [
+        "La diferencia se nota el lunes en la mañana. En un CRM tradicional, la información existe solo si alguien la escribe. En uno con IA, cada conversación de WhatsApp, Instagram o Facebook Messenger entra sola, con su etapa, su canal de origen y su siguiente paso, y tu equipo abre el día sabiendo a quién llamar."
+      ],
+      "metricRow": {
+        "title": "Cifras de sistemas en producción",
+        "metricIds": [
+          "retail-conversiones",
+          "dental-respuesta",
+          "sistemas"
+        ],
+        "sourceNote": true
+      }
+    },
+    "senales": {
+      "_componente": "ImageSection mid (dolor-crm, persona, tone=dolor, subject-left, mobile split) + lista de señales (dolor ámbar → salida cian)",
+      "rail": "Señales",
+      "eyebrow": "Un CRM que nadie usa",
+      "h2": {
+        "text": "Tus ventas viven",
+        "soft": "en libretas, chats y hojas."
+      },
+      "lede": "Si te pasa más de una, el problema no es tu equipo: es un CRM que depende de que alguien capture.",
+      "fig": {
+        "label": "La venta, repartida en notas"
+      },
+      "items": [
+        {
+          "pain": "Leads en libretas, chats y hojas de cálculo.",
+          "painLine": "Cada vendedor lleva su lista y nadie ve la de los demás.",
+          "fix": "Cada conversación entra sola al CRM, en su etapa y con su canal de origen."
+        },
+        {
+          "pain": "Nadie sabe en qué va cada venta.",
+          "painLine": "Para saberlo hay que preguntar en el grupo del equipo.",
+          "fix": "Un embudo con etapas claras que ves en tiempo real, desde el teléfono."
+        },
+        {
+          "pain": "El seguimiento depende de la memoria.",
+          "painLine": "Si alguien sale de vacaciones, sus prospectos se enfrían.",
+          "fix": "Tareas y recordatorios que salen solos, sin depender de una persona."
+        },
+        {
+          "pain": "Pagas un CRM que nadie abre.",
+          "painLine": "Se compró con entusiasmo y hoy es un directorio caro.",
+          "fix": "Lo configuramos para tu proceso y capacitamos a quien lo usa todos los días."
+        }
+      ],
+      "remate": "Un CRM vale lo que tiene adentro: con IA, nadie lo llena a mano."
+    },
+    "selector": {
+      "_componente": "Comparación por criterio (tabla pareada, las dos columnas en cian) + enlaces a /kommo/, /gohighlevel/ y al artículo comparativo",
+      "rail": "¿Kommo o GoHighLevel?",
+      "eyebrow": "¿Kommo o GoHighLevel?",
+      "h2": {
+        "text": "Dos CRM,",
+        "soft": "dos formas de vender."
+      },
+      "lede": "Trabajamos con los dos y te recomendamos el que encaja con tu proceso comercial, no el que nos convenga vender. La pregunta clave es dónde se cierra tu venta.",
+      "left": {
+        "title": "Elige Kommo si…",
+        "tone": "cian"
+      },
+      "right": {
+        "title": "Elige GoHighLevel si…",
+        "tone": "cian"
+      },
+      "rows": [
+        {
+          "criterio": "Dónde vendes",
+          "left": "Tu venta se cierra conversando por WhatsApp, Instagram o Facebook Messenger.",
+          "right": "Vendes con embudos, páginas, formularios y citas, no solo por chat."
+        },
+        {
+          "criterio": "Tu equipo",
+          "left": "Varios vendedores atienden chats y necesitan una bandeja compartida.",
+          "right": "Hoy usas herramientas sueltas para captar, agendar y dar seguimiento."
+        },
+        {
+          "criterio": "Automatización",
+          "left": "Quieres embudos y seguimiento automático dentro de la conversación.",
+          "right": "Quieres CRM, calendarios, páginas y campañas en una sola plataforma."
+        },
+        {
+          "criterio": "Con Ingeniak",
+          "left": "Somos partner oficial: licencias, implementación y agentes de IA dentro de Kommo.",
+          "right": "La implementamos en español: cuenta, embudos, calendarios y agente de IA conectado."
+        }
+      ],
+      "links": [
+        {
+          "label": "Ver Kommo con Ingeniak",
+          "href": "/kommo/"
+        },
+        {
+          "label": "Ver GoHighLevel en español",
+          "href": "/gohighlevel/"
+        },
+        {
+          "label": "Kommo vs GoHighLevel, punto por punto",
+          "href": "/blog/kommo-vs-gohighlevel/"
+        }
+      ]
+    },
+    "como-funciona": {
+      "_componente": "riel-servicios a sangre con 5 nodos registrados",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": {
+        "text": "Del primer mensaje",
+        "soft": "al tablero de ventas."
+      },
+      "nodes": [
+        {
+          "label": "Tus canales",
+          "line": "WhatsApp, Instagram, Facebook Messenger, tu web o el correo.",
+          "logos": [
+            "whatsapp",
+            "instagram",
+            "facebook"
+          ],
+          "confirmed": true
+        },
+        {
+          "label": "Kain califica",
+          "line": "Responde y hace las preguntas que haría tu vendedor.",
+          "confirmed": true
+        },
+        {
+          "label": "Tu CRM con etapas",
+          "line": "El lead entra en Kommo o GoHighLevel con toda su conversación.",
+          "logos": [
+            "kommo",
+            "gohighlevel"
+          ],
+          "confirmed": true
+        },
+        {
+          "label": "Seguimiento automático",
+          "line": "Tareas, recordatorios y mensajes que salen a tiempo.",
+          "confirmed": true
+        },
+        {
+          "label": "Tu tablero",
+          "line": "Prospectos por etapa, citas y ventas, con los datos del CRM.",
+          "confirmed": true
+        }
+      ],
+      "note": "Si ya tienes Kommo o GoHighLevel, partimos de tu cuenta: no hace falta empezar de cero."
+    },
+    "implementamos": {
+      "_componente": "ScriptList (6 filas) sobre aura",
+      "rail": "Qué implementamos",
+      "eyebrow": "Qué implementamos",
+      "h2": {
+        "text": "Seis piezas",
+        "soft": "de un CRM que sí se usa."
+      },
+      "items": [
+        {
+          "n": "01",
+          "title": "Pipelines y etapas",
+          "line": "Diseñados según cómo vende tu equipo, con un criterio claro para pasar de una etapa a la siguiente."
+        },
+        {
+          "n": "02",
+          "title": "Campos y usuarios",
+          "line": "Lo que necesitas saber de cada prospecto y quién ve qué, con permisos por rol."
+        },
+        {
+          "n": "03",
+          "title": "Canales en una bandeja",
+          "line": "Los mensajes de todos tus canales llegan al mismo CRM, sin importar qué teléfono los recibió."
+        },
+        {
+          "n": "04",
+          "title": "Agente de IA en el chat",
+          "line": "Kain responde, califica y agenda, y deja cada conversación en la ficha del prospecto.",
+          "href": "/servicios/agentes-ia-whatsapp/"
+        },
+        {
+          "n": "05",
+          "title": "Seguimiento automático",
+          "line": "Recordatorios y tareas que salen solos; con n8n, el CRM se conecta con el resto de tus sistemas.",
+          "href": "/servicios/automatizacion-n8n/"
+        },
+        {
+          "n": "06",
+          "title": "Tablero de métricas",
+          "line": "Prospectos por etapa, tiempo de respuesta, citas y ventas, para decidir con números."
+        }
+      ],
+      "body": [
+        "Si ya tienes un CRM, primero revisamos cómo se usa hoy: qué etapas sobran, qué datos faltan y en qué momento tu equipo deja de capturar. Muchas veces el problema no es la herramienta, sino cómo se configuró. Y si eliges Kommo, también te ayudamos con las licencias como partner oficial."
+      ]
+    },
+    "crm-vivo": {
+      "_componente": "ImageSection mid (home-sistema-3-organizar, regreso al set: push hacia la superficie) + viñetas del recorrido de un lead",
+      "rail": "Un CRM vivo",
+      "eyebrow": "Un CRM vivo",
+      "h2": {
+        "text": "Cada lead en su etapa,",
+        "soft": "sin capturas a mano."
+      },
+      "lede": "Así se mueve un prospecto que escribe por WhatsApp de noche, cuando tu equipo ya se fue a casa.",
+      "items": [
+        "Entra como lead nuevo, con el canal por el que llegó.",
+        "Kain le responde, lo califica y lo pasa a su etapa.",
+        "Si pide cita, queda en el calendario y tu equipo recibe el aviso.",
+        "Si deja de contestar, el CRM programa el siguiente seguimiento."
+      ],
+      "slogan": "Tu equipo deja de capturar y vuelve a vender.",
+      "links": [
+        {
+          "label": "Ver el caso de retail con Kommo",
+          "href": "/casos/retail-multimarca-kommo/"
+        }
+      ]
+    },
+    "caso": {
+      "_componente": "Montage (2 filas: un caso por plataforma) sin registro aparte",
+      "rail": "Casos",
+      "eyebrow": "Casos",
+      "h2": {
+        "text": "Kommo y GoHighLevel,",
+        "soft": "operando en negocios reales."
+      },
+      "lede": "Dos sistemas que implementamos y siguen operando, uno en cada CRM, con su cifra y su fuente.",
+      "rows": [
+        {
+          "metricId": "retail-conversiones",
+          "context": "Kommo con calificación de leads por IA · Retail multimarca",
+          "href": "/casos/retail-multimarca-kommo/",
+          "linkLabel": "Ver el caso"
+        },
+        {
+          "metricId": "dental-citas",
+          "context": "Agente de IA conectado a GoHighLevel · Clínica dental · Monterrey",
+          "href": "/casos/clinica-dental-monterrey/",
+          "linkLabel": "Ver el caso"
+        }
+      ],
+      "sourceNote": true,
+      "note": "Nombres de clientes anonimizados."
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sobre metodologia-hero si está libre)",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": {
+        "text": "Tu CRM en producción,",
+        "soft": "fase por fase."
+      },
+      "phases": [
+        {
+          "letter": "V",
+          "name": "Verify",
+          "verb": "Verificamos tu operación",
+          "line": "Vemos cómo registras hoy a tus prospectos, quién les da seguimiento y dónde se pierde la información."
+        },
+        {
+          "letter": "K",
+          "name": "Koncept",
+          "verb": "Diseñamos el concepto",
+          "line": "Elegimos contigo Kommo o GoHighLevel y diseñamos etapas, campos, permisos y lo que hará el agente."
+        },
+        {
+          "letter": "T",
+          "name": "Transform",
+          "verb": "Transformamos",
+          "line": "Configuramos el CRM, conectamos canales y agente, y probamos cada etapa antes de abrirlo a tu equipo."
+        },
+        {
+          "letter": "O",
+          "name": "Operate",
+          "verb": "Operamos junto con tu equipo",
+          "line": "Capacitamos a quienes venden y revisamos que el CRM se use a diario, no solo la primera semana."
+        },
+        {
+          "letter": "R",
+          "name": "Rise",
+          "verb": "Hacemos crecer los resultados",
+          "line": "Medimos conversión por etapa, tiempo de respuesta y ventas, y ajustamos cada mes."
+        }
+      ],
+      "links": [
+        {
+          "label": "Así trabajamos con VKTOR™",
+          "href": "/metodologia/"
+        }
+      ]
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": {
+        "text": "{{Price}}."
+      },
+      "lede": "Lo que mueve el costo de implementar tu CRM:",
+      "items": [
+        {
+          "title": "Plataforma y usuarios",
+          "line": "Kommo o GoHighLevel, y cuántas personas de tu equipo lo van a usar."
+        },
+        {
+          "title": "Canales e integraciones",
+          "line": "Qué canales llegan al CRM y con qué otros sistemas se conecta."
+        },
+        {
+          "title": "Volumen",
+          "line": "Cuántos leads entran cada mes y cuánto seguimiento se automatiza."
+        }
+      ],
+      "remate": "Las licencias dependen del plan y de los usuarios; te las explicamos por separado, sin letra chica. El resto lo definimos en tu Discovery Session, y dejar el CRM operando toma de 7 a 30 días, según el alcance."
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Preguntas sobre CRM",
+        "soft": "con inteligencia artificial."
+      },
+      "faqIds": [
+        "N03",
+        "G05",
+        "G04",
+        "H03",
+        "G07"
+      ],
+      "footer": "¿No encontraste tu respuesta? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": {
+        "text": "Elige con más detalle",
+        "soft": "antes de decidir."
+      },
+      "items": [
+        {
+          "href": "/kommo/",
+          "label": "Partner oficial",
+          "title": "Kommo con Ingeniak",
+          "line": "Licencias, implementación y agentes de IA dentro de Kommo."
+        },
+        {
+          "href": "/gohighlevel/",
+          "label": "Plataforma",
+          "title": "GoHighLevel en español",
+          "line": "CRM, embudos, calendarios y campañas en una sola plataforma."
+        },
+        {
+          "href": "/blog/kommo-vs-gohighlevel/",
+          "label": "Guía",
+          "title": "Kommo vs GoHighLevel",
+          "line": "Las diferencias, punto por punto, para elegir sin adivinar."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo: Kain a la izquierda, texto a la derecha)",
+      "rail": "Cierre",
+      "eyebrow": "Antes de elegir CRM",
+      "h2": {
+        "text": "¿Qué CRM encaja con cómo vendes?",
+        "soft": "Lo vemos en 30 minutos."
+      },
+      "lede": "En la Discovery Session revisamos por dónde te llegan los clientes y cómo les das seguimiento, y te decimos si te conviene Kommo, GoHighLevel o ajustar el CRM que ya tienes.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de CRM con IA y quiero saber si me conviene Kommo o GoHighLevel."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

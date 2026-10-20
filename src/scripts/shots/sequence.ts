@@ -9,6 +9,37 @@
 import { Flip } from 'gsap/Flip';
 import { blockReveal, sala, scrollToY, wireSkip, type Env } from './_util';
 
+/** Tope de --cam (§0.1-5) con origen (ox, oy) en la placa de `phases`, medido en su capa: la caja del sujeto escalada no
+ *  pasa del 4 % superior ni sale abajo más que a cámara 1, deja 1.5 % a los lados y, en ultra ancho, no entra al fundido
+ *  lateral (mismas cuentas que camLimit de scene.ts). */
+function seqCamCap(sec: HTMLElement, layer: HTMLElement | null, ox: number, oy: number): number {
+  const stage = layer?.querySelector<HTMLElement>(':scope > .stage');
+  if (!layer || !stage) return 1.6;
+  const cs = getComputedStyle(layer);
+  const n = (p: string) => parseFloat(cs.getPropertyValue(p));
+  const [x0, y0, x1, y1] = ['--sx0', '--sy0', '--sx1', '--sy1'].map(n);
+  if ([x0, y0, x1, y1].some(Number.isNaN)) return 1.6;
+  const lw = layer.clientWidth, lh = layer.clientHeight;
+  const sw = stage.offsetWidth, sh = stage.offsetHeight, sl = stage.offsetLeft, st = stage.offsetTop;
+  if (!lw || !lh || !sw || !sh) return 1.6;
+  const px = sl + ox * sw, py = st + oy * sh;
+  const e = { l: sl + x0 * sw, r: sl + x1 * sw, t: st + y0 * sh, b: st + y1 * sh };
+  const ultra = innerWidth >= 1800;
+  const side = sec.dataset.layout;
+  const fL = side === 'subject-right' ? 0.28 : side === 'subject-left' ? 0 : 0.1;
+  const fR = side === 'subject-left' ? 0.28 : side === 'subject-right' ? 0 : 0.1;
+  const mL = ultra ? Math.max(0, Math.min(fL * lw, x0 * lw - 16)) : 0;
+  const mR = ultra ? Math.max(0, Math.min(fR * lw, (1 - x1) * lw - 16)) : 0;
+  const pad = 0.015 * lw;
+  const lim = { l: mL + pad, r: lw - mR - pad, t: Math.min(e.t, 0.04 * lh), b: Math.max(e.b, lh) };
+  let c = 1.6;
+  if (e.r > px) c = Math.min(c, (lim.r - px) / (e.r - px));
+  if (e.l < px) c = Math.min(c, (px - lim.l) / (px - e.l));
+  if (e.b > py) c = Math.min(c, (lim.b - py) / (e.b - py));
+  if (e.t < py) c = Math.min(c, (py - lim.t) / (py - e.t));
+  return Math.max(1, Math.round(c * 1000) / 1000);
+}
+
 export default function sequence(el: HTMLElement, env: Env) {
   const { gsap, ScrollTrigger } = env;
   const preset = el.dataset.preset as 'runtime' | 'phases';
@@ -128,21 +159,31 @@ export default function sequence(el: HTMLElement, env: Env) {
     defaults: { ease: 'none' },
     scrollTrigger: {
       trigger: el, start: 'top top', end: el.dataset.pin || (preset === 'runtime' ? '+=280%' : '+=250%'),
-      pin: true, scrub: true, anticipatePin: 0,
+      pin: true, scrub: true, anticipatePin: 0, invalidateOnRefresh: preset === 'phases',
       snap: { snapTo: (v: number) => Math.round(v * (N - 1)) / (N - 1), duration: { min: 0.2, max: 0.6 }, ease: 'power1.inOut', delay: 0.08, inertia: false },
       onUpdate: (s) => go(Math.min(N - 1, Math.max(0, Math.round(s.progress * (N - 1))))),
       onToggle: (s) => { el.classList.toggle('is-pinned', s.isActive); sala(s.isActive); },
     },
   });
   tl.fromTo(el, { '--p': 0 }, { '--p': 1, duration: 1 }, 0);
+  let fitCams = () => {};
   if (preset === 'phases') {
+    // Cámara por fase con el tope del sujeto medido a este tamaño (se recalcula en cada refresh): Kain siempre completo.
     const cams = [...el.querySelectorAll<HTMLElement>('.seq__stagebox > .is__layer')];
+    const media = el.querySelector<HTMLElement>('.seq__stagebox > .is__layer--media');
+    const camOf = (i: number) => { const d = data[i]; return d ? Math.max(1, Math.min(d.cam, seqCamCap(el, media, d.ox, d.oy))) : 1; };
     for (let i = 1; i < N; i++) {
-      const d = data[i];
-      if (d) tl.to(cams, { '--cam': d.cam, '--ox': d.ox, '--oy': d.oy, duration: 1 / (N - 1), ease: 'power1.inOut' }, (i - 1) / (N - 1));
+      const d = data[i], p = data[i - 1];
+      if (d && p) {
+        tl.fromTo(cams, { '--cam': () => camOf(i - 1), '--ox': p.ox, '--oy': p.oy },
+          { '--cam': () => camOf(i), '--ox': d.ox, '--oy': d.oy, duration: 1 / (N - 1), ease: 'power1.inOut', immediateRender: false }, (i - 1) / (N - 1));
+      }
     }
+    fitCams = () => { if (cur === 0 && (tl.scrollTrigger?.progress ?? 0) === 0) gsap.set(cams, { '--cam': camOf(0) }); };
+    fitCams();
   }
   const st = tl.scrollTrigger!;
+  if (preset === 'phases') ScrollTrigger.addEventListener('refresh', fitCams);
 
   // R11: foco de teclado o lector de pantalla en una estación → el scroll va a ella y su copia aparece al instante.
   const onFocus = (e: FocusEvent) => {
@@ -159,6 +200,7 @@ export default function sequence(el: HTMLElement, env: Env) {
   const unskip = wireSkip(el, env, st);
   return () => {
     unskip(); offIO(); near.disconnect(); sala(false);
+    ScrollTrigger.removeEventListener('refresh', fitCams);
     el.removeEventListener('focusin', onFocus);
     // Interruptor "Reducir movimiento" a mitad de la escena: nada se queda oculto ni fuera de su estación.
     live.forEach((a) => a.kill()); live.clear();

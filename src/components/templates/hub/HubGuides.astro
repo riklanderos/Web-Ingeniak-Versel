@@ -1,0 +1,138 @@
+---
+// HubGuides · /blog/#categorias + /blog/#grid (ESPEC §5.5: categorías en chips y la lista de artículos).
+// Sin tarjetas (R7): un índice editorial. Cada guía es una fila con su número en Lexend 200 relleno de la portada de su
+// artículo (la imagen vive DENTRO de las cifras, como el Montage), su categoría, el título, lo que responde y su estado.
+//   · Guía publicada (su ruta existe): el título enlaza y la fila dice "Leer la guía →".
+//   · Guía en edición: sin enlace (nunca '#'); "Pregúntale a Kain" abre ⌘K con la pregunta escrita, y "Mientras tanto"
+//     lleva a la página comercial del tema si ya existe. Nada de fechas ni tiempos de lectura que no existen.
+// Chips de categoría: filtran las filas ya renderizadas (sin JS no se muestran).
+import Copy from '../../ui/Copy.astro';
+import Icon from '../../ui/Icon.astro';
+import EditorNote from '../../ui/EditorNote.astro';
+import Aura from '../Aura.astro';
+import { pages, linkTarget, isBuilt } from '../../../lib/site';
+import { publicExists } from '../../ui/ui-data';
+import { head, HUB_FALLBACK } from './hubKit';
+
+interface Props { cats: any; g: any; idCats: string; idGrid: string }
+const { cats, g, idCats, idGrid } = Astro.props;
+
+/** Still 21:9 de la portada del artículo (o de su respaldo) para rellenar el número. */
+function stillFor(href: string): string | null {
+  const pg = (pages as any[]).find((p) => p.url === href);
+  const pl = pg?.sections?.find((s: any) => s.plate)?.plate;
+  const fb = pl?.launchFallback;
+  const cands = [pl?.id, typeof fb === 'string' ? fb : fb?.plate, pl?.id ? HUB_FALLBACK[pl.id]?.plate : undefined, 'home-kain'].filter(Boolean) as string[];
+  const id = cands.find((c) => publicExists(`/img/cine/${c}-still-640.webp`));
+  return id ? `/img/cine/${id}-still-640.webp` : null;
+}
+const catName = (slug: string) => ((cats?.chips ?? []) as any[]).find((c) => c.slug === slug)?.label ?? slug;
+const items = ((g?.items ?? []) as any[]).map((it, i) => {
+  const href = it.href && isBuilt(it.href) ? it.href : null;
+  const rel = it.related?.href ? linkTarget(it.related.href) : null;
+  return { ...it, i, n: String(i + 1).padStart(2, '0'), href, rel, still: stillFor(it.href) };
+});
+/** La portada grande (16:9 de 1280) para la columna fija; si no existe, el still. */
+const big = (still: string | null) => { if (!still) return null; const b = still.replace(/-still-640\.webp$/, '-1280.webp'); return publicExists(b) ? b : still; };
+for (const it of items) (it as any).big = big(it.still);
+const firstStill = (items.find((it) => (it as any).big) as any)?.big ?? null;
+const usedCats = ((cats?.chips ?? []) as any[]).filter((c) => items.some((it) => it.category === c.slug));
+const L = g?.labels ?? {};
+const status = (n: number) => String(cats?.status ?? '{n} guías').replace('{n}', String(n));
+const builtLinks = ((g?.links ?? []) as any[]).filter((l) => l?.href && isBuilt(l.href));
+---
+<section id={idCats} class="hub-sec hub-cats tpl-glow" aria-labelledby={`${idGrid}-t`} data-hub-filter="guides">
+  <Aura kind="isotipo" x="86%" y="40%" o={0.7} only="d" />
+  <div class="frame hub-sec__frame">
+    <div class="hub-sec__head">
+      {g?.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{g.eyebrow}</p>}
+      <h2 id={`${idGrid}-t`} class="t-h2" data-split set:html={head(g?.h2)} />
+      {g?.lede && <Copy as="p" class="t-lede t-lede--2 hub-sec__lede" text={g.lede} data-reveal />}
+    </div>
+    <div class="hub-chips" role="group" aria-label={cats?.eyebrow ?? 'Categorías'} data-hub-chips>
+      <p class="t-label hub-chips__h"><span class="node" aria-hidden="true"></span>{cats?.eyebrow ?? 'Categorías'}</p>
+      <div class="hub-chips__row">
+        <button type="button" class="hub-chip" aria-pressed="true" data-dim="cat" data-val="*">{cats?.all ?? 'Todas'}</button>
+        {usedCats.map((c: any) => <button type="button" class="hub-chip" aria-pressed="false" data-dim="cat" data-val={c.slug}>{c.label}</button>)}
+      </div>
+      <p class="t-micro hub-chips__status" aria-live="polite" data-hub-status data-tpl={cats?.status ?? '{n} guías'}>{status(items.length)}</p>
+    </div>
+  </div>
+</section>
+
+<section id={idGrid} class="hub-sec hub-guides tpl-glow" aria-label={g?.rail ?? 'Guías'} data-hub-list="guides">
+  <Aura kind="ondas" x="30%" y="40%" o={1} only="d" />
+  <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+  <div class="frame hub-sec__frame hub-guides__frame">
+    {/* Escritorio: la portada de la guía en pantalla (o bajo el cursor) a sangre de su columna, fija mientras corre el
+        índice; sin caja: sus cuatro bordes se funden a --ink (R7). Decorativa: el índice ya dice todo. */}
+    {firstStill && (
+      <figure class="hub-guides__still" aria-hidden="true" data-guide-still>
+        <img src={firstStill} alt="" width="1280" height="714" loading="lazy" decoding="async" />
+      </figure>
+    )}
+    <ol class="hub-guides__list" role="list">
+      {items.map((it) => (
+        <li class:list={['hub-guide', it.href ? 'is-live' : 'is-draft']} data-cat={it.category} data-still={(it as any).big ?? undefined} style={`--i:${it.i};` + (it.still ? `--img:url('${it.still}');` : '')}>
+          <span class:list={['hub-guide__n', it.still && 'has-img']} aria-hidden="true">{it.n}</span>
+          <div class="hub-guide__body">
+            <p class="t-label hub-guide__cat">{catName(it.category)}</p>
+            <h3 class="hub-guide__t">
+              {it.href ? <a href={it.href} class="hub-guide__a">{it.title}</a> : it.title}
+            </h3>
+            {it.line && <Copy as="p" class="hub-guide__l" text={it.line} />}
+            <p class="hub-guide__meta">
+              <span class="hub-guide__by">{g?.author ?? 'Equipo de Ingeniak'}</span>
+              {it.href ? (
+                <a class="lnk--mono hub-guide__read" href={it.href}>{L.read ?? 'Leer la guía'} <span aria-hidden="true">→</span></a>
+              ) : (
+                <span class="hub-guide__status"><span class="hub-guide__dot" aria-hidden="true"></span>{L.status ?? 'En edición'}</span>
+              )}
+            </p>
+            {!it.href && (
+              <p class="hub-guide__acts">
+                {it.ask && (
+                  <button type="button" class="hub-guide__ask" data-search-open data-search-q={it.ask}>
+                    <Icon name="search" size={16} /><span>{L.ask ?? 'Pregúntale a Kain'}</span><span class="sr-only">: {it.ask}</span>
+                  </button>
+                )}
+                {it.rel && (
+                  <a class="lnk hub-guide__rel" href={it.rel}><span class="hub-guide__rel-k">{L.related ?? 'Mientras tanto'}:</span> {it.related.label} <Icon name="arrow" size={16} /></a>
+                )}
+              </p>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="t-micro hub-guides__empty" data-hub-empty hidden>{cats?.empty ?? ''}</p>
+    {g?.note && (
+      <EditorNote label={g.noteLabel ?? 'Nota del editor'} class="hub-guides__note"><Copy as="p" text={g.note} /></EditorNote>
+    )}
+    {builtLinks.length > 0 && (
+      <p class="hub-links" data-reveal>{builtLinks.map((l: any) => <a class="lnk" href={l.href}>{l.label} <Icon name="arrow" size={16} /></a>)}</p>
+    )}
+  </div>
+</section>
+
+<script>
+  // Índice de guías: la portada fija de la columna derecha sigue a la guía en pantalla (y a la que está bajo el cursor).
+  const fig = document.querySelector<HTMLElement>('[data-guide-still]');
+  const img = fig?.querySelector('img');
+  const rows = [...document.querySelectorAll<HTMLElement>('.hub-guide[data-still]')];
+  if (fig && img && rows.length) {
+    let cur = img.getAttribute('src') ?? '';
+    const show = (src?: string) => {
+      if (!src || src === cur) return;
+      cur = src;
+      fig.classList.add('is-swap');
+      window.setTimeout(() => { img.src = src; fig.classList.remove('is-swap'); }, 180);
+    };
+    rows.forEach((r) => {
+      r.addEventListener('pointerenter', () => show(r.dataset.still));
+      r.addEventListener('focusin', () => show(r.dataset.still));
+    });
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) show((e.target as HTMLElement).dataset.still); }), { rootMargin: '-45% 0px -45% 0px' });
+    rows.forEach((r) => io.observe(r));
+  }
+</script>

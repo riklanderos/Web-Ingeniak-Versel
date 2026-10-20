@@ -1,0 +1,9 @@
+---
+// /kain/ · T-PRODUCT (ESPEC §5.6). Datos: sitemap.json (estructura, placas, CTA) + src/content/paginas/kain.json (texto).
+import ProductTemplate from '../../components/templates/ProductTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+
+const page = getPage('/kain/');
+const copy = getCopy(page.id);
+---
+<ProductTemplate page={page} copy={copy} />

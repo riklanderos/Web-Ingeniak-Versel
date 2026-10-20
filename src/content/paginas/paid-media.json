@@ -1,0 +1,399 @@
+{
+  "pageId": "paid-media",
+  "url": "/servicios/paid-media/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "APROBACIÓN DE PREGUNTA · N02 ('¿La inversión en pauta está incluida?') sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. El dato que la sostiene viene del sitio actual ('inversión en pauta siempre por separado') y se dice en #inversion.remate.",
+    "CAMBIO DE TEXTO · la definición (#definicion) es un párrafo propio de la página, sin faqId, como pide el brief ('párrafo citable de 40–60 palabras'); mide 50 palabras.",
+    "CAMBIO DE TEXTO · repetición de cifras: horeca-roas sale en la portada y en #caso (dos veces); ecom-cpl solo en la fila de #definicion. Los chips 'ROAS 4.8× · −58% CPL' del brief de la portada no se pintan (ServiceTemplate no pinta chips): la portada lleva horeca-roas dentro del lede.",
+    "PREGUNTA AL CLIENTE · caso de e-commerce en la Ciudad de México ({{metric:ecom-cpl|full}}): ¿el resultado vino de campañas de paid media de Ingeniak y en qué plataformas? El texto no lo afirma: la cifra sale en la fila de #definicion con su sector y su fuente, y #relacionados enlaza al caso sin decir qué se implementó.",
+    "PREGUNTA AL CLIENTE · caso HoReCa: la ficha confirma paid media en Meta Ads con creativos dinámicos, audiencias predictivas y atribución multicanal. ¿Hubo también Google o TikTok, o agente de IA en WhatsApp? El texto de #caso solo dice Meta Ads.",
+    "PREGUNTA AL CLIENTE · el sitio actual también menciona Pinterest y LinkedIn Ads. Esta página solo nombra Meta, Google y TikTok (brief de D). ¿Se agregan?",
+    "PREGUNTA AL CLIENTE · ¿las campañas corren en la cuenta publicitaria del cliente (los datos y los activos son suyos) o en una cuenta de Ingeniak? No se afirma nada; si es la del cliente, conviene decirlo en #inversion o #que-hacemos.",
+    "CAMBIO DE TEXTO · #caso: la cifra va en el lede y no en el H2 (el token |full dentro de un titular con SplitText se recorta en escritorio)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (home-sistema-1-atraer: Kain dirige una pila de paneles de anuncio) + paneles de anuncio y curva abstracta registrados en el panel frontal + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Servicio · Atraer",
+      "h1": {
+        "text": "Paid media conectado a tu CRM:",
+        "soft": "Meta, Google y TikTok Ads",
+        "lit": "CRM"
+      },
+      "lede": "Meta, Google y TikTok Ads medidos por ventas, no por clics. Para un cliente de hoteles y restaurantes, las campañas en Meta Ads lograron un {{metric:horeca-roas|full}}.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de paid media y quiero campañas medidas por ventas, no por clics."
+      },
+      "ui": {
+        "_nota": "UI de la portada de paid media según ESPEC §5.2.1: paneles de anuncio + curva abstracta (sin números) registrados en el panel frontal (ancla pantalla de home-sistema-1-atraer). Sin burbujas a propósito: ServiceTemplate solo pinta ui.bubbles (pedido a plantillas en peticiones.md). SIMULACIÓN + data-nosnippet.",
+        "panels": [
+          "Meta Ads",
+          "Google Ads",
+          "TikTok Ads"
+        ],
+        "curve": "Ventas por campaña",
+        "status": "Venta atribuida a su anuncio"
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (párrafo propio de 50 palabras, sin faqId) + MetricRow",
+      "rail": "Qué es",
+      "eyebrow": "Definición",
+      "definition": {
+        "heading": "¿Qué es el paid media medido por ventas?",
+        "text": "Paid media medido por ventas es publicidad pagada en Meta, Google y TikTok que se evalúa por lo que vende, no por clics ni impresiones. Cada lead llega a tu CRM con el anuncio que lo trajo, para saber qué campaña termina en dinero y mover la inversión hacia ahí.",
+        "_nota": "Párrafo citable propio de la página (brief: 40–60 palabras). No hay pregunta del banco equivalente."
+      },
+      "body": [
+        "El reporte típico de una agencia termina en alcance, clics y costo por clic. El nuestro sigue al lead: del anuncio a la conversación de WhatsApp, de la conversación al agente de IA que la atiende y de ahí al CRM donde se cierra la venta. Así el reporte termina en la columna que importa."
+      ],
+      "metricRow": {
+        "title": "Resultados medidos con su fuente",
+        "metricIds": [
+          "ecom-cpl",
+          "sistemas"
+        ],
+        "sourceNote": true
+      }
+    },
+    "senales": {
+      "_componente": "ImageSection mid (dolor-anuncios; respaldo dolor-operacion mientras no se apruebe) tone=dolor, subject-left, mobile split + lista de señales",
+      "rail": "Señales",
+      "eyebrow": "Pagas clics, no ventas",
+      "h2": {
+        "text": "Gastas en anuncios",
+        "soft": "y no sabes cuáles venden."
+      },
+      "lede": "Si te reconoces en dos o más, tu publicidad está midiendo lo que no importa.",
+      "fig": {
+        "label": "Lo que pasa después del clic"
+      },
+      "items": [
+        {
+          "pain": "Te reportan clics, alcance e impresiones.",
+          "painLine": "Pero nadie te dice cuántas ventas trajo cada peso invertido.",
+          "fix": "Un reporte que termina en ventas, con los datos de tu CRM."
+        },
+        {
+          "pain": "Llegan mensajes que nadie contesta a tiempo.",
+          "painLine": "Pagaste por ese lead y se enfrió en el chat.",
+          "fix": "Kain atiende cada lead del anuncio en segundos y lo registra."
+        },
+        {
+          "pain": "Los mismos anuncios, mes tras mes.",
+          "painLine": "Nadie sabe qué creativo ya se cansó.",
+          "fix": "Creativos que se renuevan con lo que dicen los datos."
+        },
+        {
+          "pain": "Cada plataforma cuenta su propia historia.",
+          "painLine": "Meta, Google y TikTok se adjudican la misma venta.",
+          "fix": "Atribución multicanal: cada venta, con el canal que la trajo."
+        }
+      ],
+      "remate": "Un clic barato que no vende sale caro."
+    },
+    "que-hacemos": {
+      "_componente": "ScriptList (6 filas) sobre aura",
+      "rail": "Qué hacemos",
+      "eyebrow": "Qué hacemos",
+      "h2": {
+        "text": "Del anuncio a la venta,",
+        "soft": "seis piezas conectadas."
+      },
+      "items": [
+        {
+          "n": "01",
+          "title": "Estrategia por canal",
+          "line": "Qué va en Meta, qué en Google y qué en TikTok, según dónde está tu cliente y cómo compra."
+        },
+        {
+          "n": "02",
+          "title": "Creativos dinámicos",
+          "line": "Variaciones de anuncio que se prueban y se renuevan según lo que convierte."
+        },
+        {
+          "n": "03",
+          "title": "Audiencias predictivas",
+          "line": "Audiencias que se afinan con los datos de quienes sí compraron, no solo con intereses."
+        },
+        {
+          "n": "04",
+          "title": "Atribución multicanal",
+          "line": "Cada venta queda ligada al canal y a la campaña que la originaron."
+        },
+        {
+          "n": "05",
+          "title": "CRM y agente de IA",
+          "line": "El lead del anuncio llega a una conversación que Kain atiende al momento y entra a tu CRM con su origen.",
+          "href": "/servicios/crm-con-ia/"
+        },
+        {
+          "n": "06",
+          "title": "Reporte de ventas",
+          "line": "Inversión, leads, citas y ventas por campaña, en un reporte que va directo a lo que vendiste."
+        }
+      ],
+      "body": [
+        "Antes de subir el presupuesto, revisamos qué pasa con los leads que ya te llegan. Muchas veces el dinero no se pierde en el anuncio, sino en el chat que nadie contestó a tiempo."
+      ]
+    },
+    "como-funciona": {
+      "_componente": "riel-servicios a sangre con 5 nodos registrados",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": {
+        "text": "Del anuncio a la venta medida,",
+        "soft": "en cinco tramos."
+      },
+      "nodes": [
+        {
+          "label": "Tus anuncios",
+          "line": "Meta, Google y TikTok, cada uno con su estrategia.",
+          "logos": [
+            "meta",
+            "googleads",
+            "tiktok"
+          ],
+          "confirmed": true
+        },
+        {
+          "label": "Tu landing",
+          "line": "Una página rápida que lleva directo a la conversación.",
+          "confirmed": true
+        },
+        {
+          "label": "Kain en WhatsApp",
+          "line": "Responde en segundos, califica y agenda.",
+          "logos": [
+            "whatsapp"
+          ],
+          "confirmed": true
+        },
+        {
+          "label": "Tu CRM",
+          "line": "El lead entra con el anuncio que lo trajo.",
+          "logos": [
+            "kommo",
+            "gohighlevel"
+          ],
+          "confirmed": true
+        },
+        {
+          "label": "La venta medida",
+          "line": "Cada venta vuelve a su campaña para decidir dónde invertir.",
+          "confirmed": true
+        }
+      ],
+      "note": "Si ya tienes página o CRM, partimos de lo tuyo y lo conectamos."
+    },
+    "caso": {
+      "_componente": "ImageSection mid (caso-horeca-hero, persona ilustrativa del sector a la derecha) + viñetas + enlace al caso",
+      "rail": "Caso",
+      "eyebrow": "Caso · HoReCa",
+      "h2": {
+        "text": "Hoteles y restaurantes:",
+        "soft": "campañas medidas hasta la venta."
+      },
+      "lede": "Para un cliente de HoReCa trabajamos las campañas en Meta Ads con tres piezas que se refuerzan entre sí. Resultado: un {{metric:horeca-roas|full}} ({{source}}).",
+      "items": [
+        "Creativos dinámicos, renovados con datos.",
+        "Audiencias predictivas en lugar de audiencias por intuición.",
+        "Atribución multicanal para saber de dónde viene cada venta."
+      ],
+      "links": [
+        {
+          "label": "Lee el caso completo",
+          "href": "/casos/horeca-roas/"
+        }
+      ]
+    },
+    "canales": {
+      "_componente": "LogoCredits (3 grupos, uno por plataforma, logos en blanco)",
+      "rail": "Canales",
+      "eyebrow": "Canales",
+      "h2": {
+        "text": "Tres plataformas,",
+        "soft": "una sola medición."
+      },
+      "groups": [
+        {
+          "label": "Crear demanda",
+          "logos": [
+            {
+              "slug": "meta",
+              "label": "Meta Ads"
+            }
+          ],
+          "line": "Facebook e Instagram: anuncios que despiertan interés y abren la conversación en WhatsApp."
+        },
+        {
+          "label": "Captar intención",
+          "logos": [
+            {
+              "slug": "googleads",
+              "label": "Google Ads"
+            }
+          ],
+          "line": "Búsquedas de quien ya sabe lo que quiere: apareces justo cuando te busca."
+        },
+        {
+          "label": "Ser descubierto",
+          "logos": [
+            {
+              "slug": "tiktok",
+              "label": "TikTok Ads"
+            }
+          ],
+          "line": "Video corto para llegar a quien todavía no te conoce."
+        }
+      ],
+      "note": "Meta, Google y TikTok son herramientas que usamos para tus campañas; la medición vive en tu CRM."
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sobre metodologia-hero si está libre)",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": {
+        "text": "Así lanzamos y medimos",
+        "soft": "tus campañas."
+      },
+      "phases": [
+        {
+          "letter": "V",
+          "name": "Verify",
+          "verb": "Verificamos tu operación",
+          "line": "Revisamos tus campañas, tu costo por lead real y qué pasa con cada lead después del clic."
+        },
+        {
+          "letter": "K",
+          "name": "Koncept",
+          "verb": "Diseñamos el concepto",
+          "line": "Definimos canales, reparto de la inversión, creativos y cómo se va a medir cada venta."
+        },
+        {
+          "letter": "T",
+          "name": "Transform",
+          "verb": "Transformamos",
+          "line": "Conectamos landing, WhatsApp y CRM, y lanzamos las primeras campañas con su medición lista."
+        },
+        {
+          "letter": "O",
+          "name": "Operate",
+          "verb": "Operamos junto con tu equipo",
+          "line": "Probamos creativos y audiencias mientras Kain atiende los leads y tu equipo cierra."
+        },
+        {
+          "letter": "R",
+          "name": "Rise",
+          "verb": "Hacemos crecer los resultados",
+          "line": "Movemos la inversión hacia lo que vende y te reportamos ventas cada mes."
+        }
+      ],
+      "links": [
+        {
+          "label": "Conoce VKTOR™ completo",
+          "href": "/metodologia/"
+        }
+      ]
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": {
+        "text": "{{Price}}."
+      },
+      "lede": "Nuestro trabajo se cotiza según tres cosas:",
+      "items": [
+        {
+          "title": "Plataformas",
+          "line": "En cuántas corren tus campañas: Meta, Google, TikTok o las tres."
+        },
+        {
+          "title": "Integraciones",
+          "line": "Si conectamos landing, WhatsApp con Kain y tu CRM para medir hasta la venta."
+        },
+        {
+          "title": "Volumen",
+          "line": "Cuántas campañas, creativos y leads se manejan cada mes."
+        }
+      ],
+      "remate": "La inversión publicitaria va aparte: se paga directo a cada plataforma. El alcance lo definimos en tu Discovery Session, y dejar todo conectado toma de 7 a 30 días, según lo que incluya."
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Preguntas sobre",
+        "soft": "paid media."
+      },
+      "faqIds": [
+        "G14",
+        "N02",
+        "G08",
+        "G07"
+      ],
+      "footer": "¿Quieres que revisemos tus campañas? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": {
+        "text": "Lo que hace",
+        "soft": "que un anuncio venda."
+      },
+      "items": [
+        {
+          "href": "/servicios/paginas-web/",
+          "label": "Atraer",
+          "title": "Páginas web de alta conversión",
+          "line": "Donde aterriza tu anuncio y empieza la conversación."
+        },
+        {
+          "href": "/industrias/horeca/",
+          "label": "Industria",
+          "title": "Hoteles y restaurantes",
+          "line": "Reservas y pedidos medidos desde el anuncio."
+        },
+        {
+          "href": "/casos/ecommerce-cdmx-costo-por-lead/",
+          "label": "Caso",
+          "title": "E-commerce en la Ciudad de México",
+          "line": "Cómo bajó su costo por lead."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-duena-tranquila, subject-left)",
+      "rail": "Cierre",
+      "eyebrow": "Antes de subir el presupuesto",
+      "h2": {
+        "text": "¿Cuánto de tu inversión termina en ventas?",
+        "soft": "Lo vemos en 30 minutos."
+      },
+      "lede": "En la Discovery Session revisamos tus campañas y qué pasa con cada lead después del clic, y te decimos dónde se está yendo el dinero.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de paid media y quiero campañas medidas por ventas, no por clics."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

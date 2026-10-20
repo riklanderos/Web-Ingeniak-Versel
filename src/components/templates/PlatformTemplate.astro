@@ -1,0 +1,943 @@
+---
+// PlatformTemplate · T-PLATFORM (ESPEC §5.2 "Variantes T-PLATFORM", §5.2.1; D-arquitectura §3.1 y §13.2 /kommo/, /gohighlevel/).
+// Variante de servicio para las plataformas que implementamos: recorre sitemap.json → page.sections EN SU ORDEN y pinta cada id
+// con el componente de §5.2.1, con el texto de src/content/paginas/<page.id>.json. Hereda el lenguaje aprobado de T-SERVICE
+// (clases .svc-* de pages.css, body.svc) y agrega lo propio de una plataforma (clases .plt-*, src/styles/tpl/PlatformTemplate.css):
+//   hero         → SharedTake + ImageSection hero (Kain trabajando con la superficie de la plataforma) + Breadcrumbs y, registrado:
+//                  · Kommo: embudo genérico en la superficie de cristal (Nuevo → Calificado → Cita agendada → Ganado; nunca copia
+//                    de la UI de Kommo) + KommoBadge anclado al piso (ancla `sello`; en móvil, en línea). Kommo = único partner.
+//                  · GoHighLevel: pulso en la casilla que toca Kain + etiqueta de cita (o agenda completa en la superficie libre de
+//                    la placa de respaldo) + chip de cristal "En español · implementación completa" + nota de marca. Nunca "partner".
+//   definicion   → Intertitle sobre la toma desenfocada + DefinitionBlock + (GHL) "Lo que junta en un solo lugar": cinco ramas que
+//                  bajan a un pilar y convergen en un nodo (geometría del isotipo) + MetricRow
+//   senales      → ImageSection mid tone="dolor" (persona a cualquier lado: el texto va del lado contrario) + señales ámbar → cian
+//   que-hacemos  → ScriptList (agrupada por etapa del sistema si el copy trae groups) + ChatSim en línea con guion propio del copy
+//   como-funciona→ riel-servicios con los nodos del flujo registrados sobre los 5 nodos de la placa
+//   licencias    → credencial de partner (sello oficial + ficha con filetes, sin caja) + pasos (ScriptList steps) + nota de precios
+//   agente-chat · calendario → ImageSection mid con UI registrada (ChatSim / agenda del día) + pasos y prueba. "Regreso al set"
+//                  (R5) solo si el encuadre no repite la portada: si la placa de la sección es la misma que la portada (con su
+//                  tope de cámara el empuje no llega a cambiar el encuadre, QA #16/#18/#19 de T-SERVICE), usa su respaldo de lanzamiento.
+//   casos → Montage + ResultsLedger · fit → TwoColumnScript fit (el "no" en ámbar) + enlaces · vktor → VktorRail sobre las losas
+//   inversion → Intertitle de precio · faq → FAQAccordion · relacionados → Still ×3 · cta-final → Dawn
+// Reglas: un azul por pantalla (solo portada y cierre llevan primario) · una .lit (portada) · enlaces del cuerpo con linkTarget().
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/tpl/PlatformTemplate.css';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import ImageSection from '../cine/ImageSection.astro';
+import SharedTake from '../cine/SharedTake.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Montage from '../cine/Montage.astro';
+import Dawn from '../cine/Dawn.astro';
+import LightBranch from '../cine/LightBranch.astro';
+import FigCaption from '../cine/FigCaption.astro';
+import { resolvePlate, anchorStyle, plateReady, AURA_ISOTIPO, AURA_ONDAS, type Resolved } from '../cine/plate';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import Metric from '../ui/Metric.astro';
+import ScriptList from '../ui/ScriptList.astro';
+import ChatSim from '../ui/ChatSim.astro';
+import PainList from '../ui/PainList.astro';
+import TwoColumnScript from '../ui/TwoColumnScript.astro';
+import VktorRail from '../ui/VktorRail.astro';
+import SystemFlow from '../ui/SystemFlow.astro';
+import DefinitionBlock from '../ui/DefinitionBlock.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import ResultsLedger from '../ui/ResultsLedger.astro';
+import Still from '../ui/Still.astro';
+import KommoBadge from '../ui/KommoBadge.astro';
+import Icon from '../ui/Icon.astro';
+import { annotateFigures, tokensToText, esc, logoUrl, logoWide, TOOLS, VKTOR } from '../ui/ui-data';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs, builtRelated } from './heroKit';
+import { getPlate, pages, waHref, SITE, linkTarget, isBuilt, plateAlt, type Page } from '../../lib/site';
+import { METRICS, type MetricId } from '../../lib/metrics';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C: Record<string, any> = copy?.sections ?? {};
+const isKommo = /kommo/i.test(P.id ?? '') || /kommo/i.test(P.url ?? '');
+
+/* ── Secciones en el orden del sitemap (sin condicionales ni las que el copy omite) ── */
+const list = ((P.sections ?? []) as any[]).filter((s) => s?.id && C[s.id] && !C[s.id]._omitir && s.status !== 'conditional');
+
+const DEF = ['definicion', 'que-es'];
+const PAIN = ['senales', 'dolores'];
+const SCRIPT = ['capacidades', 'entregables', 'que-hacemos', 'incluye', 'construimos', 'implementamos', 'que-automatizamos', 'casos-uso', 'contenido'];
+const TWO = ['vs-chatbot', 'comparativa', 'selector', 'fit', 'si-no', 'antes-despues'];
+type Kind = 'hero' | 'def' | 'pain' | 'script' | 'flow' | 'license' | 'scene' | 'cases' | 'two' | 'vktor' | 'price' | 'faq' | 'related' | 'dawn' | 'generic';
+function kindOf(s: any): Kind {
+  const id: string = s.id;
+  if (id === 'hero') return 'hero';
+  if (id === 'cta-final') return 'dawn';
+  if (DEF.includes(id)) return 'def';
+  if (PAIN.includes(id)) return 'pain';
+  if (id === 'como-funciona') return 'flow';
+  if (id === 'licencias') return 'license';
+  if (TWO.includes(id)) return 'two';
+  if (SCRIPT.includes(id)) return 'script';
+  if ((id === 'casos' || id === 'caso') && !s.plate) return 'cases';
+  if (id === 'vktor') return 'vktor';
+  if (id === 'inversion') return 'price';
+  if (id === 'faq') return 'faq';
+  if (id === 'relacionados') return 'related';
+  if (s.plate) return 'scene';
+  return 'generic';
+}
+
+/* Bloques: la portada y la definición que la sigue comparten toma (SharedTake, §3.12) */
+type Block = { kind: Kind; s: any; c: any; next?: { s: any; c: any } };
+const blocks: Block[] = [];
+for (let i = 0; i < list.length; i++) {
+  const s = list[i];
+  const kind = kindOf(s);
+  if (kind === 'hero' && list[i + 1] && kindOf(list[i + 1]) === 'def') {
+    blocks.push({ kind, s, c: C[s.id], next: { s: list[i + 1], c: C[list[i + 1].id] } });
+    i++;
+  } else blocks.push({ kind, s, c: C[s.id] });
+}
+
+/* ── Utilidades de texto (las mismas reglas que T-SERVICE) ── */
+const lastWord = (t = '') => (t.trim().split(/\s+/).pop() ?? '').replace(/[.,:;!?¿¡]+$/, '');
+/** Espacio duro después de palabras de 1–2 letras: ninguna línea del titular termina en ellas (fuera de nodos de cifra). */
+const NBSP_RX = /(?<=^|[\s (¿¡])(a|al|de|el|en|la|lo|un|tu|su|mi|y|o|e|u|es|se|te|no|ni)\s+/gi;
+const keepShort = (html: string) => {
+  let depth = 0;
+  return html.replace(/(<[^>]+>)|([^<]+)/g, (_m: string, tag?: string, txt?: string) => {
+    if (tag) {
+      if (depth > 0) { if (/^<\//.test(tag)) depth--; else if (!/\/>$/.test(tag)) depth++; return tag; }
+      if (/\sdata-(allow-number|metric)\b/.test(tag) && !/\/>$/.test(tag)) depth = 1;
+      return tag;
+    }
+    return depth > 0 ? txt! : txt!.replace(NBSP_RX, (_x: string, w: string) => `${w} `);
+  });
+};
+/** Titular de dos voces {text, soft, lit?} → HTML (tokens resueltos; la .lit solo en la portada). */
+function head(h: any, lit = false): string {
+  if (!h) return '';
+  let t = annotateFigures(h.text ?? '');
+  if (lit) {
+    const word = h.lit ?? lastWord(h.text);
+    const w = esc(word);
+    const at = word ? t.lastIndexOf(w) : -1;
+    if (at >= 0) t = `${t.slice(0, at)}<span class="lit">${w}</span>${t.slice(at + w.length)}`;
+  }
+  return keepShort(t + (h.soft ? ` <span class="soft">${annotateFigures(h.soft)}</span>` : ''));
+}
+const toneOf = (t?: string) => (t === 'ambar' || t === 'amber' ? 'amber' : t === 'muted' ? 'muted' : 'cyan') as 'cyan' | 'amber' | 'muted';
+const wa = (c: any) => (c?.ctaSecondary?.waMessage ? waHref(c.ctaSecondary.waMessage) : P.secondaryCta?.href ?? waHref('Hola Kain'));
+const ext = (href = '') => /^https?:\/\//.test(href);
+/** Enlaces del cuerpo (R12): solo rutas construidas; una planeada se omite (nunca '#'). */
+const built = (l?: any[]) => (l ?? []).filter((x) => x?.href && isBuilt(x.href));
+const hrefOr = (h?: string) => (h ? linkTarget(h) ?? undefined : undefined);
+const lay = (p: any) => (p?.layout && p.layout !== 'sin sujeto' ? p.layout : undefined);
+const f4 = (n: number) => +(+n).toFixed(4);
+/** Guion del copy (ChatLine[] de _ESQUEMA §8) → líneas de ChatSim. */
+const chatLines = (lines?: any[]) => (lines ?? []).map((l) => ({ who: l.who, text: l.text, time: l.time, delay: l.delay, event: l.event }));
+
+/* ── Placas de la página ── */
+const plateOf = (s: any) => (s?.plate?.id ? s.plate : null);
+const used = new Set<string>();
+for (const s of list) { const p = plateOf(s); if (p) { const r = resolvePlate(p.id, { fallbackPlate: p.launchFallback, mirror: p.mirror }); if (r.id) used.add(r.id); } }
+
+/* Fotograma de una página destino: su portada si ya existe y no se repite aquí; si no, un suplente con el mismo tema. */
+const STAND_IN: Record<string, string> = {
+  'kain-hero': 'home-kain', 'kommo-hero': 'home-sistema-3-organizar', 'gohighlevel-hero': 'home-sistema-5-medir',
+  'crm-ia-hero': 'home-sistema-3-organizar', 'n8n-hero': 'home-sistema-4-automatizar', 'software-hero': 'home-sistema-5-medir',
+  'paid-media-hero': 'home-sistema-1-atraer', 'paginas-web-hero': 'home-sistema-1-atraer', 'seo-hero': 'home-sistema-1-atraer',
+  'consultoria-hero': 'home-sistema-5-medir', 'metodologia-hero': 'metodologia-hero',
+};
+const NEUTRAL = ['home-problema-b', 'home-sistema-4-automatizar', 'home-kain', 'home-hero'];
+const stillsTaken = new Set<string>();
+function stillFor(href: string): string | undefined {
+  const url = href.split('#')[0];
+  const target = (pages as any[]).find((p) => p.url === url);
+  const tried: string[] = [];
+  for (const s of (target?.sections ?? []) as any[]) if (s.plate?.id) { tried.push(s.plate.id); if (s.plate.launchFallback) tried.push(typeof s.plate.launchFallback === 'string' ? s.plate.launchFallback : s.plate.launchFallback.plate); }
+  const heroId = target?.sections?.find((s: any) => s.plate)?.plate?.id;
+  if (heroId && STAND_IN[heroId]) tried.splice(1, 0, STAND_IN[heroId]);
+  tried.push(...NEUTRAL);
+  const pick = tried.find((id) => id && plateReady(id) && !used.has(id) && !stillsTaken.has(id) && id !== 'cta-amanecer');
+  if (pick) stillsTaken.add(pick);
+  return pick;
+}
+
+/* ── Geometría registrada ── */
+type Box = [number, number, number, number];
+/** Caja de un ancla [x, y, w, h] ya espejada; null si la placa no la trae. */
+function boxOf(r: Resolved, name: string, m = false): Box | null {
+  const b = (m ? r.anchors[name]?.box?.m : r.anchors[name]?.box?.d) as Box | null | undefined;
+  return b ?? null;
+}
+/** Parte libre de una superficie de cristal (se recorta del lado del sujeto con 2 % de aire): la UI nunca queda sobre Kain. */
+function freeBox(r: Resolved, names: string[], pad = 0.06): { name: string; box: Box; style: string } | null {
+  if (!r.id) return null;
+  const raw: any = getPlate(r.id);
+  const name = names.find((n) => Array.isArray(raw?.anchors?.[n]?.d) && raw.anchors[n].d.length >= 4);
+  if (!name) return null;
+  let [x, y, w, h] = raw.anchors[name].d as number[];
+  const sd = raw.subject?.d as number[] | undefined;
+  if (sd) {
+    if (sd[0] >= x + w * 0.5) w = Math.min(w, sd[0] - 0.02 - x);
+    else if (sd[2] <= x + w * 0.5) { const nx = Math.max(x, sd[2] + 0.02); w = x + w - nx; x = nx; }
+  }
+  y += h * pad; h *= 1 - pad * 2;
+  const X = r.mirror ? 1 - x - w : x;
+  const box: Box = [f4(X), f4(y), f4(w), f4(h)];
+  return { name, box, style: `--ax:${box[0]};--ay:${box[1]};--aw:${box[2]};--ah:${box[3]};` };
+}
+/** Panel registrado con ancho y alto (teléfono, pantalla, superficie) en escritorio y vertical (R4). */
+function panel(r: Resolved, names = ['telefono', 'pantalla', 'tableta', 'superficie']): { name: string; style: string; m: boolean } | null {
+  if (!r.id) return null;
+  const name = names.find((n) => boxOf(r, n));
+  if (!name) return null;
+  const [x, y, w, h] = boxOf(r, name)!;
+  let style = `--ax:${x};--ay:${y};--aw:${w};--ah:${h};`;
+  const m = boxOf(r, name, true);
+  if (m) style += `--ax-m:${m[0]};--ay-m:${m[1]};--aw-m:${m[2]};--ah-m:${m[3]};`;
+  return { name, style, m: !!m };
+}
+/** Borde de la zona segura del texto en escritorio (fracción de la placa, ya espejada): la caja `safe` más alta de la placa.
+ *  Sujeto a la derecha → borde derecho del texto; sujeto a la izquierda → borde izquierdo. Sin placa: el de la retícula. */
+function safeEdge(r: Resolved): number {
+  const raw: any = r.id ? getPlate(r.id) : null;
+  const rects: number[][] = (raw?.safe?.d ?? []).map((b: number[]) => (r.mirror ? [1 - b[2], b[1], 1 - b[0], b[3]] : b));
+  const left = r.layout === 'subject-left';
+  if (!rects.length) return left ? 0.56 : 0.44;
+  const main = [...rects].sort((a, b) => (b[3] - b[1]) - (a[3] - a[1]) || (b[2] - b[0]) - (a[2] - a[0]))[0];
+  return f4(left ? main[0] : main[2]);
+}
+/** Punto de un ancla (escritorio y vertical) → estilo de .anchor. */
+function pointStyle(r: Resolved, name: string): string {
+  const a = r.anchors[name];
+  if (!a?.d) return '';
+  return `--ax:${a.d[0]};--ay:${a.d[1]};` + (a.m ? `--ax-m:${a.m[0]};--ay-m:${a.m[1]};` : '');
+}
+/** Centro de un ancla de caja (o el punto) en escritorio y vertical. */
+function centerStyle(r: Resolved, name: string): string {
+  const d = boxOf(r, name), m = boxOf(r, name, true);
+  if (!d) return pointStyle(r, name);
+  return `--ax:${f4(d[0] + d[2] / 2)};--ay:${f4(d[1] + d[3] / 2)};` + (m ? `--ax-m:${f4(m[0] + m[2] / 2)};--ay-m:${f4(m[1] + m[3] / 2)};` : '');
+}
+
+/* Estilos por escena con números de la placa (borde de la zona segura del texto, tamaño del titular): una sola etiqueta
+   <style> en el <head>, sin estilos en línea sobre las secciones (ImageSection ya escribe sus variables de escenario). */
+const sceneCss: string[] = [];
+const edgeRule = (id: string, r: Resolved) => sceneCss.push(`#${id}{--plt-edge:${safeEdge(r)}}`);
+
+/* ── 01 · Portada ── */
+const heroS = list.find((s) => s.id === 'hero');
+const hp = plateOf(heroS) ?? { id: isKommo ? 'home-sistema-3-organizar' : 'home-sistema-5-medir' };
+const hr = resolvePlate(hp.id, { fallbackPlate: hp.launchFallback, mirror: hp.mirror, layout: lay(hp) });
+edgeRule('hero', hr);
+const h1Words = `${C.hero?.h1?.text ?? ''} ${C.hero?.h1?.soft ?? ''}`.split(/\s+/);
+const longest = Math.max(7, ...h1Words.map((w) => w.length));
+sceneCss.push(`#hero{--plt-h1-div:${f4(Math.max(7.1, longest * 0.6 + 0.4))}}`);
+const heroLede = ledeParts(C.hero?.lede, 20);
+const heroEyebrowDup = eyebrowRepeatsCrumbs(C.hero?.eyebrow, P.breadcrumbs);
+const heroUi = C.hero?.ui ?? {};
+/* Kommo: embudo en la superficie de cristal (parte libre) */
+const pipe = heroUi.pipeline ?? null;
+const pipeBox = pipe ? freeBox(hr, ['superficie', 'pantalla', 'telefono', 'tableta'], 0.04) : null;
+const pipeActive = Math.min(Math.max(0, pipe?.active ?? 2), (pipe?.stages?.length ?? 4) - 1);
+const pipeAria = pipe ? `Simulación: un lead de WhatsApp entra a tu CRM y avanza por el embudo hasta la etapa ${pipe.stages?.[pipeActive] ?? ''}.` : '';
+/* GoHighLevel: casilla que toca Kain (placa propia) o agenda en la superficie libre (placa de respaldo) */
+const evt = heroUi.event ?? null;
+const touch = evt && hr.anchors.casilla?.d ? true : false;
+const calBox = evt && !touch ? freeBox(hr, ['superficie', 'pantalla', 'calendario', 'tableta'], 0.05) : null;
+/* La etiqueta de la cita va DEBAJO del calendario de cristal (nunca sobre Kain ni en la columna de texto), con una guía
+   vertical desde la casilla que toca Kain hasta su borde superior (--wire, en cqh del escenario). */
+const calB = touch ? boxOf(hr, "calendario") : null, casB = touch ? boxOf(hr, "casilla") : null;
+const popTop = calB ? calB[1] + calB[3] + 0.022 : null;
+const popStyle = calB && casB && popTop !== null
+  ? `--ax:${f4(casB[0] + casB[2] / 2)};--ay:${f4(popTop)};--wire:${f4((popTop - (casB[1] + casB[3])) * 100)}cqh;`
+  : touch ? centerStyle(hr, "casilla") : "";
+const evtAria = evt ? `Simulación: ${evt.title}, ${evt.when}. ${evt.what}. ${evt.status}.` : '';
+/* Sello (Kommo) o chip (GHL) anclado al piso: ancla `sello` (centro) o `fig` (esquina hacia el lado del texto) */
+const sealAt = hr.anchors.sello?.d ? { style: pointStyle(hr, 'sello'), mode: 'center' } : hr.anchors.fig?.d ? { style: pointStyle(hr, 'fig'), mode: 'fig' } : null;
+const heroUiSel = pipe ? '.plt-pipe' : touch ? '.plt-pop' : '.plt-cal';
+const heroHasUi = !!(pipeBox || touch || calBox);
+
+/* ── Señales: pie de foto "Fig. 02" en el piso de la placa, unido a la mano de la persona (§3.8) ── */
+const painFigTarget = (id?: string, fb?: any) => {
+  const r = id ? resolvePlate(id, { fallbackPlate: fb }) : null;
+  return ['telefono', 'mano', 'rostro'].find((n) => r?.anchors[n]?.d) ?? 'mano';
+};
+/** Respaldo de la placa de dolor: si sitemap.json no lo trae, la persona de "Señales" del inicio (mismo lado). */
+const painFallback = (p: any) => p?.launchFallback ?? { plate: 'home-problema-a', mirror: p?.layout === 'subject-right' };
+
+/* ── VKTOR™ a sangre: Kain sobre la última de cinco losas (la letra de cada fase registrada en su losa) ── */
+const VK_PLATE = 'metodologia-hero';
+const vkS = list.find((s) => s.id === 'vktor');
+const vkPlate: any = vkS ? (plateOf(vkS) ?? (plateReady(VK_PLATE) && !used.has(VK_PLATE) ? { id: VK_PLATE } : null)) : null;
+if (vkPlate) used.add(vkPlate.id);
+function slabSteps(vr: Resolved) {
+  const dir = vr.mirror ? -1 : 1;
+  const clear = (p: [number, number] | null, sub: number[] | null): [number, number] | null => {
+    if (!p || !sub || !(p[0] > sub[0] && p[0] < sub[2])) return p;
+    return [dir > 0 ? Math.min(sub[2] - 0.055, p[0] + 0.07) : Math.max(sub[0] + 0.055, p[0] - 0.07), p[1]];
+  };
+  return VKTOR.map((f, i) => {
+    const a = `escalon-${i + 1}`;
+    const d = clear(vr.anchors[a]?.d ?? null, vr.subject.d), m = clear(vr.anchors[a]?.m ?? null, vr.subject.m);
+    return { ...f, a, style: d ? `--ax:${f4(d[0])};--ay:${d[1]};` + (m ? `--ax-m:${f4(m[0])};--ay-m:${m[1]};` : '') + `--i:${i};` : '' };
+  }).filter((f) => f.style);
+}
+
+/* ── Escenas con UI registrada (agente-chat, calendario): placa de la sección salvo que repita la portada ── */
+function scenePlate(s: any): { p: any; r: Resolved } {
+  const p0 = plateOf(s);
+  const r0 = resolvePlate(p0.id, { fallbackPlate: p0.launchFallback, mirror: p0.mirror, layout: lay(p0) });
+  const fb = p0.launchFallback && typeof p0.launchFallback === 'object' ? p0.launchFallback : p0.launchFallback ? { plate: p0.launchFallback } : null;
+  if (r0.id && r0.id === hr.id && fb && plateReady(fb.plate)) {
+    const p = { ...p0, id: fb.plate, mirror: !!fb.mirror, layout: undefined, push: undefined, launchFallback: undefined };
+    return { p, r: resolvePlate(p.id, { mirror: p.mirror }) };
+  }
+  return { p: p0, r: r0 };
+}
+
+/* ── Cómo funciona: ¿la placa trae los nodos registrables? ── */
+function flowPlate(s: any) {
+  const p = plateOf(s);
+  if (!p) return null;
+  return { p, r: resolvePlate(p.id, { fallbackPlate: p.launchFallback, mirror: p.mirror }) };
+}
+const beadStyle = (n: number) =>
+  `--b0x:var(--A-nodo-1-x);--b0y:var(--A-nodo-1-y);--b1x:var(--A-nodo-${n}-x);--b1y:var(--A-nodo-${n}-y);` +
+  `--b0xm:var(--A-nodo-1-xm);--b0ym:var(--A-nodo-1-ym);--b1xm:var(--A-nodo-${n}-xm);--b1ym:var(--A-nodo-${n}-ym)`;
+
+/* Casos: 1–2 filas de Montage (una por caso), registro con las cifras que el montaje no muestra */
+function casesData(c: any) {
+  const seen = new Set<string>();
+  const rowIds = ((c.rows ?? []).map((r: any) => r.metricId) as MetricId[]).filter((id) => {
+    if (!METRICS[id]) return false;
+    const k = (METRICS[id] as any).href ?? id;
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  }).slice(0, 2);
+  const ledgerIds = ((c.ledger?.metricIds ?? (c.rows ?? []).map((r: any) => r.metricId)) as MetricId[]).filter((id) => METRICS[id] && !rowIds.includes(id));
+  const stillMap: Record<string, string> = {};
+  for (const id of rowIds) {
+    const href = METRICS[id]?.href;
+    const tp = href ? (pages as any[]).find((x) => x.url === href) : null;
+    const pid = tp?.sections?.find((x: any) => x.plate)?.plate?.id;
+    if (pid && plateReady(pid)) stillMap[id] = pid;
+  }
+  return { rowIds, ledgerIds, stillMap };
+}
+
+/* Aura propia (WebP ya desenfocado, sin filter en vivo) en la caja de recorte de la escena; las clases .svc-aura--* son de T-SERVICE. */
+function aura(kind: 'isotipo' | 'ondas', pos = '', cls = ''): string {
+  const src = kind === 'ondas' ? AURA_ONDAS : AURA_ISOTIPO;
+  const [w, h] = kind === 'ondas' ? [960, 640] : [640, 640];
+  const el = `<div class="svc-aura svc-aura--${kind}${pos ? ` svc-aura--${pos}` : ''}${cls ? ` ${cls}` : ''}" aria-hidden="true">`
+    + `<img src="${src}" alt="" width="${w}" height="${h}" loading="lazy" decoding="async" /></div>`;
+  return pos === 'phone' ? el : `<div class="tpl-aura-box" aria-hidden="true">${el}</div>`;
+}
+const lcp = hr.id ?? undefined;
+/* Sigue explorando: los destinos del copy que ya existen y, si faltan, páginas construidas que esta página ya enlaza */
+const relS = list.find((s) => s.id === 'relacionados');
+const prefer = [...((C.casos?.rows ?? []) as any[]).map((r) => r.href), ...((C.fit?.links ?? []) as any[]).map((r) => r.href)].filter(Boolean);
+const relItems: any[] = relS ? builtRelated(C.relacionados?.items, { self: P.url, want: 3, prefer }) : [];
+
+/* Pre-cálculo de escenas con UI (necesario antes del <head> para su regla de borde) */
+const sceneOf: Record<string, { p: any; r: Resolved }> = {};
+for (const s of list) if (kindOf(s) === 'scene') { const x = scenePlate(s); sceneOf[s.id] = x; edgeRule(s.id, x.r); if (x.r.id) used.add(x.r.id); }
+---
+<BaseLayout page={page} lcpPlate={lcp} lcpSrcsetMax={hp.srcsetMax ?? 2752} bodyClass={`svc plt plt--${isKommo ? 'kommo' : 'ghl'}`}>
+  <Fragment slot="head"><style is:inline set:html={sceneCss.join('')} /></Fragment>
+  {blocks.map((b) => {
+    const { s, c } = b;
+    const p = plateOf(s);
+
+    /* ───────────── 01 · Portada (+ 02 definición dentro de la toma compartida) ───────────── */
+    if (b.kind === 'hero') return (
+      <SharedTake plate={hp.id} fallbackPlate={hp.launchFallback} mirror={hp.mirror}>
+        <ImageSection
+          id={s.id} plate={hp.id} fallbackPlate={hp.launchFallback} layout={lay(hp)} mirror={hp.mirror}
+          height="hero" priority take mobile="split" srcsetMax={hp.srcsetMax} alt={plateAlt(hr.id ?? hp.id, P.id) || undefined}
+          class="plt-hero tpl-hero" data-plt="hero"
+        >
+          <Breadcrumbs page={page} items={builtCrumbs((page as any).breadcrumbs)} class="tpl-mhide" />
+          {c.eyebrow && <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+          <h1 id={`${s.id}-t`} class="t-display-2 plt-h1" data-split set:html={head(c.h1, true)} />
+          {c.lede && (
+            <p class="t-lede t-lede--2 plt-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
+          )}
+          <HeroCtas href={c.ctaPrimary?.href ?? SITE.discovery} label={c.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+            waHref={wa(c)} waLabel={c.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+          {c.legal && <p class="t-micro plt-legal tpl-mhide">{c.legal}</p>}
+          {heroHasUi && <LightBranch from="mano" via={heroUiSel} />}
+
+          {/* Kommo · embudo genérico registrado en la superficie de cristal (SIMULACIÓN) */}
+          {pipe && pipeBox && (
+            <div slot="anchors" class="anchor anchor--panel plt-pipe plt-ui" data-anchor={pipeBox.name} data-lock data-m="none" data-nosnippet
+              style={`${pipeBox.style}--active:${pipeActive};--n:${pipe.stages.length};`} role="img" aria-label={pipeAria}>
+              <div class="plt-pipe__card" aria-hidden="true">
+                <p class="plt-pipe__top"><span class="chip-sim">SIMULACIÓN</span></p>
+                <p class="plt-pipe__k"><span class="node"></span>{pipe.title}</p>
+                <div class="plt-pipe__board">
+                  <ol class="plt-pipe__stages">
+                    {(pipe.stages as string[]).map((t, i) => (
+                      <li class:list={['plt-pipe__st', i < pipeActive && 'is-done', i === pipeActive && 'is-on']} style={`--i:${i}`}>
+                        <span class="plt-pipe__name">{t}</span><span class="plt-pipe__slots"><i></i><i></i><i></i></span>
+                      </li>
+                    ))}
+                  </ol>
+                  <span class="plt-pipe__lead"><span class="plt-pipe__dot"></span>{pipe.lead}</span>
+                </div>
+                <p class="plt-pipe__evt"><span class="plt-pipe__ok"></span>{pipe.status}</p>
+              </div>
+            </div>
+          )}
+
+          {/* GoHighLevel · pulso en la casilla que toca Kain + etiqueta de la cita (placa propia) */}
+          {evt && touch && (
+            <Fragment slot="anchors">
+              <span class="anchor plt-pulse" style={centerStyle(hr, 'casilla')} aria-hidden="true"></span>
+              <div class="anchor plt-pop plt-ui" data-anchor="casilla" data-lock data-m="none" data-nosnippet style={popStyle} role="img" aria-label={evtAria}>
+                <div class="plt-pop__card" aria-hidden="true">
+                  <p class="plt-pop__top"><span class="chip-sim">SIMULACIÓN</span><span class="plt-pop__time">{heroUi.timeLabel ?? 'Hora ilustrativa'}</span></p>
+                  <p class="plt-pop__t"><span class="plt-pop__ok"></span>{evt.title}</p>
+                  <p class="plt-pop__when">{evt.when}</p>
+                  <p class="plt-pop__what">{evt.what}</p>
+                  <p class="plt-pop__st"><span class="node"></span>{evt.status}</p>
+                </div>
+              </div>
+            </Fragment>
+          )}
+          {/* GoHighLevel · agenda en la superficie libre de la placa de respaldo */}
+          {evt && calBox && (
+            <div slot="anchors" class="anchor anchor--panel plt-cal plt-ui" data-anchor={calBox.name} data-lock data-m="none" data-nosnippet style={calBox.style} role="img" aria-label={evtAria}>
+              <div class="plt-cal__card" aria-hidden="true">
+                <p class="plt-cal__top"><span class="chip-sim">SIMULACIÓN</span></p>
+                <div class="plt-cal__grid" style={`--days:${(heroUi.days ?? []).length || 5}`}>
+                  {((heroUi.days ?? ['Lun', 'Mar', 'Mié', 'Jue', 'Vie']) as string[]).map((d) => <span class="plt-cal__d">{d}</span>)}
+                  {Array.from({ length: ((heroUi.days ?? []).length || 5) * 4 }, (_, i) => (
+                    <i class:list={['plt-cal__c', i === 13 && 'is-on', (i === 2 || i === 6 || i === 17) && 'is-busy']} style={`--i:${i}`}></i>
+                  ))}
+                </div>
+                <p class="plt-cal__evt"><span class="plt-pop__ok"></span><span><b>{evt.title}</b> · {evt.when}</span></p>
+                <p class="plt-cal__st"><span class="node"></span>{evt.status}</p>
+              </div>
+            </div>
+          )}
+          {/* Sello de Kommo (único partner) o chip de la plataforma, anclado al piso; en móvil va en línea en `more` */}
+          {sealAt && (c.badge || c.chip) && (
+            <div slot="anchors" class:list={['anchor plt-seal', `plt-seal--${sealAt.mode}`]} data-m="none" data-lock style={sealAt.style}>
+              {c.badge ? <KommoBadge glass text /> : <p class="glass-chip plt-chip"><span class="node" aria-hidden="true"></span>{c.chip}</p>}
+            </div>
+          )}
+
+          {/* R3/R4 · móvil: la cola del lede y la versión en línea de lo registrado bajan después de la placa */}
+          <Fragment slot="more">
+            {heroLede.rest && <Copy text={heroLede.rest} as="p" class="t-lede t-lede--2 plt-hero__proof tpl-dhide" />}
+            {pipe && (
+              <div class="plt-pipe plt-pipe--inline tpl-dhide" role="img" aria-label={pipeAria} data-nosnippet style={`--active:${pipeActive};--n:${pipe.stages.length};`}>
+                <div class="plt-pipe__card" aria-hidden="true">
+                  <p class="plt-pipe__top"><span class="chip-sim">SIMULACIÓN</span></p>
+                  <p class="plt-pipe__k"><span class="node"></span>{pipe.title}</p>
+                  <div class="plt-pipe__board">
+                    <ol class="plt-pipe__stages">
+                      {(pipe.stages as string[]).map((t, i) => (
+                        <li class:list={['plt-pipe__st', i < pipeActive && 'is-done', i === pipeActive && 'is-on']} style={`--i:${i}`}>
+                          <span class="plt-pipe__name">{t}</span><span class="plt-pipe__slots"><i></i><i></i><i></i></span>
+                        </li>
+                      ))}
+                    </ol>
+                    <span class="plt-pipe__lead"><span class="plt-pipe__dot"></span>{pipe.lead}</span>
+                  </div>
+                  <p class="plt-pipe__evt"><span class="plt-pipe__ok"></span>{pipe.status}</p>
+                </div>
+              </div>
+            )}
+            {evt && (
+              <div class="plt-pop plt-pop--inline tpl-dhide" role="img" aria-label={evtAria} data-nosnippet>
+                <div class="plt-pop__card" aria-hidden="true">
+                  <p class="plt-pop__top"><span class="chip-sim">SIMULACIÓN</span><span class="plt-pop__time">{heroUi.timeLabel ?? 'Hora ilustrativa'}</span></p>
+                  <p class="plt-pop__t"><span class="plt-pop__ok"></span>{evt.title}</p>
+                  <p class="plt-pop__when">{evt.when}</p>
+                  <p class="plt-pop__what">{evt.what}</p>
+                  <p class="plt-pop__st"><span class="node"></span>{evt.status}</p>
+                </div>
+              </div>
+            )}
+            {c.badge && <div class="plt-seal-m tpl-dhide"><KommoBadge text /></div>}
+            {c.chip && <p class="chip-spec plt-chip-m tpl-dhide">{c.chip}</p>}
+            {c.legal && <p class="t-micro plt-legal tpl-dhide">{c.legal}</p>}
+          </Fragment>
+        </ImageSection>
+
+        {b.next && (
+          <Intertitle id={b.next.s.id} rack aura="none" labelledby={`${b.next.s.id}-def-q`} class="svc-def plt-def tpl-glow">
+            <Aura kind="ondas" x="40%" y="104%" o={1} only="d" />
+            <DefinitionBlock
+              id={`${b.next.s.id}-def`}
+              faqId={b.next.c.definition?.faqId}
+              heading={b.next.c.definition?.heading ?? b.next.c.h2?.text}
+              text={b.next.c.definition?.text}
+              label={b.next.c.eyebrow}
+            />
+            {(b.next.c.body ?? []).map((t: string) => <Copy text={t} as="p" class="svc-body svc-def__body" data-reveal />)}
+            {b.next.c.junta?.items?.length > 0 && (
+              <div class="plt-junta" role="group" aria-labelledby={`${b.next.s.id}-junta-h`} data-reveal>
+                <h3 id={`${b.next.s.id}-junta-h`} class="t-label t-label--cyan eyebrow plt-junta__h"><span class="node" aria-hidden="true"></span>{b.next.c.junta.title}</h3>
+                <div class="plt-junta__map" style={`--n:${b.next.c.junta.items.length}`}>
+                  <ol class="plt-junta__list">
+                    {(b.next.c.junta.items as any[]).map((it, i) => (
+                      <li class="plt-junta__it" style={`--i:${i}`}>
+                        <span class="plt-junta__t">{it.title}</span>
+                        {it.line && <span class="plt-junta__l" set:html={annotateFigures(it.line)} />}
+                        <span class="plt-junta__br" aria-hidden="true"></span>
+                      </li>
+                    ))}
+                  </ol>
+                  <p class="plt-junta__node">
+                    <span class="plt-junta__sq" aria-hidden="true"></span>
+                    <span class="plt-junta__id">
+                      <span class="logo-mask plt-junta__logo" style="--logo:url(/img/logos/gohighlevel.svg)" role="img" aria-label="GoHighLevel"></span>
+                      <span class="plt-junta__nt">{b.next.c.junta.node}</span>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            )}
+            {b.next.c.metricRow?.metricIds?.length > 0 && (
+              <Metric variant="row" ids={b.next.c.metricRow.metricIds} heading={b.next.c.metricRow.title} note={b.next.c.metricRow.sourceNote !== false} class="svc-def__row" />
+            )}
+          </Intertitle>
+        )}
+      </SharedTake>
+    );
+
+    /* ───────────── Definición suelta (si no sigue a la portada) ───────────── */
+    if (b.kind === 'def') return (
+      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-def-q`} class="svc-def tpl-glow">
+        <DefinitionBlock id={`${s.id}-def`} faqId={c.definition?.faqId} heading={c.definition?.heading ?? c.h2?.text} text={c.definition?.text} label={c.eyebrow} />
+        {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="svc-body svc-def__body" data-reveal />)}
+        {c.metricRow?.metricIds?.length > 0 && <Metric variant="row" ids={c.metricRow.metricIds} heading={c.metricRow.title} note={c.metricRow.sourceNote !== false} class="svc-def__row" />}
+        <Fragment set:html={aura('isotipo', 'right')} />
+      </Intertitle>
+    );
+
+    /* ───────────── 03 · Señales (persona en luz ámbar; el texto del lado contrario) ───────────── */
+    if (b.kind === 'pain') {
+      const items = (c.items ?? []) as { pain: string; painLine?: string; fix: string }[];
+      const withLine = items.some((it) => it.painLine);
+      const fb = painFallback(p);
+      return (
+        <ImageSection
+          id={s.id} plate={p?.id ?? 'home-problema-a'} fallbackPlate={fb} layout={lay(p)} mirror={p?.mirror}
+          height={p?.height ?? 'mid'} tone="dolor" mobile={p?.mobile ?? 'split'} srcsetMax={p?.srcsetMax ?? 1920} alt="" class="svc-pain plt-pain tpl-glow-m"
+        >
+          <span class="tpl-introglow" aria-hidden="true"></span>
+          {c.eyebrow && <p class="t-label t-label--amber eyebrow"><span class="node node--amber" aria-hidden="true"></span>{c.eyebrow}</p>}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+          {c.fig?.label && <FigCaption slot="anchors" n={2} title={c.fig.label} anchor="fig" target={painFigTarget(p?.id, fb)}></FigCaption>}
+          <Fragment slot="more">
+            <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+            {withLine ? (
+              <div class="pain pain--draw svc-signals" data-pain="draw">
+                <ol class="pain__list" aria-label={c.eyebrow ?? 'Señales y su solución'}>
+                  {items.map((it, i) => (
+                    <li class="pain__item" style={`--i:${i}`} data-pain-item>
+                      <p class="pain__pain"><span class="pain__node" aria-hidden="true"></span><span class="sr-only">Señal: </span><span set:html={annotateFigures(it.pain)} /></p>
+                      {it.painLine && <p class="svc-signals__line" set:html={annotateFigures(it.painLine)} />}
+                      <p class="pain__fix">
+                        <span class="pain__branch" aria-hidden="true"><svg viewBox="0 0 28 20" preserveAspectRatio="none"><path d="M1 1v7l8 8h18" pathLength="1" /></svg></span>
+                        <span class="sr-only">Con el sistema: </span><span class="pain__fix-t" set:html={annotateFigures(it.fix)} />
+                      </p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ) : <PainList items={items} mode="draw" label={c.eyebrow} />}
+            {c.remate && <Copy text={c.remate} as="p" class="pain__remate" />}
+          </Fragment>
+        </ImageSection>
+      );
+    }
+
+    /* ───────────── 04 · Qué hacemos (filas de guion; agrupadas por etapa si el copy lo pide; ChatSim con guion propio) ───────────── */
+    if (b.kind === 'script') {
+      const rows = (c.items ?? []).map((it: any, i: number) => ({ n: it.n ?? String(i + 1).padStart(2, '0'), title: it.title, line: it.line, href: hrefOr(it.href), external: ext(it.href) }));
+      const groups = c.groups?.map((g: any) => ({ label: g.label, glyph: g.glyph, rows: (g.items ?? []).map((it: any) => ({ title: it.title, line: it.line, href: hrefOr(it.href) })) }));
+      const lines = c.chat?.lines?.length ? chatLines(c.chat.lines) : null;
+      const tabs = lines ? [{ id: 'plt', label: c.chat.tab ?? 'WhatsApp' }] : c.chat ? (c.chat.tabs ?? c.chat.scripts ?? [c.chat.script ?? 'default']) : null;
+      return (
+        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class:list={['svc-cap', tabs && 'svc-cap--chat', groups && 'plt-cap--groups', 'tpl-glow'].filter(Boolean).join(' ')}>
+          <div class="svc-cap__grid">
+            <div class="svc-cap__main">
+              {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+              <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+              {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+              <ScriptList rows={groups ? [] : rows} groups={groups} label={c.eyebrow} class="svc-cap__rows plt-cap__rows" />
+              {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="svc-body" data-reveal />)}
+              {built(c.links).length > 0 && (
+                <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
+              )}
+            </div>
+            {tabs && (
+              <div class="svc-cap__aside">
+                <Fragment set:html={aura('isotipo', 'phone')} />
+                {lines
+                  ? <ChatSim mode="inline" scripts={{ plt: lines }} tabs={tabs} title={c.chat.title ?? 'Agente de IA de tu negocio'} />
+                  : <ChatSim mode="inline" tabs={tabs} title={c.chat.title ?? 'Agente de IA'} />}
+              </div>
+            )}
+          </div>
+          {!tabs && <Fragment set:html={aura('isotipo', 'right')} />}
+          <Aura kind="ondas" x="30%" y="100%" o={1} only="d" />
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── 05 · Cómo funciona (nodos registrados sobre el riel de la placa) ───────────── */
+    if (b.kind === 'flow') {
+      const nodes = ((c.nodes ?? []) as any[]).filter((n) => n.confirmed !== false);
+      const fp = flowPlate(s);
+      const regs = fp?.r.id ? nodes.map((_, i) => `nodo-${i + 1}`) : [];
+      const registrable = !!fp?.r.id && nodes.length > 1 && regs.every((n) => fp!.r.anchors[n]?.d) && !fp!.r.anchors[`nodo-${nodes.length + 1}`];
+      if (registrable) return (
+        <ImageSection
+          id={s.id} plate={fp!.p.id} fallbackPlate={fp!.p.launchFallback} layout="subject-center" mirror={fp!.p.mirror}
+          height="mid" align="start" mobile="top" srcsetMax={fp!.p.srcsetMax ?? 1920} alt="" class="svc-flow tpl-glow-m" data-nodes={nodes.length}
+        >
+          <span class="tpl-introglow tpl-introglow--d" aria-hidden="true"></span>
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+          {c.note && <Copy text={c.note} as="p" class="svc-flow__note t-small" />}
+          <Fragment slot="anchors">
+            <span class="svc-bead" aria-hidden="true" style={beadStyle(nodes.length)}></span>
+            <ol class="svc-nodes" aria-label={c.h2?.text ?? 'Cómo funciona'}>
+              {nodes.map((n, i) => {
+                const isKain = n.kain ?? /^kain\b/i.test(n.label ?? '');
+                return (
+                  <li class="anchor svc-node" data-anchor={`nodo-${i + 1}`} style={anchorStyle(`nodo-${i + 1}`, `--k:${i};--nn:${nodes.length};`)}>
+                    <span class="svc-node__stem" aria-hidden="true"></span>
+                    <span class="svc-node__card">
+                      <span class="svc-node__top">
+                        <span class="svc-node__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                        {isKain && <span class="kain-mark svc-node__kain" aria-hidden="true">kain</span>}
+                        {(n.logos ?? []).map((l: string) => (
+                          <span class:list={['logo-mask', logoWide(l) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(l)})`} role="img" aria-label={TOOLS[l]?.name ?? l}></span>
+                        ))}
+                      </span>
+                      <span class="svc-node__t">{n.label}</span>
+                      {n.line && <span class="svc-node__l" set:html={annotateFigures(n.line)} />}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+          </Fragment>
+        </ImageSection>
+      );
+      return (
+        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-flow-alt tpl-glow">
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          <SystemFlow nodes={nodes.map((n) => ({ label: n.label, line: n.line, logo: n.logos?.[0], kain: n.kain ?? /^kain\b/i.test(n.label ?? ''), confirmed: n.confirmed }))} title={c.h2?.text} />
+          {c.note && <Copy text={c.note} as="p" class="t-small" />}
+          <Fragment set:html={aura('isotipo', 'center')} />
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── 06 · Licencias con un partner oficial (credencial + pasos; sin precios publicados) ───────────── */
+    if (b.kind === 'license') {
+      const steps = (c.items ?? []).map((it: any, i: number) => ({ n: it.n ?? String(i + 1).padStart(2, '0'), title: it.title, line: it.line }));
+      return (
+        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="plt-lic tpl-glow">
+          <div class="plt-lic__grid">
+            <div class="plt-lic__main">
+              {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+              <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+              {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+            </div>
+            <div class="plt-lic__cred" data-reveal>
+              <Fragment set:html={aura('isotipo', '', 'plt-lic__aura')} />
+              <div class="plt-cred">
+                <span class="plt-cred__mk plt-cred__mk--tl" aria-hidden="true"></span><span class="plt-cred__mk plt-cred__mk--tr" aria-hidden="true"></span>
+                <span class="plt-cred__mk plt-cred__mk--bl" aria-hidden="true"></span><span class="plt-cred__mk plt-cred__mk--br" aria-hidden="true"></span>
+                <p class="t-label plt-cred__label">Credencial</p>
+                <KommoBadge text class="plt-cred__badge" />
+                {c.credential?.length > 0 && (
+                  <dl class="plt-cred__dl">
+                    {(c.credential as any[]).map((r) => (
+                      <div class="plt-cred__row"><dt class="t-label">{r.term}</dt><dd set:html={annotateFigures(r.value)} /></div>
+                    ))}
+                  </dl>
+                )}
+                <p class="t-micro plt-cred__foot">El sello enlaza a kommo.com, como pide el programa de partners de Kommo.</p>
+              </div>
+            </div>
+            {steps.length > 0 && <ScriptList variant="steps" rows={steps} label={c.eyebrow} class="plt-lic__steps" />}
+            <div class="plt-lic__foot">
+              {c.note && <Copy text={c.note} as="p" class="t-small plt-lic__note" data-reveal />}
+              {built(c.links).length > 0 && (
+                <p class="svc-links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name="arrow" size={16} /></a>)}</p>
+              )}
+            </div>
+          </div>
+          <Aura kind="ondas" x="70%" y="96%" o={1} only="d" />
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── 07 · Escena con UI registrada (Kommo: agente dentro del chat · GHL: agenda del día) ───────────── */
+    if (b.kind === 'scene') {
+      const { p: sp, r } = sceneOf[s.id];
+      const lines = c.chat?.lines?.length ? chatLines(c.chat.lines) : null;
+      const agenda = c.ui?.slots?.length ? c.ui : null;
+      const pan = lines ? panel(r) : null;
+      const agBox = agenda ? freeBox(r, ['calendario', 'superficie', 'pantalla', 'tableta'], 0.05) : null;
+      const steps = (c.steps ?? []).map((it: any, i: number) => ({ n: it.n ?? String(i + 1).padStart(2, '0'), title: it.title, line: it.line }));
+      const agAria = agenda ? `Simulación: ${agenda.title}. ` + (agenda.slots as any[]).map((x) => `${x.time}, ${x.label}`).join('; ') + `. ${agenda.status ?? ''}` : '';
+      const agendaCard = () => (
+        <div class="plt-ag__card" aria-hidden="true">
+          <p class="plt-ag__top"><span class="chip-sim">SIMULACIÓN</span><span class="plt-ag__time">Horas ilustrativas</span></p>
+          <p class="plt-ag__k"><span class="node"></span>{agenda.title}</p>
+          <ol class="plt-ag__slots">
+            {(agenda.slots as any[]).map((x, i) => (
+              <li class:list={['plt-ag__slot', x.on && 'is-on']} style={`--i:${i}`}><span class="plt-ag__h">{x.time}</span><span class="plt-ag__l">{x.label}</span></li>
+            ))}
+          </ol>
+          {agenda.status && <p class="plt-ag__st"><span class="plt-pop__ok"></span>{agenda.status}</p>}
+        </div>
+      );
+      const pushOk = sp.push && r.id === resolvePlate(sp.id, { fallbackPlate: sp.launchFallback, mirror: sp.mirror }).id && !r.usedFallback;
+      return (
+        <ImageSection
+          id={s.id} plate={sp.id} fallbackPlate={sp.launchFallback} layout={lay(sp)} mirror={sp.mirror} height={sp.height ?? 'mid'}
+          tone="sol" mobile="split" srcsetMax={sp.srcsetMax ?? 1920}
+          push={pushOk ? { anchor: sp.push.anchor ?? pan?.name ?? 'superficie', camFrom: sp.push.camFrom ?? 1.35, camTo: sp.push.camTo ?? 1.6 } : undefined}
+          alt="" class:list={['plt-scene', lines && 'plt-scene--chat', agenda && 'plt-scene--agenda', 'tpl-glow-m'].filter(Boolean).join(' ')}
+        >
+          <span class="tpl-introglow" aria-hidden="true"></span>
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+          {pan && lines && (
+            <div slot="anchors" class="anchor anchor--panel svc-panel svc-ui plt-scene__ui" data-anchor={pan.name} data-lock data-m="none" style={pan.style}>
+              <ChatSim mode="registered" scripts={{ plt: lines }} tabs={[{ id: 'plt', label: c.chat.tab ?? 'WhatsApp' }]} note={false} title={c.chat.title} />
+            </div>
+          )}
+          {agBox && (
+            <div slot="anchors" class="anchor anchor--panel plt-ag plt-scene__ui" data-anchor={agBox.name} data-lock data-m="none" data-nosnippet style={agBox.style} role="img" aria-label={agAria}>{agendaCard()}</div>
+          )}
+          <Fragment slot="more">
+            {c.items?.length > 0 && (
+              <ul class="svc-bullets plt-bullets">{c.items.map((t: any) => <li><span class="node" aria-hidden="true"></span><span set:html={annotateFigures(typeof t === 'string' ? t : t.title ?? '')} /></li>)}</ul>
+            )}
+            {steps.length > 0 && (
+              <ol class="plt-vsteps" aria-label={c.h2?.text ?? 'Pasos'}>
+                {steps.map((st: any, i: number) => (
+                  <li class="plt-vsteps__it" style={`--i:${i}`}>
+                    <span class="plt-vsteps__n" aria-hidden="true">{st.n}</span>
+                    <span class="plt-vsteps__t">{st.title}</span>
+                    {st.line && <span class="plt-vsteps__l" set:html={annotateFigures(st.line)} />}
+                  </li>
+                ))}
+              </ol>
+            )}
+            {c.proof && <Copy text={c.proof} as="p" class="plt-proof" />}
+            {built(c.links).length > 0 && <p class="svc-links plt-scene__links">{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
+            {lines && (
+              <div class="plt-scene__chat tpl-dhide">
+                <Fragment set:html={aura('isotipo', 'phone')} />
+                <ChatSim mode="inline" scripts={{ plt: lines }} tabs={[{ id: 'plt', label: c.chat.tab ?? 'WhatsApp' }]} title={c.chat.title ?? 'Agente de IA'} />
+              </div>
+            )}
+            {agenda && <div class="plt-ag plt-ag--inline tpl-dhide" role="img" aria-label={agAria} data-nosnippet>{agendaCard()}</div>}
+          </Fragment>
+        </ImageSection>
+      );
+    }
+
+    /* ───────────── 08 · Casos (Montage de 1–2 filas + registro filtrado) ───────────── */
+    if (b.kind === 'cases') {
+      const { rowIds, ledgerIds, stillMap } = casesData(c);
+      return (
+        <Montage id={s.id} ids={rowIds} stillFor={stillMap} anonNote={c.note ?? 'Nombres de clientes anonimizados.'} class={['svc-mt', 'tpl-glow', ledgerIds.length > 0 && 'svc-mt--ledger'].filter(Boolean).join(' ')}>
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+          <Fragment slot="foot">
+            {ledgerIds.length > 0 && (
+              <div class="svc-ledger" role="group" aria-labelledby={`${s.id}-registro-h`}>
+                <Fragment set:html={aura('ondas', 'ledger')} />
+                <h3 id={`${s.id}-registro-h`} class="t-label t-label--cyan eyebrow svc-ledger__h"><span class="node" aria-hidden="true"></span>{c.ledger?.caption ?? 'Registro de resultados'}</h3>
+                <ResultsLedger ids={ledgerIds} caption={c.ledger?.caption} id={`${s.id}-registro`} />
+              </div>
+            )}
+            {[{ href: '/casos/', label: 'Ver todos los casos' }, { href: '/casos/#registro', label: 'Registro de resultados completo' }].filter((l) => isBuilt(l.href)).map((l) => (
+              <a class="lnk" href={l.href}>{l.label} <Icon name="arrow" size={16} /></a>
+            ))}
+          </Fragment>
+        </Montage>
+      );
+    }
+
+    /* ───────────── 09 · ¿Es para ti? (FitCheck: el "no" en ámbar) · Lo que sí / lo que no ───────────── */
+    if (b.kind === 'two') {
+      const variant = s.id === 'antes-despues' ? 'before-after' : s.id === 'si-no' ? 'dodont' : 'fit';
+      const side = (x: any, d: 'cyan' | 'amber') => ({ title: x?.title ?? '', items: x?.items ?? [], tone: x?.tone ? toneOf(x.tone) : d });
+      return (
+        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-two plt-two tpl-glow">
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <TwoColumnScript variant={variant} left={side(c.left, 'cyan')} right={side(c.right, 'amber')} slogan={c.slogan} class="svc-two__cols" />
+          {built(c.links).length > 0 && (
+            <p class="svc-links plt-two__links" data-reveal>{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>
+          )}
+          <Fragment set:html={aura('ondas', 'two')} />
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── 10 · VKTOR™ aplicado a la plataforma ───────────── */
+    if (b.kind === 'vktor') {
+      const link = c.links?.[0];
+      const rail = (
+        <VktorRail variant="phases" lines={(c.phases ?? []).map((f: any) => f.line)} href={hrefOr(link?.href ?? '/metodologia/') ?? false} linkLabel={link?.label ?? 'Conoce el protocolo completo'} class="svc-vk__rail" />
+      );
+      if (vkPlate) {
+        const vr = resolvePlate(vkPlate.id, { fallbackPlate: vkPlate.launchFallback, mirror: vkPlate.mirror });
+        const steps = slabSteps(vr);
+        return (
+          <ImageSection
+            id={s.id} plate={vkPlate.id} fallbackPlate={vkPlate.launchFallback} layout={lay(vkPlate)} mirror={vkPlate.mirror} height="mid" align="start"
+            mobile="split" srcsetMax={vkPlate.srcsetMax ?? 1920} alt="" class="svc-vks tpl-glow-m"
+          >
+            <span class="tpl-introglow" aria-hidden="true"></span>
+            {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+            <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+            {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+            {steps.length === 5 && (
+              <Fragment slot="anchors">
+                {steps.map((f) => (
+                  <span class="anchor svc-slab" data-anchor={f.a} style={f.style} aria-hidden="true">
+                    <b class="svc-slab__l">{f.l}</b><span class="svc-slab__n">{f.name}</span>
+                  </span>
+                ))}
+              </Fragment>
+            )}
+            <Fragment slot="more">{rail}</Fragment>
+          </ImageSection>
+        );
+      }
+      return (
+        <section id={s.id} class="svc-sec svc-vk tpl-glow" aria-labelledby={`${s.id}-t`}>
+          <div class="frame">
+            <div class="svc-sec__head">
+              {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+              <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+            </div>
+            {rail}
+          </div>
+          <Fragment set:html={aura('ondas', 'vk')} />
+        </section>
+      );
+    }
+
+    /* ───────────── 11 · Inversión (una línea + 3 factores, sin tabla) ───────────── */
+    if (b.kind === 'price') return (
+      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-price tpl-glow">
+        <div class="svc-price__grid">
+          <div class="svc-price__head">
+            <Fragment set:html={aura('isotipo', 'price')} />
+            {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+            <h2 id={`${s.id}-t`} class="t-display-2 svc-price__h" data-split set:html={head(c.h2)} />
+          </div>
+          <div class="svc-price__body">
+            <Aura kind="ondas" x="50%" y="110%" o={1} only="d" />
+            {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+            {c.items?.length > 0 && (
+              <ol class="svc-factors" data-ui-stagger>
+                {c.items.map((it: any, i: number) => (
+                  <li class="svc-factor" style={`--i:${i}`}>
+                    <span class="svc-factor__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                    <span class="svc-factor__t" set:html={annotateFigures(it.title)} />
+                    {it.line && <span class="svc-factor__l" set:html={annotateFigures(it.line)} />}
+                  </li>
+                ))}
+              </ol>
+            )}
+            {c.remate && <Copy text={c.remate} as="p" class="t-deck svc-price__remate" data-reveal />}
+          </div>
+        </div>
+      </Intertitle>
+    );
+
+    /* ───────────── 12 · Preguntas frecuentes ───────────── */
+    if (b.kind === 'faq') return (
+      <Intertitle id={s.id} aura="none" layout="split" labelledby={`${s.id}-t`} class="svc-faq tpl-glow">
+        <Fragment slot="head">
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.footer && (
+            <p class="svc-faq__foot t-small" data-reveal set:html={annotateFigures(c.footer).replace(SITE.email, `<a href="mailto:${SITE.email}">${SITE.email}</a>`)} />
+          )}
+          <div class="svc-faq__cta" data-reveal><Btn variant="ghost" href={wa(C.hero)} label={C.hero?.ctaSecondary?.label ?? 'Escríbele a Kain'} /></div>
+        </Fragment>
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        <FAQAccordion ids={c.faqIds ?? []} glass id={`${s.id}-list`} label={c.h2 ? tokensToText(`${c.h2.text ?? ''} ${c.h2.soft ?? ''}`.trim()) : 'Preguntas frecuentes'} />
+        <Fragment set:html={aura('ondas', 'faq')} />
+      </Intertitle>
+    );
+
+    /* ───────────── 13 · Sigue explorando (Still ×3, texto dentro de la penumbra) ───────────── */
+    if (b.kind === 'related' && !relItems.length) return null;
+    if (b.kind === 'related') return (
+      <section id={s.id} class="svc-sec svc-rel tpl-glow" aria-labelledby={`${s.id}-t`}>
+        <div class="frame">
+          <div class="svc-sec__head">
+            {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+            <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          </div>
+          <ul class="svc-rel__grid" role="list" data-ui-stagger>
+            {relItems.map((it: any, i: number) => (
+              <li style={`--i:${i}`}><Still href={it.href} plate={stillFor(it.href)} label={it.label} title={it.title} line={it.line} /></li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+
+    /* ───────────── 14 · Cierre (Dawn) ───────────── */
+    if (b.kind === 'dawn') return (
+      <Dawn id={s.id} plate={p?.id ?? 'cta-amanecer'} mirror={p?.mirror} fallbackPlate={p?.launchFallback} layout={lay(p)} class="tpl-glow-m">
+        {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+        <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+        {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+        <div class="ctas">
+          <Btn variant="primary" href={c.ctaPrimary?.href ?? SITE.discovery} label={c.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+          <Btn variant="ghost" href={wa(c.ctaSecondary ? c : C.hero)} label={c.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+        </div>
+        {c.micro && !/sin compromiso/i.test(c.lede ?? '') && <p class="t-micro dawn__note" data-allow-number>{c.micro}</p>}
+      </Dawn>
+    );
+
+    /* ───────────── Sección sin componente propio (texto sobre aura) ───────────── */
+    return (
+      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="svc-gen tpl-glow">
+        {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+        {c.h2 && <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />}
+        {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+        {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="svc-body" data-reveal />)}
+        {c.items?.length > 0 && (
+          <ScriptList rows={c.items.map((it: any, i: number) => (typeof it === 'string' ? { n: String(i + 1).padStart(2, '0'), title: it } : { n: it.n, title: it.title, line: it.line, href: hrefOr(it.href) }))} />
+        )}
+        {built(c.links).length > 0 && <p class="svc-links">{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label}<Icon name={ext(l.href) ? 'external' : 'arrow'} size={16} /></a>)}</p>}
+      </Intertitle>
+    );
+  })}
+</BaseLayout>

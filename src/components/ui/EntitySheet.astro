@@ -9,6 +9,9 @@
 // rows (cualquier variante): el copy es la ÚNICA fuente (p. ej. home.sections.faq.entity). Los tokens ({{metric:…}},
 //   {{Price}}…) se resuelven con data-metric / data-allow-number; "Alianza" suma el sello de Kommo; "Contacto" enlaza el
 //   correo (mailto) y el WhatsApp; "Primer paso" enlaza la Discovery Session. Sin rows, la ficha sale de SITE + METRICS.
+// waHref: el enlace de WhatsApp de la página (mensaje único por página, R10/check-seo) para las filas de contacto, teléfono y
+//   WhatsApp; sin él, un mensaje genérico. Filas con href: WhatsApp lleva data-wa (medición); un sitio externo abre en otra
+//   pestaña (target _blank, rel noopener) con la marca visual ↗ fuera del texto accesible.
 import Metric from './Metric.astro';
 import KommoBadge from './KommoBadge.astro';
 import { SITE, waHref, linkTarget } from '../../lib/site';
@@ -18,13 +21,13 @@ import { COUNTRIES, VKTOR, DISCOVERY_MICRO, annotateFigures, esc } from './ui-da
 interface Props {
   variant?: 'home' | 'footer' | 'case' | 'about' | 'local';
   rows?: { term: string; value: string; href?: string }[]; metricIds?: MetricId[];
-  title?: string | false; class?: string; id?: string;
+  title?: string | false; class?: string; id?: string; waHref?: string;
 }
-const { variant = 'home', rows = [], metricIds = [], title, class: cls, id } = Astro.props;
+const { variant = 'home', rows = [], metricIds = [], title, class: cls, id, waHref: waPage } = Astro.props;
 const A = SITE.address;
 const addr = `${A.street}, ${A.locality}, ${A.region} ${A.postal}`;
 const tel = `tel:${SITE.phoneE164}`;
-const wa = waHref('Hola Kain, quiero información sobre Ingeniak.');
+const wa = waPage || waHref('Hola Kain, quiero información sobre Ingeniak.');
 const heading = title === false ? null : title ?? ({ home: 'Ficha técnica · Ingeniak en datos', footer: 'Ficha de la entidad', case: 'Ficha del caso', about: 'Ficha · Ingeniak', local: 'Ingeniak en Guadalajara' } as const)[variant];
 const vktor = VKTOR.map((v) => v.name).join(' · ');
 const countries = COUNTRIES.map((c) => (c.sede ? `${c.name} (sede)` : c.name)).join(', ');
@@ -33,7 +36,13 @@ const EMAIL = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
 function rowHtml(term: string, value: string, href?: string) {
   let h = annotateFigures(value);
   const t = term.toLowerCase();
-  if (href) return linkTarget(href) ? `<a href="${esc(href)}">${h}</a>` : h;
+  if (href) {
+    const to = linkTarget(href);
+    if (!to) return h;
+    if (/^https?:\/\/(wa\.me|api\.whatsapp\.com)\//i.test(to)) return `<a href="${esc(to)}" data-wa>${h}</a>`;
+    if (/^https?:\/\//i.test(to) && !/^https?:\/\/(www\.)?ingeniak\.mx(\/|$)/i.test(to)) return `<a href="${esc(to)}" target="_blank" rel="noopener">${h}<span aria-hidden="true"> ↗</span></a>`;
+    return `<a href="${esc(to)}">${h}</a>`;
+  }
   if (/contacto|correo|whatsapp|tel[eé]fono/.test(t) || EMAIL.test(value)) {
     EMAIL.lastIndex = 0;
     h = h.replace(EMAIL, (m) => `<a href="mailto:${m}">${m}</a>`);

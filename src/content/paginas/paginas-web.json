@@ -1,0 +1,200 @@
+{
+  "pageId": "paginas-web",
+  "url": "/servicios/paginas-web/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "FAQ DISTINTA DE D · N09: agrega 'Así sabes qué página, qué anuncio y qué formulario te traen clientes, y no solo visitas.' Sigue en validar: true en faq.json, así que no sale en el acordeón ni en el FAQPage hasta que se apruebe.",
+    "FAQ DISTINTA DE D · G14: agrega 'medido hasta la venta' y la cifra como token (horeca-roas, 'sostenido').",
+    "FAQ DISTINTA DE D · G08: ya no promete '60 a 90 días'; dice el rango confirmado de implementación (7 a 30 días, según el alcance) y deja los resultados a la propuesta.",
+    "FAQ DISTINTA DE D · G07: agrega por qué no hay paquetes cerrados.",
+    "PREGUNTA AL CLIENTE · tecnología de los sitios de clientes: el texto dice 'HTML estático' y pone este sitio (Astro) como ejemplo, pero no promete Astro para todo proyecto. ¿Los sitios de clientes siempre se construyen así, o también en WordPress, Shopify u otra plataforma?",
+    "PREGUNTA AL CLIENTE · ¿el servicio incluye dominio, hosting y mantenimiento mensual? Hoy la página no lo dice.",
+    "PREGUNTA AL CLIENTE · rendimiento de ingeniak.mx: la sección 'Este sitio es el ejemplo' no publica ninguna cifra (Lighthouse, Core Web Vitals). Cuando se midan en producción, ¿las publicamos con su fecha y su fuente?",
+    "PREGUNTA AL CLIENTE · inversion.remate usa el rango general confirmado (de 7 a 30 días, según el alcance). ¿Aplica también a un sitio web completo con textos nuevos, o el plazo de un sitio se dice distinto?",
+    "CAMBIO DE TEXTO · cta-final sin 'micro' ('Sin costo · Sin compromiso · 30 minutos por Google Meet' del brief): repetiría la microcopia que ya trae el botón primario (igual que en /servicios/agentes-ia-whatsapp/).",
+    "CAMBIO DE TEXTO · hero.ui (wireframe que se arma, ESPEC §5.2.1) y este-sitio.ui (capas de este sitio): son los textos de la UI registrada sobre la superficie de cristal de la placa, con VISTA DEMO. La plantilla de servicio todavía no los pinta; no cuentan para las palabras mínimas.",
+    "DATO PENDIENTE · senales usa la placa de respaldo dolor-operacion mientras no exista dolor-anuncios; el pie de foto ('Anoche entraron a tu web. Nadie escribió.') funciona con las dos."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (paginas-web-hero: Kain coloca el último bloque de una ventana de navegador de cristal) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Servicio · Atraer",
+      "h1": { "text": "Páginas web de alta conversión,", "soft": "conectadas a tu CRM y WhatsApp", "lit": "conversión" },
+      "lede": "Sitios rápidos y claros, conectados a tu CRM y a WhatsApp desde el primer día. Cada botón termina en una conversación o en un lead que puedes medir.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de páginas web y quiero una web que convierta visitas en clientes."
+      },
+      "ui": {
+        "_nota": "Wireframe que se arma sobre la ventana de cristal de la placa (anclas 'ventana' y 'bloque'): cada bloque entra en orden y el último se enciende cuando Kain lo coloca. Lleva VISTA DEMO y data-nosnippet. Solo etiquetas, sin cifras.",
+        "label": "VISTA DEMO",
+        "blocks": ["Titular claro", "Prueba", "Botón de WhatsApp", "Formulario → CRM"],
+        "status": "Lead registrado en tu CRM"
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio, citable; N09 sigue en validar)",
+      "rail": "Qué es",
+      "eyebrow": "Una web que convierte",
+      "definition": {
+        "heading": "¿Qué es una página web de alta conversión?",
+        "text": "Una página web de alta conversión es un sitio diseñado para que cada visita termine en una acción medible: escribir por WhatsApp, dejar sus datos o agendar una cita. Se distingue por tres cosas: se entiende en segundos, carga rápido en el celular y cada botón está conectado a tu CRM.",
+        "_nota": "Texto propio de la página (40–60 palabras). No sale de N09, que responde otra pregunta y sigue en validar: true."
+      },
+      "body": [
+        "Claridad en cinco segundos. Quien llega entiende qué haces, para quién lo haces y cuál es el siguiente paso, sin tener que bajar ni adivinar.",
+        "Velocidad en el celular. La página carga rápido aun con datos móviles, porque cada segundo de espera es alguien que se regresa al anuncio de tu competencia.",
+        "Cada botón conectado. WhatsApp, formulario o agenda: todo entra a tu CRM con su origen, para saber qué página y qué campaña te trajo a cada cliente."
+      ]
+    },
+    "senales": {
+      "_componente": "ImageSection mid (persona en luz ámbar, tone=dolor, móvil split; placa dolor-anuncios con respaldo dolor-operacion) + lista de señales (dolor ámbar → salida cian)",
+      "rail": "Señales",
+      "eyebrow": "Señales de que la necesitas",
+      "h2": { "text": "Tu web recibe visitas,", "soft": "pero no conversaciones." },
+      "lede": "Si te suenan dos o más, tu sitio funciona como folleto y no como vendedor.",
+      "fig": { "label": "Anoche entraron a tu web. Nadie escribió." },
+      "items": [
+        {
+          "pain": "Tu web no genera conversaciones.",
+          "painLine": "La gente entra, mira tus servicios y se va sin escribirte.",
+          "fix": "Cada página pide una sola acción, clara y medible."
+        },
+        {
+          "pain": "Los formularios llegan a un correo que nadie revisa.",
+          "painLine": "Y el prospecto se enfría mientras espera respuesta.",
+          "fix": "Cada contacto entra a tu CRM y a WhatsApp en cuanto lo envía."
+        },
+        {
+          "pain": "En el celular tarda en cargar.",
+          "painLine": "Justo donde llega quien da clic en tu anuncio.",
+          "fix": "Hecha para cargar rápido en móvil, con imágenes ligeras."
+        },
+        {
+          "pain": "No sabes qué página vende.",
+          "painLine": "Pagas anuncios y no sabes cuál termina en una venta.",
+          "fix": "Medición desde el primer día, del clic a la venta."
+        }
+      ]
+    },
+    "incluye": {
+      "_componente": "ScriptList (6 filas) sobre aura del isotipo",
+      "rail": "Qué incluye",
+      "eyebrow": "Qué incluye",
+      "h2": { "text": "Seis piezas", "soft": "para que tu sitio trabaje." },
+      "lede": "No entregamos un diseño bonito para que alguien más lo conecte después: el sitio sale listo para recibir, registrar y medir a cada cliente.",
+      "items": [
+        { "n": "01", "title": "Estrategia de conversión", "line": "Definimos a quién le habla cada página, qué duda le resuelve y qué acción le pide. Una página, un objetivo." },
+        { "n": "02", "title": "Textos que venden", "line": "Escribimos con las palabras de tus clientes: qué haces, para quién y por qué tú, con datos en lugar de adjetivos." },
+        { "n": "03", "title": "Diseño con tu identidad", "line": "Tu marca aplicada con intención: jerarquía clara, imágenes propias y un botón principal que no compite con nada.", "href": "/servicios/branding/" },
+        { "n": "04", "title": "Desarrollo estático y rápido", "line": "HTML estático, imágenes en formatos modernos y nada que estorbe la carga. El texto vive en el código, listo para Google y para los asistentes de IA." },
+        { "n": "05", "title": "Conexión con tu CRM y WhatsApp", "line": "Formularios, botones de WhatsApp y agenda conectados a Kommo o GoHighLevel, con el origen de cada lead.", "href": "/servicios/crm-con-ia/" },
+        { "n": "06", "title": "Analítica y SEO técnico base", "line": "Eventos de conversión, títulos, datos estructurados y mapa del sitio desde el lanzamiento.", "href": "/servicios/seo/" }
+      ],
+      "body": [
+        "¿Quieres que también te contesten de noche? Kain puede atender el chat de tu web con la misma información que usa tu equipo, y dejar cada conversación en tu CRM."
+      ],
+      "links": [{ "label": "Agentes de IA para WhatsApp y tu web", "href": "/servicios/agentes-ia-whatsapp/" }]
+    },
+    "como-funciona": {
+      "_componente": "riel-servicios a sangre con 5 nodos registrados sobre los nodos de la placa (respaldo: SystemFlow sobre aura)",
+      "rail": "Cómo funciona",
+      "eyebrow": "Cómo funciona",
+      "h2": { "text": "Del clic a la venta,", "soft": "sin que nadie copie datos." },
+      "lede": "Así viaja un cliente desde que te encuentra hasta que tu equipo le da seguimiento.",
+      "nodes": [
+        { "label": "El anuncio o la búsqueda", "line": "Alguien da clic en tu anuncio o te encuentra en Google.", "confirmed": true },
+        { "label": "Tu página", "line": "Entiende en segundos qué haces y ve un solo siguiente paso.", "confirmed": true },
+        { "label": "WhatsApp o formulario", "line": "Te escribe o deja sus datos; Kain puede contestarle a cualquier hora.", "logos": ["whatsapp"], "confirmed": true },
+        { "label": "Tu CRM: Kommo o GoHighLevel", "line": "El lead entra con su origen: qué página y qué campaña lo trajo.", "logos": ["kommo", "gohighlevel"], "confirmed": true },
+        { "label": "El seguimiento", "line": "Tu equipo retoma con la conversación completa y la venta queda medida.", "confirmed": true }
+      ],
+      "note": "Si ya usas Kommo o GoHighLevel, la web se conecta a tu cuenta; si todavía no tienes CRM, te ayudamos a elegirlo en la fase Koncept de VKTOR™."
+    },
+    "este-sitio": {
+      "_componente": "ImageSection mid (regreso al set: paginas-web-hero con push hacia la superficie, 1.35 → 1.6) + UI registrada: capas de este sitio",
+      "rail": "Este sitio",
+      "eyebrow": "Este sitio es el ejemplo",
+      "h2": { "text": "Lo que estás viendo", "soft": "es nuestra forma de trabajar." },
+      "lede": "ingeniak.mx está hecho con lo mismo que te proponemos: HTML estático, imágenes producidas para cada sección y movimiento que no estorba la lectura.",
+      "items": [
+        "Astro genera cada página como HTML: el texto ya está ahí cuando llega Google o un asistente de IA.",
+        "Imágenes en AVIF y WebP, con una composición vertical propia para el celular, no un recorte.",
+        "Movimiento con GSAP que se detiene si tu dispositivo pide menos animación.",
+        "Datos estructurados y un archivo llms.txt para que buscadores y asistentes entiendan quiénes somos.",
+        "Un solo botón principal por pantalla, para que nadie dude cuál es el siguiente paso."
+      ],
+      "slogan": "Si te gusta cómo se navega, así puede sentirse el tuyo.",
+      "links": [{ "label": "Cómo hacemos que te encuentren Google y ChatGPT", "href": "/servicios/seo/" }],
+      "ui": {
+        "_nota": "Capas de este sitio registradas sobre la superficie de cristal al acercarse la cámara (distinta UI que la portada, R5). VISTA DEMO, data-nosnippet, sin cifras.",
+        "label": "VISTA DEMO",
+        "layers": ["HTML estático", "Imágenes AVIF · WebP", "Movimiento GSAP", "JSON-LD", "llms.txt"]
+      }
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sobre metodologia-hero a sangre si la placa está lista)",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": { "text": "Así construimos tu sitio,", "soft": "de la revisión al ajuste mensual." },
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Revisamos tu sitio actual, tus anuncios y tus conversaciones: por dónde entra la gente, dónde se va y qué pregunta antes de comprar." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Definimos el mapa del sitio, el mensaje de cada página, la acción que pide y cómo llega cada contacto a tu CRM." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Escribimos, diseñamos y construimos; conectamos formularios, WhatsApp y analítica, y probamos en celular antes de publicar." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Publicamos, revisamos contigo los leads que llegan y corregimos lo que frena el contacto." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Cada mes vemos qué páginas traen conversaciones y ventas, y mejoramos las que no." }
+      ],
+      "links": [{ "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }]
+    },
+    "inversion": {
+      "_componente": "Intertitle (una línea + 3 factores, sin tabla)",
+      "rail": "Inversión",
+      "eyebrow": "Inversión",
+      "h2": { "text": "{{Price}}." },
+      "lede": "No vendemos plantillas por número de páginas. El precio de tu sitio depende de esto:",
+      "items": [
+        { "title": "Canales", "line": "Por dónde llegan tus visitas y a dónde las mandas: WhatsApp, formulario, agenda o el chat con Kain." },
+        { "title": "Integraciones", "line": "Tu CRM, tu calendario, tu analítica y cualquier sistema que deba recibir cada contacto." },
+        { "title": "Volumen", "line": "Cuántas páginas, servicios o sucursales necesita tu sitio y cuánto texto hay que escribir desde cero." }
+      ],
+      "remate": "El alcance exacto lo dejamos por escrito después de tu Discovery Session. Según lo que incluya, la implementación toma de 7 a 30 días."
+    },
+    "faq": {
+      "_componente": "FAQAccordion (N09 sale cuando se apruebe)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas sobre", "soft": "páginas web." },
+      "faqIds": ["N09", "G14", "G08", "G07"],
+      "footer": "¿Quieres que revisemos tu sitio actual? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "relacionados": {
+      "_componente": "Still ×3 (texto dentro de la penumbra del still, R7)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "h2": { "text": "Lo que hace", "soft": "que tu web se llene." },
+      "items": [
+        { "href": "/servicios/seo/", "label": "Servicio", "title": "SEO y visibilidad en IA", "line": "Que te encuentre Google y te citen ChatGPT, Gemini, Perplexity y Claude." },
+        { "href": "/servicios/paid-media/", "label": "Servicio", "title": "Paid media", "line": "Campañas en Meta, Google y TikTok que mandan tráfico a una página que sí convierte." },
+        { "href": "/servicios/branding/", "label": "Servicio", "title": "Branding y contenido", "line": "La identidad y los textos que tu sitio necesita para verse como la opción premium." }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Antes de rediseñar",
+      "h2": { "text": "¿Tu web trae citas", "soft": "o solo visitas?" },
+      "lede": "Lo vemos en 30 minutos: revisamos tu sitio, de dónde llegan tus visitas y dónde se pierden, y te decimos qué conviene cambiar primero.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de páginas web y quiero una web que convierta visitas en clientes."
+      }
+    }
+  }
+}

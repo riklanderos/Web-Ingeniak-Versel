@@ -1,10 +1,11 @@
 // src/scripts/nav/mega.ts — mega menú "Sala de proyección" (ESPEC §4.2).
 // Hover con intención (100 ms abre, 200 ms de gracia), clic, Enter/Espacio, ↓ abre y enfoca, flechas dentro del panel,
 // Esc cierra y devuelve el foco. Fondo de cristal único que cambia de alto entre paneles; pill que se desliza entre entradas.
-// La pantalla de previsualización carga sus stills (640 px AVIF → WebP → respaldo) la primera vez que se abre cada panel.
+// La pantalla de previsualización carga la placa de 1280 px de la portada destino (AVIF → WebP → respaldo) la primera vez que
+// se abre cada panel y la encuadra con las variables de data-frame (caja del sujeto: Kain siempre de cuerpo completo).
 import { lock, unlock, track } from './overlay';
 
-const FALLBACK = '/img/cine/home-hero-still-640';
+const FALLBACK = '/img/cine/home-sistema-2-atender-1280';
 const DESK = '(min-width: 1180px)';
 
 export type MegaApi = { open: (key: string, focusFirst?: boolean) => void; close: (returnFocus?: boolean) => void; current: () => string | null };
@@ -50,15 +51,28 @@ export function initMega(): MegaApi | undefined {
   };
   const restPill = () => movePill(openKey ? triggerOf(openKey) : null);
 
-  // ---------- stills ----------
-  const setImg = (img: HTMLImageElement, base: string, done?: () => void) => {
-    const tries = [`${base}.avif`, `${base}.webp`, `${FALLBACK}.avif`, `${FALLBACK}.webp`];
+  // ---------- placas encuadradas ----------
+  // data-frame = "--ar:…;--sx:…;--sy:…;--sw:…;--sh:…;--sd:±1" (navData → screenFrame). Se aplican una a una con setProperty
+  // para no pisar otros estilos en línea (vt.ts presta view-transition-name a la imagen visible).
+  const FRAME_KEYS = ['--ar', '--sx', '--sy', '--sw', '--sh', '--sd'];
+  const applyFrame = (img: HTMLImageElement, frame?: string) => {
+    const vals = new Map((frame ?? '').split(';').map((kv) => kv.split(':').map((x) => x.trim()) as [string, string]));
+    for (const k of FRAME_KEYS) { const v = vals.get(k); if (v) img.style.setProperty(k, v); else img.style.removeProperty(k); }
+  };
+  const fbOf = (img: HTMLImageElement) => {
+    const scr = img.closest<HTMLElement>('[data-mm-screen]');
+    return { src: scr?.dataset.fbSrc ?? FALLBACK, frame: scr?.dataset.fbFrame ?? '' };
+  };
+  const setImg = (img: HTMLImageElement, base: string, frame: string | undefined, done?: () => void) => {
+    const fb = fbOf(img);
+    const tries: [string, string | undefined][] = [[`${base}.avif`, frame], [`${base}.webp`, frame], [`${fb.src}.avif`, fb.frame], [`${fb.src}.webp`, fb.frame]];
     let n = 0;
     const next = () => {
       if (n >= tries.length) return;
       img.onerror = () => { n++; next(); };
       img.onload = () => { img.onload = img.onerror = null; done?.(); };
-      img.src = tries[n];
+      applyFrame(img, tries[n][1]);
+      img.src = tries[n][0];
     };
     next();
   };
@@ -67,7 +81,8 @@ export function initMega(): MegaApi | undefined {
     if (loaded.has(k)) return;
     loaded.add(k);
     const first = panel.querySelector<HTMLImageElement>('.mm-screen__img[data-src]');
-    if (first) setImg(first, first.dataset.src!);
+    const scr0 = panel.querySelector<HTMLElement>('[data-mm-screen]');
+    if (first) setImg(first, first.dataset.src!, scr0?.dataset.defaultFrame);
     // Precarga en segundo plano los stills de los enlaces de este panel (≤ 35 KB c/u).
     const seen = new Set<string>();
     panel.querySelectorAll<HTMLElement>('[data-still-src]').forEach((a) => {
@@ -83,10 +98,12 @@ export function initMega(): MegaApi | undefined {
   };
 
   // ---------- pantalla ----------
-  const setScreen = (panel: HTMLElement, d: { src: string; label: string; title: string; line: string; href: string }) => {
+  type ScreenData = { src: string; frame?: string; copy?: string; label: string; title: string; line: string; href: string; fig?: Element | null };
+  const setScreen = (panel: HTMLElement, d: ScreenData) => {
     const scr = panel.querySelector<HTMLAnchorElement>('[data-mm-screen]');
     if (!scr) return;
     scr.href = d.href;
+    scr.dataset.copy = d.copy === 'r' ? 'r' : 'l';
     if (/^https?:/.test(d.href)) { scr.target = '_blank'; scr.rel = 'noopener'; } else { scr.removeAttribute('target'); scr.removeAttribute('rel'); }
     const hud = panel.querySelector<HTMLElement>('[data-screen="hud"]');
     if (hud) hud.textContent = d.href.replace(/^https?:\/\//, '');
@@ -94,20 +111,32 @@ export function initMega(): MegaApi | undefined {
       const el = scr.querySelector<HTMLElement>(`[data-screen="${f}"]`);
       if (el) el.textContent = d[f];
     }
+    // Cifra del caso delante de su línea: copia del [data-metric] del propio enlace (sale de metrics.ts en el HTML).
+    const lineEl = scr.querySelector<HTMLElement>('[data-screen="line"]');
+    if (lineEl && d.fig) {
+      const b = document.createElement('b');
+      b.className = 'mm-screen__fig';
+      b.dataset.metric = (d.fig as HTMLElement).dataset.metric ?? '';
+      b.textContent = d.fig.textContent;
+      lineEl.prepend(b, ' ');
+    }
     const imgs = [...scr.querySelectorAll<HTMLImageElement>('.mm-screen__img')];
     const on = imgs.find((i) => i.classList.contains('is-on'));
     if (on?.dataset.base === d.src) return;
     const off = imgs.find((i) => i !== on) ?? imgs[0];
     off.dataset.base = d.src;
     const token = (scr.dataset.token = String(Math.random()));
-    setImg(off, d.src, () => {
+    setImg(off, d.src, d.frame, () => {
       if (scr.dataset.token !== token) return;
       on?.classList.remove('is-on');
       off.classList.add('is-on');
     });
   };
-  const fromLink = (a: HTMLElement) => ({
+  const fromLink = (a: HTMLElement): ScreenData => ({
+    fig: a.hasAttribute('data-screen-fig') ? a.querySelector('[data-metric]') : null,
     src: a.dataset.stillSrc ?? FALLBACK,
+    frame: a.dataset.frame,
+    copy: a.dataset.copy,
     label: a.dataset.screenLabel ?? '',
     title: a.dataset.screenTitle ?? a.textContent?.trim() ?? '',
     line: a.dataset.screenLine ?? '',
@@ -119,7 +148,10 @@ export function initMega(): MegaApi | undefined {
     const first = scr.querySelector<HTMLImageElement>('.mm-screen__img');
     if (first && !first.dataset.base) first.dataset.base = scr.dataset.defaultSrc;
     setScreen(panel, {
+      fig: scr.dataset.defaultFig ? panel.querySelector(`.mm-main [data-metric="${scr.dataset.defaultFig}"]`) : null,
       src: scr.dataset.defaultSrc ?? FALLBACK,
+      frame: scr.dataset.defaultFrame,
+      copy: scr.dataset.defaultCopy,
       label: scr.dataset.defaultLabel ?? '',
       title: scr.dataset.defaultTitle ?? '',
       line: scr.dataset.defaultLine ?? '',

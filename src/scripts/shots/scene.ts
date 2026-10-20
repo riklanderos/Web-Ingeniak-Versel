@@ -118,6 +118,14 @@ export default function scene(el: HTMLElement, env: Env) {
       const x0 = parseFloat(cs.getPropertyValue('--sx0')), x1 = parseFloat(cs.getPropertyValue('--sx1'));
       const lr = layer.getBoundingClientRect();
       const lx = lr.left + stage.offsetLeft, sw = stage.offsetWidth;
+      // safeCol: la columna termina (o empieza) en el borde de la zona segura de texto de la placa, medido en el escenario
+      // real (la estimación CSS usa el alto mínimo de la sección).
+      const safe = el.hasAttribute('data-safe-col') ? parseFloat(cs.getPropertyValue('--safe-edge-d')) : NaN;
+      if (!Number.isNaN(safe)) {
+        const t0 = textCol.getBoundingClientRect();
+        if (right) textCol.style.maxWidth = `${Math.max(336, Math.floor(lx + safe * sw - 8 - t0.left))}px`;
+        else textCol.style.paddingLeft = `${Math.max(0, Math.ceil(lx + safe * sw + 16 - t0.left))}px`;
+      }
       const ink = inkBox(textCol);
       if (!ink) return;
       const tr = textCol.getBoundingClientRect();
@@ -130,7 +138,7 @@ export default function scene(el: HTMLElement, env: Env) {
           if (ink.right > edge) textCol.style.maxWidth = `${Math.floor(Math.max(edge, ink.right - 120, tr.left + 280) - tr.left)}px`;
         } else {
           const edge = lx + x1 * sw + 32;
-          if (ink.left < edge) textCol.style.paddingLeft = `${Math.max(0, Math.ceil(Math.min(edge, ink.left + 120, tr.right - 280) - tr.left))}px`;
+          if (ink.left < edge) textCol.style.paddingLeft = `${Math.max(Number.isNaN(safe) ? 0 : parseFloat(textCol.style.paddingLeft) || 0, Math.ceil(Math.min(edge, ink.left + 120, tr.right - 280) - tr.left))}px`;
         }
       }
       if (!caps.length) return;
@@ -207,7 +215,12 @@ export default function scene(el: HTMLElement, env: Env) {
   const headPlayers: Player[] = heads.map((h) => splitLines(h, env, { trigger: false, lazy: true }));
   const camIntro = !push && !isCo && !pinned;
   const NIR = { immediateRender: false };
-  const intro = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' }, onComplete: () => release(el) });
+  // Al terminar la entrada, la regla de un azul vuelve a medir (ui.ts): el primario de la escena (portada, cierre Dawn)
+  // llega a opacidad 1 sin que haya otro evento de scroll.
+  const intro = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' }, onComplete: () => {
+    release(el);
+    document.dispatchEvent(new CustomEvent('cine:primary-change', { detail: { section: el.id, intro: true } }));
+  } });
   if (camIntro) intro.fromTo(el, { '--cam': 1.06 }, { '--cam': 1, duration: 1.6, ...NIR }, 0);
   intro.fromTo(el, { '--leak': 0 }, { '--leak': 0.9, duration: 1.6, ease: 'power2.out', ...NIR }, 0);
   intro.add(() => headPlayers.forEach((p) => p.play()), 0.05);

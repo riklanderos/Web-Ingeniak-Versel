@@ -1,0 +1,366 @@
+---
+// StackTemplate · T-STACK (ESPEC-v2 §5.8, §8.5; §12.2 R3/R4/R5/R11) · /tecnologias/
+// Data-driven: recorre page.sections (src/data/sitemap.json) en su orden; el texto sale de src/content/paginas/<page.id>.json.
+//   hero            SharedTake + ImageSection hero (tecnologias-hero; respaldo de lanzamiento: home-sistema-4-automatizar, Kain
+//                   toca un nodo de la red de luz) + sello oficial de Kommo anclado al piso de la placa (cristal, R4: en móvil
+//                   baja al texto)
+//   criterios       Intertitle sobre la copia desenfocada de la portada (rack) + cuatro criterios en filas numeradas
+//   modelos · crm · automatizacion · canales-ads · datos-software
+//                   UN solo StackHub: isotipo de cristal (fijo en escritorio) con el pilar y las ramas hacia los 5 grupos
+//                   (índice que se enciende con el grupo en pantalla); cada grupo = créditos de logo + nombre + función.
+//                   Logos de public/img/logos (máscara currentColor al 55 %, 100 % en hover); Kommo con su sello oficial
+//                   (único partner); herramienta sin logo publicado → solo su nombre (nunca un cuadro vacío).
+//   aviso-marcas    EditorNote "Aviso de marcas" + sello de Kommo
+//   faq             Intertitle split + FAQAccordion (sin las "validar"; el FAQPage lo emite SEOHead con las mismas ids)
+//   cta-final       Dawn (placa de sitemap.json, en espejo)
+// JSON-LD (§8.5 + sitemap.json): WebPage + BreadcrumbList + FAQPage (SEOHead) + ItemList de las herramientas visibles.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageSection from '../cine/ImageSection.astro';
+import SharedTake from '../cine/SharedTake.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Dawn from '../cine/Dawn.astro';
+import { resolvePlate, anchorStyle } from '../cine/plate';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import EditorNote from '../ui/EditorNote.astro';
+import KommoBadge from '../ui/KommoBadge.astro';
+import { annotateFigures, esc, tokensToText, publicExists, logoUrl, logoWide, TOOLS } from '../ui/ui-data';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
+import { SITE, waHref, linkTarget, type Page } from '../../lib/site';
+import '../../styles/tpl/StackTemplate.css';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C = copy?.sections ?? {};
+const dev = import.meta.env.DEV;
+
+/* ── utilidades ─────────────────────────────────────────────────────────── */
+const sec = (id: string) => (P.sections as any[]).find((s) => s.id === id);
+const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
+/** Titular de dos voces ({text, soft, lit?}) → HTML con tokens resueltos; `lit` envuelve su subcadena en .lit. */
+function headHtml(h: any, lit?: string | null): string {
+  if (!h) return '';
+  let first = annotateFigures(h.text ?? '');
+  const l = lit ?? h.lit;
+  if (l && (h.text ?? '').includes(l)) {
+    const i = (h.text as string).lastIndexOf(l);
+    first = annotateFigures(h.text.slice(0, i)) + `<span class="lit">${esc(l)}</span>` + annotateFigures(h.text.slice(i + l.length));
+  }
+  return h.soft ? `${first} <span class="soft">${annotateFigures(h.soft)}</span>` : first;
+}
+const wa = P.secondaryCta?.href ?? waHref(C.hero?.ctaSecondary?.waMessage ?? 'Hola Kain');
+const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
+const plateOf = (id: string) => sec(id)?.plate ?? null;
+
+/* ── 01 · portada ───────────────────────────────────────────────────────── */
+const hero = cp('hero');
+const heroPlate = plateOf('hero');
+const heroKey: string = heroPlate?.id ?? 'tecnologias-hero';
+// Respaldo de lanzamiento (R5): la portada de Tecnologías se genera en el lote D. Mientras no se exporte, Kain toca un nodo de
+// la red de luz que representa los procesos conectados (misma composición: sujeto a la derecha, penumbra a la izquierda).
+const heroFallback = heroPlate?.launchFallback ?? { plate: 'home-sistema-4-automatizar', note: 'respaldo de tecnologias-hero' };
+const rHero = resolvePlate(heroKey, { mirror: !!heroPlate?.mirror, fallbackPlate: heroFallback, srcsetMax: 2752, mobileMax: 1536, where: '#hero' });
+const lcpPlate = rHero.id ?? undefined;
+const heroEyebrow: string = hero?.eyebrow ?? (P.breadcrumbs as any[])?.at(-1)?.name ?? '';
+const heroEyebrowDup = eyebrowRepeatsCrumbs(heroEyebrow, P.breadcrumbs);
+const heroLede = ledeParts(hero?.lede, 20);
+// F10 · UI registrada sobre cristal en blanco: la portada de Tecnologías trae cinco placas de cristal vacías unidas a Kain por
+// ramas de luz (anclas de caja placa-1…5). Encima va, en HTML, el logo de una herramienta por capa del stack (modelos, CRM,
+// automatización, canales, datos), en blanco al 72 % con brillo cian; en móvil las placas miden < 30 px → solo la placa (R4).
+// Kommo, único partner, con su sello oficial. Decorativo (aria-hidden): la lista completa está en el StackHub.
+const PLAQUE_LOGOS = ['openai', 'kommo', 'n8n', 'whatsapp', 'supabase'];
+const plaqueNames = [1, 2, 3, 4, 5].map((i) => `placa-${i}`);
+const hasPlaques = !rHero.aura && plaqueNames.every((n) => rHero.anchors[n]?.box?.d);
+const plaques = hasPlaques
+  ? plaqueNames.map((n, i) => ({ name: n, slug: PLAQUE_LOGOS[i], url: PLAQUE_LOGOS[i] === 'kommo' ? '/img/logos/kommo-partner-blanco.webp' : logoUrl(PLAQUE_LOGOS[i]) }))
+      .filter((x) => x.url && publicExists(x.url))
+  : [];
+// Placa sin cristales (respaldo de lanzamiento): el sello de Kommo va anclado al piso (zona `fig`) donde cabe junto a los CTA.
+const badgeAt = !plaques.length && rHero.anchors.fig?.d ? 'fig' : null;
+
+/* ── 02 · criterios ─────────────────────────────────────────────────────── */
+const cr = cp('criterios');
+
+/* ── 03–07 · StackHub (las cinco secciones del stack en una sola escena) ── */
+const HUB_IDS = ['modelos', 'crm', 'automatizacion', 'canales-ads', 'datos-software'];
+const order: string[] = (P.sections as any[]).map((s) => s.id);
+type Tool = { slug: string; name: string; role?: string; href?: string; partner?: boolean };
+const groups = HUB_IDS.filter((id) => order.includes(id) && cp(id)).map((id) => {
+  const g = cp(id);
+  const tools: (Tool & { logo: string | null; link: string | null })[] = (g.tools ?? []).map((t: Tool) => {
+    const url = TOOLS[t.slug] ? logoUrl(t.slug) : `/img/logos/${t.slug}.svg`;
+    const logo = url && publicExists(url) ? url : null;
+    if (dev && !logo && !t.partner) console.warn(`[StackTemplate] ${t.slug}: sin logo en public/img/logos → se pinta solo el nombre`);
+    return { ...t, logo, link: t.href ? linkTarget(t.href) : null };
+  });
+  const links = (g.links ?? []).map((l: any) => ({ ...l, href: linkTarget(l.href) })).filter((l: any) => l.href);
+  return { id, ...g, tools, links };
+});
+const hubIntro = groups.find((g) => g.intro)?.intro ?? cp('modelos')?.intro ?? null;
+const firstHub = order.find((id) => HUB_IDS.includes(id));
+
+/* ── aviso · FAQ · cierre ───────────────────────────────────────────────── */
+const av = cp('aviso-marcas');
+const faq = cp('faq');
+const cta = cp('cta-final');
+const ctaPlate = plateOf('cta-final');
+
+// ItemList (sitemap.json → jsonLd): las herramientas visibles, con su función (texto idéntico al de la página)
+const allTools = groups.flatMap((g) => g.tools.map((t) => ({ name: t.name, role: t.role, group: g.label })));
+const itemList = allTools.length ? [{
+  '@type': 'ItemList',
+  '@id': `${SITE.url}${P.url}#itemlist`,
+  name: hubIntro?.h2 ? tokensToText(`${hubIntro.h2.text ?? ''} ${hubIntro.h2.soft ?? ''}`.trim()) : 'Herramientas',
+  numberOfItems: allTools.length,
+  itemListElement: allTools.map((t, i) => ({ '@type': 'ListItem', position: i + 1, name: t.name, ...(t.role ? { description: tokensToText(`${t.group}: ${t.role}`) } : {}) })),
+}] : undefined;
+
+if (dev) {
+  const known = new Set(['hero', 'criterios', ...HUB_IDS, 'aviso-marcas', 'faq', 'cta-final']);
+  for (const id of order) {
+    if (!known.has(id)) console.warn(`[StackTemplate] ${P.id}: sección "${id}" sin componente en la plantilla`);
+    else if (!C[id]) console.warn(`[StackTemplate] ${P.id}: falta el copy de la sección "${id}"`);
+  }
+}
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<BaseLayout page={page} lcpPlate={lcpPlate} lcpSrcsetMax={2752} bodyClass="stk" jsonLd={itemList}>
+  {order.map((id) => {
+    /* ── 01 + 02 · portada y criterios en la misma toma (SharedTake) ── */
+    if (id === 'hero' && hero) return (
+      <SharedTake plate={heroKey} fallbackPlate={heroFallback} mirror={!!heroPlate?.mirror}>
+        <ImageSection
+          id="hero"
+          plate={heroKey}
+          fallbackPlate={heroFallback}
+          mirror={!!heroPlate?.mirror}
+          height="hero"
+          mobile="split"
+          priority
+          take
+          encendido
+          class="stk-hero tpl-hero"
+        >
+          <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
+          <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>
+          <h1 id="hero-t" class="t-display-2 stk-h1" data-split set:html={headHtml(hero.h1)} />
+          {hero.lede && (
+            <p class="t-lede t-lede--2 stk-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
+          )}
+          <HeroCtas href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+            waHref={wa} waLabel={waLabel(hero)} />
+          {/* Sello de Kommo en línea bajo los CTA: siempre sin ancla `fig`; con ancla, solo donde el sello anclado no cabe
+              junto a los CTA (escritorios de menos de 1360 px o proporción ≤ 3:2) */}
+          {hero.badge && <p class:list={["stk-trust tpl-mhide", badgeAt && "stk-trust--alt"]}><KommoBadge size="sm" label={false} /><span class="t-label">{hero.badge}</span></p>}
+          {(badgeAt || plaques.length > 0) && (
+            <Fragment slot="anchors">
+              {plaques.map((q, i) => (
+                <span class:list={['anchor anchor--panel stk-plaque', q.slug === 'kommo' && 'stk-plaque--seal']} data-anchor={q.name} data-lock data-m="none" aria-hidden="true"
+                  style={anchorStyle(q.name, `--i:${i};`)}>
+                  {q.slug === 'kommo'
+                    ? <img src={q.url} alt="" width="318" height="144" loading="lazy" decoding="async" />
+                    : <span class:list={['logo-mask', logoWide(q.slug) && 'logo-mask--wide']} style={`--logo:url(${q.url})`}></span>}
+                </span>
+              ))}
+              {badgeAt && (
+                <div class="anchor stk-badge" data-anchor="fig" data-lock data-m="none" style={anchorStyle('fig')}>
+                  <span class="stk-badge__in glass-chip"><KommoBadge size="sm" label={false} /><span class="stk-badge__t">{hero.badge}</span></span>
+                </div>
+              )}
+            </Fragment>
+          )}
+          {/* R3 · móvil: después de la placa (misma sección) van la cola del lede y el sello de Kommo en línea */}
+          <Fragment slot="more">
+            {heroLede.rest && <Copy as="p" class="t-lede t-lede--2 stk-hero__rest tpl-dhide" text={heroLede.rest} />}
+            <p class="stk-trust stk-trust--m tpl-dhide"><KommoBadge size="sm" label={false} /><span class="t-label">{hero.badge}</span></p>
+          </Fragment>
+        </ImageSection>
+
+        {cr && order.includes('criterios') && (
+          <Intertitle id="criterios" rack aura="none" class="stk-crit tpl-glow">
+            <Aura kind="ondas" x="38%" y="104%" o={1} only="d" />
+            <div class="stk-crit__head">
+              <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cr.eyebrow}</p>
+              <h2 id="criterios-t" class="t-h2" data-split set:html={headHtml(cr.h2)} />
+              {cr.lede && <Copy as="p" class="t-lede t-lede--2 stk-crit__lede" text={cr.lede} data-reveal />}
+            </div>
+            {cr.items?.length > 0 && (
+              <ol class="stk-crit__list" role="list" data-reveal="stagger">
+                {cr.items.map((it: any, i: number) => (
+                  <li class="stk-crit__item" style={`--i:${i}`}>
+                    <span class="stk-crit__n" aria-hidden="true">{it.n ?? pad(i + 1)}</span>
+                    <h3 class="stk-crit__t"><Copy text={it.title} /></h3>
+                    <Copy as="p" class="stk-crit__l" text={it.line} />
+                  </li>
+                ))}
+              </ol>
+            )}
+          </Intertitle>
+        )}
+      </SharedTake>
+    );
+    if (id === 'criterios') return null; // va dentro de la toma compartida de la portada
+
+    /* ── 03–07 · StackHub (se pinta una vez, en la posición del primer grupo) ── */
+    if (HUB_IDS.includes(id)) {
+      if (id !== firstHub || !groups.length) return null;
+      return (
+        <section id="stack" class="stk-hub tpl-glow" aria-labelledby="stack-t" data-stk-hub>
+          <Aura kind="ondas" x="30%" y="8%" o={1} only="d" />
+          <Aura kind="ondas" x="70%" y="96%" o={1} only="d" />
+          <div class="frame stk-hub__head">
+            <div class="stk-hub__intro">
+              {hubIntro?.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{hubIntro.eyebrow}</p>}
+              <h2 id="stack-t" class="t-h2 stk-hub__h2" data-split set:html={headHtml(hubIntro?.h2 ?? { text: 'El stack' })} />
+            </div>
+            {hubIntro?.lede && <Copy as="p" class="t-lede t-lede--2 stk-hub__lede" text={hubIntro.lede} data-reveal />}
+          </div>
+          <div class="frame stk-hub__frame">
+            <div class="stk-hub__aside">
+              <div class="stk-hub__sticky">
+                <div class="stk-hub__iso" aria-hidden="true">
+                  <img src="/img/marca/isotipo-cristal-640.webp" alt="" width="640" height="640" loading="lazy" decoding="async" />
+                  <span class="stk-hub__core"></span>
+                </div>
+                <nav class="stk-idx" aria-label="Capas del stack">
+                  <ol role="list">
+                    {groups.map((g, i) => (
+                      <li class:list={['stk-idx__i', i === 0 && 'is-on']} data-stk-idx style={`--i:${i}`}>
+                        <a href={`#${g.id}`}><span class="stk-idx__n">{pad(i + 1)}</span><span class="stk-idx__t">{g.label}</span></a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              </div>
+            </div>
+            <div class="stk-hub__groups">
+              {groups.map((g, gi) => (
+                <section id={g.id} class="stk-g" aria-labelledby={`${g.id}-t`} data-stk-g style={`--gi:${gi}`}>
+                  <span class="stk-g__branch" aria-hidden="true"></span>
+                  <span class="stk-g__ghost" aria-hidden="true">{pad(gi + 1)}</span>
+                  <p class="t-label t-label--cyan stk-g__label"><span class="stk-g__n">{pad(gi + 1)}</span> {g.label}</p>
+                  <h3 id={`${g.id}-t`} class="stk-g__title" data-reveal><Copy text={g.title} /></h3>
+                  {g.line && <Copy as="p" class="t-lede t-lede--2 stk-g__line" text={g.line} data-reveal />}
+                  <ul class="stk-tools" role="list" data-reveal="stagger">
+                    {g.tools.map((t, ti) => (
+                      <li class:list={['stk-tool', t.partner && 'stk-tool--partner', !t.logo && !t.partner && 'stk-tool--word']} style={`--i:${ti}`}>
+                        <span class="stk-tool__mark">
+                          {t.partner ? <KommoBadge size="sm" label={false} />
+                            : t.logo ? <span class:list={['logo-mask', logoWide(t.slug) && 'logo-mask--wide']} style={`--logo:url(${t.logo})`} aria-hidden="true"></span>
+                            : <span class="stk-tool__mono" aria-hidden="true">{t.name.slice(0, 1)}</span>}
+                        </span>
+                        <span class="stk-tool__body">
+                          {t.link ? (
+                            <a class="stk-tool__name stk-tool__a" href={t.link}>{t.name}<span class="stk-tool__go" aria-hidden="true">→</span></a>
+                          ) : (
+                            <span class="stk-tool__name">{t.name}</span>
+                          )}
+                          {t.role && <Copy as="span" class="stk-tool__role" text={t.role} />}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  {g.links.length > 0 && (
+                    <p class="stk-g__links">{g.links.map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</p>
+                  )}
+                </section>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ── 08 · aviso de marcas ── */
+    if (id === 'aviso-marcas') {
+      if (!av) return null;
+      return (
+        <section id="aviso-marcas" class="stk-sec stk-aviso tpl-glow" aria-labelledby="aviso-marcas-t">
+          <Aura kind="isotipo" x="78%" y="50%" w="min(52vw,760px)" o={0.8} only="d" />
+          <div class="frame stk-aviso__frame">
+            <h2 id="aviso-marcas-t" class="sr-only">{av.label}</h2>
+            <EditorNote label={av.label ?? 'Aviso de marcas'} class="stk-aviso__note">
+              <div class="stk-aviso__body">
+                <KommoBadge size="md" />
+                <Copy as="p" text={av.text} />
+              </div>
+            </EditorNote>
+          </div>
+        </section>
+      );
+    }
+
+    /* ── 09 · preguntas frecuentes ── */
+    if (id === 'faq') {
+      if (!faq?.faqIds?.length) return null;
+      return (
+        <Intertitle id="faq" aura="ondas" layout="split" class="stk-faq tpl-glow">
+          <Fragment slot="head">
+            <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{faq.eyebrow}</p>
+            <h2 id="faq-t" class="t-h2" data-split set:html={headHtml(faq.h2)} />
+            {faq.footer && <Copy as="p" class="t-lede t-lede--2 stk-faq__foot" text={faq.footer} data-reveal />}
+            {faq.footer && <div class="stk-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} /></div>}
+          </Fragment>
+          <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
+          <FAQAccordion ids={faq.faqIds} glass id="faq-list" label={faq.eyebrow} />
+        </Intertitle>
+      );
+    }
+
+    /* ── 10 · cierre ── */
+    if (id === 'cta-final') {
+      if (!cta) return null;
+      return (
+        <Dawn id="cta-final" plate={ctaPlate?.id ?? 'cta-amanecer'} mirror={!!ctaPlate?.mirror} fallbackPlate={ctaPlate?.launchFallback} layout={ctaPlate?.layout} class="stk-dawn tpl-glow-m">
+          {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
+          <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
+          {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
+          <div class="ctas">
+            {cta.micro ? (
+              <div class="cta-p">
+                <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+                <Copy as="p" class="t-micro btn-micro" text={cta.micro} data-allow-number />
+              </div>
+            ) : (
+              <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+            )}
+            <Btn variant="ghost" href={wa} label={waLabel(cta)} />
+          </div>
+        </Dawn>
+      );
+    }
+    return null;
+  })}
+</BaseLayout>
+
+<script>
+  // StackHub · el índice (escritorio, fijo junto al isotipo) se enciende con la capa cuyo titular ya pasó el 45 % de la
+  // pantalla (la última que lo cruzó). Solo cambia una clase y una variable (sin movimiento propio): mismo estado con o sin
+  // movimiento reducido. Se recalcula en scroll y resize (rAF), así un salto de scroll (ancla, ⌘K) también lo actualiza.
+  for (const hub of document.querySelectorAll<HTMLElement>("[data-stk-hub]")) {
+    const items = [...hub.querySelectorAll<HTMLElement>("[data-stk-idx]")];
+    const groups = [...hub.querySelectorAll<HTMLElement>("[data-stk-g]")];
+    if (!items.length || !groups.length) continue;
+    let cur = -1;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const line = innerHeight * 0.45;
+      let i = 0;
+      groups.forEach((g, k) => { if (g.getBoundingClientRect().top <= line) i = k; });
+      if (i === cur) return;
+      cur = i;
+      items.forEach((it, k) => it.classList.toggle("is-on", k === i));
+      hub.style.setProperty("--on", String(i));
+    };
+    const req = () => { if (!raf) raf = requestAnimationFrame(update); };
+    addEventListener("scroll", req, { passive: true });
+    addEventListener("resize", req, { passive: true });
+    update();
+  }
+</script>

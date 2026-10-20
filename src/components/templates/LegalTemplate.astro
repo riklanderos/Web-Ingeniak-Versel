@@ -1,0 +1,207 @@
+---
+// LegalTemplate · T-LEGAL (ESPEC-v2 §5.14, §8.5; D §13.8) · /aviso-privacidad/
+// Página legal sin escena (excepción de D: sin placa), pero nunca en tinta plana (§5: ninguna zona > 40vh sin luz):
+//   encabezado  Intertitle sobre aura (isotipo + ondas) · breadcrumb · H1 (la .lit de la página) · entradilla · ficha mono
+//               (última actualización, apartados, lectura) · acceso directo a los derechos ARCO
+//   indice      TOC lateral fijo con el pilar del isotipo: cada apartado es un nodo que se enciende al leerlo y una rama de luz
+//               baja con el avance (escritorio ≥ 1024 px); plegable (<details>) en móvil y tableta
+//   texto       Prose a 68 caracteres: cláusulas numeradas (las menciones "Cláusula N" enlazan a su cláusula), la ficha de
+//               contacto como <dl>, la línea final del documento y, fuera del texto legal, un bloque de ayuda con el correo,
+//               WhatsApp y /contacto/. Luz pegajosa que acompaña la lectura (sin fondo de sección, §3.11).
+// JSON-LD (sitemap.json): WebPage + BreadcrumbList (buildGraph). Sin riel de escenas (el índice ya orienta).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import Icon from '../ui/Icon.astro';
+import { annotateFigures, esc } from '../ui/ui-data';
+import Aura from './Aura.astro';
+import { builtCrumbs } from './heroKit';
+import { SITE, waHref, linkTarget, type Page } from '../../lib/site';
+import '../../styles/tpl/LegalTemplate.css';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C = copy?.sections ?? {};
+const dev = import.meta.env.DEV;
+
+const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
+function headHtml(h: any, lit?: string | null): string {
+  if (!h) return '';
+  let first = annotateFigures(h.text ?? '');
+  const l = lit ?? h.lit;
+  if (l && (h.text ?? '').includes(l)) {
+    const i = (h.text as string).lastIndexOf(l);
+    first = annotateFigures(h.text.slice(0, i)) + `<span class="lit">${esc(l)}</span>` + annotateFigures(h.text.slice(i + l.length));
+  }
+  return h.soft ? `${first} <span class="soft">${annotateFigures(h.soft)}</span>` : first;
+}
+const waMsg: string = P.secondaryCta?.waMessage ?? 'Hola, tengo una pregunta sobre el aviso de privacidad de Ingeniak.';
+const wa = P.secondaryCta?.href ?? waHref(waMsg);
+const waLabel = P.secondaryCta?.label ?? 'Escríbele a Kain';
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const head = cp('encabezado');
+const idx = cp('indice');
+const doc = cp('texto');
+const clauses: { id: string; title: string; blocks: any[] }[] = (doc?.clauses ?? []).filter((c: any) => c?.id && c?.title);
+const byNumber = new Map(clauses.map((c, i) => [i + 1, c.id]));
+
+/** Párrafo legal → HTML seguro; "Cláusula N" enlaza a la cláusula N de este documento (el texto no cambia). */
+function legalHtml(text: string): string {
+  return annotateFigures(text).replace(/Cláusula (\d{1,2})\b/g, (m, n) => {
+    const id = byNumber.get(Number(n));
+    return id ? `<a href="#${id}">${m}</a>` : m;
+  });
+}
+/** Valor de la ficha de contacto: correo → mailto; el sitio → inicio. */
+function dlHtml(term: string, value: string): string {
+  const v = esc(value);
+  if (/^[\w.+-]+@[\w-]+(\.[\w-]+)+$/.test(value)) return `<a href="mailto:${v}">${v}</a>`;
+  if (/^ingeniak\.mx$/i.test(value)) return `<a href="/">${v}</a>`;
+  return v;
+}
+// Tiempo de lectura (texto del aviso, 200 palabras por minuto) y fecha ISO de la última actualización
+const words = clauses.flatMap((c) => c.blocks).map((b) => [b.p, b.h3, ...(b.ul ?? []), ...((b.dl ?? []).map((d: any) => `${d.term} ${d.value}`))].filter(Boolean).join(' ')).join(' ')
+  .split(/\s+/).filter(Boolean).length;
+const readMin = Math.max(1, Math.round(words / 200));
+const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const iso = (() => {
+  const m = String(head?.updated ?? '').match(/(\d{1,2}) de ([a-záéíóú]+) de (\d{4})/i);
+  const mi = m ? MONTHS.indexOf(m[2].toLowerCase()) : -1;
+  return m && mi >= 0 ? `${m[3]}-${pad(mi + 1)}-${pad(Number(m[1]))}` : undefined;
+})();
+const help = doc?.help;
+const contactHref = linkTarget('/contacto/');
+
+if (dev) {
+  for (const id of (P.sections as any[]).map((s) => s.id)) {
+    if (!['encabezado', 'indice', 'texto'].includes(id)) console.warn(`[LegalTemplate] ${P.id}: sección "${id}" sin componente en la plantilla`);
+    else if (!C[id]) console.warn(`[LegalTemplate] ${P.id}: falta el copy de la sección "${id}"`);
+  }
+}
+---
+<BaseLayout page={page} bodyClass="lgl" rail={false}>
+  {/* ── 01 · encabezado sobre aura ── */}
+  {head && (
+    <Intertitle id="encabezado" aura="none" class="lg-head tpl-glow">
+      <Aura kind="isotipo" x="80%" y="46%" w="min(58vw,860px)" o={0.9} only="d" />
+      <Aura kind="ondas" x="30%" y="104%" o={1} only="d" />
+      <Aura kind="isotipo" x="78%" y="26%" o={0.75} only="m" />
+      <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="lg-crumbs" />
+      {head.eyebrow && <p class="t-label t-label--cyan eyebrow lg-eyebrow"><span class="node" aria-hidden="true"></span>{head.eyebrow}</p>}
+      <h1 id="encabezado-t" class="t-display-2 lg-h1" data-split set:html={headHtml(head.h1)} />
+      {head.deck && <Copy as="p" class="t-deck lg-deck" text={head.deck} />}
+      <dl class="lg-meta">
+        <div class="lg-meta__i"><dt>{head.updatedLabel ?? 'Última actualización'}</dt><dd><time datetime={iso}>{head.updated}</time></dd></div>
+        <div class="lg-meta__i"><dt>Apartados</dt><dd>{clauses.length}</dd></div>
+        <div class="lg-meta__i"><dt>Lectura</dt><dd>{readMin} {readMin === 1 ? 'minuto' : 'minutos'}</dd></div>
+      </dl>
+      {head.rights && clauses.some((c) => c.id === 'arco') && (
+        <a class="lnk lg-arco" href="#arco"><span class="lg-arco__k">{head.rights.label}</span>{head.rights.text} <span aria-hidden="true">↓</span></a>
+      )}
+    </Intertitle>
+  )}
+
+  {/* ── 02 + 03 · índice lateral + texto legal ── */}
+  {doc && (
+    <section id="texto" class="lg-doc" aria-label="Texto del aviso de privacidad" data-lg-doc>
+      <div class="lg-light" aria-hidden="true"><span class="lg-light__a"></span><span class="lg-light__b"></span></div>
+      <div class="frame lg-doc__frame">
+        <nav id="indice" class="lg-toc" aria-label={idx?.label ?? 'Índice'} data-lg-toc>
+          <details class="lg-toc__details" open data-lg-details>
+            <summary class="lg-toc__sum">
+              <span class="t-label t-label--cyan lg-toc__label"><span class="node" aria-hidden="true"></span>{idx?.label ?? 'Índice'}</span>
+              <span class="lg-toc__mlabel" aria-hidden="true">{idx?.mobileLabel ?? idx?.label ?? 'Índice'} · {clauses.length}</span>
+              <Icon name="chevron" size={16} class="lg-toc__chev" />
+            </summary>
+            <div class="lg-toc__rail">
+              <span class="lg-toc__pillar" aria-hidden="true"><span class="lg-toc__fill"></span></span>
+              <ol class="lg-toc__list" role="list">
+                {clauses.map((c, i) => (
+                  <li class="lg-toc__item">
+                    <a class="lg-toc__a" href={`#${c.id}`} data-lg-link>
+                      <span class="lg-toc__node" aria-hidden="true"></span>
+                      <span class="lg-toc__n" aria-hidden="true">{pad(i + 1)}</span>
+                      <span class="lg-toc__t">{c.title}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </details>
+        </nav>
+
+        <article class="prose lg-prose">
+          {clauses.map((c, i) => (
+            <section id={c.id} class="lg-clause" aria-labelledby={`${c.id}-t`} data-lg-clause>
+              <h2 id={`${c.id}-t`} class="lg-clause__h"><span class="lg-clause__n">{pad(i + 1)}</span><span class="lg-clause__t">{c.title}</span></h2>
+              {c.blocks.map((b: any) =>
+                b.p ? <p set:html={legalHtml(b.p)} />
+                : b.h3 ? <h3>{b.h3}</h3>
+                : b.ul ? <ul>{b.ul.map((li: string) => <li set:html={legalHtml(li)} />)}</ul>
+                : b.dl ? (
+                  <dl class="lg-dl">
+                    {b.dl.map((d: any) => <div class="lg-dl__row"><dt>{d.term}</dt><dd set:html={dlHtml(d.term, d.value)} /></div>)}
+                  </dl>
+                ) : null
+              )}
+            </section>
+          ))}
+          {doc.closing && <p class="lg-closing" set:html={legalHtml(doc.closing)} />}
+        </article>
+
+        {help && (
+          <aside class="lg-help" aria-labelledby="lg-help-t">
+            <p class="t-label t-label--cyan lg-help__k"><span class="node" aria-hidden="true"></span>Ayuda</p>
+            <h2 id="lg-help-t" class="t-h3 lg-help__t">{help.title}</h2>
+            {help.text && <p class="lg-help__p" set:html={legalHtml(help.text)} />}
+            <div class="lg-help__acts">
+              <a class="lnk lg-help__mail" href={`mailto:${SITE.email}`}><Icon name="mail" size={16} />{help.mailLabel ?? SITE.email}</a>
+              <Btn variant="ghost" href={wa} label={waLabel} />
+              {contactHref && <a class="lnk lnk--mono lg-help__all" href={contactHref}>{help.contactLabel ?? 'Contacto'} <span aria-hidden="true">→</span></a>}
+            </div>
+          </aside>
+        )}
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<script>
+  // Índice del aviso: marca el apartado que se lee (el último cuyo inicio pasó el 30 % superior; también al saltar con un
+  // ancla) y baja la rama de luz del pilar con el avance de la lectura. En móvil y tableta el índice llega plegado y se
+  // pliega al elegir un apartado. Sin JS: índice abierto y anclas normales.
+  const docEl = document.querySelector<HTMLElement>('[data-lg-doc]');
+  const toc = document.querySelector<HTMLElement>('[data-lg-toc]');
+  if (docEl && toc) {
+    const details = toc.querySelector<HTMLDetailsElement>('[data-lg-details]');
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-lg-link]')];
+    const clauses = [...docEl.querySelectorAll<HTMLElement>('[data-lg-clause]')];
+    const narrow = matchMedia('(max-width: 1023px)');
+    if (details && narrow.matches) details.open = false;
+    narrow.addEventListener?.('change', (e) => { if (details) details.open = !e.matches; });
+    links.forEach((l) => l.addEventListener('click', () => { if (details && narrow.matches) details.open = false; }));
+    let raf = 0;
+    const sync = () => {
+      raf = 0;
+      const line = innerHeight * 0.3;
+      let cur = 0;
+      clauses.forEach((c, i) => { if (c.getBoundingClientRect().top <= line) cur = i; });
+      links.forEach((l, i) => {
+        if (i === cur) l.setAttribute('aria-current', 'true'); else l.removeAttribute('aria-current');
+        l.classList.toggle('is-read', i < cur);
+      });
+      const r = docEl.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (line - r.top) / Math.max(1, r.height - innerHeight * 0.5)));
+      toc.style.setProperty('--p', p.toFixed(4));
+    };
+    const ask = () => { if (!raf) raf = requestAnimationFrame(sync); };
+    addEventListener('scroll', ask, { passive: true });
+    addEventListener('resize', ask);
+    addEventListener('hashchange', () => setTimeout(sync, 80));
+    sync();
+  }
+</script>

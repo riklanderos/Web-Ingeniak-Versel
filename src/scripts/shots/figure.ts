@@ -38,13 +38,15 @@ export default function figure(el: HTMLElement, env: Env) {
     const to = Number(num?.dataset.countTo || 0);
     const o = { n: 100 };
     bars.forEach((b) => b.style.setProperty('--h', b.dataset.h || '1'));
+    // Estado inicial con sentido (nunca "100 / 100" sin barras): el antes ya está en su base 100 y el después nace a la
+    // misma altura; con el scrub solo el después crece (o baja) hasta su valor mientras el índice cuenta.
+    const base = 100 / Math.max(100, to) / Number(bars[1]?.dataset.h || 1);
     if (num) num.textContent = '100';
-    gsap.set(bars[0], { '--g': 0 });
-    gsap.set(bars[1], { '--g': 0 });
+    gsap.set(bars[0], { '--g': 1 });
+    gsap.set(bars[1], { '--g': base });
     restore.push(() => { if (num) num.textContent = String(to); gsap.set(bars, { clearProps: '--g' }); });
-    tl.fromTo(bars[0], { '--g': 0 }, { '--g': 1, duration: 0.3, ease: 'power2.out', immediateRender: false }, 0)
-      .fromTo(bars[1], { '--g': 100 / Math.max(100, to) / Number(bars[1].dataset.h || 1) }, { '--g': 1, duration: 0.7, ease: 'power2.inOut', immediateRender: false }, 0.3)
-      .to(o, { n: to, duration: 0.7, ease: 'power2.inOut', onUpdate: () => { if (num) num.textContent = String(Math.round(o.n)); } }, 0.3);
+    tl.fromTo(bars[1], { '--g': base }, { '--g': 1, duration: 0.8, ease: 'power2.inOut', immediateRender: false }, 0.1)
+      .to(o, { n: to, duration: 0.8, ease: 'power2.inOut', onUpdate: () => { if (num) num.textContent = String(Math.round(o.n)); } }, 0.1);
   } else if (v === 'multiplier') {
     const cols = [...el.querySelectorAll<HTMLElement>('.cf-mx__col')];
     gsap.set(cols, { '--g': 0 });

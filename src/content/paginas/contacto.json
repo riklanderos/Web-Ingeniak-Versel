@@ -1,0 +1,195 @@
+{
+  "_schema": "Texto publicable de /contacto/ (T-CONTACT, ContactTemplate). Forma general: _ESQUEMA.md §2–§6. Campos propios de esta plantilla: hero.mail = {label, line} (tercera ruta de la portada, mailto a SITE.email); hero.chat = {title, lines[]} (conversación SIMULADA registrada en el teléfono de cristal de la placa home-kain: lines = {who: 'cliente'|'kain', text, delay?}; sin precios ni cifras); rutas.routes[] = {id: 'discovery'|'whatsapp'|'correo', name, tag?, contact?, when, then, action} (tabla de 3 rutas; el destino lo pone la plantilla: /discovery/, waHref con el mensaje de la página, mailto); rutas.caption (leyenda de la tabla); oficina = {eyebrow, h2, lede, address, mapsLabel, mapsHref, visit, countriesLabel, nap[] = {term, value}} (address y nap van tal cual, con data-allow-number); redes.items[] = {slug: 'instagram'|'facebook'|'linkedin', name, handle, line} (el enlace sale de SITE.social). formulario existe con _omitir: true hasta que el cliente decida el webform de Kommo. Los campos que empiezan con _ no se imprimen.",
+  "pageId": "contacto",
+  "url": "/contacto/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Todo el texto de la página.",
+    "PREGUNTA AL CLIENTE · Tiempo de respuesta esperado por ruta (Discovery, WhatsApp, correo). D lo pedía en la tabla de rutas [VALIDAR]; la página no promete tiempos hasta confirmarlos.",
+    "PREGUNTA AL CLIENTE · Horario de la oficina (D proponía L–V 09:00–18:00 [VALIDAR]) y si se recibe a visitas sin cita. La página pide escribir antes para coordinar la visita y no publica horario.",
+    "PREGUNTA AL CLIENTE · ¿El +52 33 2101 7799 recibe llamadas de voz, además de WhatsApp? La ficha lo lista como 'Teléfono y WhatsApp' (igual que /agentes-ia-guadalajara/); D advierte que el Sales Brief usa otro número (+52 33 2101 2962): se publica solo el del sitio.",
+    "PREGUNTA AL CLIENTE · ¿Confirmas que en ese WhatsApp contesta Kain y que pasa la conversación a una persona del equipo cuando hace falta? La portada simula ese primer mensaje (SIMULACIÓN) y la tabla de rutas lo dice.",
+    "PREGUNTA AL CLIENTE · Formulario de contacto (webform de Kommo con nombre, empresa, WhatsApp, mensaje y casilla del aviso de privacidad): la sección 'formulario' queda omitida hasta tu decisión.",
+    "DATO PENDIENTE · Mapa estático exportado en el build (ESPEC §5.12). Mientras no exista la imagen, la sección de oficina usa un esquema tipográfico (sin mapa con pines) y el enlace a Google Maps. Las coordenadas (geo) siguen sin confirmar.",
+    "CAMBIO DE TEXTO · Cierre: D proponía \"La forma más rápida de saber si podemos ayudarte: 30 minutos.\"; se acortó a \"¿Podemos ayudarte? Lo sabes en 30 minutos.\" para que el bloque quede arriba del horizonte de la placa de cierre."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (home-kain, subject-left) + 3 rutas: Discovery (.btn) · WhatsApp (.btn--ghost) · correo (.lnk) + ChatSim registrado en el teléfono de cristal",
+      "rail": "Portada",
+      "eyebrow": "Contacto",
+      "h1": {
+        "text": "Habla con Ingeniak",
+        "lit": "Ingeniak"
+      },
+      "lede": "Tres formas de llegar al mismo equipo. Si quieres saber qué automatizar primero, la Discovery Session es la más directa.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de contacto de Ingeniak y quiero hablar con el equipo."
+      },
+      "mail": {
+        "label": "contacto@ingeniak.mx",
+        "line": "O escríbenos a"
+      },
+      "chat": {
+        "title": "Agente de IA de Ingeniak",
+        "lines": [
+          {
+            "who": "cliente",
+            "text": "Hola, quiero automatizar la atención de mi negocio."
+          },
+          {
+            "who": "kain",
+            "text": "Hola, soy Kain, el agente de IA de Ingeniak. ¿Qué vendes y por dónde te escriben tus clientes?",
+            "delay": 1100
+          },
+          {
+            "who": "cliente",
+            "text": "Una clínica. Casi todo nos llega por WhatsApp.",
+            "delay": 1300
+          },
+          {
+            "who": "kain",
+            "text": "Perfecto. Empecemos con una Discovery Session de 30 minutos: ¿te comparto los horarios?",
+            "delay": 1200
+          }
+        ]
+      }
+    },
+    "rutas": {
+      "_componente": "Intertitle + tabla semántica de 3 rutas (filas con filete, sin tarjetas; bloques en móvil)",
+      "rail": "Rutas",
+      "eyebrow": "Elige cómo hablar con nosotros",
+      "h2": {
+        "text": "Una conversación,",
+        "soft": "tres puertas de entrada."
+      },
+      "lede": "Las tres llegan al mismo equipo. Elige según lo que necesitas hoy, no según lo que creas que esperamos.",
+      "caption": "Rutas de contacto de Ingeniak: para qué sirve cada una y qué pasa después",
+      "cols": {
+        "route": "Ruta",
+        "when": "Úsala si…",
+        "then": "Qué pasa después"
+      },
+      "routes": [
+        {
+          "id": "discovery",
+          "name": "Discovery Session",
+          "tag": "Recomendada",
+          "contact": "30 min · 1:1 · Google Meet",
+          "when": "Quieres saber qué conviene automatizar en tu negocio y en qué orden.",
+          "then": "Llenas un formulario de siete preguntas, eliges tu horario y nos vemos por Google Meet. Si tiene sentido para los dos, después te enviamos una propuesta.",
+          "action": "Agendar"
+        },
+        {
+          "id": "whatsapp",
+          "name": "WhatsApp",
+          "contact": "+52 33 2101 7799",
+          "when": "Tienes una pregunta concreta o prefieres empezar por mensaje.",
+          "then": "Te contesta Kain, el agente de IA de Ingeniak. Cuando tu caso necesita a una persona, te pasa con el equipo con toda la conversación.",
+          "action": "Escribir"
+        },
+        {
+          "id": "correo",
+          "name": "Correo",
+          "contact": "contacto@ingeniak.mx",
+          "when": "Vas a enviar documentos, una solicitud formal o un tema administrativo.",
+          "then": "Lo recibe el equipo de Ingeniak y te responde por el mismo medio.",
+          "action": "Escribir correo"
+        }
+      ]
+    },
+    "formulario": {
+      "_omitir": true,
+      "_nota": "Sección condicional (sitemap.json → status: conditional). Se construye solo si el cliente aprueba el webform de Kommo con la casilla del aviso de privacidad."
+    },
+    "oficina": {
+      "_componente": "Intertitle split · dirección en grande sobre un faro de luz (esquema tipográfico, sin mapa con pines) + enlace a Google Maps + ficha NAP + países (CountryList)",
+      "rail": "Oficina",
+      "eyebrow": "Oficina",
+      "h2": {
+        "text": "Base en Guadalajara.",
+        "soft": "Trabajamos donde estés."
+      },
+      "lede": "La oficina está en Tlajomulco de Zúñiga, en la zona metropolitana de Guadalajara. Para empezar a trabajar juntos no hace falta venir: todo arranca con una llamada por Google Meet.",
+      "address": "Av. Punto Sur 312",
+      "addressLine": "Tlajomulco de Zúñiga, Jalisco 45640, México",
+      "mapsLabel": "Abrir en Google Maps",
+      "mapsHref": "https://www.google.com/maps/search/?api=1&query=Av.+Punto+Sur+312%2C+Tlajomulco+de+Z%C3%BA%C3%B1iga%2C+Jalisco+45640",
+      "visit": "Si quieres visitarnos, escríbenos antes para coordinar la cita.",
+      "napLabel": "Datos de contacto",
+      "nap": [
+        {
+          "term": "Nombre",
+          "value": "Ingeniak"
+        },
+        {
+          "term": "Dirección",
+          "value": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, México"
+        },
+        {
+          "term": "Teléfono y WhatsApp",
+          "value": "+52 33 2101 7799"
+        },
+        {
+          "term": "Correo",
+          "value": "contacto@ingeniak.mx"
+        }
+      ],
+      "countriesLabel": "Trabajamos con empresas de"
+    },
+    "redes": {
+      "_componente": "Intertitle · lista tipográfica de 3 redes (logo en máscara + nombre + usuario), sin tarjetas",
+      "rail": "Redes",
+      "eyebrow": "Redes",
+      "h2": {
+        "text": "Síguenos",
+        "soft": "donde publicamos."
+      },
+      "lede": "Si prefieres conocernos antes de escribir, ahí estamos. Los mensajes de negocio, mejor por WhatsApp o por correo: así no se pierden.",
+      "items": [
+        {
+          "slug": "instagram",
+          "name": "Instagram",
+          "handle": "@ingeniakmx"
+        },
+        {
+          "slug": "facebook",
+          "name": "Facebook",
+          "handle": "/ingeniakmx"
+        },
+        {
+          "slug": "linkedin",
+          "name": "LinkedIn",
+          "handle": "Ingeniak"
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "El primer paso no cuesta nada",
+      "h2": {
+        "text": "¿Podemos ayudarte?",
+        "soft": "Lo sabes en 30 minutos."
+      },
+      "lede": "Vemos cómo llegan hoy tus clientes, dónde se pierden y qué conviene automatizar primero.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de contacto de Ingeniak y quiero hablar con el equipo."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

@@ -3,18 +3,25 @@
 //   outline-fill → contorno; cada letra se rellena al entrar su paso (scrub). data-ghost-step en cada letra.
 //   bleed        → sangra por el borde de la escena con deriva xPercent −6.
 // `registered`: vive dentro del stage de un ImageSection (coordenadas de la placa, detrás del recorte).
+//   x, y: centro de la palabra en fracciones de la placa (por defecto .5, .3) · size: alto de letra en % del ancho de la
+//   placa (por defecto 24). Así la palabra cae detrás del sujeto y nunca detrás del titular (p. ej. x .725, y .23, size 14).
 interface Props {
   text: string;
   mode?: 'outline-fill' | 'bleed';
   registered?: boolean;
   side?: 'left' | 'right';
+  x?: number;
+  y?: number;
+  size?: number;
   class?: string;
 }
-const { text, mode = 'bleed', registered = false, side = 'right', class: cls } = Astro.props;
+const { text, mode = 'bleed', registered = false, side = 'right', x, y, size, class: cls } = Astro.props;
 const letters = [...text];
+const pos = registered ? [x != null && `--gx:${x}`, y != null && `--gy:${y}`, size != null && `--gs:${size}cqw`].filter(Boolean).join(';') : '';
 ---
 <p
   class:list={['ghost', `ghost--${mode}`, registered && 'ghost--reg', `ghost--${side}`, cls]}
+  style={pos || undefined}
   aria-hidden="true"
   data-ghost={mode}
 >{mode === 'outline-fill'

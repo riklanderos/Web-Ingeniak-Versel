@@ -1,0 +1,366 @@
+---
+// MethodTemplate · T-METHOD (ESPEC-v2 §5.7, §7.4, §8.5; §12.2 R3/R4/R5/R11/R13) · /metodologia/
+// Data-driven: recorre page.sections (src/data/sitemap.json) en su orden; el texto sale de src/content/paginas/<page.id>.json.
+//   hero        SharedTake + ImageSection hero (metodologia-hero, subject-right, cutout) + VKTOR gigante en contorno DETRÁS del
+//               recorte de Kain (letras que se rellenan en secuencia al cargar) + 5 letras registradas en las losas (R4).
+//               El texto va ARRIBA (align start): la zona segura de la placa es [0.04, 0.06, 0.56, 0.64]; las losas viven abajo.
+//   que-es      Intertitle sobre la copia desenfocada de la portada (rack) + DefinitionBlock (G12, texto idéntico al FAQ)
+//   fases       PlateSequence preset "phases" (VktorSequence): la misma placa, la cámara sube losa por losa; fijada +250 % en
+//               escritorio; móvil y movimiento reducido: 5 bloques apilados. "Qué sale" y "Con quién" en el slot metric-<id>.
+//   tabla       <table> semántica (fase · qué hacemos · qué sale · quién participa); bloques en móvil
+//   tiempos     línea de tiempo de las 5 fases (solo el plazo confirmado: 7 a 30 días de implementación) + MetricRow
+//   correccion  EditorNote "Nota de consistencia" + la expansión oficial en grande
+//   faq         Intertitle split + FAQAccordion (sin las "validar"; el FAQPage lo emite SEOHead con las mismas ids)
+//   cta-final   Dawn (placa de sitemap.json, en espejo)
+// JSON-LD (§8.5): WebPage + HowTo (5 HowToStep) + BreadcrumbList + FAQPage, desde sitemap.json → jsonLd (SEOHead).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageSection from '../cine/ImageSection.astro';
+import SharedTake from '../cine/SharedTake.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import PlateSequence from '../cine/PlateSequence.astro';
+import Dawn from '../cine/Dawn.astro';
+import { resolvePlate, anchorStyle } from '../cine/plate';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Metric from '../ui/Metric.astro';
+import Copy from '../ui/Copy.astro';
+import DefinitionBlock from '../ui/DefinitionBlock.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import EditorNote from '../ui/EditorNote.astro';
+import { annotateFigures, esc, getFaqItems } from '../ui/ui-data';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
+import { waHref, linkTarget, type Page } from '../../lib/site';
+import { METRICS, type MetricId } from '../../lib/metrics';
+import '../../styles/tpl/MethodTemplate.css';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C = copy?.sections ?? {};
+const dev = import.meta.env.DEV;
+
+/* ── utilidades ─────────────────────────────────────────────────────────── */
+const sec = (id: string) => (P.sections as any[]).find((s) => s.id === id);
+const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
+/** Titular de dos voces ({text, soft, lit?}) → HTML con tokens resueltos; `lit` envuelve su subcadena en .lit. */
+function headHtml(h: any, lit?: string | null): string {
+  if (!h) return '';
+  let first = annotateFigures(h.text ?? '');
+  const l = lit ?? h.lit;
+  if (l && (h.text ?? '').includes(l)) {
+    const i = (h.text as string).lastIndexOf(l);
+    first = annotateFigures(h.text.slice(0, i)) + `<span class="lit">${esc(l)}</span>` + annotateFigures(h.text.slice(i + l.length));
+  }
+  return h.soft ? `${first} <span class="soft">${annotateFigures(h.soft)}</span>` : first;
+}
+const wa = P.secondaryCta?.href ?? waHref(C.hero?.ctaSecondary?.waMessage ?? 'Hola Kain');
+const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
+const plateOf = (id: string) => sec(id)?.plate ?? null;
+
+/* ── 01 · portada ───────────────────────────────────────────────────────── */
+const hero = cp('hero');
+const heroPlate = plateOf('hero');
+const heroKey: string = heroPlate?.id ?? 'metodologia-hero';
+const rHero = resolvePlate(heroKey, { mirror: !!heroPlate?.mirror, fallbackPlate: heroPlate?.launchFallback, srcsetMax: 2752, mobileMax: 1536, where: '#hero' });
+const lcpPlate = rHero.id ?? undefined;
+const heroEyebrow: string = hero?.eyebrow ?? (P.breadcrumbs as any[])?.at(-1)?.name ?? '';
+const heroEyebrowDup = eyebrowRepeatsCrumbs(heroEyebrow, P.breadcrumbs);
+// R3 · intro móvil: lede ≤ 20 palabras (el resto baja a `more`). En escritorio el lede NO va en la portada: la zona segura
+// de la placa termina en y = 0.64 y abajo están las losas; su texto completo vive en la definición (que-es).
+const heroLede = ledeParts(hero?.lede, 20);
+const h1 = hero?.h1 ?? {};
+const h1Lit: string | null = h1.lit && String(h1.text ?? '').includes(h1.lit) ? h1.lit : null;
+const h1Text = String(h1.text ?? '');
+const litAt = h1Lit ? h1Text.lastIndexOf(h1Lit) : -1;
+const phases: { letter: string; name: string; verb: string }[] = hero?.phases ?? [];
+// Losas: solo si la placa usada trae escalon-1…5 (R4: con coordenadas de escritorio y de la placa vertical)
+const slabs = phases.length === 5 && phases.every((_, i) => rHero.anchors[`escalon-${i + 1}`]?.d) ? phases : [];
+// VKTOR gigante detrás del recorte (F19): solo con el recorte con alfa de la MISMA placa
+const ghostLetters = rHero.cut && !rHero.usedFallback ? [...'VKTOR'] : [];
+
+/* ── 02 · qué es (texto del banco de FAQ; si la pregunta está en "validar", el texto propio del copy o nada) ── */
+const qe = cp('que-es');
+let defText: { q: string; a: string } | null = null;
+const okFaq = qe?.definition?.faqId ? getFaqItems([qe.definition.faqId])[0] : null;
+if (okFaq) defText = { q: qe.definition.heading ?? okFaq.q, a: okFaq.a };
+else if (qe?.definition?.text) defText = { q: qe.definition.heading ?? qe.h2?.text, a: qe.definition.text };
+
+/* ── 03 · fases (VktorSequence sobre la misma placa: regreso al set con push escalón por escalón, R5) ── */
+const fa = cp('fases');
+const faPlate = plateOf('fases');
+// Ids fijos por posición (los slots metric-<id> de PlateSequence se declaran estáticos más abajo)
+const STEP_IDS = ['verify', 'koncept', 'transform', 'operate', 'rise'];
+const steps = (fa?.steps ?? []).slice(0, 5).map((s: any, i: number) => ({ id: STEP_IDS[i], letter: s.letter, stage: s.name, title: s.verb, line: s.line, out: s.out, who: s.who }));
+/** "Qué sale de la fase" y "Con quién" (HTML en línea, tokens resueltos) para el slot metric-<id> del paso i. */
+function ioHtml(i: number): string {
+  const s = steps[i];
+  if (!s) return '';
+  const row = (k: string, v: string, cls = '') => `<span class="mth-io${cls}"><span class="mth-io__k">${esc(k)}</span><span class="mth-io__v">${annotateFigures(v)}</span></span>`;
+  return (s.out ? row(fa?.outLabel ?? 'Qué sale de la fase', s.out) : '') + (s.who ? row(fa?.whoLabel ?? 'Con quién', s.who, ' mth-io--who') : '');
+}
+
+/* ── 04 · tabla · 05 · tiempos · 06 · corrección ── */
+const tb = cp('tabla');
+const ti = cp('tiempos');
+const tiIds: MetricId[] = (ti?.metricRow?.metricIds ?? []).filter((m: string) => (METRICS as any)[m]);
+const co = cp('correccion');
+
+/* ── 07 · FAQ · 08 · cierre ── */
+const faq = cp('faq');
+const cta = cp('cta-final');
+const ctaPlate = plateOf('cta-final');
+const order: string[] = (P.sections as any[]).map((s) => s.id);
+if (dev) {
+  const known = new Set(['hero', 'que-es', 'fases', 'tabla', 'tiempos', 'correccion', 'faq', 'cta-final']);
+  for (const id of order) {
+    if (!known.has(id)) console.warn(`[MethodTemplate] ${P.id}: sección "${id}" sin componente en la plantilla`);
+    else if (!C[id]) console.warn(`[MethodTemplate] ${P.id}: falta el copy de la sección "${id}"`);
+  }
+}
+---
+<BaseLayout page={page} lcpPlate={lcpPlate} lcpSrcsetMax={2752} bodyClass="mth">
+  {order.map((id) => {
+    /* ── 01 + 02 · portada y definición en la misma toma (SharedTake) ── */
+    if (id === 'hero' && hero) return (
+      <SharedTake plate={heroKey} fallbackPlate={heroPlate?.launchFallback} mirror={!!heroPlate?.mirror}>
+        <ImageSection
+          id="hero"
+          plate={heroKey}
+          fallbackPlate={heroPlate?.launchFallback}
+          mirror={!!heroPlate?.mirror}
+          height="hero"
+          align="start"
+          mobile="split"
+          priority
+          take
+          encendido
+          cutout
+          class="mth-hero tpl-hero"
+        >
+          <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
+          <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']}><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>
+          <h1 id="hero-t" class="mth-h1" data-split>
+            {h1.kicker && <span class="t-h4 mth-h1__k">{h1.kicker}</span>}{' '}
+            <span class="t-display-2 mth-h1__t">{litAt >= 0
+              ? <>{h1Text.slice(0, litAt)}<span class="lit">{h1Lit}</span>{h1Text.slice(litAt + h1Lit!.length)}</>
+              : h1Text}</span>
+          </h1>
+          {hero.deck && <Copy as="p" class="t-deck mth-deck" text={hero.deck} />}
+          {hero.lede && <Copy as="p" class="t-lede t-lede--2 mth-hero__lede tpl-dhide" text={heroLede.intro} />}
+          <HeroCtas href={hero.ctaPrimary?.href ?? '/discovery/'} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+            waHref={wa} waLabel={waLabel(hero)} />
+          {ghostLetters.length > 0 && (
+            <p slot="ghost" class="mth-ghost" aria-hidden="true">{ghostLetters.map((l, i) => <span class="mth-ghost__l" style={`--i:${i}`}>{l}</span>)}</p>
+          )}
+          {slabs.length > 0 && (
+            <Fragment slot="anchors">
+              {slabs.map((ph, i) => (
+                <span class:list={['anchor mth-slab', i === 4 && 'mth-slab--last']} data-anchor={`escalon-${i + 1}`} data-lock aria-hidden="true"
+                  style={anchorStyle(`escalon-${i + 1}`, `--i:${i};`)}>
+                  <span class="mth-slab__stem"></span>
+                  <b class="mth-slab__l">{ph.letter}</b>
+                  <span class="mth-slab__n">{ph.name}</span>
+                </span>
+              ))}
+            </Fragment>
+          )}
+          {/* R3 · móvil: después de la placa (misma sección) van la cola del lede y las cinco fases en el texto */}
+          <Fragment slot="more">
+            {heroLede.rest && <Copy as="p" class="t-lede t-lede--2 mth-hero__rest tpl-dhide" text={heroLede.rest} />}
+            {phases.length > 0 && (
+              <ol class="mth-hero__phases tpl-dhide" role="list" aria-label="Las cinco fases de VKTOR™">
+                {phases.map((ph) => (
+                  <li><b class="mth-hero__pl" aria-hidden="true">{ph.letter}</b><span><span class="mth-hero__pn">{ph.name}</span> {ph.verb}</span></li>
+                ))}
+              </ol>
+            )}
+          </Fragment>
+        </ImageSection>
+
+        {qe && order.includes('que-es') && (
+          <Intertitle id="que-es" rack aura="none" class="mth-def tpl-glow" labelledby={defText ? 'que-es-d-q' : undefined}>
+            <Aura kind="ondas" x="40%" y="106%" o={1} only="d" />
+            {defText ? (
+              <DefinitionBlock heading={defText.q} text={defText.a} label={qe.eyebrow ?? 'Definición'} headingLevel={2} id="que-es-d" />
+            ) : (
+              <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{qe.eyebrow}</p>
+            )}
+            {(qe.body ?? []).map((b: string) => <Copy as="p" class="t-lede t-lede--2 mth-def__body" text={b} data-reveal />)}
+          </Intertitle>
+        )}
+      </SharedTake>
+    );
+    if (id === 'que-es') return null; // va dentro de la toma compartida de la portada
+
+    /* ── 03 · las cinco fases (VktorSequence) ── */
+    if (id === 'fases') {
+      if (!fa || steps.length !== 5) return null;
+      return (
+        <PlateSequence
+          id="fases"
+          preset="phases"
+          plate={faPlate?.id ?? heroKey}
+          fallbackPlate={faPlate?.launchFallback}
+          steps={steps.map((s: any) => ({ id: s.id, letter: s.letter, stage: s.stage, title: s.title, line: s.line }))}
+          class="mth-seq tpl-glow"
+        >
+          <span class="mth-seq__glow" aria-hidden="true"></span>
+          <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{fa.eyebrow}</p>
+          <h2 id="fases-t" class="t-h2" data-split set:html={headHtml(fa.h2)} />
+          {fa.lede && <Copy as="p" class="t-lede t-lede--2 mth-seq__lede" text={fa.lede} />}
+          {/* "Qué sale" y "Con quién" de cada fase: slots metric-<id> de PlateSequence (dentro de un <p>: solo elementos en
+              línea). Astro no admite nombres de slot dinámicos dentro de un map: un slot fijo por fase (STEP_IDS). */}
+          <Fragment slot="metric-verify" set:html={ioHtml(0)} />
+          <Fragment slot="metric-koncept" set:html={ioHtml(1)} />
+          <Fragment slot="metric-transform" set:html={ioHtml(2)} />
+          <Fragment slot="metric-operate" set:html={ioHtml(3)} />
+          <Fragment slot="metric-rise" set:html={ioHtml(4)} />
+        </PlateSequence>
+      );
+    }
+
+    /* ── 04 · qué pasa en cada fase (tabla semántica) ── */
+    if (id === 'tabla') {
+      if (!tb?.rows?.length) return null;
+      const cols: string[] = tb.cols ?? ['Fase', 'Qué hacemos', 'Qué sale de la fase', 'Quién participa'];
+      return (
+        <section id="tabla" class="mth-sec mth-tabla tpl-glow" aria-labelledby="tabla-t">
+          <Aura kind="isotipo" x="84%" y="22%" w="min(60vw,880px)" o={0.75} only="d" />
+          <Aura kind="ondas" x="30%" y="96%" o={1} only="d" />
+          <div class="frame mth-sec__head">
+            <div class="mth-sec__intro">
+              <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{tb.eyebrow}</p>
+              <h2 id="tabla-t" class="t-h2" data-split set:html={headHtml(tb.h2)} />
+            </div>
+          </div>
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <div class="frame">
+            <div class="mth-table-wrap">
+              <table class="mth-table" data-reveal>
+                <caption class="t-micro mth-table__cap">{tb.caption}</caption>
+                <thead>
+                  <tr>{cols.map((c, i) => <th scope="col" class={`mth-table__h mth-table__h--${i}`}>{c}</th>)}</tr>
+                </thead>
+                <tbody>
+                  {tb.rows.map((r: any, i: number) => (
+                    <tr class="mth-table__row" style={`--i:${i}`}>
+                      <th scope="row" class="mth-table__ph">
+                        <span class="mth-table__l" aria-hidden="true">{r.letter}</span>
+                        <span class="mth-table__n">{r.name}</span>
+                      </th>
+                      <td data-label={cols[1]}><Copy text={r.does} /></td>
+                      <td data-label={cols[2]} class="mth-table__out"><Copy text={r.out} /></td>
+                      <td data-label={cols[3]} class="mth-table__who"><Copy text={r.who} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ── 05 · tiempos ── */
+    if (id === 'tiempos') {
+      if (!ti) return null;
+      const tl: any[] = ti.timeline ?? [];
+      return (
+        <section id="tiempos" class="mth-sec mth-tiempos tpl-glow" aria-labelledby="tiempos-t">
+          <Aura kind="ondas" x="66%" y="40%" o={1} only="d" />
+          <div class="frame mth-sec__head">
+            <div class="mth-sec__intro">
+              <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ti.eyebrow}</p>
+              <h2 id="tiempos-t" class="t-h2" data-split set:html={headHtml(ti.h2)} />
+              {ti.lede && <Copy as="p" class="t-lede t-lede--2 mth-tiempos__lede" text={ti.lede} data-reveal />}
+            </div>
+          </div>
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          {tl.length > 0 && (
+            <div class="frame">
+              <ol class="mth-tl" role="list" aria-label="Las cinco fases en el tiempo" data-reveal="stagger">
+                {tl.map((t, i) => (
+                  <li class:list={['mth-tl__step', `mth-tl__step--${String(t.letter).toLowerCase()}`]} style={`--i:${i}`}>
+                    <span class="mth-tl__node" aria-hidden="true"><b>{t.letter}</b></span>
+                    <span class="mth-tl__name t-label">{t.name}</span>
+                    <Copy as="span" class="mth-tl__when" text={t.when} data-allow-number />
+                    <Copy as="span" class="mth-tl__line" text={t.line} />
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+          {tiIds.length > 0 && (
+            <div class="frame mth-tiempos__ref">
+              <Metric variant="row" ids={tiIds} heading={ti.metricRow?.heading} link class="mth-tiempos__row" />
+              {ti.note && <Copy as="p" class="t-micro mth-tiempos__note" text={ti.note} data-reveal />}
+            </div>
+          )}
+        </section>
+      );
+    }
+
+    /* ── 06 · nota de consistencia ── */
+    if (id === 'correccion') {
+      if (!co) return null;
+      const words: string[] = co.words ?? [];
+      return (
+        <section id="correccion" class="mth-sec mth-fix tpl-glow" aria-labelledby="correccion-t">
+          <Aura kind="isotipo" x="22%" y="50%" w="min(56vw,820px)" o={0.85} only="d" />
+          <div class="frame mth-fix__frame">
+            <h2 id="correccion-t" class="sr-only">{co.label}</h2>
+            {words.length === 5 && (
+              <p class="mth-fix__words" data-reveal="stagger">
+                {words.map((w, i) => <span class="mth-fix__w" style={`--i:${i}`}><b>{w.slice(0, 1)}</b>{w.slice(1)}</span>)}
+              </p>
+            )}
+            <EditorNote label={co.label ?? 'Nota de consistencia'} class="mth-fix__note"><Copy as="p" text={co.text} /></EditorNote>
+          </div>
+        </section>
+      );
+    }
+
+    /* ── 07 · preguntas frecuentes ── */
+    if (id === 'faq') {
+      if (!faq?.faqIds?.length) return null;
+      return (
+        <Intertitle id="faq" aura="ondas" layout="split" class="mth-faq tpl-glow">
+          <Fragment slot="head">
+            <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{faq.eyebrow}</p>
+            <h2 id="faq-t" class="t-h2" data-split set:html={headHtml(faq.h2)} />
+            {faq.footer && <Copy as="p" class="t-lede t-lede--2 mth-faq__foot" text={faq.footer} data-reveal />}
+            {faq.footer && <div class="mth-faq__cta" data-reveal><Btn variant="ghost" href={wa} label={waLabel(cta ?? hero)} /></div>}
+          </Fragment>
+          <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
+          <FAQAccordion ids={faq.faqIds} glass id="faq-list" label={faq.eyebrow} />
+        </Intertitle>
+      );
+    }
+
+    /* ── 08 · cierre ── */
+    if (id === 'cta-final') {
+      if (!cta) return null;
+      return (
+        <Dawn id="cta-final" plate={ctaPlate?.id ?? 'cta-amanecer'} mirror={!!ctaPlate?.mirror} fallbackPlate={ctaPlate?.launchFallback} layout={ctaPlate?.layout} class="mth-dawn tpl-glow-m">
+          {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
+          <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
+          {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
+          <div class="ctas">
+            {cta.micro ? (
+              <div class="cta-p">
+                <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+                <Copy as="p" class="t-micro btn-micro" text={cta.micro} data-allow-number />
+              </div>
+            ) : (
+              <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+            )}
+            <Btn variant="ghost" href={wa} label={waLabel(cta)} />
+          </div>
+        </Dawn>
+      );
+    }
+    return null;
+  })}
+</BaseLayout>

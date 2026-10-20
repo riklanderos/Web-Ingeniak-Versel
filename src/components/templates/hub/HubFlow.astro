@@ -1,0 +1,84 @@
+---
+// HubFlow · /servicios/#conexion (ESPEC §5.5 `conexion` SystemFlow; D: "anuncio → web → agente → CRM → automatización →
+// tablero; al pasar el cursor se ilumina el servicio de cada tramo"). La placa compartida riel-servicios a sangre y, sobre
+// sus 5 nodos (anclas nodo-1…5, escritorio y vertical), una tarjeta por tramo: etapa, logos, qué pasa y los servicios
+// de ese tramo (enlazados solo si su página existe). Un destello recorre el riel con el scroll (CSS, sin pin).
+// Si la placa no trae los 5 nodos registrables: SystemFlow sobre aura (mismo contenido).
+import ImageSection from '../../cine/ImageSection.astro';
+import Intertitle from '../../cine/Intertitle.astro';
+import { resolvePlate, anchorStyle } from '../../cine/plate';
+import SystemFlow from '../../ui/SystemFlow.astro';
+import Copy from '../../ui/Copy.astro';
+import Aura from '../Aura.astro';
+import { logoUrl, logoWide, TOOLS, annotateFigures } from '../../ui/ui-data';
+import { linkTarget } from '../../../lib/site';
+import { head, fallbackOf } from './hubKit';
+
+interface Props { id: string; c: any; plate: any }
+const { id, c, plate } = Astro.props;
+const nodes = ((c.nodes ?? []) as any[]).filter((n) => n.confirmed !== false);
+const r = plate?.id ? resolvePlate(plate.id, { fallbackPlate: fallbackOf(plate), mirror: !!plate.mirror }) : null;
+const names = nodes.map((_, i) => `nodo-${i + 1}`);
+const registrable = !!r?.id && nodes.length > 1 && names.every((n) => r.anchors[n]?.d) && !r.anchors[`nodo-${nodes.length + 1}`];
+const n = nodes.length;
+// Destello del nodo 1 al último (escritorio en X, vertical en Y)
+const bead =
+  `--b0x:var(--A-nodo-1-x);--b0y:var(--A-nodo-1-y);--b1x:var(--A-nodo-${n}-x);--b1y:var(--A-nodo-${n}-y);` +
+  `--b0xm:var(--A-nodo-1-xm);--b0ym:var(--A-nodo-1-ym);--b1xm:var(--A-nodo-${n}-xm);--b1ym:var(--A-nodo-${n}-ym)`;
+const svc = (list: any[] = []) => list.map((s) => ({ label: s.label, href: s.href ? linkTarget(s.href) : null }));
+---
+{registrable ? (
+  <ImageSection
+    id={id} plate={plate.id} fallbackPlate={fallbackOf(plate)} layout="subject-center" mirror={!!plate.mirror}
+    height="mid" align="start" mobile="top" srcsetMax={plate.srcsetMax ?? 1920} alt="" class="hub-flow tpl-glow-m" data-nodes={n}
+  >
+    <span class="tpl-introglow tpl-introglow--d" aria-hidden="true"></span>
+    {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+    <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+    {/* Lede y nota a la derecha (columnas 9–12, al pie del titular): el bloque de texto queda bajo y las tarjetas de los
+        tramos tienen aire sobre el riel */}
+    {(c.lede || c.note) && (
+      <div slot="aside" class="hub-flow__aside">
+        {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+        {c.note && <Copy text={c.note} as="p" class="hub-flow__note t-small" />}
+      </div>
+    )}
+    <Fragment slot="anchors">
+      <span class="hub-bead" aria-hidden="true" style={bead}></span>
+      <ol class="hub-nodes" aria-label={c.h2?.text ?? 'Cómo se conectan los servicios'}>
+        {nodes.map((nd, i) => (
+          <li class="anchor hub-node" data-anchor={`nodo-${i + 1}`} style={anchorStyle(`nodo-${i + 1}`, `--k:${i};--nn:${n};`)}>
+            <span class="hub-node__stem" aria-hidden="true"></span>
+            <span class="hub-node__card">
+              <span class="hub-node__top">
+                <span class="hub-node__n t-label" aria-hidden="true">{String(i + 1).padStart(2, '0')} · {nd.stage}</span>
+              </span>
+              <span class="hub-node__logos" aria-hidden={nd.logos?.length || nd.kain ? undefined : 'true'}>
+                {nd.kain && <span class="kain-mark hub-node__kain" aria-hidden="true">kain</span>}
+                {(nd.logos ?? []).map((l: string) => (
+                  <span class:list={['logo-mask', logoWide(l) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(l)})`} role="img" aria-label={TOOLS[l]?.name ?? l}></span>
+                ))}
+              </span>
+              <span class="hub-node__t">{nd.label}</span>
+              {nd.line && <span class="hub-node__l" set:html={annotateFigures(nd.line)} />}
+              {nd.services?.length > 0 && (
+                <span class="hub-node__svc">
+                  {svc(nd.services).map((s) => s.href ? <a class="hub-node__a" href={s.href}>{s.label}</a> : <span class="hub-node__a hub-node__a--static">{s.label}</span>)}
+                </span>
+              )}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </Fragment>
+  </ImageSection>
+) : (
+  <Intertitle id={id} aura="none" labelledby={`${id}-t`} class="hub-flow-alt tpl-glow">
+    {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+    <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+    {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+    <SystemFlow nodes={nodes.map((nd) => ({ label: nd.label, line: nd.line, logo: nd.logos?.[0], kain: !!nd.kain, confirmed: nd.confirmed }))} title={c.h2?.text} />
+    {c.note && <Copy text={c.note} as="p" class="t-small" />}
+    <Aura kind="isotipo" x="50%" y="60%" o={0.8} />
+  </Intertitle>
+)}

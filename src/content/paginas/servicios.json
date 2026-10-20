@@ -1,0 +1,385 @@
+{
+  "_schema": "Hub /servicios/ · HubTemplate (T-HUB, ESPEC §5.5). Campos de _ESQUEMA.md §3–§6 y, propios del hub: hero.fig {label,text} (pie de foto anclado a la placa, solo si la placa trae las anclas fig y mano) · mapa.groups[] {label, glyph, line, items[] {title, line, href, metricId?}} (ScriptList por etapa + riel de 5 etapas fijo a la izquierda en escritorio) · mapa.closing · conexion.nodes[] {stage, label, line, logos[], kain?, services[] {label, href}} (registrados sobre los 5 nodos de riel-servicios) · no-se.items[] {pain, fix} (señal en ámbar → por dónde empezar en cian) · vktor.phases[].line (cómo se aplica la fase a cualquier servicio). Los href a páginas sin construir se pintan como texto (linkTarget).",
+  "pageId": "servicios",
+  "url": "/servicios/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "CAMBIO DE TEXTO · mapa: D pedía 3 columnas con 11 tarjetas (Atraer · Atender y vender · Operar y escalar). Se usan las 5 etapas del mega menú y de la ESPEC §5.5 (Atraer · Atender · Organizar · Automatizar · Medir), en filas de guion sin tarjetas.",
+    "CAMBIO DE TEXTO · conexion: D describía 6 tramos (anuncio → web → agente → CRM → automatización → tablero). Quedan 5 (anuncio y web van juntos en Atraer) para coincidir con los 5 nodos de la placa riel-servicios y con las 5 etapas.",
+    "PREGUNTA AL CLIENTE · conexion.nodes[0].logos: Meta, Google Ads y TikTok como plataformas de pauta en el tramo Atraer (las mismas del servicio de paid media en D). ¿Se quedan las tres?",
+    "PREGUNTA AL CLIENTE · no-se.items: las tres señales ('te escriben más de lo que alcanzas a contestar', 'tus leads viven en chats y hojas de cálculo', 'pagas pauta y no sabes qué campaña vende') son las más comunes en las Discovery Sessions según el brief; confirma que describen bien a tus clientes.",
+    "DATO PENDIENTE · vktor.links: /metodologia/ todavía no existe; el enlace aparece solo cuando se publique esa página."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (servicios-hero; respaldo: home-sistema-4-automatizar) + FigCaption + LightBranch + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Servicios · Un solo sistema",
+      "h1": {
+        "text": "Servicios de inteligencia artificial para empresas,",
+        "soft": "conectados en un solo sistema",
+        "lit": "inteligencia artificial"
+      },
+      "lede": "No vendemos servicios sueltos: conectamos atracción, atención, CRM, automatización y datos para que cada lead llegue, se atienda y se mida.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de servicios de Ingeniak y quiero saber qué servicio me conviene primero."
+      },
+      "fig": {
+        "label": "Fig. 01 · Kain",
+        "text": "El agente de IA de Ingeniak (render), en medio del sistema: lo que atrae la pauta, él lo atiende y tu CRM lo registra."
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada de la portada + DefinitionBlock (texto propio, citable) + MetricRow",
+      "rail": "Un sistema",
+      "eyebrow": "Un sistema, no servicios sueltos",
+      "definition": {
+        "heading": "¿Qué servicios de inteligencia artificial ofrece Ingeniak?",
+        "text": "Ingeniak diseña, implementa y opera un sistema comercial con IA: atrae demanda con pauta, web y SEO; la atiende con agentes de IA en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo; la ordena en Kommo o GoHighLevel; automatiza lo repetitivo con n8n y Make, y lo mide todo en un tablero."
+      },
+      "body": [
+        "Cada servicio se puede contratar solo, pero está hecho para conectarse: el lead que trae un anuncio llega a la misma conversación, al mismo CRM y al mismo tablero. Por eso empezamos por la pieza que más te urge y dejamos listo el camino para sumar las demás, con IA y con nuestro equipo operando a tu lado."
+      ],
+      "metricRow": {
+        "title": "Ingeniak en datos",
+        "metricIds": [
+          "sistemas",
+          "paises",
+          "tiempo-operativo"
+        ],
+        "sourceNote": true
+      }
+    },
+    "mapa": {
+      "_componente": "Intertitle split: riel de 5 etapas (fijo en escritorio, se enciende la etapa en pantalla) + ScriptList por etapa con fotograma que sigue al cursor",
+      "rail": "Mapa",
+      "eyebrow": "Mapa de servicios",
+      "h2": {
+        "text": "Once servicios,",
+        "soft": "cinco etapas de un mismo cliente."
+      },
+      "lede": "Ordenados por lo que hacen con cada cliente: atraerlo, atenderlo, organizarlo, automatizar lo que sigue y medir lo que pasó.",
+      "groups": [
+        {
+          "label": "Atraer",
+          "glyph": "atraer",
+          "line": "Que llegue la gente correcta.",
+          "items": [
+            {
+              "title": "Paid media",
+              "line": "Campañas en Meta, Google y TikTok conectadas a tu CRM, para medir ventas y no clics.",
+              "href": "/servicios/paid-media/",
+              "metricId": "horeca-roas"
+            },
+            {
+              "title": "Páginas web de alta conversión",
+              "line": "Sitios rápidos que convierten visitas en conversaciones, con WhatsApp y CRM integrados.",
+              "href": "/servicios/paginas-web/"
+            },
+            {
+              "title": "SEO y visibilidad en IA",
+              "line": "Que te encuentre Google y que ChatGPT, Gemini, Perplexity y Claude citen a tu marca.",
+              "href": "/servicios/seo/"
+            },
+            {
+              "title": "Branding y contenido",
+              "line": "Identidad, sistema visual y contenido que alimentan tus campañas, tu web y tus agentes.",
+              "href": "/servicios/branding/"
+            }
+          ]
+        },
+        {
+          "label": "Atender",
+          "glyph": "atender",
+          "line": "Que nadie se quede sin respuesta.",
+          "items": [
+            {
+              "title": "Agentes de IA para WhatsApp",
+              "line": "Kain responde, califica y agenda en WhatsApp, Instagram, Facebook Messenger, tu web y el correo.",
+              "href": "/servicios/agentes-ia-whatsapp/",
+              "metricId": "dental-respuesta"
+            }
+          ]
+        },
+        {
+          "label": "Organizar",
+          "glyph": "organizar",
+          "line": "Que cada lead tenga su etapa.",
+          "items": [
+            {
+              "title": "CRM con IA",
+              "line": "Te ayudamos a elegir entre Kommo y GoHighLevel y lo dejamos operando con tu equipo.",
+              "href": "/servicios/crm-con-ia/"
+            },
+            {
+              "title": "Kommo",
+              "line": "Somos partner oficial: licencias, implementación y agentes de IA dentro de Kommo.",
+              "href": "/kommo/",
+              "metricId": "retail-conversiones"
+            },
+            {
+              "title": "GoHighLevel en español",
+              "line": "CRM, embudos, calendarios y campañas en una sola plataforma, configurada en español.",
+              "href": "/gohighlevel/"
+            }
+          ]
+        },
+        {
+          "label": "Automatizar",
+          "glyph": "automatizar",
+          "line": "Que lo repetitivo deje de pasar por ti.",
+          "items": [
+            {
+              "title": "Automatización con n8n",
+              "line": "Flujos que conectan tu CRM, WhatsApp, hojas de cálculo y sistemas, sin capturas a mano.",
+              "href": "/servicios/automatizacion-n8n/",
+              "metricId": "logistica-procesos"
+            },
+            {
+              "title": "Software a la medida",
+              "line": "Cuando ninguna herramienta encaja: sistemas y tableros hechos para tu operación, con IA integrada.",
+              "href": "/servicios/desarrollo-software/"
+            }
+          ]
+        },
+        {
+          "label": "Medir",
+          "glyph": "medir",
+          "line": "Que decidas con datos, no con corazonadas.",
+          "items": [
+            {
+              "title": "Consultoría en IA",
+              "line": "Diagnóstico, roadmap y casos de uso con retorno medible, con la metodología VKTOR™.",
+              "href": "/servicios/consultoria-ia-empresas/"
+            }
+          ]
+        }
+      ],
+      "closing": "Planes {{price}}. El alcance de cada pieza lo definimos en tu Discovery Session."
+    },
+    "conexion": {
+      "_componente": "ImageSection (riel-servicios, sin sujeto) con 5 nodos registrados sobre los nodos de la placa; respaldo: SystemFlow sobre aura",
+      "rail": "Cómo se conectan",
+      "eyebrow": "Cómo se conectan",
+      "h2": {
+        "text": "Del anuncio al tablero,",
+        "soft": "un lead recorre cinco tramos."
+      },
+      "lede": "Cada tramo es un servicio. Puedes empezar por uno y sumar los demás después, sobre los mismos datos y el mismo CRM.",
+      "nodes": [
+        {
+          "stage": "Atraer",
+          "label": "El anuncio o Google",
+          "line": "Traen a alguien a tu web o directo a tu WhatsApp.",
+          "logos": [
+            "meta",
+            "googleads",
+            "tiktok"
+          ],
+          "services": [
+            {
+              "label": "Paid media",
+              "href": "/servicios/paid-media/"
+            },
+            {
+              "label": "Web",
+              "href": "/servicios/paginas-web/"
+            },
+            {
+              "label": "SEO",
+              "href": "/servicios/seo/"
+            }
+          ]
+        },
+        {
+          "stage": "Atender",
+          "label": "Kain responde",
+          "kain": true,
+          "line": "En segundos, por WhatsApp, Instagram, Messenger, tu web o el correo.",
+          "logos": [
+            "whatsapp",
+            "instagram"
+          ],
+          "services": [
+            {
+              "label": "Agentes de IA",
+              "href": "/servicios/agentes-ia-whatsapp/"
+            }
+          ]
+        },
+        {
+          "stage": "Organizar",
+          "label": "Tu CRM",
+          "line": "El lead entra en su etapa, con toda su conversación.",
+          "logos": [
+            "kommo",
+            "gohighlevel"
+          ],
+          "services": [
+            {
+              "label": "CRM con IA",
+              "href": "/servicios/crm-con-ia/"
+            },
+            {
+              "label": "Kommo",
+              "href": "/kommo/"
+            }
+          ]
+        },
+        {
+          "stage": "Automatizar",
+          "label": "Flujos con n8n y Make",
+          "line": "Recordatorios, avisos y capturas que ya no hace nadie a mano.",
+          "logos": [
+            "n8n",
+            "make"
+          ],
+          "services": [
+            {
+              "label": "Automatización",
+              "href": "/servicios/automatizacion-n8n/"
+            }
+          ]
+        },
+        {
+          "stage": "Medir",
+          "label": "Un tablero",
+          "line": "Junta tus fuentes y te dice qué campaña sí vende.",
+          "logos": [],
+          "services": [
+            {
+              "label": "Software a la medida",
+              "href": "/servicios/desarrollo-software/"
+            },
+            {
+              "label": "Consultoría",
+              "href": "/servicios/consultoria-ia-empresas/"
+            }
+          ]
+        }
+      ],
+      "note": "Los logos son herramientas que usamos e integramos. Kommo es nuestro único partner oficial."
+    },
+    "no-se": {
+      "_componente": "ImageSection mid subject-left (servicios-no-se; respaldo: home-sistema-1-atraer en espejo) + PainList (señal en ámbar → por dónde empezar en cian) + primario",
+      "rail": "Por dónde empezar",
+      "eyebrow": "¿Por dónde empiezo?",
+      "h2": {
+        "text": "¿No sabes por dónde empezar?",
+        "soft": "Para eso existe la Discovery Session."
+      },
+      "lede": "Treinta minutos para ver tu operación completa y decidir qué conviene automatizar primero. Estas son las tres señales que más vemos:",
+      "items": [
+        {
+          "pain": "Te escriben más de lo que alcanzas a contestar.",
+          "fix": "Empezamos por atender: un agente de IA en tus canales."
+        },
+        {
+          "pain": "Tus leads viven en chats, libretas y hojas de cálculo.",
+          "fix": "Empezamos por organizar: un CRM que tu equipo sí use."
+        },
+        {
+          "pain": "Pagas pauta y no sabes qué campaña vende.",
+          "fix": "Empezamos por medir: campañas conectadas a tu CRM."
+        }
+      ],
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      }
+    },
+    "vktor": {
+      "_componente": "Intertitle + VktorRail variant=phases (líneas propias del hub)",
+      "rail": "VKTOR™",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": {
+        "text": "Cualquier servicio entra por el mismo protocolo,",
+        "soft": "en cinco fases."
+      },
+      "lede": "Implementar una pieza toma de 7 a 30 días, según el alcance. El orden y las herramientas se deciden en la fase K, no antes.",
+      "phases": [
+        {
+          "letter": "V",
+          "name": "Verify",
+          "verb": "Verificamos tu operación",
+          "line": "Vemos cómo llegan, cómo se atienden y dónde se pierden hoy tus clientes."
+        },
+        {
+          "letter": "K",
+          "name": "Koncept",
+          "verb": "Diseñamos el concepto",
+          "line": "Elegimos qué pieza va primero, con qué herramientas y qué se conecta con qué."
+        },
+        {
+          "letter": "T",
+          "name": "Transform",
+          "verb": "Transformamos",
+          "line": "Construimos y conectamos la pieza, y la probamos antes de encenderla."
+        },
+        {
+          "letter": "O",
+          "name": "Operate",
+          "verb": "Operamos junto con tu equipo",
+          "line": "Capacitamos a tu equipo, revisamos y ajustamos en producción."
+        },
+        {
+          "letter": "R",
+          "name": "Rise",
+          "verb": "Hacemos crecer los resultados",
+          "line": "Medimos y sumamos la siguiente pieza cuando la anterior ya da resultados."
+        }
+      ],
+      "links": [
+        {
+          "label": "Conoce la metodología VKTOR™",
+          "href": "/metodologia/"
+        }
+      ]
+    },
+    "faq": {
+      "_componente": "Intertitle split + FAQAccordion (G05, G07, G08, G09, N07)",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Antes de elegir",
+        "soft": "un servicio."
+      },
+      "faqIds": [
+        "G05",
+        "G07",
+        "G08",
+        "G09",
+        "N07"
+      ],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Tu siguiente paso",
+      "h2": {
+        "text": "¿Qué pieza del sistema te falta?",
+        "soft": "Lo vemos en 30 minutos."
+      },
+      "lede": "Revisamos cómo atraes, atiendes y das seguimiento hoy, y te decimos por cuál servicio empezar.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de servicios de Ingeniak y quiero saber qué servicio me conviene primero."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "_schema": {
+    "_nota": "Esquema T-ARTICLE (ArticleTemplate.astro · ESPEC §5.10, §8.5, R1, R8). Todo campo que empieza con _ es nota y no se imprime. Tokens de cifra y precio: _ESQUEMA.md §5 ({{metric:ID}}, |full, |prose, {{price}}, {{Price}}, {{source}}). Nunca cifras ni precios de Ingeniak escritos a mano; tarifas de terceros: se describen y se enlazan, no se copian (check-cifras solo admite PRICE_FROM).",
+    "raiz": "pageId, url, estado (borrador|revisión|aprobado), autor, aprobadoPor, publicado y actualizado (AAAA-MM-DD reales: datePublished/dateModified, R8), pendientes[] (paquete de aprobación, no se imprime).",
+    "articulo": "categoria (etiqueta de la portada y articleSection), about[] ({type, name, url} → BlogPosting.about en el JSON-LD; una ruta interna construida vale como Service).",
+    "hero": "eyebrow (categoría visible), h1 {text, soft, lit} (text + ' ' + soft = sitemap.h1; lit = subcadena con la única .lit de la página), deck (entradilla .t-standfirst, ≤ 40 palabras; en móvil las primeras ~22 palabras van arriba y el resto baja junto a la firma), byline (crédito visible: 'Equipo de Ingeniak' mientras no se confirme autor, R8), jump (texto del enlace a la respuesta corta), ui? {label, title, items[]} (figura registrada en la superficie de cristal de la placa; si la placa no tiene superficie, no se pinta).",
+    "respuesta": "label (eyebrow), heading (h2, sin tokens), text (40–60 palabras, la respuesta en la primera oración, citable).",
+    "indice": "label (título del índice). Los renglones salen de cuerpo.blocks con variant 'h2' (campo rail = texto corto del índice) más la respuesta, el FAQ y las fuentes.",
+    "cuerpo": "blocks[]: un string = párrafo. Objetos por variant → 'h2' {id, text, rail} · 'h3' {text} · 'ul'/'ol' {items[]} · 'note' {label, text} · 'table' {caption, head[], rows[][], note} (la primera celda de cada fila es su encabezado) · 'steps' {items[{title, text}]} · 'calc' {id, eyebrow, title, lede, formula{terms[], result}, fields[{id, label, hint, mode: count|percent|money}], result{month, year, empty}, note} · 'scene' {id, plate{id, layout, mirror, launchFallback}, eyebrow, title, metricId, text, links[{label, href}], illus} (ImageSection mid a sangre dentro del artículo) · 'cta-medio' (posición del CTA intermedio). En texto: [etiqueta](/ruta/ o https://…) = enlace (las rutas sin construir se pintan como texto), **negritas**, [^n] = llamada a la fuente n de fuentes.items.",
+    "cta-medio": "label, text, link {label, href} (página comercial del tema; sin construir = no se pinta), ctaPrimary {label, href}, ctaSecondary {label, waMessage = sitemap.secondaryCta.waMessage}.",
+    "faq": "eyebrow, h2 {text, soft}, faqIds[] (banco src/data/faq.json; las 'validar' no se publican y vuelven solas al aprobarse).",
+    "autor": "bio (una o dos oraciones; la tarjeta firma 'Equipo de Ingeniak' hasta que haya autor confirmado, R8).",
+    "fuentes": "eyebrow, h2 {text}, lede, items[{title, publisher, href, consultado AAAA-MM-DD, nota}] (numeradas en orden; [^n] apunta a items[n-1]), internas (línea de cifras propias con {{source}}).",
+    "relacionados": "eyebrow, items[{href, label, title, line, plate?}] (solo se pintan rutas construidas; si faltan, se completan con páginas construidas).",
+    "cta-final": "eyebrow, h2 {text, soft}, ctaPrimary, ctaSecondary {label, waMessage}, micro."
+  },
+  "pageId": "art-partner-kommo",
+  "url": "/blog/como-verificar-partner-oficial-kommo/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "publicado": "2026-10-19",
+  "actualizado": "2026-10-19",
+  "articulo": {
+    "categoria": "CRM",
+    "about": [
+      { "type": "SoftwareApplication", "name": "Kommo", "url": "https://www.kommo.com/" },
+      { "type": "Thing", "name": "Programa de partners de Kommo", "url": "https://www.kommo.com/partners/become-partner/" },
+      { "type": "Service", "name": "Kommo con Ingeniak", "url": "/kommo/" }
+    ]
+  },
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · URGENTE · ficha de Ingeniak en el directorio de Kommo: el 2026-10-19 Ingeniak NO aparece en el directorio público, ni en la versión en español (236 fichas) ni en la versión en inglés (458 fichas); tampoco con otro nombre que reconozcamos. D pide enlazar la ficha real antes de publicar, y este artículo le dice al lector que busque ahí primero. Kommo pide para listarse: una sección de Kommo en el sitio (ya está: /kommo/), el sello en el sitio con enlace a kommo.com (ya está: KommoBadge), un logo de buena calidad y la solicitud en el Portal de partners (Resources → Get listed), que revisa su equipo. ¿Tienen ficha con otro nombre o razón social? Si no, recomendamos solicitarla ya. Mientras tanto, la sección 7 se llama 'Cómo verificar a Ingeniak' (D: 'Ingeniak en el directorio de Kommo') y no dice que estemos en el directorio.",
+    "PREGUNTA AL CLIENTE · certificado: la sección 7 invita a pedir nuestro certificado de partner en la Discovery Session (Kommo lo entrega al aprobar el examen). ¿Lo tienen y se puede mostrar? Si no, se quita ese renglón.",
+    "PREGUNTA AL CLIENTE · cuentas de Kommo: la guía recomienda que la cuenta quede a nombre y con el correo del cliente (así lo describe el portal de partners). No lo afirmamos de Ingeniak: ¿así crean las cuentas? Si sí, se suma a la sección 7.",
+    "PREGUNTA AL CLIENTE · ¿Ingeniak revende las licencias de Kommo en pesos? Kommo dice que algunos partners oficiales revenden en moneda local; no lo afirmamos de Ingeniak hasta confirmarlo.",
+    "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Marcos González como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
+    "CAMBIO DE TEXTO · respuesta corta: el brief de D marcaba '[VALIDAR el proceso vigente en la documentación de Kommo]'. Validado el 2026-10-19 con el centro de ayuda de Kommo: aparecer en el directorio no es automático (el partner lo solicita y Kommo lo revisa), así que la respuesta suma el certificado como segunda prueba. El sello que enlaza a kommo.com es requisito de Kommo para listarse (fuente 2).",
+    "CAMBIO DE TEXTO · cierre: D pedía 'Verifícanos y luego platiquemos: 30 minutos, gratis.' Mientras Ingeniak no tenga ficha en el directorio, un 'verifícanos' manda al lector a un paso que hoy no encuentra. Queda 'Haznos las mismas preguntas. Te respondemos en 30 minutos.' Al publicarse la ficha, se puede volver al texto de D y enlazarla en la sección 7.",
+    "DATO DE TERCEROS · reglas del programa de partners (examen de certificación y certificado, cuentas y órdenes desde el portal, usuario técnico opcional, precios estándar, requisitos y revisión del directorio, independencia de los partners, servicios que ofrecen) y condiciones de cobro de Kommo, consultadas el 2026-10-19 en páginas oficiales (fuentes 1 a 6). Revisar cada trimestre y actualizar 'actualizado'.",
+    "CIFRAS · retail-conversiones aparece una vez (escena del paso 4, Retail multimarca · Kommo + IA; la descripción del sistema viene de la respuesta K03 aprobada). La escena enlaza al caso retail (/casos/retail-multimarca-kommo/, ya construido) y a /kommo/.",
+    "PLACA · la portada usa kommo-hero, como pide sitemap.json (D pedía 'art-partner-kommo-hero', un gerente con lupa; no está en el plan de placas). Sin figura registrada: kommo-hero no tiene teléfono ni pantalla. Su ancla 'sello' (donde /kommo/ pinta el KommoBadge) no la usa ArticleTemplate: pedido en peticiones.md. Escena del cuerpo: caso-retail-hero (persona a la derecha); cierre: cta-amanecer (Kain a la derecha), como pide sitemap.json. Fotogramas de Sigue explorando: /kommo/ con home-kain y /servicios/crm-con-ia/ con home-sistema-3-organizar (sin esa pista la plantilla elegía dolor-crm, una placa de dolor, para un servicio). La columna de texto de la portada empieza a 0.48 de la placa y la zona segura de kommo-hero a 0.51: check-escenas lo avisa a 1440 × 900, aunque en la captura el texto no toca el panel ni las burbujas (pedido en peticiones.md)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (kommo-hero: Kain presenta un panel de cristal con burbujas de chat; texto a la derecha)",
+      "eyebrow": "CRM",
+      "h1": { "text": "Cómo verificar que una agencia", "soft": "es partner oficial de Kommo", "lit": "verificar" },
+      "deck": "Antes de pagar licencias o una implementación, comprueba con quién tratas. Cuatro pasos con las reglas que publica Kommo y las señales que deberían hacerte dudar.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta"
+    },
+    "respuesta": {
+      "_componente": "Intertitle (rack sobre la portada desenfocada) + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "Búscala en el directorio de Kommo y compara sus datos",
+      "text": "Para verificar que una agencia es partner oficial de Kommo, búscala en el directorio de partners de kommo.com y compara su sitio, correo y teléfono con los de quien te contactó. Si no aparece, pídele su certificado de partner. Después revisa que su sello enlace a kommo.com y pregunta qué incluye su servicio."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con escena a sangre y CTA intermedio",
+      "blocks": [
+        { "variant": "h2", "id": "por-que-importa", "text": "Por qué importa comprar con un partner oficial", "rail": "Por qué importa" },
+        "Puedes comprar las licencias de Kommo directo en su sitio o con uno de sus partners: agencias y consultores que pasaron su certificación. Kommo factura en dólares, por usuario y con un plazo mínimo de seis meses, y su propia página de precios aclara que algunos partners oficiales revenden las licencias en moneda local.[^1]",
+        "Un partner oficial no es solo alguien que sabe usar Kommo. Para serlo, abrió una cuenta en el portal de partners y aprobó el examen de certificación de Kommo, de 61 preguntas, en el que hay que acertar al menos 50. Además, las licencias de sus clientes las tramita desde ese portal: crea la cuenta de prueba con el correo de tu empresa, levanta la orden y Kommo activa tu suscripción.[^2]",
+        "Eso te da tres cosas que una agencia sin certificación no te puede asegurar:",
+        { "variant": "ul", "items": [
+          "**Precio de lista.** La guía de Kommo para sus partners pide cobrar las licencias a los precios estándar de su página y no ofrecer precios distintos. El partner gana con el descuento que Kommo le da en el portal, no con un sobreprecio.[^2]",
+          "**Tu cuenta, a tu nombre.** La cuenta se crea con el correo de tu empresa. Si los dos lo acuerdan, el partner entra como usuario técnico para configurarla.[^2]",
+          "**Alguien a quien Kommo conoce.** Cada partner tiene acceso a un equipo de Kommo que lo apoya con pagos en el portal, creación de cuentas y dudas del programa.[^2]"
+        ] },
+        { "variant": "note", "label": "Lo que la certificación no garantiza", "text": "Kommo certifica a sus partners, pero aclara que son empresas independientes: no supervisa el trabajo que hacen para ti ni responde por sus servicios.[^3] La certificación demuestra que conocen la herramienta; la calidad de la implementación la tienes que revisar tú." },
+
+        { "variant": "h2", "id": "paso-1-directorio", "text": "Paso 1: búscala en el directorio de partners de Kommo", "rail": "Paso 1 · El directorio" },
+        "Kommo publica un directorio de partners en su propio sitio. Puedes filtrarlo por región, país e idioma, y cada ficha muestra la ciudad, los datos de contacto, el sitio web, los idiomas, las regiones que atiende y los servicios que ofrece.[^2][^4]",
+        "Hay dos versiones: [el directorio en español](https://www.kommo.com/es/socios/encontrar-socio/) y [el directorio en inglés](https://www.kommo.com/partners/). No muestran las mismas fichas, así que conviene buscar en las dos.[^4][^5] Cuando encuentres la ficha, compárala con lo que sabes de la agencia que te contactó:",
+        { "variant": "ul", "items": [
+          "**Sitio web y correo.** El dominio del correo que te escribe debe coincidir con el sitio que aparece en la ficha.",
+          "**Teléfono y ciudad.** Si te llaman desde otro país o desde otro número, pregunta por qué.",
+          "**Servicios.** Si te ofrecen una implementación compleja o configurar Salesbot con IA, revisa que la ficha los incluya."
+        ] },
+        "Si no la encuentras, todavía no la descartes. Aparecer en el directorio no es automático: el partner tiene que solicitarlo y el equipo de Kommo revisa la solicitud antes de publicarla.[^2] En ese caso, pídele el certificado que Kommo entrega al aprobar el examen y, si te quedan dudas, pregúntale a Kommo por sus canales oficiales de soporte.[^3]",
+
+        { "variant": "h2", "id": "paso-2-sello", "text": "Paso 2: revisa el sello de partner y a dónde enlaza", "rail": "Paso 2 · El sello" },
+        "El sello de partner es una imagen, y una imagen se copia en segundos. Lo que importa es a dónde lleva. Entre los requisitos que Kommo pide para aparecer en su directorio está que el partner ponga su sello en su sitio web y que, al hacer clic, te lleve a kommo.com.[^2]",
+        "Haz la prueba: da clic en el sello del sitio de la agencia. Si no lleva a ningún lado, si te manda a otra página de la misma agencia o si el sello solo aparece en una presentación, toma nota y sigue con los siguientes pasos con más cuidado.",
+        "Fíjate también en cómo se presenta. Kommo describe a sus partners como empresas que pueden mostrar su alianza con Kommo sin perder su propia marca.[^6] Si una agencia usa la palabra «partner» para cada herramienta que menciona, pregúntale qué respalda cada una.",
+
+        { "variant": "h2", "id": "paso-3-que-incluye", "text": "Paso 3: pregunta qué incluye", "rail": "Paso 3 · Qué incluye" },
+        "Las licencias son solo una parte. Según Kommo, sus partners pueden ofrecer configuración de la cuenta, capacitación, personalización, Salesbot, mejora del proceso de venta, marketing y consultoría, y ponen su propio precio a esos servicios.[^3][^6] Por eso dos propuestas «de Kommo» pueden ser muy distintas. Antes de comparar montos, pide que te digan qué incluye cada una:",
+        { "variant": "table", "caption": "Qué preguntar antes de contratar", "head": ["Tema", "Qué preguntar", "Qué respuesta buscar"], "rows": [
+          ["Licencias", "¿Qué plan de Kommo me recomiendan, para cuántos usuarios y por cuánto tiempo?", "El plan y el número de usuarios, con el precio de la página oficial. Kommo cobra por usuario y con un plazo mínimo de seis meses"],
+          ["Cuenta", "¿A nombre de quién queda la cuenta?", "A nombre de tu empresa, con tu correo. El partner entra como usuario técnico solo si tú lo apruebas"],
+          ["Implementación", "¿Qué configuran exactamente?", "Embudos, etapas, campos, usuarios, plantillas y automatizaciones, por escrito"],
+          ["WhatsApp y canales", "¿Qué canales conectan y qué pasa con mi número actual de WhatsApp?", "Los canales que vas a usar y un plan claro para tu número"],
+          ["Agentes de IA", "¿Usan los agentes de IA de Kommo o construyen uno propio? ¿Qué hace y qué no?", "Qué responde, qué registra, cuándo pasa a una persona y cómo se mide"],
+          ["Capacitación", "¿Quién capacita a mi equipo y cuántas sesiones incluye?", "Sesiones definidas y material para quien se integre después"],
+          ["Soporte", "¿A quién le escribo si algo falla y en cuánto tiempo me responden?", "Un canal, un responsable y un tiempo de respuesta acordado"],
+          ["Medición", "¿Cómo voy a saber si funciona?", "Indicadores acordados desde el inicio: conversaciones, citas y ventas"]
+        ], "note": "Condiciones de Kommo consultadas el 19 de octubre de 2026 en sus páginas oficiales (fuentes 1 a 3 y 6)." },
+        "Pide las respuestas por escrito y separa dos montos: lo que pagas a Kommo por las licencias y lo que pagas al partner por su trabajo. Si los dos vienen juntos en una sola cifra, pide el desglose antes de firmar.",
+
+        { "variant": "h2", "id": "paso-4-casos", "text": "Paso 4: pide casos con cifras", "rail": "Paso 4 · Casos con cifras" },
+        "Un logo en una presentación o un testimonio sin nombre no prueba gran cosa. Pide casos con cifras y revisa que cada uno diga cuatro cosas: el tipo de negocio, las herramientas que se usaron, qué se midió y de dónde sale el dato.",
+        "Pide también ver un sistema funcionando, aunque sea con datos de prueba: un embudo configurado, un Salesbot, un agente que responde. Es más fácil juzgar una implementación cuando la ves que cuando te la describen.",
+        { "variant": "scene", "id": "escena-caso-retail",
+          "plate": { "id": "caso-retail-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Caso real · Retail · Kommo",
+          "title": "Una cifra con sector, herramienta y fuente.",
+          "metricId": "retail-conversiones",
+          "text": "Un retail multimarca combina el embudo de Kommo con calificación de leads por IA: su equipo sabe a quién atender primero y ningún prospecto se queda sin seguimiento.",
+          "links": [ { "label": "Ver el caso del retail multimarca", "href": "/casos/retail-multimarca-kommo/" }, { "label": "Ver cómo trabajamos Kommo", "href": "/kommo/" } ],
+          "illus": "Imagen ilustrativa del sector" },
+        "Fíjate en lo que acompaña a la cifra: el sector, la herramienta y la nota de dónde sale el dato. Si un proveedor no puede darte eso de ninguno de sus casos, pregúntale cómo mide sus resultados. La respuesta te dice mucho de cómo va a medir los tuyos.",
+        { "variant": "cta-medio" },
+
+        { "variant": "h2", "id": "senales-de-alerta", "text": "Señales de alerta", "rail": "Señales de alerta" },
+        "Ninguna de estas señales prueba por sí sola que una agencia no sea partner. Pero si ves dos o más, frena y verifica antes de pagar:",
+        { "variant": "ul", "items": [
+          "**Dice ser partner, pero no aparece en el directorio y no puede mostrarte su certificado.**",
+          "**Te ofrece las licencias de Kommo más baratas que en la página oficial.** La guía de Kommo para sus partners pide cobrar los precios estándar.[^2]",
+          "**Quiere crear la cuenta con su correo, no con el tuyo.** Si mañana dejas de trabajar con esa agencia, la cuenta y tus datos deben seguir siendo tuyos.",
+          "**El sello no lleva a kommo.com,** o solo aparece en una presentación.",
+          "**No separa licencias e implementación** en la propuesta, o no te dice qué incluye cada parte.",
+          "**Promete resultados sin conocer tu proceso,** o solo muestra logos y testimonios, sin cifras ni fuente."
+        ] },
+        { "variant": "note", "label": "Si ya pagaste", "text": "Pide a tu proveedor el plan, el número de usuarios y la fecha de vencimiento de tu suscripción, y confirma con Kommo que la cuenta está a nombre de tu empresa." },
+
+        { "variant": "h2", "id": "verifica-a-ingeniak", "text": "Cómo verificar a Ingeniak", "rail": "Verifica a Ingeniak" },
+        "Somos partner oficial y distribuidor de Kommo en Latinoamérica. Esta guía también aplica para nosotros, así que te decimos cómo comprobarlo:",
+        { "variant": "ul", "items": [
+          "**El sello.** El sello de partner de [nuestra página de Kommo](/kommo/) enlaza a kommo.com.",
+          "**El certificado.** Pídenos nuestro certificado de partner en la Discovery Session.",
+          "**Qué incluye.** Te explicamos por separado las licencias de Kommo, que dependen del plan y de cuántas personas de tu equipo lo usarán, y nuestra implementación: embudos, conexión de WhatsApp, automatizaciones y agentes de IA. Lo detallamos en [CRM con IA](/servicios/crm-con-ia/).",
+          "**Los casos.** Te mostramos casos con cifra, sector, herramienta y fuente, como el del retail multimarca que viste arriba."
+        ] },
+        "Nuestros proyectos empiezan {{price}}, y implementar un sistema toma de 7 a 30 días, según el alcance. Si todavía no decides entre plataformas, lee [Kommo vs GoHighLevel](/blog/kommo-vs-gohighlevel/): ahí comparamos las dos con sus páginas oficiales en la mano."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Ya tienes una propuesta de Kommo y no sabes qué incluye? Revisa cómo trabajamos Kommo o escríbele a Kain y cuéntale qué te ofrecieron.",
+      "link": { "label": "Kommo con Ingeniak", "href": "/kommo/" },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola, leí cómo verificar un partner oficial de Kommo y quiero cotizar licencias con Ingeniak." }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Ingeniak y Kommo,", "soft": "en tres respuestas." },
+      "faqIds": ["G04", "K01", "K04"]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo de Ingeniak que implementa Kommo con agentes de IA. Lo revisamos cuando Kommo cambia las reglas de su programa de partners o de su directorio."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": { "text": "Fuentes y fecha de consulta" },
+      "lede": "Todo lo que decimos de Kommo sale de sus páginas oficiales, consultadas el 19 de octubre de 2026. El programa de partners y el directorio cambian: revisa la versión vigente antes de contratar.",
+      "items": [
+        { "title": "Pricing", "publisher": "Kommo", "href": "https://www.kommo.com/pricing/", "consultado": "2026-10-19", "nota": "Cobro en dólares, por usuario al mes y con un periodo mínimo de seis meses; algunos partners oficiales revenden en moneda local." },
+        { "title": "Become a Kommo partner", "publisher": "Centro de ayuda de Kommo", "href": "https://support.kommo.com/docs/become-a-kommo-partner", "consultado": "2026-10-19", "nota": "Examen de certificación y certificado; cuentas de prueba y órdenes desde el portal de partners; usuario técnico opcional; precios estándar; requisitos para aparecer en el directorio (incluido el sello que enlaza a kommo.com) y revisión de Kommo." },
+        { "title": "Hire a certified Kommo expert", "publisher": "Centro de ayuda de Kommo", "href": "https://support.kommo.com/docs/hire-a-certified-kommo-expert", "consultado": "2026-10-19", "nota": "Partners certificados como empresas independientes, sin supervisión ni responsabilidad de Kommo sobre su trabajo; servicios que ofrecen y canales de soporte de Kommo." },
+        { "title": "Encontrar un socio", "publisher": "Kommo", "href": "https://www.kommo.com/es/socios/encontrar-socio/", "consultado": "2026-10-19", "nota": "Directorio en español, con filtros por región, país e idioma. Ese día mostraba 236 fichas." },
+        { "title": "Find a partner", "publisher": "Kommo", "href": "https://www.kommo.com/partners/", "consultado": "2026-10-19", "nota": "Directorio en inglés, con los mismos filtros. Ese día mostraba 458 fichas." },
+        { "title": "The Kommo Partners Program", "publisher": "Blog de Kommo", "href": "https://www.kommo.com/blog/kommo-partners/", "consultado": "2026-10-19", "nota": "Servicios que ofrecen los partners, precio propio por esos servicios y uso del sello oficial junto a su propia marca." }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}. Los nombres de los clientes están anonimizados."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "items": [
+        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con Ingeniak", "line": "Licencias, implementación y agentes de IA dentro de Kommo.", "plate": "home-kain" },
+        { "href": "/blog/kommo-vs-gohighlevel/", "label": "Blog", "title": "Kommo vs GoHighLevel", "line": "Cuál conviene según cómo vende tu equipo." },
+        { "href": "/servicios/crm-con-ia/", "label": "Servicio", "title": "CRM con IA", "line": "Cada conversación en su etapa y con su seguimiento.", "plate": "home-sistema-3-organizar" }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer, Kain a la derecha, texto a la izquierda)",
+      "eyebrow": "Tu caso",
+      "h2": { "text": "Haznos las mismas preguntas.", "soft": "Te respondemos en 30 minutos." },
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola, leí cómo verificar un partner oficial de Kommo y quiero cotizar licencias con Ingeniak." },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

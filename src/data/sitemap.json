@@ -453,7 +453,10 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-4-automatizar"
+          }
         }
       },
       {
@@ -519,7 +522,11 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-1-atraer",
+            "mirror": true
+          }
         }
       },
       {
@@ -1691,7 +1698,12 @@
           "tone": "dolor",
           "mobile": "split",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-problema-a",
+            "mirror": true,
+            "note": "Persona a la derecha, como dolor-crm en espejo."
+          }
         },
         "image": {
           "file": "/img/cine/dolor-crm",
@@ -1758,25 +1770,16 @@
           "mobile": "4:5 · modo split: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Kain en x≈0.36; panel a su derecha (x≈0.64)."
         },
         "plate": {
-          "id": "kommo-hero",
+          "id": "home-sistema-2-atender",
           "component": "ImageSection mid + ChatSim",
           "layout": "subject-left",
-          "mirror": false,
+          "mirror": true,
           "height": "mid",
           "tone": "sol",
           "mobile": "split",
           "srcsetMax": 2752,
-          "push": {
-            "anchor": "superficie",
-            "camFrom": 1.35,
-            "camTo": 1.6
-          },
           "priority": "P1",
-          "launchFallback": {
-            "plate": "home-sistema-2-atender",
-            "mirror": true,
-            "note": "Estación Atender en espejo (sujeto a la izquierda); el ChatSim se registra en su teléfono (ancla telefono en lugar de superficie). Distinto de la portada."
-          }
+          "note": "[2026-10-19 · construcción] Antes kommo-hero con push 1.35→1.6 (regreso al set, R5): con el tope de cámara (camCap) el empuje no pasa de ≈1.1 y el encuadre repetía la portada. Estación Atender en espejo (Kain con el teléfono, ChatSim registrado)."
         }
       },
       {
@@ -2029,7 +2032,11 @@
           "tone": "dolor",
           "mobile": "split",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-problema-a",
+            "mirror": false
+          }
         },
         "image": {
           "file": "/img/cine/dolor-crm",
@@ -2089,7 +2096,7 @@
           "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Kain en x≈0.66; calendario a su izquierda (x≈0.36)."
         },
         "plate": {
-          "id": "gohighlevel-hero",
+          "id": "home-sistema-3-organizar",
           "component": "ImageSection mid + UI calendario",
           "layout": "subject-right",
           "mirror": false,
@@ -2097,17 +2104,8 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "push": {
-            "anchor": "superficie",
-            "camFrom": 1.35,
-            "camTo": 1.6
-          },
           "priority": "P1",
-          "launchFallback": {
-            "plate": "home-sistema-3-organizar",
-            "mirror": false,
-            "note": "Estación Organizar sin espejo (sujeto a la derecha) con el calendario en su superficie. Distinto de la portada."
-          }
+          "note": "[2026-10-19 · construcción] Antes gohighlevel-hero con push 1.35→1.6 (regreso al set, R5): con el tope de cámara el empuje no pasa de ≈1.1 y el encuadre repetía la portada. Estación Organizar (Kain con la tarjeta frente a los carriles, agenda registrada)."
         }
       },
       {
@@ -4054,7 +4052,10 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-3-organizar"
+          }
         }
       },
       {
@@ -4137,7 +4138,12 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "cta-amanecer",
+            "mirror": true,
+            "note": "Mismo amanecer con Kain del mismo lado (izquierda) mientras cta-duena-tranquila no esté exportada."
+          }
         }
       }
     ],
@@ -6120,7 +6126,10 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-5-medir"
+          }
         }
       },
       {
@@ -7105,8 +7114,8 @@
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
-      "waMessage": "Hola Kain, leí el caso HoReCa con ROAS 4.8× y quiero campañas así para mi negocio.",
-      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20el%20caso%20HoReCa%20con%20ROAS%204.8%C3%97%20y%20quiero%20campa%C3%B1as%20as%C3%AD%20para%20mi%20negocio."
+      "waMessage": "Hola Kain, leí el caso de HoReCa y quiero campañas así para mi negocio.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20el%20caso%20de%20HoReCa%20y%20quiero%20campa%C3%B1as%20as%C3%AD%20para%20mi%20negocio."
     },
     "internalLinks": [
       "/servicios/paid-media/",
@@ -7332,8 +7341,8 @@
     },
     "secondaryCta": {
       "label": "Escríbele a Kain",
-      "waMessage": "Hola Kain, leí el caso de logística con 27 procesos automatizados y quiero automatizar mi operación.",
-      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20el%20caso%20de%20log%C3%ADstica%20con%2027%20procesos%20automatizados%20y%20quiero%20automatizar%20mi%20operaci%C3%B3n."
+      "waMessage": "Hola Kain, leí el caso de logística con n8n y quiero automatizar mi operación.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20el%20caso%20de%20log%C3%ADstica%20con%20n8n%20y%20quiero%20automatizar%20mi%20operaci%C3%B3n."
     },
     "internalLinks": [
       "/servicios/automatizacion-n8n/",
@@ -7470,7 +7479,11 @@
           "tone": "sol",
           "mobile": "split",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-kain",
+            "note": "Kain a la izquierda junto al teléfono, sin vestuario de sector (la escena siguiente abre con salud)."
+          }
         }
       },
       {
@@ -7870,7 +7883,11 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-4-automatizar",
+            "note": "Kain toca la red de nodos; respaldo de la plantilla T-STACK."
+          }
         }
       },
       {
@@ -8036,8 +8053,8 @@
     ],
     "title": "Nosotros: el equipo detrás de Ingeniak",
     "titleLength": 38,
-    "metaDescription": "Consultoría de IA con sede en Guadalajara, Jalisco: 6 especialistas, {{metric:sistemas|full}} y clientes en {{metric:paises|full}}. Conoce al equipo.",
-    "metaLength": 143,
+    "metaDescription": "Consultoría de IA con sede en Guadalajara, Jalisco: {{metric:sistemas|full}} y clientes en {{metric:paises|full}}. Conoce al equipo que los construye.",
+    "metaLength": 138,
     "h1": "Estrategas que construyen, operan y miden",
     "breadcrumbs": [
       {
@@ -8073,7 +8090,8 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": "nosotros-manifiesto"
         }
       },
       {
@@ -8106,7 +8124,8 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": "servicios-hero"
         }
       },
       {
@@ -8308,7 +8327,10 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "ind-finanzas-hero"
+          }
         }
       },
       {
@@ -8355,7 +8377,11 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-kain",
+            "mirror": false
+          }
         }
       },
       {
@@ -8410,7 +8436,11 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "cta-amanecer",
+            "mirror": false
+          }
         }
       }
     ],
@@ -8549,7 +8579,11 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-kain",
+            "note": "Mismo lado (izquierda) y misma penumbra que kain-si-no."
+          }
         }
       },
       {
@@ -8909,7 +8943,11 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "discovery-para-quien",
+            "mirror": true
+          }
         }
       },
       {
@@ -9147,7 +9185,12 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "cta-amanecer",
+            "mirror": true,
+            "note": "Mismo amanecer con Kain del mismo lado (izquierda) mientras cta-duena-tranquila no esté exportada."
+          }
         }
       }
     ],
@@ -9288,8 +9331,13 @@
           "height": "hero",
           "tone": "sol",
           "mobile": "top",
-          "srcsetMax": 2752,
-          "priority": "P1"
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-3-organizar",
+            "mirror": false,
+            "note": "Respaldo de la plantilla de artículo: Kain frente a los carriles (elegir camino), sujeto a la derecha."
+          }
         }
       },
       {
@@ -9514,7 +9562,12 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-2-atender",
+            "mirror": false,
+            "note": "Respaldo de la plantilla de artículo: estación Atender con el teléfono, sujeto a la derecha."
+          }
         }
       },
       {
@@ -10037,7 +10090,12 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 1920,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "cta-amanecer",
+            "mirror": true,
+            "note": "Mismo amanecer con Kain del mismo lado (izquierda) mientras cta-duena-tranquila no esté exportada."
+          }
         }
       }
     ],
@@ -10627,7 +10685,11 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1"
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "kain-si-no",
+            "note": "Mismo lado (izquierda) y misma penumbra que home-kain."
+          }
         }
       },
       {

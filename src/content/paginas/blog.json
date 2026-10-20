@@ -1,0 +1,183 @@
+{
+  "_schema": "Hub /blog/ · HubTemplate (T-HUB, ESPEC §5.5). Campos de _ESQUEMA.md §3–§6 y, propios del hub: hero.featured {label} (rótulo del artículo destacado: solo aparece si alguna guía ya está publicada) · categorias {eyebrow, all, chips[] {slug, label}, status} (filtran #grid sin recargar; status usa {n}) · grid.items[] {href, category, title, line, ask, related?} (índice de guías: enlace solo si la guía ya existe; si no, rótulo 'En edición' y botón que abre ⌘K con la pregunta en `ask`; related = página comercial del tema, se enlaza solo si existe) · grid.author / grid.labels {status, read, ask, related} · grid.note/noteLabel (EditorNote). suscripcion lleva _omitir hasta que el cliente decida la herramienta de correo.",
+  "pageId": "blog",
+  "url": "/blog/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · ¿se publica /blog/ antes de que exista el primer artículo aprobado? Hoy la página muestra las seis guías del plan como 'En edición', sin enlace, y deja preguntarle a Kain cada tema. Cuando una guía se publica, su fila enlaza sola y aparece como destacada en la portada.",
+    "PREGUNTA AL CLIENTE · autores de las seis guías (R8): mientras no se confirme quién firma, el crédito visible es 'Equipo de Ingeniak'. Los autores sugeridos en D (Rik Landeros, Alonso Vega, Marcos González) no se publican sin tu confirmación.",
+    "PREGUNTA AL CLIENTE · suscripcion: el formulario de correo conectado a Kommo sigue sin decidir (herramienta y doble opt-in). La sección no se publica.",
+    "CAMBIO DE TEXTO · grid: D pedía 6 tarjetas con imagen, autor, fecha 'Actualizado: …' y tiempo de lectura. Sin artículos publicados no hay fecha ni tiempo de lectura reales: la página no inventa ninguno. Las guías van como índice editorial (sin tarjetas) y cada fila toma su título y su resumen de sitemap.json.",
+    "DATO PENDIENTE · /preguntas-frecuentes/ no existe todavía; el enlace aparece cuando se publique."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (blog-hero; respaldo: discovery-para-quien en espejo) + Breadcrumbs (+ destacado si hay una guía publicada)",
+      "rail": "Portada",
+      "eyebrow": "Blog · Guías",
+      "h1": {
+        "text": "Blog: IA aplicada",
+        "soft": "a ventas y operación",
+        "lit": "IA"
+      },
+      "lede": "Guías sin humo para decidir mejor: cuánto cuesta, qué herramienta elegir y qué automatizar primero.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, estoy leyendo el blog de Ingeniak y quiero aplicar esto en mi empresa."
+      },
+      "featured": {
+        "label": "Guía destacada"
+      },
+      "illus": "Imagen ilustrativa"
+    },
+    "categorias": {
+      "_componente": "Chips de categoría (botones aria-pressed) que filtran #grid; sin JS no se muestran",
+      "rail": "Categorías",
+      "eyebrow": "Categorías",
+      "all": "Todas",
+      "chips": [
+        {
+          "slug": "agentes",
+          "label": "Agentes de IA"
+        },
+        {
+          "slug": "crm",
+          "label": "CRM"
+        },
+        {
+          "slug": "automatizacion",
+          "label": "Automatización"
+        },
+        {
+          "slug": "decisiones",
+          "label": "Precios y decisiones"
+        }
+      ],
+      "status": "{n} de 6 guías"
+    },
+    "grid": {
+      "_componente": "Índice editorial de guías (filas numeradas, sin tarjetas) + EditorNote",
+      "rail": "Guías",
+      "eyebrow": "Guías",
+      "h2": {
+        "text": "Seis preguntas que nos hacen",
+        "soft": "antes de contratar."
+      },
+      "lede": "Las estamos escribiendo con el equipo que implementa estos sistemas. Mientras se publican, Kain te da la respuesta corta de cada una.",
+      "author": "Equipo de Ingeniak",
+      "labels": {
+        "status": "En edición",
+        "read": "Leer la guía",
+        "ask": "Pregúntale a Kain",
+        "related": "Mientras tanto"
+      },
+      "items": [
+        {
+          "href": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+          "category": "decisiones",
+          "title": "¿Cuánto cuesta un agente de IA para WhatsApp en México?",
+          "line": "Qué mueve el precio, qué costos no se ven y cómo calcular si te conviene. En Ingeniak, los proyectos empiezan {{price}}.",
+          "ask": "¿Cuánto cuesta un agente de IA para WhatsApp?",
+          "related": {
+            "label": "Agentes de IA para WhatsApp",
+            "href": "/servicios/agentes-ia-whatsapp/"
+          }
+        },
+        {
+          "href": "/blog/kommo-vs-gohighlevel/",
+          "category": "crm",
+          "title": "Kommo vs GoHighLevel: ¿cuál conviene a tu empresa?",
+          "line": "Kommo si vendes por chat; GoHighLevel si vendes con embudos, páginas y calendarios. Una comparativa por criterio para decidir.",
+          "ask": "¿Me conviene Kommo o GoHighLevel?",
+          "related": {
+            "label": "CRM con IA",
+            "href": "/servicios/crm-con-ia/"
+          }
+        },
+        {
+          "href": "/blog/agente-ia-whatsapp-vs-chatbot/",
+          "category": "agentes",
+          "title": "Agente de IA para WhatsApp vs chatbot: diferencias",
+          "line": "Un chatbot sigue un menú; un agente de IA entiende, consulta tu CRM y agenda. Cuándo basta cada uno y qué no debe hacer un agente.",
+          "ask": "¿En qué se diferencia un agente de IA de un chatbot?",
+          "related": {
+            "label": "Agentes de IA para WhatsApp",
+            "href": "/servicios/agentes-ia-whatsapp/"
+          }
+        },
+        {
+          "href": "/blog/como-verificar-partner-oficial-kommo/",
+          "category": "crm",
+          "title": "Cómo verificar que una agencia es partner oficial de Kommo",
+          "line": "Cómo confirmar que tu proveedor es partner oficial antes de comprar licencias o pagar una implementación, y las señales de alerta.",
+          "ask": "¿Ingeniak es partner oficial de Kommo?",
+          "related": {
+            "label": "Kommo",
+            "href": "/kommo/"
+          }
+        },
+        {
+          "href": "/blog/gohighlevel-en-espanol/",
+          "category": "crm",
+          "title": "GoHighLevel en español: qué es y cómo se implementa",
+          "line": "Qué junta en una sola plataforma, para quién sí y para quién no, y cómo se implementa en español paso a paso.",
+          "ask": "¿Qué es GoHighLevel?",
+          "related": {
+            "label": "GoHighLevel en español",
+            "href": "/gohighlevel/"
+          }
+        },
+        {
+          "href": "/blog/n8n-vs-zapier-vs-make/",
+          "category": "automatizacion",
+          "title": "n8n vs Zapier vs Make: cuál elegir para tu empresa",
+          "line": "Modelo de cobro, autoalojamiento, agentes de IA y curva de aprendizaje: cuándo conviene cada una.",
+          "ask": "¿Qué puedo automatizar con n8n?",
+          "related": {
+            "label": "Automatización con n8n",
+            "href": "/servicios/automatizacion-n8n/"
+          }
+        }
+      ],
+      "noteLabel": "Cómo escribimos estas guías",
+      "note": "Cada guía responde primero, en un párrafo, la pregunta de su título; después explica con criterios y ejemplos. Solo usamos cifras que podemos respaldar con un caso y su fuente, y precios como los manejamos: {{price}}. Las firma el Equipo de Ingeniak.",
+      "links": [
+        {
+          "label": "Preguntas frecuentes",
+          "href": "/preguntas-frecuentes/"
+        }
+      ]
+    },
+    "suscripcion": {
+      "_omitir": true,
+      "_nota": "Condicional (sitemap status: conditional). Formulario de correo conectado a Kommo pendiente de decisión del cliente (herramienta y doble opt-in)."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo)",
+      "rail": "Cierre",
+      "eyebrow": "Con tu caso",
+      "h2": {
+        "text": "¿Prefieres que lo veamos con tu caso?",
+        "soft": "30 minutos, gratis."
+      },
+      "lede": "Una guía responde lo general. En la llamada vemos qué aplica en tu negocio y por dónde empezar.",
+      "ctaPrimary": {
+        "label": "Agenda tu Discovery Session",
+        "href": "/discovery/"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, estoy leyendo el blog de Ingeniak y quiero aplicar esto en mi empresa."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

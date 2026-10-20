@@ -4,6 +4,10 @@
 // Slots: default (copy) · anchors (UI registrada: FigCaption, chips, UI sobre cristal) · aside (subject-center: CTAs abajo a la derecha)
 //        more (R3: resto del contenido; en móvil 'split' va después de la placa) · ghost (palabra gigante propia) · over (ColdOpen)
 //        stage (capa registrada SIN máscaras laterales, sobre la placa y bajo el recorte: p. ej. el filo del horizonte de Dawn)
+// blend="light": escena intermedia sobre una zona con luz (artículos, auras): el velo lateral se funde arriba y abajo, sin
+//        la disolución a tinta opaca (nunca un filo recto contra la luz que sigue).
+// safeCol: en escritorio la columna de texto se acota al borde de la zona segura de texto de la placa pintada
+//        (--safe-edge-d de plate.ts; también con respaldo o espejo): el titular nunca entra a la parte iluminada.
 // Si la placa no existe: usa `fallbackPlate` (respaldo de lanzamiento) y si no, un aura del isotipo con la misma penumbra.
 import { resolvePlate, boxPoint, rackSize, camCap, AURA_ISOTIPO, type Layout, type Fallback } from './plate';
 import GhostWord from './GhostWord.astro';
@@ -20,7 +24,7 @@ interface Props {
   priority?: boolean;
   take?: boolean;
   cutout?: boolean;
-  ghost?: { text: string; mode?: 'outline-fill' | 'bleed' };
+  ghost?: { text: string; mode?: 'outline-fill' | 'bleed'; x?: number; y?: number; size?: number };
   push?: { anchor: string; to?: number; camFrom?: number; camTo?: number };
   pin?: string;            // escena fijada en escritorio (p. ej. '+=100%', §5.3 industria 05): --cam hacia el centro del ancla
   skipLabel?: string;
@@ -31,6 +35,8 @@ interface Props {
   alt?: string;
   wide?: boolean;          // .is__text--wide (display de portada hasta la columna 7)
   breathe?: boolean;       // respiración en reposo (--cam 1 → 1.015, solo portada del inicio)
+  blend?: 'ink' | 'light'; // 'light': el velo se funde arriba y abajo (escena sobre una zona con luz)
+  safeCol?: boolean;       // columna de texto acotada a la zona segura de la placa (escritorio)
   encendido?: boolean;     // mini firma de portada (por defecto: priority y sin ColdOpen)
   shot?: string;           // módulo de movimiento (por defecto "scene")
   labelledby?: string;
@@ -40,7 +46,7 @@ interface Props {
 const {
   id, plate: key, layout, height = 'mid', align, tone = 'sol', mobile = 'top', priority = false, take = false,
   cutout = false, ghost, push, mirror = false, hud, fallbackPlate, srcsetMax, alt, wide = false, breathe = false,
-  encendido, shot = 'scene', labelledby, pin, skipLabel = 'Saltar escena', class: cls, ...rest
+  encendido, shot = 'scene', labelledby, pin, skipLabel = 'Saltar escena', blend = 'ink', safeCol = false, class: cls, ...rest
 } = Astro.props;
 
 const r = resolvePlate(key, {
@@ -101,6 +107,8 @@ const rk = rackSize(rackSrc);
   data-plate-missing={r.id !== key ? key : undefined}
   data-mirror={r.mirror || undefined}
   data-mnull={r.mnull || undefined}
+  data-blend={blend === 'light' ? 'light' : undefined}
+  data-safe-col={safeCol && r.safeEdge !== null ? '' : undefined}
   data-shot={shot}
   style={style}
   aria-labelledby={titleId}
@@ -151,7 +159,7 @@ const rk = rackSize(rackSrc);
     {(ghost || hasGhostSlot) && (!cutout || r.cut) && (
       <div class="is__layer is__layer--ghost" aria-hidden="true">
         <div class="stage">
-          {ghost && <GhostWord text={ghost.text} mode={ghost.mode ?? 'outline-fill'} registered />}
+          {ghost && <GhostWord text={ghost.text} mode={ghost.mode ?? 'outline-fill'} x={ghost.x} y={ghost.y} size={ghost.size} registered />}
           <slot name="ghost" />
         </div>
       </div>

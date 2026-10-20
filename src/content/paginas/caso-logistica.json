@@ -1,0 +1,175 @@
+{
+  "pageId": "caso-logistica",
+  "url": "/casos/logistica-n8n/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "publishGate": {
+    "ok": false,
+    "fuente": null,
+    "_nota": "Puerta R2 cerrada: la página sale como caso breve (noindex,follow; solo portada, ficha con filas confirmed:true, cifra, replicar, relacionados y cierre). Lo publicable hoy: la cifra de metrics.ts (logistica-procesos · 'procesos automatizados', contexto 'Logística · n8n'), lo que la ficha de D da por confirmado (logística; n8n + agentes de IA), la descripción que ya publica ingeniak.mx (integraciones entre CRM, WhatsApp, ERP y modelos de IA con disparadores en tiempo real), la FAQ G06 aprobada y que el sistema sigue operando (RESPUESTAS-CLIENTE 2026-10-19 #3). Para abrirla hace falta, por escrito: ficha (ciudad, herramientas con nombre, plazo), punto de partida e implementación."
+  },
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · puerta R2: ¿autorizas publicar este caso completo e indexable? Necesitamos por escrito ficha, punto de partida e implementación. Mientras tanto sale como caso breve en noindex, enlazado desde /casos/, el inicio, /servicios/automatizacion-n8n/ y /industrias/industrial-logistica/.",
+    "PREGUNTA AL CLIENTE · ficha: (1) ¿en qué ciudad opera la empresa? (si no se puede, se omite); (2) ¿qué tipo de logística? (paquetería, transporte de carga, almacenaje, última milla, distribución); (3) ¿qué CRM, qué ERP y qué modelos de IA? (con nombre, para poner sus logos en el diagrama; si alguno no se puede nombrar, queda genérico); (4) ¿n8n corre en la nube o en la infraestructura de la empresa?; (5) ¿cuánto tardó la implementación? Si no se confirma, solo se usa el rango general de Ingeniak (de 7 a 30 días según el alcance), rotulado como general.",
+    "PREGUNTA AL CLIENTE · implementación: confirma pieza por pieza lo que va en el diagrama (hoy los cinco nodos llevan confirmed:false y no se pintan): CRM, WhatsApp, ERP, n8n y modelos de IA. Además: (a) ¿el WhatsApp es con clientes finales (estatus de envíos, citas de entrega) o interno con el equipo y los choferes?; (b) ¿los agentes de IA conversan con personas o trabajan dentro de los flujos (leer, clasificar, redactar)?; (c) de los procesos automatizados, ¿cuáles podemos nombrar? Bastan de tres a cinco nombres cortos (por ejemplo, 'aviso de retraso al cliente'); con ellos se arma el cuerpo de la implementación. La misma duda está abierta en ind-industrial.json.",
+    "PREGUNTA AL CLIENTE · punto de partida: ¿cómo se hacían esos procesos antes (captura a mano, hojas de cálculo, llamadas)? Si hay horas por semana o errores medidos, se publican; si no, se cuenta en cualitativo. La cifra del caso no cambia.",
+    "RESUELTO 2026-10-19 · cliente en chat · (3) los cinco sistemas siguen activos: chip 'En operación' en la portada y fila 'Estado' en la ficha.",
+    "RESUELTO 2026-10-19 · cliente en chat · (6) en la operación intervienen personas: el texto no dice que los procesos 'se hacen solos' ni 'sin intervención'; habla de procesos automatizados y de flujos que se disparan.",
+    "RESUELTO 2026-10-19 · cliente en chat · (16) plazo general: 'de 7 a 30 días según lo robusto del proyecto'. Va solo en vktor.lede, como rango general (la sección no se pinta mientras el caso sea breve).",
+    "BORRADOR SIN PUBLICAR · implementacion, resultado y vktor existen para cuando se abra la puerta, pero CaseTemplate no los pinta en el caso breve. Solo usan la descripción ya publicada (sitio actual, G06) y fases genéricas de VKTOR aplicadas a la operación de quien lee. punto-partida va con _omitir hasta tener el dato.",
+    "CAMBIO DE TEXTO · ficha.deckBreve es la entradilla del caso breve; ficha.deck queda para la versión completa. ficha.note dice 'Reportaje breve…': al abrir la puerta se cambia por la nota de anonimato del caso dental.",
+    "CAMBIO DE TEXTO · CTA primario de portada y cierre: 'Agenda tu Discovery Session' (regla de un solo azul, §0.1-4; sitemap.primaryCta dice 'Quiero un sistema así: agenda tu Discovery').",
+    "CAMBIO DE TEXTO · cierre: el brief dice '¿Qué procesos de tu operación podrían moverse solos?'. Se queda tal cual porque pregunta por la operación de quien lee, no afirma nada del caso.",
+    "CAMBIO DE TEXTO · relacionados: el brief pide /servicios/automatizacion-n8n/, /industrias/industrial-logistica/ y el caso dental. Van el servicio, la industria y /servicios/desarrollo-software/ (internalLinks); el caso dental es el 'Siguiente reportaje' y cierra la cadena de casos.",
+    "TESTIMONIO: no existe aprobación escrita; la sección no se renderiza (_omitir)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (caso-logistica-hero, persona a la derecha) + Breadcrumbs + fila .chip-spec",
+      "rail": "Portada",
+      "h1": { "kicker": "Logística:", "metricId": "logistica-procesos", "text": "procesos automatizados con n8n y agentes de IA" },
+      "chips": ["Logística", "n8n", "Agentes de IA", "En operación"],
+      "lede": "Conectamos el CRM, el WhatsApp, el ERP y modelos de IA de una empresa de logística con flujos en n8n que se disparan en tiempo real, en cuanto algo cambia en uno de sus sistemas.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de logística con 27 procesos automatizados y quiero automatizar mi operación." },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "ficha": {
+      "_componente": "EntitySheet variant=case + .t-standfirst + crédito + SceneRail mode=labels (Quick Jump)",
+      "rail": "Contexto",
+      "eyebrow": "Ficha del caso",
+      "entity": [
+        { "term": "Sector", "value": "Logística", "confirmed": true },
+        { "term": "Servicio", "value": "Automatización con n8n", "href": "/servicios/automatizacion-n8n/", "confirmed": true },
+        { "term": "Herramientas", "value": "n8n y agentes de IA", "confirmed": true },
+        { "term": "Sistemas conectados", "value": "CRM, WhatsApp, ERP y modelos de IA", "confirmed": true },
+        { "term": "Disparadores", "value": "En tiempo real", "confirmed": true },
+        { "term": "Estado", "value": "Sigue en operación", "confirmed": true },
+        { "term": "Cifra", "value": "{{metric:logistica-procesos|full}}" }
+      ],
+      "deckBreve": "En logística, un mismo envío pasa por varios sistemas: el CRM donde se cerró la venta, el ERP donde se registra la operación y el WhatsApp donde alguien pregunta por él. Esta empresa los conectó con flujos de n8n y agentes de IA que se disparan en tiempo real.",
+      "deck": "Una empresa de logística conectó su CRM, su WhatsApp, su ERP y modelos de IA con n8n. Este reportaje sigue los procesos automatizados: de dónde salieron, cómo se eligieron y qué hace cada flujo.",
+      "byline": "Por el equipo de Ingeniak",
+      "note": "Reportaje breve: la cifra, el sector y los sistemas conectados, tal como los publicamos. El nombre de la empresa está anonimizado."
+    },
+    "punto-partida": {
+      "_componente": "Prose + nota al margen (ámbar)",
+      "_omitir": true,
+      "_nota": "D: 'Situación inicial con números del cliente [POR CONFIRMAR]… procesos manuales, horas y sistemas previos'. Se escribe cuando el cliente confirme por escrito cómo se hacían esos procesos antes (ver pendientes)."
+    },
+    "cifra": {
+      "_componente": "CaseFigure variant=nodes (un nodo cuadrado por proceso, unidos con ramas del isotipo; fijada +100 % en escritorio)",
+      "rail": "La cifra",
+      "eyebrow": "La cifra",
+      "h2": { "text": "Cada cuadro", "soft": "es un proceso automatizado." },
+      "figure": {
+        "variant": "nodes",
+        "caption": "Procesos automatizados con n8n. Empresa de logística.",
+        "aria": "Una red de nodos cuadrados, uno por proceso automatizado, unidos por ramas de luz."
+      },
+      "line": "La escena dibuja un nodo por proceso y los une con las ramas del isotipo de Ingeniak. Cada nodo es un flujo que se dispara cuando algo cambia en uno de los sistemas de la empresa y deja el dato donde hace falta.",
+      "metricIds": ["logistica-procesos"],
+      "sourceNote": true
+    },
+    "implementacion": {
+      "_componente": "SystemFlow (los nodos con confirmed=false no se publican). No se pinta mientras el caso sea breve.",
+      "rail": "Solución",
+      "eyebrow": "Qué implementamos",
+      "h2": { "text": "Cuatro sistemas,", "soft": "una sola red de flujos." },
+      "lede": "Con n8n conectamos el CRM, el WhatsApp, el ERP y modelos de IA de la empresa, con disparadores en tiempo real.",
+      "nodes": [
+        { "label": "CRM", "line": "Clientes, oportunidades y su historial.", "confirmed": false },
+        { "label": "WhatsApp", "line": "Donde entran y salen los mensajes.", "logos": ["whatsapp"], "confirmed": false },
+        { "label": "ERP", "line": "El sistema central de la operación.", "confirmed": false },
+        { "label": "n8n", "line": "Los flujos que mueven cada dato en cuanto algo cambia.", "logos": ["n8n"], "confirmed": false },
+        { "label": "Modelos de IA", "line": "Agentes y modelos que trabajan dentro de los flujos.", "confirmed": false }
+      ],
+      "body": [
+        "n8n es la capa que une: escucha lo que pasa en cada sistema y, cuando algo cambia, dispara el flujo que corresponde. Los modelos de IA entran donde hace falta entender un texto o tomar una decisión sencilla dentro de ese flujo.",
+        "Así, un mismo dato se captura una vez y llega a todos los sistemas que lo necesitan."
+      ]
+    },
+    "resultado": {
+      "_componente": "ImageSection mid (ind-industrial-kain-sector; respaldo home-sistema-2-atender en espejo) + panel con casillas HTML ancladas. No se pinta mientras el caso sea breve.",
+      "rail": "Resultado",
+      "eyebrow": "Resultado",
+      "h2": { "text": "Todo el caso,", "soft": "en una oración." },
+      "quote": "En una empresa de logística automatizamos {{metric:logistica-procesos|full}} con n8n, conectando CRM, WhatsApp, ERP y modelos de IA.",
+      "sourceNote": true,
+      "ui": {
+        "_nota": "Casillas que se encienden una a una sobre el panel de cristal. Llevan SIMULACIÓN y data-nosnippet: patrón ilustrativo, no un dato del caso. El slot va en femenino porque la plantilla arma 'cada casilla encendida es una …'.",
+        "title": "Flujos de la semana",
+        "days": ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+        "slot": "Tarea resuelta por un flujo"
+      }
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sin hitos del proyecto: fases genéricas aplicadas a una operación logística). No se pinta mientras el caso sea breve.",
+      "rail": "VKTOR",
+      "eyebrow": "Cómo lo hacemos con VKTOR™",
+      "h2": { "text": "Del diagnóstico", "soft": "al flujo en producción." },
+      "lede": "Así se verían las cinco fases en tu operación. Una implementación de Ingeniak toma de 7 a 30 días, según el alcance del proyecto.",
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Qué tareas repite tu equipo cada día, en qué sistemas viven y dónde se captura lo mismo dos veces." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Qué proceso va primero, qué lo dispara y qué pasa si un sistema no responde." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Armamos los flujos en n8n, los conectamos con tus sistemas y los probamos con datos reales antes de encenderlos." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Tu equipo trabaja con los flujos encendidos y ajustamos lo que la operación pida." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Medimos tiempo y errores cada mes, y sumamos el siguiente proceso." }
+      ],
+      "links": [{ "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }]
+    },
+    "replicar": {
+      "_componente": "ScriptList (3 filas) + enlace a /servicios/automatizacion-n8n/",
+      "rail": "Replicar",
+      "eyebrow": "Qué puedes replicar en tu operación",
+      "h2": { "text": "Tres ideas para automatizar", "soft": "sin detener la operación." },
+      "items": [
+        {
+          "n": "01",
+          "title": "Empieza por el proceso que más se repite",
+          "line": "No por el más complejo, sino por el que tu equipo hace más veces al día: confirmar un pedido, actualizar un estatus, avisar de un cambio de ruta. Ahí cada minuto ahorrado se multiplica por todas las veces que ocurre, y el equipo lo nota desde el principio."
+        },
+        {
+          "n": "02",
+          "title": "Conecta antes de reemplazar",
+          "line": "Cambiar de ERP o de CRM toma meses y frena a toda la empresa. Casi siempre conviene más conectar los sistemas que ya usas para que se pasen la información entre sí, y reemplazar solo lo que de verdad estorba. Un flujo puede leer del ERP y escribir en el CRM sin que ninguno de los dos cambie."
+        },
+        {
+          "n": "03",
+          "title": "Pon alertas en tiempo real",
+          "line": "Un retraso que se avisa al día siguiente ya es una queja. Si el flujo detecta el cambio en cuanto ocurre y avisa a la persona correcta, tu equipo resuelve antes de que el cliente tenga que preguntar dónde está su envío."
+        }
+      ],
+      "links": [{ "label": "Conoce la automatización con n8n", "href": "/servicios/automatizacion-n8n/" }]
+    },
+    "testimonio": {
+      "_componente": "Quote (condicional)",
+      "_omitir": true,
+      "_nota": "Solo con aprobación escrita del cliente (frase, nombre, cargo y empresa). Sin ella, la sección no existe en el HTML. No usar los borradores de testimonios de v1 (entre ellos el de 'TechLogistic', que era inventado)."
+    },
+    "relacionados": {
+      "_componente": "ScriptList (servicio, industria y software) + Still variant=next (Siguiente reportaje)",
+      "rail": "Sigue explorando",
+      "eyebrow": "Sigue explorando",
+      "items": [
+        { "title": "Automatización con n8n", "line": "El servicio detrás de este caso: flujos en n8n que conectan los sistemas que ya usas.", "href": "/servicios/automatizacion-n8n/" },
+        { "title": "Industrial y logística", "line": "Cómo se ve el sistema completo en una empresa industrial o de logística.", "href": "/industrias/industrial-logistica/" },
+        { "title": "Software a la medida", "line": "Para cuando ninguna herramienta del mercado encaja con tu operación y hay que construirla.", "href": "/servicios/desarrollo-software/" }
+      ],
+      "next": { "label": "Siguiente reportaje", "title": "Clínica dental en Monterrey: agente de IA en WhatsApp", "metricId": "dental-citas", "href": "/casos/clinica-dental-monterrey/" }
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer; cta-equipo espera la sesión de fotos R6)",
+      "rail": "Cierre",
+      "eyebrow": "Tu operación, en flujos",
+      "h2": { "text": "¿Qué procesos de tu operación podrían moverse solos?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "En la Discovery Session listamos contigo las tareas que tu equipo repite cada día, los sistemas donde viven y cuál conviene automatizar primero, sin cambiar lo que ya funciona. Sales con sugerencias concretas.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": { "label": "Escríbele a Kain", "waMessage": "Hola Kain, leí el caso de logística con 27 procesos automatizados y quiero automatizar mi operación." },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

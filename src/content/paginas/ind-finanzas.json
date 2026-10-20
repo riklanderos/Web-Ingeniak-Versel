@@ -1,0 +1,170 @@
+{
+  "pageId": "ind-finanzas",
+  "url": "/industrias/finanzas/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-19",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PREGUNTA AL CLIENTE · subsectores (D lo marcaba '[VALIDAR subsectores que atiende Ingeniak]'): la página habla a financieras de crédito, aseguradoras y despachos contables o fiscales como público, igual que el title y la meta de D, sin afirmar que sean clientes. Confirma si son los subsectores que quieres atender o si alguno sobra (p. ej. despachos fiscales, cajas de ahorro, Sofomes).",
+    "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos del sector financiero que podamos mencionar por tipo (sin nombre)? La página no afirma que los haya. Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
+    "DATO PENDIENTE · kain-sector.chat.script = 'finanzas': el guion src/data/chats/finanzas.json todavía no existe (src/data no es del área de este encargo). Mientras no exista, ChatSim cae al guion de salud (limpieza dental), que no corresponde a esta página. El guion propuesto (crédito para un negocio: tres preguntas de calificación, sin prometer aprobación ni tasa, llamada con asesor y lista de documentos) está listo para pegar en materiales/v2/build/peticiones.md → 'Construcción · industrias (copy)'. El lede de kain-sector ya lo describe.",
+    "VALIDACIÓN LEGAL · sitemap.json (notes): 'Revisar con el cliente obligaciones de protección de datos del sector antes de publicar ejemplos'. Revisar con el asesor legal: la sección 'Tus datos', la recepción de documentos por WhatsApp (automatizamos 02, jornada 11:00) y el guion de ejemplo. La página no afirma cumplimiento de ninguna norma ni muestra sellos.",
+    "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas F01–F04 (preguntas de calificación, documentos por WhatsApp, aprobaciones y tasas, subsectores) con su texto en peticiones.md. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-finanzas.faq.",
+    "FAQ DISTINTA DE D · faq.faqIds suma G05 (aprobada, '¿Me conviene Kommo o GoHighLevel?') al final: N11 y N14 siguen en validar: true y, sin G05, el acordeón quedaría con dos preguntas (W02 y G07). Al aprobarse N14 y las propias F01–F04, se puede quitar G05. Pedido: sumar /industrias/finanzas/ a G05.pages en faq.json.",
+    "CAMBIO DE TEXTO · automatizamos: D pedía 5 tarjetas; R2 pide 6 tareas por industria. Se suma 'Respuestas aprobadas' (requisitos y pasos del trámite con texto validado por tu empresa).",
+    "CAMBIO DE TEXTO · cifras: sin caso del sector (R2). EditorNote + dental-respuesta (con enlace al caso) y tiempo-operativo (promedio, primeros 90 días), cada una con su origen."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "SharedTake + ImageSection hero (ind-finanzas-hero, Kain en el despacho + persona del sector desenfocada) + Breadcrumbs. Sin chip de prueba: el sector no tiene caso.",
+      "rail": "Portada",
+      "eyebrow": "Industria · Finanzas",
+      "h1": { "text": "Agentes de IA y automatización", "soft": "para el sector financiero", "lit": "IA" },
+      "lede": "Cada prospecto calificado y en su etapa antes de que tu asesor tome el teléfono. Kain responde con información aprobada, pide los documentos y agenda la llamada.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, trabajo en el sector financiero y quiero calificar prospectos automáticamente."
+      },
+      "illus": "Imagen ilustrativa del sector"
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada + DefinitionBlock (texto propio de la página, citable)",
+      "rail": "Cómo ayuda",
+      "eyebrow": "IA en finanzas",
+      "definition": {
+        "heading": "¿Cómo ayuda la IA en el sector financiero?",
+        "text": "Un agente de IA atiende a cada prospecto en cuanto escribe: responde con la información que tu empresa aprobó, hace tus preguntas de calificación, pide los documentos que tu proceso requiere y agenda la llamada con el asesor indicado. Tu CRM guarda el historial completo. No da asesoría financiera ni promete aprobaciones.",
+        "_nota": "52 palabras. Brief de D + lo que dicen G02 y W02 (aprobadas) y N14 (en validar; aquí solo como regla de lo que Kain no hace)."
+      },
+      "body": [
+        "Sirve a financieras de crédito, aseguradoras y despachos contables o fiscales: cambian las preguntas y los documentos, no el sistema. Tu equipo decide qué responde Kain, qué datos pide y en qué momento entra una persona."
+      ]
+    },
+    "dolores": {
+      "_componente": "DayTimeline vertical (aguja con scrub, sin pin). Horas ilustrativas; abre con la del HUD del sector (DESPACHO · 09:15, ESPEC §5.3).",
+      "rail": "La jornada",
+      "eyebrow": "La jornada",
+      "h2": { "text": "Del anuncio al asesor,", "soft": "un día en tu despacho." },
+      "lede": "Horas ilustrativas. En ámbar, dónde se enfría hoy un prospecto; en cian, cómo llega listo a tu asesor.",
+      "entries": [
+        {
+          "time": "09:15",
+          "pain": "Llegan los prospectos de la campaña de anoche. Tu asesor empieza a llamar en orden y varios ya no contestan.",
+          "fix": "Kain les escribió en cuanto llegaron, hizo tus preguntas de calificación y dejó a cada uno en su etapa."
+        },
+        {
+          "time": "11:00",
+          "pain": "Un prospecto manda su identificación y sus comprobantes por WhatsApp, revueltos con audios. Nadie sabe qué falta.",
+          "fix": "Kain pide cada documento por su nombre, confirma lo que recibió y le dice al prospecto qué le falta."
+        },
+        {
+          "time": "13:30",
+          "pain": "Tu mejor asesor pasa la mañana con personas que solo querían saber si califican y nunca iban a solicitar.",
+          "fix": "Kain filtra con tus criterios y solo agenda con el asesor a quien cumple el perfil; el resto recibe la información aprobada."
+        },
+        {
+          "time": "17:00",
+          "pain": "Dirección pregunta cuántos prospectos entraron en la semana y en qué etapa van. Alguien arma el reporte a mano.",
+          "fix": "El reporte sale de tu CRM con cada etapa al día, por origen y por asesor, sin hojas de cálculo."
+        },
+        {
+          "time": "21:40",
+          "pain": "Alguien pide informes de un seguro de gastos médicos desde su casa, cuando ya no queda nadie en la oficina.",
+          "fix": "Kain responde con la información aprobada, hace las primeras preguntas y le agenda la llamada para mañana."
+        }
+      ]
+    },
+    "automatizamos": {
+      "_componente": "ScriptList (6 filas; la 04 enlaza a /kommo/)",
+      "rail": "Qué automatizamos",
+      "eyebrow": "Qué automatizamos",
+      "h2": { "text": "Lo que pasa", "soft": "antes de que tu asesor marque." },
+      "items": [
+        { "n": "01", "title": "Calificación inicial", "line": "Hace las preguntas que tu equipo aprobó, en orden, y marca a cada prospecto según tus criterios." },
+        { "n": "02", "title": "Documentos completos", "line": "Pide cada documento por su nombre, confirma lo recibido y avisa qué falta antes de la cita." },
+        { "n": "03", "title": "Agenda con el asesor indicado", "line": "Asigna por producto, zona o turno y aparta la llamada en el calendario de ese asesor." },
+        { "n": "04", "title": "Seguimiento por etapa", "line": "En Kommo o GoHighLevel, retoma a quien dejó la solicitud a medias, con el mensaje y la frecuencia que tú defines.", "href": "/kommo/" },
+        { "n": "05", "title": "Respuestas aprobadas", "line": "Requisitos, horarios y pasos del trámite, siempre con el texto que tu empresa validó." },
+        { "n": "06", "title": "Reportes para dirección", "line": "Prospectos por etapa, origen y asesor, directo de tu CRM y sin armar hojas de cálculo." }
+      ]
+    },
+    "kain-sector": {
+      "_componente": "ImageSection mid (ind-finanzas-kain-sector, Kain a la izquierda, push; respaldo home-sistema-2-atender en espejo) + ChatSim registrado (script finanzas: falta el archivo, ver pendientes). Fijada +100 % en escritorio",
+      "rail": "Kain en tu despacho",
+      "eyebrow": "Kain en tu despacho",
+      "h2": { "text": "Tres preguntas", "soft": "y una llamada agendada." },
+      "lede": "El dueño de una cafetería pide un crédito desde un anuncio. Kain hace tres preguntas de calificación, aclara que no puede prometerle una aprobación y le agenda la llamada con un asesor, con la lista de documentos.",
+      "chat": { "mode": "registered", "script": "finanzas" },
+      "limite": "Kain no da asesoría financiera, no calcula tasas ni montos por su cuenta y no promete aprobaciones. Responde con la información que tu empresa aprobó y deja las recomendaciones a tu asesor.",
+      "note": "Ejemplo ilustrativo: la conversación, el negocio y las horas no son datos de un caso."
+    },
+    "cifras": {
+      "_componente": "EditorNote + Montage (2 filas, sin caso del sector) con enlace al caso más cercano",
+      "rail": "Resultados",
+      "eyebrow": "Resultados",
+      "h2": { "text": "Sin caso financiero publicado,", "soft": "con cifras que dicen de dónde vienen." },
+      "lede": "Todavía no publicamos un caso del sector financiero. Estas dos cifras miden velocidad y orden, lo que más pesa en tu proceso, y vienen de otros clientes.",
+      "noteLabel": "Nota del editor",
+      "note": "El tiempo de respuesta es de una clínica dental en Monterrey; la reducción de tiempo operativo es el promedio de nuestros clientes en sus primeros 90 días. Ninguna viene de una financiera, una aseguradora o un despacho: no publicamos el caso de un cliente sin su autorización.",
+      "rows": [
+        { "metricId": "dental-respuesta", "context": "Tiempo de respuesta en WhatsApp · Clínica dental · Monterrey", "href": "/casos/clinica-dental-monterrey/", "linkLabel": "Ver el caso" },
+        { "metricId": "tiempo-operativo", "context": "Promedio de nuestros clientes, primeros 90 días" }
+      ],
+      "sourceNote": true,
+      "links": [
+        { "label": "Lee el caso de la clínica dental", "href": "/casos/clinica-dental-monterrey/" }
+      ]
+    },
+    "servicios": {
+      "_componente": "Still ×3",
+      "rail": "Servicios",
+      "eyebrow": "Servicios recomendados",
+      "h2": { "text": "El sistema", "soft": "detrás de un prospecto bien calificado." },
+      "items": [
+        { "href": "/servicios/crm-con-ia/", "label": "Organizar", "title": "CRM con IA", "line": "Cada prospecto con su etapa, sus documentos y su historial en Kommo o GoHighLevel." },
+        { "href": "/servicios/agentes-ia-whatsapp/", "label": "Atender", "title": "Agentes de IA para WhatsApp", "line": "Kain califica, pide documentos y agenda con tu asesor." },
+        { "href": "/servicios/automatizacion-n8n/", "label": "Automatizar", "title": "Automatización con n8n", "line": "Reportes, avisos y tareas entre tu CRM, tu correo y tus hojas de cálculo." }
+      ]
+    },
+    "datos": {
+      "_componente": "Intertitle (aura) con lista corta",
+      "rail": "Tus datos",
+      "eyebrow": "Tus datos",
+      "h2": { "text": "Datos financieros,", "soft": "con reglas antes del primer mensaje." },
+      "lede": "Ingresos, identificaciones y estados de cuenta son información que tu cliente le confía a tu empresa. Antes de encender a Kain definimos contigo qué pide, dónde se guarda y quién lo ve.",
+      "items": [
+        { "title": "Consentimiento", "line": "Cuándo ve el prospecto tu aviso de privacidad y cómo lo acepta, antes de mandar cualquier documento." },
+        { "title": "Solo lo necesario", "line": "Qué documentos pide Kain y en qué etapa. Nuestra propuesta de partida: nada que tu asesor no vaya a revisar." },
+        { "title": "Escalamiento a una persona", "line": "Quejas, aclaraciones o cualquier pregunta que pida una recomendación pasan a tu equipo con el historial completo." },
+        { "title": "Sin asesoría financiera ni legal", "line": "Kain informa, califica y agenda. Tasas, montos, coberturas y decisiones las da tu asesor." },
+        { "title": "Tu aviso, tus reglas", "line": "Tu aviso de privacidad y las obligaciones de tu sector las define tu empresa con su asesor legal; Kain se configura con esas reglas." }
+      ],
+      "note": "Si tu empresa responde ante un regulador y tiene requisitos propios de seguridad, los revisamos en la llamada. No ponemos sellos ni certificaciones que no tenemos."
+    },
+    "faq": {
+      "_componente": "FAQAccordion",
+      "rail": "Preguntas",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": { "text": "Preguntas del", "soft": "sector financiero." },
+      "faqIds": ["N11", "N14", "W02", "G07", "G05"],
+      "_nota": "Ids de sitemap.json → ind-finanzas.faq, en su orden, más G05 (aprobada) al final para que el acordeón no quede con dos preguntas mientras N11 y N14 siguen en validar. Propuestas propias del sector (F01–F04) en peticiones.md.",
+      "footer": "¿Tienes otra duda sobre tu proceso comercial? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "Tu siguiente paso",
+      "h2": { "text": "¿Cuántos prospectos llegan sin calificar a tu asesor?", "soft": "Lo vemos en 30 minutos." },
+      "lede": "Revisamos tu embudo de punta a punta: de dónde llegan los prospectos, qué preguntas les haces y cuánto tarda alguien en contestarles. Sales con un orden claro de qué automatizar.",
+      "ctaPrimary": { "label": "Agenda tu Discovery Session", "href": "/discovery/" },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, trabajo en el sector financiero y quiero calificar prospectos automáticamente."
+      },
+      "micro": "Sin costo · Sin compromiso · 30 minutos por Google Meet"
+    }
+  }
+}

@@ -70,6 +70,58 @@ export function stillOf(href: string): string {
   return id ? `/img/cine/${id}-still-640` : STILL_FALLBACK;
 }
 
+/* ───────── Pantalla del mega menú: Kain SIEMPRE de cuerpo completo (§0.1 · tarea nav de construcción) ─────────
+ * El still 21:9 de 640 px corta la cabeza o los pies del sujeto (la placa es 16:9 y Kain ocupa ~87 % de su alto). La pantalla
+ * usa la PLACA de escritorio de 1280 px (≈ 18 KB en AVIF, la misma que ya publica plates.mjs) y la encuadra con la caja del
+ * sujeto registrada en plates.json (subject.d): el sujeto entero cabe en la pantalla, del lado de su composición, y el texto
+ * de la pantalla va del otro lado (data-copy). El encuadre lo hace CSS (nav.css · .mm-screen__img) con estas variables.
+ * Placa: la de la portada destino; si aún no está registrada, su launchFallback del sitemap; si no, la del respaldo local de la
+ * plantilla (nosotros → nosotros-manifiesto); si no, la estación Atender. Nunca se pide un archivo que no exista. */
+export const SCREEN_DEFAULT_PLATE = 'home-sistema-2-atender';
+const SCREEN_LOCAL_FALLBACK: Record<string, string> = {
+  '/nosotros/': 'nosotros-manifiesto',   // AboutTemplate usa el mismo respaldo mientras no exista equipo-real
+};
+const usable = (id?: string | null): id is string => {
+  const p = id ? getPlate(id) : null;
+  return !!(p?.d?.src && Array.isArray(p?.subject?.d) && p.subject.d.length === 4);
+};
+/** Placa registrada que la pantalla del mega menú muestra para un href. */
+export function screenPlateOf(href: string): string {
+  if (/^https?:/.test(href)) return SCREEN_DEFAULT_PLATE;
+  const url = href.split('#')[0];
+  const p = pageByHref(url);
+  const s = (p?.sections as any[])?.find((x) => x.plate);
+  const raw = s?.plate?.id;
+  const lf = s?.plate?.launchFallback;
+  const ids = (Array.isArray(raw) ? raw : [raw]).concat([typeof lf === 'string' ? lf : lf?.plate, SCREEN_LOCAL_FALLBACK[url]]);
+  return ids.find((id) => usable(id)) ?? SCREEN_DEFAULT_PLATE;
+}
+export type ScreenFrame = { src: string; frame: string; copy: 'l' | 'r'; plate: string };
+const r3 = (n: number) => String(Math.round(n * 1000) / 1000);
+/** Imagen (ruta base sin extensión) y encuadre de la pantalla para una placa registrada. */
+export function screenFrame(plateId: string): ScreenFrame {
+  const id = usable(plateId) ? plateId : SCREEN_DEFAULT_PLATE;
+  const p = getPlate(id) as any;
+  const [a, b, c, d] = (p.subject.d as number[]).map((v) => Math.min(1, Math.max(0, Number(v) || 0)));
+  const x0 = Math.min(a, c), x1 = Math.max(a, c), y0 = Math.min(b, d), y1 = Math.max(b, d);
+  const left = p.layout === 'subject-left' || (p.layout !== 'subject-right' && (x0 + x1) / 2 < 0.42);
+  return {
+    plate: id,
+    src: `${p.d.src}-1280`,
+    copy: left ? 'r' : 'l',
+    frame: `--ar:${r3(p.d.ar || p.d.w / p.d.h || 1.7917)};--sx:${r3(x0)};--sy:${r3(y0)};--sw:${r3(Math.max(0.05, x1 - x0))};--sh:${r3(Math.max(0.05, y1 - y0))};--sd:${left ? '-1' : '1'}`,
+  };
+}
+/** Pantalla de un href (placa de su portada encuadrada). */
+export function screenOf(href: string): ScreenFrame {
+  return screenFrame(screenPlateOf(href));
+}
+/** Id de placa desde una ruta de still de navegacion.json ("/img/cine/<id>-still"). */
+export function plateFromStill(path?: string): string | undefined {
+  const m = path?.match(/\/img\/cine\/(.+?)-still(?:-\d+)?$/);
+  return m?.[1];
+}
+
 /** ¿La placa está registrada? (solo informativo; el JS cae al respaldo si el archivo no existe). */
 export function plateKnown(href: string): boolean {
   const id = heroPlateOf(href);

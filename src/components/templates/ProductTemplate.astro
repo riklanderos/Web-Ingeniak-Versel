@@ -1,0 +1,560 @@
+---
+// ProductTemplate · T-PRODUCT (ESPEC §5.6, §8.5, §12.2). Hoy sirve /kain/: la sub-marca kain, su plataforma app.kain.mx y
+// el personaje que le da cara, contado por Kain en primera persona.
+// Data-driven: recorre sitemap.json → page.sections EN SU ORDEN y pinta cada id con su escena, con el texto de
+// src/content/paginas/<page.id>.json (área copy; campos propios documentados en su "_schema"). Nada de texto fijo aquí.
+//   hero        ImageSection hero subject-center (Kain al centro saludando): logotipo kain · by Ingeniak + H1 abajo a la
+//               izquierda; lede, CTAs y app.kain.mx abajo a la derecha (el texto flanquea al sujeto). Pantallas estrechas o
+//               4:3: el escenario se corre y todo el texto va a la izquierda. Sin placa exportada: escenario de luz (halo,
+//               ondas, piso) con el clip con alfa de Kain saludando (recorte fijo en móvil, Safari y movimiento reducido).
+//   que-es      Intertitle sobre la toma desenfocada de la portada (SharedTake) + DefinitionBlock (G13) + tres acepciones
+//   hago        Intertitle + ScriptList (6 capacidades en primera persona) + ChatSim con pestañas en teléfono de cristal
+//   donde       hub propio: canales → Kain (clip con alfa, brazos cruzados) → sistemas, unidos por ramas del isotipo
+//   si-no       ImageSection mid subject-left (kain-si-no; móvil split) + TwoColumnScript "sí / no" + eslogan
+//   sectores    LocationSwitcher (8 sectores con el eslogan adaptado + 2 burbujas SIMULACIÓN sobre la portada del sector)
+//   plataforma  Intertitle split + ProductWindow (SIMULACIÓN sobre aura; sin capturas reales todavía) + app.kain.mx
+//   cifras      Montage (cifras del caso dental con su portada dentro de las letras)
+//   faq         Intertitle split + FAQAccordion (FAQPage lo emite SEOHead con las mismas ids)
+//   cta-final   Dawn (cta-amanecer)
+// Reglas: un azul por pantalla (solo portada y cierre llevan primario) · una .lit (H1) · cada sección con su id ·
+// enlaces del cuerpo solo a rutas construidas (linkTarget) · cifras solo con tokens/Metric · CSS en src/styles/tpl/ProductTemplate.css.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/tpl/ProductTemplate.css';   // después de BaseLayout: sus reglas van después de tokens/cine/ui/pages
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import ImageSection from '../cine/ImageSection.astro';
+import SharedTake from '../cine/SharedTake.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Montage from '../cine/Montage.astro';
+import LocationSwitcher from '../cine/LocationSwitcher.astro';
+import Dawn from '../cine/Dawn.astro';
+import { resolvePlate, plateReady, AURA_ONDAS, type Fallback, type Layout } from '../cine/plate';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import Icon from '../ui/Icon.astro';
+import ScriptList from '../ui/ScriptList.astro';
+import ChatSim from '../ui/ChatSim.astro';
+import TwoColumnScript from '../ui/TwoColumnScript.astro';
+import DefinitionBlock from '../ui/DefinitionBlock.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import ProductWindow from '../ui/ProductWindow.astro';
+import KommoBadge from '../ui/KommoBadge.astro';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import { ledeParts, builtCrumbs } from './heroKit';
+import { annotateFigures, esc, logoUrl, logoWide, TOOLS } from '../ui/ui-data';
+import { pages, waHref, SITE, linkTarget, isBuilt, plateAlt, type Page } from '../../lib/site';
+import { METRICS, type MetricId } from '../../lib/metrics';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C: Record<string, any> = copy?.sections ?? {};
+
+/* ── Secciones en el orden del sitemap (sin condicionales ni las que el copy omite) ── */
+const list = ((P.sections ?? []) as any[]).filter((s) => s?.id && C[s.id] && !C[s.id]._omitir && s.status !== 'conditional');
+type Kind = 'hero' | 'def' | 'hago' | 'hub' | 'sino' | 'sectors' | 'platform' | 'figures' | 'faq' | 'dawn' | 'generic';
+const KIND: Record<string, Kind> = {
+  hero: 'hero', 'que-es': 'def', hago: 'hago', donde: 'hub', 'si-no': 'sino', sectores: 'sectors',
+  plataforma: 'platform', cifras: 'figures', faq: 'faq', 'cta-final': 'dawn',
+};
+const kindOf = (s: any): Kind => KIND[s.id] ?? (s.plate ? 'sino' : 'generic');
+/* La portada y la definición que la sigue comparten toma (SharedTake, §3.12), como en los servicios */
+type Block = { kind: Kind; s: any; c: any; next?: { s: any; c: any } };
+const blocks: Block[] = [];
+for (let i = 0; i < list.length; i++) {
+  const s = list[i];
+  const kind = kindOf(s);
+  if (kind === 'hero' && list[i + 1] && kindOf(list[i + 1]) === 'def') {
+    blocks.push({ kind, s, c: C[s.id], next: { s: list[i + 1], c: C[list[i + 1].id] } });
+    i++;
+  } else blocks.push({ kind, s, c: C[s.id] });
+}
+
+/* ── Utilidades de texto ── */
+/** Espacio duro tras palabras de 1–2 letras (ninguna línea de titular termina en "de", "tu", "y"…), fuera de los nodos con cifras. */
+const NBSP_RX = /(?<=^|[\s (¿¡])(a|al|de|el|en|la|lo|un|tu|su|mi|me|y|o|e|u|es|se|te|no|ni)\s+/gi;
+const keepShort = (html: string) => {
+  let depth = 0;
+  return html.replace(/(<[^>]+>)|([^<]+)/g, (_m: string, tag?: string, txt?: string) => {
+    if (tag) {
+      if (depth > 0) { if (/^<\//.test(tag)) depth--; else if (!/\/>$/.test(tag)) depth++; return tag; }
+      if (/\sdata-(allow-number|metric)\b/.test(tag) && !/\/>$/.test(tag)) depth = 1;
+      return tag;
+    }
+    return depth > 0 ? txt! : txt!.replace(NBSP_RX, (_x: string, w: string) => `${w} `);
+  });
+};
+/** Titular de dos voces {text, soft} → HTML (tokens resueltos). */
+const head = (h: any) => (h ? keepShort(annotateFigures(h.text ?? '') + (h.soft ? ` <span class="soft">${annotateFigures(h.soft)}</span>` : '')) : '');
+/** Primera voz del H1 con su palabra de luz (.lit, UNA por página, §2.3). */
+function litVoice(text = '', lit?: string): string {
+  const html = annotateFigures(text);
+  const word = lit ?? (text.trim().split(/\s+/).pop() ?? '').replace(/[.,;:¿?¡!]+$/, '');
+  const w = esc(word);
+  const at = word ? html.lastIndexOf(w) : -1;
+  return keepShort(at < 0 ? html : `${html.slice(0, at)}<span class="lit">${w}</span>${html.slice(at + w.length)}`);
+}
+/** Eslogan en dos tiempos: "Tu negocio trabajando, <b>sin depender más de ti.</b>" */
+const sloganHTML = (s?: string) => {
+  if (!s) return '';
+  const i = s.indexOf(', ');
+  return i > 0 ? `${annotateFigures(s.slice(0, i + 1))} <b>${annotateFigures(s.slice(i + 2))}</b>` : annotateFigures(s);
+};
+const toneOf = (t?: string) => (/^(ambar|ámbar|amber)$/i.test(t ?? '') ? 'amber' : /^(cian|cyan)$/i.test(t ?? '') ? 'cyan' : 'muted') as 'cyan' | 'amber' | 'muted';
+const wa = (c: any) => (c?.ctaSecondary?.waMessage ? waHref(c.ctaSecondary.waMessage) : P.secondaryCta?.href ?? waHref('Hola Kain'));
+const WA_LABEL = 'Escríbele a Kain';   // regla de marca: el secundario siempre se llama así; el copy aporta el mensaje
+const ext = (href = '') => /^https?:\/\//.test(href);
+/** Enlaces del cuerpo (R12): solo rutas construidas o externas; una planeada no se pinta (nunca '#'). */
+const built = (l?: any[]) => (l ?? []).filter((x) => x?.href && isBuilt(x.href));
+const hrefOr = (h?: string) => (h ? linkTarget(h) ?? undefined : undefined);
+const Eyebrow = (c: any) => (c?.eyebrow ? `<span class="node" aria-hidden="true"></span>${esc(c.eyebrow)}` : '');
+
+/* ── Placas: respaldo de lanzamiento de sitemap.json o, si no lo trae, uno local con la misma lectura ── */
+// kain-si-no (Kain pensativo a la izquierda) → "Conoce a Kain" del inicio (Kain a la izquierda junto a un teléfono de
+// cristal, sin vestuario de sector: la escena siguiente abre con el sector salud). Pose distinta a la del hub anterior (R13).
+const LOCAL_FALLBACK: Record<string, Fallback> = { 'kain-si-no': { plate: 'home-kain' } };
+const fbOf = (p: any): Fallback => p?.launchFallback ?? LOCAL_FALLBACK[p?.id] ?? undefined;
+/** Lado del sujeto: el de sitemap si se pinta la placa pedida (o el aura que la sustituye); el de la placa de respaldo si
+ *  se usa el respaldo (su sujeto puede estar del otro lado). */
+function layoutFor(p: any): Layout | undefined {
+  if (!p?.id) return undefined;
+  const r = resolvePlate(p.id, { fallbackPlate: fbOf(p), mirror: p.mirror });
+  if (r.usedFallback) return undefined;
+  return p.layout && p.layout !== 'sin sujeto' ? (p.layout as Layout) : undefined;
+}
+
+/* ── 01 · Portada ── */
+const heroS = list.find((s) => s.id === 'hero');
+const hp = heroS?.plate ?? { id: 'kain-hero', layout: 'subject-center', srcsetMax: 2752 };
+const hr = resolvePlate(hp.id, { fallbackPlate: fbOf(hp), mirror: hp.mirror, layout: layoutFor(hp) });
+const heroAura = hr.aura;                 // sin placa exportada: escenario de luz + Kain (clip/recorte)
+const heroCenter = hr.layout === 'subject-center';
+const heroLede = ledeParts(C.hero?.lede, 20);
+const lcp = hr.id ?? undefined;
+/* Clips con alfa (public/video/kain-*.webm) y sus recortes fijos (public/img/kain/*, 560 × 996, mismo encuadre que el
+   clip): el recorte es el estado de reposo y el respaldo (móvil, Safari, movimiento reducido, ahorro de datos). */
+const CLIP_HERO = { video: '/video/kain-presenta.webm', still: '/img/kain/kain-saluda.webp', loop: true };
+const CLIP_HUB = { video: '/video/kain-brazos.webm', still: '/img/kain/kain-brazos-cruzados.webp', loop: false };
+
+/* ── 04 · Dónde trabajo: canales → Kain → sistemas ── */
+type HubItem = { slug?: string; icon?: string; name: string; line?: string; href?: string };
+const hubSide = (g: any) => ({ label: g?.label ?? '', items: ((g?.items ?? []) as HubItem[]).map((it) => ({ ...it, href: hrefOr(it.href) })) });
+
+/* ── 06 · Sectores (LocationSwitcher): la portada de cada industria + eslogan adaptado + 2 burbujas ── */
+const sectorsOf = (c: any) => ((c?.sectors ?? []) as any[]).map((s) => ({
+  slug: s.slug, name: s.name, line: s.line, href: hrefOr(s.href), bubbles: s.bubbles,
+  plate: `ind-${s.slug}-hero`, fallbackPlate: 'home-sistema-2-atender',
+}));
+
+/* ── 07 · Plataforma: nombre corto de cada canal en la ventana simulada ── */
+const CHANNEL_NAME: Record<string, string> = { whatsapp: 'WhatsApp', instagram: 'Instagram', facebook: 'Messenger', web: 'Chat web', correo: 'Correo' };
+
+/* ── 08 · Cifras (Montage): la portada de cada caso dentro de sus letras ── */
+function figuresOf(c: any) {
+  const ids = ((c?.rows ?? []).map((r: any) => r.metricId) as MetricId[]).filter((id) => METRICS[id]);
+  const stillFor: Record<string, string> = {};
+  for (const id of ids) {
+    const href = METRICS[id]?.href;
+    const tp = href ? (pages as any[]).find((x) => x.url === href) : null;
+    const pid = tp?.sections?.find((x: any) => x.plate)?.plate?.id;
+    if (pid && plateReady(pid)) stillFor[id] = pid;
+  }
+  return { ids, stillFor };
+}
+---
+<BaseLayout page={page} lcpPlate={lcp} lcpSrcsetMax={hp.srcsetMax ?? 2752} bodyClass="prd">
+  {blocks.map((b) => {
+    const { s, c } = b;
+    const p = s.plate ?? null;
+
+    /* ───────────── 01 · Portada (+ 02 definición dentro de la toma compartida) ───────────── */
+    if (b.kind === 'hero') return (
+      <SharedTake plate={hp.id} fallbackPlate={fbOf(hp)} mirror={hp.mirror}>
+        <ImageSection
+          id={s.id} plate={hp.id} fallbackPlate={fbOf(hp)} layout={hr.layout} mirror={hp.mirror}
+          height="hero" priority take mobile="split" srcsetMax={hp.srcsetMax ?? 2752} alt={plateAlt(hr.id ?? hp.id, P.id) || undefined}
+          class={['prd-hero', 'tpl-hero', heroCenter ? 'prd-hero--center' : 'prd-hero--side'].join(' ')}
+        >
+          <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
+          {c.firma && (
+            <p class="prd-firma"><span class="kain-mark">kain</span><span class="prd-firma__by">{c.firma.replace(/^kain\s*/i, '')}</span></p>
+          )}
+          <h1 id={`${s.id}-t`} class="prd-h1" data-split>
+            <span class="t-display prd-h1__a" set:html={litVoice(c.h1?.text ?? P.h1, c.h1?.lit)} />{c.h1?.soft && <> <span class="t-deck prd-h1__b" set:html={keepShort(annotateFigures(c.h1.soft))} /></>}
+          </h1>
+          {c.channels?.items?.length > 0 && (
+            <p class="t-label prd-channels tpl-mhide">
+              <span class="prd-channels__k">{c.channels.label}</span>
+              {(c.channels.items as string[]).map((t, i) => <>{i > 0 && <span class="prd-channels__sep" aria-hidden="true"></span>}<span class="tpl-nw">{t}</span></>)}
+            </p>
+          )}
+
+          {/* Abajo a la derecha (subject-center): lede, CTAs y app.kain.mx. En pantallas estrechas el aside baja bajo el H1. */}
+          <Fragment slot="aside">
+            {c.lede && (
+              <p class="t-lede t-lede--2 prd-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
+            )}
+            <HeroCtas href={c.ctaPrimary?.href ?? SITE.discovery} label={c.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+              waHref={wa(c)} waLabel={WA_LABEL} class="prd-hero__ctas" />
+            {c.app?.href && (
+              <a class="lnk--mono prd-app tpl-mhide" href={c.app.href} target="_blank" rel="noopener">
+                {c.app.label}<Icon name="external" size={16} />
+              </a>
+            )}
+          </Fragment>
+
+          {/* Sin placa exportada: escenario de luz registrado (halo, ondas, piso con reflejo) y Kain de cuerpo completo */}
+          {heroAura && (
+            <Fragment slot="stage">
+              <span class="prd-stage__waves" aria-hidden="true"><img src={AURA_ONDAS} alt="" width="960" height="640" decoding="async" /></span>
+              <span class="prd-stage__halo" aria-hidden="true"></span>
+              <span class="prd-stage__floor" aria-hidden="true"></span>
+              <span class="prd-kain prd-kain--hero" data-kclip={CLIP_HERO.loop ? 'loop' : 'once'} data-src={CLIP_HERO.video}>
+                <img class="prd-kain__img" src={CLIP_HERO.still} alt="" width="560" height="996" decoding="async" fetchpriority="high" />
+                <img class="prd-kain__mirror" src={CLIP_HERO.still} alt="" width="560" height="996" decoding="async" loading="lazy" />
+              </span>
+            </Fragment>
+          )}
+
+          {/* R3 · móvil: la línea de canales y app.kain.mx bajan después de la placa, dentro de la misma sección */}
+          <Fragment slot="more">
+            {heroLede.rest && <Copy text={heroLede.rest} as="p" class="t-lede t-lede--2 prd-hero__rest tpl-dhide" />}
+            {c.channels?.items?.length > 0 && (
+              <p class="t-label prd-channels prd-channels--m tpl-dhide">
+                <span class="prd-channels__k">{c.channels.label}</span>
+                {(c.channels.items as string[]).map((t, i) => <>{i > 0 && <span class="prd-channels__sep" aria-hidden="true"></span>}<span class="tpl-nw">{t}</span></>)}
+              </p>
+            )}
+            {c.app?.href && (
+              <a class="lnk--mono prd-app prd-app--m tpl-dhide" href={c.app.href} target="_blank" rel="noopener">{c.app.label}<Icon name="external" size={16} /></a>
+            )}
+          </Fragment>
+        </ImageSection>
+
+        {b.next && (
+          <Intertitle id={b.next.s.id} rack aura="none" labelledby={`${b.next.s.id}-def-q`} class="prd-def tpl-glow">
+            <Aura kind="ondas" x="38%" y="104%" o={1} only="d" />
+            <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+            <div class="prd-def__grid">
+              <DefinitionBlock
+                id={`${b.next.s.id}-def`}
+                faqId={b.next.c.definition?.faqId}
+                heading={b.next.c.definition?.heading ?? b.next.c.h2?.text}
+                text={b.next.c.definition?.text}
+                label={b.next.c.eyebrow}
+                class="prd-def__block"
+              />
+              {(b.next.c.facets ?? []).length > 0 && (
+                <dl class="prd-facets" data-ui-stagger>
+                  {(b.next.c.facets as any[]).map((f, i) => (
+                    <div class="prd-facet" style={`--i:${i}`}>
+                      <dt class="t-label prd-facet__t"><span class="prd-facet__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{f.term}</dt>
+                      <dd class="prd-facet__l" set:html={annotateFigures(f.line)} />
+                    </div>
+                  ))}
+                </dl>
+              )}
+            </div>
+            {(b.next.c.body ?? []).map((t: string) => <p class="prd-def__body t-deck" data-reveal set:html={annotateFigures(t)} />)}
+          </Intertitle>
+        )}
+      </SharedTake>
+    );
+
+    /* ───────────── Definición suelta (si no sigue a la portada) ───────────── */
+    if (b.kind === 'def') return (
+      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-def-q`} class="prd-def tpl-glow">
+        <Aura kind="ondas" x="38%" y="104%" o={1} />
+        <div class="prd-def__grid">
+          <DefinitionBlock id={`${s.id}-def`} faqId={c.definition?.faqId} heading={c.definition?.heading ?? c.h2?.text} text={c.definition?.text} label={c.eyebrow} class="prd-def__block" />
+        </div>
+      </Intertitle>
+    );
+
+    /* ───────────── 03 · Lo que hago (filas de guion + teléfono de cristal con pestañas) ───────────── */
+    if (b.kind === 'hago') {
+      const rows = (c.items ?? []).map((it: any, i: number) => ({ n: it.n ?? String(i + 1).padStart(2, '0'), title: it.title, line: it.line, href: hrefOr(it.href) }));
+      const tabs = c.chat ? (c.chat.tabs ?? c.chat.scripts ?? [c.chat.script ?? 'default']) : null;
+      return (
+        <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="prd-hago tpl-glow">
+          <Aura kind="ondas" x="30%" y="100%" o={1} only="d" />
+          <div class:list={['prd-hago__grid', tabs && 'prd-hago__grid--chat']}>
+            <div class="prd-hago__main">
+              {c.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={Eyebrow(c)} />}
+              <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+              {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+              <ScriptList rows={rows} label={c.eyebrow} class="prd-hago__rows" />
+              {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="prd-body" data-reveal />)}
+              {c.limite && <p class="t-micro prd-limit" data-reveal><span class="node" aria-hidden="true"></span><span set:html={annotateFigures(c.limite)} /></p>}
+            </div>
+            {tabs && (
+              <div class="prd-hago__aside">
+                <Aura kind="isotipo" x="50%" y="46%" w="250%" o={0.9} clip={false} class="prd-hago__aura" />
+                <ChatSim mode="inline" tabs={tabs} title="Agente de IA de tu negocio" />
+              </div>
+            )}
+          </div>
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── 04 · Dónde trabajo (hub: canales → Kain → sistemas) ───────────── */
+    if (b.kind === 'hub') {
+      const L = hubSide(c.channels), R = hubSide(c.systems);
+      const mark = (it: HubItem) => it.slug
+        ? <span class:list={['logo-mask prd-hub__logo', logoWide(it.slug) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(it.slug)})`} aria-hidden="true"></span>
+        : <Icon name={it.icon ?? 'check'} size={22} class="prd-hub__ico" />;
+      const col = (side: { label: string; items: any[] }, dir: 'in' | 'out') => (
+        <section class={`prd-hub__col prd-hub__col--${dir}`} aria-labelledby={`${s.id}-${dir}`}>
+          <h3 id={`${s.id}-${dir}`} class="t-label t-label--cyan prd-hub__label"><span class="node" aria-hidden="true"></span>{side.label}</h3>
+          <ul class="prd-hub__list" role="list">
+            {side.items.map((it: any, i: number) => {
+              const inner = (
+                <>
+                  <span class="prd-hub__mark">{mark(it)}</span>
+                  <span class="prd-hub__name">{it.name ?? TOOLS[it.slug]?.name}</span>
+                  {it.line && <span class="prd-hub__line" set:html={annotateFigures(it.line)} />}
+                </>
+              );
+              return (
+                <li class="prd-hub__item" style={`--i:${i}`}>
+                  {it.href ? <a class="prd-hub__a" href={it.href}>{inner}</a> : <div class="prd-hub__a prd-hub__a--static">{inner}</div>}
+                  <i class="prd-hub__stub" aria-hidden="true"></i>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      );
+      return (
+        <section id={s.id} class="prd-sec prd-hub tpl-glow" aria-labelledby={`${s.id}-t`}>
+          <Aura kind="ondas" x="50%" y="62%" o={1} only="d" />
+          <div class="frame prd-hub__frame">
+            <div class="prd-sec__head prd-hub__head">
+              {c.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={Eyebrow(c)} />}
+              <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+              {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+            </div>
+            <div class="prd-hub__map" data-ui-reveal>
+              {col(L, 'in')}
+              <div class="prd-hub__core" aria-hidden="true">
+                <span class="prd-hub__glow"></span>
+                <span class="prd-hub__ring"></span>
+                <span class="prd-hub__pad"></span>
+                <span class="prd-kain prd-kain--hub" data-kclip={CLIP_HUB.loop ? 'loop' : 'once'} data-src={CLIP_HUB.video}>
+                  <img class="prd-kain__img" src={CLIP_HUB.still} alt="" width="560" height="996" loading="lazy" decoding="async" />
+                </span>
+                <span class="prd-hub__node prd-hub__node--l"></span>
+                <span class="prd-hub__node prd-hub__node--r"></span>
+              </div>
+              {col(R, 'out')}
+            </div>
+            {c.handoff && <p class="t-deck prd-hub__handoff" data-reveal set:html={annotateFigures(c.handoff)} />}
+            {c.note && (
+              <div class="prd-hub__note" data-reveal>
+                {/kommo/i.test(c.note) && <KommoBadge size="sm" />}
+                <Copy text={c.note} as="p" class="t-small" />
+              </div>
+            )}
+          </div>
+        </section>
+      );
+    }
+
+    /* ───────────── 05 · Lo que sí / lo que no (Kain a la izquierda; móvil split) ───────────── */
+    if (b.kind === 'sino') {
+      const lay = layoutFor(p);
+      return (
+        <ImageSection
+          id={s.id} plate={p?.id ?? 'kain-si-no'} fallbackPlate={fbOf(p)} layout={lay} mirror={p?.mirror}
+          height={p?.height ?? 'mid'} align="start" mobile={(p?.mobile as any) ?? 'split'} srcsetMax={p?.srcsetMax ?? 1920} alt=""
+          class="prd-sino tpl-glow"
+        >
+          <span class="tpl-introglow" aria-hidden="true"></span>
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={Eyebrow(c)} />}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+          <Fragment slot="more">
+            <div class="prd-sino__lists">
+              <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+              <Aura kind="ondas" x="10%" y="70%" o={0.9} only="d" />
+              <TwoColumnScript variant="dodont" headingLevel={3}
+                left={{ title: c.left?.title ?? 'Lo que sí hago', items: c.left?.items ?? [], tone: toneOf(c.left?.tone ?? 'cian') }}
+                right={{ title: c.right?.title ?? 'Lo que no hago', items: c.right?.items ?? [], tone: toneOf(c.right?.tone ?? 'neutral') }} />
+              {c.slogan && <p class="t-deck prd-slogan" set:html={sloganHTML(c.slogan)} />}
+            </div>
+          </Fragment>
+        </ImageSection>
+      );
+    }
+
+    /* ───────────── 06 · Kain en tu sector (locaciones) ───────────── */
+    if (b.kind === 'sectors') {
+      const sectors = sectorsOf(c);
+      if (!sectors.length) return null;
+      return (
+        <LocationSwitcher id={s.id} sectors={sectors} label={(c.eyebrow ?? 'Sector').toUpperCase()} class="prd-loc tpl-glow-m">
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={Eyebrow(c)} />}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2 prd-loc__lede" />}
+          <Fragment slot="foot">
+            {c.footer && <Copy text={c.footer} as="p" class="t-micro prd-loc__foot" />}
+            {built(c.links).map((l: any) => <a class="lnk prd-loc__all" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+          </Fragment>
+        </LocationSwitcher>
+      );
+    }
+
+    /* ───────────── 07 · La plataforma (ventana de producto sobre aura; SIMULACIÓN hasta tener capturas reales) ───────────── */
+    if (b.kind === 'platform') {
+      const w = c.window ?? {};
+      const rows = (w.rows ?? []) as { channel: string; who: string; text: string; state: string }[];
+      const chIcon = (ch: string) => (TOOLS[ch] ? <span class:list={['logo-mask prd-appui__logo', logoWide(ch) && 'logo-mask--wide']} style={`--logo:url(${logoUrl(ch)})`} aria-hidden="true"></span>
+        : <Icon name={ch === 'correo' ? 'mail' : 'atender'} size={16} class="prd-appui__ico" />);
+      const chName = (ch: string) => CHANNEL_NAME[ch] ?? TOOLS[ch]?.name ?? ch;
+      const done = (st: string) => /agendad|registrad|respondid/i.test(st);
+      return (
+        <Intertitle id={s.id} aura="none" layout="split" labelledby={`${s.id}-t`} class="prd-plat tpl-glow">
+          <Fragment slot="head">
+            {c.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={Eyebrow(c)} />}
+            <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+            {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+            {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="prd-body" data-reveal />)}
+            {c.app?.href && <div class="ctas prd-plat__cta" data-reveal><Btn variant="ghost" href={c.app.href} label={c.app.label} /></div>}
+          </Fragment>
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <ProductWindow title={w.title ?? 'app.kain.mx'} label="SIMULACIÓN" fig={w.note} aura class="prd-plat__win">
+            <div class="prd-appui" role="img" aria-label={`Simulación: ${rows.map((r) => `${chName(r.channel)}, ${r.who}: ${r.state}`).join('; ')}`}>
+              <div class="prd-appui__side" aria-hidden="true">
+                <p class="prd-appui__brand"><span class="kain-mark">kain</span></p>
+                {w.status && <p class="prd-appui__status"><span class="dot-live"></span>{w.status}</p>}
+                <ul class="prd-appui__chans" role="list">
+                  {rows.map((r) => <li>{chIcon(r.channel)}<span>{chName(r.channel)}</span></li>)}
+                </ul>
+              </div>
+              <ol class="prd-appui__rows" aria-hidden="true">
+                {rows.map((r, i) => (
+                  <li class="prd-appui__row" style={`--i:${i}`}>
+                    <span class="prd-appui__ch">{chIcon(r.channel)}</span>
+                    <span class="prd-appui__who">{r.who}</span>
+                    <span class="prd-appui__msg" set:html={annotateFigures(r.text)} />
+                    <span class:list={['prd-appui__st', done(r.state) && 'is-done', /equipo/i.test(r.state) && 'is-hand']}>{r.state}</span>
+                  </li>
+                ))}
+              </ol>
+              {w.foot && <p class="prd-appui__foot" aria-hidden="true"><Icon name="check" size={14} />{w.foot}</p>}
+            </div>
+          </ProductWindow>
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── 08 · Resultados (Montage) ───────────── */
+    if (b.kind === 'figures') {
+      const { ids, stillFor } = figuresOf(c);
+      if (!ids.length) return null;
+      return (
+        <Montage id={s.id} ids={ids} stillFor={stillFor} anonNote={c.note ?? 'Nombres de clientes anonimizados.'} class="prd-mt tpl-glow">
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={Eyebrow(c)} />}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+          <Fragment slot="foot">{built(c.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}</Fragment>
+        </Montage>
+      );
+    }
+
+    /* ───────────── 09 · Preguntas frecuentes ───────────── */
+    if (b.kind === 'faq') return (
+      <Intertitle id={s.id} aura="none" layout="split" labelledby={`${s.id}-t`} class="prd-faq tpl-glow">
+        <Fragment slot="head">
+          {c.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={Eyebrow(c)} />}
+          <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+          {c.footer && <p class="prd-faq__foot t-small" data-reveal set:html={annotateFigures(c.footer).replace(SITE.email, `<a href="mailto:${SITE.email}">${SITE.email}</a>`)} />}
+          <div class="prd-faq__cta" data-reveal><Btn variant="ghost" href={wa(C.hero)} label={WA_LABEL} /></div>
+        </Fragment>
+        <Aura kind="ondas" x="60%" y="50%" o={1} only="d" />
+        <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+        <FAQAccordion ids={c.faqIds ?? []} glass id={`${s.id}-list`} label={c.h2?.text ?? 'Preguntas frecuentes'} />
+      </Intertitle>
+    );
+
+    /* ───────────── 10 · Cierre (Dawn) ───────────── */
+    if (b.kind === 'dawn') return (
+      <Dawn id={s.id} plate={p?.id ?? 'cta-amanecer'} mirror={p?.mirror} fallbackPlate={fbOf(p)} layout={p?.layout && p.layout !== 'sin sujeto' ? p.layout : undefined} class="prd-dawn tpl-glow-m">
+        {c.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={Eyebrow(c)} />}
+        <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
+        {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" />}
+        <div class="ctas">
+          <Btn variant="primary" href={c.ctaPrimary?.href ?? SITE.discovery} label={c.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+          <Btn variant="ghost" href={wa(c.ctaSecondary ? c : C.hero)} label={WA_LABEL} />
+        </div>
+      </Dawn>
+    );
+
+    /* ───────────── Sección sin componente propio (texto sobre aura) ───────────── */
+    return (
+      <Intertitle id={s.id} aura="none" labelledby={`${s.id}-t`} class="prd-gen tpl-glow">
+        <Aura kind="ondas" x="50%" o={1} />
+        {c.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={Eyebrow(c)} />}
+        {c.h2 && <h2 id={`${s.id}-t`} class="t-h2" data-split set:html={head(c.h2)} />}
+        {c.lede && <Copy text={c.lede} as="p" class="t-lede t-lede--2" data-reveal />}
+        {(c.body ?? []).map((t: string) => <Copy text={t} as="p" class="prd-body" data-reveal />)}
+      </Intertitle>
+    );
+  })}
+</BaseLayout>
+
+<script>
+  // Clips con alfa de Kain ([data-kclip], public/video/kain-*.webm): el recorte fijo (mismo encuadre) es el estado de
+  // reposo y el respaldo. El clip solo se carga y reproduce en escritorio, con movimiento permitido, sin ahorro de datos y
+  // en navegadores que pintan el canal alfa de VP9 (Chromium y Firefox; Safari lo pintaría con fondo negro). Se reproduce
+  // al estar en pantalla (50 %), se pausa fuera de ella y con la pestaña oculta; "once" se queda en su último cuadro.
+  const root = document.documentElement;
+  const clips = Array.from(document.querySelectorAll<HTMLElement>('[data-kclip][data-src]'));
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || root.dataset.motion === 'reduced';
+  const desk = () => matchMedia('(min-width: 768px) and (min-aspect-ratio: 5/6)').matches;
+  const conn = (navigator as any).connection;
+  const saveData = !!(conn && (conn.saveData || /(^|-)(2g|3g)$/.test(conn.effectiveType || '')));
+  const ua = navigator.userAgent;
+  const webkitOnly = /AppleWebKit/.test(ua) && !/(Chrome|Chromium|Edg|OPR)\//.test(ua);
+  const probe = document.createElement('video');
+  const vp9 = !!probe.canPlayType && probe.canPlayType('video/webm; codecs="vp9"') !== '';
+  if (clips.length && 'IntersectionObserver' in window && !saveData && !webkitOnly && vp9) {
+    const vids = new Map<HTMLElement, HTMLVideoElement>();
+    const ensure = (box: HTMLElement) => {
+      let v = vids.get(box);
+      if (v) return v;
+      v = document.createElement('video');
+      v.className = 'prd-kain__vid';
+      v.muted = true; v.playsInline = true; v.preload = 'auto';
+      v.setAttribute('aria-hidden', 'true'); v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+      v.loop = box.dataset.kclip === 'loop';
+      v.width = 720; v.height = 1280;
+      v.src = box.dataset.src!;
+      v.addEventListener('playing', () => box.classList.add('is-playing'));
+      v.addEventListener('error', () => box.classList.remove('is-playing'));
+      box.appendChild(v);
+      vids.set(box, v);
+      return v;
+    };
+    const play = (box: HTMLElement) => {
+      if (reduced() || !desk() || document.hidden) return;
+      const v = ensure(box);
+      if (box.dataset.kclip === 'once' && v.ended) return;
+      v.play().catch(() => box.classList.remove('is-playing'));
+    };
+    const pause = (box: HTMLElement) => vids.get(box)?.pause();
+    const seen = new Set<HTMLElement>();
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        const box = e.target as HTMLElement;
+        if (e.isIntersecting) { seen.add(box); play(box); } else { seen.delete(box); pause(box); }
+      }
+    }, { threshold: 0.5 });
+    // La portada espera a que la página cargue (la placa/recorte es el LCP; el clip no compite con él)
+    const start = () => clips.forEach((c) => io.observe(c));
+    if (document.readyState === 'complete') setTimeout(start, 400); else addEventListener('load', () => setTimeout(start, 400), { once: true });
+    document.addEventListener('visibilitychange', () => { for (const b of clips) (document.hidden || !seen.has(b) ? pause(b) : play(b)); });
+    addEventListener('ingeniak:motion', () => { if (reduced()) clips.forEach((b) => { pause(b); b.classList.remove('is-playing'); }); });
+  }
+</script>

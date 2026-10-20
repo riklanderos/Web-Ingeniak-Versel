@@ -1,0 +1,457 @@
+---
+// FaqTemplate · T-FAQ (ESPEC-v2 §5.14, §8.5; §12.2 R3/R7/R8/R11) · /preguntas-frecuentes/
+// Data-driven: recorre page.sections (src/data/sitemap.json) en su orden; el texto propio sale de
+// src/content/paginas/<page.id>.json y las preguntas, del banco src/data/faq.json (el mismo de cada página del sitio).
+//   hero            ImageSection hero (kain-si-no: Kain pensativo a la izquierda, texto a la derecha) · breadcrumb · H1 ·
+//                   buscador que filtra el HTML ya renderizado (sin fetch) · índice de temas con su número de respuestas ·
+//                   WhatsApp. Móvil `split` (R3): arriba H1 + buscador; después de la placa, entrada, temas y WhatsApp.
+//   ingeniak · agentes · crm · automatizacion · precio · empezar
+//                   Un tema por sección: Intertitle split (cabeza a la izquierda, fija en escritorio alto) + FAQAccordion
+//                   (cristal: solo sobre aura). Cada cabeza trae un elemento propio (cifras con fuente, canales, sello de
+//                   Kommo, herramientas, precio, pasos) para que ningún tema se vea como plantilla repetida.
+//   cta-final       Dawn (placa de sitemap.json)
+// Banco completo: cada tema lista sus ids (también las "validar", que no se pintan hasta aprobarse) y toda pregunta
+// publicable del banco que no esté en ningún tema se suma sola al tema de su categoría. FAQPage (SEOHead) = las mismas ids
+// visibles, en el mismo orden; las "validar" quedan fuera de la página y del JSON-LD (check-seo: FAQPage = FAQ visible).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageSection from '../cine/ImageSection.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Dawn from '../cine/Dawn.astro';
+import { resolvePlate } from '../cine/plate';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import Icon from '../ui/Icon.astro';
+import Metric from '../ui/Metric.astro';
+import Credits from '../ui/Credits.astro';
+import KommoBadge from '../ui/KommoBadge.astro';
+import EditorNote from '../ui/EditorNote.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import { annotateFigures, esc, getFaqBank, publicExists, logoUrl, TOOLS } from '../ui/ui-data';
+import Aura from './Aura.astro';
+import { ledeParts, builtCrumbs } from './heroKit';
+import { waHref, linkTarget, type Page } from '../../lib/site';
+import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import '../../styles/tpl/FaqTemplate.css';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C = copy?.sections ?? {};
+const dev = import.meta.env.DEV;
+
+/* ── utilidades ─────────────────────────────────────────────────────────── */
+const sec = (id: string) => (P.sections as any[]).find((s) => s.id === id);
+const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
+/** Titular de dos voces ({text, soft, lit?}) → HTML con tokens resueltos; `lit` envuelve su subcadena en .lit. */
+function headHtml(h: any, lit?: string | null): string {
+  if (!h) return '';
+  let first = annotateFigures(h.text ?? '');
+  const l = lit ?? h.lit;
+  if (l && (h.text ?? '').includes(l)) {
+    const i = (h.text as string).lastIndexOf(l);
+    first = annotateFigures(h.text.slice(0, i)) + `<span class="lit">${esc(l)}</span>` + annotateFigures(h.text.slice(i + l.length));
+  }
+  return h.soft ? `${first} <span class="soft">${annotateFigures(h.soft)}</span>` : first;
+}
+const waMsg: string = P.secondaryCta?.waMessage ?? C.hero?.ctaSecondary?.waMessage ?? 'Hola Kain, tengo una duda.';
+const wa = P.secondaryCta?.href ?? waHref(waMsg);
+const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
+const plateOf = (id: string) => sec(id)?.plate ?? null;
+const pad = (n: number) => String(n).padStart(2, '0');
+const fill = (s: string | undefined, vars: Record<string, string | number>) =>
+  String(s ?? '').replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));
+
+/* ── temas: el banco completo, repartido ────────────────────────────────── */
+const TOPIC_IDS = ['ingeniak', 'agentes', 'crm', 'automatizacion', 'precio', 'empezar'];
+// Categoría del banco (faq.json → categoria) → tema de la página (red de seguridad: ninguna pregunta aprobada se queda fuera)
+const CAT_TO_TOPIC: Record<string, string> = {
+  Ingeniak: 'ingeniak', 'Agentes de IA': 'agentes', Kain: 'agentes', Industrias: 'agentes', Kommo: 'crm', GoHighLevel: 'crm',
+  'Automatización': 'automatizacion', Servicios: 'automatizacion', Precios: 'precio', 'Discovery Session': 'empezar',
+};
+const order: string[] = (P.sections as any[]).filter((s) => s.status !== 'conditional').map((s) => s.id);
+const bank = getFaqBank();                              // solo publicables (sin "validar"), el mismo filtro del FAQPage
+const okIds = new Set(bank.map((f) => f.id));
+const topicIds = TOPIC_IDS.filter((id) => order.includes(id) && cp(id));
+const lists: Record<string, string[]> = Object.fromEntries(topicIds.map((id) => [id, (cp(id).faqIds ?? []) as string[]]));
+const assigned = new Set(Object.values(lists).flat());
+for (const f of bank) {
+  if (assigned.has(f.id)) continue;
+  const t = CAT_TO_TOPIC[f.categoria ?? ''] ?? topicIds.at(-1)!;
+  (lists[t] ?? lists[topicIds.at(-1)!]).push(f.id);
+  assigned.add(f.id);
+  if (dev) console.warn(`[FaqTemplate] ${f.id} no estaba en ningún tema del copy: se suma a "${t}" por su categoría`);
+}
+// Visibles por tema (sin duplicados entre temas: la primera aparición manda)
+const seen = new Set<string>();
+const topics = topicIds.map((id, i) => {
+  const ids = lists[id].filter((q) => okIds.has(q) && !seen.has(q));
+  ids.forEach((q) => seen.add(q));
+  return { id, n: i + 1, c: cp(id), ids };
+}).filter((t) => t.ids.length > 0);
+const allIds = topics.flatMap((t) => t.ids);
+const total = allIds.length;
+
+/* ── 01 · portada ───────────────────────────────────────────────────────── */
+const hero = cp('hero');
+const heroPlate = plateOf('hero');
+const heroKey: string = heroPlate?.id ?? 'kain-si-no';
+// Respaldo de lanzamiento: si la placa no existiera, Kain junto al teléfono (mismo lado, misma penumbra a la derecha)
+const heroFallback = heroPlate?.launchFallback ?? { plate: 'home-kain', note: 'respaldo de kain-si-no' };
+const rHero = resolvePlate(heroKey, { mirror: !!heroPlate?.mirror, fallbackPlate: heroFallback, srcsetMax: 2752, mobileMax: 1536, where: '#hero' });
+const lcpPlate = rHero.id ?? undefined;
+const heroLede = ledeParts(hero?.lede, 20);
+const search = hero?.search ?? {};
+const heroEyebrow = fill(hero?.eyebrow, { n: total, t: topics.length });
+
+/* ── temas: elementos propios ───────────────────────────────────────────── */
+const metricIds = (ids?: string[]) => (ids ?? []).filter((m) => (METRICS as any)[m]) as MetricId[];
+const toolsOf = (slugs?: string[]) => (slugs ?? [])
+  .map((s) => ({ slug: s, url: TOOLS[s] ? logoUrl(s) : `/img/logos/${s}.svg` }))
+  .filter((t) => t.url && publicExists(t.url))
+  .map((t) => t.slug);
+const linksOf = (links?: any[]) => (links ?? []).map((l) => ({ ...l, href: l?.href ? linkTarget(l.href) : null })).filter((l) => l.href);
+// Luz por tema (alternada; ninguna zona > 40vh sin luz y nunca la misma escena dos veces seguidas)
+const LIGHT: Record<string, { d: { kind: 'isotipo' | 'ondas'; x: string; y: string; w?: string; o: number }[] }> = {
+  ingeniak: { d: [{ kind: 'isotipo', x: '84%', y: '18%', w: 'min(48vw,720px)', o: 0.75 }, { kind: 'ondas', x: '30%', y: '96%', o: 1 }] },
+  agentes: { d: [{ kind: 'ondas', x: '62%', y: '40%', o: 1 }] },
+  crm: { d: [{ kind: 'isotipo', x: '14%', y: '30%', w: 'min(44vw,660px)', o: 0.7 }, { kind: 'ondas', x: '70%', y: '92%', o: 0.9 }] },
+  automatizacion: { d: [{ kind: 'ondas', x: '38%', y: '50%', o: 1 }] },
+  precio: { d: [{ kind: 'isotipo', x: '20%', y: '44%', w: 'min(52vw,780px)', o: 0.8 }] },
+  empezar: { d: [{ kind: 'ondas', x: '58%', y: '30%', o: 1 }, { kind: 'isotipo', x: '88%', y: '86%', w: 'min(40vw,600px)', o: 0.6 }] },
+};
+
+/* ── cierre ─────────────────────────────────────────────────────────────── */
+const cta = cp('cta-final');
+const ctaPlate = plateOf('cta-final');
+
+if (dev) {
+  const known = new Set(['hero', ...TOPIC_IDS, 'cta-final']);
+  for (const id of order) {
+    if (!known.has(id)) console.warn(`[FaqTemplate] ${P.id}: sección "${id}" sin componente en la plantilla`);
+    else if (!C[id]) console.warn(`[FaqTemplate] ${P.id}: falta el copy de la sección "${id}"`);
+  }
+}
+---
+<BaseLayout page={page} lcpPlate={lcpPlate} lcpSrcsetMax={2752} faqIds={allIds} bodyClass="faq-pg">
+  {order.map((id) => {
+    /* ── 01 · portada con buscador ── */
+    if (id === 'hero' && hero) {
+      const Topics = (cls: string) => (
+        <nav class:list={['faq-topics', cls]} aria-label={hero.topicsLabel ?? 'Temas'}>
+          <p class="t-label faq-topics__h"><span class="node" aria-hidden="true"></span>{hero.topicsLabel ?? 'Temas'}</p>
+          <ol class="faq-topics__list" role="list">
+            {topics.map((t) => (
+              <li>
+                <a class="faq-topics__a" href={`#${t.id}`} data-faq-topic={t.id}>
+                  <span class="faq-topics__n" aria-hidden="true">{pad(t.n)}</span>
+                  <span class="faq-topics__t">{t.c.rail ?? t.c.eyebrow}</span>
+                  <span class="faq-topics__c" data-faq-topic-count>{t.ids.length}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      );
+      return (
+        <ImageSection id="hero" plate={heroKey} fallbackPlate={heroFallback} mirror={!!heroPlate?.mirror} layout={heroPlate?.layout}
+          height="hero" mobile="split" priority srcsetMax={2752} class="faq-hero tpl-hero" data-faq-hero>
+          <span class="tpl-introglow" aria-hidden="true"></span>
+          <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
+          {heroEyebrow && <p class="t-label t-label--cyan eyebrow faq-hero__eyebrow"><span class="node" aria-hidden="true"></span>{heroEyebrow}</p>}
+          <h1 id="hero-t" class="t-display-2 faq-h1" data-split set:html={headHtml(hero.h1)} />
+          {hero.deck && <Copy as="p" class="t-deck faq-hero__deck" text={hero.deck} />}
+          {hero.lede && <Copy as="p" class="t-lede t-lede--2 faq-hero__lede tpl-mhide" text={hero.lede} />}
+
+          {/* Buscador: filtra las preguntas ya renderizadas (sin fetch, sin terceros). Sin JS no se muestra (todo el banco
+              queda visible y el índice de temas sigue funcionando con anclas). */}
+          <div class="faq-search" role="search" aria-label={search.label ?? 'Busca una pregunta'} data-faq-search
+            data-results={search.results} data-results-one={search.resultsOne} data-empty={search.empty}
+            data-wa-base={waHref(waMsg).split('?')[0]} data-wa-msg={waMsg}>
+            <label class="t-label faq-search__label" for="faq-q">{search.label ?? 'Busca una pregunta'}</label>
+            <div class="faq-search__field">
+              <Icon name="search" size={20} class="faq-search__i" />
+              <input id="faq-q" class="faq-search__input" type="search" name="q" autocomplete="off" spellcheck="false"
+                enterkeyhint="search" placeholder={search.placeholder} aria-describedby="faq-q-hint faq-q-status" aria-controls={topics.map((t) => `${t.id}-list`).join(' ')} data-faq-input />
+              <button type="button" class="faq-search__clear" aria-label={search.clear ?? 'Borrar la búsqueda'} hidden data-faq-clear>
+                <Icon name="close" size={16} />
+              </button>
+            </div>
+            <p id="faq-q-hint" class="t-micro faq-search__hint">{search.hint}</p>
+            <p id="faq-q-status" class="faq-search__status" role="status" aria-live="polite" data-faq-status></p>
+            <p class="faq-search__empty" hidden data-faq-empty>
+              <span data-faq-empty-text></span>
+              <a class="lnk faq-search__wa" href={wa} data-faq-wa data-wa>{search.emptyCta ?? 'Preguntarle a Kain'} <Icon name="whatsapp" size={16} /></a>
+            </p>
+          </div>
+
+          {Topics('tpl-mhide')}
+          <div class="ctas faq-hero__ctas tpl-mhide"><Btn variant="ghost" href={wa} label={waLabel(hero)} /></div>
+
+          {/* R3 · móvil: después de la placa (misma sección) van la entrada, los temas y WhatsApp */}
+          <Fragment slot="more">
+            {heroLede.intro && <Copy as="p" class="t-lede t-lede--2 faq-hero__rest tpl-dhide" text={hero.lede} />}
+            {Topics('tpl-dhide faq-topics--m')}
+            <div class="ctas faq-hero__ctas-m tpl-dhide"><Btn variant="ghost" href={wa} label={waLabel(hero)} /></div>
+          </Fragment>
+        </ImageSection>
+      );
+    }
+
+    /* ── 02–07 · un tema por sección ── */
+    const t = topics.find((x) => x.id === id);
+    if (t) {
+      const c = t.c;
+      const light = LIGHT[id] ?? LIGHT.agentes;
+      const links = linksOf(c.links);
+      const proof = metricIds(c.proof);
+      const tools = toolsOf(c.tools);
+      return (
+        <Intertitle id={id} aura="none" layout="split" class={`faq-sec faq-sec--${id} tpl-glow`}>
+          {light.d.map((a) => <Aura kind={a.kind} x={a.x} y={a.y} w={a.w} o={a.o} only="d" />)}
+          <Fragment slot="head">
+            <div class="faq-sec__head" data-faq-group={id}>
+              <p class="t-label t-label--cyan eyebrow faq-sec__eyebrow">
+                <span class="faq-sec__n" aria-hidden="true">{pad(t.n)}</span>{c.eyebrow}
+              </p>
+              <h2 id={`${id}-t`} class="t-h2 faq-sec__h2" data-split set:html={headHtml(c.h2)} />
+              {c.price?.figure && (
+                <p class="faq-price" data-reveal>
+                  <Copy class="faq-price__fig" text={c.price.figure} />
+                  {c.price.line && <Copy class="faq-price__line" text={c.price.line} data-allow-number />}
+                </p>
+              )}
+              {c.lede && <Copy as="p" class="t-lede t-lede--2 faq-sec__lede" text={c.lede} data-reveal />}
+              {c.factors?.length > 0 && (
+                <div class="faq-factors" data-reveal>
+                  {c.factorsLabel && <p class="t-label faq-factors__h">{c.factorsLabel}</p>}
+                  <ul class="faq-factors__list" role="list">
+                    {c.factors.map((f: string) => <li><Copy text={f} /></li>)}
+                  </ul>
+                </div>
+              )}
+
+              {proof.length > 0 && (
+                <div class="faq-proof" data-reveal>
+                  <ul class="faq-proof__list" role="list">
+                    {proof.map((m) => <li><Metric id={m} variant="inline" label /></li>)}
+                  </ul>
+                  <p class="t-micro faq-proof__src">{SOURCE_NOTE}</p>
+                </div>
+              )}
+              {c.channels?.length > 0 && (
+                <div class="faq-chan" data-reveal>
+                  {c.channelsLabel && <p class="t-label faq-chan__h">{c.channelsLabel}</p>}
+                  <ul class="faq-chan__list" role="list">
+                    {c.channels.map((ch: string) => <li class="chip-spec"><span class="node" aria-hidden="true"></span>{ch}</li>)}
+                  </ul>
+                </div>
+              )}
+              {(c.badge || c.ghl) && (
+                <div class="faq-crm" data-reveal>
+                  {c.badge && <KommoBadge size="sm" text />}
+                  {c.ghl && <Copy as="p" class="faq-crm__ghl" text={c.ghl} />}
+                </div>
+              )}
+              {tools.length > 0 && (
+                <Credits variant="logos" items={tools} kommo={false} label={c.toolsLabel} size="sm" class="faq-tools" />
+              )}
+              {c.steps?.length > 0 && (
+                <ol class="faq-steps" role="list" data-reveal="stagger">
+                  {c.steps.map((s: any, i: number) => (
+                    <li class="faq-steps__i">
+                      <span class="faq-steps__n" aria-hidden="true">{pad(i + 1)}</span>
+                      <span class="faq-steps__t">{s.title}</span>
+                      <Copy class="faq-steps__l" text={s.line} data-allow-number />
+                    </li>
+                  ))}
+                </ol>
+              )}
+              {c.remate && <Copy as="p" class="faq-sec__remate" text={c.remate} data-reveal />}
+              <p class="t-micro faq-sec__count" data-faq-count data-total={t.ids.length}>{t.ids.length} {t.ids.length === 1 ? 'respuesta' : 'respuestas'}</p>
+            </div>
+          </Fragment>
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <FAQAccordion ids={t.ids} glass headingLevel={3} label={c.eyebrow} id={`${id}-list`} class="faq-sec__list" />
+          {links.length > 0 && (
+            <nav class="faq-more" aria-label={`Para profundizar: ${c.eyebrow}`} data-reveal>
+              <p class="t-label faq-more__h"><span class="node" aria-hidden="true"></span>Para profundizar</p>
+              <ul class="faq-more__list" role="list">
+                {links.map((l: any) => (
+                  <li>
+                    <a class="faq-more__a" href={l.href}>
+                      <span class="faq-more__t">{l.label}</span>
+                      {l.line && <span class="faq-more__l">{l.line}</span>}
+                      <span class="faq-more__go" aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
+          {c.glossary?.length > 0 && (
+            <div class="faq-gloss" data-reveal>
+              <p class="t-label faq-gloss__h"><span class="node" aria-hidden="true"></span>{c.glossaryLabel ?? "Palabras que usamos"}</p>
+              <dl class="faq-gloss__dl">
+                {c.glossary.map((g: any) => <div class="faq-gloss__row"><dt>{g.term}</dt><dd><Copy text={g.def} /></dd></div>)}
+              </dl>
+            </div>
+          )}
+          {c.note?.text && (
+            <EditorNote label={c.note.label ?? 'Nota del editor'} class="faq-note"><Copy as="p" text={c.note.text} /></EditorNote>
+          )}
+        </Intertitle>
+      );
+    }
+
+    /* ── 08 · cierre ── */
+    if (id === 'cta-final' && cta) return (
+      <Dawn id="cta-final" plate={ctaPlate?.id ?? 'cta-amanecer'} mirror={!!ctaPlate?.mirror} fallbackPlate={ctaPlate?.launchFallback} layout={ctaPlate?.layout} class="faq-dawn tpl-glow-m">
+        {cta.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{cta.eyebrow}</p>}
+        <h2 id="cta-final-t" class="t-h2" data-split set:html={headHtml(cta.h2)} />
+        {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
+        <div class="ctas">
+          <div class="cta-p">
+            <Btn variant="primary" href={cta.ctaPrimary?.href ?? '/discovery/'} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+            <Copy as="p" class="t-micro btn-micro" text={cta.micro ?? '30 min · 1:1 · Google Meet · sin costo'} data-allow-number />
+          </div>
+          <Btn variant="ghost" href={wa} label={waLabel(cta)} />
+        </div>
+      </Dawn>
+    );
+    return null;
+  })}
+</BaseLayout>
+
+<script>
+  // Buscador de /preguntas-frecuentes/: filtra las preguntas ya renderizadas (texto de la pregunta y de la respuesta, sin
+  // acentos ni mayúsculas), oculta los temas sin resultados, resalta los términos (CSS Custom Highlight API, sin tocar el
+  // DOM) y, sin resultados, ofrece preguntarle a Kain por WhatsApp con lo escrito. ?q=… precarga la búsqueda; #G07 abre esa
+  // pregunta. Sin JS: no hay buscador (todo el banco visible y los temas como anclas).
+  const box = document.querySelector<HTMLElement>('[data-faq-search]');
+  const input = document.querySelector<HTMLInputElement>('[data-faq-input]');
+  if (box && input) {
+    document.documentElement.classList.add('faq-js');
+    const clear = box.querySelector<HTMLButtonElement>('[data-faq-clear]')!;
+    const status = box.querySelector<HTMLElement>('[data-faq-status]')!;
+    const empty = box.querySelector<HTMLElement>('[data-faq-empty]')!;
+    const emptyText = box.querySelector<HTMLElement>('[data-faq-empty-text]')!;
+    const waLink = box.querySelector<HTMLAnchorElement>('[data-faq-wa]')!;
+    const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const fill = (tpl: string | undefined, v: Record<string, string>) => String(tpl ?? '').replace(/\{(\w+)\}/g, (m, k) => v[k] ?? m);
+    const sections = [...document.querySelectorAll<HTMLElement>('.faq-sec')];
+    const groups = sections.map((sec) => ({
+      sec,
+      id: sec.id,
+      count: sec.querySelector<HTMLElement>('[data-faq-count]'),
+      chip: document.querySelectorAll<HTMLElement>(`[data-faq-topic="${sec.id}"]`),
+      items: [...sec.querySelectorAll<HTMLElement>('[data-faq-item]')].map((el) => ({ el, text: norm(el.textContent ?? '') })),
+    }));
+    const total = groups.reduce((a, g) => a + g.items.length, 0);
+    const hl = (window as any).Highlight && (CSS as any).highlights ? (CSS as any).highlights : null;
+    const refresh = () => { try { (window as any).__cine?.refresh?.(); } catch {} };
+    let t = 0;
+
+    const highlight = (terms: string[]) => {
+      if (!hl) return;
+      hl.delete('faq-hit');
+      if (!terms.length) return;
+      const ranges: Range[] = [];
+      for (const g of groups) for (const it of g.items) {
+        if (it.el.hidden) continue;
+        const walker = document.createTreeWalker(it.el, NodeFilter.SHOW_TEXT);
+        let n: Node | null;
+        while ((n = walker.nextNode())) {
+          const raw = n.nodeValue ?? '';
+          // norm() conserva la longitud de cada letra salvo los acentos combinados: se mapea sobre el texto descompuesto
+          const plain = norm(raw);
+          if (plain.length !== raw.length) continue;
+          for (const term of terms) {
+            let i = plain.indexOf(term);
+            while (i >= 0) {
+              const r = new Range(); r.setStart(n, i); r.setEnd(n, i + term.length); ranges.push(r);
+              i = plain.indexOf(term, i + term.length);
+            }
+          }
+        }
+      }
+      if (ranges.length) hl.set('faq-hit', new (window as any).Highlight(...ranges));
+    };
+
+    const apply = (q: string) => {
+      const raw = q.trim();
+      const terms = norm(raw).split(/\s+/).filter((w) => w.length > 1);
+      clear.hidden = !raw;
+      let found = 0;
+      for (const g of groups) {
+        let vis = 0;
+        for (const it of g.items) {
+          const ok = !terms.length || terms.every((w) => it.text.includes(w));
+          it.el.hidden = !ok;
+          if (ok) vis++;
+        }
+        found += vis;
+        g.sec.hidden = vis === 0;
+        if (g.count) g.count.textContent = terms.length ? `${vis} de ${g.items.length}` : `${g.items.length} ${g.items.length === 1 ? 'respuesta' : 'respuestas'}`;
+        g.chip.forEach((c) => {
+          c.classList.toggle('is-off', vis === 0);
+          const k = c.querySelector('[data-faq-topic-count]'); if (k) k.textContent = String(terms.length ? vis : g.items.length);
+        });
+      }
+      if (!terms.length) { status.textContent = ''; empty.hidden = true; }
+      else if (!found) {
+        status.textContent = '';
+        emptyText.textContent = fill(box.dataset.empty, { q: raw }) + ' ';
+        waLink.href = `${box.dataset.waBase}?text=${encodeURIComponent(`${box.dataset.waMsg} ${raw}`.slice(0, 600))}`;
+        empty.hidden = false;
+      } else {
+        empty.hidden = true;
+        status.textContent = fill(found === 1 ? box.dataset.resultsOne : box.dataset.results, { n: String(found), q: raw });
+      }
+      document.documentElement.toggleAttribute('data-faq-filtering', terms.length > 0);
+      highlight(terms);
+      clearTimeout(t); t = window.setTimeout(refresh, 120);
+      return found;
+    };
+
+    const goFirst = () => {
+      const it = groups.flatMap((g) => g.items).find((x) => !x.el.hidden)?.el;
+      if (!it) return;
+      const btn = it.querySelector<HTMLButtonElement>('[data-faq-toggle]');
+      if (btn && btn.getAttribute('aria-expanded') !== 'true') btn.click();
+      const y = it.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 96);
+      const lenis = (window as any).__lenis;
+      if (lenis) lenis.scrollTo(y); else scrollTo({ top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      window.setTimeout(() => btn?.focus({ preventScroll: true }), 650);
+    };
+
+    input.addEventListener('input', () => apply(input.value));
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); goFirst(); }
+      else if (e.key === 'Escape' && input.value) { e.preventDefault(); input.value = ''; apply(''); }
+    });
+    clear.addEventListener('click', () => { input.value = ''; apply(''); input.focus(); });
+    document.addEventListener('click', (e) => {
+      if ((e.target as Element).closest?.('[data-faq-wa]')) {
+        try { document.dispatchEvent(new CustomEvent('ingeniak:track', { detail: { name: 'whatsapp_click', page: location.pathname, section: 'faq-search' } })); } catch {}
+      }
+    });
+
+    // ?q=… precarga la búsqueda (enlaces desde ⌘K u otras páginas)
+    const q0 = new URLSearchParams(location.search).get('q');
+    if (q0) { input.value = q0.slice(0, 80); apply(input.value); }
+    // #G07 → abre esa pregunta
+    const openHash = () => {
+      const id = decodeURIComponent(location.hash.slice(1));
+      if (!/^[A-Z]\d{2}$/.test(id)) return;
+      const it = document.querySelector<HTMLElement>(`[data-faq-item][data-faq-id="${id}"]`);
+      const btn = it?.querySelector<HTMLButtonElement>('[data-faq-toggle]');
+      if (!it || !btn) return;
+      if (btn.getAttribute('aria-expanded') !== 'true') btn.click();
+      window.setTimeout(() => it.scrollIntoView({ block: 'start' }), 60);
+    };
+    openHash();
+    addEventListener('hashchange', openHash);
+    void total;
+  }
+</script>

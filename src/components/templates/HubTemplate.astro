@@ -1,0 +1,482 @@
+---
+// HubTemplate · T-HUB (ESPEC-v2 §5.5, §8.5, §12.2 R3/R4/R5/R7/R11/R13) · /servicios/, /industrias/, /casos/, /blog/.
+// Data-driven: recorre sitemap.json → page.sections EN SU ORDEN y pinta cada id con su componente; el texto sale de
+// src/content/paginas/<page.id>.json (área copy). Secciones sin copy, con `_omitir` o condicionales no se pintan.
+//   hero                     SharedTake (si sigue una definición) + ImageSection hero + Breadcrumbs + HeroCtas
+//                            servicios/industrias: FigCaption + LightBranch (solo si la placa trae fig y mano)
+//                            casos: SumarioCover del lado del texto · blog: guía destacada (si alguna existe) + rótulo ilustrativo
+//   definicion · datos       Intertitle sobre la copia desenfocada de la portada + DefinitionBlock (+ MetricRow, + igual/cambia)
+//   mapa                     HubMap: riel de 5 etapas + ScriptList de los 11 servicios por etapa
+//   conexion                 HubFlow: riel-servicios a sangre con los 5 tramos registrados en sus nodos
+//   no-se                    ImageSection mid (Kain señalando) + señales en ámbar → por dónde empezar + primario
+//   vktor                    Intertitle + VktorRail
+//   grid (industrias)        LocationSwitcher (el mismo del inicio, con sus propias líneas y conversaciones)
+//   cifras                   Montage (un sector con caso por fila) + EditorNote
+//   filtros + grid (casos)   HubCases: chips de sector/servicio + una escena a sangre por caso
+//   registro                 Intertitle + ResultsLedger (#registro: las 9 cifras de caso)
+//   metodo                   Intertitle + EditorNote "Nota de método"
+//   categorias + grid (blog) HubGuides: chips de categoría + índice editorial de guías
+//   faq                      Intertitle split + FAQAccordion (sin las "validar"; FAQPage lo emite SEOHead con los mismos ids)
+//   cta-final                Dawn (placa de sitemap.json; respaldo local si aún no se exporta)
+// Placas de hub que aún no se exportan: respaldo local (hubKit HUB_FALLBACK) y pedido en peticiones.md.
+// Reglas: un azul por pantalla (portada, "no sé por dónde empezar" y cierre, siempre lejos entre sí) · una .lit (H1) ·
+// ninguna sección pinta fondo (luz de placas, auras y .tpl-glow) · cifras solo con <Metric>/tokens · enlaces del cuerpo solo
+// a rutas construidas (linkTarget/isBuilt).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/tpl/HubTemplate.css';
+import ImageSection from '../cine/ImageSection.astro';
+import SharedTake from '../cine/SharedTake.astro';
+import Intertitle from '../cine/Intertitle.astro';
+import Montage from '../cine/Montage.astro';
+import LocationSwitcher from '../cine/LocationSwitcher.astro';
+import Dawn from '../cine/Dawn.astro';
+import FigCaption from '../cine/FigCaption.astro';
+import LightBranch from '../cine/LightBranch.astro';
+import { resolvePlate, type Resolved } from '../cine/plate';
+import Breadcrumbs from '../nav/Breadcrumbs.astro';
+import Btn from '../ui/Btn.astro';
+import Copy from '../ui/Copy.astro';
+import Metric from '../ui/Metric.astro';
+import Icon from '../ui/Icon.astro';
+import DefinitionBlock from '../ui/DefinitionBlock.astro';
+import FAQAccordion from '../ui/FAQAccordion.astro';
+import VktorRail from '../ui/VktorRail.astro';
+import PainList from '../ui/PainList.astro';
+import ResultsLedger from '../ui/ResultsLedger.astro';
+import EditorNote from '../ui/EditorNote.astro';
+import SumarioCover from '../ui/SumarioCover.astro';
+import HeroCtas from './HeroCtas.astro';
+import Aura from './Aura.astro';
+import HubMap from './hub/HubMap.astro';
+import HubFlow from './hub/HubFlow.astro';
+import HubCases from './hub/HubCases.astro';
+import HubGuides from './hub/HubGuides.astro';
+import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
+import { head, fallbackOf, safeEdge, hasAnchor, showsPerson, usesFallback } from './hub/hubKit';
+import { pages, waHref, SITE, linkTarget, isBuilt, type Page } from '../../lib/site';
+import { METRICS, type MetricId } from '../../lib/metrics';
+
+interface Props { page: Page; copy: any }
+const { page, copy } = Astro.props;
+const P = page as any;
+const C: Record<string, any> = copy?.sections ?? {};
+const dev = import.meta.env.DEV;
+const hub: string = P.id;                                   // servicios · industrias · casos · blog
+
+/* ── utilidades ─────────────────────────────────────────────────────────── */
+const list = ((P.sections ?? []) as any[]).filter((s) => s?.id && C[s.id] && !C[s.id]._omitir && s.status !== 'conditional');
+const ids = list.map((s) => s.id);
+const sec = (id: string) => list.find((s) => s.id === id);
+const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
+const plateOf = (id: string) => sec(id)?.plate ?? null;
+const wa = (c?: any) => (c?.ctaSecondary?.waMessage ? waHref(c.ctaSecondary.waMessage) : P.secondaryCta?.href ?? waHref('Hola Kain'));
+const waLabel = (c?: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
+const built = (l?: any[]) => (l ?? []).filter((x) => x?.href && isBuilt(x.href));
+const lay = (p: any) => (p?.layout && p.layout !== 'sin sujeto' ? p.layout : undefined);
+/** Borde de texto seguro de una escena como clase (.hub-e38 … .hub-e62 en HubTemplate.css): la columna de texto se acota
+ *  a la penumbra de la placa REALMENTE pintada (también con el respaldo). ImageSection no recibe style propio (sus
+ *  variables de escenario viven en el style de la sección). */
+const edgeCls = (r: Resolved | null) => (r ? `hub-e${Math.round(Math.min(0.62, Math.max(0.38, safeEdge(r))) * 100)}` : '');
+
+/* ── 01 · portada ───────────────────────────────────────────────────────── */
+const hero = cp('hero');
+const heroPlate = plateOf('hero');
+const rHero = heroPlate ? resolvePlate(heroPlate.id, { fallbackPlate: fallbackOf(heroPlate), mirror: !!heroPlate.mirror, srcsetMax: 2752, mobileMax: 1536 }) : null;
+const lcpPlate = rHero?.id ?? undefined;
+const heroLede = ledeParts(hero?.lede, 20);
+const heroEyebrowDup = eyebrowRepeatsCrumbs(hero?.eyebrow, P.breadcrumbs);
+// Pie de foto anclado (§3.8): solo con una placa que trae ancla `fig` (piso) y `mano` (la línea guía sube hasta ella)
+const heroFig = hero?.fig && hasAnchor(rHero, 'fig') && hasAnchor(rHero, 'mano') ? hero.fig : null;
+// …y en escritorio solo si el pie (300 px ≈ .19 del escenario, hacia la izquierda de su ancla) cabe entero entre la columna
+// de texto y el sujeto: en las portadas de hub los CTA viven en la misma franja del piso y el pie los tapaba (servicios e
+// industrias a 1440 × 900). Si no cabe, queda solo su versión en línea de móvil.
+const figFits = (() => {
+  const f = rHero?.anchors?.fig?.d;
+  if (!heroFig || !f || !rHero) return false;
+  const edge = safeEdge(rHero);
+  if (rHero.layout === 'subject-left') return f[0] <= edge - 0.02 && f[0] - 0.19 >= (rHero.subject.d?.[2] ?? 0.45) + 0.01;
+  return f[0] - 0.19 >= edge + 0.02;
+})();
+/** Palabra más larga del H1 (en letras): el titular escala para que ninguna palabra se salga de su columna. */
+const longest = (h: any) => Math.max(8, ...[h?.text, h?.soft].filter(Boolean).join(' ').split(/\s+/).map((w: string) => w.replace(/[^\p{L}\p{N}]/gu, '').length));
+const figTitle = (f: any) => String(f?.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '');
+// Casos: sumario de 3 cifras en la portada (F7), del lado del texto
+const sumarioIds = ((hero?.sumario?.metricIds ?? []) as MetricId[]).filter((m) => (METRICS as any)[m]).slice(0, 3);
+// Blog: "imagen ilustrativa" si la portada muestra a una persona; guía destacada si alguna ya existe
+const heroIllus = hero?.illus && showsPerson(rHero) ? hero.illus : null;
+const featured = hub === 'blog'
+  ? ((C.grid?.items ?? []) as any[]).find((it) => it?.href && isBuilt(it.href)) ?? null
+  : null;
+// La definición que sigue a la portada comparte su toma (SharedTake, §3.12)
+const DEF_IDS = ['definicion', 'datos'];
+const takeNext = ids[1] && DEF_IDS.includes(ids[1]) ? ids[1] : null;
+
+/* ── 05 · ¿No sabes por dónde empezar? ──────────────────────────────────── */
+const noSe = cp('no-se');
+const noSePlate = plateOf('no-se');
+const rNoSe = noSePlate ? resolvePlate(noSePlate.id, { fallbackPlate: fallbackOf(noSePlate), mirror: !!noSePlate.mirror }) : null;
+
+/* ── industrias · grid (LocationSwitcher) ───────────────────────────────── */
+const gridPlates: string[] = (() => { const p = plateOf('grid')?.id; return Array.isArray(p) ? p : p ? [p] : []; })();
+const sectors = hub === 'industrias'
+  ? ((C.grid?.sectors ?? []) as any[]).map((s, i) => ({
+      slug: s.slug,
+      name: s.name,
+      line: s.line,
+      metricId: s.metricId && (METRICS as any)[s.metricId] ? (s.metricId as MetricId) : undefined,
+      href: s.href ? linkTarget(s.href) ?? undefined : undefined,
+      bubbles: s.bubbles,
+      plate: gridPlates.find((p) => p === `ind-${s.slug}-hero`) ?? gridPlates[i] ?? `ind-${s.slug}-hero`,
+    }))
+  : [];
+
+/* ── cifras (Montage) ───────────────────────────────────────────────────── */
+const cif = cp('cifras');
+const cifIds: MetricId[] = ((cif?.rows ?? []) as any[]).map((r) => r.metricId).filter((m: string) => (METRICS as any)[m]);
+const caseHero = (href?: string) => {
+  if (!href) return undefined;
+  const pg = (pages as any[]).find((x) => x.url === href.split('#')[0]);
+  return pg?.sections?.find((s: any) => s.plate)?.plate?.id as string | undefined;
+};
+const stillFor: Partial<Record<MetricId, string>> = {};
+for (const id of cifIds) { const p = caseHero((METRICS as any)[id].href); if (p) stillFor[id] = p; }
+
+/* ── cierre ─────────────────────────────────────────────────────────────── */
+const cta = cp('cta-final');
+const ctaPlate = plateOf('cta-final');
+
+if (dev) {
+  const known = new Set(['hero', 'definicion', 'datos', 'mapa', 'conexion', 'no-se', 'vktor', 'grid', 'cifras', 'filtros', 'categorias', 'registro', 'metodo', 'faq', 'cta-final']);
+  for (const s of (P.sections as any[])) {
+    if (s.status === 'conditional') continue;
+    if (!known.has(s.id)) console.warn(`[HubTemplate] ${P.id}: sección "${s.id}" sin componente en la plantilla`);
+    else if (!C[s.id]) console.warn(`[HubTemplate] ${P.id}: falta el copy de la sección "${s.id}"`);
+  }
+  for (const p of [heroPlate, noSePlate, ctaPlate]) if (p?.id && usesFallback(p.id)) console.warn(`[HubTemplate] ${P.id}: placa "${p.id}" sin exportar → respaldo local`);
+}
+
+/* ── piezas reutilizadas ────────────────────────────────────────────────── */
+const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
+  c?.eyebrow ? `<span class="node${tone === 'amber' ? ' node--amber' : ''}" aria-hidden="true"></span>${c.eyebrow.replace(/[<>&]/g, '')}` : '';
+---
+<BaseLayout page={page} lcpPlate={lcpPlate} lcpSrcsetMax={2752} bodyClass={`hub hub--${hub}`}>
+  {ids.map((id) => {
+    /* ───────────── 01 · Portada (+ definición en la misma toma) ───────────── */
+    if (id === 'hero') {
+      if (!hero || !heroPlate) return null;
+      const heroScene = (
+        <ImageSection
+          id="hero"
+          plate={heroPlate.id}
+          fallbackPlate={fallbackOf(heroPlate)}
+          mirror={!!heroPlate.mirror}
+          height="hero"
+          mobile="split"
+          priority
+          take={!!takeNext}
+          srcsetMax={2752}
+          class={`hub-hero hub-hero--${hub} ${edgeCls(rHero)} tpl-hero`}
+        >
+          {/* Envoltura sin posición: el sumario sigue anclado a la portada y se apaga con el rack de la toma compartida (su
+              propia opacidad la maneja la entrada de ui) */}
+          {sumarioIds.length === 3 && <div slot="over" class="hub-sumario-wrap"><SumarioCover ids={sumarioIds} class="hub-sumario" /></div>}
+          {/* R3: crumbs en escritorio; en móvil solo la etiqueta (si repite los crumbs, solo en móvil) */}
+          <Breadcrumbs page={page} items={builtCrumbs(P.breadcrumbs)} class="tpl-mhide" />
+          {hero.eyebrow && <p class:list={['t-label t-label--cyan eyebrow', heroEyebrowDup && 'tpl-dhide']} set:html={eyebrowOf(hero)} />}
+          <h1 id="hero-t" class="t-display-2 hub-h1" style={`--hub-long:${longest(hero.h1)}`} data-split set:html={head(hero.h1, true)} />
+          {hero.lede && (
+            <p class="t-lede t-lede--2 hub-hero__lede"><Copy text={heroLede.intro} />{heroLede.rest && <span class="tpl-mhide"> <Copy text={heroLede.rest} /></span>}</p>
+          )}
+          <HeroCtas href={hero.ctaPrimary?.href ?? SITE.discovery} label={hero.ctaPrimary?.label ?? 'Agenda tu Discovery Session'}
+            waHref={wa(hero)} waLabel={waLabel(hero)} />
+          {/* Guía destacada (D: "artículo destacado sobre la imagen"): solo si alguna guía ya existe. R3: en móvil baja a `more` */}
+          {featured && (
+            <p class="hub-featured tpl-mhide">
+              <span class="t-label t-label--cyan"><span class="node" aria-hidden="true"></span>{hero.featured?.label ?? 'Guía destacada'}</span>
+              <a class="lnk" href={featured.href}>{featured.title} <Icon name="arrow" size={16} /></a>
+            </p>
+          )}
+          {figFits && <LightBranch from="mano" />}
+          {figFits && <FigCaption slot="anchors" n={1} title={figTitle(heroFig)} anchor="fig" target="mano"><Copy text={heroFig.text} /></FigCaption>}
+          {heroIllus && <p slot="over" class="chip-illus hub-illus tpl-mhide">{heroIllus}</p>}
+          {/* R3 · móvil: después de la placa (misma sección) va la cola del lede, el pie de foto en línea y el rótulo */}
+          {(heroLede.rest || heroFig || heroIllus || featured || sumarioIds.length === 3) && (
+            <Fragment slot="more">
+              {heroIllus && <p class="chip-illus tpl-illus-m tpl-dhide" aria-hidden="true">{heroIllus}</p>}
+              {heroLede.rest && <Copy as="p" class="t-lede t-lede--2 hub-hero__rest tpl-dhide" text={heroLede.rest} />}
+              {featured && (
+                <p class="hub-featured tpl-dhide">
+                  <span class="t-label t-label--cyan"><span class="node" aria-hidden="true"></span>{hero.featured?.label ?? 'Guía destacada'}</span>
+                  <a class="lnk" href={featured.href}>{featured.title} <Icon name="arrow" size={16} /></a>
+                </p>
+              )}
+              {sumarioIds.length === 3 && <SumarioCover ids={sumarioIds} variant="row" class="hub-sumario-row tpl-dhide" />}
+              {heroFig && <FigCaption variant="inline" n={1} title={figTitle(heroFig)} class="tpl-dhide"><Copy text={heroFig.text} /></FigCaption>}
+            </Fragment>
+          )}
+        </ImageSection>
+      );
+      if (!takeNext) return heroScene;
+      const d = cp(takeNext)!;
+      return (
+        <SharedTake plate={heroPlate.id} fallbackPlate={fallbackOf(heroPlate)} mirror={!!heroPlate.mirror}>
+          {heroScene}
+          <Intertitle id={takeNext} rack aura="none" class={`hub-def hub-def--${hub}${rHero?.layout === 'subject-left' ? ' hub-def--right' : ''} tpl-glow`} labelledby={d.definition ? `${takeNext}-d-q` : `${takeNext}-t`}>
+            <Aura kind="ondas" x="45%" y="108%" o={1} only="d" />
+            {d.definition ? (
+              <DefinitionBlock id={`${takeNext}-d`} faqId={d.definition.faqId} heading={d.definition.heading} text={d.definition.text} label={d.eyebrow ?? 'Definición'} headingLevel={2} />
+            ) : (
+              <>
+                <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(d)} />
+                {d.h2 && <h2 id={`${takeNext}-t`} class="t-h2" data-split set:html={head(d.h2)} />}
+              </>
+            )}
+            {(d.body ?? []).map((b: string) => <Copy as="p" class="t-lede t-lede--2 hub-def__body" text={b} data-reveal />)}
+            {d.split && (
+              <div class="hub-split" data-reveal="stagger">
+                {[{ k: 'same', x: d.split.same }, { k: 'changes', x: d.split.changes }].filter((o) => o.x?.items?.length).map((o) => (
+                  <section class:list={['hub-split__col', `hub-split__col--${o.k}`]} aria-label={o.x.title}>
+                    <h3 class="t-label hub-split__h"><span class:list={['hub-split__mark', `hub-split__mark--${o.k}`]} aria-hidden="true"></span>{o.x.title}</h3>
+                    <ul class="hub-split__list" role="list">
+                      {(o.x.items as string[]).map((t, i) => <li style={`--i:${i}`}><Copy text={t} /></li>)}
+                    </ul>
+                  </section>
+                ))}
+              </div>
+            )}
+            {d.note && <p class="hub-limit"><span class="node" aria-hidden="true"></span><Copy text={d.note} /></p>}
+            {d.metricRow?.metricIds?.length > 0 && (
+              <Metric variant="row" ids={d.metricRow.metricIds} heading={d.metricRow.title} note={d.metricRow.sourceNote !== false}
+                link={(d.metricRow.metricIds as MetricId[]).every((m) => !(METRICS as any)[m]?.href || isBuilt((METRICS as any)[m].href))} class="hub-def__row" />
+            )}
+          </Intertitle>
+        </SharedTake>
+      );
+    }
+    if (id === takeNext) return null;     // vive dentro de la toma compartida de la portada
+
+    /* ───────────── servicios · mapa ───────────── */
+    if (id === 'mapa') return <HubMap id={id} c={cp(id)} />;
+
+    /* ───────────── servicios · cómo se conectan ───────────── */
+    if (id === 'conexion') return <HubFlow id={id} c={cp(id)} plate={plateOf(id)} />;
+
+    /* ───────────── servicios · ¿no sabes por dónde empezar? ───────────── */
+    if (id === 'no-se') {
+      if (!noSe || !noSePlate) return null;
+      const items = ((noSe.items ?? []) as any[]).filter((it) => it?.pain && it?.fix);
+      return (
+        <ImageSection
+          id={id} plate={noSePlate.id} fallbackPlate={fallbackOf(noSePlate)} mirror={!!noSePlate.mirror}
+          height={noSePlate.height ?? 'mid'} mobile="split" srcsetMax={noSePlate.srcsetMax ?? 1920} alt=""
+          class={`hub-nose ${edgeCls(rNoSe)} tpl-glow-m`}
+        >
+          <span class="tpl-introglow" aria-hidden="true"></span>
+          {noSe.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(noSe)} />}
+          <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(noSe.h2)} />
+          {noSe.lede && <Copy as="p" class="t-lede t-lede--2" text={noSe.lede} />}
+          <Fragment slot="more">
+            <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+            {items.length > 0 && <PainList items={items} mode="draw" label={noSe.eyebrow ?? 'Señales y por dónde empezar'} class="hub-nose__list" />}
+            <div class="ctas hub-nose__ctas">
+              <Btn variant="primary" href={noSe.ctaPrimary?.href ?? SITE.discovery} label={noSe.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+            </div>
+          </Fragment>
+        </ImageSection>
+      );
+    }
+
+    /* ───────────── servicios · VKTOR™ ───────────── */
+    if (id === 'vktor') {
+      const v = cp(id);
+      const link = (v.links ?? [])[0];
+      return (
+        <Intertitle id={id} aura="none" labelledby={`${id}-t`} class="hub-vk tpl-glow">
+          <Aura kind="ondas" x="38%" y="62%" o={1} only="d" />
+          <Aura kind="isotipo" x="90%" y="8%" w="min(46vw,680px)" o={0.6} only="d" />
+          <div class="hub-vk__head">
+            {v.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(v)} />}
+            <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(v.h2)} />
+            {v.lede && <Copy as="p" class="t-lede t-lede--2" text={v.lede} data-reveal />}
+          </div>
+          <VktorRail variant="phases" lines={(v.phases ?? []).map((f: any) => f.line)} href={(link?.href && linkTarget(link.href)) || false}
+            linkLabel={link?.label ?? 'Conoce el protocolo completo'} class="hub-vk__rail" />
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── industrias · elige tu sector (LocationSwitcher) ───────────── */
+    if (id === 'grid' && hub === 'industrias') {
+      const g = cp(id);
+      if (!sectors.length) return null;
+      return (
+        <LocationSwitcher id={id} sectors={sectors} label="SECTOR" class="hub-loc">
+          {/* Sin aura propia: en móvil la luz la da la placa del sector activo (un aura pegajosa detrás de la lista bajaba el
+              contraste de las líneas en muted, check:contraste) */}
+          {g.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(g)} />}
+          <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(g.h2)} />
+          {g.lede && <Copy as="p" class="t-lede t-lede--2 hub-loc__lede" text={g.lede} />}
+          <Fragment slot="foot">
+            {g.footer && <Copy as="p" class="t-micro hub-loc__foot" text={g.footer} />}
+            {built(g.links).map((l: any) => <a class="lnk hub-loc__all" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+          </Fragment>
+        </LocationSwitcher>
+      );
+    }
+
+    /* ───────────── casos · filtros + escenas ───────────── */
+    if (id === 'filtros') return <HubCases f={cp('filtros')} g={cp('grid')} idFilters="filtros" idGrid="grid" />;
+    if (id === 'grid' && hub === 'casos') return null;   // lo pinta HubCases junto con los filtros
+
+    /* ───────────── blog · categorías + guías ───────────── */
+    if (id === 'categorias') return <HubGuides cats={cp('categorias')} g={cp('grid')} idCats="categorias" idGrid="grid" />;
+    if (id === 'grid' && hub === 'blog') return null;    // lo pinta HubGuides junto con las categorías
+
+    /* ───────────── industrias · resultados por sector (Montage) ───────────── */
+    if (id === 'cifras') {
+      if (!cif || !cifIds.length) return null;
+      return (
+        <Montage id={id} ids={cifIds} transversal={cif.transversal} stillFor={stillFor} class="hub-cifras tpl-glow">
+          <Aura kind="ondas" x="50%" y="6%" o={1} clip />
+          {cif.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(cif)} />}
+          <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(cif.h2)} />
+          {cif.lede && <Copy as="p" class="t-lede t-lede--2 hub-cifras__lede" text={cif.lede} data-reveal />}
+          {cif.note && <EditorNote label={cif.noteLabel ?? 'Nota del editor'} class="hub-cifras__note"><Copy as="p" text={cif.note} /></EditorNote>}
+          <Fragment slot="foot">
+            {built(cif.links).map((l: any) => <a class="lnk" href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+          </Fragment>
+        </Montage>
+      );
+    }
+
+    /* ───────────── casos · registro de resultados ───────────── */
+    if (id === 'registro') {
+      const r = cp(id);
+      return (
+        <Intertitle id={id} aura="none" labelledby={`${id}-t`} class="hub-reg tpl-glow">
+          <Aura kind="ondas" x="50%" y="58%" o={1} only="d" />
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <div class="hub-reg__head">
+            {r.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(r)} />}
+            <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(r.h2)} />
+            {r.lede && <Copy as="p" class="t-lede t-lede--2" text={r.lede} data-reveal />}
+          </div>
+          <ResultsLedger caption={r.ledger?.caption} id="registro-tabla" class="hub-reg__ledger" />
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── casos · cómo medimos ───────────── */
+    if (id === 'metodo') {
+      const m = cp(id);
+      return (
+        <Intertitle id={id} aura="none" layout="split" labelledby={`${id}-t`} class="hub-method tpl-glow">
+          <Fragment slot="head">
+            {m.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(m)} />}
+            <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(m.h2)} />
+          </Fragment>
+          <Aura kind="isotipo" x="78%" y="40%" o={0.55} only="d" />
+          <EditorNote label={m.noteLabel ?? 'Nota de método'} class="hub-method__note">
+            <dl class="hub-method__list">
+              {((m.items ?? []) as any[]).map((it) => (
+                <div class="hub-method__row">
+                  <dt class="t-label hub-method__k">{it.title}</dt>
+                  <dd class="hub-method__v"><Copy text={it.text} /></dd>
+                </div>
+              ))}
+            </dl>
+          </EditorNote>
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── preguntas frecuentes ───────────── */
+    if (id === 'faq') {
+      const f = cp(id);
+      if (!f?.faqIds?.length) return null;
+      return (
+        <Intertitle id={id} aura="none" layout="split" labelledby={`${id}-t`} class="hub-faq tpl-glow">
+          <Fragment slot="head">
+            {f.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(f)} />}
+            <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(f.h2)} />
+            {f.footer && (
+              <p class="hub-faq__foot t-small" data-reveal set:html={(() => {
+                const t = String(f.footer).replace(/[<>&]/g, '');
+                return t.replace(SITE.email, `<a href="mailto:${SITE.email}">${SITE.email}</a>`);
+              })()} />
+            )}
+            <div class="hub-faq__cta" data-reveal><Btn variant="ghost" href={wa(hero)} label={waLabel(hero)} /></div>
+          </Fragment>
+          <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <FAQAccordion ids={f.faqIds} glass id={`${id}-list`} label={f.h2?.text ?? 'Preguntas frecuentes'} />
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── cierre ───────────── */
+    if (id === 'cta-final') {
+      if (!cta) return null;
+      return (
+        <Dawn id={id} plate={ctaPlate?.id ?? 'cta-amanecer'} mirror={!!ctaPlate?.mirror} fallbackPlate={fallbackOf(ctaPlate)} layout={lay(ctaPlate)} class="hub-dawn tpl-glow-m">
+          {cta.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(cta)} />}
+          <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(cta.h2)} />
+          {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
+          <div class="ctas">
+            {cta.micro ? (
+              <div class="cta-p">
+                <Btn variant="primary" href={cta.ctaPrimary?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} />
+                {/* Grupos que no se parten por dentro ("Sin costo · Sin compromiso · / 30 minutos por Google Meet"): dos renglones */}
+                <p class="t-micro btn-micro" data-allow-number>{String(cta.micro).split(/\s+·\s+/).map((g: string, i: number) => <>{i > 0 && ' · '}<span class="tpl-nw">{g}</span></>)}</p>
+              </div>
+            ) : (
+              <Btn variant="primary" href={cta.ctaPrimary?.href ?? SITE.discovery} label={cta.ctaPrimary?.label ?? 'Agenda tu Discovery Session'} micro />
+            )}
+            <Btn variant="ghost" href={wa(cta.ctaSecondary ? cta : hero)} label={waLabel(cta)} />
+          </div>
+        </Dawn>
+      );
+    }
+    return null;
+  })}
+</BaseLayout>
+
+<script>
+  // Filtros de los hubs (casos: sector × servicio · blog: categoría). Sin fetch: muestran u ocultan lo ya renderizado.
+  // [data-hub-filter] contiene los chips ([data-dim][data-val]); la lista es el siguiente [data-hub-list] de la página.
+  // Cada elemento declara data-<dim> (un valor) o data-<dim>s (lista separada por espacios).
+  document.querySelectorAll<HTMLElement>('[data-hub-filter]').forEach((box) => {
+    const kind = box.dataset.hubFilter;
+    const listEl = document.querySelector<HTMLElement>(`[data-hub-list="${kind}"]`);
+    if (!listEl) return;
+    const items = [...listEl.querySelectorAll<HTMLElement>(':scope li[data-sector], :scope li[data-cat]')];
+    const chips = [...box.querySelectorAll<HTMLButtonElement>('[data-dim][data-val]')];
+    const status = box.querySelector<HTMLElement>('[data-hub-status]');
+    const empty = listEl.querySelector<HTMLElement>('[data-hub-empty]');
+    const sel: Record<string, string> = {};
+    chips.forEach((c) => { if (c.getAttribute('aria-pressed') === 'true') sel[c.dataset.dim!] = c.dataset.val!; });
+    const has = (el: HTMLElement, dim: string, val: string) => {
+      if (val === '*') return true;
+      const one = el.dataset[dim];
+      if (one !== undefined) return one === val;
+      return (el.dataset[`${dim}s`] ?? '').split(/\s+/).includes(val);
+    };
+    const apply = () => {
+      let n = 0;
+      items.forEach((el) => {
+        const ok = Object.entries(sel).every(([d, v]) => has(el, d, v));
+        el.hidden = !ok;
+        if (ok) { n++; el.classList.remove('is-in'); void el.offsetWidth; el.classList.add('is-in'); }
+      });
+      if (status) status.textContent = (status.dataset.tpl ?? '{n}').replace('{n}', String(n));
+      if (empty) empty.hidden = n > 0;
+    };
+    chips.forEach((c) => c.addEventListener('click', () => {
+      const d = c.dataset.dim!;
+      sel[d] = c.dataset.val!;
+      chips.filter((x) => x.dataset.dim === d).forEach((x) => x.setAttribute('aria-pressed', String(x === c)));
+      apply();
+      (window as any).ScrollTrigger?.refresh?.();
+    }));
+  });
+</script>
