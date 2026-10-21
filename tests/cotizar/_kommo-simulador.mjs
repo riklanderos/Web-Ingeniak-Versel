@@ -54,7 +54,7 @@ export function cuentaSimulada(o = {}) {
       });
     }
     // Un embudo archivado con el mismo nombre no debe confundir al sitio.
-    pipelines.push({ id: 1900, name: EMBUDOS.cotizaciones.nombre, sort: 99, is_main: false, is_archive: true, statuses: [{ id: 59_999, name: 'Nueva cotización', sort: 20, type: 0, pipeline_id: 1900 }] });
+    pipelines.push({ id: 1900, name: EMBUDOS.ventas.nombre, sort: 99, is_main: false, is_archive: true, statuses: [{ id: 59_999, name: 'Nueva cotización', sort: 20, type: 0, pipeline_id: 1900 }] });
   }
   /** @type {any[]} */
   const campos = [];

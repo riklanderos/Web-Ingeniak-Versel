@@ -1,5 +1,9 @@
 # Agenda de Discovery Session y Power Session · configuración y pruebas
 
+> **Actualización · 20 de octubre de 2026 (noche):** la estructura de 3 embudos quedó sustituida por el **plan de reestructura** (`kommo-plan-reestructura.md`), que un agente ejecutará por API sobre la cuenta real. Equivalencias donde esta guía diga lo contrario:
+> «Sitio web · Cotizaciones» → **«Ventas»** (el P1 11303859); «Agenda · Sesiones» → se divide: las **Discovery** caen en «Ventas» → etapa **«Discovery agendada» (97185916)** y las **Power Session** en su propio embudo **«Power Session»**; «Clientes · Implementación» ya no lo crea el sitio (lo administra el equipo en el embudo Clientes/Licencias).
+> Variables: `KOMMO_AGENDA_PIPELINE_ID`/`KOMMO_AGENDA_STATUS_ID` siguen funcionando como alias de `KOMMO_POWER_PIPELINE_ID`/`KOMMO_POWER_STATUS_ID`; nueva `KOMMO_DISCOVERY_STATUS_ID` (respaldo = 97185916, opcional). La agenda llena «Ventas» (Discovery) y «Power Session» (Power); el pago mueve el lead a «Power Session pagada» dentro de su embudo.
+
 **Para quién es:** para el equipo de Ingeniak (y quien administre Vercel, Stripe, Google y Kommo).
 **Qué cubre:** qué hay que decidir, qué hay que capturar en Vercel, cómo comprobar el primer Preview y cómo hacer la prueba de punta a punta.
 **Fecha:** 20 de octubre de 2026 (actualizada con la estructura de 3 embudos de Kommo que aprobaste ese día). **Especificación:** `materiales/v2/CAMBIO-COTIZAR.md` §5 y `materiales/v2/landings/flujo-agenda.md`.

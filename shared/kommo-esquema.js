@@ -1,38 +1,32 @@
-// shared/kommo-esquema.js — estructura de Kommo aprobada por el cliente el 2026-10-20 (3 embudos).
-// Única fuente de nombres para: scripts/kommo-configurar.mjs (crea la estructura) y server/kommo.js (llena los campos).
+// shared/kommo-esquema.js — estructura de Kommo según el plan de reestructura aprobado el 2026-10-20
+// (materiales/v2/landings/kommo-plan-reestructura.md): el embudo «Ventas» es el P1 existente (11303859) con la etapa
+// de Discovery ya existente (97185916, renombrada a «Discovery agendada»), y «Power Session» es un embudo nuevo.
+// Única fuente de nombres para: scripts/kommo-configurar.mjs (completa la estructura) y server/kommo.js (llena los campos).
 // Los nombres y las opciones deben coincidir EXACTO con lo que existe en Kommo: el sitio los busca por nombre.
 // Colores: solo la paleta que acepta Kommo para etapas (se valida en el script antes de enviar).
 import { INDUSTRIES as AGENDA_INDUSTRIAS, TEAM_SIZES as AGENDA_EQUIPOS, REVENUES as AGENDA_FACTURACION } from './agenda.js';
 
 /** Embudos y etapas activas (Ganado/Perdido los crea Kommo). La primera etapa es la de entrada. */
 export const EMBUDOS = {
-  cotizaciones: {
-    nombre: 'Sitio web · Cotizaciones',
+  ventas: {
+    nombre: 'Ventas',
     etapas: [
       { clave: 'nueva', nombre: 'Nueva cotización', color: '#98cbff' },
       { clave: 'contactado', nombre: 'Contactado', color: '#ffeab2' },
       { clave: 'calificado', nombre: 'Calificado', color: '#ffdc7f' },
-      { clave: 'propuesta', nombre: 'Propuesta enviada', color: '#ffce5a' },
+      { clave: 'discovery', nombre: 'Discovery agendada', color: '#c1e0ff' },
+      { clave: 'realizada', nombre: 'Sesión realizada', color: '#ffce5a' },
+      { clave: 'propuesta', nombre: 'Propuesta enviada', color: '#f3beff' },
       { clave: 'negociacion', nombre: 'Negociación', color: '#ff8f92' },
     ],
   },
-  agenda: {
-    nombre: 'Agenda · Sesiones',
+  power: {
+    nombre: 'Power Session',
     etapas: [
-      { clave: 'discovery', nombre: 'Discovery agendada', color: '#98cbff' },
-      { clave: 'power-por-pagar', nombre: 'Power Session por pagar', color: '#ffeab2' },
+      { clave: 'power-por-pagar', nombre: 'Power Session por pagar', color: '#fffd7f' },
       { clave: 'power-pagada', nombre: 'Power Session pagada', color: '#87f2c0' },
       { clave: 'realizada', nombre: 'Sesión realizada', color: '#ffce5a' },
-      { clave: 'propuesta', nombre: 'Propuesta enviada', color: '#ff8f92' },
-    ],
-  },
-  clientes: {
-    nombre: 'Clientes · Implementación',
-    etapas: [
-      { clave: 'arranque', nombre: 'Arranque', color: '#ccc8f9' },
-      { clave: 'implementacion', nombre: 'Implementación (7–30 días)', color: '#f3beff' },
-      { clave: 'operacion', nombre: 'En operación', color: '#87f2c0' },
-      { clave: 'renovacion', nombre: 'Renovación', color: '#deff81' },
+      { clave: 'propuesta', nombre: 'Propuesta enviada', color: '#f3beff' },
     ],
   },
 };

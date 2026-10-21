@@ -84,8 +84,8 @@ test('api · confirmar: pagado → cita real con invitado, Meet y aviso; Kommo p
   assert.equal(patch.length, 1);
   assert.equal(patch[0].path, '/leads/4242');
   assert.deepEqual(patch[0].body, {
-    pipeline_id: IDS.embudo('Agenda · Sesiones'),
-    status_id: IDS.etapa('Agenda · Sesiones', 'Power Session pagada'),
+    pipeline_id: IDS.embudo('Power Session'),
+    status_id: IDS.etapa('Power Session', 'Power Session pagada'),
     custom_fields_values: [
       { field_id: IDS.campo('Pago Power Session'), values: [{ enum_id: IDS.opcion('Pago Power Session', 'Pagado') }] },
       { field_id: IDS.campo('Fecha de la sesión'), values: [{ value: Date.parse(START) / 1000 }] },

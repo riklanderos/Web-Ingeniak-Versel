@@ -38,7 +38,7 @@ test('§3.9-1 · válido sin variables → 200 dryRun con la instantánea de com
   ]);
   // Estructura aprobada (2026-10-20): solo web-cotizar + origen + entorno; lo demás va en campos.
   const tags = ['web-cotizar', 'orgánico', 'entorno-preview'];
-  assert.deepEqual(b.preview.destino, { embudo: 'Sitio web · Cotizaciones', etapa: 'Nueva cotización' });
+  assert.deepEqual(b.preview.destino, { embudo: 'Ventas', etapa: 'Nueva cotización' });
   assert.deepEqual(b.preview.campos, {
     'Servicios de interés': ['Agentes de IA para WhatsApp', 'CRM con IA (Kommo o GoHighLevel)'],
     'Objetivo principal': 'Responder rápido a cada cliente',

@@ -1,5 +1,9 @@
 # Formulario «Cotizar proyecto» → Kommo · guía de configuración
 
+> **Actualización · 20 de octubre de 2026 (noche):** la estructura de 3 embudos quedó sustituida por el **plan de reestructura** (`kommo-plan-reestructura.md`), que un agente ejecutará por API sobre la cuenta real. Equivalencias donde esta guía diga lo contrario:
+> «Sitio web · Cotizaciones» → **«Ventas»** (el P1 11303859); «Agenda · Sesiones» → se divide: las **Discovery** caen en «Ventas» → etapa **«Discovery agendada» (97185916)** y las **Power Session** en su propio embudo **«Power Session»**; «Clientes · Implementación» ya no lo crea el sitio (lo administra el equipo en el embudo Clientes/Licencias).
+> Variables: `KOMMO_AGENDA_PIPELINE_ID`/`KOMMO_AGENDA_STATUS_ID` siguen funcionando como alias de `KOMMO_POWER_PIPELINE_ID`/`KOMMO_POWER_STATUS_ID`; nueva `KOMMO_DISCOVERY_STATUS_ID` (respaldo = 97185916, opcional). La cotización entra a «Ventas → Nueva cotización».
+
 **Para:** el equipo de Ingeniak (quien administra Kommo y el proyecto de Vercel).
 **Fecha:** 20 de octubre de 2026 (actualizada con la estructura de 3 embudos que aprobaste ese día). **Base técnica:** `CAMBIO-COTIZAR.md` §3 y `kommo-vercel-tecnico.md` §1–§2.
 **Plantillas y automatizaciones de Kommo** (WhatsApp, correo, bots y tareas): la única guía es `kommo-setup.md` §8 y §9. Esta guía solo te remite a ella.

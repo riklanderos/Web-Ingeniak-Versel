@@ -141,7 +141,7 @@ describe('kommo-configurar · errores', () => {
       assert.equal(mock.estado.tags.length, 0);
       assert.equal(mock.peticiones.filter((p) => p.metodo === 'POST' && p.ruta === '/leads/custom_fields').length, 1);
       // Los embudos ya creados quedan en el archivo de IDs.
-      assert.ok(leerJson(salida).embudos.cotizaciones.id);
+      assert.ok(leerJson(salida).embudos.ventas.id);
       const embudosAntes = mock.estado.pipelines.length;
 
       const r2 = await correr(mock, ['--aplicar'], { salida });

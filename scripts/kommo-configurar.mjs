@@ -100,8 +100,10 @@ const err = (s = '') => process.stderr.write(`${tapar(s)}\n`);
 export const AYUDA = `
 Ingeniak · configuración de Kommo
 
-Crea en tu cuenta de Kommo la estructura aprobada: 3 embudos con sus etapas,
-15 campos del lead, 10 etiquetas y 6 plantillas de respuesta.
+Completa en tu cuenta de Kommo la estructura del plan de reestructura: los embudos
+«Ventas» y «Power Session» con sus etapas, 15 campos del lead, 10 etiquetas y
+6 plantillas de respuesta. Córrelo DESPUÉS de la reestructura (kommo-plan-reestructura.md):
+si el P1 todavía no se llama «Ventas», crearía un embudo «Ventas» aparte.
 
 Uso (desde la carpeta del proyecto):
   node scripts/kommo-configurar.mjs --inventario  Lista TODO lo que ya tiene tu cuenta (embudos con sus etapas y
@@ -112,7 +114,6 @@ Uso (desde la carpeta del proyecto):
                                                 Puedes correrlo las veces que quieras: no duplica.
 
 Opciones:
-  --sin-clientes     No toca el embudo «${EMBUDOS.clientes.nombre}».
   --sin-plantillas   No crea las plantillas de respuesta.
   --salida=RUTA      Dónde guardar los IDs (por defecto materiales/v2/landings/kommo-ids.json).
   --ayuda            Muestra este texto.
@@ -129,14 +130,13 @@ Guía paso a paso: materiales/v2/landings/kommo-setup.md
 
 /** Lee las opciones. Nunca repite un argumento largo (podría ser el token pegado por error). */
 export function leerOpciones(argv) {
-  const op = { modo: 'prueba', clientes: true, plantillas: true, ayuda: false, salida: SALIDA_POR_DEFECTO, error: null };
+  const op = { modo: 'prueba', plantillas: true, ayuda: false, salida: SALIDA_POR_DEFECTO, error: null };
   const modos = new Set();
   for (const a of argv) {
     if (a === '--ayuda' || a === '-h' || a === '--help') op.ayuda = true;
     else if (a === '--prueba') modos.add('prueba');
     else if (a === '--aplicar') modos.add('aplicar');
     else if (a === '--inventario') modos.add('inventario');
-    else if (a === '--sin-clientes') op.clientes = false;
     else if (a === '--sin-plantillas') op.plantillas = false;
     else if (a.startsWith('--salida=') && a.length > 9) op.salida = resolve(process.cwd(), a.slice(9));
     else op.error = a.startsWith('--') && a.length <= 40 ? `No reconozco la opción «${a}».` : 'No reconozco una de las opciones (no la repito aquí por si era el token).';
@@ -565,8 +565,7 @@ async function pasoEmbudos(ctx) {
     rep.fallo(S, 'Lista', 'embudos de la cuenta', e);
     return;
   }
-  const claves = Object.keys(EMBUDOS).filter((c) => op.clientes || c !== 'clientes');
-  if (!op.clientes) rep.agregar(S, 'omitido', 'Embudo', EMBUDOS.clientes.nombre, { detalle: 'se pidió --sin-clientes' });
+  const claves = Object.keys(EMBUDOS);
   let sortSiguiente = Math.max(0, ...existentes.map((p) => Number(p.sort) || 0)) + 1;
 
   for (const clave of claves) {
@@ -918,11 +917,12 @@ function imprimirReporte(rep) {
 
 /**
  * Variables de Vercel: solo el subdominio (y el token, que pega el cliente). El sitio encuentra embudos, etapas y
- * campos por su nombre; KOMMO_PIPELINE_ID / KOMMO_STATUS_ID / KOMMO_AGENDA_* mandan sobre los nombres (p. ej.
- * KOMMO_AGENDA_STATUS_ID mandaría cada Power Session a «Discovery agendada»), por eso nunca se sugieren
- * (cotizar-configuracion.md §2 y agenda-configuracion.md §4).
+ * campos por su nombre; KOMMO_PIPELINE_ID / KOMMO_STATUS_ID / KOMMO_POWER_* (y los KOMMO_AGENDA_* viejos) mandan
+ * sobre los nombres y pueden mandar leads a la etapa equivocada, por eso nunca se sugieren (cotizar-configuracion.md
+ * §2 y agenda-configuracion.md §4). La excepción es KOMMO_DISCOVERY_STATUS_ID: es solo un respaldo (la etapa por
+ * nombre siempre le gana) y sirve mientras la etapa 97185916 no se llame «Discovery agendada».
  */
-const NO_CAPTURAR = ['KOMMO_PIPELINE_ID', 'KOMMO_STATUS_ID', 'KOMMO_AGENDA_PIPELINE_ID', 'KOMMO_AGENDA_STATUS_ID'];
+const NO_CAPTURAR = ['KOMMO_PIPELINE_ID', 'KOMMO_STATUS_ID', 'KOMMO_POWER_PIPELINE_ID', 'KOMMO_POWER_STATUS_ID', 'KOMMO_AGENDA_PIPELINE_ID', 'KOMMO_AGENDA_STATUS_ID'];
 
 function imprimirVercel(ctx) {
   const sub = ctx.ids.cuenta?.subdominio ?? ctx.subdominio;
@@ -938,6 +938,7 @@ function imprimirVercel(ctx) {
   const activos = (ctx.usuariosDetalle ?? []).filter((u) => u.activo);
   if (activos.length === 1) out(`  ${'KOMMO_RESPONSIBLE_USER_ID'.padEnd(26)} = ${activos[0].id}   ← ${activos[0].nombre} (único usuario activo)`);
   else out(`  ${'KOMMO_RESPONSIBLE_USER_ID'.padEnd(26)} = (el ID de la persona que atiende los leads del sitio; está en la lista de abajo)`);
+  out(`  ${'KOMMO_DISCOVERY_STATUS_ID'.padEnd(26)} = 97185916   ← respaldo para las Discovery mientras esa etapa de P1 no se llame «Discovery agendada»`);
   out('');
   out(`No captures ${NO_CAPTURAR.slice(0, -1).join(', ')} ni ${NO_CAPTURAR.at(-1)}, y bórralas si ya existían:`);
   out('mandan sobre los nombres y pueden mandar los leads a la etapa equivocada (por ejemplo, una Power Session sin pagar');

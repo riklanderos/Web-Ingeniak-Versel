@@ -118,7 +118,7 @@ test('buildKommo · lead, contacto, empresa y ids de embudo desde variables', ()
     name: 'Cotización web · Clínica Ejemplo',
     contact: { name: 'Ana Pérez', phoneE164: '+523312345678', email: 'ana@empresa.mx' },
     company: 'Clínica Ejemplo',
-    embudo: 'cotizaciones',
+    embudo: 'ventas',
     etapa: 'nueva',
     campos: {
       servicios: ['Agentes de IA para WhatsApp', 'CRM con IA (Kommo o GoHighLevel)'],

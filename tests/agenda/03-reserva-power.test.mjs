@@ -84,12 +84,12 @@ test('reserva power · apartado → Checkout → rl_stripe → Kommo «Power Ses
   // El título del apartado no cambia (riklanderos obtiene el negocio de él).
   assert.equal(g.events.get(eventId).summary, '[Apartado · pago pendiente] Power Session · Clínica Ejemplo');
 
-  // Kommo: «Agenda · Sesiones / Power Session por pagar», Pago Power Session = Pendiente.
+  // Kommo: «Power Session / Power Session por pagar», Pago Power Session = Pendiente.
   const lead = k.complex[0].body[0];
   assert.equal(lead.name, 'Power Session · Clínica Ejemplo');
   assert.deepEqual(lead._embedded.tags.map((x) => x.name), ['web-agenda', 'power-session', 'campaña', 'entorno-preview']);
-  assert.equal(lead.pipeline_id, IDS.embudo('Agenda · Sesiones'));
-  assert.equal(lead.status_id, IDS.etapa('Agenda · Sesiones', 'Power Session por pagar'));
+  assert.equal(lead.pipeline_id, IDS.embudo('Power Session'));
+  assert.equal(lead.status_id, IDS.etapa('Power Session', 'Power Session por pagar'));
   const sel = (campo, opcion) => ({ field_id: IDS.campo(campo), values: [{ enum_id: IDS.opcion(campo, opcion) }] });
   assert.deepEqual(lead.custom_fields_values.filter((c) => c.field_id >= 7000), [
     sel('Tipo de sesión', 'Power Session'),

@@ -3,8 +3,8 @@
  * Responde solo estados ('ok' | 'error' | 'sin-configurar'), sin IDs, llaves ni datos de personas:
  * { ok, entorno, simulacion, google, googleAuth, stripe, live, calendarios: { power, discovery }, kommo,
  *   kommoEstructura: 'completa' | 'incompleta' | 'sin-estructura' | 'error' | 'sin-configurar', kommoFaltan?: [nombres],
- *   kommoOpcional?: [nombres de «Clientes · Implementación» que faltan; no cambian kommoEstructura], supabase, cron }.
- *   kommoEstructura y kommoFaltan solo cuentan lo que el sitio usa (embudos de cotización y agenda + los 15 campos).
+ *   kommoOpcional?: [nombres de embudos que el sitio no llena y faltan; no cambian kommoEstructura], supabase, cron }.
+ *   kommoEstructura y kommoFaltan solo cuentan lo que el sitio usa (embudos «Ventas» y «Power Session» + los 15 campos).
  *
  * POST { simular: 'pago', session_id } · SOLO en la simulación local: "Simular pago" de /dev/agenda-checkout/.
  * POST { simular: 'reiniciar' } · SOLO en la simulación local: vacía la memoria simulada (QA repetible).
@@ -79,7 +79,7 @@ export default {
       kommo: st.kommo ? 'configurado' : 'sin-configurar',
       kommoEstructura: estructura.estado,
       ...(estructura.faltan.length ? { kommoFaltan: estructura.faltan } : {}),
-      // Lo que falta de «Clientes · Implementación»: el sitio no lo usa, así que no cambia kommoEstructura.
+      // Lo que falta de embudos que el sitio no llena: no cambia kommoEstructura.
       ...(estructura.opcionales?.length ? { kommoOpcional: estructura.opcionales } : {}),
       supabase,
       cron: Boolean(env.CRON_SECRET),

@@ -20,7 +20,6 @@ describe('kommo-configurar · --prueba', () => {
       assert.equal(r.codigo, 0);
       assert.match(r.stdout, /--prueba/);
       assert.match(r.stdout, /--aplicar/);
-      assert.match(r.stdout, /--sin-clientes/);
       assert.match(r.stdout, /--sin-plantillas/);
       assert.equal(mock.peticiones.length, 0);
     } finally {
@@ -36,15 +35,17 @@ describe('kommo-configurar · --prueba', () => {
       assert.equal(r.codigo, 0, r.stderr);
       assert.equal(mock.cambios().length, 0, 'en modo prueba no debe haber POST/PATCH');
       assert.ok(mock.peticiones.every((p) => p.metodo === 'GET'));
-      assert.equal(lineas(r.stdout, 'Se crearía · Embudo'), 3);
+      assert.equal(lineas(r.stdout, 'Se crearía · Embudo'), 2);
       assert.equal(lineas(r.stdout, 'Se crearía · Campo'), 15);
       assert.equal(lineas(r.stdout, 'Se crearía · Etiqueta'), 10);
       assert.equal(lineas(r.stdout, 'Se crearía · Plantilla'), 6);
-      assert.match(r.stdout, /Resumen: se crearían 34 · ya existen 0/);
+      assert.match(r.stdout, /Resumen: se crearían 33 · ya existen 0/);
       assert.match(r.stdout, /No se cambió nada en Kommo/);
       // Vercel: solo subdominio y token; nunca IDs de embudo o etapa (mandarían sobre los nombres).
       assert.match(r.stdout, /KOMMO_SUBDOMAIN\s+= ejemplo\n/);
-      assert.doesNotMatch(r.stdout, /KOMMO_(AGENDA_)?(PIPELINE|STATUS)_ID\s+=/);
+      assert.doesNotMatch(r.stdout, /KOMMO_(AGENDA_|POWER_)?(PIPELINE|STATUS)_ID\s+=/);
+      // La única variable de etapa que sí se sugiere es el respaldo de Discovery (97185916).
+      assert.match(r.stdout, /KOMMO_DISCOVERY_STATUS_ID\s+= 97185916/);
       assert.match(r.stdout, /✓ Zona horaria de la cuenta: America\/Mexico_City/);
       assert.ok(mock.peticiones.find((p) => p.ruta === '/account').query.with.split(',').includes('datetime_settings'));
       assert.match(r.stdout, /9001\s+Rik Landeros \(administrador\)/);
@@ -72,14 +73,12 @@ describe('kommo-configurar · --prueba', () => {
     }
   });
 
-  test('--sin-clientes y --sin-plantillas: no los planea ni consulta plantillas', async () => {
+  test('--sin-plantillas: no consulta ni planea plantillas', async () => {
     const mock = await crearMockKommo();
     try {
-      const r = await correr(mock, ['--prueba', '--sin-clientes', '--sin-plantillas']);
+      const r = await correr(mock, ['--prueba', '--sin-plantillas']);
       assert.equal(r.codigo, 0, r.stderr);
       assert.equal(lineas(r.stdout, 'Se crearía · Embudo'), 2);
-      assert.ok(!r.stdout.includes('Se crearía · Embudo «Clientes · Implementación»'));
-      assert.match(r.stdout, /Omitido · Embudo «Clientes · Implementación»/);
       assert.equal(lineas(r.stdout, 'Se crearía · Plantilla'), 0);
       assert.ok(!mock.peticiones.some((p) => p.ruta === '/chats/templates'));
     } finally {

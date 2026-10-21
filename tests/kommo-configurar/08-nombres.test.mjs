@@ -20,18 +20,16 @@ describe('kommo-configurar · --aplicar con nombres escritos casi igual y un emb
   let ids;
   let cambios1;
   let tamano;
-  let cot;
-  let clientes;
-  let agendaArchivada;
+  let vta;
+  let powerArchivado;
   before(async () => {
     dir = carpetaTemporal();
-    cot = embudo('sitio web · cotizaciones', ['nueva cotización', 'Contactado', 'Calificado', 'Propuesta enviada', 'Negociación'], { sort: 2 });
-    clientes = embudo('CLIENTES · IMPLEMENTACIÓN', ['Arranque', 'Implementación (7-30 días)', 'En operación', 'Renovación'], { sort: 3 });
-    agendaArchivada = archivado(embudo('Agenda · Sesiones', ['Discovery agendada'], { sort: 4 }));
+    vta = embudo('VENTAS', ['nueva cotización', 'Contactado', 'Calificado', 'Discovery agendada', 'Sesión realizada', 'Propuesta enviada', 'Negociación'], { sort: 2 });
+    powerArchivado = archivado(embudo('Power Session', ['Power Session por pagar'], { sort: 4 }));
     tamano = campo('Tamaño de empresa', 'select', ['1-10', '11-50', 'Mi rango']);
     mock = await crearMockKommo({
       estado: {
-        pipelines: [embudo('Embudo de ventas', ['Contacto inicial'], { is_main: true, sort: 1 }), cot, clientes, agendaArchivada],
+        pipelines: [embudo('Embudo de ventas', ['Contacto inicial'], { is_main: true, sort: 1 }), vta, powerArchivado],
         campos: [tamano, campo('industria', 'select', ['Salud'])],
         tags: [{ id: 777010, name: 'HOT–LEAD' }],
       },
@@ -47,32 +45,26 @@ describe('kommo-configurar · --aplicar con nombres escritos casi igual y un emb
   });
 
   test('embudo con otras mayúsculas: lo usa (como el sitio) y avisa cómo está escrito; no crea otro', () => {
-    assert.equal(similares(mock.estado.pipelines, EMBUDOS.cotizaciones.nombre).length, 1);
-    assert.match(r.stdout, /↺ Ya existía · Embudo «Sitio web · Cotizaciones» · id \d+ — existe escrito «sitio web · cotizaciones»/);
+    assert.equal(similares(mock.estado.pipelines, EMBUDOS.ventas.nombre).length, 1);
+    assert.match(r.stdout, /↺ Ya existía · Embudo «Ventas» · id \d+ — existe escrito «VENTAS»/);
     assert.match(r.stdout, /↺ Ya existía · Etapa «Nueva cotización» · id \d+ — existe escrita «nueva cotización»/);
-    assert.equal(ids.embudos.cotizaciones.id, cot.id);
-    assert.equal(ids.embudos.cotizaciones.etapas.nueva.id, cot._embedded.statuses.find((s) => s.name === 'nueva cotización').id);
-    assert.ok(!mock.peticiones.some((p) => p.metodo === 'POST' && p.ruta === `/leads/pipelines/${cot.id}/statuses`));
-  });
-
-  test('etapa con guion corto en vez de largo: la usa y no agrega «Implementación (7–30 días)»', () => {
-    assert.equal(similares(mock.estado.pipelines, EMBUDOS.clientes.nombre).length, 1);
-    assert.match(r.stdout, /↺ Ya existía · Etapa «Implementación \(7–30 días\)» · id \d+ — existe escrita «Implementación \(7-30 días\)»/);
-    assert.ok(!mock.peticiones.some((p) => p.metodo === 'POST' && p.ruta === `/leads/pipelines/${clientes.id}/statuses`));
+    assert.equal(ids.embudos.ventas.id, vta.id);
+    assert.equal(ids.embudos.ventas.etapas.nueva.id, vta._embedded.statuses.find((s) => s.name === 'nueva cotización').id);
+    assert.ok(!mock.peticiones.some((p) => p.metodo === 'POST' && p.ruta === `/leads/pipelines/${vta.id}/statuses`));
   });
 
   test('embudo archivado: «❌ Falló», no le agrega etapas, no crea otro y no guarda sus IDs', () => {
     assert.equal(r.codigo, 1, r.stdout + r.stderr);
-    assert.match(r.stdout, /❌ Falló · Embudo «Agenda · Sesiones» — Está archivado en Kommo y el sitio no usa embudos archivados\. Desarchívalo en Kommo y vuelve a correr el script\./);
+    assert.match(r.stdout, /❌ Falló · Embudo «Power Session» — Está archivado en Kommo y el sitio no usa embudos archivados\. Desarchívalo en Kommo y vuelve a correr el script\./);
     assert.ok(!mock.peticiones.some((p) => p.metodo === 'POST' && p.ruta === '/leads/pipelines'), 'no crea ningún embudo');
-    assert.ok(!mock.peticiones.some((p) => p.metodo === 'POST' && p.ruta === `/leads/pipelines/${agendaArchivada.id}/statuses`));
-    assert.equal(similares(mock.estado.pipelines, EMBUDOS.agenda.nombre).length, 1);
-    assert.equal(ids.embudos.agenda.id, null);
-    assert.ok(Object.values(ids.embudos.agenda.etapas).every((e) => e.id === null));
+    assert.ok(!mock.peticiones.some((p) => p.metodo === 'POST' && p.ruta === `/leads/pipelines/${powerArchivado.id}/statuses`));
+    assert.equal(similares(mock.estado.pipelines, EMBUDOS.power.nombre).length, 1);
+    assert.equal(ids.embudos.power.id, null);
+    assert.ok(Object.values(ids.embudos.power.etapas).every((e) => e.id === null));
     const texto = readFileSync(join(dir, 'kommo-ids.json'), 'utf8');
-    assert.ok(!texto.includes(String(agendaArchivada.id)), 'el id del embudo archivado no va en kommo-ids.json');
-    for (const s of agendaArchivada._embedded.statuses.filter((x) => x.id > 1000)) assert.ok(!texto.includes(String(s.id)));
-    assert.ok(!r.stdout.includes(String(agendaArchivada.id)), 'ni en la pantalla');
+    assert.ok(!texto.includes(String(powerArchivado.id)), 'el id del embudo archivado no va en kommo-ids.json');
+    for (const s of powerArchivado._embedded.statuses.filter((x) => x.id > 1000)) assert.ok(!texto.includes(String(s.id)));
+    assert.ok(!r.stdout.includes(String(powerArchivado.id)), 'ni en la pantalla');
   });
 
   test('opciones «1-10» y «11-50» ya existen con guion corto: no agrega «1–10» ni «11–50» y usa las que hay', () => {
@@ -100,18 +92,18 @@ describe('kommo-configurar · --aplicar con nombres escritos casi igual y un emb
   test('segunda corrida: no crea nada y vuelve a avisar del embudo archivado', () => {
     assert.equal(mock.cambios().length, cambios1, 'ningún POST/PATCH nuevo');
     assert.equal(r2.codigo, 1);
-    assert.match(r2.stdout, /❌ Falló · Embudo «Agenda · Sesiones» — Está archivado/);
+    assert.match(r2.stdout, /❌ Falló · Embudo «Power Session» — Está archivado/);
   });
 });
 
 describe('kommo-configurar · --prueba con embudos archivados', () => {
   test('archivado sin otro activo: «❌ Problema» (código 1) y no dice que lo crearía', async () => {
-    const mock = await crearMockKommo({ estado: { pipelines: [embudo('Embudo de ventas', [], { is_main: true }), archivado(embudo('Agenda · Sesiones', ['Discovery agendada']))] } });
+    const mock = await crearMockKommo({ estado: { pipelines: [embudo('Embudo de ventas', [], { is_main: true }), archivado(embudo('Power Session', ['Power Session por pagar']))] } });
     try {
       const r = await correr(mock, ['--prueba']);
       assert.equal(r.codigo, 1, r.stdout + r.stderr);
-      assert.match(r.stdout, /❌ Problema · Embudo «Agenda · Sesiones» — Está archivado en Kommo/);
-      assert.ok(!r.stdout.includes('Se crearía · Embudo «Agenda · Sesiones»'));
+      assert.match(r.stdout, /❌ Problema · Embudo «Power Session» — Está archivado en Kommo/);
+      assert.ok(!r.stdout.includes('Se crearía · Embudo «Power Session»'));
       assert.ok(!r.stdout.includes('Se crearía · Etapa'), 'tampoco planea etapas en el archivado');
       assert.equal(mock.cambios().length, 0);
     } finally {
@@ -120,13 +112,13 @@ describe('kommo-configurar · --prueba con embudos archivados', () => {
   });
 
   test('archivado y otro activo con el mismo nombre: usa el activo, como el sitio', async () => {
-    const viejo = archivado(embudo('Sitio web · Cotizaciones', ['Nueva cotización'], { sort: 2 }));
-    const activo = embudo('Sitio web · Cotizaciones', EMBUDOS.cotizaciones.etapas.map((e) => e.nombre), { sort: 3 });
+    const viejo = archivado(embudo('Ventas', ['Nueva cotización'], { sort: 2 }));
+    const activo = embudo('Ventas', EMBUDOS.ventas.etapas.map((e) => e.nombre), { sort: 3 });
     const mock = await crearMockKommo({ estado: { pipelines: [embudo('Embudo de ventas', [], { is_main: true }), viejo, activo] } });
     try {
-      const r = await correr(mock, ['--prueba', '--sin-clientes']);
-      assert.match(r.stdout, new RegExp(`↺ Ya existe · Embudo «Sitio web · Cotizaciones» · id ${activo.id}\\n`));
-      assert.ok(!r.stdout.includes('❌ Problema · Embudo «Sitio web · Cotizaciones»'));
+      const r = await correr(mock, ['--prueba']);
+      assert.match(r.stdout, new RegExp(`↺ Ya existe · Embudo «Ventas» · id ${activo.id}\\n`));
+      assert.ok(!r.stdout.includes('❌ Problema · Embudo «Ventas»'));
     } finally {
       await mock.cerrar();
     }

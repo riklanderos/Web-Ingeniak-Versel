@@ -84,7 +84,7 @@ test('barrido · confirma pagados, libera vencidos y sin rl_stripe; un retrieve 
 
   // Kommo: el confirmado pasa a «Power Session pagada» (PATCH al mismo lead); el vencido solo recibe la nota.
   const patches = k.calls.filter((c) => c.method === 'PATCH');
-  assert.deepEqual(patches.map((c) => [c.path, c.body.status_id]), [['/leads/5001', IDS.etapa('Agenda · Sesiones', 'Power Session pagada')]]);
+  assert.deepEqual(patches.map((c) => [c.path, c.body.status_id]), [['/leads/5001', IDS.etapa('Power Session', 'Power Session pagada')]]);
   assert.deepEqual(k.notes.map((n) => [n.entity_id, n.params.text.split(' · ')[0].split(':')[0]]).sort(), [
     [5001, 'Pago confirmado en Stripe'],
     [5002, 'No completó el pago de la Power Session'],

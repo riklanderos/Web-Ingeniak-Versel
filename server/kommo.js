@@ -52,11 +52,10 @@ const CAMPOS_PAGINAS_MAX = 10;
 /** Errores que no se arreglan reintentando con menos datos: se corta y se avisa. */
 const FATALES = Object.freeze(['auth', 'payment', 'forbidden', 'rate']);
 /**
- * Embudos que el sitio llena (cotización y agenda). «Clientes · Implementación» lo usa solo el equipo: el diagnóstico
- * lo reporta aparte, como opcional (el script admite `--sin-clientes`).
+ * Embudos que el sitio llena: «Ventas» (cotización y Discovery) y «Power Session» (reservas de Power).
  * @type {ReadonlyArray<keyof typeof EMBUDOS>}
  */
-const EMBUDOS_DEL_SITIO = Object.freeze(['cotizaciones', 'agenda']);
+const EMBUDOS_DEL_SITIO = Object.freeze(['ventas', 'power']);
 
 /** Campos `tracking_data` que se mandan si existen en la cuenta. */
 export const TRACKING_CODES = Object.freeze([
@@ -424,8 +423,9 @@ function nombreEtapa(embudo, etapa) {
  *   3. Embudo y etapa por nombre (estructura aprobada). Si la etapa con ese nombre no existe, `statusIdRespaldo`.
  *   4. `statusIdRespaldo` sin la estructura (con el embudo al que pertenece, si se conoce).
  *   5. Embudo de respaldo (`fallbackPipelineId` / `fallbackStatusId`) → embudo principal (sin pipeline_id ni status_id).
- * `statusId` manda siempre (la cotización tiene una sola etapa de entrada). `statusIdRespaldo` (KOMMO_AGENDA_STATUS_ID)
- * nunca le gana a una etapa encontrada por nombre: una sola variable no puede ser la entrada de Discovery y de Power.
+ * `statusId` manda siempre (la cotización tiene una sola etapa de entrada). `statusIdRespaldo` (p. ej.
+ * KOMMO_DISCOVERY_STATUS_ID = 97185916) nunca le gana a una etapa encontrada por nombre: es el plan B mientras la
+ * etapa no tenga todavía el nombre aprobado.
  * @param {Estructura | null} est
  * @param {{ embudo?: string, etapa?: string, pipelineId?: number, statusId?: number, statusIdRespaldo?: number,
  *           fallbackPipelineId?: number, fallbackStatusId?: number }} [destino]
@@ -983,10 +983,9 @@ export async function addLeadNote(leadId, text, ctx = {}) {
 
 /**
  * Diagnóstico de la estructura aprobada (para /api/agenda/estado/ en Preview): consulta fresca, sin ids.
- * `estado` y `faltan` cuentan solo lo que el sitio usa: los embudos de la cotización y de la agenda (con sus etapas)
+ * `estado` y `faltan` cuentan solo lo que el sitio usa: los embudos «Ventas» y «Power Session» (con sus etapas)
  * y los 15 campos con sus opciones. `faltan` lista los nombres que el sitio no encontró (máximo 30).
- * `opcionales` lista lo que falta de los embudos que el sitio no llena («Clientes · Implementación», que el script
- * omite con `--sin-clientes`): no cambia el estado.
+ * `opcionales` lista lo que falta de embudos que el sitio no llena (hoy ninguno): no cambia el estado.
  * @returns {Promise<{ estado: 'completa' | 'incompleta' | 'sin-estructura' | 'error' | 'sin-configurar', faltan: string[], opcionales: string[] }>}
  */
 export async function revisarEstructura() {

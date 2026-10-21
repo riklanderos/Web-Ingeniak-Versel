@@ -1,5 +1,5 @@
 // 10 · Estructura aprobada de Kommo (2026-10-20) · agenda contra el SIMULADOR HTTP LOCAL de Kommo
-// (tests/cotizar/_kommo-simulador.mjs; Google y Stripe siguen simulados en `fetch`). Discovery → «Agenda · Sesiones /
+// (tests/cotizar/_kommo-simulador.mjs; Google y Stripe siguen simulados en `fetch`). Discovery → «Ventas /
 // Discovery agendada» con sus campos; Power apartada → «Power Session por pagar» (Pago = Pendiente); pagada → PATCH
 // del MISMO lead a «Power Session pagada» (Pago = Pagado, fecha y Meet); liberada → nota «No completó el pago».
 // Sin la estructura: embudo de respaldo o principal + nota. Nunca un id que la cuenta no tenga.
@@ -67,13 +67,13 @@ function sinIdsDesconocidos(sim) {
   }
 }
 
-test('kommo · Discovery → «Agenda · Sesiones / Discovery agendada» con tipo, fecha (unix), Meet, giro, equipo, facturación y página', async (t) => {
+test('kommo · Discovery → «Ventas / Discovery agendada» con tipo, fecha (unix), Meet, giro, equipo, facturación y página', async (t) => {
   const { sim, g, logs } = await montar(t);
   const r = await reservar('discovery');
   assert.equal(r.kind, 'confirmed');
   const id = leadDelEvento(g);
   assert.ok(sim.leads.has(id), 'ik_kommo apunta al lead creado');
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'Agenda · Sesiones', etapa: 'Discovery agendada' });
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Ventas', etapa: 'Discovery agendada' });
   assert.deepEqual(sim.valores(id), {
     'Tipo de sesión': 'Discovery Session',
     'Fecha de la sesión': Date.parse(START) / 1000,
@@ -115,7 +115,7 @@ test('kommo · Power: apartado → «Power Session por pagar» (Pendiente); pago
   const r = await reservar('power');
   assert.equal(r.kind, 'checkout');
   const id = leadDelEvento(g);
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'Agenda · Sesiones', etapa: 'Power Session por pagar' });
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Power Session', etapa: 'Power Session por pagar' });
   const v0 = sim.valores(id);
   assert.equal(v0['Tipo de sesión'], 'Power Session');
   assert.equal(v0['Pago Power Session'], 'Pendiente');
@@ -130,7 +130,7 @@ test('kommo · Power: apartado → «Power Session por pagar» (Pendiente); pago
   assert.equal(sim.leads.size, 1, 'no se crea otro lead');
   const patch = sim.llamadasA('PATCH', `/leads/${id}`);
   assert.equal(patch.length, 1, 'un PATCH al mismo lead');
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'Agenda · Sesiones', etapa: 'Power Session pagada' });
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Power Session', etapa: 'Power Session pagada' });
   const v1 = sim.valores(id);
   assert.equal(v1['Pago Power Session'], 'Pagado');
   assert.equal(v1['Enlace de Meet'], c.meetLink);
@@ -153,7 +153,7 @@ test('kommo · apartado liberado → el lead se queda en «Power Session por pag
   const id = leadDelEvento(g);
   const eventId = [...g.events.keys()][0];
   assert.equal(await book().releaseHold(eventId), 'liberado');
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'Agenda · Sesiones', etapa: 'Power Session por pagar' });
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Power Session', etapa: 'Power Session por pagar' });
   assert.equal(sim.valores(id)['Pago Power Session'], 'Pendiente');
   assert.equal(sim.llamadasA('PATCH', '/leads/').length, 0, 'sin mover ni cambiar campos');
   assert.match(sim.notasDe(id).at(-1), /^No completó el pago de la Power Session: el horario apartado \(Miércoles 21 de octubre · 10:00 AM, hora del centro de México\) se liberó\.$/);
@@ -177,55 +177,69 @@ test('kommo · sin la estructura → Discovery al embudo principal; Power pagada
   assert.equal([...g.events.values()][0].extendedProperties.private.ik_kommo_pago, '1');
 });
 
-test('kommo · sin el embudo «Agenda · Sesiones» → el de KOMMO_PIPELINE_ID / KOMMO_STATUS_ID (respaldo)', async (t) => {
-  const { sim, g } = await montar(t, { sinEmbudos: ['Agenda · Sesiones'] });
-  process.env.KOMMO_PIPELINE_ID = String(sim.ids.embudo('Sitio web · Cotizaciones'));
-  process.env.KOMMO_STATUS_ID = String(sim.ids.etapa('Sitio web · Cotizaciones', 'Contactado'));
+test('kommo · sin los embudos «Ventas» y «Power Session» → el de KOMMO_PIPELINE_ID / KOMMO_STATUS_ID (respaldo)', async (t) => {
+  const { sim, g } = await montar(t, { sinEmbudos: ['Ventas', 'Power Session'] });
+  process.env.KOMMO_PIPELINE_ID = String(sim.ids.embudo('Embudo de ventas'));
+  process.env.KOMMO_STATUS_ID = String(sim.ids.etapa('Embudo de ventas', 'Contacto inicial'));
   await reservar('discovery');
   const id = leadDelEvento(g);
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'Sitio web · Cotizaciones', etapa: 'Contactado' });
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Embudo de ventas', etapa: 'Contacto inicial' });
   assert.equal(sim.valores(id)['Tipo de sesión'], 'Discovery Session', 'los campos existen y se llenan igual');
 });
 
-test('kommo · con las 4 variables que imprime el script (KOMMO_AGENDA_STATUS_ID = «Discovery agendada»): cada reserva va a SU etapa', async (t) => {
+test('kommo · transición: «Ventas» aún se llama «P1 · PROSPECTOS» → KOMMO_DISCOVERY_STATUS_ID (97185916) lleva la Discovery a SU etapa de P1', async (t) => {
+  const { sim, g } = await montar(t);
+  // La cuenta real de hoy: el P1 sin renombrar y la etapa de Discovery con su nombre viejo.
+  const p1 = sim.cuenta.pipelines.find((p) => p.name === 'Ventas');
+  p1.name = 'P1 · PROSPECTOS';
+  const etapaDiscovery = p1.statuses.find((s) => s.name === 'Discovery agendada');
+  etapaDiscovery.name = '4 · DISCOVERY Session';
+  process.env.KOMMO_DISCOVERY_STATUS_ID = String(etapaDiscovery.id);
+  await reservar('discovery');
+  const id = leadDelEvento(g);
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'P1 · PROSPECTOS', etapa: '4 · DISCOVERY Session' }, 'el respaldo trae consigo su embudo');
+  assert.equal(sim.valores(id)['Tipo de sesión'], 'Discovery Session');
+});
+
+test('kommo · con las variables que imprime el script: cada reserva va a SU etapa (ninguna variable le gana al nombre)', async (t) => {
   const { sim, g, s } = await montar(t);
-  // Exactamente lo que el script de configuración le pide capturar al cliente en Vercel (kommo-setup.md §7).
-  process.env.KOMMO_AGENDA_PIPELINE_ID = String(sim.ids.embudo('Agenda · Sesiones'));
-  process.env.KOMMO_AGENDA_STATUS_ID = String(sim.ids.etapa('Agenda · Sesiones', 'Discovery agendada'));
-  process.env.KOMMO_PIPELINE_ID = String(sim.ids.embudo('Sitio web · Cotizaciones'));
-  process.env.KOMMO_STATUS_ID = String(sim.ids.etapa('Sitio web · Cotizaciones', 'Nueva cotización'));
+  process.env.KOMMO_DISCOVERY_STATUS_ID = String(sim.ids.etapa('Ventas', 'Contactado'));
+  process.env.KOMMO_POWER_PIPELINE_ID = String(sim.ids.embudo('Power Session'));
+  process.env.KOMMO_POWER_STATUS_ID = String(sim.ids.etapa('Power Session', 'Sesión realizada'));
+  process.env.KOMMO_PIPELINE_ID = String(sim.ids.embudo('Ventas'));
+  process.env.KOMMO_STATUS_ID = String(sim.ids.etapa('Ventas', 'Nueva cotización'));
 
   await reservar('discovery');
   const d = leadDelEvento(g);
-  assert.deepEqual(sim.ubicacion(d), { embudo: 'Agenda · Sesiones', etapa: 'Discovery agendada' });
+  assert.deepEqual(sim.ubicacion(d), { embudo: 'Ventas', etapa: 'Discovery agendada' }, 'el respaldo no le gana a la etapa por nombre');
 
   g.events.clear();
   await reservar('power');
   const p = leadDelEvento(g);
-  assert.deepEqual(sim.ubicacion(p), { embudo: 'Agenda · Sesiones', etapa: 'Power Session por pagar' }, 'la variable no le gana a la etapa por nombre');
+  assert.deepEqual(sim.ubicacion(p), { embudo: 'Power Session', etapa: 'Power Session por pagar' }, 'la variable no le gana a la etapa por nombre');
   assert.equal(sim.valores(p)['Pago Power Session'], 'Pendiente');
   assert.equal(sim.llamadasA('POST', '/leads/complex').length, 2, 'sin 400 ni reintentos');
 
   s.pay([...s.sessions.keys()][0]);
   await book().confirmFromCheckout([...s.sessions.keys()][0]);
-  assert.deepEqual(sim.ubicacion(p), { embudo: 'Agenda · Sesiones', etapa: 'Power Session pagada' });
+  assert.deepEqual(sim.ubicacion(p), { embudo: 'Power Session', etapa: 'Power Session pagada' });
 });
 
-test('kommo · KOMMO_AGENDA_STATUS_ID solo es respaldo: se usa si la etapa con su nombre no existe en la cuenta', async (t) => {
+test('kommo · KOMMO_POWER_STATUS_ID (o el alias KOMMO_AGENDA_STATUS_ID) solo es respaldo: se usa si la etapa con su nombre no existe', async (t) => {
   const { sim, g } = await montar(t, { sinEtapas: ['Power Session por pagar'] });
-  process.env.KOMMO_AGENDA_STATUS_ID = String(sim.ids.etapa('Agenda · Sesiones', 'Sesión realizada'));
+  process.env.KOMMO_AGENDA_STATUS_ID = String(sim.ids.etapa('Power Session', 'Sesión realizada'));
   await reservar('power');
-  assert.deepEqual(sim.ubicacion(leadDelEvento(g)), { embudo: 'Agenda · Sesiones', etapa: 'Sesión realizada' }, 'falta «por pagar» → la de la variable');
+  assert.deepEqual(sim.ubicacion(leadDelEvento(g)), { embudo: 'Power Session', etapa: 'Sesión realizada' }, 'falta «por pagar» → la de la variable (alias viejo)');
   g.events.clear();
   await reservar('discovery');
-  assert.deepEqual(sim.ubicacion(leadDelEvento(g)), { embudo: 'Agenda · Sesiones', etapa: 'Discovery agendada' }, 'la que sí existe gana');
+  assert.deepEqual(sim.ubicacion(leadDelEvento(g)), { embudo: 'Ventas', etapa: 'Discovery agendada' }, 'la que sí existe gana');
 
   // Con un embudo forzado por variable que no tiene las etapas aprobadas: la etapa de la variable.
-  process.env.KOMMO_AGENDA_PIPELINE_ID = String(sim.ids.embudo('Clientes · Implementación'));
-  process.env.KOMMO_AGENDA_STATUS_ID = String(sim.ids.etapa('Clientes · Implementación', 'Arranque'));
+  process.env.KOMMO_POWER_PIPELINE_ID = String(sim.ids.embudo('Ventas'));
+  process.env.KOMMO_POWER_STATUS_ID = String(sim.ids.etapa('Ventas', 'Contactado'));
   g.events.clear();
-  await reservar('discovery');
-  assert.deepEqual(sim.ubicacion(leadDelEvento(g)), { embudo: 'Clientes · Implementación', etapa: 'Arranque' });
+  await reservar('power');
+  assert.deepEqual(sim.ubicacion(leadDelEvento(g)), { embudo: 'Ventas', etapa: 'Contactado' });
 });
 
 test('kommo · al pagar, el lead ya no existe (404) → lead NUEVO en «Power Session pagada» con la nota; el cron no reintenta de más', async (t) => {
@@ -253,7 +267,7 @@ test('kommo · al pagar, el lead ya no existe (404) → lead NUEVO en «Power Se
   assert.notEqual(nuevo, viejo, 'ik_kommo apunta al lead nuevo');
   assert.ok(sim.leads.has(nuevo));
   assert.equal(ev().extendedProperties.private.ik_kommo_pago, '1');
-  assert.deepEqual(sim.ubicacion(nuevo), { embudo: 'Agenda · Sesiones', etapa: 'Power Session pagada' });
+  assert.deepEqual(sim.ubicacion(nuevo), { embudo: 'Power Session', etapa: 'Power Session pagada' });
   assert.equal(sim.leads.get(nuevo).name, 'Power Session · Clínica Ejemplo');
   assert.equal(sim.leads.get(nuevo).contact_id, contacto, 'ligado al mismo contacto (por correo)');
   assert.deepEqual(sim.valores(nuevo), {
@@ -317,7 +331,7 @@ test('kommo · al pagar, Kommo rechaza una opción que cambió → reintento sin
   const patches = sim.llamadasA('PATCH', `/leads/${id}`);
   assert.equal(patches.length, 2, '400 + reintento');
   assert.equal(patches[1].body.custom_fields_values, undefined);
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'Agenda · Sesiones', etapa: 'Power Session pagada' });
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Power Session', etapa: 'Power Session pagada' });
   assert.equal(sim.valores(id)['Pago Power Session'], 'Pendiente', 'el campo no se pudo cambiar…');
   assert.match(sim.notasDe(id).at(-1), /^Pago confirmado en Stripe/, '…pero la nota lo dice');
   assert.equal([...g.events.values()][0].extendedProperties.private.ik_kommo_pago, '1');
@@ -343,7 +357,7 @@ test('kommo · estructura caída al pagar → no se marca ik_kommo_pago y el cro
   __resetKommo();
   assert.equal(await book().syncKommoPaid(), 1);
   assert.equal(ev().extendedProperties.private.ik_kommo_pago, '1');
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'Agenda · Sesiones', etapa: 'Power Session pagada' });
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Power Session', etapa: 'Power Session pagada' });
   assert.equal(sim.valores(id)['Pago Power Session'], 'Pagado');
 });
 
@@ -392,15 +406,15 @@ test('estado · kommoEstructura: completa, incompleta (con lo que falta) y sin e
   assert.equal(r.body.kommoFaltan, undefined);
   assert.equal(r.body.kommoOpcional, undefined);
 
-  // Script corrido con --sin-clientes: el sitio no usa «Clientes · Implementación» → sigue «completa» (aparte, como opcional).
-  const sinClientes = await new KommoSimulado({ sinEmbudos: ['Clientes · Implementación'] }).iniciar();
-  t.after(() => sinClientes.detener());
-  process.env.KOMMO_BASE_URL = sinClientes.base;
-  mockFetch(t, google, sinClientes.pasarela());
+  // El sitio llena los dos embudos: si falta «Power Session» completo, el estado es «incompleta».
+  const sinPower = await new KommoSimulado({ sinEmbudos: ['Power Session'] }).iniciar();
+  t.after(() => sinPower.detener());
+  process.env.KOMMO_BASE_URL = sinPower.base;
+  mockFetch(t, google, sinPower.pasarela());
   r = await read(await estado.fetch(req('/api/agenda/estado/')));
-  assert.equal(r.body.kommoEstructura, 'completa');
-  assert.equal(r.body.kommoFaltan, undefined);
-  assert.deepEqual(r.body.kommoOpcional, ['Embudo «Clientes · Implementación»']);
+  assert.equal(r.body.kommoEstructura, 'incompleta');
+  assert.deepEqual(r.body.kommoFaltan, ['Embudo «Power Session»']);
+  assert.equal(r.body.kommoOpcional, undefined);
 
   const vacia = await new KommoSimulado({ estructura: false }).iniciar();
   t.after(() => vacia.detener());
@@ -408,5 +422,5 @@ test('estado · kommoEstructura: completa, incompleta (con lo que falta) y sin e
   mockFetch(t, google, vacia.pasarela());
   r = await read(await estado.fetch(req('/api/agenda/estado/')));
   assert.equal(r.body.kommoEstructura, 'sin-estructura');
-  assert.ok(r.body.kommoFaltan.includes('Embudo «Agenda · Sesiones»'));
+  assert.ok(r.body.kommoFaltan.includes('Embudo «Ventas»'));
 });

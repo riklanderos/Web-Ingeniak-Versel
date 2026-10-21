@@ -1,5 +1,9 @@
 # Kommo · dejar lista la cuenta de Ingeniak (guía paso a paso)
 
+> **Actualización · 20 de octubre de 2026 (noche):** la estructura de 3 embudos quedó sustituida por el **plan de reestructura** (`kommo-plan-reestructura.md`), que un agente ejecutará por API sobre la cuenta real. Equivalencias donde esta guía diga lo contrario:
+> «Sitio web · Cotizaciones» → **«Ventas»** (el P1 11303859); «Agenda · Sesiones» → se divide: las **Discovery** caen en «Ventas» → etapa **«Discovery agendada» (97185916)** y las **Power Session** en su propio embudo **«Power Session»**; «Clientes · Implementación» ya no lo crea el sitio (lo administra el equipo en el embudo Clientes/Licencias).
+> Variables: `KOMMO_AGENDA_PIPELINE_ID`/`KOMMO_AGENDA_STATUS_ID` siguen funcionando como alias de `KOMMO_POWER_PIPELINE_ID`/`KOMMO_POWER_STATUS_ID`; nueva `KOMMO_DISCOVERY_STATUS_ID` (respaldo = 97185916, opcional). El script `kommo-configurar.mjs` ya crea/verifica la estructura nueva (2 embudos del sitio); córrelo DESPUÉS de la reestructura.
+
 **Para:** quien administra la cuenta de Kommo de Ingeniak.
 **Fecha:** 20 de octubre de 2026. **Estructura aprobada ese día:** 3 embudos, 15 campos del lead, 10 etiquetas, 6 plantillas de respuesta, 6 plantillas de WhatsApp y las automatizaciones del Digital Pipeline.
 **Fuente única de los nombres:** `shared/kommo-esquema.js` (el script y el sitio usan exactamente los mismos nombres).

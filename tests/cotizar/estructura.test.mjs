@@ -119,11 +119,11 @@ test('etiquetas · todo lo que manda la cotización está en las 10 etiquetas ap
 
 /* ── Contra el simulador HTTP local ──────────────────────────────────────────────────────── */
 
-test('simulador · cotización → «Sitio web · Cotizaciones / Nueva cotización» con los 10 campos, etiquetas y nota completa', async (t) => {
+test('simulador · cotización → «Ventas / Nueva cotización» con los 10 campos, etiquetas y nota completa', async (t) => {
   const salida = logs(t);
   const sim = await simulador(t);
   const id = await cotizacion(sim);
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'Sitio web · Cotizaciones', etapa: 'Nueva cotización' });
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Ventas', etapa: 'Nueva cotización' });
   assert.deepEqual(sim.valores(id), {
     'Servicios de interés': ['Agentes de IA para WhatsApp', 'CRM con IA (Kommo o GoHighLevel)'],
     'Objetivo principal': 'Responder rápido a cada cliente',
@@ -207,7 +207,7 @@ test('simulador · estructura incompleta → solo lo que existe (campo, tipo y o
     sinEtapas: ['Nueva cotización'],
   });
   const id = await cotizacion(sim);
-  assert.equal(sim.ubicacion(id).embudo, 'Sitio web · Cotizaciones', 'el embudo existe aunque falte la etapa');
+  assert.equal(sim.ubicacion(id).embudo, 'Ventas', 'el embudo existe aunque falte la etapa');
   assert.equal(sim.llamadasA('POST', '/leads/complex')[0].body[0].status_id, undefined, 'sin la etapa: Kommo usa la primera');
   const v = sim.valores(id);
   assert.deepEqual(v['Servicios de interés'], ['Agentes de IA para WhatsApp'], 'del multiselect solo la opción que existe');
@@ -248,7 +248,7 @@ test('simulador · Kommo cambia una opción guardada en caché → 400 → un re
   const complex = sim.llamadasA('POST', '/leads/complex');
   assert.equal(complex.length, 3, 'primer lead + 400 + reintento');
   assert.equal(complex[2].body[0].custom_fields_values, undefined, 'el reintento va sin campos');
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'Sitio web · Cotizaciones', etapa: 'Nueva cotización' }, 'pero en su etapa');
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Ventas', etapa: 'Nueva cotización' }, 'pero en su etapa');
   assert.ok(sim.notasDe(id)[0].includes('Industria: Salud'));
   // La caché se olvidó: el siguiente envío vuelve a leer la estructura y omite solo la opción que ya no existe.
   const id3 = await cotizacion(sim);
@@ -285,15 +285,15 @@ test('simulador · campos paginados (_links.next): se leen todas las páginas', 
 test('simulador · KOMMO_PIPELINE_ID / KOMMO_STATUS_ID mandan; con solo el embudo, la etapa se busca por nombre', async (t) => {
   logs(t);
   const sim = await simulador(t);
-  process.env.KOMMO_PIPELINE_ID = String(sim.ids.embudo('Clientes · Implementación'));
-  process.env.KOMMO_STATUS_ID = String(sim.ids.etapa('Clientes · Implementación', 'Arranque'));
+  process.env.KOMMO_PIPELINE_ID = String(sim.ids.embudo('Power Session'));
+  process.env.KOMMO_STATUS_ID = String(sim.ids.etapa('Power Session', 'Power Session pagada'));
   const a = await cotizacion(sim);
-  assert.deepEqual(sim.ubicacion(a), { embudo: 'Clientes · Implementación', etapa: 'Arranque' });
+  assert.deepEqual(sim.ubicacion(a), { embudo: 'Power Session', etapa: 'Power Session pagada' });
   assert.equal(sim.valores(a)['Industria'], 'Salud', 'los campos se llenan igual');
-  process.env.KOMMO_PIPELINE_ID = String(sim.ids.embudo('Sitio web · Cotizaciones'));
+  process.env.KOMMO_PIPELINE_ID = String(sim.ids.embudo('Ventas'));
   delete process.env.KOMMO_STATUS_ID;
   const b = await cotizacion(sim);
-  assert.deepEqual(sim.ubicacion(b), { embudo: 'Sitio web · Cotizaciones', etapa: 'Nueva cotización' });
+  assert.deepEqual(sim.ubicacion(b), { embudo: 'Ventas', etapa: 'Nueva cotización' });
 });
 
 test('simulador · producción: web-cotizar · campaña (gclid), sin entorno-preview', async (t) => {
@@ -329,21 +329,24 @@ test('revisarEstructura · completa, incompleta (con lo que falta) y sin estruct
   await otro({ sinCampos: ['Plazo'], sinEtapas: ['Power Session pagada'], sinOpciones: { 'Industria': ['Otra'] } });
   const r = await kommo.revisarEstructura();
   assert.equal(r.estado, 'incompleta');
-  assert.deepEqual(r.faltan.sort(), ['Campo «Plazo»', 'Etapa «Power Session pagada» (Agenda · Sesiones)', 'Opción «Otra» (Industria)'].sort());
+  assert.deepEqual(r.faltan.sort(), ['Campo «Plazo»', 'Etapa «Power Session pagada» (Power Session)', 'Opción «Otra» (Industria)'].sort());
   await otro({ estructura: false });
   assert.equal((await kommo.revisarEstructura()).estado, 'sin-estructura');
-  // «Clientes · Implementación» no lo usa el sitio (el script lo omite con --sin-clientes): no cuenta para el estado.
-  await otro({ sinEmbudos: ['Clientes · Implementación'] });
-  assert.deepEqual(await kommo.revisarEstructura(), { estado: 'completa', faltan: [], opcionales: ['Embudo «Clientes · Implementación»'] });
-  await otro({ sinEtapas: ['Renovación', 'Nueva cotización'] });
+  // El sitio llena los dos embudos («Ventas» y «Power Session»): si falta uno completo, cuenta para el estado.
+  await otro({ sinEmbudos: ['Power Session'] });
+  const sinPower = await kommo.revisarEstructura();
+  assert.equal(sinPower.estado, 'incompleta');
+  assert.ok(sinPower.faltan.includes('Embudo «Power Session»'));
+  assert.deepEqual(sinPower.opcionales, []);
+  await otro({ sinEtapas: ['Nueva cotización'] });
   assert.deepEqual(await kommo.revisarEstructura(), {
     estado: 'incompleta',
-    faltan: ['Etapa «Nueva cotización» (Sitio web · Cotizaciones)'],
-    opcionales: ['Etapa «Renovación» (Clientes · Implementación)'],
+    faltan: ['Etapa «Nueva cotización» (Ventas)'],
+    opcionales: [],
   });
 });
 
-test('resolverDestino · la etapa de respaldo (agenda) nunca le gana a la etapa por nombre; statusId (cotización) sí manda', () => {
+test('resolverDestino · la etapa de respaldo nunca le gana a la etapa por nombre; statusId (cotización) sí manda', () => {
   // Cuenta de mentira sin la etapa «Power Session por pagar», con la forma que arma el sitio (sin red).
   const cuenta = cuentaSimulada({ sinEtapas: ['Power Session por pagar'] });
   const ids = new Ids(cuenta);
@@ -354,25 +357,26 @@ test('resolverDestino · la etapa de respaldo (agenda) nunca le gana a la etapa 
     campos: new Map(),
     rastreo: new Map(),
   };
-  const ag = ids.embudo('Agenda · Sesiones');
-  const discovery = ids.etapa('Agenda · Sesiones', 'Discovery agendada');
-  const realizada = ids.etapa('Agenda · Sesiones', 'Sesión realizada');
-  const pagada = ids.etapa('Agenda · Sesiones', 'Power Session pagada');
+  const ventas = ids.embudo('Ventas');
+  const pw = ids.embudo('Power Session');
+  const discovery = ids.etapa('Ventas', 'Discovery agendada');
+  const contactado = ids.etapa('Ventas', 'Contactado');
+  const realizada = ids.etapa('Power Session', 'Sesión realizada');
+  const pagada = ids.etapa('Power Session', 'Power Session pagada');
   const r = (o) => kommo.resolverDestino(est, o);
-  // Respaldo = «Discovery agendada» (lo que imprime el script): Discovery y Power pagada van a SU etapa.
-  assert.equal(r({ embudo: 'agenda', etapa: 'discovery', pipelineId: ag, statusIdRespaldo: discovery }).statusId, discovery);
-  assert.equal(r({ embudo: 'agenda', etapa: 'power-pagada', pipelineId: ag, statusIdRespaldo: discovery }).statusId, pagada);
-  assert.equal(r({ embudo: 'agenda', etapa: 'power-pagada', statusIdRespaldo: discovery }).statusId, pagada);
+  // Respaldo (KOMMO_DISCOVERY_STATUS_ID o KOMMO_POWER_STATUS_ID): la etapa por nombre siempre le gana.
+  assert.equal(r({ embudo: 'ventas', etapa: 'discovery', pipelineId: ventas, statusIdRespaldo: contactado }).statusId, discovery);
+  assert.equal(r({ embudo: 'power', etapa: 'power-pagada', pipelineId: pw, statusIdRespaldo: realizada }).statusId, pagada);
+  assert.equal(r({ embudo: 'power', etapa: 'power-pagada', statusIdRespaldo: realizada }).statusId, pagada);
   // La etapa con su nombre no existe → la de respaldo (con su embudo).
-  assert.deepEqual(r({ embudo: 'agenda', etapa: 'power-por-pagar', statusIdRespaldo: realizada }), { pipelineId: ag, statusId: realizada, origen: 'variable' });
-  assert.deepEqual(r({ embudo: 'agenda', etapa: 'power-por-pagar', pipelineId: ag, statusIdRespaldo: realizada }), { pipelineId: ag, statusId: realizada, origen: 'variable' });
+  assert.deepEqual(r({ embudo: 'power', etapa: 'power-por-pagar', statusIdRespaldo: realizada }), { pipelineId: pw, statusId: realizada, origen: 'variable' });
+  assert.deepEqual(r({ embudo: 'power', etapa: 'power-por-pagar', pipelineId: pw, statusIdRespaldo: realizada }), { pipelineId: pw, statusId: realizada, origen: 'variable' });
   // Respaldo de otro embudo que el de la variable → se ignora (Kommo rechazaría el lead completo).
-  const nuevaCot = ids.etapa('Sitio web · Cotizaciones', 'Nueva cotización');
-  assert.deepEqual(r({ embudo: 'agenda', etapa: 'power-por-pagar', pipelineId: ag, statusIdRespaldo: nuevaCot }), { pipelineId: ag, statusId: undefined, origen: 'variable' });
+  assert.deepEqual(r({ embudo: 'power', etapa: 'power-por-pagar', pipelineId: pw, statusIdRespaldo: discovery }), { pipelineId: pw, statusId: undefined, origen: 'variable' });
   // Respaldo que ya no existe en la cuenta → se ignora (embudo por nombre, Kommo elige la primera etapa).
-  assert.deepEqual(r({ embudo: 'agenda', etapa: 'power-por-pagar', statusIdRespaldo: 999_999 }), { pipelineId: ag, statusId: undefined, origen: 'nombre' });
+  assert.deepEqual(r({ embudo: 'power', etapa: 'power-por-pagar', statusIdRespaldo: 999_999 }), { pipelineId: pw, statusId: undefined, origen: 'nombre' });
   // Sin estructura (la consulta falló): el respaldo va solo, como antes.
-  assert.deepEqual(kommo.resolverDestino(null, { embudo: 'agenda', etapa: 'discovery', statusIdRespaldo: discovery }), { statusId: discovery, origen: 'variable' });
+  assert.deepEqual(kommo.resolverDestino(null, { embudo: 'ventas', etapa: 'discovery', statusIdRespaldo: discovery }), { statusId: discovery, origen: 'variable' });
   // statusId (KOMMO_STATUS_ID de la cotización) sí manda sobre el nombre.
-  assert.deepEqual(r({ embudo: 'agenda', etapa: 'discovery', pipelineId: ag, statusId: realizada }), { pipelineId: ag, statusId: realizada, origen: 'variable' });
+  assert.deepEqual(r({ embudo: 'ventas', etapa: 'discovery', pipelineId: ventas, statusId: contactado }), { pipelineId: ventas, statusId: contactado, origen: 'variable' });
 });

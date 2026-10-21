@@ -2,7 +2,7 @@
  * Lógica del formulario «Cotizar proyecto» (CAMBIO-COTIZAR §2.3, §2.4, §3.3, §3.4).
  * Validación con las listas blancas de `src/data/cotizar.json` (las mismas que usa el modal),
  * normalización del teléfono a E.164, folio y armado de lo que se manda a Kommo (lead, nota, etiquetas, rastreo
- * y los campos de la estructura aprobada el 2026-10-20: embudo «Sitio web · Cotizaciones», etapa «Nueva cotización»).
+ * y los campos de la estructura aprobada el 2026-10-20: embudo «Ventas», etapa «Nueva cotización»).
  * Puro: no llama a la red ni lee `process.env` (el entorno llega como argumento).
  */
 import catalogo from '../src/data/cotizar.json' with { type: 'json' };
@@ -501,7 +501,7 @@ export function trackingFor(meta) {
 /**
  * Todo lo que se manda a Kommo para una cotización (§3.4 + estructura aprobada).
  * `lead` son los argumentos de `createLeadWithNote` salvo `tags`, `note` y `tracking`:
- * embudo «Sitio web · Cotizaciones» y etapa «Nueva cotización» por nombre; KOMMO_PIPELINE_ID / KOMMO_STATUS_ID,
+ * embudo «Ventas» y etapa «Nueva cotización» por nombre; KOMMO_PIPELINE_ID / KOMMO_STATUS_ID,
  * si existen, mandan sobre los nombres.
  * @param {Cotizacion} data  validada y con `folio`
  * @param {Meta} meta
@@ -514,7 +514,7 @@ export function buildKommo(data, meta, env = process.env, now = new Date()) {
       name: `Cotización web · ${data.empresa}`,
       contact: { name: data.nombre, phoneE164: data.telefono.e164, email: data.email },
       company: data.empresa,
-      embudo: /** @type {const} */ ('cotizaciones'),
+      embudo: /** @type {const} */ ('ventas'),
       etapa: 'nueva',
       campos: camposFor(data, meta),
       pipelineId: intEnv(env.KOMMO_PIPELINE_ID),

@@ -33,12 +33,12 @@ describe('kommo-configurar · --aplicar en una cuenta vacía', () => {
 
   test('termina sin errores y reporta todo como creado', () => {
     assert.equal(r1.codigo, 0, r1.stdout + r1.stderr);
-    assert.match(r1.stdout, /Totales: ✅ creados 48 · ↺ ya existían 0 · ➕ con opciones nuevas 0 · ❌ fallaron 0/);
+    assert.match(r1.stdout, /Totales: ✅ creados 44 · ↺ ya existían 0 · ➕ con opciones nuevas 0 · ❌ fallaron 0/);
     // Una petición por elemento (cada embudo lleva sus etapas en la misma petición): un fallo no arrastra a los demás.
-    assert.equal(cambios1, 3 + 15 + 10 + 6);
+    assert.equal(cambios1, 2 + 15 + 10 + 6);
   });
 
-  test('crea los 3 embudos con sus etapas exactas, en orden y con sus colores, sin tocar el principal', () => {
+  test('crea los 2 embudos con sus etapas exactas, en orden y con sus colores, sin tocar el principal', () => {
     for (const def of Object.values(EMBUDOS)) {
       const [p] = porNombre(mock.estado.pipelines, def.nombre);
       assert.ok(p, def.nombre);
@@ -82,13 +82,14 @@ describe('kommo-configurar · --aplicar en una cuenta vacía', () => {
   test('kommo-ids.json trae solo IDs y nombres, y coincide con la cuenta', () => {
     assert.ok(ids1, 'no se escribió kommo-ids.json');
     assert.deepEqual(Object.keys(ids1), ['_nota', 'generado', 'cuenta', 'embudos', 'campos', 'etiquetas', 'plantillas', 'usuarios', 'vercel']);
-    const cot = mock.estado.pipelines.find((p) => p.name === EMBUDOS.cotizaciones.nombre);
-    const ag = mock.estado.pipelines.find((p) => p.name === EMBUDOS.agenda.nombre);
-    assert.equal(ids1.embudos.cotizaciones.id, cot.id);
-    assert.equal(ids1.embudos.cotizaciones.etapas.nueva.id, cot._embedded.statuses.find((s) => s.name === 'Nueva cotización').id);
-    assert.equal(ids1.embudos.agenda.etapas.discovery.id, ag._embedded.statuses.find((s) => s.name === 'Discovery agendada').id);
-    assert.equal(ids1.embudos.cotizaciones.etapas.ganado.id, 142);
-    assert.equal(ids1.embudos.cotizaciones.etapas.perdido.id, 143);
+    const vta = mock.estado.pipelines.find((p) => p.name === EMBUDOS.ventas.nombre);
+    const pw = mock.estado.pipelines.find((p) => p.name === EMBUDOS.power.nombre);
+    assert.equal(ids1.embudos.ventas.id, vta.id);
+    assert.equal(ids1.embudos.ventas.etapas.nueva.id, vta._embedded.statuses.find((s) => s.name === 'Nueva cotización').id);
+    assert.equal(ids1.embudos.ventas.etapas.discovery.id, vta._embedded.statuses.find((s) => s.name === 'Discovery agendada').id);
+    assert.equal(ids1.embudos.power.etapas['power-por-pagar'].id, pw._embedded.statuses.find((s) => s.name === 'Power Session por pagar').id);
+    assert.equal(ids1.embudos.ventas.etapas.ganado.id, 142);
+    assert.equal(ids1.embudos.ventas.etapas.perdido.id, 143);
     const industria = mock.estado.campos.find((c) => c.name === 'Industria');
     assert.equal(ids1.campos.industria.id, industria.id);
     assert.equal(ids1.campos.industria.opciones.Salud, industria.enums.find((e) => e.value === 'Salud').id);
@@ -100,10 +101,10 @@ describe('kommo-configurar · --aplicar en una cuenta vacía', () => {
       { id: 9003, nombre: 'Ex colaborador' },
     ]);
     // En Vercel solo va el subdominio (y el token, que nunca se guarda). Los IDs de embudos y etapas quedan como
-    // referencia: KOMMO_AGENDA_STATUS_ID mandaría cada Power Session a «Discovery agendada».
+    // referencia: KOMMO_POWER_STATUS_ID mal puesto mandaría cada Power Session a la etapa equivocada.
     assert.deepEqual(Object.keys(ids1.vercel), ['_nota', 'KOMMO_SUBDOMAIN']);
     assert.equal(ids1.vercel.KOMMO_SUBDOMAIN, 'ejemplo');
-    assert.match(ids1.vercel._nota, /No captures KOMMO_PIPELINE_ID, KOMMO_STATUS_ID, KOMMO_AGENDA_PIPELINE_ID, KOMMO_AGENDA_STATUS_ID/);
+    assert.match(ids1.vercel._nota, /No captures KOMMO_PIPELINE_ID, KOMMO_STATUS_ID/);
     assert.match(ids1._nota, /referencia; no las captures en Vercel/);
     const texto = JSON.stringify(ids1);
     assert.ok(!texto.includes(TOKEN_PRUEBA));
@@ -117,9 +118,10 @@ describe('kommo-configurar · --aplicar en una cuenta vacía', () => {
     assert.match(bloque, /Opcional[^\n]*\n\s+KOMMO_RESPONSIBLE_USER_ID\s+= \(el ID de la persona/);
     assert.match(bloque, /9002\s+Ana Ventas/);
     // Ningún ID de embudo o etapa como valor para capturar; sí la advertencia de no capturarlos.
-    assert.doesNotMatch(bloque, /KOMMO_(AGENDA_)?(PIPELINE|STATUS)_ID\s+=/);
+    assert.doesNotMatch(bloque, /KOMMO_(AGENDA_|POWER_)?(PIPELINE|STATUS)_ID\s+=/);
+    assert.match(bloque, /KOMMO_DISCOVERY_STATUS_ID\s+= 97185916/);
     for (const { id } of Object.values(ids1.embudos)) assert.ok(!bloque.includes(String(id)), `el bloque de Vercel no debe traer el id ${id}`);
-    assert.match(bloque, /No captures KOMMO_PIPELINE_ID, KOMMO_STATUS_ID, KOMMO_AGENDA_PIPELINE_ID ni KOMMO_AGENDA_STATUS_ID, y bórralas si ya existían/);
+    assert.match(bloque, /No captures KOMMO_PIPELINE_ID, KOMMO_STATUS_ID, KOMMO_POWER_PIPELINE_ID, KOMMO_POWER_STATUS_ID, KOMMO_AGENDA_PIPELINE_ID ni KOMMO_AGENDA_STATUS_ID, y bórralas si ya existían/);
     assert.match(bloque, /Redeploy/);
     assert.match(bloque, /\/api\/agenda\/estado\/ → debe decir "kommoEstructura": "completa"/);
   });
@@ -127,10 +129,10 @@ describe('kommo-configurar · --aplicar en una cuenta vacía', () => {
   test('segunda corrida: no crea nada (idempotente) y deja los mismos IDs', () => {
     assert.equal(r2.codigo, 0, r2.stdout + r2.stderr);
     assert.equal(mock.cambios().length, cambios1, 'la segunda corrida no debe mandar ningún POST/PATCH');
-    assert.match(r2.stdout, /Totales: ✅ creados 0 · ↺ ya existían 48 · ➕ con opciones nuevas 0 · ❌ fallaron 0/);
+    assert.match(r2.stdout, /Totales: ✅ creados 0 · ↺ ya existían 44 · ➕ con opciones nuevas 0 · ❌ fallaron 0/);
     const sinFecha = (o) => ({ ...o, generado: null });
     assert.deepEqual(sinFecha(ids2), sinFecha(ids1));
-    assert.equal(mock.estado.pipelines.length, 4);
+    assert.equal(mock.estado.pipelines.length, 3);
     assert.equal(mock.estado.tags.length, 10);
     assert.equal(mock.estado.plantillas.length, 6);
   });
@@ -144,7 +146,7 @@ describe('kommo-configurar · --aplicar en una cuenta a medias', () => {
   let antes;
   before(async () => {
     dir = carpetaTemporal();
-    const agenda = embudo('Agenda · Sesiones', ['Discovery agendada', 'Power Session por pagar', 'Power Session pagada', 'Propuesta enviada'], { sort: 2 });
+    const power = embudo('Power Session', ['Power Session por pagar', 'Power Session pagada', 'Propuesta enviada'], { sort: 2 });
     const principal = embudo('Embudo de ventas', ['Contacto inicial'], { is_main: true, sort: 1 });
     const industria = campo('Industria', 'select', ['Salud', 'Finanzas', 'Mi opción propia']);
     const plazo = campo('Plazo', 'text');
@@ -154,7 +156,7 @@ describe('kommo-configurar · --aplicar en una cuenta a medias', () => {
     mock = await crearMockKommo({
       tamPagina: 3,
       estado: {
-        pipelines: [principal, agenda],
+        pipelines: [principal, power],
         campos: [...relleno, industria, plazo, meet],
         tags: [
           { id: 777001, name: 'web-cotizar' },
@@ -166,7 +168,7 @@ describe('kommo-configurar · --aplicar en una cuenta a medias', () => {
       },
     });
     antes = { industria: industria.enums.map((e) => ({ ...e })), plazo: { ...plazo } };
-    r = await correr(mock, ['--aplicar', '--sin-clientes'], { salida: join(dir, 'kommo-ids.json') });
+    r = await correr(mock, ['--aplicar'], { salida: join(dir, 'kommo-ids.json') });
     ids = leerJson(join(dir, 'kommo-ids.json'));
   });
   after(async () => {
@@ -179,19 +181,18 @@ describe('kommo-configurar · --aplicar en una cuenta a medias', () => {
     assert.match(r.stdout, /❌ Falló · Campo «Plazo» · id \d+ — Ya existe con otro tipo \(«text»; la estructura pide «select»\)/);
   });
 
-  test('no recrea «Agenda · Sesiones»: solo agrega la etapa que falta, en su lugar y con su color', () => {
-    assert.equal(porNombre(mock.estado.pipelines, 'Agenda · Sesiones').length, 1);
-    assert.equal(porNombre(mock.estado.pipelines, 'Sitio web · Cotizaciones').length, 1);
-    assert.equal(porNombre(mock.estado.pipelines, 'Clientes · Implementación').length, 0, '--sin-clientes');
-    const ag = mock.estado.pipelines.find((p) => p.name === 'Agenda · Sesiones');
-    const post = mock.peticiones.filter((p) => p.metodo === 'POST' && p.ruta === `/leads/pipelines/${ag.id}/statuses`);
+  test('no recrea «Power Session»: solo agrega la etapa que falta, en su lugar y con su color', () => {
+    assert.equal(porNombre(mock.estado.pipelines, 'Power Session').length, 1);
+    assert.equal(porNombre(mock.estado.pipelines, 'Ventas').length, 1);
+    const pw = mock.estado.pipelines.find((p) => p.name === 'Power Session');
+    const post = mock.peticiones.filter((p) => p.metodo === 'POST' && p.ruta === `/leads/pipelines/${pw.id}/statuses`);
     assert.equal(post.length, 1);
     assert.equal(post[0].cuerpo[0].name, 'Sesión realizada');
-    assert.equal(post[0].cuerpo[0].color, EMBUDOS.agenda.etapas.find((e) => e.nombre === 'Sesión realizada').color);
-    const orden = ag._embedded.statuses.filter((s) => s.type === 0 && ![142, 143].includes(s.id)).sort((a, b) => a.sort - b.sort).map((s) => s.name);
-    assert.deepEqual(orden, ['Discovery agendada', 'Power Session por pagar', 'Power Session pagada', 'Sesión realizada', 'Propuesta enviada']);
+    assert.equal(post[0].cuerpo[0].color, EMBUDOS.power.etapas.find((e) => e.nombre === 'Sesión realizada').color);
+    const orden = pw._embedded.statuses.filter((s) => s.type === 0 && ![142, 143].includes(s.id)).sort((a, b) => a.sort - b.sort).map((s) => s.name);
+    assert.deepEqual(orden, ['Power Session por pagar', 'Power Session pagada', 'Sesión realizada', 'Propuesta enviada']);
     assert.match(r.stdout, /✅ Creado · Etapa «Sesión realizada»/);
-    assert.match(r.stdout, /↺ Ya existía · Embudo «Agenda · Sesiones»/);
+    assert.match(r.stdout, /↺ Ya existía · Embudo «Power Session»/);
   });
 
   test('agrega las opciones que faltan a «Industria» sin borrar las que ya había (ni la propia del cliente)', () => {

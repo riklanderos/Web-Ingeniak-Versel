@@ -80,14 +80,14 @@ test('reserva discovery · evento con Meet, invitación, propiedades rl_* + rl_s
   assert.match(ins.body.description, /^Discovery Session · 30 min\n\nNombre: Ana Prueba Ejemplo\n/);
   assert.match(ins.body.description, /\n\nOrigen: Sección: hero · meta · prueba\n\nAgendado desde/);
 
-  // Kommo: lead en «Agenda · Sesiones / Discovery agendada», etiquetas exactas, campos de la sesión, contacto E.164 y nota.
+  // Kommo: lead en «Ventas / Discovery agendada», etiquetas exactas, campos de la sesión, contacto E.164 y nota.
   assert.equal(k.complex.length, 1);
   const lead = k.complex[0].body[0];
   assert.equal(lead.name, 'Discovery Session · Clínica Ejemplo');
   // ATRIB trae utm_medium=paid → campaña; fuera de producción → entorno-preview.
   assert.deepEqual(lead._embedded.tags.map((x) => x.name), ['web-agenda', 'discovery', 'campaña', 'entorno-preview']);
-  assert.equal(lead.pipeline_id, IDS.embudo('Agenda · Sesiones'));
-  assert.equal(lead.status_id, IDS.etapa('Agenda · Sesiones', 'Discovery agendada'));
+  assert.equal(lead.pipeline_id, IDS.embudo('Ventas'));
+  assert.equal(lead.status_id, IDS.etapa('Ventas', 'Discovery agendada'));
   const sel = (campo, opcion) => ({ field_id: IDS.campo(campo), values: [{ enum_id: IDS.opcion(campo, opcion) }] });
   assert.deepEqual(lead.custom_fields_values.filter((c) => c.field_id >= 7000), [
     sel('Tipo de sesión', 'Discovery Session'),

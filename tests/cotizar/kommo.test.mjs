@@ -80,8 +80,8 @@ test('§3.9-2 · contacto nuevo: 204, 204 → pipelines + custom_fields → comp
   assert.deepEqual(llamadas[4].body, [
     {
       name: 'Cotización web · Clínica Ejemplo',
-      pipeline_id: IDS.embudo('Sitio web · Cotizaciones'),
-      status_id: IDS.etapa('Sitio web · Cotizaciones', 'Nueva cotización'),
+      pipeline_id: IDS.embudo('Ventas'),
+      status_id: IDS.etapa('Ventas', 'Nueva cotización'),
       responsible_user_id: 3333333,
       custom_fields_values: [...CAMPOS_EJEMPLO, { field_id: IDS.campo('REFERRER'), values: [{ value: 'https://www.google.com/' }] }],
       _embedded: { tags: TAGS, contacts: [CONTACTO_NUEVO], companies: [{ name: 'Clínica Ejemplo' }] },

@@ -3,9 +3,9 @@
  * opcionalmente (opción A1), Supabase `public.leads` por REST — el mismo esquema y los mismos estados de pago
  * que riklanderos.tech (`lib/agenda/leads.server.ts`).
  *
- * Kommo (estructura aprobada el 2026-10-20, por nombre; ver `shared/kommo-esquema.js`):
- *   Discovery reservada   → embudo «Agenda · Sesiones», etapa «Discovery agendada», campos de la sesión.
- *   Power apartada        → etapa «Power Session por pagar», Pago Power Session = Pendiente.
+ * Kommo (plan de reestructura aprobado el 2026-10-20, por nombre; ver `shared/kommo-esquema.js`):
+ *   Discovery reservada   → embudo «Ventas» (P1 11303859), etapa «Discovery agendada» (97185916), campos de la sesión.
+ *   Power apartada        → embudo «Power Session», etapa «Power Session por pagar», Pago Power Session = Pendiente.
  *   Power pagada          → EL MISMO lead (PATCH /leads/{id}, id guardado en `ik_kommo` del evento de Calendar):
  *                           etapa «Power Session pagada», Pago = Pagado, fecha y Meet. Si ese lead ya no existe
  *                           (404) o Kommo lo rechaza siempre: un lead nuevo en «Power Session pagada» con la nota.
@@ -237,7 +237,7 @@ export function createLeads({ kommo, env = process.env } = {}) {
         company: negocio || undefined,
         tags: ['web-agenda', 'power-session', ...(environment === 'production' ? [] : ['entorno-preview'])],
         note,
-        embudo: /** @type {const} */ ('agenda'),
+        embudo: /** @type {const} */ ('power'),
         etapa: 'power-pagada',
         campos: {
           sesion: SESSION_RULES.power.label,
@@ -246,8 +246,8 @@ export function createLeads({ kommo, env = process.env } = {}) {
           meet: d.meetLink ?? undefined,
           origen: urlDePagina(LANDING.power) ?? undefined,
         },
-        // Sin KOMMO_AGENDA_STATUS_ID: esa es la etapa de entrada, no la de «pagada».
-        pipelineId: int(env.KOMMO_AGENDA_PIPELINE_ID),
+        // Sin KOMMO_POWER_STATUS_ID: esa es la etapa de entrada, no la de «pagada».
+        pipelineId: int(env.KOMMO_POWER_PIPELINE_ID ?? env.KOMMO_AGENDA_PIPELINE_ID),
         fallbackPipelineId: int(env.KOMMO_PIPELINE_ID),
         fallbackStatusId: int(env.KOMMO_STATUS_ID),
         responsibleUserId: int(env.KOMMO_RESPONSIBLE_USER_ID),
@@ -289,7 +289,7 @@ export function createLeads({ kommo, env = process.env } = {}) {
 
     /**
      * Diagnóstico de la estructura de Kommo (solo nombres, sin ids). `faltan`: lo que el sitio usa y no encontró;
-     * `opcionales`: lo que falta de «Clientes · Implementación» (no cambia el estado).
+     * `opcionales`: lo que falta de embudos que el sitio no llena (hoy ninguno; no cambia el estado).
      * @returns {Promise<{ estado: string, faltan: string[], opcionales: string[] }>}
      */
     async kommoEstructura() {
@@ -338,7 +338,8 @@ export function createLeads({ kommo, env = process.env } = {}) {
           REFERRER: a.landing.referrer ?? a.referrer ?? '', GCLID: a.clid.gclid ?? '', FBCLID: a.clid.fbclid ?? '',
         },
         // Estructura aprobada, por nombre. «Industria: Otro» se guarda como «Otra» (alias del esquema).
-        embudo: /** @type {const} */ ('agenda'),
+        // Discovery cae en «Ventas» (el P1 de la cuenta) y Power en su propio embudo «Power Session».
+        embudo: /** @type {const} */ (i.type === 'discovery' ? 'ventas' : 'power'),
         etapa: i.type === 'discovery' ? 'discovery' : 'power-por-pagar',
         campos: {
           sesion: SESSION_RULES[i.type].label,
@@ -350,12 +351,12 @@ export function createLeads({ kommo, env = process.env } = {}) {
           origen: urlDePagina(a.pagePath ?? LANDING[i.type]) ?? undefined,
           pago: i.type === 'power' ? 'Pendiente' : undefined,
         },
-        // Variables: KOMMO_AGENDA_PIPELINE_ID manda sobre «Agenda · Sesiones». KOMMO_AGENDA_STATUS_ID es solo un
-        // respaldo: la etapa con su nombre («Discovery agendada» o «Power Session por pagar») siempre le gana, porque
-        // una sola variable no puede ser la entrada de los dos tipos de reserva. Las de la cotización, solo si no
-        // existe el embudo «Agenda · Sesiones».
-        pipelineId: int(env.KOMMO_AGENDA_PIPELINE_ID),
-        statusIdRespaldo: int(env.KOMMO_AGENDA_STATUS_ID),
+        // Variables por tipo. Discovery: solo KOMMO_DISCOVERY_STATUS_ID como respaldo (la etapa 97185916 de P1,
+        // que trae consigo su embudo mientras «Ventas» no exista con ese nombre). Power: KOMMO_POWER_PIPELINE_ID y
+        // KOMMO_POWER_STATUS_ID (con los KOMMO_AGENDA_* viejos como alias). El respaldo nunca le gana a la etapa
+        // encontrada por su nombre aprobado. Las variables de la cotización, solo si nada de lo anterior existe.
+        pipelineId: i.type === 'discovery' ? undefined : int(env.KOMMO_POWER_PIPELINE_ID ?? env.KOMMO_AGENDA_PIPELINE_ID),
+        statusIdRespaldo: int(i.type === 'discovery' ? env.KOMMO_DISCOVERY_STATUS_ID : env.KOMMO_POWER_STATUS_ID ?? env.KOMMO_AGENDA_STATUS_ID),
         fallbackPipelineId: int(env.KOMMO_PIPELINE_ID),
         fallbackStatusId: int(env.KOMMO_STATUS_ID),
         responsibleUserId: int(env.KOMMO_RESPONSIBLE_USER_ID),
@@ -446,9 +447,9 @@ export function createLeads({ kommo, env = process.env } = {}) {
         const k = await getKommo();
         if (!k.kommoConfigured()) return { ok: false };
         const up = await withTimeout(Promise.resolve(k.updateLead(leadId, {
-          embudo: 'agenda',
+          embudo: 'power',
           etapa: 'power-pagada',
-          pipelineId: int(env.KOMMO_AGENDA_PIPELINE_ID),
+          pipelineId: int(env.KOMMO_POWER_PIPELINE_ID ?? env.KOMMO_AGENDA_PIPELINE_ID),
           campos: { pago: 'Pagado', fechaSesion: unixDe(d.start), meet: d.meetLink ?? undefined },
           source: 'agenda-power',
           budgetMs: KOMMO_MS - 500,

@@ -11,8 +11,8 @@ describe('kommo-configurar · esquema', () => {
     assert.deepEqual(validarEsquema(), []);
   });
 
-  test('3 embudos, 15 campos, 10 etiquetas y 6 plantillas', () => {
-    assert.equal(Object.keys(EMBUDOS).length, 3);
+  test('2 embudos, 15 campos, 10 etiquetas y 6 plantillas', () => {
+    assert.equal(Object.keys(EMBUDOS).length, 2);
     assert.equal(Object.keys(CAMPOS).length, 15);
     assert.equal(ETIQUETAS.length, 10);
     assert.equal(PLANTILLAS_SISTEMA.length, 6);
@@ -113,7 +113,7 @@ describe('kommo-configurar · nombres como los compara el sitio', () => {
     casos.push(...ETIQUETAS, ...PLANTILLAS_SISTEMA.map((p) => p.nombre));
     for (const c of casos) assert.equal(normalizar(c), normalizarSitio(c), String(c));
     assert.ok(mismoNombre('1-10', '1–10'));
-    assert.ok(mismoNombre('sitio web · cotizaciones', 'Sitio web · Cotizaciones'));
+    assert.ok(mismoNombre('power session', 'Power Session'));
     assert.ok(!mismoNombre('11-50', '11–25'));
   });
 
@@ -134,15 +134,13 @@ describe('kommo-configurar · opciones y mensajes', () => {
   test('modo por defecto: prueba', () => {
     const op = leerOpciones([]);
     assert.equal(op.modo, 'prueba');
-    assert.equal(op.clientes, true);
     assert.equal(op.plantillas, true);
     assert.equal(op.error, null);
   });
 
-  test('--aplicar, --sin-clientes, --sin-plantillas', () => {
-    const op = leerOpciones(['--aplicar', '--sin-clientes', '--sin-plantillas']);
+  test('--aplicar, --sin-plantillas', () => {
+    const op = leerOpciones(['--aplicar', '--sin-plantillas']);
     assert.equal(op.modo, 'aplicar');
-    assert.equal(op.clientes, false);
     assert.equal(op.plantillas, false);
   });
 
