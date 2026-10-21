@@ -10875,8 +10875,8 @@
           "priority": "P1",
           "id": "home-sistema-5-medir",
           "component": "VideoScene",
-          "layout": "subject-right",
-          "mobile": "split"
+          "layout": "subject-center",
+          "mobile": "top"
         }
       },
       {
