@@ -257,7 +257,7 @@
         "cinematic": true,
         "image": {
           "file": "/img/cine/equipo-real",
-          "subject": "Las 6 personas reales del equipo (Rik Landeros, Alonso Vega, César Ovalle, Richard Vela, Andy Pizano, Marcos González) en duotono, emergiendo de la niebla a la izquierda.",
+          "subject": "Las 6 personas reales del equipo (Rik Landeros, Barb Mendoza, Alonso Vega, César Ovalle, Richard Vela, Marcos González) en duotono, emergiendo de la niebla a la izquierda; al centro Rik, con Alonso a su izquierda y Barb a su derecha.",
           "side": "izquierda",
           "textSide": "derecha",
           "brief": "NO se genera gente: se componen las fotos reales sobre un set vacío generado con la misma luz de la serie. Sirve para el inicio (ESC 11) y la portada de /nosotros/.",
@@ -8079,7 +8079,7 @@
         "cinematic": true,
         "image": {
           "file": "/img/cine/equipo-real",
-          "subject": "Las 6 personas reales del equipo (Rik Landeros, Alonso Vega, César Ovalle, Richard Vela, Andy Pizano, Marcos González) en duotono, emergiendo de la niebla a la izquierda.",
+          "subject": "Las 6 personas reales del equipo (Rik Landeros, Barb Mendoza, Alonso Vega, César Ovalle, Richard Vela, Marcos González) en duotono, emergiendo de la niebla a la izquierda; al centro Rik, con Alonso a su izquierda y Barb a su derecha.",
           "side": "izquierda",
           "textSide": "derecha",
           "brief": "NO se genera gente: se componen las fotos reales sobre un set vacío generado con la misma luz de la serie. Sirve para el inicio (ESC 11) y la portada de /nosotros/.",
@@ -8152,7 +8152,7 @@
         "order": 6,
         "id": "equipo",
         "name": "El equipo",
-        "spec": "Una tarjeta por persona con foto real, nombre, cargo y una línea (el texto no dice cuántas son, RESPUESTAS-CLIENTE 2026-10-19 #7; cada persona confirma su cargo y su línea). Hoy: Rik Landeros (Director de Estrategia Comercial), Alonso Vega (Arquitecto de IA y Automatización), César Ovalle (Director Creativo), Richard Vela (Medios de Performance), Andy Pizano (Administración y Finanzas), Marcos González (Líder Comercial). LinkedIn de cada uno [POR CONFIRMAR].",
+        "spec": "Una tarjeta por persona con foto real, nombre, cargo y una línea (el texto no dice cuántas son, RESPUESTAS-CLIENTE 2026-10-19 #7; cada persona confirma su cargo y su línea). Hoy: Rik Landeros (Director de Estrategia Comercial), Barb Mendoza (Project Manager), Alonso Vega (Arquitecto de IA y Automatización), César Ovalle (Director Creativo), Richard Vela (Medios de Performance), Marcos González (Líder Comercial). LinkedIn de cada uno [POR CONFIRMAR].",
         "cinematic": false
       },
       {

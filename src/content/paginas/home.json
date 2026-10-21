@@ -423,11 +423,11 @@
       },
       "lede": "Un equipo que diseña, construye y opera tu sistema contigo, con datos y sin humo.",
       "credits": [
-        { "role": "Director de Estrategia Comercial", "name": "Rik Landeros", "line": "Construye el sistema comercial completo: oferta, embudo, CRM y métricas de crecimiento." },
-        { "role": "Arquitecto de IA y Automatización", "name": "Alonso Vega", "line": "Diseña e implementa los agentes de IA y las automatizaciones que atienden, califican y dan seguimiento a tus leads." },
         { "role": "Director Creativo", "name": "César Ovalle", "line": "Convierte la identidad de tu marca en piezas que la posicionan como la opción premium." },
         { "role": "Medios de Performance", "name": "Richard Vela", "line": "Escala oportunidades reales con paid media, creatividad orientada a conversión y reportes de atribución." },
-        { "role": "Administración y Finanzas", "name": "Andy Pizano", "line": "Cuida que cada inversión que hagas con Ingeniak sea medible y sostenible." },
+        { "role": "Arquitecto de IA y Automatización", "name": "Alonso Vega", "line": "Diseña e implementa los agentes de IA y las automatizaciones que atienden, califican y dan seguimiento a tus leads." },
+        { "role": "Director de Estrategia Comercial", "name": "Rik Landeros", "line": "Construye el sistema comercial completo: oferta, embudo, CRM y métricas de crecimiento." },
+        { "role": "Project Manager", "name": "Barb Mendoza", "line": "Coordina tu proyecto de principio a fin: tiempos, entregables y comunicación entre tu equipo y el nuestro." },
         { "role": "Líder Comercial", "name": "Marcos González", "line": "Diagnostica tu operación de ventas y la convierte en un proceso que escala." }
       ],
       "links": [{ "label": "Conoce al equipo", "href": "/nosotros/" }]

@@ -204,7 +204,7 @@ export const TEAM: TeamMember[] = [
   { slug: 'alonso-vega', name: 'Alonso Vega', role: 'Arquitecto de IA y Automatización', photo: '/img/equipo/alonso-vega.webp', crop: { fx: 0.47, ey: 0.39, hw: 0.175 } },
   { slug: 'cesar-ovalle', name: 'César Ovalle', role: 'Director Creativo', photo: '/img/equipo/cesar-ovalle.webp', crop: { fx: 0.5, ey: 0.35, hw: 0.155 } },
   { slug: 'richard-vela', name: 'Richard Vela', role: 'Medios de Performance', photo: '/img/equipo/richard-vela.webp', crop: { fx: 0.5, ey: 0.355, hw: 0.23 } },
-  { slug: 'andy-pizano', name: 'Andy Pizano', role: 'Administración y Finanzas', photo: '/img/equipo/andy-pizano.webp', crop: { fx: 0.5, ey: 0.405, hw: 0.21 } },
+  { slug: 'barb-mendoza', name: 'Barb Mendoza', role: 'Project Manager', photo: '/img/equipo/barb-mendoza.webp', crop: { fx: 0.5, ey: 0.37, hw: 0.26 } },
   { slug: 'marcos-gonzalez', name: 'Marcos González', role: 'Líder Comercial', photo: '/img/equipo/marcos-gonzalez.webp', crop: { fx: 0.5, ey: 0.33, hw: 0.165 } },
 ];
 
