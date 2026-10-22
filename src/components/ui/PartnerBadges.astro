@@ -1,0 +1,51 @@
+---
+// PartnerBadges · Franja de partners oficiales: Kommo (sello oficial), GoHighLevel, Google y Meta.
+// RESUELTO 2026-10-22 · cliente en chat: Ingeniak es partner de Kommo (LATAM), GoHighLevel, Google y Meta; esta franja
+// sustituye al sello solitario de Kommo donde el sitio habla de alianzas (footer, /nosotros/ #alianzas, inicio #stack).
+// Mismo lenguaje visual de KommoBadge: el sello de Kommo en imagen (no se recolorea ni se recorta) y los demás logos en
+// máscara currentColor con su nombre en mono. KommoBadge sigue existiendo para los contextos solo-Kommo (/kommo/, FAQ hub).
+//   label → rótulo "PARTNERS DE" al frente (por defecto sí) · link → el sello de Kommo enlaza a kommo.com (por defecto sí)
+import { SITE } from '../../lib/site';
+interface Props { size?: 'sm' | 'md'; label?: boolean; link?: boolean; class?: string }
+const { size = 'md', label = true, link = true, class: cls } = Astro.props;
+const BADGE = '/img/logos/kommo-partner-blanco.webp'; // 318 × 144, blanco sobre transparente
+const h = size === 'sm' ? 26 : 32;
+const w = Math.round((h * 318) / 144);
+const KTag = link ? 'a' : 'span';
+const kAttrs = link ? { href: SITE.kommo, target: '_blank', rel: 'noopener', 'aria-label': 'Partner oficial de Kommo en LATAM (abre kommo.com)' } : {};
+// Logos en máscara currentColor (public/img/logos). GoHighLevel: logotipo completo (172×38); Google y Meta: símbolo + nombre.
+const MARKS = [
+  { name: 'GoHighLevel', logo: '/img/logos/gohighlevel.svg', ar: 172 / 38, word: true },
+  { name: 'Google', logo: '/img/logos/google.svg', ar: 1 },
+  { name: 'Meta', logo: '/img/logos/meta.svg', ar: 1 },
+];
+---
+<div class:list={['partners', `partners--${size}`, cls]} role="group" aria-label="Partners oficiales de Ingeniak: Kommo, GoHighLevel, Google y Meta">
+  {label && <span class="partners__k">Partners de</span>}
+  <KTag class="partners__item partners__item--kommo" {...kAttrs}>
+    <span class="partners__seal"><img src={BADGE} alt="Sello de partner oficial de Kommo" width={w} height={h} loading="lazy" decoding="async" /></span>
+  </KTag>
+  {MARKS.map((m) => (
+    <span class="partners__item">
+      <span class:list={['partners__logo', m.word && 'partners__logo--word']} style={`--logo:url(${m.logo});--ar:${m.ar}`} role="img" aria-label={m.name}></span>
+      {!m.word && <span class="partners__name" aria-hidden="true">{m.name}</span>}
+    </span>
+  ))}
+</div>
+
+<style>
+  .partners { display: inline-flex; align-items: center; gap: 16px 18px; flex-wrap: wrap; color: var(--text-2); }
+  .partners__k { font: 500 10.5px/1.2 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--cyan); white-space: nowrap; }
+  .partners__item { display: inline-flex; align-items: center; gap: 8px; flex: none; text-decoration: none; color: inherit; transition: filter var(--d-ui); }
+  a.partners__item:hover { filter: brightness(1.25); }
+  .partners__seal { display: inline-grid; place-items: center; padding: 5px 9px; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--hair-cyan); background: rgb(3 4 11 / .25); }
+  .partners__seal img { display: block; height: var(--ph, 32px); width: auto; }
+  /* Logos de marca en máscara (un color, como SystemFlow/Credits): blanco al 72 %, sin recuadro */
+  .partners__logo { display: inline-block; height: var(--lh, 18px); width: calc(var(--lh, 18px) * var(--ar, 1)); background: currentColor; opacity: .72;
+    -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
+  .partners__logo--word { height: calc(var(--lh, 18px) * .92); }
+  .partners__name { font: 500 12px/1.2 var(--f-mono); letter-spacing: .06em; opacity: .85; white-space: nowrap; }
+  .partners--sm { gap: 12px 14px; --ph: 26px; --lh: 15px; }
+  .partners--sm .partners__name { font-size: 11px; }
+  .partners--md { --ph: 32px; --lh: 18px; }
+</style>

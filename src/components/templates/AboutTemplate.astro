@@ -30,7 +30,7 @@ import Copy from '../ui/Copy.astro';
 import ScriptList from '../ui/ScriptList.astro';
 import EntitySheet from '../ui/EntitySheet.astro';
 import Credits from '../ui/Credits.astro';
-import KommoBadge from '../ui/KommoBadge.astro';
+import PartnerBadges from '../ui/PartnerBadges.astro';
 import FAQAccordion from '../ui/FAQAccordion.astro';
 import Icon from '../ui/Icon.astro';
 import { annotateFigures, esc, TEAM } from '../ui/ui-data';
@@ -289,7 +289,7 @@ const personLd = cast.map((p) => ({
       </Intertitle>
     );
 
-    /* ── 08 · alianzas y marcas (Kommo = único partner; kain = sub-marca) ── */
+    /* ── 08 · alianzas y marcas (partners: Kommo, GoHighLevel, Google y Meta; kain = sub-marca) ── */
     if (id === 'alianzas' && ali) return (
       <section id="alianzas" class="ab-ali tpl-glow" aria-labelledby="alianzas-t">
         <Aura kind="ondas" x="50%" y="60%" o={1} only="d" />
@@ -302,7 +302,7 @@ const personLd = cast.map((p) => ({
           <div class="ab-ali__pair" data-reveal="stagger">
             {ali.kommo && (
               <article class="ab-ally ab-ally--kommo" aria-labelledby="ali-kommo-t">
-                <div class="ab-ally__mark"><KommoBadge size="md" /></div>
+                <div class="ab-ally__mark"><PartnerBadges size="md" label={false} /></div>
                 <h3 id="ali-kommo-t" class="ab-ally__t">{ali.kommo.title}</h3>
                 <Copy as="p" class="ab-ally__b" text={ali.kommo.body} />
                 {builtLinks(ali.kommo.links).length > 0 && (

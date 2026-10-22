@@ -5,7 +5,7 @@
   "estado": "borrador",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": null,
-  "actualizado": "2026-10-20",
+  "actualizado": "2026-10-22",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'. Nadie del equipo de construcción cambia ese campo.",
     "PREGUNTA AL CLIENTE · portada (ESPEC §12.2 R6): sin la sesión de fotos del equipo, la portada usa la escena de Kain sobre Guadalajara (nosotros-manifiesto) y el equipo vive en la sección 'El equipo' con sus fotos reales. ¿Fecha de la sesión de fotos? Y mientras tanto: ¿una persona de Ingeniak aprueba por escrito la composición cta-equipo (los retratos actuales sobre el horizonte del amanecer) como 'no se ve collage' para usarla de portada?",
@@ -19,7 +19,8 @@
     "CAMBIO DE TEXTO · presencia: sin mapa con pines (ESPEC §5.9): los países van tipográficos y salen de metrics.ts. Los sectores son las ocho industrias del sitio (el sitio actual lista seis 'estratégicos': salud, belleza, nutrición, finanzas, inmobiliario e industrial). ¿De acuerdo con la lista de ocho?",
     "CAMBIO DE TEXTO · ficha.lede dice que los datos son los mismos del pie de página y del marcado que leen los buscadores (no menciona Google Business Profile porque no está confirmado que exista).",
     "DATO PENDIENTE · Person ×6 en el JSON-LD: nombre, cargo (el de esta página), foto y worksFor; sin sameAs hasta tener los LinkedIn.",
-    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Ficha 'Primer paso': 'Discovery Session: 30 min · 1:1 · Google Meet · sin costo' → 'Cotizar proyecto · te contactamos por WhatsApp y correo' (el componente enlaza 'Cotizar proyecto'). Cierre: eyebrow 'El primer paso no cuesta nada' → 'El primer paso'; H2 'Conócenos en 30 minutos, con tu operación sobre la mesa.' → 'Conozcámonos con tu proyecto y tu operación sobre la mesa.'."
+    "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: portada y cierre pasan a 'Cotizar proyecto' y sale la microcopia de 30 minutos. Ficha 'Primer paso': 'Discovery Session: 30 min · 1:1 · Google Meet · sin costo' → 'Cotizar proyecto · te contactamos por WhatsApp y correo' (el componente enlaza 'Cotizar proyecto'). Cierre: eyebrow 'El primer paso no cuesta nada' → 'El primer paso'; H2 'Conócenos en 30 minutos, con tu operación sobre la mesa.' → 'Conozcámonos con tu proyecto y tu operación sobre la mesa.'.",
+    "RESUELTO 2026-10-22 · cliente en chat · partners: Ingeniak es partner de Kommo (LATAM), GoHighLevel, Google y Meta. #alianzas y la ficha dejan de decir \"única alianza oficial\"; la franja PartnerBadges muestra los cuatro logos (también en el pie y en el inicio #stack)."
   ],
   "sections": {
     "hero": {
@@ -68,8 +69,8 @@
           "value": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640"
         },
         {
-          "term": "Alianza",
-          "value": "Partner oficial de Kommo en LATAM"
+          "term": "Alianzas",
+          "value": "Partners de Kommo (LATAM), GoHighLevel, Google y Meta"
         },
         {
           "term": "En producción",
@@ -255,16 +256,16 @@
       }
     },
     "alianzas": {
-      "_componente": "KommoBadge + kain (sub-marca)",
+      "_componente": "PartnerBadges (Kommo, GoHighLevel, Google y Meta) + kain (sub-marca)",
       "rail": "Alianzas",
       "eyebrow": "Alianzas y marcas",
       "h2": {
-        "text": "Una alianza oficial",
+        "text": "Partners oficiales",
         "soft": "y un agente con nombre propio."
       },
       "kommo": {
-        "title": "Partner oficial de Kommo en LATAM",
-        "body": "Somos partner oficial y distribuidor de Kommo en Latinoamérica: licencias, implementación del CRM y conexión de WhatsApp con el mismo equipo. Es nuestra única alianza oficial; GoHighLevel, n8n, Make, OpenAI y las demás son herramientas que usamos e integramos.",
+        "title": "Partners de Kommo, GoHighLevel, Google y Meta",
+        "body": "Somos partner oficial y distribuidor de Kommo en Latinoamérica —licencias, implementación del CRM y conexión de WhatsApp con el mismo equipo— y partners de GoHighLevel, Google y Meta: las plataformas donde construimos tu CRM, tus campañas y tus canales. n8n, Make, OpenAI y las demás son herramientas que usamos e integramos.",
         "links": [
           {
             "label": "Kommo con Ingeniak",
@@ -303,7 +304,12 @@
         "G04"
       ],
       "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx.",
-      "links": [{ "label": "Todos los canales de contacto", "href": "/contacto/" }]
+      "links": [
+        {
+          "label": "Todos los canales de contacto",
+          "href": "/contacto/"
+        }
+      ]
     },
     "cta-final": {
       "_componente": "Dawn (cta-amanecer en espejo)",

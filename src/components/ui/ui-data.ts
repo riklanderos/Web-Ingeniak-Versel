@@ -208,7 +208,7 @@ export const TEAM: TeamMember[] = [
   { slug: 'marcos-gonzalez', name: 'Marcos González', role: 'Líder Comercial', photo: '/img/equipo/marcos-gonzalez.webp', crop: { fx: 0.5, ey: 0.33, hw: 0.165 } },
 ];
 
-/** Herramientas con logo en public/img/logos (pintadas con máscara currentColor). Nunca "partner" salvo Kommo. */
+/** Herramientas con logo en public/img/logos (pintadas con máscara currentColor). Partners oficiales (Kommo, GoHighLevel, Google y Meta): su franja es PartnerBadges; aquí aparecen como herramientas del stack. */
 export const TOOLS: Record<string, { name: string; logo: string; wide?: boolean }> = {
   whatsapp: { name: 'WhatsApp Business', logo: 'whatsapp' }, gohighlevel: { name: 'GoHighLevel', logo: 'gohighlevel-mark' },
   kommo: { name: 'Kommo', logo: 'kommo', wide: true }, n8n: { name: 'n8n', logo: 'n8n' }, make: { name: 'Make', logo: 'make' },

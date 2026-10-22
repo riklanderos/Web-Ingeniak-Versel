@@ -906,6 +906,7 @@ body.hm .tpl-glow::before{
 .hm-stack__head{grid-column:1 / span 3;padding-top:var(--s-2)}
 .hm-stack__head .eyebrow{margin:0}
 .hm-stack__lede{margin:var(--s-4) 0 0;font:400 .9375rem/1.55 var(--f-body);color:var(--muted);max-width:30ch}
+.hm-stack__partners{margin-top:var(--s-5)}
 .hm-stack__logos{grid-column:4 / -1;padding-top:var(--s-5);border-top:1px solid var(--hair)}
 .hm-stack__logos .credits__logos{gap:30px 46px}
 /* Escritorio: dos filas parejas, columnas alineadas (sin huérfano en una tercera fila). --logo-cols lo calcula la plantilla. */

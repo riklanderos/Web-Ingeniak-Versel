@@ -131,7 +131,7 @@
         "En Ingeniak trabajamos con las dos plataformas y te recomendamos una según tu proceso comercial, no según lo que nos convenga vender.",
         { "variant": "ul", "items": [
           "**Kommo:** somos partner oficial de Kommo en Latinoamérica. Te ayudamos a contratar las licencias que necesitas, implementamos el CRM, conectamos WhatsApp y ponemos agentes de IA que responden, califican y agendan.",
-          "**GoHighLevel:** lo implementamos completo en español: configuración de la cuenta, embudos, calendarios, mensajes, automatizaciones, agente de IA y capacitación de tu equipo. Es una herramienta que implementamos; nuestra única alianza oficial es con Kommo."
+          "**GoHighLevel:** lo implementamos completo en español: configuración de la cuenta, embudos, calendarios, mensajes, automatizaciones, agente de IA y capacitación de tu equipo. Somos partners de GoHighLevel, igual que de Kommo: te recomendamos uno u otro según tu proceso comercial, no según la etiqueta."
         ] },
         "Cuando cotizas tu proyecto, revisamos cómo vendes hoy y te decimos cuál conviene, con qué plan y qué costos de terceros considerar. Nuestros proyectos empiezan {{price}}, y implementar un sistema toma de 7 a 30 días, según el alcance."
       ]

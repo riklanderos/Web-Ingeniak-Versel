@@ -30,6 +30,7 @@ import ChatTabs from '../ui/ChatTabs.astro';
 import HomeStation from './HomeStation.astro';
 import Aura from './Aura.astro';
 import Credits from '../ui/Credits.astro';
+import PartnerBadges from '../ui/PartnerBadges.astro';
 import EntitySheet from '../ui/EntitySheet.astro';
 import FAQAccordion from '../ui/FAQAccordion.astro';
 import { annotateFigures, esc, TEAM } from '../ui/ui-data';
@@ -87,7 +88,7 @@ const sumarioIds = (hero.sumario?.metricIds ?? []) as MetricId[];
 
 /* ── 02 · Con qué construimos: sello Kommo + logos en dos filas parejas ─────── */
 const stackLogos = (S('stack').logos ?? []).map((l: any) => ({ logo: l.slug, name: l.label }));
-const logoCols = Math.max(1, Math.ceil((stackLogos.length + 1) / 2)); // +1: el sello de Kommo
+const logoCols = Math.max(1, Math.ceil(stackLogos.length / 2)); // la franja de partners va aparte, bajo el lede
 
 /* ── 03 · Problema (planos gemelos) ───────────────────────────────────────── */
 const prob = S('problema');
@@ -273,11 +274,13 @@ const railGroups = [3, 6, 4];
         <div class="hm-stack__head">
           <h2 id="stack-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{S('stack').eyebrow ?? 'Con qué construimos'}</h2>
           {S('stack').lede && <Copy as="p" class="hm-stack__lede" text={S('stack').lede} />}
+          <PartnerBadges size="sm" class="hm-stack__partners" />
         </div>
         <Credits
           variant="logos"
           class="hm-stack__logos"
           items={stackLogos}
+          kommo={false}
         />
       </div>
     </section>

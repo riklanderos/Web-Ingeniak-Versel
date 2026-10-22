@@ -20,9 +20,10 @@ import { ICONS } from './icons';
 import Logo from './Logo.astro';
 import { QUOTE, quoteAttrs, quoteHref, isHiddenHref } from '../layout/cta';
 
-// Sello de Kommo: si el área ui ya publicó KommoBadge, se usa; si no, el sello oficial en imagen.
-const badgeMods = import.meta.glob('../ui/KommoBadge.astro', { eager: true }) as Record<string, any>;
-const KommoBadge = Object.values(badgeMods)[0]?.default;
+// Franja de partners (Kommo, GoHighLevel, Google y Meta): si el área ui ya publicó PartnerBadges, se usa; si no, el
+// sello oficial de Kommo en imagen como respaldo.
+const badgeMods = import.meta.glob('../ui/PartnerBadges.astro', { eager: true }) as Record<string, any>;
+const PartnerBadges = Object.values(badgeMods)[0]?.default;
 
 const indexable = new Set(pages.filter((p) => p.indexable && !isHiddenHref(p.url)).map((p) => p.url));
 const cols = FOOTER.columns.map((c) => ({
@@ -118,8 +119,8 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain,
       <div class="ftr__row"><dt>En producción</dt><dd><Metric id="sistemas" label /> · <Metric id="paises" label /><small class="ftr__src">{SOURCE_NOTE}.</small></dd></div>
     </dl>
     <div class="ftr__seals">
-      {KommoBadge ? (
-        <KommoBadge size="sm" />
+      {PartnerBadges ? (
+        <PartnerBadges size="sm" />
       ) : (
         <a class="ftr__kommo" href={SITE.kommo} target="_blank" rel="noopener" aria-label="Partner oficial de Kommo en LATAM (kommo.com)">
           <img src="/img/logos/kommo-partner.webp" alt="Kommo partner" width="400" height="178" loading="lazy" decoding="async" />

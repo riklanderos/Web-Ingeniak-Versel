@@ -404,8 +404,8 @@
   {
     "id": "H04",
     "q": "¿Ingeniak es partner de GoHighLevel?",
-    "a": "No usamos esa etiqueta. GoHighLevel es una herramienta que implementamos en español para nuestros clientes: configuración, embudos, calendarios, automatizaciones y agentes de IA. Nuestra única alianza oficial es con Kommo, como partner en Latinoamérica. Por eso en este sitio el sello de partner solo aparece junto a Kommo.",
-    "short": "No. GoHighLevel es una herramienta que implementamos; nuestra única alianza oficial es con Kommo.",
+    "a": "Sí. Somos partners de GoHighLevel: implementamos la plataforma completa en español —configuración, embudos, calendarios, automatizaciones y agentes de IA— y la dejamos operando con tu equipo. También somos partners oficiales de Kommo en Latinoamérica, de Google y de Meta; el CRM que te recomendamos depende de tu proceso comercial, no de la etiqueta.",
+    "short": "Sí: somos partners de GoHighLevel, igual que de Kommo, Google y Meta.",
     "pages": [
       "/gohighlevel/",
       "/tecnologias/",
@@ -414,7 +414,7 @@
       "/blog/gohighlevel-en-espanol/"
     ],
     "categoria": "GoHighLevel",
-    "validar": true,
+    "validar": false,
     "editada": true
   },
   {
