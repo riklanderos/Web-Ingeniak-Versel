@@ -11371,5 +11371,151 @@
       "owner": "[POR ASIGNAR]",
       "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
     }
+  },
+  {
+    "id": "recursos",
+    "group": "Recursos",
+    "url": "/recursos/",
+    "canonical": "https://ingeniak.mx/recursos/",
+    "indexable": true,
+    "status": "nueva",
+    "template": "T-HUB",
+    "purpose": "Biblioteca de recursos gratuitos de Ingeniak: hoy guías del blog y las preguntas frecuentes; crece con plantillas, calculadoras y otras herramientas sin costo.",
+    "primaryKeyword": "recursos gratuitos de inteligencia artificial para empresas",
+    "secondaryKeywords": [
+      "guías gratuitas de IA para pymes",
+      "recursos de automatización para empresas",
+      "material gratuito agentes de IA"
+    ],
+    "title": "Recursos gratuitos de IA para tu empresa | Ingeniak",
+    "titleLength": 51,
+    "metaDescription": "Guías y respuestas gratuitas sobre agentes de IA, WhatsApp, CRM y automatización: todo lo que publica Ingeniak para decidir mejor, en un solo lugar.",
+    "metaLength": 148,
+    "h1": "Recursos gratuitos de IA para tu empresa",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Recursos",
+        "url": "/recursos/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "spec": "Breadcrumb + H1 + lede + CTAs. Mientras no exista la placa recursos-hero, respaldo: home-sistema-5-medir (Kain presenta la pantalla).",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/recursos-hero",
+          "subject": "Dueña de negocio (38) en su escritorio nocturno, hojeando una guía impresa junto a una laptop que le ilumina el rostro en cian; estantes con carpetas al fondo.",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Portada del hub /recursos/ (biblioteca de recursos gratuitos).",
+          "mobile": "4:5 · modo top: 40 % superior vacío; persona en el 60 % inferior, el torso se disuelve en sombra abajo."
+        },
+        "plate": {
+          "id": "recursos-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-5-medir"
+          }
+        }
+      },
+      {
+        "order": 2,
+        "id": "categorias",
+        "name": "Tipo de recurso",
+        "spec": "Chips: Guías · Respuestas directas (crece con Plantillas, Calculadoras, Videos cuando existan).",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "grid",
+        "name": "Recursos",
+        "spec": "Índice editorial (mismo patrón del blog): 6 guías + preguntas frecuentes, cada fila con tipo, título, qué resuelve y enlace.",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cta-final",
+        "name": "Cierre",
+        "spec": "Cierre cinematográfico: de lo general del recurso a cotizar el proyecto propio. Imagen compartida Dawn.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/cta-amanecer",
+          "subject": "Kain saludando de pie sobre un horizonte curvo con filo de amanecer frío cian-blanco (\"06:00 · Rise\").",
+          "side": "izquierda",
+          "textSide": "derecha",
+          "brief": "Cierre compartido (Dawn) de casi todo el sitio.",
+          "mobile": "4:5 · modo top: Cielo vacío en el 40 % superior; cresta del horizonte en y≈0.86; Kain sobre ella centrado en x≈0.58 (antenas y≈0.46).",
+          "shared": true
+        },
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mirror": true,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola Kain, vengo de la página de recursos de Ingeniak y quiero saber qué me sirve para mi negocio.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20recursos%20de%20Ingeniak%20y%20quiero%20saber%20qu%C3%A9%20me%20sirve%20para%20mi%20negocio."
+    },
+    "internalLinks": [
+      "/blog/",
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+      "/blog/kommo-vs-gohighlevel/",
+      "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "/blog/como-verificar-partner-oficial-kommo/",
+      "/blog/gohighlevel-en-espanol/",
+      "/blog/n8n-vs-zapier-vs-make/",
+      "/preguntas-frecuentes/"
+    ],
+    "jsonLd": [
+      "CollectionPage",
+      "BreadcrumbList"
+    ],
+    "faq": [],
+    "redirectsFrom": [
+      "/recursos"
+    ],
+    "sitemap": {
+      "priority": 0.6,
+      "changefreq": "weekly"
+    },
+    "folio": "507",
+    "copy": {
+      "status": "borrador",
+      "minWords": 350,
+      "owner": "Equipo de Ingeniak",
+      "note": "Hub de recursos gratuitos. El índice reutiliza el patrón del blog (HubGuides); los descargables futuros (plantillas, calculadoras) se suman como items nuevos del grid con su categoría."
+    }
   }
 ]

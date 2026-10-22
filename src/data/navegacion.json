@@ -286,9 +286,14 @@
     },
     {
       "label": "Recursos",
-      "href": "/blog/",
+      "href": "/recursos/",
       "type": "dropdown",
       "items": [
+        {
+          "label": "Todos los recursos",
+          "href": "/recursos/",
+          "description": "La biblioteca gratuita de Ingeniak"
+        },
         {
           "label": "Blog",
           "href": "/blog/",
@@ -396,6 +401,7 @@
       {
         "title": "Recursos",
         "links": [
+          "/recursos/",
           "/blog/",
           "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
           "/blog/kommo-vs-gohighlevel/",

@@ -1,0 +1,172 @@
+{
+  "_schema": "Hub /recursos/ · HubTemplate (T-HUB, ESPEC §5.5). Mismo patrón del blog: categorias {eyebrow, all, chips[] {slug, label}, status, empty} (chips de TIPO de recurso que filtran #grid sin recargar) · grid.items[] {href, category, title, line, ask?, related?} (índice editorial: cada recurso gratuito es una fila; los descargables futuros —plantillas, calculadoras, videos— se suman aquí con su chip nuevo) · grid.author / grid.labels / grid.note / grid.links. Campos comunes: _ESQUEMA.md §3–§6.",
+  "pageId": "recursos",
+  "url": "/recursos/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-22",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PLACA · recursos-hero sin exportar: la portada usa el respaldo home-sistema-5-medir (launchFallback en sitemap.json). Cuando la placa llegue, la escena la toma sola.",
+    "PRÓXIMOS RECURSOS · los descargables (plantillas, calculadoras, videos) se suman como items del grid con su categoría nueva en los chips; cada descargable necesita su archivo en /public/ y su fila aquí. Nada se anuncia antes de existir.",
+    "NAVEGACIÓN · el menú 'Recursos' ahora abre este hub (/recursos/); el blog sigue como primera entrada del menú y primera categoría de esta biblioteca."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (recursos-hero; respaldo: home-sistema-5-medir) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Recursos · Gratis",
+      "h1": {
+        "text": "Recursos gratuitos de IA",
+        "soft": "para tu empresa",
+        "lit": "gratuitos"
+      },
+      "lede": "Las guías y respuestas que publicamos para decidir mejor, en un solo lugar y sin registro. Esta biblioteca crece: lo nuevo aparece aquí primero.",
+      "ctaPrimary": {
+        "label": "Cotizar proyecto"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de recursos de Ingeniak y quiero saber qué me sirve para mi negocio."
+      },
+      "illus": "Imagen ilustrativa"
+    },
+    "categorias": {
+      "_componente": "Chips de tipo de recurso (botones aria-pressed) que filtran #grid; sin JS no se muestran",
+      "rail": "Tipo",
+      "eyebrow": "Tipo de recurso",
+      "all": "Todos",
+      "chips": [
+        {
+          "slug": "guias",
+          "label": "Guías"
+        },
+        {
+          "slug": "respuestas",
+          "label": "Respuestas directas"
+        }
+      ],
+      "status": "{n} de 7 recursos",
+      "empty": "Ningún recurso de ese tipo todavía. Quita el filtro o pregúntale a Kain."
+    },
+    "grid": {
+      "_componente": "Índice editorial de recursos (filas numeradas, sin tarjetas; mismo patrón del blog) + EditorNote",
+      "rail": "Biblioteca",
+      "eyebrow": "La biblioteca",
+      "h2": {
+        "text": "Todo lo gratuito de Ingeniak,",
+        "soft": "en un solo lugar."
+      },
+      "lede": "Hoy son siete recursos: seis guías escritas con el equipo que implementa estos sistemas y el banco de respuestas directas. Iremos sumando plantillas, calculadoras y más herramientas, siempre sin costo.",
+      "author": "Equipo de Ingeniak",
+      "labels": {
+        "status": "En preparación",
+        "read": "Abrir el recurso",
+        "ask": "Pregúntale a Kain",
+        "related": "Mientras tanto",
+        "updated": "Actualizado"
+      },
+      "items": [
+        {
+          "href": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+          "category": "guias",
+          "title": "¿Cuánto cuesta un agente de IA para WhatsApp en México?",
+          "line": "La guía para entender qué mueve el precio de un agente, qué costos no se ven y cómo calcular si te conviene antes de pedir una cotización.",
+          "ask": "¿Cuánto cuesta un agente de IA para WhatsApp?",
+          "related": {
+            "label": "Agentes de IA para WhatsApp",
+            "href": "/servicios/agentes-ia-whatsapp/"
+          }
+        },
+        {
+          "href": "/blog/kommo-vs-gohighlevel/",
+          "category": "guias",
+          "title": "Kommo vs GoHighLevel: ¿cuál conviene a tu empresa?",
+          "line": "La comparativa por criterio: cuál conviene si vendes por chat y cuál si vendes con embudos, páginas y calendarios en una sola plataforma.",
+          "ask": "¿Me conviene Kommo o GoHighLevel?",
+          "related": {
+            "label": "CRM con IA",
+            "href": "/servicios/crm-con-ia/"
+          }
+        },
+        {
+          "href": "/blog/agente-ia-whatsapp-vs-chatbot/",
+          "category": "guias",
+          "title": "Agente de IA para WhatsApp vs chatbot: diferencias",
+          "line": "Las diferencias que importan: qué entiende cada uno, qué acciones puede ejecutar y en qué casos basta con el más sencillo.",
+          "ask": "¿En qué se diferencia un agente de IA de un chatbot?",
+          "related": {
+            "label": "Agentes de IA para WhatsApp",
+            "href": "/servicios/agentes-ia-whatsapp/"
+          }
+        },
+        {
+          "href": "/blog/como-verificar-partner-oficial-kommo/",
+          "category": "guias",
+          "title": "Cómo verificar que una agencia es partner oficial de Kommo",
+          "line": "Los pasos para confirmar que tu proveedor es partner oficial antes de pagar licencias o una implementación, y las señales de alerta.",
+          "ask": "¿Ingeniak es partner oficial de Kommo?",
+          "related": {
+            "label": "Kommo",
+            "href": "/kommo/"
+          }
+        },
+        {
+          "href": "/blog/gohighlevel-en-espanol/",
+          "category": "guias",
+          "title": "GoHighLevel en español: qué es y cómo se implementa",
+          "line": "Qué junta la plataforma, para quién sí y para quién no, y cómo se deja operando en español paso a paso.",
+          "ask": "¿Qué es GoHighLevel?",
+          "related": {
+            "label": "GoHighLevel en español",
+            "href": "/gohighlevel/"
+          }
+        },
+        {
+          "href": "/blog/n8n-vs-zapier-vs-make/",
+          "category": "guias",
+          "title": "n8n vs Zapier vs Make: cuál elegir para tu empresa",
+          "line": "Qué pesa al elegir herramienta de automatización: modelo de cobro, autoalojamiento, agentes de IA y curva de aprendizaje.",
+          "ask": "¿Qué puedo automatizar con n8n?",
+          "related": {
+            "label": "Automatización con n8n",
+            "href": "/servicios/automatizacion-n8n/"
+          }
+        },
+        {
+          "href": "/preguntas-frecuentes/",
+          "category": "respuestas",
+          "title": "Preguntas frecuentes, respondidas en corto",
+          "line": "El banco completo de respuestas directas sobre agentes, CRM, automatización, precios y cómo trabajamos: lo que contestamos antes de conocerte.",
+          "ask": "¿Qué es Ingeniak?"
+        }
+      ],
+      "noteLabel": "Cómo crece esta biblioteca",
+      "note": "Todo lo que publicamos aquí es gratuito y sale del mismo equipo que implementa estos sistemas. Solo usamos cifras que podemos respaldar con un caso y su fuente, y precios como los manejamos: {{price}}. Cuando un recurso nuevo esté listo —una plantilla, una calculadora, un video— aparece primero en esta página.",
+      "links": [
+        {
+          "label": "Ir al blog",
+          "href": "/blog/"
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer en espejo)",
+      "rail": "Cierre",
+      "eyebrow": "Con tu caso",
+      "h2": {
+        "text": "¿Un recurso no te alcanza?",
+        "soft": "Cuéntanos tu proyecto."
+      },
+      "lede": "Los recursos responden lo general; tu operación es particular. Cuéntanos cómo vendes y atiendes hoy, y te decimos qué conviene automatizar primero.",
+      "ctaPrimary": {
+        "label": "Cotizar proyecto"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vengo de la página de recursos de Ingeniak y quiero saber qué me sirve para mi negocio."
+      }
+    }
+  }
+}

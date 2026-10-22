@@ -75,6 +75,7 @@ export const RUTAS = Object.freeze({
   '/agentes-ia-guadalajara/': 'guadalajara',
   '/preguntas-frecuentes/': 'faq',
   '/blog/': 'blog',
+  '/recursos/': 'recursos',
   '/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/': 'art-costo',
   '/blog/kommo-vs-gohighlevel/': 'art-kommo-ghl',
   '/blog/agente-ia-whatsapp-vs-chatbot/': 'art-agente-chatbot',

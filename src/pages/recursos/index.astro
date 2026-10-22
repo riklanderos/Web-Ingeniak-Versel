@@ -1,0 +1,9 @@
+---
+// /recursos/ · T-HUB (ESPEC-v2 §5.5). Estructura: sitemap.json (secciones, placas, CTA); texto: src/content/paginas/recursos.json.
+import HubTemplate from '../../components/templates/HubTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+
+const page = getPage('/recursos/');
+const copy = getCopy(page.id);
+---
+<HubTemplate page={page} copy={copy} />
