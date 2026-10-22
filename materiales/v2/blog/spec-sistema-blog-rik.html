@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sistema de blog Ingeniak · Especificación</title>
+<style>
+  @page { size: letter; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font: 10.5pt/1.55 -apple-system, "Helvetica Neue", Arial, sans-serif; color: #15202b; margin: 0; }
+  h1 { font-size: 21pt; line-height: 1.15; letter-spacing: -.02em; margin: 0 0 4pt; }
+  h2 { font-size: 13.5pt; letter-spacing: -.01em; margin: 22pt 0 7pt; padding-bottom: 4pt; border-bottom: 2px solid #0b57d0; color: #0b2545; break-after: avoid; }
+  h3 { font-size: 11pt; margin: 14pt 0 4pt; color: #0b2545; break-after: avoid; }
+  p { margin: 0 0 7pt; }
+  .meta { color: #5a6b7b; font-size: 9pt; margin-bottom: 18pt; }
+  .tag { display: inline-block; background: #0b57d0; color: #fff; font-size: 8pt; letter-spacing: .12em; padding: 2pt 7pt; border-radius: 3pt; text-transform: uppercase; margin-bottom: 10pt; }
+  table { width: 100%; border-collapse: collapse; margin: 8pt 0 12pt; font-size: 9.5pt; }
+  th { text-align: left; background: #eef3fb; color: #0b2545; padding: 5pt 7pt; border: 1px solid #d5dfee; }
+  td { padding: 5pt 7pt; border: 1px solid #d5dfee; vertical-align: top; }
+  code { font-family: "SF Mono", Menlo, monospace; font-size: 8.8pt; background: #f1f4f8; padding: 1pt 4pt; border-radius: 3pt; }
+  .paso { display: grid; grid-template-columns: 26pt 1fr; gap: 8pt; margin-bottom: 9pt; break-inside: avoid; }
+  .paso .n { width: 22pt; height: 22pt; border-radius: 50%; background: #0b57d0; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 10.5pt; }
+  .paso b { display: block; }
+  .caja { background: #f6f9fd; border: 1px solid #d5dfee; border-left: 4px solid #0b57d0; padding: 9pt 12pt; border-radius: 4pt; margin: 10pt 0; break-inside: avoid; }
+  .alerta { border-left-color: #c77700; background: #fdf8ee; border-color: #ecdfc3; }
+  ul { margin: 0 0 8pt; padding-left: 16pt; }
+  li { margin-bottom: 3pt; }
+  .firma { margin-top: 26pt; padding-top: 8pt; border-top: 1px solid #d5dfee; color: #5a6b7b; font-size: 8.5pt; }
+</style>
+</head>
+<body>
+
+<span class="tag">Documento interno · Dirección</span>
+<h1>Sistema de blog de ingeniak.mx</h1>
+<p class="meta">Especificación técnica y de operación · Opción A: "el repo es el CMS" con un agente como editor · Octubre 2026</p>
+
+<h2>1. Resumen</h2>
+<p>El blog de ingeniak.mx se publica desde el propio repositorio del sitio (GitHub → Vercel). No se agrega ningún CMS externo: el equipo de SEO entrega <b>briefs</b> en un formato simple, un <b>agente de IA</b> los convierte al esquema del sitio y abre un Pull Request, Vercel genera una <b>vista previa</b> con el artículo ya diseñado, el equipo la revisa, y <b>solo se publica lo que una persona aprueba</b>. El diseño, el SEO técnico y los verificadores de calidad que ya tiene el sitio aplican automáticamente a cada artículo.</p>
+
+<div class="caja">
+<b>Por qué así:</b> el sitio ya tiene un sistema de control de calidad construido (esquema estricto por artículo, verificadores de cifras/SEO/contenido que tiran el deploy si algo está mal, y un campo <code>estado</code> que impide publicar texto no aprobado). Cualquier CMS externo lo esquivaría; este flujo lo aprovecha.</div>
+
+<h2>2. Arquitectura: qué existe y qué se construye</h2>
+<h3>Ya existe en el repo</h3>
+<table>
+<tr><th>Pieza</th><th>Qué hace</th></tr>
+<tr><td><code>src/data/sitemap.json</code></td><td>Una entrada por artículo (template T-ARTICLE) con todo el SEO: title, meta description, keyword principal y secundarias, JSON-LD, breadcrumbs y enlaces internos.</td></tr>
+<tr><td><code>src/content/paginas/art-&lt;slug&gt;.json</code></td><td>El texto del artículo con esquema fijo: hero, respuesta directa, índice, cuerpo por bloques, FAQ (del banco único <code>src/data/faq.json</code>), autor, fuentes, relacionados y CTA. Campo <code>estado</code>: borrador | revisión | aprobado.</td></tr>
+<tr><td><code>ArticleTemplate.astro</code></td><td>Pinta cualquier artículo con el diseño del sitio. Un artículo nuevo no requiere tocar diseño.</td></tr>
+<tr><td>Verificadores del build</td><td><code>npm run build</code> corre checks de cifras, SEO, pendientes, pesos y contenido. Si algo falla, no hay deploy.</td></tr>
+<tr><td>Gate de publicación</td><td>Solo se publica un artículo con <code>estado: "aprobado"</code> y nombre en <code>aprobadoPor</code>. Un borrador puede estar en el repo sin aparecer en el sitio.</td></tr>
+</table>
+
+<h3>Se construye (una sola vez)</h3>
+<table>
+<tr><th>Pieza</th><th>Qué hace</th><th>Esfuerzo</th></tr>
+<tr><td><code>scripts/blog-nuevo.mjs</code></td><td>Andamiaje: a partir de un brief en Markdown genera la entrada del sitemap + el JSON del artículo en <code>estado: "borrador"</code>, con validación del esquema.</td><td>1 sesión</td></tr>
+<tr><td><code>BLOG.md</code></td><td>Guía en la raíz del repo: formato del brief, reglas editoriales, flujo y comandos. Es el contrato entre SEO y el agente.</td><td>Incluida</td></tr>
+<tr><td><code>materiales/briefs/</code></td><td>Bandeja de entrada: cada brief es un archivo <code>YYYY-MM-DD-slug.md</code>. Lo que está ahí, el agente lo procesa.</td><td>Trivial</td></tr>
+<tr><td>Agente editor</td><td>Sesión de Claude Code (manual) o agente programado en la nube (automático, p. ej. revisa la bandeja cada lunes). Convierte brief → JSON + PR.</td><td>Config.</td></tr>
+</table>
+
+<h2>3. El flujo completo</h2>
+<div class="paso"><span class="n">1</span><span><b>SEO entrega el brief.</b> Un archivo Markdown (o Google Doc que se pega) con: título, keyword, intención de búsqueda, outline H2/H3, respuesta directa, FAQs, fuentes con URL y fecha, y enlaces internos sugeridos. Formato exacto en la guía del equipo.</span></div>
+<div class="paso"><span class="n">2</span><span><b>El agente lo maquila.</b> Corre <code>scripts/blog-nuevo.mjs</code>, completa el cuerpo respetando el texto del brief, arma JSON-LD, meta y enlaces, deja <code>estado: "borrador"</code> y abre un Pull Request. Nunca inventa cifras: si falta un dato lo anota en <code>pendientes</code>.</span></div>
+<div class="paso"><span class="n">3</span><span><b>Vercel genera el preview.</b> El PR produce una URL privada donde el artículo se ve ya diseñado, con tipografía, escenas y CTA reales. Los verificadores del build corren solos; si algo falla, el agente lo corrige antes de avisar.</span></div>
+<div class="paso"><span class="n">4</span><span><b>SEO revisa en el preview.</b> Con su checklist (texto fiel al brief, H2/H3, meta, enlaces, FAQ). Pide cambios comentando el PR o por el canal acordado; el agente los aplica y el preview se actualiza.</span></div>
+<div class="paso"><span class="n">5</span><span><b>Tú (o quien delegues) apruebas.</b> El agente pasa <code>estado</code> a <code>"aprobado"</code> con el nombre en <code>aprobadoPor</code> y se hace merge a <code>main</code>.</span></div>
+<div class="paso"><span class="n">6</span><span><b>Se publica solo.</b> Vercel despliega, el artículo entra al sitemap XML, a <code>llms.txt</code> y a los enlaces internos del hub /blog/. Sin pasos manuales.</span></div>
+
+<h2>4. Cómo se alimenta (intake)</h2>
+<ul>
+<li><b>Nivel 1 — Manual (arranque, recomendado ya):</b> el equipo de SEO manda el brief (archivo o texto) y tú lo pegas en una sesión de Claude Code diciendo "procesa este brief". Cero infraestructura.</li>
+<li><b>Nivel 2 — Bandeja compartida:</b> carpeta <code>materiales/briefs/</code> en el repo o una carpeta de Google Drive. Un agente programado en la nube (cron semanal) toma los briefs nuevos y abre los PRs sin que nadie se lo pida.</li>
+<li><b>Nivel 3 — n8n como ventanilla (opcional):</b> un formulario o base de Notion donde SEO captura el brief; n8n lo convierte a Markdown, lo sube a la bandeja y dispara al agente. Útil solo si el volumen crece (4+ artículos/mes).</li>
+</ul>
+<div class="caja alerta"><b>Regla fija en cualquier nivel:</b> la automatización llega hasta el borrador y el PR. El paso a <code>"aprobado"</code> siempre lo da una persona con nombre y apellido. Nada se publica sin esa firma.</div>
+
+<h2>5. Cómo se mantiene</h2>
+<h3>Operación mensual (≈ 1–2 h/mes de tu lado)</h3>
+<ul>
+<li><b>Aprobar:</b> revisar los previews que SEO ya validó y dar el visto bueno. Es el único paso que no se delega al agente.</li>
+<li><b>Actualizaciones de artículos viejos:</b> mismo flujo con brief de actualización; el campo <code>actualizado</code> alimenta el <code>dateModified</code> del JSON-LD (señal de frescura para Google).</li>
+<li><b>Medición:</b> Google Search Console sobre ingeniak.mx (impresiones, clics y posición por artículo). Revisión mensual con SEO para decidir qué se actualiza, qué se amplía y qué se deja.</li>
+</ul>
+<h3>Salud del sistema (automática o del agente)</h3>
+<ul>
+<li>Los verificadores del build vigilan cifras sin fuente, metas fuera de medida y texto placeholder en cada deploy.</li>
+<li>El banco de FAQ (<code>src/data/faq.json</code>) es único: una respuesta se corrige una vez y cambia en todas las páginas que la citan.</li>
+<li>Enlaces internos: cada artículo nuevo debe enlazar a 2–3 páginas de servicio y recibir enlace desde el hub; el script lo deja anotado y el agente lo verifica.</li>
+<li>Imágenes: el agente genera/optimiza a WebP con los pesos que el build exige.</li>
+</ul>
+
+<h2>6. Gobernanza (reglas no negociables)</h2>
+<ul>
+<li>Nada de cifras, testimonios, clientes o casos inventados. Toda cifra lleva fuente y fecha visibles; si el brief no la trae, el dato se omite y queda en <code>pendientes</code>.</li>
+<li>El agente nunca cambia <code>estado</code> a aprobado por sí solo; solo registra la aprobación que una persona dio.</li>
+<li>Un artículo = un PR. Nunca se mezclan artículos con cambios de diseño o de código en el mismo PR.</li>
+<li>El esquema de <code>src/content/paginas/_ESQUEMA.md</code> es la única forma válida de un artículo; si el esquema cambia, cambia primero ahí.</li>
+</ul>
+
+<h2>7. Roles</h2>
+<table>
+<tr><th>Rol</th><th>Responsable</th><th>Hace</th></tr>
+<tr><td>Estrategia y briefs</td><td>Equipo SEO</td><td>Keywords, intención, outline, fuentes, revisión en preview.</td></tr>
+<tr><td>Maquila y técnica</td><td>Agente (Claude)</td><td>Brief → JSON + sitemap, JSON-LD, enlaces, imágenes, PR, correcciones.</td></tr>
+<tr><td>Aprobación</td><td>Rik (o quien delegue)</td><td>Visto bueno final; su nombre queda en <code>aprobadoPor</code>.</td></tr>
+<tr><td>Infraestructura</td><td>Automática</td><td>GitHub + Vercel: previews, checks y publicación.</td></tr>
+</table>
+
+<h2>8. Puesta en marcha sugerida</h2>
+<div class="paso"><span class="n">1</span><span><b>Semana 1:</b> construir <code>scripts/blog-nuevo.mjs</code> + <code>BLOG.md</code> + <code>materiales/briefs/</code>, y entregar la guía al equipo SEO (el otro PDF).</span></div>
+<div class="paso"><span class="n">2</span><span><b>Semana 2:</b> piloto con 1 brief real de SEO, de brief a publicado, midiendo fricción del formato.</span></div>
+<div class="paso"><span class="n">3</span><span><b>Mes 2:</b> si el ritmo es 2+ artículos/mes, activar el agente programado en la nube sobre la bandeja de briefs (nivel 2).</span></div>
+
+<p class="firma">Ingeniak · Sistema de blog · Preparado con Claude Code · Este documento acompaña a la "Guía para el equipo SEO".</p>
+
+</body>
+</html>

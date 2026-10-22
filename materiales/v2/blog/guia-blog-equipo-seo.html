@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Guía del blog de ingeniak.mx · Equipo SEO</title>
+<style>
+  @page { size: letter; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font: 10.5pt/1.55 -apple-system, "Helvetica Neue", Arial, sans-serif; color: #15202b; margin: 0; }
+  h1 { font-size: 21pt; line-height: 1.15; letter-spacing: -.02em; margin: 0 0 4pt; }
+  h2 { font-size: 13.5pt; letter-spacing: -.01em; margin: 22pt 0 7pt; padding-bottom: 4pt; border-bottom: 2px solid #0e7a5f; color: #0b3b2e; break-after: avoid; }
+  h3 { font-size: 11pt; margin: 14pt 0 4pt; color: #0b3b2e; break-after: avoid; }
+  p { margin: 0 0 7pt; }
+  .meta { color: #5a6b7b; font-size: 9pt; margin-bottom: 18pt; }
+  .tag { display: inline-block; background: #0e7a5f; color: #fff; font-size: 8pt; letter-spacing: .12em; padding: 2pt 7pt; border-radius: 3pt; text-transform: uppercase; margin-bottom: 10pt; }
+  table { width: 100%; border-collapse: collapse; margin: 8pt 0 12pt; font-size: 9.5pt; }
+  th { text-align: left; background: #ecf6f2; color: #0b3b2e; padding: 5pt 7pt; border: 1px solid #cfe5dc; }
+  td { padding: 5pt 7pt; border: 1px solid #cfe5dc; vertical-align: top; }
+  code { font-family: "SF Mono", Menlo, monospace; font-size: 8.8pt; background: #f1f4f8; padding: 1pt 4pt; border-radius: 3pt; }
+  pre { font-family: "SF Mono", Menlo, monospace; font-size: 8.6pt; line-height: 1.5; background: #f6f9f8; border: 1px solid #cfe5dc; border-radius: 4pt; padding: 10pt 12pt; white-space: pre-wrap; break-inside: avoid; }
+  .paso { display: grid; grid-template-columns: 26pt 1fr; gap: 8pt; margin-bottom: 9pt; break-inside: avoid; }
+  .paso .n { width: 22pt; height: 22pt; border-radius: 50%; background: #0e7a5f; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 10.5pt; }
+  .paso b { display: block; }
+  .caja { background: #f3faf7; border: 1px solid #cfe5dc; border-left: 4px solid #0e7a5f; padding: 9pt 12pt; border-radius: 4pt; margin: 10pt 0; break-inside: avoid; }
+  .alerta { border-left-color: #b3261e; background: #fdf1f0; border-color: #ecc8c5; }
+  ul { margin: 0 0 8pt; padding-left: 16pt; }
+  li { margin-bottom: 3pt; }
+  .check li { list-style: none; position: relative; padding-left: 4pt; }
+  .check li::before { content: "☐"; position: absolute; left: -14pt; }
+  .firma { margin-top: 26pt; padding-top: 8pt; border-top: 1px solid #cfe5dc; color: #5a6b7b; font-size: 8.5pt; }
+</style>
+</head>
+<body>
+
+<span class="tag">Guía de trabajo · Equipo SEO</span>
+<h1>Cómo publicar en el blog de ingeniak.mx</h1>
+<p class="meta">Ustedes entregan el brief; el sistema arma el artículo con el diseño del sitio; ustedes lo revisan ya montado; se aprueba y se publica. · Octubre 2026</p>
+
+<h2>1. Cómo funciona (en corto)</h2>
+<div class="paso"><span class="n">1</span><span><b>Entregan un brief</b> por artículo, con el formato de la sección 2. No tocan código ni archivos del sitio, nunca.</span></div>
+<div class="paso"><span class="n">2</span><span><b>El sistema lo convierte</b> en un artículo con el diseño real del sitio (tipografía, escenas, CTA, datos estructurados). Respeta su texto y su estructura; no agrega cifras ni afirmaciones que no vengan en el brief.</span></div>
+<div class="paso"><span class="n">3</span><span><b>Reciben una URL de vista previa</b> (privada, de Vercel) con el artículo terminado tal como se verá publicado.</span></div>
+<div class="paso"><span class="n">4</span><span><b>Revisan con el checklist</b> de la sección 4 y piden los cambios que haga falta; la vista previa se actualiza con cada ronda.</span></div>
+<div class="paso"><span class="n">5</span><span><b>Ingeniak aprueba y se publica solo.</b> El artículo entra automáticamente al sitemap XML y a los enlaces internos del blog.</span></div>
+
+<h2>2. El brief: qué entregar</h2>
+<p>Un documento por artículo (Google Doc o Markdown, como prefieran) con <b>todos</b> estos campos. El nombre del archivo o documento: <code>AAAA-MM-DD-slug-propuesto</code>.</p>
+
+<pre># BRIEF DE ARTÍCULO · ingeniak.mx
+
+Título propuesto:        (H1, máx. 65 caracteres, keyword incluida)
+Slug propuesto:          /blog/…/
+Keyword principal:       (1)
+Keywords secundarias:    (3–6)
+Intención de búsqueda:   informativa | comparativa | transaccional
+Buyer / etapa:           (a quién le habla y en qué momento de decisión)
+
+Meta title sugerido:     (máx. 60 caracteres)
+Meta description:        (máx. 155 caracteres, con verbo de acción)
+
+Respuesta directa:       (40–60 palabras que contestan la búsqueda de
+                          entrada; va arriba del artículo y es la que
+                          los buscadores y las IAs citan)
+
+Outline:
+  H2 …
+    H3 …  (notas de qué va en cada bloque; si traen el texto
+           redactado, mejor: se respeta tal cual)
+  H2 …
+
+FAQs propuestas:         (3–5 preguntas con su respuesta de 40–60
+                          palabras cada una)
+
+Fuentes:                 (URL + fecha de consulta de CADA dato o cifra
+                          que el artículo menciona)
+
+Enlaces internos sugeridos:  (2–3 páginas de ingeniak.mx a las que
+                          este artículo debe enlazar, y desde cuáles
+                          debería recibir enlace)
+
+CTA del artículo:        cotizar | agendar Discovery | otra (cuál)
+
+Notas:                   (tono, ángulo, competidores a no mencionar, etc.)</pre>
+
+<div class="caja"><b>Entre más texto redactado traiga el brief, más fiel sale el artículo.</b> Un outline con bullets funciona, pero el sistema redactará esos huecos y ustedes tendrán más que corregir en la revisión. Lo que ustedes escriben se respeta palabra por palabra.</div>
+
+<h2>3. Reglas editoriales (el sitio las verifica en automático)</h2>
+<ul>
+<li><b>Toda cifra lleva fuente y fecha.</b> Un dato sin fuente en el brief no se publica: el sistema lo omite y lo reporta como pendiente. No hay excepciones — el deploy del sitio falla si una cifra queda sin fuente.</li>
+<li><b>Nada inventado:</b> ni testimonios, ni nombres de clientes, ni resultados, ni precios que no estén confirmados por Ingeniak.</li>
+<li>Español de México, de tú, directo y sin relleno. El blog habla como el resto del sitio: claro, técnico sin jerga innecesaria.</li>
+<li>Medidas: título H1 ≤ 65 caracteres · meta title ≤ 60 · meta description ≤ 155 · respuesta directa y respuestas de FAQ entre 40 y 60 palabras.</li>
+<li>Un artículo = una keyword principal = una intención. Si hay dos intenciones, son dos briefs.</li>
+<li>Las FAQ se integran a un banco único del sitio: si proponen una pregunta que ya existe en otra página, se cita la misma respuesta (consistencia que los buscadores premian). El sistema les avisará cuando pase.</li>
+</ul>
+
+<h2>4. Checklist de revisión en la vista previa</h2>
+<ul class="check">
+<li>El H1, los H2/H3 y la respuesta directa son los del brief (o mejores).</li>
+<li>Meta title y description correctos (se ven en la pestaña/código de la preview).</li>
+<li>Keyword principal presente en H1, primer párrafo, al menos un H2 y la meta.</li>
+<li>Cada cifra tiene su fuente visible y las URLs de fuentes abren.</li>
+<li>Los 2–3 enlaces internos del brief están y apuntan bien.</li>
+<li>Las FAQ aparecen completas y con las respuestas acordadas.</li>
+<li>El CTA es el del brief y el botón funciona.</li>
+<li>Se lee bien en celular (la preview es responsiva: pruébenla a lo angosto).</li>
+</ul>
+<p>Los cambios se piden por el canal acordado (comentario en el documento del brief o mensaje directo), por rondas: una lista de cambios → una vista previa nueva. Eviten goteo de correcciones sueltas.</p>
+
+<h2>5. Qué NO hacer</h2>
+<div class="caja alerta">
+<ul style="margin:0">
+<li>No editar archivos del repositorio ni pedir acceso al código: todo pasa por briefs.</li>
+<li>No publicar ni dar por publicado nada: la aprobación final siempre la da Ingeniak y queda registrada con nombre.</li>
+<li>No reutilizar contenido de otros sitios ni de IA sin verificar: el brief es la fuente de verdad y ustedes responden por sus datos.</li>
+<li>No pedir cambios de diseño en un artículo (colores, tipografía, componentes): el diseño es del sistema del sitio y es igual para todos los artículos.</li>
+</ul>
+</div>
+
+<h2>6. Cadencia y tiempos</h2>
+<table>
+<tr><th>Momento</th><th>Qué pasa</th><th>Tiempo típico</th></tr>
+<tr><td>Brief entregado</td><td>El sistema arma el artículo y la vista previa</td><td>1 día hábil</td></tr>
+<tr><td>Revisión de SEO</td><td>Checklist + lista de cambios (por rondas)</td><td>1–2 días hábiles</td></tr>
+<tr><td>Correcciones</td><td>Nueva vista previa por ronda</td><td>mismo día</td></tr>
+<tr><td>Aprobación de Ingeniak</td><td>Visto bueno final y publicación automática</td><td>1 día hábil</td></tr>
+</table>
+<p>Seguimiento mensual conjunto en Google Search Console: qué artículos ganan impresiones y clics, cuáles se actualizan (un brief de actualización sigue este mismo flujo) y cuáles son los siguientes del calendario.</p>
+
+<p class="firma">Ingeniak · Guía del blog para el equipo SEO · Las dudas sobre el formato del brief se resuelven con Rik Landeros.</p>
+
+</body>
+</html>
