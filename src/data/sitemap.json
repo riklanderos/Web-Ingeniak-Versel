@@ -11554,14 +11554,14 @@
         "id": "hero",
         "name": "Portada",
         "cinematic": true,
-        "spec": "Breadcrumb + H1 + lede + CTAs. Mientras no exista la placa brochure-hero, respaldo: home-hero.",
+        "spec": "Breadcrumb + H1 + lede + SumarioCover (3 cifras de caso) + CTAs. Placa propia brochure-hero (Kain monumental sobre la ciudad).",
         "image": {
           "file": "/img/cine/brochure-hero",
-          "subject": "Kain presenta el sistema completo sobre la ciudad al amanecer (placa propia pendiente).",
+          "subject": "Kain monumental sobre la ciudad al amanecer presenta el isotipo de cristal con los paneles del sistema.",
           "side": "derecha",
           "textSide": "izquierda",
-          "brief": "Portada del brochure corporativo.",
-          "mobile": "4:5 · modo top."
+          "brief": "Portada del brochure corporativo (exportada 2026-10-22, GPT Image 2.5 vía Higgsfield con referencias de home-hero y kain-presenta).",
+          "mobile": "4:5 · modo top: 42 % superior limpio; Kain de la cadera hacia arriba abajo."
         },
         "plate": {
           "id": "brochure-hero",
@@ -11572,10 +11572,7 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1",
-          "launchFallback": {
-            "plate": "home-hero"
-          }
+          "priority": "P1"
         }
       },
       {
@@ -11587,6 +11584,13 @@
       },
       {
         "order": 3,
+        "id": "clientes",
+        "name": "Marcas que han confiado",
+        "cinematic": false,
+        "spec": "Muro de logos de clientes en blanco (procesados con alfa): marcas con las que el equipo ha colaborado + clientes de Ingeniak. Nota de propiedad de marcas."
+      },
+      {
+        "order": 4,
         "id": "conexion",
         "name": "Cómo se conecta",
         "cinematic": true,
@@ -11605,63 +11609,63 @@
         }
       },
       {
-        "order": 4,
+        "order": 5,
         "id": "mapa",
         "name": "Servicios",
         "cinematic": false,
         "spec": "HubMap: riel de 5 etapas + los 11 servicios por etapa (mismo patrón de /servicios/)."
       },
       {
-        "order": 5,
+        "order": 6,
         "id": "pantallas",
-        "name": "El sistema en pantalla",
+        "name": "El sistema en vivo",
         "cinematic": false,
-        "spec": "ProductWindows con vistas demo de las herramientas (interfaces de ejemplo, sin datos de clientes) + el motion graphic de Remotion (video/sistema-1920) en línea."
+        "spec": "Motion de Remotion (video/sistema-1920) como video ambiental (bucle silencioso al entrar en pantalla; póster sin JS o con movimiento reducido) + 3 pantallas demo ancladas a un riel central, cada una con su etapa del sistema (sin ventanas sueltas)."
       },
       {
-        "order": 6,
+        "order": 7,
         "id": "stack",
         "name": "Con qué construimos",
         "cinematic": false,
         "spec": "Muro de logos del stack (Credits variant=logos) + PartnerBadges, mismo patrón del inicio."
       },
       {
-        "order": 7,
+        "order": 8,
         "id": "cifras",
         "name": "Implementaciones y resultados",
         "cinematic": false,
         "spec": "Montage con 5 cifras de caso y su fuente; cada fila con la portada de su caso."
       },
       {
-        "order": 8,
+        "order": 9,
         "id": "ficha",
         "name": "Ficha verificable",
         "cinematic": false,
         "spec": "EntitySheet con los datos verificables (los del pie y el JSON-LD) + franja PartnerBadges."
       },
       {
-        "order": 9,
+        "order": 10,
         "id": "equipo",
         "name": "Equipo",
         "cinematic": false,
         "spec": "Reparto de Credits con fotos reales en duotono: rol y nombre, sin decir cuántas personas son."
       },
       {
-        "order": 10,
+        "order": 11,
         "id": "vktor",
         "name": "Metodología",
         "cinematic": false,
         "spec": "VktorRail con las 5 fases y enlace a /metodologia/."
       },
       {
-        "order": 11,
+        "order": 12,
         "id": "faq",
         "name": "Preguntas frecuentes",
         "cinematic": false,
         "spec": "FAQAccordion con G07, G08, G11 y N07 (banco compartido)."
       },
       {
-        "order": 12,
+        "order": 13,
         "id": "cta-final",
         "name": "Cierre",
         "cinematic": true,

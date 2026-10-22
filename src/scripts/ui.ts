@@ -764,6 +764,25 @@ function initMotionSwitch() {
   });
 }
 
+/* ───────────── Video ambiental (video[data-ambient], /brochure/#pantallas) ─────────────
+   Bucle silencioso que solo se reproduce en pantalla (35 %) con movimiento permitido y sin ahorro de datos; se pausa
+   fuera de pantalla y con la pestaña oculta. Sin JS, con movimiento reducido o con ahorro de datos queda el póster. */
+function initAmbient() {
+  const vids = $$<HTMLVideoElement>('video[data-ambient]');
+  if (!vids.length || !('IntersectionObserver' in window)) return;
+  const saveData = !!((navigator as any).connection && ((navigator as any).connection.saveData || /(^|-)(2g|3g)$/.test((navigator as any).connection.effectiveType || '')));
+  if (saveData) return;
+  const io = new IntersectionObserver((es) => {
+    for (const e of es) {
+      const v = e.target as HTMLVideoElement;
+      if (e.isIntersecting && !reduced()) { v.preload = 'auto'; v.play().catch(() => {}); }
+      else v.pause();
+    }
+  }, { threshold: 0.35 });
+  vids.forEach((v) => io.observe(v));
+  document.addEventListener('visibilitychange', () => { if (document.hidden) vids.forEach((v) => v.pause()); });
+}
+
 /* ───────────── Arranque ───────────── */
 export function initUI(): void {
   root.classList.add('ui-ready');
@@ -775,6 +794,7 @@ export function initUI(): void {
   run('stations', initStations);
   run('ledger', initLedger);
   run('video', initVideo);
+  run('ambient', initAmbient);
   run('primary', initPrimaryRule);
   run('attribution', initAttribution);
   run('still', initStillTransition);

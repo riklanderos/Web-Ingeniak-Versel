@@ -48,8 +48,6 @@ import SumarioCover from '../ui/SumarioCover.astro';
 import EntitySheet from '../ui/EntitySheet.astro';
 import Credits from '../ui/Credits.astro';
 import PartnerBadges from '../ui/PartnerBadges.astro';
-import ProductWindow from '../ui/ProductWindow.astro';
-import VideoPoster from '../content/VideoPoster.astro';
 import HeroCtas from './HeroCtas.astro';
 import { primaryLabel, quoteLink } from '../layout/cta';
 import Aura from './Aura.astro';
@@ -153,7 +151,7 @@ const cta = cp('cta-final');
 const ctaPlate = plateOf('cta-final');
 
 if (dev) {
-  const known = new Set(['hero', 'definicion', 'datos', 'mapa', 'conexion', 'no-se', 'vktor', 'grid', 'cifras', 'filtros', 'categorias', 'registro', 'metodo', 'ficha', 'equipo', 'pantallas', 'stack', 'faq', 'cta-final']);
+  const known = new Set(['hero', 'definicion', 'datos', 'mapa', 'conexion', 'no-se', 'vktor', 'grid', 'cifras', 'filtros', 'categorias', 'registro', 'metodo', 'ficha', 'equipo', 'clientes', 'pantallas', 'stack', 'faq', 'cta-final']);
   for (const s of (P.sections as any[])) {
     if (s.status === 'conditional') continue;
     if (!known.has(s.id)) console.warn(`[HubTemplate] ${P.id}: sección "${s.id}" sin componente en la plantilla`);
@@ -434,35 +432,79 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
       );
     }
 
-    /* ───────────── brochure · el sistema en pantalla (ProductWindow + motion de Remotion) ───────────── */
+    /* ───────────── brochure · el sistema en vivo (motion ambiental de Remotion + pantallas en la narrativa) ─────────────
+       El video corre solo (silencioso, en bucle) al entrar en pantalla y se pausa al salir; sin JS o con movimiento
+       reducido queda el póster. Las pantallas demo no van en ventanas sueltas: cada una es un plano del relato, anclada
+       al riel central con su etapa del sistema. */
     if (id === 'pantallas') {
       const s = cp(id);
-      const wins = ((s.windows ?? []) as any[]).filter((w) => w?.img && w?.title);
+      const steps = ((s.windows ?? []) as any[]).filter((w) => w?.img && w?.title);
       return (
-        <Intertitle id={id} aura="none" labelledby={`${id}-t`} class="hub-screens tpl-glow">
-          <Aura kind="ondas" x="16%" y="6%" o={1} only="d" />
+        <Intertitle id={id} aura="none" labelledby={`${id}-t`} class="hub-live tpl-glow">
+          <Aura kind="ondas" x="16%" y="4%" o={1} only="d" />
+          <Aura kind="isotipo" x="92%" y="40%" w="min(44vw,640px)" o={0.5} only="d" />
           <Aura kind="ondas" x="50%" o={1} only="m" sticky />
-          <div class="hub-sec__head hub-screens__head">
+          <div class="hub-sec__head hub-live__head">
             {s.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(s)} />}
             <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(s.h2)} />
             {s.lede && <Copy as="p" class="t-lede t-lede--2" text={s.lede} data-reveal />}
           </div>
           {s.motion?.src && (
-            <ProductWindow title={s.motion.title ?? 'El sistema en movimiento'} label="SIMULACIÓN" fig={s.motion.fig} aura class="hub-screens__motion">
-              <VideoPoster mode="inline" src={s.motion.src} poster={s.motion.poster} title={s.motion.title ?? 'El sistema en movimiento'}
-                label={s.motion.label ?? 'Ver el sistema'} duration={s.motion.duration} width={1920} height={1080} />
-            </ProductWindow>
+            <figure class="hub-live__film" data-nosnippet>
+              <div class="hub-live__screen">
+                <video class="hub-live__video" data-ambient muted loop playsinline preload="none"
+                  poster={s.motion.poster} width={1920} height={1080} aria-label={s.motion.title ?? 'El sistema en movimiento'}>
+                  {s.motion.webm && <source src={s.motion.webm} type="video/webm" />}
+                  <source src={s.motion.src} type="video/mp4" />
+                </video>
+              </div>
+              {s.motion.fig && <figcaption class="hub-live__fig t-micro"><span class="node" aria-hidden="true"></span>{s.motion.fig}</figcaption>}
+            </figure>
           )}
-          {wins.length > 0 && (
-            <div class="hub-screens__grid">
-              {wins.map((w) => (
-                <ProductWindow title={w.title} label="VISTA DEMO" fig={w.fig} ratio="16/9">
-                  <img src={w.img} alt={w.alt ?? w.title} width={1600} height={900} loading="lazy" decoding="async" />
-                </ProductWindow>
+          {steps.length > 0 && (
+            <ol class="hub-live__steps" role="list">
+              {steps.map((w, i) => (
+                <li class="hub-live__step" style={`--i:${i}`}>
+                  <div class="hub-live__copy" data-reveal>
+                    {w.k && <p class="t-label t-label--cyan hub-live__k"><span class="node" aria-hidden="true"></span>{w.k}</p>}
+                    <h3 class="t-h3 hub-live__t">{w.title}</h3>
+                    {w.fig && <Copy as="p" class="t-body hub-live__line" text={w.fig} />}
+                  </div>
+                  <figure class="hub-live__shot" data-ui-reveal="lift" data-nosnippet>
+                    <img src={w.img} alt={w.alt ?? w.title} width={1600} height={905} loading="lazy" decoding="async" />
+                    <span class="chip-sim hub-live__chip">Vista demo</span>
+                  </figure>
+                </li>
               ))}
-            </div>
+            </ol>
           )}
-          {s.note && <Copy as="p" class="t-micro hub-screens__note" text={s.note} data-reveal />}
+          {s.note && <Copy as="p" class="t-micro hub-live__note" text={s.note} data-reveal />}
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── brochure · marcas que han confiado (muro de logos de clientes en blanco) ───────────── */
+    if (id === 'clientes') {
+      const cl = cp(id);
+      const marcas = ((cl.items ?? []) as any[]).filter((x) => x?.img && x?.name);
+      if (!marcas.length) return null;
+      return (
+        <Intertitle id={id} aura="none" labelledby={`${id}-t`} class="hub-clients tpl-glow">
+          <Aura kind="ondas" x="80%" y="12%" o={1} only="d" />
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <div class="hub-sec__head hub-clients__head">
+            {cl.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(cl)} />}
+            <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(cl.h2)} />
+            {cl.lede && <Copy as="p" class="t-lede t-lede--2" text={cl.lede} data-reveal />}
+          </div>
+          <ul class="hub-clients__wall" role="list" data-reveal="stagger">
+            {marcas.map((x, i) => (
+              <li class="hub-clients__brand" style={`--i:${i};--lh:${x.h ?? 34}px`}>
+                <img src={x.img} alt={x.name} title={x.name} width={x.dims?.[0] ?? 320} height={x.dims?.[1] ?? 160} loading="lazy" decoding="async" />
+              </li>
+            ))}
+          </ul>
+          {cl.note && <Copy as="p" class="t-micro hub-clients__note" text={cl.note} data-reveal />}
         </Intertitle>
       );
     }

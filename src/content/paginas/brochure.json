@@ -8,7 +8,8 @@
   "actualizado": "2026-10-22",
   "pendientes": [
     "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
-    "PLACA · brochure-hero sin exportar: la portada usa el respaldo home-hero (launchFallback en sitemap.json). Cuando la placa llegue, la escena la toma sola.",
+    "RESUELTO 2026-10-22 · placa brochure-hero exportada (GPT Image 2.5 vía Higgsfield, referencias home-hero + kain-presenta): Kain monumental sobre la ciudad; launchFallback retirado.",
+    "LOGOS DE CLIENTES (sección clientes): el cliente pidió en chat (2026-10-22) mostrar las marcas de riklanderos.tech y los logos adjuntos. Confirmar con él que todas pueden mostrarse en el brochure de Ingeniak.",
     "LANDING OCULTA (R17): sin enlaces desde páginas públicas, fuera de menús, sitemap.xml y llms*.txt. Se comparte por URL directa (WhatsApp, correo, propuestas).",
     "RESUELTO 2026-10-22 · cliente en chat: pidió un brochure/CV empresarial en el sitio con servicios, soluciones, implementaciones, autoridad y confianza, animaciones e imágenes premium."
   ],
@@ -23,6 +24,13 @@
         "lit": "una página"
       },
       "lede": "Esta página es nuestra carta de presentación: qué construimos, cómo lo operamos y qué resultados respaldan cada afirmación, con su fuente.",
+      "sumario": {
+        "metricIds": [
+          "dental-citas",
+          "ecom-cpl",
+          "retail-conversiones"
+        ]
+      },
       "ctaPrimary": {
         "label": "Cotizar proyecto"
       },
@@ -44,8 +52,142 @@
       ],
       "metricRow": {
         "title": "Ingeniak en datos",
-        "metricIds": ["sistemas", "paises", "tiempo-operativo"]
+        "metricIds": [
+          "sistemas",
+          "paises",
+          "tiempo-operativo"
+        ]
       }
+    },
+    "clientes": {
+      "_componente": "Muro de logos de clientes en blanco (public/img/clientes/, procesados con alfa). h = alto en px del logo en escritorio (móvil ×0.8).",
+      "rail": "Han confiado",
+      "eyebrow": "Marcas que han confiado",
+      "h2": {
+        "text": "De marcas globales",
+        "soft": "a negocios que crecen con sistema."
+      },
+      "lede": "Proyectos de Ingeniak y de la trayectoria de nuestro equipo fundador: marketing, ventas y sistemas con IA para marcas de todos los tamaños.",
+      "items": [
+        {
+          "img": "/img/clientes/cocacola.png",
+          "name": "Coca-Cola",
+          "h": 30,
+          "dims": [
+            511,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/nike.png",
+          "name": "Nike",
+          "h": 26,
+          "dims": [
+            456,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/bmw.png",
+          "name": "BMW",
+          "h": 44,
+          "dims": [
+            160,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/cemex.png",
+          "name": "Cemex",
+          "h": 28,
+          "dims": [
+            587,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/argi.png",
+          "name": "ARGI",
+          "h": 32,
+          "dims": [
+            533,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/tierra-y-armonia.png",
+          "name": "Tierra y Armonía",
+          "h": 40,
+          "dims": [
+            339,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/street.png",
+          "name": "Street · Inteligencia Comercial",
+          "h": 48,
+          "dims": [
+            104,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/quirovida.png",
+          "name": "QuiroVida · Centro Quiropráctico",
+          "h": 30,
+          "dims": [
+            703,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/nutribalanc.png",
+          "name": "Clínica NutriBalan-C",
+          "h": 42,
+          "dims": [
+            474,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/raire.png",
+          "name": "RAIRE Construcciones",
+          "h": 40,
+          "dims": [
+            516,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/lunbaldi.png",
+          "name": "Lunbaldi",
+          "h": 32,
+          "dims": [
+            671,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/ai-search-masters.png",
+          "name": "AI Search Masters",
+          "h": 26,
+          "dims": [
+            1267,
+            160
+          ]
+        },
+        {
+          "img": "/img/clientes/luna-jessica-lorzo.png",
+          "name": "Luna · Jessica Lorzo",
+          "h": 24,
+          "dims": [
+            1555,
+            160
+          ]
+        }
+      ],
+      "note": "Marcas de proyectos de Ingeniak y de la trayectoria profesional del equipo fundador. Los logotipos pertenecen a sus respectivos dueños."
     },
     "conexion": {
       "_componente": "HubFlow sobre riel-servicios (5 tramos registrados en los nodos de la placa); respaldo: SystemFlow sobre aura",
@@ -61,11 +203,24 @@
           "stage": "Atraer",
           "label": "El anuncio o Google",
           "line": "Traen a alguien a tu web o directo a tu WhatsApp.",
-          "logos": ["meta", "googleads", "tiktok"],
+          "logos": [
+            "meta",
+            "googleads",
+            "tiktok"
+          ],
           "services": [
-            { "label": "Paid media", "href": "/servicios/paid-media/" },
-            { "label": "Web", "href": "/servicios/paginas-web/" },
-            { "label": "SEO", "href": "/servicios/seo/" }
+            {
+              "label": "Paid media",
+              "href": "/servicios/paid-media/"
+            },
+            {
+              "label": "Web",
+              "href": "/servicios/paginas-web/"
+            },
+            {
+              "label": "SEO",
+              "href": "/servicios/seo/"
+            }
           ]
         },
         {
@@ -73,28 +228,49 @@
           "label": "Kain responde",
           "kain": true,
           "line": "En segundos, por WhatsApp, Instagram, Messenger, tu web o el correo.",
-          "logos": ["whatsapp", "instagram"],
+          "logos": [
+            "whatsapp",
+            "instagram"
+          ],
           "services": [
-            { "label": "Agentes de IA", "href": "/servicios/agentes-ia-whatsapp/" }
+            {
+              "label": "Agentes de IA",
+              "href": "/servicios/agentes-ia-whatsapp/"
+            }
           ]
         },
         {
           "stage": "Organizar",
           "label": "Tu CRM",
           "line": "El lead entra en su etapa, con toda su conversación.",
-          "logos": ["kommo", "gohighlevel"],
+          "logos": [
+            "kommo",
+            "gohighlevel"
+          ],
           "services": [
-            { "label": "CRM con IA", "href": "/servicios/crm-con-ia/" },
-            { "label": "Kommo", "href": "/kommo/" }
+            {
+              "label": "CRM con IA",
+              "href": "/servicios/crm-con-ia/"
+            },
+            {
+              "label": "Kommo",
+              "href": "/kommo/"
+            }
           ]
         },
         {
           "stage": "Automatizar",
           "label": "Flujos con n8n y Make",
           "line": "Recordatorios, avisos y capturas que ya no hace nadie a mano.",
-          "logos": ["n8n", "make"],
+          "logos": [
+            "n8n",
+            "make"
+          ],
           "services": [
-            { "label": "Automatización", "href": "/servicios/automatizacion-n8n/" }
+            {
+              "label": "Automatización",
+              "href": "/servicios/automatizacion-n8n/"
+            }
           ]
         },
         {
@@ -103,8 +279,14 @@
           "line": "Junta tus fuentes y te dice qué campaña sí vende.",
           "logos": [],
           "services": [
-            { "label": "Software a la medida", "href": "/servicios/desarrollo-software/" },
-            { "label": "Consultoría", "href": "/servicios/consultoria-ia-empresas/" }
+            {
+              "label": "Software a la medida",
+              "href": "/servicios/desarrollo-software/"
+            },
+            {
+              "label": "Consultoría",
+              "href": "/servicios/consultoria-ia-empresas/"
+            }
           ]
         }
       ],
@@ -125,10 +307,27 @@
           "glyph": "atraer",
           "line": "Que llegue la gente correcta.",
           "items": [
-            { "title": "Paid media", "line": "Campañas en Meta, Google y TikTok conectadas a tu CRM, medidas por ventas y no por clics.", "href": "/servicios/paid-media/", "metricId": "horeca-roas" },
-            { "title": "Páginas web de alta conversión", "line": "Sitios rápidos que convierten visitas en conversaciones, con WhatsApp y CRM integrados.", "href": "/servicios/paginas-web/" },
-            { "title": "SEO y visibilidad en IA", "line": "Que te encuentre Google y que ChatGPT, Gemini, Perplexity y Claude citen a tu marca.", "href": "/servicios/seo/" },
-            { "title": "Branding y contenido", "line": "Identidad, sistema visual y contenido que alimentan tus campañas, tu web y tus agentes.", "href": "/servicios/branding/" }
+            {
+              "title": "Paid media",
+              "line": "Campañas en Meta, Google y TikTok conectadas a tu CRM, medidas por ventas y no por clics.",
+              "href": "/servicios/paid-media/",
+              "metricId": "horeca-roas"
+            },
+            {
+              "title": "Páginas web de alta conversión",
+              "line": "Sitios rápidos que convierten visitas en conversaciones, con WhatsApp y CRM integrados.",
+              "href": "/servicios/paginas-web/"
+            },
+            {
+              "title": "SEO y visibilidad en IA",
+              "line": "Que te encuentre Google y que ChatGPT, Gemini, Perplexity y Claude citen a tu marca.",
+              "href": "/servicios/seo/"
+            },
+            {
+              "title": "Branding y contenido",
+              "line": "Identidad, sistema visual y contenido que alimentan tus campañas, tu web y tus agentes.",
+              "href": "/servicios/branding/"
+            }
           ]
         },
         {
@@ -136,7 +335,12 @@
           "glyph": "atender",
           "line": "Que nadie se quede sin respuesta.",
           "items": [
-            { "title": "Agentes de IA para WhatsApp", "line": "Kain responde, califica y agenda en WhatsApp, Instagram, Facebook Messenger, tu web y el correo.", "href": "/servicios/agentes-ia-whatsapp/", "metricId": "dental-respuesta" }
+            {
+              "title": "Agentes de IA para WhatsApp",
+              "line": "Kain responde, califica y agenda en WhatsApp, Instagram, Facebook Messenger, tu web y el correo.",
+              "href": "/servicios/agentes-ia-whatsapp/",
+              "metricId": "dental-respuesta"
+            }
           ]
         },
         {
@@ -144,9 +348,22 @@
           "glyph": "organizar",
           "line": "Que cada lead tenga su etapa.",
           "items": [
-            { "title": "CRM con IA", "line": "Te ayudamos a elegir entre Kommo y GoHighLevel y lo dejamos operando con tu equipo.", "href": "/servicios/crm-con-ia/" },
-            { "title": "Kommo", "line": "Partners oficiales: licencias, implementación y agentes de IA dentro de Kommo.", "href": "/kommo/", "metricId": "retail-conversiones" },
-            { "title": "GoHighLevel en español", "line": "CRM, embudos, calendarios y campañas en una sola plataforma, configurada en español.", "href": "/gohighlevel/" }
+            {
+              "title": "CRM con IA",
+              "line": "Te ayudamos a elegir entre Kommo y GoHighLevel y lo dejamos operando con tu equipo.",
+              "href": "/servicios/crm-con-ia/"
+            },
+            {
+              "title": "Kommo",
+              "line": "Partners oficiales: licencias, implementación y agentes de IA dentro de Kommo.",
+              "href": "/kommo/",
+              "metricId": "retail-conversiones"
+            },
+            {
+              "title": "GoHighLevel en español",
+              "line": "CRM, embudos, calendarios y campañas en una sola plataforma, configurada en español.",
+              "href": "/gohighlevel/"
+            }
           ]
         },
         {
@@ -154,8 +371,17 @@
           "glyph": "automatizar",
           "line": "Que lo repetitivo deje de pasar por ti.",
           "items": [
-            { "title": "Automatización con n8n", "line": "Flujos que conectan tu CRM, WhatsApp, hojas de cálculo y sistemas, sin capturas a mano.", "href": "/servicios/automatizacion-n8n/", "metricId": "logistica-procesos" },
-            { "title": "Software a la medida", "line": "Cuando ninguna herramienta encaja: sistemas y tableros hechos para tu operación, con IA.", "href": "/servicios/desarrollo-software/" }
+            {
+              "title": "Automatización con n8n",
+              "line": "Flujos que conectan tu CRM, WhatsApp, hojas de cálculo y sistemas, sin capturas a mano.",
+              "href": "/servicios/automatizacion-n8n/",
+              "metricId": "logistica-procesos"
+            },
+            {
+              "title": "Software a la medida",
+              "line": "Cuando ninguna herramienta encaja: sistemas y tableros hechos para tu operación, con IA.",
+              "href": "/servicios/desarrollo-software/"
+            }
           ]
         },
         {
@@ -163,46 +389,53 @@
           "glyph": "medir",
           "line": "Que decidas con datos.",
           "items": [
-            { "title": "Consultoría en IA", "line": "Diagnóstico, roadmap y casos de uso con retorno medible, con la metodología VKTOR™.", "href": "/servicios/consultoria-ia-empresas/" }
+            {
+              "title": "Consultoría en IA",
+              "line": "Diagnóstico, roadmap y casos de uso con retorno medible, con la metodología VKTOR™.",
+              "href": "/servicios/consultoria-ia-empresas/"
+            }
           ]
         }
       ],
       "closing": "Los proyectos empiezan {{price}}. El alcance de cada pieza lo definimos contigo cuando cotizas tu proyecto."
     },
     "pantallas": {
-      "_componente": "ProductWindows (VISTA DEMO) con interfaces de ejemplo + VideoPoster en línea con el motion de Remotion (SIMULACIÓN)",
-      "rail": "En pantalla",
-      "eyebrow": "El sistema en pantalla",
+      "_componente": "Motion ambiental (video[data-ambient], bucle silencioso al entrar en pantalla) + 3 pantallas demo ancladas al riel central, cada una con su etapa (k)",
+      "rail": "El sistema en vivo",
+      "eyebrow": "El sistema en vivo",
       "h2": {
         "text": "Así se ve el sistema",
         "soft": "trabajando todos los días."
       },
-      "lede": "El motion del sistema completo y tres vistas demo de lo que operamos a diario: el embudo en el CRM, los flujos de automatización y el tablero que junta tus fuentes.",
+      "lede": "Primero el sistema completo en movimiento. Después, plano por plano, lo que tu equipo vería cada mañana: el embudo con sus leads, los flujos corriendo solos y el tablero que junta tus fuentes.",
       "motion": {
+        "webm": "/video/sistema-1920.webm",
         "src": "/video/sistema-1920.mp4",
         "poster": "/img/motion-sistema-poster.webp",
         "title": "El sistema en movimiento",
-        "label": "Ver el sistema en movimiento",
-        "fig": "Motion graphic del sistema: las cinco estaciones conectadas, del anuncio al tablero."
+        "fig": "El sistema en movimiento: las cinco estaciones conectadas, del anuncio al tablero."
       },
       "windows": [
         {
-          "title": "Embudo de ventas en el CRM",
+          "k": "03 · Organizar",
+          "title": "El embudo con cada lead en su etapa",
           "img": "/img/pantallas/demo-crm.webp",
           "alt": "Vista demo de un embudo de ventas en el CRM: cinco etapas con tarjetas de lead y WhatsApp integrado",
-          "fig": "Cada lead entra con su conversación completa y avanza por etapas."
+          "fig": "Cada lead entra con su conversación completa y avanza de 'Nuevo' a 'Ganado' sin perderse en el camino."
         },
         {
-          "title": "Flujo de automatización",
+          "k": "04 · Automatizar",
+          "title": "Los flujos que corren solos",
           "img": "/img/pantallas/demo-flujo.webp",
           "alt": "Vista demo de un flujo de automatización: nodos conectados que clasifican con IA y avisan al equipo",
-          "fig": "Recordatorios, avisos y capturas que ya no hace nadie a mano."
+          "fig": "Recordatorios, avisos y capturas que ya no hace nadie a mano: el flujo clasifica con IA y avisa a tu equipo."
         },
         {
-          "title": "Tablero de resultados",
+          "k": "05 · Medir",
+          "title": "El tablero que junta tus fuentes",
           "img": "/img/pantallas/demo-tablero.webp",
           "alt": "Vista demo de un tablero de resultados: leads, citas, tasa de respuesta y embudo en una sola vista",
-          "fig": "Todas tus fuentes en una vista: qué campaña sí vende."
+          "fig": "Leads, citas, respuesta y ventas en una sola vista: qué campaña sí vende, con números y no corazonadas."
         }
       ],
       "note": "Vistas demo ilustrativas: interfaces de ejemplo sin datos de ningún cliente. Tu sistema se configura sobre Kommo o GoHighLevel, n8n y tu tablero."
@@ -213,18 +446,54 @@
       "eyebrow": "Con qué construimos",
       "lede": "Somos partners oficiales de Kommo, GoHighLevel, Google y Meta. Lo demás son herramientas que usamos e integramos según lo que pida tu operación.",
       "logos": [
-        { "slug": "whatsapp", "label": "WhatsApp Business" },
-        { "slug": "gohighlevel", "label": "GoHighLevel" },
-        { "slug": "n8n", "label": "n8n" },
-        { "slug": "make", "label": "Make" },
-        { "slug": "openai", "label": "OpenAI" },
-        { "slug": "claude", "label": "Claude" },
-        { "slug": "googlegemini", "label": "Gemini" },
-        { "slug": "meta", "label": "Meta" },
-        { "slug": "googleads", "label": "Google Ads" },
-        { "slug": "tiktok", "label": "TikTok" },
-        { "slug": "supabase", "label": "Supabase" },
-        { "slug": "stripe", "label": "Stripe" }
+        {
+          "slug": "whatsapp",
+          "label": "WhatsApp Business"
+        },
+        {
+          "slug": "gohighlevel",
+          "label": "GoHighLevel"
+        },
+        {
+          "slug": "n8n",
+          "label": "n8n"
+        },
+        {
+          "slug": "make",
+          "label": "Make"
+        },
+        {
+          "slug": "openai",
+          "label": "OpenAI"
+        },
+        {
+          "slug": "claude",
+          "label": "Claude"
+        },
+        {
+          "slug": "googlegemini",
+          "label": "Gemini"
+        },
+        {
+          "slug": "meta",
+          "label": "Meta"
+        },
+        {
+          "slug": "googleads",
+          "label": "Google Ads"
+        },
+        {
+          "slug": "tiktok",
+          "label": "TikTok"
+        },
+        {
+          "slug": "supabase",
+          "label": "Supabase"
+        },
+        {
+          "slug": "stripe",
+          "label": "Stripe"
+        }
       ]
     },
     "cifras": {
@@ -237,14 +506,27 @@
       },
       "lede": "Cinco implementaciones reales en sectores distintos, operando hoy mismo. Cada cifra sale de la operación del cliente, no de una demo, y los nombres van anonimizados.",
       "rows": [
-        { "metricId": "dental-citas" },
-        { "metricId": "retail-conversiones" },
-        { "metricId": "ecom-cpl" },
-        { "metricId": "horeca-roas" },
-        { "metricId": "logistica-procesos" }
+        {
+          "metricId": "dental-citas"
+        },
+        {
+          "metricId": "retail-conversiones"
+        },
+        {
+          "metricId": "ecom-cpl"
+        },
+        {
+          "metricId": "horeca-roas"
+        },
+        {
+          "metricId": "logistica-procesos"
+        }
       ],
       "links": [
-        { "label": "Ver todos los casos", "href": "/casos/" }
+        {
+          "label": "Ver todos los casos",
+          "href": "/casos/"
+        }
       ]
     },
     "ficha": {
@@ -257,19 +539,59 @@
       },
       "lede": "Los mismos datos que publicamos en el pie de cada página del sitio y en el marcado que leen Google y los motores de IA. Si alguno cambia, cambia en todos lados.",
       "entity": [
-        { "term": "Nombre comercial", "value": "Ingeniak" },
-        { "term": "Qué hacemos", "value": "Agentes de IA, CRM y automatización conectados en un solo sistema, con paid media, sitios web, software a la medida y SEO" },
-        { "term": "Sede", "value": "Guadalajara, Jalisco, México" },
-        { "term": "Oficina", "value": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640" },
-        { "term": "Alianzas", "value": "Partners de Kommo (LATAM), GoHighLevel, Google y Meta" },
-        { "term": "En producción", "value": "{{metric:sistemas|full}}" },
-        { "term": "Presencia", "value": "{{metric:paises|full}}: México (sede), Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador" },
-        { "term": "Metodología", "value": "VKTOR™: Verify · Koncept · Transform · Operate · Rise" },
-        { "term": "Sub-marca", "value": "kain, nuestros agentes de IA · app.kain.mx", "href": "https://app.kain.mx/" },
-        { "term": "Implementación", "value": "De 7 a 30 días, según el alcance" },
-        { "term": "Inversión", "value": "{{Price}}" },
-        { "term": "Correo", "value": "contacto@ingeniak.mx" },
-        { "term": "WhatsApp", "value": "+52 33 2101 7799" }
+        {
+          "term": "Nombre comercial",
+          "value": "Ingeniak"
+        },
+        {
+          "term": "Qué hacemos",
+          "value": "Agentes de IA, CRM y automatización conectados en un solo sistema, con paid media, sitios web, software a la medida y SEO"
+        },
+        {
+          "term": "Sede",
+          "value": "Guadalajara, Jalisco, México"
+        },
+        {
+          "term": "Oficina",
+          "value": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640"
+        },
+        {
+          "term": "Alianzas",
+          "value": "Partners de Kommo (LATAM), GoHighLevel, Google y Meta"
+        },
+        {
+          "term": "En producción",
+          "value": "{{metric:sistemas|full}}"
+        },
+        {
+          "term": "Presencia",
+          "value": "{{metric:paises|full}}: México (sede), Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador"
+        },
+        {
+          "term": "Metodología",
+          "value": "VKTOR™: Verify · Koncept · Transform · Operate · Rise"
+        },
+        {
+          "term": "Sub-marca",
+          "value": "kain, nuestros agentes de IA · app.kain.mx",
+          "href": "https://app.kain.mx/"
+        },
+        {
+          "term": "Implementación",
+          "value": "De 7 a 30 días, según el alcance"
+        },
+        {
+          "term": "Inversión",
+          "value": "{{Price}}"
+        },
+        {
+          "term": "Correo",
+          "value": "contacto@ingeniak.mx"
+        },
+        {
+          "term": "WhatsApp",
+          "value": "+52 33 2101 7799"
+        }
       ]
     },
     "equipo": {
@@ -292,14 +614,42 @@
       },
       "lede": "Del diagnóstico a la operación en producción, siempre en el mismo orden. Implementar una pieza toma de 7 a 30 días, según el alcance.",
       "phases": [
-        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Revisamos con números cómo vendes, atiendes y operas hoy." },
-        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Definimos qué se automatiza primero, con qué herramientas y en qué orden." },
-        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Construimos y conectamos el sistema, y lo probamos antes de encenderlo." },
-        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Capacitamos a tu equipo y ajustamos el sistema en producción." },
-        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Medimos cada mes y sumamos la siguiente pieza cuando la anterior ya rinde." }
+        {
+          "letter": "V",
+          "name": "Verify",
+          "verb": "Verificamos tu operación",
+          "line": "Revisamos con números cómo vendes, atiendes y operas hoy."
+        },
+        {
+          "letter": "K",
+          "name": "Koncept",
+          "verb": "Diseñamos el concepto",
+          "line": "Definimos qué se automatiza primero, con qué herramientas y en qué orden."
+        },
+        {
+          "letter": "T",
+          "name": "Transform",
+          "verb": "Transformamos",
+          "line": "Construimos y conectamos el sistema, y lo probamos antes de encenderlo."
+        },
+        {
+          "letter": "O",
+          "name": "Operate",
+          "verb": "Operamos junto con tu equipo",
+          "line": "Capacitamos a tu equipo y ajustamos el sistema en producción."
+        },
+        {
+          "letter": "R",
+          "name": "Rise",
+          "verb": "Hacemos crecer los resultados",
+          "line": "Medimos cada mes y sumamos la siguiente pieza cuando la anterior ya rinde."
+        }
       ],
       "links": [
-        { "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }
+        {
+          "label": "Conoce la metodología VKTOR™",
+          "href": "/metodologia/"
+        }
       ]
     },
     "faq": {
@@ -310,7 +660,12 @@
         "text": "Lo que nos preguntan",
         "soft": "antes de contratar."
       },
-      "faqIds": ["G07", "G08", "G11", "N07"],
+      "faqIds": [
+        "G07",
+        "G08",
+        "G11",
+        "N07"
+      ],
       "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
     },
     "cta-final": {
