@@ -514,3 +514,9 @@ body.hub #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max
   .hub-case__media{opacity:.35}
 }
 /* ===== fin HubTemplate ===== */
+
+/* ── brochure · ficha y equipo (secciones genéricas nuevas, 2026-10-22) ── */
+.hub-ficha__partners{margin-top:var(--s-6)}
+.hub-ficha__sheet{align-self:start}
+.hub-team__head{margin-bottom:var(--s-7)}
+.hub-team__cast{margin-top:var(--s-6)}

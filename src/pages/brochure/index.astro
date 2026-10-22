@@ -1,0 +1,10 @@
+---
+// /brochure/ · T-HUB (landing oculta, R17): brochure corporativo / CV empresarial compartible por URL.
+// Estructura: sitemap.json (secciones, placas, CTA, FAQ); texto: src/content/paginas/brochure.json.
+import HubTemplate from '../../components/templates/HubTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+
+const page = getPage('/brochure/');
+const copy = getCopy(page.id);
+---
+<HubTemplate page={page} copy={copy} />

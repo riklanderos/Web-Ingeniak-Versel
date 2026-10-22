@@ -45,6 +45,9 @@ import PainList from '../ui/PainList.astro';
 import ResultsLedger from '../ui/ResultsLedger.astro';
 import EditorNote from '../ui/EditorNote.astro';
 import SumarioCover from '../ui/SumarioCover.astro';
+import EntitySheet from '../ui/EntitySheet.astro';
+import Credits from '../ui/Credits.astro';
+import PartnerBadges from '../ui/PartnerBadges.astro';
 import HeroCtas from './HeroCtas.astro';
 import { primaryLabel, quoteLink } from '../layout/cta';
 import Aura from './Aura.astro';
@@ -148,7 +151,7 @@ const cta = cp('cta-final');
 const ctaPlate = plateOf('cta-final');
 
 if (dev) {
-  const known = new Set(['hero', 'definicion', 'datos', 'mapa', 'conexion', 'no-se', 'vktor', 'grid', 'cifras', 'filtros', 'categorias', 'registro', 'metodo', 'faq', 'cta-final']);
+  const known = new Set(['hero', 'definicion', 'datos', 'mapa', 'conexion', 'no-se', 'vktor', 'grid', 'cifras', 'filtros', 'categorias', 'registro', 'metodo', 'ficha', 'equipo', 'faq', 'cta-final']);
   for (const s of (P.sections as any[])) {
     if (s.status === 'conditional') continue;
     if (!known.has(s.id)) console.warn(`[HubTemplate] ${P.id}: sección "${s.id}" sin componente en la plantilla`);
@@ -161,7 +164,7 @@ if (dev) {
 const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
   c?.eyebrow ? `<span class="node${tone === 'amber' ? ' node--amber' : ''}" aria-hidden="true"></span>${c.eyebrow.replace(/[<>&]/g, '')}` : '';
 ---
-<BaseLayout page={page} lcpPlate={lcpPlate} lcpSrcsetMax={2752} bodyClass={`hub hub--${hub}`}>
+<BaseLayout page={page} lcpPlate={lcpPlate} lcpSrcsetMax={2752} bodyClass={`hub hub--${hub}`} nav={P.nav}>
   {ids.map((id) => {
     /* ───────────── 01 · Portada (+ definición en la misma toma) ───────────── */
     if (id === 'hero') {
@@ -389,6 +392,42 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
               ))}
             </dl>
           </EditorNote>
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── brochure · ficha verificable (EntitySheet + PartnerBadges) ───────────── */
+    if (id === 'ficha') {
+      const f = cp(id);
+      return (
+        <Intertitle id={id} aura="none" layout="split" labelledby={`${id}-t`} class="hub-ficha tpl-glow">
+          <Fragment slot="head">
+            {f.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(f)} />}
+            <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(f.h2)} />
+            {f.lede && <Copy as="p" class="t-lede t-lede--2" text={f.lede} data-reveal />}
+            <PartnerBadges size="md" class="hub-ficha__partners" />
+          </Fragment>
+          <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <EntitySheet variant="about" rows={((f.entity ?? []) as any[]).map((r: any) => (!r.href && /whatsapp|tel[eé]fono/i.test(r.term) ? { ...r, href: wa(hero) } : r))} title={false} class="hub-ficha__sheet" />
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── brochure · equipo (reparto de Credits, fotos reales en duotono) ───────────── */
+    if (id === 'equipo') {
+      const e = cp(id);
+      return (
+        <Intertitle id={id} aura="none" labelledby={`${id}-t`} class="hub-team tpl-glow">
+          <Aura kind="isotipo" x="18%" y="60%" w="min(56vw,820px)" o={0.8} only="d" />
+          <Aura kind="ondas" x="70%" y="10%" o={1} only="d" />
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <div class="hub-sec__head hub-team__head">
+            {e.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(e)} />}
+            <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(e.h2)} />
+            {e.lede && <Copy as="p" class="t-lede t-lede--2" text={e.lede} data-reveal />}
+          </div>
+          <Credits variant="team" class="hub-team__cast" />
         </Intertitle>
       );
     }

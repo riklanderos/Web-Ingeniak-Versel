@@ -152,8 +152,10 @@ const showRail = full && p.rail !== false && page.template !== 'T-404';
     <main id="main" tabindex="-1">
       <slot />
     </main>
+    {/* Footer: sigue al modo de navegación — una página oculta con nav completa (p. ej. /brochure/) lleva el footer
+        completo, porque su "Menú" sin JS enlaza a #mapa-del-sitio; las landings de reserva (nav reducida) van en minimal. */}
     {p.footer !== false && (
-      <Footer waHref={wa} folio={page.folio} current={page.url} variant={hidden ? 'minimal' : 'full'}
+      <Footer waHref={wa} folio={page.folio} current={page.url} variant={full ? 'full' : 'minimal'}
         anchors={(page.footerAnchors as any[] | undefined) ?? (railItems ?? []).filter((r) => r.id !== 'hero').slice(0, 5)} />
     )}
     {full && (p.kainPill !== false || p.mobileBar !== false) && (

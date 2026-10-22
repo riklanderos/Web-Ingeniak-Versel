@@ -1,0 +1,213 @@
+{
+  "_schema": "Landing oculta /brochure/ · HubTemplate (T-HUB). Brochure corporativo / CV empresarial para compartir por URL con prospectos. Secciones del hub: hero, definicion (DefinitionBlock + metricRow), mapa (HubMap, mismo patrón de /servicios/), cifras (Montage), ficha (EntitySheet + PartnerBadges, sección genérica nueva), equipo (Credits team, sección genérica nueva), vktor (VktorRail), faq (banco compartido), cta-final (Dawn). Tokens: {{metric:ID}}, {{price}}, {{source}}. Campos con _ nunca se imprimen.",
+  "pageId": "brochure",
+  "url": "/brochure/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-10-22",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PLACA · brochure-hero sin exportar: la portada usa el respaldo home-hero (launchFallback en sitemap.json). Cuando la placa llegue, la escena la toma sola.",
+    "LANDING OCULTA (R17): sin enlaces desde páginas públicas, fuera de menús, sitemap.xml y llms*.txt. Se comparte por URL directa (WhatsApp, correo, propuestas).",
+    "RESUELTO 2026-10-22 · cliente en chat: pidió un brochure/CV empresarial en el sitio con servicios, soluciones, implementaciones, autoridad y confianza, animaciones e imágenes premium."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (brochure-hero; respaldo: home-hero) + Breadcrumbs",
+      "rail": "Portada",
+      "eyebrow": "Brochure · CV empresarial",
+      "h1": {
+        "text": "Ingeniak en una página:",
+        "soft": "el sistema, los resultados y el equipo",
+        "lit": "una página"
+      },
+      "lede": "Esta página es nuestra carta de presentación: qué construimos, cómo lo operamos y qué resultados respaldan cada afirmación, con su fuente.",
+      "ctaPrimary": {
+        "label": "Cotizar proyecto"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vi el brochure de Ingeniak y quiero platicar de un proyecto para mi empresa."
+      }
+    },
+    "definicion": {
+      "_componente": "Intertitle sobre la toma desenfocada de la portada + DefinitionBlock (texto propio, citable) + MetricRow",
+      "rail": "Qué es Ingeniak",
+      "eyebrow": "Qué es Ingeniak",
+      "definition": {
+        "heading": "¿Qué es Ingeniak y qué hace por tu empresa?",
+        "text": "Ingeniak es una consultoría de inteligencia artificial con sede en Guadalajara que diseña, implementa y opera sistemas comerciales completos: atrae demanda con pauta, web y SEO; la atiende con agentes de IA en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo; la ordena en Kommo o GoHighLevel; automatiza lo repetitivo con n8n y Make, y lo mide todo en un tablero."
+      },
+      "body": [
+        "No somos una agencia tradicional ni un proveedor de herramientas sueltas: construimos tu sistema de crecimiento y nos quedamos a operarlo contigo, con IA y con nuestro equipo. El anuncio, la conversación, el CRM y el seguimiento dejan de ser proveedores separados y se vuelven un solo sistema que se mide de punta a punta."
+      ],
+      "metricRow": {
+        "title": "Ingeniak en datos",
+        "metricIds": ["sistemas", "paises", "tiempo-operativo"]
+      }
+    },
+    "mapa": {
+      "_componente": "HubMap: riel de 5 etapas + ScriptList de los 11 servicios por etapa",
+      "rail": "Servicios",
+      "eyebrow": "Servicios y soluciones",
+      "h2": {
+        "text": "Once servicios,",
+        "soft": "un solo sistema."
+      },
+      "lede": "Cada servicio se contrata solo o conectado a los demás, ordenados por lo que hacen con tu cliente: atraerlo, atenderlo, organizarlo, automatizar lo que sigue y medir lo que pasó.",
+      "groups": [
+        {
+          "label": "Atraer",
+          "glyph": "atraer",
+          "line": "Que llegue la gente correcta.",
+          "items": [
+            { "title": "Paid media", "line": "Campañas en Meta, Google y TikTok conectadas a tu CRM, medidas por ventas y no por clics.", "href": "/servicios/paid-media/", "metricId": "horeca-roas" },
+            { "title": "Páginas web de alta conversión", "line": "Sitios rápidos que convierten visitas en conversaciones, con WhatsApp y CRM integrados.", "href": "/servicios/paginas-web/" },
+            { "title": "SEO y visibilidad en IA", "line": "Que te encuentre Google y que ChatGPT, Gemini, Perplexity y Claude citen a tu marca.", "href": "/servicios/seo/" },
+            { "title": "Branding y contenido", "line": "Identidad, sistema visual y contenido que alimentan tus campañas, tu web y tus agentes.", "href": "/servicios/branding/" }
+          ]
+        },
+        {
+          "label": "Atender",
+          "glyph": "atender",
+          "line": "Que nadie se quede sin respuesta.",
+          "items": [
+            { "title": "Agentes de IA para WhatsApp", "line": "Kain responde, califica y agenda en WhatsApp, Instagram, Facebook Messenger, tu web y el correo.", "href": "/servicios/agentes-ia-whatsapp/", "metricId": "dental-respuesta" }
+          ]
+        },
+        {
+          "label": "Organizar",
+          "glyph": "organizar",
+          "line": "Que cada lead tenga su etapa.",
+          "items": [
+            { "title": "CRM con IA", "line": "Te ayudamos a elegir entre Kommo y GoHighLevel y lo dejamos operando con tu equipo.", "href": "/servicios/crm-con-ia/" },
+            { "title": "Kommo", "line": "Partners oficiales: licencias, implementación y agentes de IA dentro de Kommo.", "href": "/kommo/", "metricId": "retail-conversiones" },
+            { "title": "GoHighLevel en español", "line": "CRM, embudos, calendarios y campañas en una sola plataforma, configurada en español.", "href": "/gohighlevel/" }
+          ]
+        },
+        {
+          "label": "Automatizar",
+          "glyph": "automatizar",
+          "line": "Que lo repetitivo deje de pasar por ti.",
+          "items": [
+            { "title": "Automatización con n8n", "line": "Flujos que conectan tu CRM, WhatsApp, hojas de cálculo y sistemas, sin capturas a mano.", "href": "/servicios/automatizacion-n8n/", "metricId": "logistica-procesos" },
+            { "title": "Software a la medida", "line": "Cuando ninguna herramienta encaja: sistemas y tableros hechos para tu operación, con IA.", "href": "/servicios/desarrollo-software/" }
+          ]
+        },
+        {
+          "label": "Medir",
+          "glyph": "medir",
+          "line": "Que decidas con datos.",
+          "items": [
+            { "title": "Consultoría en IA", "line": "Diagnóstico, roadmap y casos de uso con retorno medible, con la metodología VKTOR™.", "href": "/servicios/consultoria-ia-empresas/" }
+          ]
+        }
+      ],
+      "closing": "Los proyectos empiezan {{price}}. El alcance de cada pieza lo definimos contigo cuando cotizas tu proyecto."
+    },
+    "cifras": {
+      "_componente": "Montage: una cifra de caso por fila con la portada de su caso",
+      "rail": "Implementaciones",
+      "eyebrow": "Implementaciones y resultados",
+      "h2": {
+        "text": "Sistemas implementados,",
+        "soft": "con sus cifras y su fuente."
+      },
+      "lede": "Cinco implementaciones reales en sectores distintos, operando hoy mismo. Cada cifra sale de la operación del cliente, no de una demo, y los nombres van anonimizados.",
+      "rows": [
+        { "metricId": "dental-citas" },
+        { "metricId": "retail-conversiones" },
+        { "metricId": "ecom-cpl" },
+        { "metricId": "horeca-roas" },
+        { "metricId": "logistica-procesos" }
+      ],
+      "links": [
+        { "label": "Ver todos los casos", "href": "/casos/" }
+      ]
+    },
+    "ficha": {
+      "_componente": "Intertitle split: EntitySheet (datos verificables) + PartnerBadges",
+      "rail": "Confianza",
+      "eyebrow": "Ficha verificable",
+      "h2": {
+        "text": "Lo que puedes",
+        "soft": "comprobar de nosotros."
+      },
+      "lede": "Los mismos datos que publicamos en el pie de cada página del sitio y en el marcado que leen Google y los motores de IA. Si alguno cambia, cambia en todos lados.",
+      "entity": [
+        { "term": "Nombre comercial", "value": "Ingeniak" },
+        { "term": "Qué hacemos", "value": "Agentes de IA, CRM y automatización conectados en un solo sistema, con paid media, sitios web, software a la medida y SEO" },
+        { "term": "Sede", "value": "Guadalajara, Jalisco, México" },
+        { "term": "Oficina", "value": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640" },
+        { "term": "Alianzas", "value": "Partners de Kommo (LATAM), GoHighLevel, Google y Meta" },
+        { "term": "En producción", "value": "{{metric:sistemas|full}}" },
+        { "term": "Presencia", "value": "{{metric:paises|full}}: México (sede), Estados Unidos, Colombia, Argentina, España, Costa Rica y Ecuador" },
+        { "term": "Metodología", "value": "VKTOR™: Verify · Koncept · Transform · Operate · Rise" },
+        { "term": "Sub-marca", "value": "kain, nuestros agentes de IA · app.kain.mx", "href": "https://app.kain.mx/" },
+        { "term": "Implementación", "value": "De 7 a 30 días, según el alcance" },
+        { "term": "Inversión", "value": "{{Price}}" },
+        { "term": "Correo", "value": "contacto@ingeniak.mx" },
+        { "term": "WhatsApp", "value": "+52 33 2101 7799" }
+      ]
+    },
+    "equipo": {
+      "_componente": "Credits variant=team: reparto con fotos reales en duotono",
+      "rail": "Equipo",
+      "eyebrow": "El equipo",
+      "h2": {
+        "text": "Las personas",
+        "soft": "detrás del sistema."
+      },
+      "lede": "Estrategia, inteligencia artificial, creatividad, medios y ventas en la misma mesa. Cada quien responde por una parte del sistema y todos lo ven completo."
+    },
+    "vktor": {
+      "_componente": "Intertitle + VktorRail variant=phases",
+      "rail": "Metodología",
+      "eyebrow": "Metodología VKTOR™",
+      "h2": {
+        "text": "Cada implementación sigue el mismo protocolo,",
+        "soft": "en cinco fases."
+      },
+      "lede": "Del diagnóstico a la operación en producción, siempre en el mismo orden. Implementar una pieza toma de 7 a 30 días, según el alcance.",
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "Verificamos tu operación", "line": "Revisamos con números cómo vendes, atiendes y operas hoy." },
+        { "letter": "K", "name": "Koncept", "verb": "Diseñamos el concepto", "line": "Definimos qué se automatiza primero, con qué herramientas y en qué orden." },
+        { "letter": "T", "name": "Transform", "verb": "Transformamos", "line": "Construimos y conectamos el sistema, y lo probamos antes de encenderlo." },
+        { "letter": "O", "name": "Operate", "verb": "Operamos junto con tu equipo", "line": "Capacitamos a tu equipo y ajustamos el sistema en producción." },
+        { "letter": "R", "name": "Rise", "verb": "Hacemos crecer los resultados", "line": "Medimos cada mes y sumamos la siguiente pieza cuando la anterior ya rinde." }
+      ],
+      "links": [
+        { "label": "Conoce la metodología VKTOR™", "href": "/metodologia/" }
+      ]
+    },
+    "faq": {
+      "_componente": "Intertitle split + FAQAccordion (banco compartido)",
+      "rail": "Preguntas",
+      "eyebrow": "Antes de decidir",
+      "h2": {
+        "text": "Lo que nos preguntan",
+        "soft": "antes de contratar."
+      },
+      "faqIds": ["G07", "G08", "G11", "N07"],
+      "footer": "¿Te quedó otra duda? Escríbele a Kain por WhatsApp o escríbenos a contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-equipo; respaldo: cta-amanecer)",
+      "rail": "Cierre",
+      "eyebrow": "El siguiente paso",
+      "h2": {
+        "text": "Ya nos conoces.",
+        "soft": "Ahora cuéntanos tu proyecto."
+      },
+      "lede": "Cuéntanos cómo vendes, atiendes y das seguimiento hoy, y te decimos qué conviene automatizar primero, con alcance, tiempos y costo por escrito.",
+      "ctaPrimary": {
+        "label": "Cotizar proyecto"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, vi el brochure de Ingeniak y quiero platicar de un proyecto para mi empresa."
+      }
+    }
+  }
+}

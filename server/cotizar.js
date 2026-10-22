@@ -76,6 +76,7 @@ export const RUTAS = Object.freeze({
   '/preguntas-frecuentes/': 'faq',
   '/blog/': 'blog',
   '/recursos/': 'recursos',
+  '/brochure/': 'brochure',
   '/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/': 'art-costo',
   '/blog/kommo-vs-gohighlevel/': 'art-kommo-ghl',
   '/blog/agente-ia-whatsapp-vs-chatbot/': 'art-agente-chatbot',

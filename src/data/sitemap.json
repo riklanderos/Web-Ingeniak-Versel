@@ -11517,5 +11517,191 @@
       "owner": "Equipo de Ingeniak",
       "note": "Hub de recursos gratuitos. El índice reutiliza el patrón del blog (HubGuides); los descargables futuros (plantillas, calculadoras) se suman como items nuevos del grid con su categoría."
     }
+  },
+  {
+    "id": "brochure",
+    "group": "Empresa",
+    "url": "/brochure/",
+    "canonical": "https://ingeniak.mx/brochure/",
+    "indexable": false,
+    "hidden": true,
+    "status": "landing oculta (nueva, 2026-10-22): brochure corporativo compartible por URL; noindex,follow, fuera de menús, sitemap.xml, llms*.txt y de todo enlace desde páginas públicas · nav completa: es un brochure, no una landing de reserva",
+    "template": "T-HUB",
+    "purpose": "CV empresarial de Ingeniak para compartir con prospectos: qué es la empresa, servicios, resultados con fuente, ficha verificable, equipo y metodología, con las placas premium del sitio.",
+    "primaryKeyword": "brochure de servicios de Ingeniak",
+    "secondaryKeywords": [
+      "presentación corporativa Ingeniak",
+      "cv empresarial Ingeniak"
+    ],
+    "title": "Brochure de servicios y resultados | Ingeniak",
+    "titleLength": 45,
+    "metaDescription": "El CV empresarial de Ingeniak: servicios, soluciones, implementaciones y resultados con fuente, la ficha verificable y el equipo detrás del sistema.",
+    "metaLength": 148,
+    "h1": "Ingeniak en una página: el sistema, los resultados y el equipo",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Brochure",
+        "url": "/brochure/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "cinematic": true,
+        "spec": "Breadcrumb + H1 + lede + CTAs. Mientras no exista la placa brochure-hero, respaldo: home-hero.",
+        "image": {
+          "file": "/img/cine/brochure-hero",
+          "subject": "Kain presenta el sistema completo sobre la ciudad al amanecer (placa propia pendiente).",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Portada del brochure corporativo.",
+          "mobile": "4:5 · modo top."
+        },
+        "plate": {
+          "id": "brochure-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-hero"
+          }
+        }
+      },
+      {
+        "order": 2,
+        "id": "definicion",
+        "name": "Qué es Ingeniak",
+        "cinematic": false,
+        "spec": "DefinitionBlock citable (texto propio) + MetricRow (sistemas, países, tiempo operativo)."
+      },
+      {
+        "order": 3,
+        "id": "mapa",
+        "name": "Servicios",
+        "cinematic": false,
+        "spec": "HubMap: riel de 5 etapas + los 11 servicios por etapa (mismo patrón de /servicios/)."
+      },
+      {
+        "order": 4,
+        "id": "cifras",
+        "name": "Implementaciones y resultados",
+        "cinematic": false,
+        "spec": "Montage con 5 cifras de caso y su fuente; cada fila con la portada de su caso."
+      },
+      {
+        "order": 5,
+        "id": "ficha",
+        "name": "Ficha verificable",
+        "cinematic": false,
+        "spec": "EntitySheet con los datos verificables (los del pie y el JSON-LD) + franja PartnerBadges."
+      },
+      {
+        "order": 6,
+        "id": "equipo",
+        "name": "Equipo",
+        "cinematic": false,
+        "spec": "Reparto de Credits con fotos reales en duotono: rol y nombre, sin decir cuántas personas son."
+      },
+      {
+        "order": 7,
+        "id": "vktor",
+        "name": "Metodología",
+        "cinematic": false,
+        "spec": "VktorRail con las 5 fases y enlace a /metodologia/."
+      },
+      {
+        "order": 8,
+        "id": "faq",
+        "name": "Preguntas frecuentes",
+        "cinematic": false,
+        "spec": "FAQAccordion con G07, G08, G11 y N07 (banco compartido)."
+      },
+      {
+        "order": 9,
+        "id": "cta-final",
+        "name": "Cierre",
+        "cinematic": true,
+        "spec": "Cierre cinematográfico con el equipo sobre el amanecer (cta-equipo; respaldo: cta-amanecer).",
+        "image": {
+          "file": "/img/cine/cta-equipo",
+          "subject": "Los retratos del equipo sobre el horizonte del amanecer frío cian-blanco.",
+          "side": "izquierda",
+          "textSide": "derecha",
+          "brief": "Cierre del brochure: las personas detrás del sistema.",
+          "mobile": "4:5 · modo top.",
+          "shared": true
+        },
+        "plate": {
+          "id": "cta-equipo",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "cta-amanecer"
+          }
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola Kain, vi el brochure de Ingeniak y quiero platicar de un proyecto para mi empresa.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20vi%20el%20brochure%20de%20Ingeniak%20y%20quiero%20platicar%20de%20un%20proyecto%20para%20mi%20empresa."
+    },
+    "internalLinks": [
+      "/servicios/",
+      "/casos/",
+      "/metodologia/",
+      "/nosotros/"
+    ],
+    "jsonLd": [
+      "AboutPage",
+      "BreadcrumbList"
+    ],
+    "faq": [
+      "G07",
+      "G08",
+      "G11",
+      "N07"
+    ],
+    "redirectsFrom": [
+      "/brochure"
+    ],
+    "sitemap": {
+      "priority": 0.3,
+      "changefreq": "monthly"
+    },
+    "folio": "604",
+    "copy": {
+      "status": "borrador",
+      "minWords": 450,
+      "owner": "Equipo de Ingeniak",
+      "note": "Brochure/CV empresarial (landing oculta). Reutiliza las secciones genéricas del hub: definicion, mapa, cifras, vktor, faq + las nuevas ficha y equipo."
+    },
+    "nav": "full"
   }
 ]
