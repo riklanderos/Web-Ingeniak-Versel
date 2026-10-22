@@ -11587,48 +11587,81 @@
       },
       {
         "order": 3,
+        "id": "conexion",
+        "name": "Cómo se conecta",
+        "cinematic": true,
+        "spec": "HubFlow sobre riel-servicios a sangre: 5 tramos registrados en los nodos de la placa, con logos y el destello que recorre el riel (mismo patrón de /servicios/#conexion).",
+        "plate": {
+          "id": "riel-servicios",
+          "component": "SystemFlow",
+          "layout": "sin sujeto",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P2",
+          "shared": true
+        }
+      },
+      {
+        "order": 4,
         "id": "mapa",
         "name": "Servicios",
         "cinematic": false,
         "spec": "HubMap: riel de 5 etapas + los 11 servicios por etapa (mismo patrón de /servicios/)."
       },
       {
-        "order": 4,
+        "order": 5,
+        "id": "pantallas",
+        "name": "El sistema en pantalla",
+        "cinematic": false,
+        "spec": "ProductWindows con vistas demo de las herramientas (interfaces de ejemplo, sin datos de clientes) + el motion graphic de Remotion (video/sistema-1920) en línea."
+      },
+      {
+        "order": 6,
+        "id": "stack",
+        "name": "Con qué construimos",
+        "cinematic": false,
+        "spec": "Muro de logos del stack (Credits variant=logos) + PartnerBadges, mismo patrón del inicio."
+      },
+      {
+        "order": 7,
         "id": "cifras",
         "name": "Implementaciones y resultados",
         "cinematic": false,
         "spec": "Montage con 5 cifras de caso y su fuente; cada fila con la portada de su caso."
       },
       {
-        "order": 5,
+        "order": 8,
         "id": "ficha",
         "name": "Ficha verificable",
         "cinematic": false,
         "spec": "EntitySheet con los datos verificables (los del pie y el JSON-LD) + franja PartnerBadges."
       },
       {
-        "order": 6,
+        "order": 9,
         "id": "equipo",
         "name": "Equipo",
         "cinematic": false,
         "spec": "Reparto de Credits con fotos reales en duotono: rol y nombre, sin decir cuántas personas son."
       },
       {
-        "order": 7,
+        "order": 10,
         "id": "vktor",
         "name": "Metodología",
         "cinematic": false,
         "spec": "VktorRail con las 5 fases y enlace a /metodologia/."
       },
       {
-        "order": 8,
+        "order": 11,
         "id": "faq",
         "name": "Preguntas frecuentes",
         "cinematic": false,
         "spec": "FAQAccordion con G07, G08, G11 y N07 (banco compartido)."
       },
       {
-        "order": 9,
+        "order": 12,
         "id": "cta-final",
         "name": "Cierre",
         "cinematic": true,
@@ -11660,6 +11693,7 @@
     ],
     "cinematicSections": [
       "hero",
+      "conexion",
       "cta-final"
     ],
     "primaryCta": {

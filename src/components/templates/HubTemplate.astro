@@ -48,6 +48,8 @@ import SumarioCover from '../ui/SumarioCover.astro';
 import EntitySheet from '../ui/EntitySheet.astro';
 import Credits from '../ui/Credits.astro';
 import PartnerBadges from '../ui/PartnerBadges.astro';
+import ProductWindow from '../ui/ProductWindow.astro';
+import VideoPoster from '../content/VideoPoster.astro';
 import HeroCtas from './HeroCtas.astro';
 import { primaryLabel, quoteLink } from '../layout/cta';
 import Aura from './Aura.astro';
@@ -151,7 +153,7 @@ const cta = cp('cta-final');
 const ctaPlate = plateOf('cta-final');
 
 if (dev) {
-  const known = new Set(['hero', 'definicion', 'datos', 'mapa', 'conexion', 'no-se', 'vktor', 'grid', 'cifras', 'filtros', 'categorias', 'registro', 'metodo', 'ficha', 'equipo', 'faq', 'cta-final']);
+  const known = new Set(['hero', 'definicion', 'datos', 'mapa', 'conexion', 'no-se', 'vktor', 'grid', 'cifras', 'filtros', 'categorias', 'registro', 'metodo', 'ficha', 'equipo', 'pantallas', 'stack', 'faq', 'cta-final']);
   for (const s of (P.sections as any[])) {
     if (s.status === 'conditional') continue;
     if (!known.has(s.id)) console.warn(`[HubTemplate] ${P.id}: sección "${s.id}" sin componente en la plantilla`);
@@ -429,6 +431,59 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           </div>
           <Credits variant="team" class="hub-team__cast" />
         </Intertitle>
+      );
+    }
+
+    /* ───────────── brochure · el sistema en pantalla (ProductWindow + motion de Remotion) ───────────── */
+    if (id === 'pantallas') {
+      const s = cp(id);
+      const wins = ((s.windows ?? []) as any[]).filter((w) => w?.img && w?.title);
+      return (
+        <Intertitle id={id} aura="none" labelledby={`${id}-t`} class="hub-screens tpl-glow">
+          <Aura kind="ondas" x="16%" y="6%" o={1} only="d" />
+          <Aura kind="ondas" x="50%" o={1} only="m" sticky />
+          <div class="hub-sec__head hub-screens__head">
+            {s.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(s)} />}
+            <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(s.h2)} />
+            {s.lede && <Copy as="p" class="t-lede t-lede--2" text={s.lede} data-reveal />}
+          </div>
+          {s.motion?.src && (
+            <ProductWindow title={s.motion.title ?? 'El sistema en movimiento'} label="SIMULACIÓN" fig={s.motion.fig} aura class="hub-screens__motion">
+              <VideoPoster mode="inline" src={s.motion.src} poster={s.motion.poster} title={s.motion.title ?? 'El sistema en movimiento'}
+                label={s.motion.label ?? 'Ver el sistema'} duration={s.motion.duration} width={1920} height={1080} />
+            </ProductWindow>
+          )}
+          {wins.length > 0 && (
+            <div class="hub-screens__grid">
+              {wins.map((w) => (
+                <ProductWindow title={w.title} label="VISTA DEMO" fig={w.fig} ratio="16/9">
+                  <img src={w.img} alt={w.alt ?? w.title} width={1600} height={900} loading="lazy" decoding="async" />
+                </ProductWindow>
+              ))}
+            </div>
+          )}
+          {s.note && <Copy as="p" class="t-micro hub-screens__note" text={s.note} data-reveal />}
+        </Intertitle>
+      );
+    }
+
+    /* ───────────── brochure · con qué construimos (muro de logos, mismo patrón del inicio) ───────────── */
+    if (id === 'stack') {
+      const st = cp(id);
+      const logos = ((st.logos ?? []) as any[]).map((l: any) => ({ logo: l.slug, name: l.label }));
+      if (!logos.length) return null;
+      return (
+        <section id={id} class="hub-stack tpl-glow" aria-labelledby={`${id}-t`} style={`--logo-cols:${Math.max(1, Math.ceil(logos.length / 2))}`}>
+          <Aura kind="ondas" x="50%" y="45%" o={1} only="m" />
+          <div class="frame hub-stack__frame">
+            <div class="hub-stack__head">
+              <h2 id={`${id}-t`} class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{st.eyebrow ?? 'Con qué construimos'}</h2>
+              {st.lede && <Copy as="p" class="hub-stack__lede" text={st.lede} />}
+              <PartnerBadges size="sm" class="hub-stack__partners" />
+            </div>
+            <Credits variant="logos" class="hub-stack__logos" items={logos} kommo={false} />
+          </div>
+        </section>
       );
     }
 

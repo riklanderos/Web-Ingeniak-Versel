@@ -520,3 +520,27 @@ body.hub #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max
 .hub-ficha__sheet{align-self:start}
 .hub-team__head{margin-bottom:var(--s-7)}
 .hub-team__cast{margin-top:var(--s-6)}
+
+/* ── brochure · pantallas (motion + ventanas demo) ── */
+.hub-screens__head{max-width:56rem;margin-bottom:var(--s-7)}
+.hub-screens__motion{margin-bottom:var(--s-7)}
+.hub-screens__motion .vposter{width:100%}
+.hub-screens__grid{display:grid;gap:var(--s-6);grid-template-columns:repeat(3,minmax(0,1fr))}
+.hub-screens__grid img{display:block;width:100%;height:100%;object-fit:cover}
+.hub-screens__note{margin-top:var(--s-6);color:var(--muted)}
+@media (max-width:1279px){.hub-screens__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:767px){.hub-screens__grid{grid-template-columns:1fr;gap:var(--s-5)}}
+
+/* ── brochure · con qué construimos (muro de logos; mismo trazo que .hm-stack del inicio) ── */
+.hub-stack{position:relative;z-index:1;overflow-x:clip;padding:var(--s-7) 0 var(--s-9)}
+.hub-stack__frame{row-gap:var(--s-7);align-items:start}
+.hub-stack__head{grid-column:1 / span 3;padding-top:var(--s-2)}
+.hub-stack__head .eyebrow{margin:0}
+.hub-stack__lede{margin:var(--s-4) 0 0;font:400 .9375rem/1.55 var(--f-body);color:var(--muted);max-width:30ch}
+.hub-stack__partners{margin-top:var(--s-5)}
+.hub-stack__logos{grid-column:4 / -1;padding-top:var(--s-5);border-top:1px solid var(--hair)}
+.hub-stack__logos .credits__logos{gap:30px 46px}
+@media (min-width:1280px){
+  .hub-stack__logos .credits__logos{display:grid;grid-template-columns:repeat(var(--logo-cols,7),max-content);justify-content:space-between;gap:30px 20px}
+}
+@media (max-width:1279px){.hub-stack__head,.hub-stack__logos{grid-column:1 / -1}}

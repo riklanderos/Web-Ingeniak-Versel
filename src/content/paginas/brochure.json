@@ -47,6 +47,69 @@
         "metricIds": ["sistemas", "paises", "tiempo-operativo"]
       }
     },
+    "conexion": {
+      "_componente": "HubFlow sobre riel-servicios (5 tramos registrados en los nodos de la placa); respaldo: SystemFlow sobre aura",
+      "rail": "Cómo se conecta",
+      "eyebrow": "Cómo se conecta el sistema",
+      "h2": {
+        "text": "Del anuncio al tablero,",
+        "soft": "tu cliente recorre cinco tramos."
+      },
+      "lede": "Así se ve el sistema conectado: cada tramo es una pieza que ya operamos a diario. Puedes empezar por una y sumar las demás después, sobre los mismos datos y el mismo CRM.",
+      "nodes": [
+        {
+          "stage": "Atraer",
+          "label": "El anuncio o Google",
+          "line": "Traen a alguien a tu web o directo a tu WhatsApp.",
+          "logos": ["meta", "googleads", "tiktok"],
+          "services": [
+            { "label": "Paid media", "href": "/servicios/paid-media/" },
+            { "label": "Web", "href": "/servicios/paginas-web/" },
+            { "label": "SEO", "href": "/servicios/seo/" }
+          ]
+        },
+        {
+          "stage": "Atender",
+          "label": "Kain responde",
+          "kain": true,
+          "line": "En segundos, por WhatsApp, Instagram, Messenger, tu web o el correo.",
+          "logos": ["whatsapp", "instagram"],
+          "services": [
+            { "label": "Agentes de IA", "href": "/servicios/agentes-ia-whatsapp/" }
+          ]
+        },
+        {
+          "stage": "Organizar",
+          "label": "Tu CRM",
+          "line": "El lead entra en su etapa, con toda su conversación.",
+          "logos": ["kommo", "gohighlevel"],
+          "services": [
+            { "label": "CRM con IA", "href": "/servicios/crm-con-ia/" },
+            { "label": "Kommo", "href": "/kommo/" }
+          ]
+        },
+        {
+          "stage": "Automatizar",
+          "label": "Flujos con n8n y Make",
+          "line": "Recordatorios, avisos y capturas que ya no hace nadie a mano.",
+          "logos": ["n8n", "make"],
+          "services": [
+            { "label": "Automatización", "href": "/servicios/automatizacion-n8n/" }
+          ]
+        },
+        {
+          "stage": "Medir",
+          "label": "Un tablero",
+          "line": "Junta tus fuentes y te dice qué campaña sí vende.",
+          "logos": [],
+          "services": [
+            { "label": "Software a la medida", "href": "/servicios/desarrollo-software/" },
+            { "label": "Consultoría", "href": "/servicios/consultoria-ia-empresas/" }
+          ]
+        }
+      ],
+      "note": "Los logos son plataformas y herramientas que usamos e integramos. Somos partners de Kommo, GoHighLevel, Google y Meta."
+    },
     "mapa": {
       "_componente": "HubMap: riel de 5 etapas + ScriptList de los 11 servicios por etapa",
       "rail": "Servicios",
@@ -105,6 +168,64 @@
         }
       ],
       "closing": "Los proyectos empiezan {{price}}. El alcance de cada pieza lo definimos contigo cuando cotizas tu proyecto."
+    },
+    "pantallas": {
+      "_componente": "ProductWindows (VISTA DEMO) con interfaces de ejemplo + VideoPoster en línea con el motion de Remotion (SIMULACIÓN)",
+      "rail": "En pantalla",
+      "eyebrow": "El sistema en pantalla",
+      "h2": {
+        "text": "Así se ve el sistema",
+        "soft": "trabajando todos los días."
+      },
+      "lede": "El motion del sistema completo y tres vistas demo de lo que operamos a diario: el embudo en el CRM, los flujos de automatización y el tablero que junta tus fuentes.",
+      "motion": {
+        "src": "/video/sistema-1920.mp4",
+        "poster": "/img/motion-sistema-poster.webp",
+        "title": "El sistema en movimiento",
+        "label": "Ver el sistema en movimiento",
+        "fig": "Motion graphic del sistema: las cinco estaciones conectadas, del anuncio al tablero."
+      },
+      "windows": [
+        {
+          "title": "Embudo de ventas en el CRM",
+          "img": "/img/pantallas/demo-crm.webp",
+          "alt": "Vista demo de un embudo de ventas en el CRM: cinco etapas con tarjetas de lead y WhatsApp integrado",
+          "fig": "Cada lead entra con su conversación completa y avanza por etapas."
+        },
+        {
+          "title": "Flujo de automatización",
+          "img": "/img/pantallas/demo-flujo.webp",
+          "alt": "Vista demo de un flujo de automatización: nodos conectados que clasifican con IA y avisan al equipo",
+          "fig": "Recordatorios, avisos y capturas que ya no hace nadie a mano."
+        },
+        {
+          "title": "Tablero de resultados",
+          "img": "/img/pantallas/demo-tablero.webp",
+          "alt": "Vista demo de un tablero de resultados: leads, citas, tasa de respuesta y embudo en una sola vista",
+          "fig": "Todas tus fuentes en una vista: qué campaña sí vende."
+        }
+      ],
+      "note": "Vistas demo ilustrativas: interfaces de ejemplo sin datos de ningún cliente. Tu sistema se configura sobre Kommo o GoHighLevel, n8n y tu tablero."
+    },
+    "stack": {
+      "_componente": "Credits variant=logos + PartnerBadges (mismo patrón del inicio)",
+      "rail": "Con qué construimos",
+      "eyebrow": "Con qué construimos",
+      "lede": "Somos partners oficiales de Kommo, GoHighLevel, Google y Meta. Lo demás son herramientas que usamos e integramos según lo que pida tu operación.",
+      "logos": [
+        { "slug": "whatsapp", "label": "WhatsApp Business" },
+        { "slug": "gohighlevel", "label": "GoHighLevel" },
+        { "slug": "n8n", "label": "n8n" },
+        { "slug": "make", "label": "Make" },
+        { "slug": "openai", "label": "OpenAI" },
+        { "slug": "claude", "label": "Claude" },
+        { "slug": "googlegemini", "label": "Gemini" },
+        { "slug": "meta", "label": "Meta" },
+        { "slug": "googleads", "label": "Google Ads" },
+        { "slug": "tiktok", "label": "TikTok" },
+        { "slug": "supabase", "label": "Supabase" },
+        { "slug": "stripe", "label": "Stripe" }
+      ]
     },
     "cifras": {
       "_componente": "Montage: una cifra de caso por fila con la portada de su caso",
