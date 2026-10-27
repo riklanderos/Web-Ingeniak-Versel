@@ -1,0 +1,324 @@
+{
+  "pageId": "art-prueba-rik",
+  "url": "/blog/prueba-rik-como-elegir-un-crm-para-tu-empresa/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "publicado": "2026-10-27",
+  "actualizado": "2026-10-27",
+  "articulo": {
+    "categoria": "CRM",
+    "about": [
+      {
+        "type": "Service",
+        "name": "Agentes de IA para WhatsApp Business | Ingeniak",
+        "url": "/servicios/agentes-ia-whatsapp/"
+      }
+    ]
+  },
+  "pendientes": [
+    "APROBACIÓN (R1): estado \"borrador\". Se aprueba en SEO Studio; al aprobar, este archivo se regenera con aprobadoPor.",
+    "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
+    "PLACA · portada y cierre usan placas compartidas por defecto (home-sistema-2-atender y cta-amanecer)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (placa compartida por defecto)",
+      "eyebrow": "CRM",
+      "h1": {
+        "text": "PRUEBA RIK - Cómo elegir",
+        "soft": "un CRM para tu empresa",
+        "lit": "elegir"
+      },
+      "deck": "Descubre cómo elegir un CRM para tu empresa: criterios, errores comunes y checklist para implementarlo sin fricción en tu equipo comercial.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta"
+    },
+    "respuesta": {
+      "_componente": "Intertitle + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "La respuesta corta",
+      "text": "Para saber cómo elegir un CRM, primero define tu proceso de ventas y los datos que necesitas medir. Después compara integraciones con WhatsApp y correo, facilidad de uso, automatizaciones y costo por usuario. Prueba dos o tres opciones con tu equipo comercial antes de decidir, y valida que puedas migrar contactos sin perder historial."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con CTA intermedio",
+      "blocks": [
+        "Si tus ventas viven entre hojas de cálculo, chats de WhatsApp y la memoria de tus vendedores, saber **cómo elegir un CRM** es más una decisión de proceso que de software. La herramienta correcta es la que se adapta a la forma en que tu empresa consigue, atiende y cierra clientes, y no la que trae más funciones en su página de precios.",
+        "Esta guía es para dueños de PyME que ya decidieron que necesitan un software CRM y ahora tienen que escoger entre varias opciones. Verás qué definir antes de pedir demos, qué criterios usar para comparar, qué errores conviene evitar al implementar un CRM y una lista de verificación para tomar la decisión con tu equipo.",
+        {
+          "variant": "h2",
+          "id": "define-proceso-comercial-antes",
+          "text": "Define tu proceso comercial antes de comparar",
+          "rail": "Define tu proceso comercial"
+        },
+        "Antes de ver herramientas, documenta cómo entra un lead y cuándo se vuelve cliente.",
+        "Un CRM se configura alrededor de tu proceso de ventas: etapas, campos, responsables y reglas de seguimiento. Si llegas a las demos sin ese proceso escrito, cada proveedor te mostrará su flujo ideal y terminarás adaptando tu negocio a la herramienta, cuando debería ser al revés.",
+        "No necesitas un manual. Basta con un documento de una página o un diagrama que responda estas preguntas:",
+        {
+          "variant": "table",
+          "head": [
+            "Pregunta",
+            "Ejemplo de respuesta (distribuidora de equipo industrial)"
+          ],
+          "rows": [
+            [
+              "¿Por dónde llegan los leads?",
+              "Formulario del sitio, WhatsApp, llamadas y referidos"
+            ],
+            [
+              "¿Qué etapas recorre un prospecto?",
+              "Nuevo → Calificado → Cotización enviada → Negociación → Ganado / Perdido"
+            ],
+            [
+              "¿Qué tiene que pasar para avanzar de etapa?",
+              "Pasa a «Calificado» cuando confirma presupuesto y fecha de compra"
+            ],
+            [
+              "¿Quién es responsable en cada etapa?",
+              "Un asesor de primer contacto califica; el ejecutivo de cuenta cotiza y cierra"
+            ],
+            [
+              "¿Qué datos hay que capturar?",
+              "Empresa, RFC, giro, producto de interés, monto estimado, motivo de pérdida"
+            ],
+            [
+              "¿Qué quieres medir?",
+              "Tiempo de primera respuesta, conversión por etapa, ventas por vendedor"
+            ]
+          ]
+        },
+        "La última fila es la que más se olvida. Si sabes desde el inicio que quieres medir, por ejemplo, por qué se pierden las cotizaciones, buscarás un CRM que te permita registrar el motivo de pérdida como campo obligatorio y reportarlo sin exportar a Excel.",
+        "Con este documento en mano, cada demo se vuelve una prueba concreta: «muéstrame cómo se vería mi pipeline de cinco etapas y cómo entra un lead desde WhatsApp». Así comparas opciones con el mismo criterio y no te dejas llevar por la presentación más vistosa.",
+        {
+          "variant": "h2",
+          "id": "criterios-comparar-crm",
+          "text": "Criterios para comparar un CRM",
+          "rail": "Criterios para comparar un"
+        },
+        "Para comparar un CRM, evalúa primero tres criterios: cómo se conecta con los canales donde ya hablas con tus clientes, qué tanto trabajo repetitivo automatiza y cuánto te costará realmente por usuario. Después revisa la facilidad de uso y la migración de datos.",
+        {
+          "variant": "ul",
+          "items": [
+            "Integraciones con WhatsApp y correo",
+            "Automatizaciones y reportes",
+            "Costo por usuario"
+          ]
+        },
+        "**Integraciones con WhatsApp y correo.** Si buena parte de tus conversaciones comerciales pasa por WhatsApp, un CRM que no se integra con ese canal obliga a tus vendedores a copiar y pegar mensajes, y el historial termina repartido en celulares personales. Hay proveedores que construyen su propuesta alrededor de este punto; por ejemplo, [el sitio de Kommo](https://www.kommo.com/) presenta la integración con apps de mensajería como parte central de su CRM. En cada demo pregunta:",
+        {
+          "variant": "ul",
+          "items": [
+            "¿La integración usa la API oficial de WhatsApp Business o una conexión no oficial?",
+            "¿Varios vendedores pueden atender desde un mismo número sin perder el contexto?",
+            "¿Cada conversación queda ligada al contacto y a su oportunidad en el pipeline?",
+            "¿Los correos enviados desde Gmail u Outlook se registran solos en la ficha del cliente?"
+          ]
+        },
+        "Si además quieres responder fuera de horario o calificar prospectos antes de que los tome un vendedor, conviene que el CRM permita conectar [agentes de IA para WhatsApp](/servicios/agentes-ia-whatsapp/) que registren cada lead con sus datos desde el primer mensaje.",
+        "**Automatizaciones y reportes.** Las automatizaciones útiles en una PyME suelen ser sencillas: asignar cada lead nuevo al vendedor que le toca, crear una tarea de seguimiento si el prospecto no responde a una cotización y mover la oportunidad de etapa cuando se cumple una condición. Pide que te muestren cómo se configura una de estas reglas sin ayuda del proveedor; si requiere programar o pagar soporte, tómalo en cuenta. En reportes, verifica que puedas ver el embudo por etapa, el tiempo de respuesta y las ventas por vendedor directamente en el CRM. Si para ver esos datos tienes que exportar a una hoja de cálculo, el reporte no te va a servir en el día a día.",
+        "**Costo por usuario.** El precio publicado casi nunca es el costo total. Para comparar con justicia, arma una cuenta con los mismos supuestos para cada opción:",
+        {
+          "variant": "ol",
+          "items": [
+            "Cuántos usuarios necesitas hoy y cuántos en los próximos doce meses.",
+            "Qué plan incluye las funciones que definiste en tu proceso, no el plan más barato.",
+            "Qué se cobra aparte: mensajes de WhatsApp, almacenamiento, contactos adicionales, soporte o implementación.",
+            "Si el precio cambia entre pago mensual y contrato anual, y qué pasa si quieres cancelar."
+          ]
+        },
+        "**Facilidad de uso y migración.** Un CRM que tu equipo no usa no sirve, sin importar sus funciones. Prueba dos o tres opciones con tus vendedores reales durante un periodo corto y pídeles que registren leads, muevan oportunidades y envíen mensajes desde la herramienta. Antes de decidir, confirma también que puedes importar tus contactos con su historial (notas, actividades y conversaciones) y, si algún día cambias de proveedor, exportarlos de nuevo.",
+        "Para registrar lo que observes en cada prueba, te sirve una tabla como esta:",
+        {
+          "variant": "table",
+          "head": [
+            "Criterio",
+            "Qué validar en la prueba",
+            "Señal de alerta"
+          ],
+          "rows": [
+            [
+              "WhatsApp y correo",
+              "Conversaciones ligadas al contacto y al pipeline",
+              "Historial que se queda en el celular del vendedor"
+            ],
+            [
+              "Automatizaciones",
+              "Configurar una regla de seguimiento sin soporte",
+              "Cada cambio requiere al proveedor"
+            ],
+            [
+              "Reportes",
+              "Embudo y tiempo de respuesta visibles en el CRM",
+              "Todo se analiza exportando a Excel"
+            ],
+            [
+              "Costo por usuario",
+              "Costo total con extras incluidos",
+              "Cargos que aparecen después de la demo"
+            ],
+            [
+              "Facilidad de uso",
+              "Vendedores registran leads sin ayuda",
+              "El equipo vuelve a la hoja de cálculo"
+            ],
+            [
+              "Migración",
+              "Importar contactos con notas e historial",
+              "Solo se importan nombres y teléfonos"
+            ]
+          ]
+        },
+        "No hay un mejor CRM en abstracto. El que gana esta tabla con tu proceso y tu equipo es el mejor CRM para tu empresa, aunque no sea el más conocido.",
+        {
+          "variant": "cta-medio"
+        },
+        {
+          "variant": "h2",
+          "id": "errores-comunes-implementarlo",
+          "text": "Errores comunes al implementarlo",
+          "rail": "Errores comunes al implementarlo"
+        },
+        "Elegir bien la herramienta es la mitad del trabajo; la otra mitad es implementarla sin repetir errores que hacen que el equipo la abandone. Estos son los que conviene evitar:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Configurar de más desde el primer día.** Diez etapas y treinta campos obligatorios hacen que registrar un lead tome demasiado tiempo. Empieza con lo que definiste en tu proceso y agrega después.",
+            "**No nombrar un responsable interno.** Alguien de tu empresa tiene que ser dueño del CRM: resolver dudas, ajustar etapas y revisar que la información esté completa.",
+            "**Capacitar con una sola sesión.** Una demo general no basta. Cada rol necesita practicar sus tareas reales: el asesor califica, el ejecutivo cotiza y el gerente revisa reportes.",
+            "**Dejar WhatsApp fuera del CRM.** Si las conversaciones siguen en celulares personales, el CRM nunca tendrá el historial completo y el seguimiento dependerá otra vez de la memoria de cada vendedor.",
+            "**No medir la adopción.** Revisa cada semana cuántos leads se registran y cuántos tienen una siguiente acción programada. Si los números no cuadran con lo que ves en ventas, el equipo está trabajando por fuera."
+          ]
+        },
+        {
+          "variant": "h3",
+          "text": "Migrar sin limpiar la base"
+        },
+        "Importar tu base tal como está es el error que más se nota después, porque el CRM hereda todos los problemas de tus hojas de cálculo. Contactos duplicados, teléfonos en formatos distintos y clientes sin vendedor asignado provocan que dos personas atiendan al mismo prospecto, que las automatizaciones fallen y que los reportes no reflejen la realidad.",
+        "Antes de migrar, sigue este orden:",
+        {
+          "variant": "ol",
+          "items": [
+            "**Junta todas las fuentes.** Exporta contactos de hojas de cálculo, correo, el sistema de facturación y, si aplica, la herramienta anterior.",
+            "**Elimina duplicados.** Usa el correo o el teléfono como identificador y decide qué registro conservar cuando haya dos versiones del mismo cliente.",
+            "**Normaliza formatos.** Escribe todos los teléfonos con el mismo formato, incluida la lada internacional (+52), para que la integración con WhatsApp los reconozca. Unifica nombres de empresas y estados.",
+            "**Asigna un responsable a cada contacto.** Ningún registro debe entrar al CRM sin vendedor o equipo asignado.",
+            "**Decide qué historial migrar.** Define si importarás notas, cotizaciones y conversaciones anteriores, y confirma con el proveedor que su importador lo permite.",
+            "**Prueba con una muestra.** Importa un grupo pequeño de contactos, revisa con tus vendedores que la información se vea completa y solo después carga el resto."
+          ]
+        },
+        "Limpiar la base toma tiempo, pero es más barato hacerlo antes que corregir registros uno por uno cuando el equipo ya está trabajando en el CRM.",
+        {
+          "variant": "h2",
+          "id": "resumen-elegir-crm-cinco",
+          "text": "Resumen: cómo elegir un CRM en cinco pasos",
+          "rail": "Resumen: cómo elegir un"
+        },
+        "Si quieres llevar esta guía a una decisión concreta con tu equipo, usa esta lista:",
+        {
+          "variant": "ol",
+          "items": [
+            "**Documenta tu proceso comercial:** canales de entrada, etapas, responsables, datos y métricas.",
+            "**Prioriza integraciones:** WhatsApp y correo conectados al contacto y al pipeline.",
+            "**Compara automatizaciones, reportes y costo total por usuario** con los mismos supuestos para cada opción.",
+            "**Haz una prueba piloto con dos o tres CRM** y con tus vendedores reales, no solo con la demo del proveedor.",
+            "**Planea la migración:** limpia la base y confirma que puedes importar y exportar el historial."
+          ]
+        },
+        "Si ya tienes tu proceso más o menos claro y quieres contrastarlo con alguien que haya implementado CRM en empresas como la tuya, en Ingeniak podemos revisarlo contigo en una llamada de discovery. Ahí vemos tu proceso, tus canales y tu base actual, y te decimos qué tipo de [implementación de CRM](/servicios/crm/) tendría sentido para tu caso, si es que la necesitas."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Quieres ver cómo aplica a tu negocio? Escríbele a Kain y cuéntale cómo te llegan tus clientes.",
+      "link": {
+        "label": "Agentes de IA para WhatsApp Business",
+        "href": "/servicios/agentes-ia-whatsapp/"
+      },
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí pRUEBA RIK - Cómo elegir un CRM para tu empresa y quiero ver cómo aplica a mi negocio."
+      }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Lo que más nos preguntan"
+      },
+      "faqIds": [
+        "B01",
+        "B02",
+        "B03"
+      ]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo que diseña, implementa y opera agentes de IA, CRM y automatizaciones en Ingeniak."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": {
+        "text": "Fuentes y fecha de consulta"
+      },
+      "lede": "Los datos de terceros cambian; antes de decidir, revisa la versión vigente de cada fuente.",
+      "items": [
+        {
+          "title": "PRUEBA RIK - Sitio oficial de Kommo CRM",
+          "publisher": "Kommo",
+          "href": "https://www.kommo.com/",
+          "consultado": "2026-10-27",
+          "nota": "Dato de prueba: criterios de integración con mensajería"
+        }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "h2": {
+        "text": "Sigue explorando"
+      },
+      "items": [
+        {
+          "href": "/servicios/agentes-ia-whatsapp/",
+          "label": "Servicios",
+          "title": "Agentes de IA para WhatsApp Business",
+          "line": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM."
+        },
+        {
+          "href": "/kain/",
+          "label": "Empresa",
+          "title": "Soy Kain, el agente de IA de tu empresa",
+          "line": "Soy Kain, el agente de IA de tu empresa: respondo, agendo y confirmo en WhatsApp, Instagram y tu web, y registro todo en tu CRM."
+        },
+        {
+          "href": "/casos/clinica-dental-monterrey/",
+          "label": "Casos",
+          "title": "Clínica dental en Monterrey",
+          "line": "Una clínica dental de Monterrey logró {{metric:dental-citas|full}} con un agente de IA en WhatsApp: tiempo de respuesta {{metric:dental-respuesta|prose}}."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer, placa compartida)",
+      "eyebrow": "Siguiente paso",
+      "h2": {
+        "text": "¿Hablamos de tu caso?",
+        "soft": "Agenda tu Discovery Session."
+      },
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí pRUEBA RIK - Cómo elegir un CRM para tu empresa y quiero ver cómo aplica a mi negocio."
+      }
+    }
+  }
+}

@@ -867,5 +867,41 @@
     "categoria": "Power Session",
     "validar": false,
     "editada": true
+  },
+  {
+    "id": "B01",
+    "q": "¿Cuánto cuesta un CRM para una PyME?",
+    "a": "El costo de un CRM para una PyME suele calcularse por usuario al mes y varía según funciones, integraciones y volumen de contactos. Pide una prueba gratuita, confirma qué automatizaciones incluye cada plan y revisa cargos extra por WhatsApp, almacenamiento o soporte antes de comprometerte con un contrato anual.",
+    "short": "El costo de un CRM para una PyME suele calcularse por usuario al mes y varía según funciones, integraciones y volumen de contactos.",
+    "pages": [
+      "/blog/prueba-rik-como-elegir-un-crm-para-tu-empresa/"
+    ],
+    "categoria": "CRM",
+    "validar": true,
+    "editada": false
+  },
+  {
+    "id": "B02",
+    "q": "¿Cuánto tarda en implementarse un CRM?",
+    "a": "Una implementación básica de CRM puede tomar entre una y tres semanas, según la cantidad de etapas, usuarios e integraciones. Lo que más retrasa el arranque es migrar datos sucios y no definir responsables, así que limpia tu base, documenta tu proceso y capacita al equipo antes de lanzar.",
+    "short": "Una implementación básica de CRM puede tomar entre una y tres semanas, según la cantidad de etapas, usuarios e integraciones.",
+    "pages": [
+      "/blog/prueba-rik-como-elegir-un-crm-para-tu-empresa/"
+    ],
+    "categoria": "CRM",
+    "validar": true,
+    "editada": false
+  },
+  {
+    "id": "B03",
+    "q": "¿Qué CRM es mejor para empezar?",
+    "a": "No existe un mejor CRM universal: el ideal es el que tu equipo realmente use todos los días. Para empezar, prioriza pipelines visibles, integración con WhatsApp, automatizaciones simples y reportes claros. Valida con una prueba piloto de dos semanas y mide cuántos leads se registran y se atienden a tiempo.",
+    "short": "No existe un mejor CRM universal: el ideal es el que tu equipo realmente use todos los días.",
+    "pages": [
+      "/blog/prueba-rik-como-elegir-un-crm-para-tu-empresa/"
+    ],
+    "categoria": "CRM",
+    "validar": true,
+    "editada": false
   }
 ]
