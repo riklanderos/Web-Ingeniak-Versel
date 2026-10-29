@@ -3,6 +3,7 @@
 import { initNav } from './nav';
 import { initUI } from './ui';
 import { initCine } from './cine';
+import { injectSpeedInsights } from '@vercel/speed-insights';
 
 const safe = (name: string, fn: () => unknown) => { try { fn(); } catch (e) { console.warn(`[ingeniak:${name}]`, e); } };
 const start = () => {
@@ -10,5 +11,9 @@ const start = () => {
   safe('ui', initUI);
   safe('cine', initCine);
 };
+
+// Initialize Vercel Speed Insights
+injectSpeedInsights();
+
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
 else start();
