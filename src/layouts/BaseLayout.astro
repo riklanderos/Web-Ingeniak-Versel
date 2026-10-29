@@ -26,6 +26,7 @@ import '../styles/ui.css';
 import '../styles/content.css';
 import '../styles/pages.css';
 import type { Page } from '../lib/site';
+import Analytics from '@vercel/analytics/astro';
 import SEOHead from '../components/layout/SEOHead.astro';
 import BrandSymbols from '../components/nav/BrandSymbols.astro';
 import Header from '../components/nav/Header.astro';
@@ -141,6 +142,7 @@ const showRail = full && p.rail !== false && page.template !== 'T-404';
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <slot name="head" />
+    <Analytics />
   </head>
   <body class={p.bodyClass} data-page={page.id} data-template={page.template} data-folio={page.folio}
     data-cotizar-servicio={prefill.servicio} data-cotizar-industria={prefill.industria}>
