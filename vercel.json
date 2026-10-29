@@ -212,6 +212,146 @@
       "source": "/powersession/",
       "destination": "/power-session/",
       "statusCode": 301
+    },
+    {
+      "source": "/gracias",
+      "destination": "/contacto/",
+      "statusCode": 301
+    },
+    {
+      "source": "/gracias/",
+      "destination": "/contacto/",
+      "statusCode": 301
+    },
+    {
+      "source": "/thank-you",
+      "destination": "/contacto/",
+      "statusCode": 301
+    },
+    {
+      "source": "/thank-you/",
+      "destination": "/contacto/",
+      "statusCode": 301
+    },
+    {
+      "source": "/calculadoratokens",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/calculadoratokens/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/briefclinica",
+      "destination": "/industrias/salud/",
+      "statusCode": 301
+    },
+    {
+      "source": "/briefclinica/",
+      "destination": "/industrias/salud/",
+      "statusCode": 301
+    },
+    {
+      "source": "/cotizacion",
+      "destination": "/contacto/#cotizar",
+      "statusCode": 301
+    },
+    {
+      "source": "/cotizacion/",
+      "destination": "/contacto/#cotizar",
+      "statusCode": 301
+    },
+    {
+      "source": "/consultoria-ia",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/consultoria-ia/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/comparativas",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/comparativas/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/categoria",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/categoria/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/tag",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/tag/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/autor",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/autor/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/buscar",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/buscar/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/servicios/crm-automatizacion",
+      "destination": "/servicios/crm-con-ia/",
+      "statusCode": 301
+    },
+    {
+      "source": "/servicios/crm-automatizacion/",
+      "destination": "/servicios/crm-con-ia/",
+      "statusCode": 301
+    },
+    {
+      "source": "/servicios/desarrollo-de-software",
+      "destination": "/servicios/desarrollo-software/",
+      "statusCode": 301
+    },
+    {
+      "source": "/servicios/desarrollo-de-software/",
+      "destination": "/servicios/desarrollo-software/",
+      "statusCode": 301
     }
   ],
   "headers": [

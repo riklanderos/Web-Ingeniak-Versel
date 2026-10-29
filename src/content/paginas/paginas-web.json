@@ -182,7 +182,7 @@
       "h2": { "text": "Lo que hace", "soft": "que tu web se llene." },
       "items": [
         { "href": "/servicios/seo/", "label": "Servicio", "title": "SEO y visibilidad en IA", "line": "Que te encuentre Google y te citen ChatGPT, Gemini, Perplexity y Claude." },
-        { "href": "/servicios/paid-media/", "label": "Servicio", "title": "Paid media", "line": "Campañas en Meta, Google y TikTok que mandan tráfico a una página que sí convierte." },
+        { "href": "/blog/gohighlevel-en-espanol/", "label": "Del blog", "title": "GoHighLevel en español", "line": "Qué es, para quién es y cómo se implementa con embudos y páginas que convierten." },
         { "href": "/servicios/branding/", "label": "Servicio", "title": "Branding y contenido", "line": "La identidad y los textos que tu sitio necesita para verse como la opción premium." }
       ]
     },
