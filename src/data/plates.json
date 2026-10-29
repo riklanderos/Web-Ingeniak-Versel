@@ -4089,14 +4089,14 @@
     "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con la placa de escritorio como primera referencia (+ Kain recorte, escena Kain, hero aprobado). Bolita de la antena derecha neutralizada igual que en escritorio (movil-a-antena.png). Reencuadre con la lógica de scripts/reencuadre-movil.mjs (0.06 0.02 0.0582 0 0.40) a 1536 × 1920, más caída lateral a #03040B en el último 7 % de cada lado y abajo en el último 6 %; JPEG q92. Antenas en y ≈ 0.435, 41 % superior limpio, pies en y ≈ 0.876. Kain quedó centrado en x ≈ 0.58 (el plan pedía 0.66) con la rama cortada a su izquierda (x 0.355–0.423). Original en materiales/magnific/v2/404-hero/movil-a-kszqTeA16B.png; intermedio movil-a-reencuadre.jpg."
   },
   "art-agente-chatbot-hero": {
-    "alt": "Kain, el agente de IA de Ingeniak, junto a una vieja terminal de menús apagada",
+    "alt": "Kain compara un menú rígido de bloques con una conversación viva de burbujas de luz",
     "srcsetMax": 2752,
     "d": {
       "src": "/img/cine/art-agente-chatbot-hero",
       "w": 2752,
       "h": 1536,
       "ar": 1.7917,
-      "fx": 0.74,
+      "fx": 0.78,
       "fy": 0.5,
       "fadeFrom": 0.9
     },
@@ -4105,139 +4105,80 @@
       "w": 1536,
       "h": 1920,
       "ar": 0.8,
-      "fx": 0.5,
+      "fx": 0.65,
       "fy": 1,
-      "subjTop": 0.445
+      "subjTop": 0.36
     },
     "layout": "subject-right",
-    "pose": "mira de reojo la terminal vieja y apagada",
+    "pose": "junto a dos flujos holográficos: bloques rígidos (menú) y burbujas orgánicas (conversación)",
     "safe": {
       "d": [
         [
-          0.04,
-          0.06,
-          0.53,
-          0.94
+          0.03,
+          0.1,
+          0.48,
+          0.9
         ]
       ],
       "m": [
         [
-          0.04,
+          0.05,
           0.03,
-          0.96,
-          0.42
+          0.95,
+          0.33
         ]
       ]
     },
     "subject": {
       "d": [
-        0.555,
-        0.14,
-        0.915,
-        0.905
+        0.52,
+        0.04,
+        0.94,
+        0.96
       ],
       "m": [
-        0.25,
-        0.445,
-        0.735,
-        0.91
+        0.1,
+        0.36,
+        0.9,
+        0.98
       ]
     },
     "anchors": {
       "pecho": {
         "d": [
-          0.81,
-          0.461
+          0.8,
+          0.44
         ],
         "m": [
-          0.594,
-          0.637
+          0.65,
+          0.62
         ],
-        "scrW": 0.033
+        "scrW": 0.035
       },
       "mano": {
         "d": [
-          0.776,
+          0.7,
+          0.48
+        ],
+        "m": [
+          0.47000000000000003,
           0.66
-        ],
-        "m": [
-          0.545,
-          0.75
         ]
-      },
-      "rostro": {
-        "d": [
-          0.796,
-          0.318
-        ],
-        "m": [
-          0.585,
-          0.553
-        ]
-      },
-      "pantalla": {
-        "d": [
-          0.603,
-          0.258,
-          0.103,
-          0.141
-        ],
-        "m": [
-          0.298,
-          0.511,
-          0.158,
-          0.092
-        ]
-      },
-      "terminal": {
-        "d": [
-          0.555,
-          0.231,
-          0.191,
-          0.621
-        ],
-        "m": [
-          0.252,
-          0.497,
-          0.256,
-          0.372
-        ]
-      },
-      "fig": {
-        "d": [
-          0.745,
-          0.87
-        ],
-        "m": null
       },
       "piso": {
         "d": [
           0.5,
-          0.86
+          0.95
         ],
         "m": [
           0.5,
-          0.875
+          0.95
         ]
       }
     },
-    "leak": {
-      "d": [
-        0.745,
-        0.4
-      ],
-      "m": [
-        0.52,
-        0.58
-      ]
-    },
     "grade": 0,
-    "creationIds": {
-      "desktop": "ovSewFE829",
-      "mobile": "fH4mRqNCDY"
-    },
-    "deskNote": "Nano Banana Pro nativo a 2K (2752 × 1536, sin escalado; mismo costo que 1K: 75 créditos). Referencias: s7TThool8e, 5jAAdVBKxe, jUccthULD0. Kain correcto, botones de la terminal lisos y su pantalla vacía. El render salió más cerrado que el plan (terminal desde x ≈ 0.50, antenas en y ≈ 0.10) → reencuadre sin IA: lienzo 3100 × 1730 con el original en (366, 90), recorte de 18 px a la derecha, relleno sintetizado desde los bordes (ya en tinta) y vuelta a 2752 × 1536 (escala 0.888). Terminal en sombra (−28 % de x 0.46 a 0.60, vuelve a 1 en 0.71) y caída de los cuatro bordes a #03040B (lados 7 %, arriba 8 %, abajo desde 0.90). Luminancia máx. en x < 0.55 ≤ 33/255. `pantalla` es la caja envolvente del monitor muerto de la terminal (inclinado); `terminal`, la de todo el gabinete con su base. Original en materiales/magnific/v2/art-agente-chatbot-hero/desk-a-ovSewFE829.png; procesada en desk-a-final.jpg.",
-    "mobileNote": "Nano Banana Pro nativo a 2K (1856 × 2304) con el render de escritorio (ovSewFE829) como primera referencia + s7TThool8e, 5jAAdVBKxe, jUccthULD0. Salió con Kain grande (antenas en y ≈ 0.36, suelas en 0.94) → reencuadre sin IA con scripts/reencuadre-movil.mjs (0.2305 0.1016 0.1115 0.1484 0.40) a 1536 × 1920, luego terminal en sombra (−25 % en x 0.28–0.45) y caída lateral a #03040B (izq. hasta 0.09–0.26, der. 0.755–0.875) para ocultar las costuras del relleno en la banda del piso. Antenas en 0.445, suelas en ≈ 0.88, 42 % superior limpio (luminancia ≤ 44/255). Original en materiales/magnific/v2/art-agente-chatbot-hero/movil-a-fH4mRqNCDY.png; intermedio movil-a-reencuadre.jpg; final movil-a-final.jpg."
+    "deskNote": "GPT Image 2.5 (Higgsfield) nativo 3840×2160 → 2752×1536. Referencias: master home-hero + kain-presenta. Kain a la derecha (x 0.70–0.92); bloques apilados (x 0.53–0.63) y burbujas (x 0.64–0.78); mitad izquierda en penumbra para el texto. 2026-10-29.",
+    "mobileNote": "Reencuadre de la placa de escritorio (ventana 2506×2160 centrada en Kain) + reencuadre-movil.mjs padTop 0.45 (penumbra superior sintetizada, tClean 0.33) → 1536×1920 (4:5). Tercio superior limpio para el texto (modo top)."
   },
   "blog-hero": {
     "alt": "Mujer leyendo en una tableta de noche junto a un ventanal (imagen ilustrativa)",
@@ -8689,5 +8630,465 @@
     "grade": 0,
     "deskNote": "GPT Image 2.5 (Higgsfield) nativo 3840×2160 → 2752×1536 (recorte central de 12 px). Referencias: master home-hero + kain-presenta (mismo personaje). Composición: Kain colosal a la derecha (x 0.70–0.98), isotipo de cristal y 4 paneles del sistema sobre su mano (x 0.38–0.70, y 0.05–0.50), ciudad al amanecer abajo; tercio izquierdo limpio para el texto. 2026-10-22.",
     "mobileNote": "GPT Image 2.5 (Higgsfield) nativo 2560×3200 → 1536×1920 (4:5). 42 % superior limpio para el texto (modo top); Kain de la cadera hacia arriba en la mitad inferior, isotipo y 2 paneles sobre la mano."
+  },
+  "art-costo-hero": {
+    "alt": "Kain presenta un holograma de barras ascendentes que ilustra la inversión en un agente de IA",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/art-costo-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.6,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/art-costo-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.62,
+      "fy": 1,
+      "subjTop": 0.36
+    },
+    "layout": "subject-right",
+    "pose": "presenta con la mano abierta un holograma de barras y discos de luz (inversión)",
+    "safe": {
+      "d": [
+        [
+          0.03,
+          0.1,
+          0.3,
+          0.9
+        ]
+      ],
+      "m": [
+        [
+          0.05,
+          0.03,
+          0.95,
+          0.33
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.32,
+        0.04,
+        0.72,
+        0.96
+      ],
+      "m": [
+        0.1,
+        0.36,
+        0.9,
+        0.98
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.62,
+          0.42
+        ],
+        "m": [
+          0.62,
+          0.62
+        ],
+        "scrW": 0.035
+      },
+      "mano": {
+        "d": [
+          0.5,
+          0.42
+        ],
+        "m": [
+          0.44,
+          0.66
+        ]
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.95
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "grade": 0,
+    "deskNote": "GPT Image 2.5 (Higgsfield) nativo 3840×2160 → 2752×1536. Referencias: master home-hero + kain-presenta. Kain al centro-derecha con holograma de barras y discos sobre la mano (x 0.33–0.50); mitad izquierda en penumbra para el texto. 2026-10-29.",
+    "mobileNote": "Reencuadre de la placa de escritorio (ventana 2506×2160 centrada en Kain) + reencuadre-movil.mjs padTop 0.45 (penumbra superior sintetizada, tClean 0.33) → 1536×1920 (4:5). Tercio superior limpio para el texto (modo top)."
+  },
+  "art-ghl-espanol-hero": {
+    "alt": "Kain junto a un embudo de luz que aterriza en una cuadrícula de celdas, como un calendario",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/art-ghl-espanol-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.72,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/art-ghl-espanol-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.6,
+      "fy": 1,
+      "subjTop": 0.36
+    },
+    "layout": "subject-right",
+    "pose": "presenta un embudo holográfico que cae en una cuadrícula de celdas (embudo a calendario)",
+    "safe": {
+      "d": [
+        [
+          0.03,
+          0.1,
+          0.3,
+          0.9
+        ]
+      ],
+      "m": [
+        [
+          0.05,
+          0.03,
+          0.95,
+          0.33
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.33,
+        0.04,
+        0.86,
+        0.96
+      ],
+      "m": [
+        0.1,
+        0.36,
+        0.9,
+        0.98
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.73,
+          0.45
+        ],
+        "m": [
+          0.6,
+          0.62
+        ],
+        "scrW": 0.035
+      },
+      "mano": {
+        "d": [
+          0.64,
+          0.5
+        ],
+        "m": [
+          0.42,
+          0.66
+        ]
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.95
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "grade": 0,
+    "deskNote": "GPT Image 2.5 (Higgsfield) nativo 3840×2160 → 2752×1536. Referencias: master home-hero + kain-presenta. Kain a la derecha (x 0.65–0.83) con embudo y cuadrícula (x 0.35–0.60); mitad izquierda en penumbra para el texto. 2026-10-29.",
+    "mobileNote": "Reencuadre de la placa de escritorio (ventana 2506×2160 centrada en Kain) + reencuadre-movil.mjs padTop 0.45 (penumbra superior sintetizada, tClean 0.33) → 1536×1920 (4:5). Tercio superior limpio para el texto (modo top)."
+  },
+  "art-kommo-ghl-hero": {
+    "alt": "Kain entre dos portales de luz que representan dos plataformas CRM por elegir",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/art-kommo-ghl-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.38,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/art-kommo-ghl-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.42,
+      "fy": 1,
+      "subjTop": 0.36
+    },
+    "layout": "subject-left",
+    "pose": "de pie entre dos portales de luz contrastados (dos caminos), señala con una mano",
+    "safe": {
+      "d": [
+        [
+          0.72,
+          0.1,
+          0.97,
+          0.9
+        ]
+      ],
+      "m": [
+        [
+          0.05,
+          0.03,
+          0.95,
+          0.33
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.08,
+        0.04,
+        0.68,
+        0.97
+      ],
+      "m": [
+        0.1,
+        0.36,
+        0.9,
+        0.98
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.4,
+          0.42
+        ],
+        "m": [
+          0.42,
+          0.62
+        ],
+        "scrW": 0.035
+      },
+      "mano": {
+        "d": [
+          0.46,
+          0.47
+        ],
+        "m": [
+          0.6,
+          0.66
+        ]
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.95
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "grade": 0,
+    "deskNote": "GPT Image 2.5 (Higgsfield) nativo 3840×2160 → 2752×1536. Referencias: master home-hero + kain-presenta. Kain al centro-izquierda entre un portal cian (x 0.10–0.22) y uno azul (x 0.52–0.66); mitad derecha en penumbra para el texto. 2026-10-29.",
+    "mobileNote": "Reencuadre de la placa de escritorio (ventana 2506×2160 centrada en Kain) + reencuadre-movil.mjs padTop 0.45 (penumbra superior sintetizada, tClean 0.33) → 1536×1920 (4:5). Tercio superior limpio para el texto (modo top)."
+  },
+  "art-n8n-hero": {
+    "alt": "Kain dirige tres corrientes de nodos de luz que se unen en un solo flujo automatizado",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/art-n8n-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.22,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/art-n8n-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.38,
+      "fy": 1,
+      "subjTop": 0.36
+    },
+    "layout": "subject-left",
+    "pose": "orquesta con la mano en alto tres corrientes de nodos que convergen en un flujo",
+    "safe": {
+      "d": [
+        [
+          0.58,
+          0.14,
+          0.96,
+          0.86
+        ]
+      ],
+      "m": [
+        [
+          0.05,
+          0.03,
+          0.95,
+          0.33
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.04,
+        0.04,
+        0.48,
+        0.97
+      ],
+      "m": [
+        0.1,
+        0.36,
+        0.9,
+        0.98
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.17,
+          0.45
+        ],
+        "m": [
+          0.38,
+          0.62
+        ],
+        "scrW": 0.035
+      },
+      "mano": {
+        "d": [
+          0.28,
+          0.35
+        ],
+        "m": [
+          0.56,
+          0.66
+        ]
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.95
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "grade": 0,
+    "deskNote": "GPT Image 2.5 (Higgsfield) nativo 3840×2160 → 2752×1536. Referencias: master home-hero + kain-presenta. Kain a la izquierda (x 0.08–0.28); tres corrientes de nodos convergen hacia la derecha; la penumbra del texto va a la derecha sobre el flujo tenue. 2026-10-29.",
+    "mobileNote": "Reencuadre de la placa de escritorio (ventana 2506×2160 centrada en Kain) + reencuadre-movil.mjs padTop 0.45 (penumbra superior sintetizada, tClean 0.33) → 1536×1920 (4:5). Tercio superior limpio para el texto (modo top)."
+  },
+  "art-partner-kommo-hero": {
+    "alt": "Kain sostiene un sello holográfico de anillos concéntricos, símbolo de verificación oficial",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/art-partner-kommo-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.2,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/art-partner-kommo-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.55,
+      "fy": 1,
+      "subjTop": 0.36
+    },
+    "layout": "subject-left",
+    "pose": "sostiene en alto un sello circular de anillos de luz (verificación)",
+    "safe": {
+      "d": [
+        [
+          0.46,
+          0.1,
+          0.96,
+          0.9
+        ]
+      ],
+      "m": [
+        [
+          0.05,
+          0.03,
+          0.95,
+          0.33
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.04,
+        0.04,
+        0.4,
+        0.97
+      ],
+      "m": [
+        0.1,
+        0.36,
+        0.9,
+        0.98
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.15,
+          0.42
+        ],
+        "m": [
+          0.55,
+          0.62
+        ],
+        "scrW": 0.035
+      },
+      "mano": {
+        "d": [
+          0.26,
+          0.42
+        ],
+        "m": [
+          0.37000000000000005,
+          0.66
+        ]
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.95
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "grade": 0,
+    "deskNote": "GPT Image 2.5 (Higgsfield) nativo 3840×2160 → 2752×1536. Referencias: master home-hero + kain-presenta. Kain a la izquierda (x 0.06–0.24) con el sello sobre la mano (x 0.22–0.36); mitad derecha en penumbra para el texto. 2026-10-29.",
+    "mobileNote": "Reencuadre de la placa de escritorio (ventana 2506×2160 centrada en Kain) + reencuadre-movil.mjs padTop 0.45 (penumbra superior sintetizada, tClean 0.33) → 1536×1920 (4:5). Tercio superior limpio para el texto (modo top)."
   }
 }

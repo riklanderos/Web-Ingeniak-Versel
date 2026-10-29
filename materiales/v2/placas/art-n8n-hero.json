@@ -1,0 +1,94 @@
+{
+  "art-n8n-hero": {
+    "alt": "Kain dirige tres corrientes de nodos de luz que se unen en un solo flujo automatizado",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/art-n8n-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.22,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/art-n8n-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.38,
+      "fy": 1,
+      "subjTop": 0.36
+    },
+    "layout": "subject-left",
+    "pose": "orquesta con la mano en alto tres corrientes de nodos que convergen en un flujo",
+    "safe": {
+      "d": [
+        [
+          0.58,
+          0.14,
+          0.96,
+          0.86
+        ]
+      ],
+      "m": [
+        [
+          0.05,
+          0.03,
+          0.95,
+          0.33
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.04,
+        0.04,
+        0.48,
+        0.97
+      ],
+      "m": [
+        0.1,
+        0.36,
+        0.9,
+        0.98
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.17,
+          0.45
+        ],
+        "m": [
+          0.38,
+          0.62
+        ],
+        "scrW": 0.035
+      },
+      "mano": {
+        "d": [
+          0.28,
+          0.35
+        ],
+        "m": [
+          0.56,
+          0.66
+        ]
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.95
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "grade": 0,
+    "deskNote": "GPT Image 2.5 (Higgsfield) nativo 3840×2160 → 2752×1536. Referencias: master home-hero + kain-presenta. Kain a la izquierda (x 0.08–0.28); tres corrientes de nodos convergen hacia la derecha; la penumbra del texto va a la derecha sobre el flujo tenue. 2026-10-29.",
+    "mobileNote": "Reencuadre de la placa de escritorio (ventana 2506×2160 centrada en Kain) + reencuadre-movil.mjs padTop 0.45 (penumbra superior sintetizada, tClean 0.33) → 1536×1920 (4:5). Tercio superior limpio para el texto (modo top)."
+  }
+}

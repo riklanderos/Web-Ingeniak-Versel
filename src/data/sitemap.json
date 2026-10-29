@@ -9081,7 +9081,7 @@
           "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Mismo objeto de estación junto a Kain dentro del 60 % inferior; riel a ras de piso en y≈0.93."
         },
         "plate": {
-          "id": "home-sistema-2-atender",
+          "id": "art-costo-hero",
           "component": "ImageSection hero",
           "layout": "subject-right",
           "mirror": false,
@@ -9311,20 +9311,15 @@
           "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Kain en x≈0.44 señalando hacia arriba a la derecha (hacia el CTA)."
         },
         "plate": {
-          "id": "servicios-no-se",
+          "id": "art-kommo-ghl-hero",
           "component": "ImageSection hero",
-          "layout": "subject-right",
-          "mirror": true,
+          "layout": "subject-left",
+          "mirror": false,
           "height": "hero",
           "tone": "sol",
           "mobile": "top",
-          "srcsetMax": 1920,
-          "priority": "P1",
-          "launchFallback": {
-            "plate": "home-sistema-3-organizar",
-            "mirror": false,
-            "note": "Respaldo de la plantilla de artículo: Kain frente a los carriles (elegir camino), sujeto a la derecha."
-          }
+          "srcsetMax": 2752,
+          "priority": "P1"
         }
       },
       {
@@ -9555,12 +9550,7 @@
           "tone": "sol",
           "mobile": "top",
           "srcsetMax": 2752,
-          "priority": "P1",
-          "launchFallback": {
-            "plate": "home-sistema-2-atender",
-            "mirror": false,
-            "note": "Respaldo de la plantilla de artículo: estación Atender con el teléfono, sujeto a la derecha."
-          }
+          "priority": "P1"
         }
       },
       {
@@ -9776,7 +9766,7 @@
           "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Kain en x≈0.36; panel a su derecha (x≈0.64)."
         },
         "plate": {
-          "id": "kommo-hero",
+          "id": "art-partner-kommo-hero",
           "component": "ImageSection hero",
           "layout": "subject-left",
           "mirror": false,
@@ -9992,7 +9982,7 @@
           "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Kain en x≈0.66; calendario a su izquierda (x≈0.36)."
         },
         "plate": {
-          "id": "gohighlevel-hero",
+          "id": "art-ghl-espanol-hero",
           "component": "ImageSection hero",
           "layout": "subject-right",
           "mirror": false,
@@ -10224,10 +10214,10 @@
           "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Mismo objeto de estación junto a Kain dentro del 60 % inferior; riel a ras de piso en y≈0.93."
         },
         "plate": {
-          "id": "home-sistema-4-automatizar",
+          "id": "art-n8n-hero",
           "component": "ImageSection hero",
           "layout": "subject-left",
-          "mirror": true,
+          "mirror": false,
           "height": "hero",
           "tone": "sol",
           "mobile": "top",
