@@ -11741,5 +11741,200 @@
       "note": "Brochure/CV empresarial (landing oculta). Reutiliza las secciones genéricas del hub: definicion, mapa, cifras, vktor, faq + las nuevas ficha y equipo."
     },
     "nav": "full"
+  },
+  {
+    "id": "art-prueba-rik",
+    "group": "Recursos",
+    "url": "/blog/prueba-rik-como-elegir-un-crm-para-tu-empresa/",
+    "canonical": "https://ingeniak.mx/blog/prueba-rik-como-elegir-un-crm-para-tu-empresa/",
+    "indexable": true,
+    "status": "nueva",
+    "template": "T-ARTICLE",
+    "purpose": "Intención informativa · Buyer/etapa: Dueño de PyME, etapa de consideración",
+    "primaryKeyword": "cómo elegir un crm",
+    "secondaryKeywords": [
+      "crm para pymes",
+      "mejor crm",
+      "software crm",
+      "implementar crm"
+    ],
+    "title": "Cómo elegir un CRM para tu empresa: guía 2026",
+    "titleLength": 45,
+    "metaDescription": "Descubre cómo elegir un CRM para tu empresa: criterios, errores comunes y checklist para implementarlo sin fricción en tu equipo comercial.",
+    "metaLength": 139,
+    "h1": "PRUEBA RIK - Cómo elegir un CRM para tu empresa",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Blog",
+        "url": "/blog/"
+      },
+      {
+        "name": "PRUEBA RIK - Cómo elegir un",
+        "url": "/blog/prueba-rik-como-elegir-un-crm-para-tu-empresa/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: cómo elegir un crm.",
+        "cinematic": true,
+        "plate": {
+          "id": "home-sistema-2-atender",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "respuesta",
+        "name": "Respuesta corta",
+        "spec": "40–60 palabras citables que responden \"cómo elegir un crm\" en la primera oración.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "indice",
+        "name": "Índice",
+        "spec": "Tabla de contenidos fija en escritorio, plegable en celular.",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cuerpo",
+        "name": "Cuerpo (H2)",
+        "spec": "1) Define tu proceso comercial antes de comparar · 2) Criterios para comparar un CRM · 3) Errores comunes al implementarlo · 4) Resumen: cómo elegir un CRM en cinco pasos",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "cta-medio",
+        "name": "CTA intermedio",
+        "spec": "Tarjeta a /servicios/agentes-ia-whatsapp/ + WhatsApp.",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "faq",
+        "name": "Preguntas frecuentes",
+        "spec": "Acordeón (B01, B02, B03); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 7,
+        "id": "autor",
+        "name": "Sobre el autor",
+        "spec": "Tarjeta de Equipo de Ingeniak hasta confirmar autor (R8).",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "fuentes",
+        "name": "Fuentes",
+        "spec": "1 fuente(s) con fecha de consulta.",
+        "cinematic": false
+      },
+      {
+        "order": 9,
+        "id": "relacionados",
+        "name": "Sigue explorando",
+        "spec": "3 tarjetas: /servicios/agentes-ia-whatsapp/ · /kain/ · /casos/clinica-dental-monterrey/.",
+        "cinematic": false
+      },
+      {
+        "order": 10,
+        "id": "cta-final",
+        "name": "Cierre",
+        "spec": "Cierre cinematográfico compartido (cta-amanecer).",
+        "cinematic": true,
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Agendar mi Discovery Session",
+      "href": "/discovery/",
+      "action": "agendar"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola Kain, leí pRUEBA RIK - Cómo elegir un CRM para tu empresa y quiero ver cómo aplica a mi negocio.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20pRUEBA%20RIK%20-%20C%C3%B3mo%20elegir%20un%20CRM%20para%20tu%20empresa%20y%20quiero%20ver%20c%C3%B3mo%20aplica%20a%20mi%20negocio."
+    },
+    "internalLinks": [
+      "/servicios/agentes-ia-whatsapp/",
+      "/kain/",
+      "/casos/clinica-dental-monterrey/"
+    ],
+    "jsonLd": [
+      "BlogPosting (author Person, datePublished, dateModified)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "B01",
+        "q": "¿Cuánto cuesta un CRM para una PyME?",
+        "a": "El costo de un CRM para una PyME suele calcularse por usuario al mes y varía según funciones, integraciones y volumen de contactos. Pide una prueba gratuita, confirma qué automatizaciones incluye cada plan y revisa cargos extra por WhatsApp, almacenamiento o soporte antes de comprometerte con un contrato anual.",
+        "estado": "por validar"
+      },
+      {
+        "id": "B02",
+        "q": "¿Cuánto tarda en implementarse un CRM?",
+        "a": "Una implementación básica de CRM puede tomar entre una y tres semanas, según la cantidad de etapas, usuarios e integraciones. Lo que más retrasa el arranque es migrar datos sucios y no definir responsables, así que limpia tu base, documenta tu proceso y capacita al equipo antes de lanzar.",
+        "estado": "por validar"
+      },
+      {
+        "id": "B03",
+        "q": "¿Qué CRM es mejor para empezar?",
+        "a": "No existe un mejor CRM universal: el ideal es el que tu equipo realmente use todos los días. Para empezar, prioriza pipelines visibles, integración con WhatsApp, automatizaciones simples y reportes claros. Valida con una prueba piloto de dos semanas y mide cuántos leads se registran y se atienden a tiempo.",
+        "estado": "por validar"
+      }
+    ],
+    "sitemap": {
+      "priority": 0.6,
+      "changefreq": "monthly"
+    },
+    "author": "Equipo de Ingeniak",
+    "wordCount": 1662,
+    "outline": [
+      "Define tu proceso comercial antes de comparar",
+      "Criterios para comparar un CRM",
+      "Errores comunes al implementarlo",
+      "Resumen: cómo elegir un CRM en cinco pasos"
+    ],
+    "sources": "PRUEBA RIK - Sitio oficial de Kommo CRM",
+    "notes": "",
+    "folio": "507",
+    "copy": {
+      "status": "borrador",
+      "minWords": 1200,
+      "owner": "SEO Studio (brief + redacción + aprobación)",
+      "note": "Generado por SEO Studio (artículo 2175d166-7b6f-4785-b35c-b720eb741676) el 2026-10-27."
+    }
   }
 ]
