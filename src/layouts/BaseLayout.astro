@@ -138,6 +138,19 @@ const showRail = full && p.rail !== false && page.template !== 'T-404';
     <meta name="color-scheme" content="dark" />
     {/* Verificación de Google Search Console (propiedad ingeniak.mx; etiqueta pedida por el cliente, 2026-10-29) */}
     <meta name="google-site-verification" content="o2wBitvRnS8xvYel800kz9ZlhQ7gLCexN1MLIFqX_E0" />
+    {/* Google Analytics 4 (flujo "Ingeniak Web" G-XF9G08CZJQ, 2026-10-29): solo en el build de producción; IP anónima.
+        Va en todas las páginas, también en las landings ocultas de campaña (son justo las que hay que medir). */}
+    {import.meta.env.PROD && (
+      <>
+        <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-XF9G08CZJQ"></script>
+        <script is:inline>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { dataLayer.push(arguments); }
+          gtag('js', new Date());
+          gtag('config', 'G-XF9G08CZJQ', { anonymize_ip: true });
+        </script>
+      </>
+    )}
     <meta name="format-detection" content="telephone=no" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
