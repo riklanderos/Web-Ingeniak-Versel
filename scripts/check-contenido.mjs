@@ -71,8 +71,8 @@ export async function run(opts) {
     // T-FAQ es la casa del banco completo de preguntas: ahí las compartidas sí cuentan (peticiones · faq-contacto-legal #2)
     const n = words(mainText(root, pg.page.template === 'T-FAQ' ? new Set() : shared, { dropFigures: false })).length;
     const min = pg.page.copy?.minWords ?? MIN_BY_TEMPLATE[pg.page.template] ?? 0;
-    // Caso breve (R2, noindex hasta que el cliente confirme): lo corto es la puerta del cliente, no un defecto del build
-    if (n < min) (gatePending(pg.page) ? R.gate : R.fail)(pg.route, `${n} palabras visibles < ${min} (copy.minWords, plantilla ${pg.page.template})${gatePending(pg.page) ? ' · caso breve con noindex: el texto completo vuelve con la confirmación escrita (R2)' : ''}`);
+    // Caso breve (R2, aunque se autorice su indexación): lo corto es la puerta del cliente, no un defecto del build
+    if (n < min) (gatePending(pg.page) ? R.gate : R.fail)(pg.route, `${n} palabras visibles < ${min} (copy.minWords, plantilla ${pg.page.template})${gatePending(pg.page) ? ' · caso breve: el texto completo vuelve con la confirmación escrita (R2)' : ''}`);
     R.info(`${pg.route} · ${n} palabras visibles (mínimo ${min})`);
     const f = FAMILY[pg.page.template];
     if (f) {

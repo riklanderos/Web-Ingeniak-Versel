@@ -1,10 +1,11 @@
 // src/lib/llms.ts — /llms.txt y /llms-full.txt (ESPEC-v2 §8.7, §12.2 R8).
-// Se generan desde sitemap.json (páginas construidas, indexables y sin puerta pendiente), metrics.ts y la ficha de la
+// Se generan desde sitemap.json (páginas construidas e indexables), metrics.ts y la ficha de la
 // entidad, con la MISMA redacción que el footer (src/components/nav/Footer.astro) y el JSON-LD (layout/jsonld.ts).
-// Precio: solo PRICE_FROM. Cifras: solo metrics.ts. Un caso breve (noindex) no se enlaza; su línea de resultado se queda sin enlace.
+// Precio: solo PRICE_FROM. Cifras: solo metrics.ts. Un caso breve solo se enlaza si su indexación está autorizada; el texto exportado conserva el recorte editorial.
 // Las landings ocultas (hidden: true → noindex) no entran: indexablePages() ya las excluye (ESPEC §12.6 R17).
 import { METRICS, PRICE_FROM, SOURCE_NOTE, type MetricId } from './metrics';
 import { SITE, pages, indexablePages, copyOrNull, isBuilt, type Page } from './site';
+import { gatePending, CASE_BRIEF_SECTIONS } from './indexacion.mjs';
 import { tokensToText, getFaqItems, VKTOR } from '../components/ui/ui-data';
 
 const abs = (u: string) => `${SITE.url}${u}`;
@@ -144,8 +145,15 @@ function pageText(p: Page): string {
   const order = ((p.sections as any[]) ?? []).map((s) => s.id);
   const secs = copy?.sections ?? {};
   const ids = [...order.filter((id) => id in secs), ...Object.keys(secs).filter((id) => !order.includes(id))];
+  const brief = gatePending(p, copy);
   for (const id of ids) {
-    const s = secs[id];
+    if (brief && !CASE_BRIEF_SECTIONS.includes(id)) continue;
+    let s = secs[id];
+    if (brief && id === 'ficha' && s) {
+      // Igual que CaseTemplate: solo ficha confirmada y entradilla breve, nunca el borrador completo.
+      const { deckBreve, ...ficha } = s;
+      s = { ...ficha, deck: deckBreve ?? ficha.deck, entity: (ficha.entity ?? []).filter((r: any) => r.confirmed === true || /\{\{metric:/.test(r.value ?? '')) };
+    }
     if (!s || s._omitir) continue;
     if (s.faqIds?.length) {
       const items = getFaqItems(s.faqIds);
