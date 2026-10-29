@@ -16,7 +16,7 @@
 //   10 relacionados  ScriptList (servicio e industria) + Still variant="next" (Siguiente reportaje)
 //   11 cta-final     Dawn
 // Puerta R2: si sitemap trae publishGate y el copy no lo marca como confirmado (copy.publishGate.ok === true),
-// la página sale como "caso breve": noindex,follow (fuera de sitemap.xml y llms-full.txt; el resto lo resuelve el build).
+// la página sale como "caso breve". Su indexación se autoriza aparte con publishGate.indexBrief (indexacion.mjs).
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ImageSection from '../cine/ImageSection.astro';
 import CaseFigure from '../cine/CaseFigure.astro';
@@ -39,7 +39,8 @@ import Still from '../ui/Still.astro';
 import Icon from '../ui/Icon.astro';
 import Prose from '../content/Prose.astro';
 import Quote from '../content/Quote.astro';
-import { getCopy, getPage, getPlate, waHref, resolveTokens, SITE, linkTarget, type Page } from '../../lib/site';
+import { getCopy, getPage, getPlate, waHref, resolveTokens, SITE, linkTarget, pageNoindex, type Page } from '../../lib/site';
+import { CASE_BRIEF_SECTIONS } from '../../lib/indexacion.mjs';
 import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 
 interface Props { page: Page; devCompleto?: boolean }
@@ -60,14 +61,14 @@ const shows = (s: any) => {
 };
 // ── Puerta de publicación (R2) ───────────────────────────────────────────────
 // Caso breve (QA #54): mientras ficha, punto de partida e implementación no estén confirmados por escrito, la página solo
-// pinta portada, ficha (filas confirmadas), CaseFigure, qué puedes replicar, relacionados y cierre — y sale en noindex.
+// pinta portada, ficha (filas confirmadas), CaseFigure, qué puedes replicar, relacionados y cierre. La indexación no abre esta puerta editorial.
 // Lo no confirmado no llega al HTML público (no basta con noindex).
 // Solo en desarrollo: /casos/<slug>--completo/ (casos/[slug].astro) pinta la versión completa de un caso breve para revisar
 // su maqueta (implementación, resultado y VKTOR con sus placas o su launchFallback) antes de que el cliente abra la puerta.
 // Esa ruta no existe en el build y sale en noindex.
 const devCompleto = import.meta.env.DEV && Astro.props.devCompleto === true;
 const breve = !!page.publishGate && copy.publishGate?.ok !== true && !devCompleto;
-const BREVE = ['hero', 'ficha', 'cifra', 'replicar', 'relacionados', 'cta-final'];
+const BREVE = CASE_BRIEF_SECTIONS;
 const order: string[] = sitemapSecs.filter(shows).map((s) => s.id).filter((id) => !breve || BREVE.includes(id));
 
 // ── Utilidades ───────────────────────────────────────────────────────────────
@@ -229,7 +230,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
   page={page}
   lcpPlate={heroR?.id ?? undefined}
   lcpSrcsetMax={heroPlate?.srcsetMax}
-  noindex={breve || devCompleto}
+  noindex={pageNoindex(page) || devCompleto}
   articleAbout={articleAbout}
   rail={rail.length > 1 ? rail : false}
   railMode="labels"

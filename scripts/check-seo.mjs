@@ -234,7 +234,7 @@ export async function run(opts) {
     const want = new Set(expected.filter(inScope)), got = new Set(xmlUrls.filter(inScope));
     for (const u of want) if (!got.has(u)) R.fail(u, 'página indexable fuera de sitemap.xml');
     for (const u of got) if (!want.has(u)) R.fail(u, 'sitemap.xml incluye una página que no es indexable/construida');
-    R.info(`sitemap.xml: ${got.size} URL(s) · esperadas ${want.size} (indexables sin puerta pendiente${opts.release ? ', todas' : ', construidas'}${scope ? `; solo las ${scope.size} ruta(s) de --only` : ''})`);
+    R.info(`sitemap.xml: ${got.size} URL(s) · esperadas ${want.size} (indexables${opts.release ? ', todas' : ', construidas'}${scope ? `; solo las ${scope.size} ruta(s) de --only` : ''})`);
   }
   const llms = await loadText(opts, '/llms.txt');
   const full = await loadText(opts, '/llms-full.txt');
