@@ -53,11 +53,14 @@ test('validate · envío válido normalizado', () => {
   assert.equal(r.data.consentimiento, true);
 });
 
-test('validate · opcionales vacíos son válidos', () => {
+test('validate · canales, CRM, sitio y proyecto son obligatorios (2026-11-01)', () => {
   const r = validate({ ...valido(), canales: [], crm: '', sitio: '', vision: '' });
-  assert.equal(r.ok, true);
-  assert.deepEqual(r.data.canales, []);
-  assert.equal(r.data.crm, '');
+  assert.equal(r.ok, false);
+  assert.deepEqual(Object.keys(r.errors).sort(), ['canales', 'crm', 'sitio', 'vision']);
+  assert.equal(r.errors.canales, E.canales);
+  assert.equal(r.errors.crm, E.crm);
+  assert.equal(r.errors.sitio, E.sitio);
+  assert.equal(r.errors.vision, E.vision);
 });
 
 test('validate · reglas por campo con los mensajes del catálogo', () => {
@@ -118,7 +121,7 @@ test('§3.9-8 · inválidos → 422 con las claves exactas y mensajes de cotizar
   assert.equal(r3.status, 422, 'objeto vacío → 422 con todos los obligatorios');
   assert.deepEqual(
     Object.keys((await cuerpo(r3)).errors).sort(),
-    ['canal_preferido', 'consentimiento', 'email', 'empresa', 'industria', 'nombre', 'objetivo', 'plazo', 'presupuesto', 'servicios', 'tamano', 'telefono'],
+    ['canal_preferido', 'canales', 'consentimiento', 'crm', 'email', 'empresa', 'industria', 'nombre', 'objetivo', 'plazo', 'presupuesto', 'servicios', 'sitio', 'tamano', 'telefono', 'vision'],
   );
   assert.equal(llamadas.length, 0, 'sin llamadas a Kommo');
 });

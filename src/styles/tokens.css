@@ -24,7 +24,7 @@
   /* §2.1 Color */
   --ink:#03040B; --ink-2:#060A18; --paper:#070B18; --navy:#0A1F4C;
   --blue:#0055FF; --blue-hi:#1A66FF; --indigo:#455DFF; --cyan:#00E5FF; --cyan-soft:#A8F3FF;
-  --text:#FFFFFF; --text-2:#DCE6F2; --soft:#C9D6E6; --muted:#9EB0C7; --amber:#FFB547;
+  --text:#FFFFFF; --text-2:#DCE6F2; --soft:#C9D6E6; --muted:#9EB0C7; --amber:#FFB547; --err:#FF6B70;
   --hair:rgb(158 176 199 / .14); --hair-2:rgb(158 176 199 / .32); --hair-cyan:rgb(0 229 255 / .35);
   color-scheme:dark;
 

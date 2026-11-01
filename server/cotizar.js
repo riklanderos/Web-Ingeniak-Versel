@@ -248,13 +248,13 @@ export function validate(input) {
     else uno[campo] = v;
   }
 
-  // Paso 2 · Tu negocio (opcionales)
+  // Paso 2 · Tu negocio (obligatorios desde 2026-11-01; «Ninguno» cuenta como respuesta de CRM)
   const canales = slugs(src.canales);
-  if (!canales || canales.length > 7 || canales.some((s) => !opcion(catalogo.canales, s))) {
+  if (!canales || canales.length < 1 || canales.length > 7 || canales.some((s) => !opcion(catalogo.canales, s))) {
     errors.canales = ERR.canales ?? 'Revisa los canales que elegiste.';
   }
   const crm = typeof src.crm === 'string' ? src.crm.trim() : src.crm == null ? '' : null;
-  if (crm === null || (crm !== '' && !opcion(catalogo.crms, crm))) {
+  if (crm === null || !crm || !opcion(catalogo.crms, crm)) {
     errors.crm = ERR.crm ?? 'Revisa el CRM que elegiste.';
   }
 
@@ -274,11 +274,11 @@ export function validate(input) {
 
   const sitio = clean(src.sitio).replace(/\s+/g, ' ');
   if (src.sitio != null && typeof src.sitio !== 'string') errors.sitio = ERR.sitio;
-  else if (sitio.length > LIM.sitio) errors.sitio = ERR.sitio;
+  else if (!sitio || sitio.length > LIM.sitio) errors.sitio = ERR.sitio;
 
   const vision = clean(src.vision, Infinity, { lines: true });
   if (src.vision != null && typeof src.vision !== 'string') errors.vision = ERR.vision;
-  else if (vision.length > LIM.vision) errors.vision = ERR.vision;
+  else if (!vision || vision.length > LIM.vision) errors.vision = ERR.vision;
 
   if (src.consentimiento !== true) errors.consentimiento = ERR.consentimiento;
 

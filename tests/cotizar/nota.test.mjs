@@ -49,8 +49,9 @@ test('nota · formato exacto de §3.4 (todos los datos)', () => {
 });
 
 test('§3.9-12 · nota mínima: sin undefined, null, renglones vacíos ni separadores sueltos', () => {
+  // Desde 2026-11-01 canales, CRM, sitio y proyecto son obligatorios: la nota mínima es la de meta vacía.
   const { data, meta } = datos({
-    canales: [], crm: '', sitio: '', vision: '\n\n  Primera línea.\n\n\n   \nSegunda línea.\n\n',
+    vision: '\n\n  Primera línea.\n\n\n   \nSegunda línea.\n\n',
     tamano: '200+', canal_preferido: 'llamada',
     meta: { pagina: '', folio: '', cta: '', src: '', landing: '', referrer: '', zona: '', t_llenado_ms: 9000 },
   });
@@ -65,7 +66,7 @@ test('§3.9-12 · nota mínima: sin undefined, null, renglones vacíos ni separa
   assert.match(nota, /Su proyecto: Primera línea\.\nSegunda línea\./);
   assert.match(nota, /\nEnviado: 20\/10\/2026 12:34 \(hora del centro de México\)\n/);
   assert.match(nota, /\nEntorno: local$/);
-  assert.doesNotMatch(nota, /Canales que usan hoy|CRM actual|Sitio o redes|Página:|Llegó por|UTM:|gclid|Zona horaria/);
+  assert.doesNotMatch(nota, /Página:|Llegó por|UTM:|gclid|Zona horaria/);
 });
 
 test('hora del centro de México (sin horario de verano desde 2022)', () => {
@@ -136,9 +137,6 @@ test('buildKommo · lead, contacto, empresa y ids de embudo desde variables', ()
     statusId: 2222222,
     responsibleUserId: undefined,
   });
-  // Opcionales vacíos: sin claves vacías (CRM y canales no se mandan).
-  const sinOpc = buildKommo(datos({ crm: '', canales: [], meta: { pagina: '' } }).data, cleanMeta({}), {}, AHORA);
-  assert.deepEqual(Object.keys(sinOpc.lead.campos).sort(), ['contacto', 'industria', 'objetivo', 'plazo', 'presupuesto', 'servicios', 'tamano']);
   assert.deepEqual(k.tracking, { REFERRER: 'https://www.google.com/' });
   assert.equal(k.tags[0], 'web-cotizar');
   assert.match(k.note, /^Solicitud de cotización · sitio web · Folio IK-6F1C2D\n/);

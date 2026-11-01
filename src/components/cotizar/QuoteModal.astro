@@ -1,6 +1,7 @@
 ---
 // QuoteModal · "Cotizar proyecto" (CAMBIO-COTIZAR §2, dueño "modal"). Se monta UNA vez por página (BaseLayout).
-// Props: waHref (WhatsApp de la página: es el único wa.me del HTML, en el atajo del paso 1) · page (entrada de sitemap.json).
+// Props: waHref (WhatsApp de la página; desde 2026-11-01 el modal no trae atajo de WhatsApp en el paso 1: quote.ts usa el
+//   número del sitio en éxito/falla) · page (entrada de sitemap.json).
 // Contrato (§1.2): cualquier [data-cotizar] lo abre (clic delegado en captura, preventDefault); también #cotizar en la URL
 // y window.ingeniakCotizar.open({ servicio, industria, section }). La lógica (pasos, validación, borrador, envío a
 // POST /api/cotizar/, éxito y falla) vive en scripts/cotizar/quote.ts y se carga con import() en el primer uso o en
@@ -76,9 +77,6 @@ const S = cat.pasos;
             </div>
             <p class="fld__error" id="qm-objetivo-error" hidden></p>
           </fieldset>
-          <p class="qm__atajo">
-            <a class="lnk" href={waHref} data-wa data-qm-atajo target="_blank" rel="noopener"><Icon name="whatsapp" size={18} class="qm__atajo-ico" />{T.atajoWa}</a>
-          </p>
         </section>
 
         {/* ── Paso 2 · Tu negocio ── */}
@@ -136,7 +134,7 @@ const S = cat.pasos;
             <p class="fld__error" id="qm-plazo-error" hidden></p>
           </fieldset>
           <fieldset class="fld" data-field="canales" id="qm-canales">
-            <legend class="fld__label">¿Por dónde te escriben hoy tus clientes? <span class="fld__opt">Opcional</span></legend>
+            <legend class="fld__label">¿Por dónde te escriben hoy tus clientes?</legend>
             <div class="chips">
               {cat.canales.map((c) => (
                 <label class="chip-opt">
@@ -149,7 +147,7 @@ const S = cat.pasos;
             <p class="fld__error" id="qm-canales-error" hidden></p>
           </fieldset>
           <fieldset class="fld" data-field="crm" id="qm-crm" data-deselect>
-            <legend class="fld__label">¿Usan algún CRM? <span class="fld__opt">Opcional</span></legend>
+            <legend class="fld__label">¿Usan algún CRM?</legend>
             <div class="chips">
               {cat.crms.map((c) => (
                 <label class="chip-opt">
@@ -201,12 +199,12 @@ const S = cat.pasos;
             <p class="fld__error" id="qm-canal_preferido-error" hidden></p>
           </fieldset>
           <div class="fld" data-field="sitio">
-            <label class="fld__label" for="qm-sitio">Sitio web o redes <span class="fld__opt">Opcional</span></label>
+            <label class="fld__label" for="qm-sitio">Sitio web o redes</label>
             <input class="fld__input" id="qm-sitio" name="sitio" type="text" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" maxlength="200" enterkeyhint="next" />
             <p class="fld__error" id="qm-sitio-error" hidden></p>
           </div>
           <div class="fld" data-field="vision">
-            <label class="fld__label" for="qm-vision">Cuéntanos tu proyecto <span class="fld__opt">Opcional</span></label>
+            <label class="fld__label" for="qm-vision">Cuéntanos tu proyecto</label>
             <textarea class="fld__textarea" id="qm-vision" name="vision" rows="4" maxlength={cat.limites.vision}
               placeholder="Ej. Nos escriben 80 personas al día por WhatsApp y no alcanzamos a responder." aria-describedby="qm-vision-count"></textarea>
             <p class="fld__count" id="qm-vision-count" data-qm-count-for="vision">0 / {cat.limites.vision}</p>

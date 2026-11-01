@@ -89,10 +89,10 @@ export function validar(d: Datos, campos: readonly Campo[] = ORDEN): Errores {
         uno(c, d[c]);
         break;
       case 'canales':
-        if (d.canales.length > 7 || !d.canales.every((x) => CAT.canales.has(x))) e.canales = ERR.canales ?? GENERICO;
+        if (d.canales.length < 1 || d.canales.length > 7 || !d.canales.every((x) => CAT.canales.has(x))) e.canales = ERR.canales ?? GENERICO;
         break;
       case 'crm':
-        if (d.crm && !CAT.crm.has(d.crm)) e.crm = ERR.crm ?? GENERICO;
+        if (!CAT.crm.has(d.crm)) e.crm = ERR.crm ?? GENERICO;
         break;
       case 'nombre': {
         const n = largo(d.nombre);
@@ -114,10 +114,10 @@ export function validar(d: Datos, campos: readonly Campo[] = ORDEN): Errores {
         if (!d.email || largo(d.email) > L.email || !EMAIL_RX.test(d.email)) e.email = ERR.email;
         break;
       case 'sitio':
-        if (largo(d.sitio) > L.sitio) e.sitio = ERR.sitio;
+        if (!d.sitio || largo(d.sitio) > L.sitio) e.sitio = ERR.sitio;
         break;
       case 'vision':
-        if (largo(d.vision) > L.vision) e.vision = ERR.vision;
+        if (!d.vision || largo(d.vision) > L.vision) e.vision = ERR.vision;
         break;
       case 'consentimiento':
         if (d.consentimiento !== true) e.consentimiento = ERR.consentimiento;

@@ -105,11 +105,10 @@
     "enviando": "Enviando…",
     "cerrar": "Cerrar",
     "pasoDe": "Paso {n} de 3",
-    "atajoWa": "¿Prefieres escribirnos? Escríbele a Kain",
     "consentimiento": "Acepto que Ingeniak me contacte por WhatsApp y correo sobre esta solicitud. Leí el {aviso}.",
     "aviso": "aviso de privacidad",
-    "resumenErrores": "Revisa {n} campos antes de continuar:",
-    "resumenErroresUno": "Revisa 1 campo antes de continuar:",
+    "resumenErrores": "Nos faltan {n} datos para cotizar tu proyecto:",
+    "resumenErroresUno": "Nos falta 1 dato para cotizar tu proyecto:",
     "borrador": "Guardamos tus respuestas mientras sigas en esta página.",
     "telefonoAyuda": {
       "mx": "10 dígitos con la lada de tu ciudad, sin el +52. Ahí te escribimos.",
@@ -162,8 +161,10 @@
     "telefonoLada": "Escribe la lada de tu país (por ejemplo, +52).",
     "email": "Revisa tu correo.",
     "canal_preferido": "Elige cómo prefieres que te contactemos.",
-    "sitio": "El sitio o la red social es demasiado largo.",
-    "vision": "El texto es demasiado largo (máximo 1000 caracteres).",
+    "canales": "Elige por dónde te escriben tus clientes.",
+    "crm": "Elige una opción; si no usan CRM, marca «Ninguno».",
+    "sitio": "Escribe el sitio web o una red social de tu negocio.",
+    "vision": "Cuéntanos tu proyecto: con dos líneas nos basta.",
     "consentimiento": "Necesitamos tu autorización para contactarte."
   },
   "prefill": {
