@@ -6,6 +6,12 @@
 // Colores: solo la paleta que acepta Kommo para etapas (se valida en el script antes de enviar).
 import { INDUSTRIES as AGENDA_INDUSTRIAS, TEAM_SIZES as AGENDA_EQUIPOS, REVENUES as AGENDA_FACTURACION } from './agenda.js';
 
+/** Destino fijo de la reserva de Discovery (cliente en chat, 2026-11-01): la etapa 113621315 del embudo 14704615 de su
+ *  cuenta. Manda sobre el nombre aprobado («Ventas» · «Discovery agendada») y sobre KOMMO_DISCOVERY_STATUS_ID; si la
+ *  cuenta ya no tiene ese embudo, resolverDestino lo ignora y sigue con el nombre (nunca se mandan ids que Kommo
+ *  rechazaría). La cotización web no cambia: sigue entrando a «Ventas / Nueva cotización». */
+export const DISCOVERY_DESTINO = { pipelineId: 14704615, statusId: 113621315 };
+
 /** Embudos y etapas activas (Ganado/Perdido los crea Kommo). La primera etapa es la de entrada. */
 export const EMBUDOS = {
   ventas: {

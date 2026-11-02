@@ -417,8 +417,9 @@ function nombreEtapa(embudo, etapa) {
 
 /**
  * Embudo y etapa del lead. Prioridad:
- *   1. `pipelineId` (variable): ese embudo, con la etapa de `statusId` (variable) o, sin ella, la del nombre aprobado
- *      dentro de ese embudo; si ese nombre no existe ahí, `statusIdRespaldo`.
+ *   1. `pipelineId` (variable; o DISCOVERY_DESTINO con `siExiste`, que solo cuenta si la cuenta leída lo tiene): ese
+ *      embudo, con la etapa de `statusId` o, sin ella, la del nombre aprobado dentro de ese embudo; si ese nombre no
+ *      existe ahí, `statusIdRespaldo`.
  *   2. `statusId` (variable, sin embudo): esa etapa.
  *   3. Embudo y etapa por nombre (estructura aprobada). Si la etapa con ese nombre no existe, `statusIdRespaldo`.
  *   4. `statusIdRespaldo` sin la estructura (con el embudo al que pertenece, si se conoce).
@@ -428,7 +429,7 @@ function nombreEtapa(embudo, etapa) {
  * etapa no tenga todavía el nombre aprobado.
  * @param {Estructura | null} est
  * @param {{ embudo?: string, etapa?: string, pipelineId?: number, statusId?: number, statusIdRespaldo?: number,
- *           fallbackPipelineId?: number, fallbackStatusId?: number }} [destino]
+ *           fallbackPipelineId?: number, fallbackStatusId?: number, siExiste?: boolean }} [destino]
  * @returns {Destino}
  */
 export function resolverDestino(est, destino = {}) {
@@ -436,16 +437,21 @@ export function resolverDestino(est, destino = {}) {
   const sid = posInt(destino.statusId);
   const respaldo = posInt(destino.statusIdRespaldo);
   const etapa = destino.embudo && destino.etapa ? nombreEtapa(destino.embudo, destino.etapa) : null;
-  if (pid) {
-    if (sid) return { pipelineId: pid, statusId: sid, origen: 'variable' };
-    const enPid = est?.embudos.find((p) => p.id === pid);
+  // `siExiste` (DISCOVERY_DESTINO): los ids fijos solo cuentan si la cuenta leída los tiene — nunca se mandan ids que
+  // Kommo rechazaría; si el embudo ya no existe, se sigue por nombre. Las variables de entorno siguen mandando tal cual.
+  const leido = !!est?.embudos.length;
+  const enPid = pid ? est?.embudos.find((p) => p.id === pid) : undefined;
+  const fijoIgnorado = !!(destino.siExiste && pid && leido && !enPid);
+  if (pid && !fijoIgnorado) {
+    const sidOk = sid && !(destino.siExiste && enPid && !enPid.etapas.some((x) => x.id === sid)) ? sid : undefined;
+    if (sidOk) return { pipelineId: pid, statusId: sidOk, origen: 'variable' };
     const s = etapa ? buscarEtapa(enPid, etapa)?.id : undefined;
     if (s) return { pipelineId: pid, statusId: s, origen: 'variable', etapaPorNombre: true };
     // La de respaldo solo si es de ese embudo (o si no se pudo leer): otra haría que Kommo rechazara el lead.
     const r = respaldo && (!enPid || enPid.etapas.some((x) => x.id === respaldo)) ? respaldo : undefined;
     return { pipelineId: pid, statusId: r, origen: 'variable' };
   }
-  if (sid) return { statusId: sid, origen: 'variable' };
+  if (sid && !fijoIgnorado) return { statusId: sid, origen: 'variable' };
   const nombre = destino.embudo ? /** @type {any} */ (EMBUDOS)[destino.embudo]?.nombre : null;
   const p = nombre ? buscarEmbudo(est, nombre) : null;
   const s = p && etapa ? buscarEtapa(p, etapa)?.id : undefined;

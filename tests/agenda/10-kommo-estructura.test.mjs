@@ -67,13 +67,13 @@ function sinIdsDesconocidos(sim) {
   }
 }
 
-test('kommo · Discovery → «Ventas / Discovery agendada» con tipo, fecha (unix), Meet, giro, equipo, facturación y página', async (t) => {
+test('kommo · Discovery → su destino fijo (DISCOVERY_DESTINO) con tipo, fecha (unix), Meet, giro, equipo, facturación y página', async (t) => {
   const { sim, g, logs } = await montar(t);
   const r = await reservar('discovery');
   assert.equal(r.kind, 'confirmed');
   const id = leadDelEvento(g);
   assert.ok(sim.leads.has(id), 'ik_kommo apunta al lead creado');
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'Ventas', etapa: 'Discovery agendada' });
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Discovery', etapa: 'Discovery agendada' });
   assert.deepEqual(sim.valores(id), {
     'Tipo de sesión': 'Discovery Session',
     'Fecha de la sesión': Date.parse(START) / 1000,
@@ -177,8 +177,8 @@ test('kommo · sin la estructura → Discovery al embudo principal; Power pagada
   assert.equal([...g.events.values()][0].extendedProperties.private.ik_kommo_pago, '1');
 });
 
-test('kommo · sin los embudos «Ventas» y «Power Session» → el de KOMMO_PIPELINE_ID / KOMMO_STATUS_ID (respaldo)', async (t) => {
-  const { sim, g } = await montar(t, { sinEmbudos: ['Ventas', 'Power Session'] });
+test('kommo · sin los embudos «Ventas», «Power Session» y «Discovery» → el de KOMMO_PIPELINE_ID / KOMMO_STATUS_ID (respaldo)', async (t) => {
+  const { sim, g } = await montar(t, { sinEmbudos: ['Ventas', 'Power Session', 'Discovery'] });
   process.env.KOMMO_PIPELINE_ID = String(sim.ids.embudo('Embudo de ventas'));
   process.env.KOMMO_STATUS_ID = String(sim.ids.etapa('Embudo de ventas', 'Contacto inicial'));
   await reservar('discovery');
@@ -187,18 +187,25 @@ test('kommo · sin los embudos «Ventas» y «Power Session» → el de KOMMO_PI
   assert.equal(sim.valores(id)['Tipo de sesión'], 'Discovery Session', 'los campos existen y se llenan igual');
 });
 
-test('kommo · transición: «Ventas» aún se llama «P1 · PROSPECTOS» → KOMMO_DISCOVERY_STATUS_ID (97185916) lleva la Discovery a SU etapa de P1', async (t) => {
+test('kommo · destino fijo: la Discovery va a sus ids aunque los nombres viejos sigan y KOMMO_DISCOVERY_STATUS_ID apunte a otro lado', async (t) => {
   const { sim, g } = await montar(t);
-  // La cuenta real de hoy: el P1 sin renombrar y la etapa de Discovery con su nombre viejo.
+  // Nombres viejos en la cuenta y la variable apuntando a la etapa de P1: nada de eso le gana a DISCOVERY_DESTINO.
   const p1 = sim.cuenta.pipelines.find((p) => p.name === 'Ventas');
   p1.name = 'P1 · PROSPECTOS';
-  const etapaDiscovery = p1.statuses.find((s) => s.name === 'Discovery agendada');
-  etapaDiscovery.name = '4 · DISCOVERY Session';
-  process.env.KOMMO_DISCOVERY_STATUS_ID = String(etapaDiscovery.id);
+  const etapaVieja = p1.statuses.find((s) => s.name === 'Discovery agendada');
+  etapaVieja.name = '4 · DISCOVERY Session';
+  process.env.KOMMO_DISCOVERY_STATUS_ID = String(etapaVieja.id);
   await reservar('discovery');
   const id = leadDelEvento(g);
-  assert.deepEqual(sim.ubicacion(id), { embudo: 'P1 · PROSPECTOS', etapa: '4 · DISCOVERY Session' }, 'el respaldo trae consigo su embudo');
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Discovery', etapa: 'Discovery agendada' }, 'los ids fijos mandan');
   assert.equal(sim.valores(id)['Tipo de sesión'], 'Discovery Session');
+});
+
+test('kommo · destino fijo: si la cuenta ya no tiene ese embudo, la Discovery sigue por el nombre aprobado', async (t) => {
+  const { sim, g } = await montar(t, { sinEmbudos: ['Discovery'] });
+  await reservar('discovery');
+  const id = leadDelEvento(g);
+  assert.deepEqual(sim.ubicacion(id), { embudo: 'Ventas', etapa: 'Discovery agendada' }, 'nunca se mandan ids que Kommo rechazaría');
 });
 
 test('kommo · con las variables que imprime el script: cada reserva va a SU etapa (ninguna variable le gana al nombre)', async (t) => {
@@ -211,7 +218,7 @@ test('kommo · con las variables que imprime el script: cada reserva va a SU eta
 
   await reservar('discovery');
   const d = leadDelEvento(g);
-  assert.deepEqual(sim.ubicacion(d), { embudo: 'Ventas', etapa: 'Discovery agendada' }, 'el respaldo no le gana a la etapa por nombre');
+  assert.deepEqual(sim.ubicacion(d), { embudo: 'Discovery', etapa: 'Discovery agendada' }, 'el destino fijo manda; la variable vieja se ignora');
 
   g.events.clear();
   await reservar('power');
@@ -232,7 +239,7 @@ test('kommo · KOMMO_POWER_STATUS_ID (o el alias KOMMO_AGENDA_STATUS_ID) solo es
   assert.deepEqual(sim.ubicacion(leadDelEvento(g)), { embudo: 'Power Session', etapa: 'Sesión realizada' }, 'falta «por pagar» → la de la variable (alias viejo)');
   g.events.clear();
   await reservar('discovery');
-  assert.deepEqual(sim.ubicacion(leadDelEvento(g)), { embudo: 'Ventas', etapa: 'Discovery agendada' }, 'la que sí existe gana');
+  assert.deepEqual(sim.ubicacion(leadDelEvento(g)), { embudo: 'Discovery', etapa: 'Discovery agendada' }, 'la Discovery sigue en su destino fijo');
 
   // Con un embudo forzado por variable que no tiene las etapas aprobadas: la etapa de la variable.
   process.env.KOMMO_POWER_PIPELINE_ID = String(sim.ids.embudo('Ventas'));

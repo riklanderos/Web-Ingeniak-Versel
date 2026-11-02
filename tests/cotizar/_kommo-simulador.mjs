@@ -4,7 +4,7 @@
 // que la cuenta no tiene → 400 y no guarda nada. Así cualquier id inventado por el sitio hace fallar la prueba.
 // La estructura sale de shared/kommo-esquema.js (la misma que crea el script de configuración).
 import { createServer } from 'node:http';
-import { CAMPOS, EMBUDOS } from '../../shared/kommo-esquema.js';
+import { CAMPOS, EMBUDOS, DISCOVERY_DESTINO } from '../../shared/kommo-esquema.js';
 
 /** Token de mentira que acepta el simulador. */
 export const TOKEN_SIMULADO = 'tok-simulador-no-real-000';
@@ -55,6 +55,18 @@ export function cuentaSimulada(o = {}) {
     }
     // Un embudo archivado con el mismo nombre no debe confundir al sitio.
     pipelines.push({ id: 1900, name: EMBUDOS.ventas.nombre, sort: 99, is_main: false, is_archive: true, statuses: [{ id: 59_999, name: 'Nueva cotización', sort: 20, type: 0, pipeline_id: 1900 }] });
+    // Destino fijo de la Discovery (shared/kommo-esquema.js): el embudo existe en la cuenta real con estos ids.
+    if (!o.sinEmbudos?.includes('Discovery')) {
+      const dp = DISCOVERY_DESTINO.pipelineId;
+      pipelines.push({
+        id: dp, name: 'Discovery', sort: 50, is_main: false, is_archive: false,
+        statuses: [
+          { id: ++sid, name: 'Leads entrantes', sort: 10, type: 1, pipeline_id: dp, is_editable: false },
+          { id: DISCOVERY_DESTINO.statusId, name: 'Discovery agendada', sort: 20, type: 0, pipeline_id: dp, is_editable: true },
+          ...sistema(dp),
+        ],
+      });
+    }
   }
   /** @type {any[]} */
   const campos = [];

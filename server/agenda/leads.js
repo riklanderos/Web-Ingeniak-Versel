@@ -18,6 +18,7 @@
  * `createLeads({ kommo, env })` permite inyectar un Kommo simulado (modo local) o espía (pruebas).
  */
 import { CDMX_TZ, LANDING, SESSION_RULES, formatSlotEs, phoneToE164 } from '../../shared/agenda.js';
+import { DISCOVERY_DESTINO } from '../../shared/kommo-esquema.js';
 import { clean } from '../http.js';
 import * as kommoApi from '../kommo.js';
 import { etiquetasDeOrigen, urlDePagina } from '../kommo.js';
@@ -351,11 +352,13 @@ export function createLeads({ kommo, env = process.env } = {}) {
           origen: urlDePagina(a.pagePath ?? LANDING[i.type]) ?? undefined,
           pago: i.type === 'power' ? 'Pendiente' : undefined,
         },
-        // Variables por tipo. Discovery: solo KOMMO_DISCOVERY_STATUS_ID como respaldo (la etapa 97185916 de P1,
-        // que trae consigo su embudo mientras «Ventas» no exista con ese nombre). Power: KOMMO_POWER_PIPELINE_ID y
-        // KOMMO_POWER_STATUS_ID (con los KOMMO_AGENDA_* viejos como alias). El respaldo nunca le gana a la etapa
-        // encontrada por su nombre aprobado. Las variables de la cotización, solo si nada de lo anterior existe.
-        pipelineId: i.type === 'discovery' ? undefined : int(env.KOMMO_POWER_PIPELINE_ID ?? env.KOMMO_AGENDA_PIPELINE_ID),
+        // Destinos por tipo. Discovery: DISCOVERY_DESTINO (ids fijos del esquema, cliente 2026-11-01); si la cuenta ya
+        // no tiene ese embudo, resolverDestino lo ignora y sigue por nombre («Ventas / Discovery agendada») y después
+        // KOMMO_DISCOVERY_STATUS_ID. Power: KOMMO_POWER_PIPELINE_ID y KOMMO_POWER_STATUS_ID (con los KOMMO_AGENDA_*
+        // viejos como alias); el respaldo nunca le gana a la etapa por nombre. Las de la cotización, al final.
+        pipelineId: i.type === 'discovery' ? DISCOVERY_DESTINO.pipelineId : int(env.KOMMO_POWER_PIPELINE_ID ?? env.KOMMO_AGENDA_PIPELINE_ID),
+        statusId: i.type === 'discovery' ? DISCOVERY_DESTINO.statusId : undefined,
+        siExiste: i.type === 'discovery' ? true : undefined,
         statusIdRespaldo: int(i.type === 'discovery' ? env.KOMMO_DISCOVERY_STATUS_ID : env.KOMMO_POWER_STATUS_ID ?? env.KOMMO_AGENDA_STATUS_ID),
         fallbackPipelineId: int(env.KOMMO_PIPELINE_ID),
         fallbackStatusId: int(env.KOMMO_STATUS_ID),
