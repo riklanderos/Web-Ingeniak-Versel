@@ -532,7 +532,7 @@ function initPrimaryRule() {
 //   ingeniak-landing      JSON {path, referrer?, t}: primera ruta de la sesión; referrer solo si es de otro origen (origen + ruta)
 //   ingeniak-src          `${folio}-${sección}` del PRIMER clic en un [data-cotizar] o en un a[data-primary][href="#agenda"]
 //   ingeniak-agenda-desde data-section del ÚLTIMO clic en un a[href="#agenda"] (landings ocultas)
-// Eventos (ingeniak:track): cta_cotizar_click {section, folio, src} · cta_agenda_click {section, folio}.
+// Eventos (ingeniak:track): cta_cotizar_click {section, folio, src} · cta_agenda_click {section, folio} · whatsapp_click {section, folio}.
 const UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 const CLID = ['gclid', 'fbclid', 'gbraid', 'wbraid'];
 const ssGet = (k: string): string | null => { try { return sessionStorage.getItem(k); } catch { return null; } };
@@ -555,7 +555,8 @@ function initAttribution() {
   const folio = () => document.body.dataset.folio ?? document.querySelector<HTMLElement>('[data-folio]')?.dataset.folio ?? document.body.dataset.page ?? 'web';
   const sectionOf = (el: HTMLElement) =>
     el.dataset.section ?? el.closest<HTMLElement>('[data-section]')?.dataset.section ?? el.closest('section[id],[data-section-id]')?.id
-    ?? (el.closest(HEADER_SEL) ? 'header' : el.closest('[data-mbar],[data-cta-bar],.mcta') ? 'barra' : 'page');
+    ?? (el.closest(HEADER_SEL) ? 'header' : el.closest('[data-mbar],[data-cta-bar],.mcta,.mbar__wa') ? 'barra' : el.closest('.kpill') ? 'kain-pill'
+      : el.closest('.msheet__wa') ? 'menu' : el.closest('footer') ? 'footer' : 'page');
   document.addEventListener('click', (e) => {
     const t = e.target as Element | null;
     const quote = t?.closest?.('[data-cotizar]') as HTMLElement | null;
@@ -575,6 +576,12 @@ function initAttribution() {
       track('cta_agenda_click', { section, folio: folio() });
     }
   }, true);
+  // WhatsApp: cuenta cualquier enlace a wa.me (encabezado, héroe, píldora, barra, footer…). Va en burbuja para que los emisores
+  // con sección propia (modal, agenda, buscador) lleguen primero; el puente de GA4 de BaseLayout descarta el repetido.
+  document.addEventListener('click', (e) => {
+    const wa = (e.target as Element | null)?.closest?.('a[href*="wa.me/"]') as HTMLElement | null;
+    if (wa) track('whatsapp_click', { section: sectionOf(wa), folio: folio() });
+  });
 }
 
 /* ───────────── VktorRail: la línea se dibuja con scrub ───────────── */

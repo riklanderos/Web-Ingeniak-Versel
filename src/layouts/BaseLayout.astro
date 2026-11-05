@@ -148,6 +148,26 @@ const showRail = full && p.rail !== false && page.template !== 'T-404';
           function gtag() { dataLayer.push(arguments); }
           gtag('js', new Date());
           gtag('config', 'G-XF9G08CZJQ', { anonymize_ip: true });
+          /* Puente de medición: cada evento 'ingeniak:track' del sitio llega a GA4 con su mismo nombre. Va aquí, antes de los
+             módulos, para no perder los que salen al arrancar. Ningún evento lleva texto escrito por la persona.
+             Conversiones (marcarlas en GA4 → Eventos clave): cotizar_success, booking_confirmed, whatsapp_click. */
+          (function () {
+            var ultimoWa = 0;
+            document.addEventListener('ingeniak:track', function (e) {
+              var d = e.detail || {};
+              if (!d.name || (d.name === 'cotizar_success' && d.dryRun)) return; /* una simulación no es un lead */
+              if (d.name === 'whatsapp_click') {
+                /* Un mismo clic puede avisar dos veces: su emisor propio (modal, agenda…) y el general de ui.ts */
+                if (Date.now() - ultimoWa < 800) return;
+                ultimoWa = Date.now();
+              }
+              var p = {};
+              Object.keys(d).forEach(function (k) {
+                if (k !== 'name' && k !== 'page' && d[k] != null && typeof d[k] !== 'object') p[k] = d[k];
+              });
+              gtag('event', d.name, p);
+            });
+          })();
         </script>
       </>
     )}

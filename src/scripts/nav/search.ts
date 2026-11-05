@@ -219,7 +219,7 @@ function activate(o: HTMLElement | undefined, e?: Event) {
   const a = o as HTMLAnchorElement;
   if (a.dataset.wa !== undefined) {
     a.href = waHref(input.value.trim());            // se arma al hacer clic, con lo escrito
-    track('whatsapp_click', { seccion: 'buscador' });
+    track('whatsapp_click', { section: 'buscador' });
   } else track('search_submit', { largo: input.value.trim().length, grupo: o.closest('[role="group"]')?.id ?? o.closest('[role="group"]')?.getAttribute('aria-labelledby') });
   if (!e) {
     if (a.target === '_blank') window.open(a.href, '_blank', 'noopener');
