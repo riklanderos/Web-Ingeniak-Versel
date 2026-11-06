@@ -188,11 +188,21 @@ async function call(path, { method = 'GET', body, deadline } = {}) {
 const digits = (v) => String(v ?? '').replace(/\D/g, '');
 
 /**
+ * ¿Es el mismo número? Un valor guardado sin lada (10 dígitos o más) cuenta como el mismo.
+ * @param {unknown} guardado
+ * @param {string} wantDigits  solo dígitos del E.164
+ */
+function mismoTelefono(guardado, wantDigits) {
+  const d = digits(guardado);
+  return d === wantDigits || (d.length >= 10 && wantDigits.endsWith(d));
+}
+
+/**
  * Primer contacto cuyo EMAIL o PHONE coincide exactamente.
  * @param {any} data  respuesta de GET /contacts
  * @param {'EMAIL' | 'PHONE'} code
  * @param {string} value  correo en minúsculas o teléfono E.164
- * @returns {number | null}
+ * @returns {any | null}  el contacto tal como lo devuelve Kommo (con `id` válido)
  */
 function matchContact(data, code, value) {
   const contacts = Array.isArray(data?._embedded?.contacts) ? data._embedded.contacts : [];
@@ -201,15 +211,32 @@ function matchContact(data, code, value) {
     const fields = Array.isArray(c?.custom_fields_values) ? c.custom_fields_values : [];
     for (const f of fields) {
       if (f?.field_code !== code || !Array.isArray(f.values)) continue;
-      const hit = f.values.some((v) => {
-        if (code === 'EMAIL') return String(v?.value ?? '').trim().toLowerCase() === want;
-        const d = digits(v?.value);
-        return d === want || (d.length >= 10 && want.endsWith(d));
-      });
-      if (hit && Number.isSafeInteger(c.id)) return c.id;
+      const hit = f.values.some((v) => (code === 'EMAIL' ? String(v?.value ?? '').trim().toLowerCase() === want : mismoTelefono(v?.value, want)));
+      if (hit && Number.isSafeInteger(c.id)) return c;
     }
   }
   return null;
+}
+
+/**
+ * Cuerpo de PATCH /contacts/{id} para agregar un teléfono a un contacto que ya existe, o null si ya lo tiene.
+ * Kommo reemplaza todos los valores del campo, así que los números que ya tenía se mandan también.
+ * @param {any} contacto  contacto tal como lo devuelve GET /contacts
+ * @param {string} phoneE164
+ * @returns {{ custom_fields_values: object[] } | null}
+ */
+export function telefonoBody(contacto, phoneE164) {
+  const want = digits(phoneE164);
+  if (!want) return null;
+  const fields = Array.isArray(contacto?.custom_fields_values) ? contacto.custom_fields_values : [];
+  const campo = fields.find((f) => f?.field_code === 'PHONE');
+  const actuales = (Array.isArray(campo?.values) ? campo.values : []).filter((v) => digits(v?.value));
+  if (actuales.some((v) => mismoTelefono(v.value, want))) return null;
+  const conservar = actuales.map((v) => ({
+    value: v.value,
+    ...(v.enum_code ? { enum_code: v.enum_code } : Number.isSafeInteger(v.enum_id) ? { enum_id: v.enum_id } : {}),
+  }));
+  return { custom_fields_values: [{ field_code: 'PHONE', values: [...conservar, { value: phoneE164, enum_code: 'MOB' }] }] };
 }
 
 /* ── Convenciones del sitio para la estructura aprobada ───────────────────────────────────── */
@@ -720,10 +747,11 @@ export function noteBody(leadId, text) {
  * Orden: GET contacts?query=correo → (204) GET contacts?query=+E164 → estructura (GET leads/pipelines y
  * GET leads/custom_fields, en paralelo y con caché de 10 min; solo si hay embudo, campos o rastreo) →
  * POST leads/complex (si Kommo responde 400 y mandamos datos de la estructura: un reintento sin campos, y sin
- * embudo/etapa por nombre si el error los menciona) → POST leads/notes (si falla, el lead ya existe: ok igual).
+ * embudo/etapa por nombre si el error los menciona) → POST leads/notes (si falla, el lead ya existe: ok igual) →
+ * PATCH contacts/{id} si el contacto existente no tenía este teléfono (si falla: ok igual, la nota lo trae).
  * @param {LeadInput} input
  * @returns {Promise<
- *   { ok: true, status: number, leadId: number | null, contactId: number | null, existingContact: boolean, noteOk: boolean,
+ *   { ok: true, status: number, leadId: number | null, contactId: number | null, existingContact: boolean, telefonoAgregado?: boolean, noteOk: boolean,
  *     destino?: OrigenDestino, campos?: { enviados: string[], omitidos: string[] }, reintento?: boolean, dryRun?: true, preview?: object }
  *   | { ok: false, status: number, reason: Reason }>}
  */
@@ -770,12 +798,17 @@ export async function createLeadWithNote(input) {
     // 1 · ¿El contacto ya existe? (correo y luego teléfono)
     /** @type {number | null} */
     let contactId = null;
+    /** @type {any} */
+    let contactoExistente = null;
     for (const s of searches) {
       const r = await call(`/contacts?query=${encodeURIComponent(s.value)}`, { deadline });
       if (r.status === 204) continue;
       if (r.status !== 200) return await fail('contactos', r, ctx, t0);
-      contactId = matchContact(r.data, s.code, s.value);
-      if (contactId) break;
+      contactoExistente = matchContact(r.data, s.code, s.value);
+      if (contactoExistente) {
+        contactId = contactoExistente.id;
+        break;
+      }
     }
 
     // 2 · Estructura de la cuenta: embudo y etapa por nombre, campos del sitio y de rastreo (caché 10 min)
@@ -820,12 +853,25 @@ export async function createLeadWithNote(input) {
         await maybeAlert(n, ctx);
       }
     }
+
+    // 5 · Contacto que ya existía (por correo) sin este número: se le agrega. Si falla, el lead ya existe y la nota lo trae.
+    let telefonoAgregado = false;
+    const conTelefono = contactoExistente ? telefonoBody(contactoExistente, phone) : null;
+    if (conTelefono) {
+      const p = await call(`/contacts/${contactId}`, { method: 'PATCH', body: conTelefono, deadline });
+      telefonoAgregado = p.status === 200;
+      if (!telefonoAgregado) {
+        log({ evento: 'kommo.telefono', folio: ctx.folio, status: p.status, leadId, ms: Date.now() - t0 });
+        await maybeAlert(p, ctx);
+      }
+    }
     return {
       ok: true,
       status: r.status,
       leadId,
       contactId: contactId ?? newContact,
       existingContact: Boolean(contactId),
+      telefonoAgregado,
       noteOk,
       destino: destino.origen,
       campos: reintento ? { enviados: [], omitidos: [...campos.enviados, ...campos.omitidos] } : { enviados: campos.enviados, omitidos: campos.omitidos },

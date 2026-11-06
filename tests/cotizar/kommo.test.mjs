@@ -133,14 +133,18 @@ test('§3.9-3 · contacto existente por correo → contacts: [{ id }] y sin comp
     ...estructura(false),
     { match: 'POST /leads/complex', json: KOMMO.complexOk },
     { match: 'POST /leads/notes', json: KOMMO.notaOk },
+    { match: 'PATCH /contacts/555', json: { id: 555 } },
   ]);
   const r = await handler.fetch(peticion(valido({ meta: { referrer: '' } })));
   assert.equal(r.status, 200);
   assert.deepEqual(
     llamadas.map((c) => `${c.method} ${c.path}`),
-    ['GET /contacts?query=ana%40empresa.mx', 'GET /leads/pipelines', 'GET /leads/custom_fields?limit=250&page=1', 'POST /leads/complex', 'POST /leads/notes'],
-    'sin búsqueda por teléfono (el correo ya coincidió)',
+    ['GET /contacts?query=ana%40empresa.mx', 'GET /leads/pipelines', 'GET /leads/custom_fields?limit=250&page=1', 'POST /leads/complex', 'POST /leads/notes', 'PATCH /contacts/555'],
+    'sin búsqueda por teléfono (el correo ya coincidió); el contacto no tenía teléfono: se le agrega',
   );
+  assert.deepEqual(llamadas[5].body, {
+    custom_fields_values: [{ field_code: 'PHONE', values: [{ value: '+523312345678', enum_code: 'MOB' }] }],
+  });
   const lead = llamadas[3].body[0];
   assert.deepEqual(lead._embedded.contacts, [{ id: 555 }]);
   assert.equal(lead._embedded.companies, undefined);
@@ -149,6 +153,72 @@ test('§3.9-3 · contacto existente por correo → contacts: [{ id }] y sin comp
   assert.equal(lead.pipeline_id, undefined);
   assert.equal(lead.status_id, undefined);
   assert.match(llamadas[4].body[0].params.text, /\nIndustria: Salud · Equipo: 11–50 personas\n/);
+});
+
+/** Contacto encontrado por correo, con los teléfonos dados. */
+const porCorreo = (telefonos) => ({
+  match: 'GET /contacts?query=ana%40empresa.mx',
+  json: {
+    _embedded: {
+      contacts: [{
+        id: 555,
+        custom_fields_values: [
+          { field_code: 'EMAIL', values: [{ value: 'ana@empresa.mx', enum_code: 'WORK' }] },
+          { field_code: 'PHONE', values: telefonos },
+        ],
+      }],
+    },
+  },
+});
+
+test('contacto existente con otro número: se agrega el nuevo y conserva el que tenía', async (t) => {
+  entorno(t, kommoVars());
+  logs(t);
+  const llamadas = simularFetch(t, [
+    porCorreo([{ value: '+525500000000', enum_id: 77, enum_code: 'WORK' }]),
+    ...estructura(),
+    { match: 'POST /leads/complex', json: KOMMO.complexOk },
+    { match: 'POST /leads/notes', json: KOMMO.notaOk },
+    { match: 'PATCH /contacts/555', json: { id: 555 } },
+  ]);
+  assert.equal((await handler.fetch(peticion(valido()))).status, 200);
+  assert.deepEqual(llamadas.find((c) => c.method === 'PATCH').body, {
+    custom_fields_values: [{
+      field_code: 'PHONE',
+      values: [{ value: '+525500000000', enum_code: 'WORK' }, { value: '+523312345678', enum_code: 'MOB' }],
+    }],
+  });
+});
+
+test('contacto existente que ya tiene el número (aunque sin lada): no se toca', async (t) => {
+  entorno(t, kommoVars());
+  logs(t);
+  const llamadas = simularFetch(t, [
+    porCorreo([{ value: '33 1234 5678', enum_code: 'MOB' }]),
+    ...estructura(),
+    { match: 'POST /leads/complex', json: KOMMO.complexOk },
+    { match: 'POST /leads/notes', json: KOMMO.notaOk },
+  ]);
+  assert.equal((await handler.fetch(peticion(valido()))).status, 200);
+  assert.equal(llamadas.some((c) => c.method === 'PATCH'), false);
+});
+
+test('si agregar el teléfono falla, el lead sigue entregado', async (t) => {
+  entorno(t, kommoVars());
+  const registro = logs(t);
+  const llamadas = simularFetch(t, [
+    porCorreo([]),
+    ...estructura(),
+    { match: 'POST /leads/complex', json: KOMMO.complexOk },
+    { match: 'POST /leads/notes', json: KOMMO.notaOk },
+    { match: 'PATCH /contacts/555', status: 500, json: {} },
+  ]);
+  const r = await handler.fetch(peticion(valido({ submission_id: ID })));
+  assert.equal(r.status, 200);
+  assert.deepEqual(await cuerpo(r), { ok: true, folio: 'IK-6F1C2D', delivered: 'kommo' });
+  assert.equal(llamadas.at(-1).method, 'PATCH');
+  assert.ok(JSON.stringify(registro).includes('kommo.telefono'));
+  assert.equal(JSON.stringify(registro).includes('3312345678'), false, 'el log nunca lleva el teléfono');
 });
 
 test('contacto existente por teléfono (el correo no coincide exacto)', async (t) => {
