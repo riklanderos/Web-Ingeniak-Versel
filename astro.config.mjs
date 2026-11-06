@@ -7,8 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { isNoindex } from './src/lib/indexacion.mjs';
 
-// sitemap.xml = páginas indexables sin puerta pendiente (ESPEC-v2 §8.6 y §12.2 R2/R8): fuera el 404, /dev/ y toda
-// página con noindex (p. ej. un caso breve mientras su copy no marque publishGate.ok). Misma regla que llms.txt y check-seo.
+// sitemap.xml = páginas indexables: fuera el 404, /dev/ y toda página con noindex. Los casos breves pueden
+// indexarse con publishGate.indexBrief sin confirmar el reportaje completo. Misma regla que llms.txt y check-seo.
 const pages = JSON.parse(readFileSync(new URL('./src/data/sitemap.json', import.meta.url), 'utf8'));
 const copyOf = (/** @type {string} */ id) => {
   const u = new URL(`./src/content/paginas/${id}.json`, import.meta.url);
