@@ -11795,5 +11795,211 @@
       "note": "Brochure/CV empresarial (landing oculta). Reutiliza las secciones genéricas del hub: definicion, mapa, cifras, vktor, faq + las nuevas ficha y equipo."
     },
     "nav": "full"
+  },
+  {
+    "id": "art-servicios-software",
+    "group": "Recursos",
+    "url": "/blog/servicios-como-software/",
+    "canonical": "https://ingeniak.mx/blog/servicios-como-software/",
+    "indexable": true,
+    "status": "nueva",
+    "template": "T-ARTICLE",
+    "purpose": "Intención informativa · Buyer/etapa: Dueño de negocio / agencia de servicios · Etapa: descubrimiento (TOFU)",
+    "primaryKeyword": "servicios como software",
+    "secondaryKeywords": [
+      "service as a software",
+      "services as software",
+      "agentes de IA",
+      "automatización con IA",
+      "SOPs para IA",
+      "economía agéntica"
+    ],
+    "title": "Servicios como software: la nueva economía de la IA",
+    "titleLength": 51,
+    "metaDescription": "Descubre qué son los servicios como software (services as software), cómo los agentes de IA transforman los servicios y cómo aprovecharlo.",
+    "metaLength": 138,
+    "h1": "Servicios como software: la nueva economía de los agentes de IA",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Blog",
+        "url": "/blog/"
+      },
+      {
+        "name": "Servicios como software",
+        "url": "/blog/servicios-como-software/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: servicios como software.",
+        "cinematic": true,
+        "plate": {
+          "id": "home-sistema-2-atender",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "respuesta",
+        "name": "Respuesta corta",
+        "spec": "40–60 palabras citables que responden \"servicios como software\" en la primera oración.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "indice",
+        "name": "Índice",
+        "spec": "Tabla de contenidos fija en escritorio, plegable en celular.",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cuerpo",
+        "name": "Cuerpo (H2)",
+        "spec": "1) ¿Qué son los servicios como software (service as a software)? · 2) Por qué las automatizaciones de antes se quedaron cortas · 3) Las tres fases de la economía de servicios con IA · 4) Casos reales: negocios de una sola persona con IA · 5) La clave: los SOPs ahora son para agentes · 6) Las cuatro capas de un sistema de service as a software · 7) Cómo aprovechar los servicios como software en tu negocio",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "cta-medio",
+        "name": "CTA intermedio",
+        "spec": "Tarjeta a / + WhatsApp.",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "faq",
+        "name": "Preguntas frecuentes",
+        "spec": "Acordeón (B01, B02, B03, B04); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 7,
+        "id": "autor",
+        "name": "Sobre el autor",
+        "spec": "Tarjeta de Equipo de Ingeniak hasta confirmar autor (R8).",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "fuentes",
+        "name": "Fuentes",
+        "spec": "Sin fuentes de terceros.",
+        "cinematic": false
+      },
+      {
+        "order": 9,
+        "id": "relacionados",
+        "name": "Sigue explorando",
+        "spec": "3 tarjetas: / · /agendar/ · /servicios/agentes-ia-whatsapp/.",
+        "cinematic": false
+      },
+      {
+        "order": 10,
+        "id": "cta-final",
+        "name": "Cierre",
+        "spec": "Cierre cinematográfico compartido (cta-amanecer).",
+        "cinematic": true,
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Agendar mi Discovery Session",
+      "href": "/discovery/",
+      "action": "agendar"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola Kain, leí servicios como software: la nueva economía de los agentes de IA y quiero ver cómo aplica a mi negocio.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20servicios%20como%20software%3A%20la%20nueva%20econom%C3%ADa%20de%20los%20agentes%20de%20IA%20y%20quiero%20ver%20c%C3%B3mo%20aplica%20a%20mi%20negocio."
+    },
+    "internalLinks": [
+      "/",
+      "/agendar/",
+      "/servicios/agentes-ia-whatsapp/"
+    ],
+    "jsonLd": [
+      "BlogPosting (author Person, datePublished, dateModified)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "B01",
+        "q": "¿Qué significa service as a software o services as software?",
+        "a": "Service as a software, o services as software, es el término en inglés para servicios como software: entregar un servicio mediante agentes de IA en lugar de trabajo manual. En vez de venderte una herramienta para que tú hagas el trabajo, el sistema hace el trabajo completo siguiendo procesos documentados y con supervisión humana.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B02",
+        "q": "¿Los agentes de IA van a reemplazar a los empleados?",
+        "a": "Los agentes de IA van a reemplazar sobre todo tareas repetitivas que se hacen frente a una pantalla, como dar seguimiento, capturar datos o responder mensajes. Al mismo tiempo, permiten que un equipo pequeño atienda a más clientes y haga trabajo que antes no era rentable. Las personas se enfocan en criterio, estrategia y relación con el cliente.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B03",
+        "q": "¿Qué tipo de negocios pueden aplicar servicios como software?",
+        "a": "Cualquier negocio con procesos digitales repetibles puede aplicarlo: ventas, atención a clientes, marketing, cobranza o administración. Funciona especialmente bien en empresas de servicios, clínicas, inmobiliarias, distribuidoras y agencias, donde gran parte del trabajo diario consiste en dar seguimiento, responder, registrar información en un CRM y coordinar tareas entre áreas.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B04",
+        "q": "¿Por dónde empiezo a convertir mis servicios en software?",
+        "a": "Empieza documentando tus procesos como SOPs: qué se hace, en qué orden y con qué herramientas. Después elige el proceso más repetitivo y con más impacto en ventas, define qué modelo de IA, contexto e integraciones necesita, y automatízalo primero. Cuando funcione, repite con el siguiente proceso hasta que tu operación corra con sistemas.",
+        "estado": "aprobada"
+      }
+    ],
+    "sitemap": {
+      "priority": 0.6,
+      "changefreq": "monthly"
+    },
+    "author": "Equipo de Ingeniak",
+    "wordCount": 1965,
+    "outline": [
+      "¿Qué son los servicios como software (service as a software)?",
+      "Por qué las automatizaciones de antes se quedaron cortas",
+      "Las tres fases de la economía de servicios con IA",
+      "Casos reales: negocios de una sola persona con IA",
+      "La clave: los SOPs ahora son para agentes",
+      "Las cuatro capas de un sistema de service as a software",
+      "Cómo aprovechar los servicios como software en tu negocio"
+    ],
+    "sources": "Sin fuentes de terceros.",
+    "notes": "Tono: directo, para dueños de negocio en México; destacar en negritas las keywords (servicios como software, services as software, agentes de IA, automatización con IA). Cifras pendientes de fuente: economía de servicios de ~70 billones USD/año y proyección a ~100 billones; no publicarlas sin fuente con fecha. Casos reales: presentarlos sin nombres o verificar antes. Portada: portada-servicios-como-software.png (1200x630).",
+    "folio": "507",
+    "copy": {
+      "status": "aprobado",
+      "minWords": 1200,
+      "owner": "SEO Studio (brief + redacción + aprobación)",
+      "note": "Generado por SEO Studio (artículo 06ba448d-a313-465d-bb02-f9129872550d) el 2026-11-06."
+    }
   }
 ]

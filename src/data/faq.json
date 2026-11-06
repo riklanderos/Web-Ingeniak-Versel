@@ -867,5 +867,53 @@
     "categoria": "Power Session",
     "validar": false,
     "editada": true
+  },
+  {
+    "id": "B01",
+    "q": "¿Qué significa service as a software o services as software?",
+    "a": "Service as a software, o services as software, es el término en inglés para servicios como software: entregar un servicio mediante agentes de IA en lugar de trabajo manual. En vez de venderte una herramienta para que tú hagas el trabajo, el sistema hace el trabajo completo siguiendo procesos documentados y con supervisión humana.",
+    "short": "Service as a software, o services as software, es el término en inglés para servicios como software: entregar un servicio mediante agentes…",
+    "pages": [
+      "/blog/servicios-como-software/"
+    ],
+    "categoria": "Inteligencia artificial",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B02",
+    "q": "¿Los agentes de IA van a reemplazar a los empleados?",
+    "a": "Los agentes de IA van a reemplazar sobre todo tareas repetitivas que se hacen frente a una pantalla, como dar seguimiento, capturar datos o responder mensajes. Al mismo tiempo, permiten que un equipo pequeño atienda a más clientes y haga trabajo que antes no era rentable. Las personas se enfocan en criterio, estrategia y relación con el cliente.",
+    "short": "Los agentes de IA van a reemplazar sobre todo tareas repetitivas que se hacen frente a una pantalla, como dar seguimiento, capturar…",
+    "pages": [
+      "/blog/servicios-como-software/"
+    ],
+    "categoria": "Inteligencia artificial",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B03",
+    "q": "¿Qué tipo de negocios pueden aplicar servicios como software?",
+    "a": "Cualquier negocio con procesos digitales repetibles puede aplicarlo: ventas, atención a clientes, marketing, cobranza o administración. Funciona especialmente bien en empresas de servicios, clínicas, inmobiliarias, distribuidoras y agencias, donde gran parte del trabajo diario consiste en dar seguimiento, responder, registrar información en un CRM y coordinar tareas entre áreas.",
+    "short": "Cualquier negocio con procesos digitales repetibles puede aplicarlo: ventas, atención a clientes, marketing, cobranza o administración.",
+    "pages": [
+      "/blog/servicios-como-software/"
+    ],
+    "categoria": "Inteligencia artificial",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B04",
+    "q": "¿Por dónde empiezo a convertir mis servicios en software?",
+    "a": "Empieza documentando tus procesos como SOPs: qué se hace, en qué orden y con qué herramientas. Después elige el proceso más repetitivo y con más impacto en ventas, define qué modelo de IA, contexto e integraciones necesita, y automatízalo primero. Cuando funcione, repite con el siguiente proceso hasta que tu operación corra con sistemas.",
+    "short": "Empieza documentando tus procesos como SOPs: qué se hace, en qué orden y con qué herramientas.",
+    "pages": [
+      "/blog/servicios-como-software/"
+    ],
+    "categoria": "Inteligencia artificial",
+    "validar": false,
+    "editada": false
   }
 ]
