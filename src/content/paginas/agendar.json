@@ -1,0 +1,35 @@
+{
+  "pageId": "agendar",
+  "url": "/agendar/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-11-05",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "ORIGEN: página pedida por el cliente el 2026-11-05 — un enlace directo para compartir la agenda de la Discovery (WhatsApp, correo, bio) sin mandar la landing completa de /discovery/."
+  ],
+  "sections": {
+    "agenda": {
+      "_componente": "Intro breve (eyebrow, H1 con .lit, lede y los pasos) + BookingFlow tipo='discovery' dentro de section#agenda; sin placa.",
+      "eyebrow": "Discovery Session · 30 minutos",
+      "h1": {
+        "text": "Agenda tu Discovery Session",
+        "lit": "Discovery Session"
+      },
+      "lede": "Elige el día y la hora que te acomoden. Es una videollamada de 30 minutos con el equipo de Ingeniak para revisar cómo opera hoy tu negocio y decirte con claridad qué automatizaríamos primero.",
+      "steps": [
+        { "n": "01", "title": "Déjanos tus datos", "line": "Tu nombre, tu negocio y el correo al que te mandamos la invitación." },
+        { "n": "02", "title": "Elige tu horario", "line": "La agenda se lee en vivo de Google Calendar: los horarios que ves están libres." },
+        { "n": "03", "title": "Recibe tu invitación", "line": "Te llega al instante, con el enlace de Google Meet incluido. No necesitas preparar nada." }
+      ],
+      "nota": "Si ningún horario te acomoda, escríbenos por WhatsApp y lo buscamos contigo.",
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, me compartieron el enlace para agendar una Discovery Session y tengo una duda."
+      },
+      "waDone": "Hola, acabo de agendar mi Discovery Session desde el enlace directo y quiero confirmar algo.",
+      "waMover": "Hola, agendé mi Discovery Session desde el enlace directo y necesito mover la llamada."
+    }
+  }
+}

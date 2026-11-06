@@ -85,6 +85,7 @@ export const RUTAS = Object.freeze({
   '/blog/n8n-vs-zapier-vs-make/': 'art-n8n',
   '/discovery/': 'discovery',
   '/power-session/': 'power-session',
+  '/agendar/': 'agendar',
   '/agendar/confirmado/': 'agendar-confirmado',
   '/contacto/': 'contacto',
   '/aviso-privacidad/': 'aviso',

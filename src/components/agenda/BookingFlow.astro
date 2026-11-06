@@ -6,6 +6,8 @@
 //   Power:     Tus datos → Horario → Pago (apartado de 30 minutos → Stripe Checkout → /agendar/confirmado/).
 // Props: tipo ('discovery' | 'power', obligatorio) · waHref (WhatsApp de la landing: errores y vacío) ·
 //        waDoneHref (WhatsApp de la vista final de Discovery, ya con la sesión agendada; por defecto T.done.waMensaje) ·
+//        waMoverHref (WhatsApp de "mover la llamada" en esa vista; por defecto T.done.waMover — cada página que monta el
+//        componente pasa mensajes propios: check-seo exige que un mensaje no se repita entre páginas) ·
 //        headingLevel (2 | 3, títulos de paso; por defecto 3) · id (por defecto bk-<tipo>) · class.
 // Raíz: <div class="bk glass-panel" data-agenda="<tipo>" data-hold="30">. Evento de entrada: `agenda:focus` sobre la raíz.
 // Diseño: errores ámbar; día y horario elegidos en cian; el ÚNICO azul es el botón del paso (.btn + data-primary);
@@ -18,9 +20,9 @@ import { T, POWER_PRICE, HOLD_SHOWN } from './textos';
 import { waHref as waLink } from '../../lib/site';
 import { INDUSTRIES, TEAM_SIZES, REVENUES, TIME_DRAINS, SESSION_RULES, CONTACT, type SessionType } from '../../../shared/agenda.js';
 
-interface Props { tipo: SessionType; waHref?: string; waDoneHref?: string; headingLevel?: 2 | 3; id?: string; class?: string }
-const { tipo, waHref = CONTACT.wa, waDoneHref = waLink(T.done.waMensaje), headingLevel = 3, id: idProp, class: cls } = Astro.props;
-const waMover = waLink(T.done.waMover);
+interface Props { tipo: SessionType; waHref?: string; waDoneHref?: string; waMoverHref?: string; headingLevel?: 2 | 3; id?: string; class?: string }
+const { tipo, waHref = CONTACT.wa, waDoneHref = waLink(T.done.waMensaje), waMoverHref, headingLevel = 3, id: idProp, class: cls } = Astro.props;
+const waMover = waMoverHref ?? waLink(T.done.waMover);
 if (tipo !== 'discovery' && tipo !== 'power') throw new Error(`[agenda/BookingFlow] tipo inválido: ${tipo}`);
 const id = idProp ?? `bk-${tipo}`;
 const H = `h${headingLevel}` as 'h2' | 'h3';

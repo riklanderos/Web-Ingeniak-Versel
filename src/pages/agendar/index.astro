@@ -1,0 +1,45 @@
+---
+// /agendar/ · enlace directo para compartir la agenda de la Discovery (petición del cliente, 2026-11-05). Página oculta
+// (R17): noindex,follow + X-Robots-Tag (vercel.json /agendar/(.*)); encabezado reducido sin CTA, footer mínimo, sin riel.
+// Una sola section#agenda sin placa: intro breve (eyebrow, H1 con .lit, lede, los pasos con riel de nodos y la nota) +
+// BookingFlow tipo="discovery" — la misma reserva de /discovery/: Tus datos → Horario (Google Calendar en vivo) →
+// Confirmar (Meet + invitación al instante). Copy: src/content/paginas/agendar.json (borrador). Sin [data-primary]:
+// el único azul de la página es el botón del paso del BookingFlow. Estilos .agd en src/styles/agenda.css.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookingFlow from '../../components/agenda/BookingFlow.astro';
+import { getPage, getCopy, waHref } from '../../lib/site';
+import '../../styles/agenda.css';
+
+const page = getPage('/agendar/');
+const c = getCopy('agendar').sections.agenda;
+const wa = waHref(c.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage ?? 'Hola, quiero agendar una Discovery Session.');
+// Mensajes propios de la vista final (check-seo: un mensaje de WhatsApp no se repite entre páginas; los de T.done son de /discovery/).
+const waDone = waHref(c.waDone ?? 'Hola, acabo de agendar mi Discovery Session desde el enlace directo y quiero confirmar algo.');
+const waMover = waHref(c.waMover ?? 'Hola, agendé mi Discovery Session desde el enlace directo y necesito mover la llamada.');
+const [h1a, h1b] = c.h1.text.split(c.h1.lit);
+---
+<BaseLayout page={page} nav="reduced" rail={false} noindex waHref={wa} bodyClass="agd-page">
+  <section id="agenda" class="agd" aria-labelledby="agenda-t">
+    <div class="frame agd__frame">
+      <div class="agd__intro">
+        <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>
+        <h1 id="agenda-t" class="t-display-2 agd__h1">{h1a}<span class="lit">{c.h1.lit}</span>{h1b}</h1>
+        <p class="t-lede t-lede--2 agd__lede">{c.lede}</p>
+        <ol class="agd__steps" role="list">
+          {c.steps.map((st: any) => (
+            <li class="agd__step">
+              <span class="agd__rail" aria-hidden="true"><span class="agd__node"></span></span>
+              <span class="agd__n t-label t-label--cyan" aria-hidden="true">{st.n}</span>
+              <p class="agd__st"><span class="sr-only">Paso {st.n}: </span>{st.title}</p>
+              <p class="agd__sl">{st.line}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="agd__nota">{c.nota}</p>
+      </div>
+      <div class="agd__form">
+        <BookingFlow tipo="discovery" waHref={wa} waDoneHref={waDone} waMoverHref={waMover} headingLevel={2} />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

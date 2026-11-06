@@ -234,6 +234,41 @@ html.no-js .cfm [data-cf="error"][hidden]{display:grid!important}
   .cfm .ctas .btn--ghost{justify-content:center}
 }
 
+/* ---------- /agendar/ · enlace directo de la agenda (.agd, página oculta; copy en src/content/paginas/agendar.json) ----------
+   Sin placa: la sección pone su propia luz (radial cian tenue arriba a la derecha, como el aura de las landings).
+   Escritorio ≥ 1024 px: intro fija a la izquierda (cols 1–5) y BookingFlow a la derecha (cols 7–12); angosto: apilado. */
+.agd{position:relative;padding:calc(var(--hdr) + var(--s-7)) 0 var(--s-10);min-height:calc(100svh - var(--hdr))}
+.agd::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(52% 44% at 74% 18%,rgb(0 229 255 / .07),transparent 70%)}
+.agd__frame{row-gap:var(--s-7);align-items:start}
+.agd__intro{grid-column:1 / span 5;min-width:0}
+.agd__intro > .eyebrow{margin-bottom:var(--s-4)}
+.agd__h1{margin:0;font-size:clamp(2.25rem,1rem + 3vw,4rem)}
+.agd__lede{margin:var(--s-4) 0 0;max-width:34rem}
+.agd__steps{list-style:none;margin:var(--s-7) 0 0;padding:0;width:100%;max-width:30rem}
+.agd__step{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:var(--s-3);padding:0 0 var(--s-5)}
+.agd__step:last-child{padding-bottom:0}
+.agd__rail{position:absolute;left:4px;top:10px;bottom:-2px;width:1px;background:linear-gradient(180deg,var(--cyan),rgb(0 229 255 / .2))}
+.agd__step:last-child .agd__rail{bottom:auto;height:calc(100% - 10px);background:linear-gradient(180deg,var(--cyan),transparent)}
+.agd__node{position:absolute;left:-4px;top:-6px;width:9px;height:9px;border-radius:2px;background:var(--cyan);box-shadow:var(--glow-cyan)}
+.agd__n{grid-column:2;margin:0 0 6px}
+.agd__st{grid-column:2;margin:0;font:500 clamp(1.125rem,1rem + .4vw,1.375rem)/1.2 var(--f-display);letter-spacing:-.015em;color:var(--text)}
+.agd__sl{grid-column:2;margin:6px 0 0;font:400 .9375rem/1.55 var(--f-body);color:var(--text-2);max-width:40ch;text-wrap:pretty}
+.agd__nota{margin:var(--s-6) 0 0;font:400 .875rem/1.55 var(--f-body);color:var(--text-2);max-width:30rem;text-wrap:pretty}
+.agd__form{grid-column:7 / span 6;width:100%;max-width:640px;justify-self:end;min-width:0}
+@media (min-width:1024px){
+  .agd__intro{position:sticky;top:calc(var(--hdr) + var(--s-6))}
+}
+@media (max-width:1023px){
+  .agd{padding-top:calc(var(--hdr) + var(--s-6))}
+  .agd__intro{grid-column:1 / -1;position:static}
+  .agd__form{grid-column:1 / -1;max-width:640px;justify-self:start;margin-top:var(--s-2)}
+}
+@media (max-width:767px){
+  .agd{padding-bottom:var(--s-9)}
+  .agd__steps{margin-top:var(--s-6)}
+}
+
 /* ---------- Movimiento ---------- */
 @keyframes bk-step{from{opacity:0;transform:translateY(12px)}}
 @keyframes bk-spin{to{rotate:360deg}}

@@ -11203,6 +11203,70 @@
     "notes": "Página oculta (R17, §5.6): BaseLayout nav=\"reduced\" sin CTA en el encabezado, footer mínimo; raíz con data-confirmado. Sin [data-primary]."
   },
   {
+    "id": "agendar",
+    "group": "Conversión",
+    "url": "/agendar/",
+    "canonical": "https://ingeniak.mx/agendar/",
+    "indexable": false,
+    "hidden": true,
+    "status": "página oculta (nueva, cambio 2026-11-05): enlace directo para compartir la agenda de la Discovery (petición del cliente); noindex,follow + X-Robots-Tag noindex (vercel.json /agendar/(.*))",
+    "template": "T-CONFIRM",
+    "purpose": "Enlace directo para compartir la agenda de la Discovery Session (WhatsApp, correo, bio) sin pasar por la landing completa.",
+    "primaryKeyword": "—",
+    "secondaryKeywords": [],
+    "title": "Agenda tu Discovery Session | Ingeniak",
+    "titleLength": 38,
+    "metaDescription": "Elige el día y la hora de tu Discovery Session de 30 minutos. La invitación de Google Calendar te llega al instante con el enlace de Google Meet.",
+    "metaLength": 145,
+    "h1": "Agenda tu Discovery Session",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Agendar",
+        "url": "/agendar/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "agenda",
+        "name": "Agenda tu sesión",
+        "cinematic": false,
+        "spec": "Intro breve (eyebrow, H1 con .lit, lede y los pasos de la reserva) + BookingFlow tipo discovery dentro de section#agenda; sin placa."
+      }
+    ],
+    "cinematicSections": [],
+    "primaryCta": null,
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola, me compartieron el enlace para agendar una Discovery Session y tengo una duda.",
+      "href": "https://wa.me/523321017799?text=Hola%2C%20me%20compartieron%20el%20enlace%20para%20agendar%20una%20Discovery%20Session%20y%20tengo%20una%20duda."
+    },
+    "internalLinks": [
+      "/",
+      "/aviso-privacidad/"
+    ],
+    "jsonLd": [
+      "WebPage",
+      "BreadcrumbList"
+    ],
+    "faq": [],
+    "redirectsFrom": [],
+    "sitemap": null,
+    "folio": "605",
+    "copy": {
+      "status": "borrador",
+      "minWords": 60,
+      "owner": "agenda",
+      "note": "Página utilitaria: el copy vive en src/content/paginas/agendar.json (borrador, R1)."
+    },
+    "footerAnchors": [],
+    "notes": "Página oculta (R17): BaseLayout nav=\"reduced\" sin CTA en el encabezado, footer mínimo; BookingFlow tipo=\"discovery\" dentro de section#agenda. Sin [data-primary]. El enlace que se comparte es https://ingeniak.mx/agendar/."
+  },
+  {
     "id": "aviso",
     "group": "Legal",
     "url": "/aviso-privacidad/",
