@@ -415,40 +415,24 @@ a.hub-node__a:hover,a.hub-node__a:focus-visible{background-size:100% 1px;color:#
 /* ── blog · Índice de guías ─────────────────────────────────────────────────────────────────────────────────────── */
 .hub-cats{padding-bottom:var(--s-6)}
 .hub-guides{padding-top:var(--s-5)}
-.hub-guides__list{grid-column:1 / -1;grid-row:1;margin:0;padding:0;list-style:none;border-top:1px solid var(--hair)}
-.hub-guides__still{display:none}
-@media (min-width:1024px){
-  .hub-guides__list{grid-column:1 / span 8}
-  /* Portada fija de la guía en pantalla. Caja de proporción fija (1.05, la de frameOf en HubGuides) que corre de la columna
-     9 hasta el margen (a sangre, ≤ 160 px más allá de la retícula) y nunca pasa de 72svh: centrada en el alto útil. La
-     placa 16:9 llena su alto ("cover") y se corre en X hasta centrar al sujeto registrado (--ox); la máscara se centra en
-     él (--mx, --my) y funde el resto hacia --ink por los cuatro lados: Kain siempre entero, sin bordes de imagen (R7). */
-  .hub-guides__still{--hub-gw:calc((var(--frame) - var(--gap) * 11) / 3 + var(--gap) * 3 + min((100vw - var(--frame)) / 2, 160px));
-    --hub-gh:min(72svh, var(--hub-gw) / 1.05);
-    display:block;grid-column:9 / span 4;grid-row:1;align-self:start;justify-self:start;position:sticky;
-    top:calc(var(--hdr) + (100svh - var(--hdr) - var(--hub-gh)) / 2);width:calc(var(--hub-gh) * 1.05);height:var(--hub-gh);
-    margin:var(--s-8) 0 0;overflow:hidden;pointer-events:none;
-    -webkit-mask-image:radial-gradient(ellipse 60% 62% at calc(var(--mx,.5) * 100%) calc(var(--my,.5) * 100%),#000 58%,transparent 100%),
-      linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent),linear-gradient(180deg,transparent,#000 9%,#000 93%,transparent);
-    -webkit-mask-composite:source-in,source-in;
-    mask-image:radial-gradient(ellipse 60% 62% at calc(var(--mx,.5) * 100%) calc(var(--my,.5) * 100%),#000 58%,transparent 100%),
-      linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent),linear-gradient(180deg,transparent,#000 9%,#000 93%,transparent);
-    mask-composite:intersect}
-  .hub-guides__still img{display:block;width:100%;height:100%;object-fit:cover;object-position:calc(var(--ox,.5) * 100%) 50%;opacity:.92;
-    transition:opacity .25s var(--ease-ui,ease),scale 1.2s var(--ease-cine,ease)}
-  .hub-guides__still.is-swap img{opacity:0;scale:1.03}
-}
-.hub-guide{position:relative;display:grid;grid-template-columns:clamp(5.5rem,3rem + 8vw,12rem) minmax(0,1fr);column-gap:clamp(20px,3vw,48px);
+.hub-guides__list{grid-column:1 / -1;margin:0;padding:0;list-style:none;border-top:1px solid var(--hair)}
+.hub-guide{position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:center;column-gap:clamp(24px,3.5vw,64px);
   padding:var(--s-7) 0 calc(var(--s-7) + 2px);border-bottom:1px solid var(--hair)}
 .hub-guide[hidden]{display:none}
 .hub-guide::before{content:"";position:absolute;left:0;top:-1px;height:1px;width:100%;pointer-events:none;
   background:linear-gradient(90deg,var(--cyan),rgb(0 229 255 / .2) 40%,transparent 75%);transform:scaleX(0);transform-origin:left;transition:transform .8s var(--ease-cine,ease)}
 .hub-guide:is(:hover,:focus-within)::before{transform:scaleX(1)}
-/* El número lleva DENTRO la portada de su artículo (como el Montage); sin placa, la luz de la marca */
-.hub-guide__n{font:200 clamp(4.5rem,2.4rem + 6vw,9.5rem)/.82 var(--f-display);letter-spacing:-.06em;font-variant-numeric:tabular-nums;
-  background:linear-gradient(92deg,#fff 0%,var(--cyan-soft) 40%,var(--cyan) 75%,var(--indigo) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hub-guide__n.has-img{font-weight:500;background:linear-gradient(rgb(255 255 255 / .1),rgb(255 255 255 / .1)),var(--img) 70% 38% / cover,linear-gradient(92deg,#fff,var(--cyan));
-  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1px rgb(0 229 255 / .28)}
+/* Portada de la guía: la placa 16:9 entera. Sin placa propia, la compartida lleva encima el nombre del artículo, del lado
+   libre de la escena, para que ninguna portada se repita. */
+.hub-guide__cover{position:relative;display:block;aspect-ratio:16 / 9;overflow:hidden;border-radius:var(--r-still);background:var(--ink);
+  box-shadow:inset 0 0 0 1px var(--hair);container-type:inline-size}
+.hub-guide__cover img{display:block;width:100%;height:100%;object-fit:cover;transition:scale 1.2s var(--ease-cine,ease)}
+.hub-guide:is(:hover,:focus-within) .hub-guide__cover img{scale:1.03}
+.hub-guide__cover-t{position:absolute;top:0;bottom:0;left:0;width:48%;display:flex;align-items:center;padding:0 0 0 6%;
+  font:500 6.2cqw/1.12 var(--f-display);letter-spacing:-.02em;color:#fff;text-wrap:balance}
+.hub-guide__cover-t.is-right{left:auto;right:0;padding:0 6% 0 0}
+@media (prefers-reduced-motion:reduce){.hub-guide__cover img{transition:none}.hub-guide:is(:hover,:focus-within) .hub-guide__cover img{scale:1}}
+html[data-motion="reduced"] .hub-guide__cover img{transition:none}
 .hub-guide__body{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
 .hub-guide__cat{margin:0;color:var(--cyan)}
 .hub-guide__t{margin:var(--s-3) 0 0;font:500 clamp(1.375rem,1rem + 1.1vw,2.125rem)/1.12 var(--f-display);letter-spacing:-.022em;color:#fff;text-wrap:balance;max-width:30ch}
@@ -481,8 +465,7 @@ html.no-js .hub-guide__ask{display:none}
 @media (pointer:coarse){.hub-guide__ask{min-height:44px}}
 @media (max-width:1023px){.hub-guides__note{grid-column:1 / -1}}
 @media (max-width:767px){
-  .hub-guide{grid-template-columns:minmax(0,1fr);row-gap:var(--s-3);padding:var(--s-6) 0}
-  .hub-guide__n{font-size:clamp(3.5rem,2.4rem + 6vw,4.5rem)}
+  .hub-guide{grid-template-columns:minmax(0,1fr);row-gap:var(--s-5);padding:var(--s-6) 0}
 }
 
 /* ── Preguntas frecuentes ───────────────────────────────────────────────────────────────────────────────────────── */
@@ -510,7 +493,7 @@ body.hub #cta-final .is__text{min-width:0}
 body.hub #cta-final .cta-p .btn-micro{contain:inline-size;align-self:stretch;max-width:none;white-space:normal;text-wrap:balance}
 
 @media (forced-colors:active){
-  .hub-case__fig .metric__v,.hub-guide__n,.hub-guide__n.has-img{background:none;color:CanvasText;-webkit-text-stroke:0}
+  .hub-case__fig .metric__v{background:none;color:CanvasText;-webkit-text-stroke:0}
   .hub-case__media{opacity:.35}
 }
 /* ===== fin HubTemplate ===== */

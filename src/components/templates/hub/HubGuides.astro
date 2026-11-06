@@ -1,19 +1,20 @@
 ---
 // HubGuides · /blog/#categorias + /blog/#grid (ESPEC §5.5: categorías en chips y la lista de artículos).
-// Sin tarjetas (R7): un índice editorial. Cada guía es una fila con su número en Lexend 200 relleno de la portada de su
-// artículo (la imagen vive DENTRO de las cifras, como el Montage), su categoría, el título, lo que responde y su estado.
+// Sin tarjetas (R7): un índice editorial. Cada guía es una fila con su portada, su categoría, el título, lo que responde
+// y su estado. La lista sale de guias.ts: todo artículo publicado entra solo, del más reciente al más antiguo.
 //   · Guía publicada (su ruta existe): el título enlaza y la fila dice "Leer la guía →" y su fecha real (el campo
 //     `actualizado` del texto del artículo, la misma que imprime el artículo).
 //   · Guía en edición: sin enlace (nunca '#'); "Pregúntale a Kain" abre ⌘K con la pregunta escrita, y "Mientras tanto"
 //     lleva a la página comercial del tema si ya existe. Nada de fechas ni tiempos de lectura que no existen.
-// Portada fija (escritorio): la placa de la guía en pantalla, encuadrada con su sujeto registrado (plates.json subject.d):
-// Kain entero, nunca cortado por el recorte (R13).
+// Portada: la placa del hero del artículo. Si es propia (<page.id>-hero) va limpia; si es la compartida por defecto, lleva
+// encima el nombre corto del artículo (su último breadcrumb) para que dos portadas nunca se vean iguales.
 // Chips de categoría: filtran las filas ya renderizadas (sin JS no se muestran).
 import Copy from '../../ui/Copy.astro';
 import Icon from '../../ui/Icon.astro';
 import EditorNote from '../../ui/EditorNote.astro';
 import Aura from '../Aura.astro';
 import { pages, linkTarget, isBuilt, getPlate, copyOrNull } from '../../../lib/site';
+import { guiasDelBlog } from './guias';
 import { publicExists } from '../../ui/ui-data';
 import { head, HUB_FALLBACK } from './hubKit';
 import { quoteLink } from '../../layout/cta';
@@ -21,57 +22,35 @@ import { quoteLink } from '../../layout/cta';
 interface Props { cats: any; g: any; idCats: string; idGrid: string }
 const { cats, g, idCats, idGrid } = Astro.props;
 
-/** Placa de la portada del artículo (o de su respaldo) que ya tiene still exportado. */
+/** Placa de la portada del artículo (o de su respaldo) que ya está exportada. */
 function plateFor(href: string): string | null {
   const pg = (pages as any[]).find((p) => p.url === href);
   const pl = pg?.sections?.find((s: any) => s.plate)?.plate;
   const fb = pl?.launchFallback;
   const cands = [pl?.id, typeof fb === 'string' ? fb : fb?.plate, pl?.id ? HUB_FALLBACK[pl.id]?.plate : undefined, 'home-kain'].filter(Boolean) as string[];
-  return cands.find((c) => publicExists(`/img/cine/${c}-still-640.webp`)) ?? null;
-}
-/** Still 21:9 de esa placa para rellenar el número. */
-const stillFor = (id: string | null) => (id ? `/img/cine/${id}-still-640.webp` : null);
-/**
- * Encuadre de la portada fija (caja de proporción STILL_AR, la placa 16:9 en "cover": su alto llena la caja). Con el
- * sujeto registrado de la placa (subject.d, sin espejo: el archivo no se refleja):
- *   ox  → object-position X que centra al sujeto en la caja (acotado a la placa: nunca deja ver su borde)
- *   mx, my → centro del sujeto dentro de la caja (centro de la máscara que funde el resto de la escena)
- * Así Kain entra entero (el más ancho, kommo-hero con su panel, ocupa ~3/4 de la caja) y nunca queda una toma vacía.
- */
-const STILL_AR = 1.05;
-function frameOf(id: string | null) {
-  const p: any = id ? getPlate(id) : null;
-  const ar: number = p?.d?.ar ?? 16 / 9;
-  const sd: number[] | undefined = p?.subject?.d;
-  const cx = sd ? (sd[0] + sd[2]) / 2 : p?.d?.fx ?? 0.5;
-  const cy = sd ? (sd[1] + sd[3]) / 2 : 0.5;
-  const f = STILL_AR / ar;                                   // fracción del ancho de la placa que entra en la caja
-  const ox = f >= 1 ? 0.5 : Math.min(1, Math.max(0, (cx - f / 2) / (1 - f)));
-  const mx = f >= 1 ? cx : (cx * ar - ox * (ar - STILL_AR)) / STILL_AR;
-  const k = (n: number) => n.toFixed(3);
-  return { ox: k(ox), mx: k(Math.min(0.7, Math.max(0.3, mx))), my: k(Math.min(0.6, Math.max(0.4, cy))) };
+  return cands.find((c) => publicExists(`/img/cine/${c}-1280.webp`)) ?? null;
 }
 const fmtDate = (iso?: string) => (iso ? new Date(`${iso}T12:00:00Z`).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : '');
-const catName = (slug: string) => ((cats?.chips ?? []) as any[]).find((c) => c.slug === slug)?.label ?? slug;
-const items = ((g?.items ?? []) as any[]).map((it, i) => {
+const lista = guiasDelBlog(g, cats);
+// Una categoría nueva en un artículo agrega su chip: los del copy primero, luego las nuevas en orden de aparición.
+const chips: any[] = [...(cats?.chips ?? [])];
+for (const it of lista) if (it.categoryLabel && !chips.some((c) => c.slug === it.category)) chips.push({ slug: it.category, label: it.categoryLabel });
+const catName = (slug: string) => chips.find((c) => c.slug === slug)?.label ?? slug;
+const items = lista.map((it, i) => {
   const href = it.href && isBuilt(it.href) ? it.href : null;
   const rel = it.related?.href ? linkTarget(it.related.href) : null;
   const plate = plateFor(it.href);
   // Fecha real de la guía publicada: el `actualizado` de su texto (lo mismo que imprime el artículo)
-  const pg = href ? (pages as any[]).find((p) => p.url === href) : null;
-  const updated: string | undefined = pg ? copyOrNull(pg.id)?.actualizado : undefined;
-  return { ...it, i, n: String(i + 1).padStart(2, '0'), href, rel, plate, still: stillFor(plate), frame: frameOf(plate), updated };
+  const pg = (pages as any[]).find((p) => p.url === it.href);
+  const updated: string | undefined = href && pg ? copyOrNull(pg.id)?.actualizado : undefined;
+  const coverTitle: string | null = plate && pg && plate !== `${pg.id}-hero` ? pg.breadcrumbs?.at(-1)?.name ?? it.title : null;
+  const titleRight = plate ? getPlate(plate)?.layout === 'subject-left' : false;
+  return { ...it, i, href, rel, plate, updated, coverTitle, titleRight };
 });
-/** La portada grande (16:9 de 1280) para la columna fija. Sin ella, la fila no cambia la portada: el still 21:9 no
- *  trae el encuadre registrado del sujeto y lo cortaría. */
-const big = (still: string | null) => { if (!still) return null; const b = still.replace(/-still-640\.webp$/, '-1280.webp'); return publicExists(b) ? b : null; };
-for (const it of items) (it as any).big = big(it.still);
-const first = items.find((it) => (it as any).big) as any;
-const firstStill = first?.big ?? null;
-const frameVars = (fr: { ox: string; mx: string; my: string }) => `--ox:${fr.ox};--mx:${fr.mx};--my:${fr.my};`;
-const usedCats = ((cats?.chips ?? []) as any[]).filter((c) => items.some((it) => it.category === c.slug));
+const usedCats = chips.filter((c) => items.some((it) => it.category === c.slug));
 const L = g?.labels ?? {};
-const status = (n: number) => String(cats?.status ?? '{n} guías').replace('{n}', String(n));
+const statusTpl = String(cats?.status ?? '{n} guías').replace('{total}', String(items.length));
+const status = (n: number) => statusTpl.replace('{n}', String(n));
 // "cotizar": true (o una landing oculta) → disparador del modal (CAMBIO-COTIZAR §1.2)
 const builtLinks = ((g?.links ?? []) as any[]).map((l) => quoteLink(l)).filter((l) => l?.href && isBuilt(l.href));
 ---
@@ -89,7 +68,7 @@ const builtLinks = ((g?.links ?? []) as any[]).map((l) => quoteLink(l)).filter((
         <button type="button" class="hub-chip" aria-pressed="true" data-dim="cat" data-val="*">{cats?.all ?? 'Todas'}</button>
         {usedCats.map((c: any) => <button type="button" class="hub-chip" aria-pressed="false" data-dim="cat" data-val={c.slug}>{c.label}</button>)}
       </div>
-      <p class="t-micro hub-chips__status" aria-live="polite" data-hub-status data-tpl={cats?.status ?? '{n} guías'}>{status(items.length)}</p>
+      <p class="t-micro hub-chips__status" aria-live="polite" data-hub-status data-tpl={statusTpl}>{status(items.length)}</p>
     </div>
   </div>
 </section>
@@ -98,18 +77,18 @@ const builtLinks = ((g?.links ?? []) as any[]).map((l) => quoteLink(l)).filter((
   <Aura kind="ondas" x="30%" y="40%" o={1} only="d" />
   <Aura kind="ondas" x="50%" o={1} only="m" sticky />
   <div class="frame hub-sec__frame hub-guides__frame">
-    {/* Escritorio: la portada de la guía en pantalla (o bajo el cursor) a sangre de su columna, fija mientras corre el
-        índice; sin caja: sus cuatro bordes se funden a --ink (R7). Decorativa: el índice ya dice todo. */}
-    {firstStill && (
-      <figure class="hub-guides__still" aria-hidden="true" data-guide-still style={frameVars(first.frame)}>
-        <img src={firstStill} alt="" width="1280" height="714" loading="lazy" decoding="async" />
-      </figure>
-    )}
     <ol class="hub-guides__list" role="list">
-      {items.map((it) => (
-        <li class:list={['hub-guide', it.href ? 'is-live' : 'is-draft']} data-cat={it.category} data-still={(it as any).big ?? undefined}
-          data-ox={it.frame.ox} data-mx={it.frame.mx} data-my={it.frame.my} style={`--i:${it.i};` + (it.still ? `--img:url('${it.still}');` : '')}>
-          <span class:list={['hub-guide__n', it.still && 'has-img']} aria-hidden="true">{it.n}</span>
+      {items.map((it) => { const Cover = it.href ? 'a' : 'div'; return (
+        <li class:list={['hub-guide', it.href ? 'is-live' : 'is-draft']} data-cat={it.category} style={`--i:${it.i};`}>
+          {it.plate && (
+            <Cover class="hub-guide__cover" href={it.href ?? undefined} tabindex={it.href ? -1 : undefined} aria-hidden="true">
+              <picture>
+                <source type="image/avif" srcset={`/img/cine/${it.plate}-1280.avif`} />
+                <img src={`/img/cine/${it.plate}-1280.webp`} alt="" width="1280" height="714" loading="lazy" decoding="async" />
+              </picture>
+              {it.coverTitle && <span class:list={['hub-guide__cover-t', it.titleRight && 'is-right']}>{it.coverTitle}</span>}
+            </Cover>
+          )}
           <div class="hub-guide__body">
             <p class="t-label hub-guide__cat">{catName(it.category)}</p>
             <h3 class="hub-guide__t">
@@ -141,7 +120,7 @@ const builtLinks = ((g?.links ?? []) as any[]).map((l) => quoteLink(l)).filter((
             )}
           </div>
         </li>
-      ))}
+      ); })}
     </ol>
     <p class="t-micro hub-guides__empty" data-hub-empty hidden>{cats?.empty ?? ''}</p>
     {g?.note && (
@@ -152,31 +131,3 @@ const builtLinks = ((g?.links ?? []) as any[]).map((l) => quoteLink(l)).filter((
     )}
   </div>
 </section>
-
-<script>
-  // Índice de guías: la portada fija de la columna derecha sigue a la guía en pantalla (y a la que está bajo el cursor).
-  const fig = document.querySelector<HTMLElement>('[data-guide-still]');
-  const img = fig?.querySelector('img');
-  const rows = [...document.querySelectorAll<HTMLElement>('.hub-guide[data-still]')];
-  if (fig && img && rows.length) {
-    let cur = img.getAttribute('src') ?? '';
-    // Cambia la placa y su encuadre (centro del sujeto y de la máscara) mientras la portada está apagada
-    const show = (r: HTMLElement) => {
-      const src = r.dataset.still;
-      if (!src || src === cur) return;
-      cur = src;
-      fig.classList.add('is-swap');
-      window.setTimeout(() => {
-        img.src = src;
-        for (const k of ['ox', 'mx', 'my'] as const) { const v = r.dataset[k]; if (v) fig.style.setProperty(`--${k}`, v); }
-        fig.classList.remove('is-swap');
-      }, 180);
-    };
-    rows.forEach((r) => {
-      r.addEventListener('pointerenter', () => show(r));
-      r.addEventListener('focusin', () => show(r));
-    });
-    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) show(e.target as HTMLElement); }), { rootMargin: '-45% 0px -45% 0px' });
-    rows.forEach((r) => io.observe(r));
-  }
-</script>

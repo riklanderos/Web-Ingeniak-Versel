@@ -33,6 +33,7 @@ import Dawn from '../cine/Dawn.astro';
 import FigCaption from '../cine/FigCaption.astro';
 import LightBranch from '../cine/LightBranch.astro';
 import { resolvePlate, type Resolved } from '../cine/plate';
+import { guiasDelBlog } from './hub/guias';
 import Breadcrumbs from '../nav/Breadcrumbs.astro';
 import Btn from '../ui/Btn.astro';
 import Copy from '../ui/Copy.astro';
@@ -110,7 +111,7 @@ const sumarioIds = ((hero?.sumario?.metricIds ?? []) as MetricId[]).filter((m) =
 // Blog: "imagen ilustrativa" si la portada muestra a una persona; guía destacada si alguna ya existe
 const heroIllus = hero?.illus && showsPerson(rHero) ? hero.illus : null;
 const featured = hub === 'blog'
-  ? ((C.grid?.items ?? []) as any[]).find((it) => it?.href && isBuilt(it.href)) ?? null
+  ? guiasDelBlog(C.grid, C.categorias).find((it) => it?.href && isBuilt(it.href)) ?? null
   : null;
 // La definición que sigue a la portada comparte su toma (SharedTake, §3.12)
 const DEF_IDS = ['definicion', 'datos'];

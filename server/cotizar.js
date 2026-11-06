@@ -83,6 +83,7 @@ export const RUTAS = Object.freeze({
   '/blog/como-verificar-partner-oficial-kommo/': 'art-partner-kommo',
   '/blog/gohighlevel-en-espanol/': 'art-ghl-espanol',
   '/blog/n8n-vs-zapier-vs-make/': 'art-n8n',
+  '/blog/servicios-como-software/': 'art-servicios-software',
   '/discovery/': 'discovery',
   '/power-session/': 'power-session',
   '/agendar/': 'agendar',
@@ -351,7 +352,11 @@ export function pageIdFrom(pagina) {
   path = path.toLowerCase().replace(/\/index\.html$/, '/');
   if (!path.endsWith('/')) path += '/';
   const extra = /** @type {Record<string, string>} */ (catalogo.rutas ?? {});
-  return extra[path] ?? /** @type {Record<string, string>} */ (RUTAS)[path] ?? null;
+  const mapeada = extra[path] ?? /** @type {Record<string, string>} */ (RUTAS)[path];
+  if (mapeada) return mapeada;
+  // Los artículos llegan por PR del Estudio editorial sin pasar por RUTAS: su etiqueta se deriva del slug.
+  const articulo = path.match(/^\/blog\/([a-z0-9-]{1,80})\/$/);
+  return articulo ? `art-${articulo[1]}` : null;
 }
 
 /**

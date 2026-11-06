@@ -19,11 +19,11 @@
   "pendientes": [
     "RESUELTO 2026-11-06 · SEO Studio · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
-    "PLACA · portada y cierre usan placas compartidas por defecto (home-sistema-2-atender y cta-amanecer)."
+    "PLACA · RESUELTO 2026-11-06: portada propia art-servicios-software-hero; el cierre usa la placa compartida cta-amanecer."
   ],
   "sections": {
     "hero": {
-      "_componente": "ImageSection hero (placa compartida por defecto)",
+      "_componente": "ImageSection hero (placa propia art-servicios-software-hero)",
       "eyebrow": "Inteligencia artificial",
       "h1": {
         "text": "Servicios como software:",

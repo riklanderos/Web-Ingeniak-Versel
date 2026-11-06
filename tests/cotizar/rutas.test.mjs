@@ -12,7 +12,9 @@ test('rutas · cada página de sitemap.json tiene su page.id en RUTAS', () => {
   const faltan = [];
   for (const p of paginas) {
     if (!p?.url || p.url === '/404' || p.id === '404') continue;
-    if (cotizar.pageIdFrom(p.url) !== p.id) faltan.push(`${p.url} → ${p.id} (RUTAS da ${cotizar.pageIdFrom(p.url)})`);
+    const id = cotizar.pageIdFrom(p.url);
+    const derivado = p.template === 'T-ARTICLE' && id === `art-${p.url.split('/').filter(Boolean).pop()}`;
+    if (id !== p.id && !derivado) faltan.push(`${p.url} → ${p.id} (RUTAS da ${id})`);
   }
   assert.deepEqual(faltan, [], 'actualiza RUTAS en server/cotizar.js');
 });

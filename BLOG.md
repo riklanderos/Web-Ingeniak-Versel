@@ -36,6 +36,14 @@ y su PDF.
 6. **Publicar.** Merge a `main` → deploy. El artículo entra solo al sitemap XML, al hub `/blog/` y
    a los enlaces internos. Nada más que hacer.
 
+## Portadas
+
+- `/blog/` lista sola todo artículo publicado, del más reciente al más antiguo, con su portada. No hay que tocar `blog.json`.
+- La portada es la placa del hero del artículo. Sin placa propia, el artículo usa la compartida y el índice le pone encima
+  su nombre corto (el último breadcrumb), para que no haya dos portadas iguales.
+- Para darle portada propia: registra la placa `<page.id>-hero` (`materiales/v2/placas/`, masters en `src/assets/cine/`,
+  `node scripts/plates.mjs <id>`), apunta a ella el hero en `sitemap.json` y regenera su tarjeta con `npm run og -- <page.id>`.
+
 ## Qué verifica el build (no negociable)
 
 - `check-cifras`: ninguna cifra comercial escrita a mano; solo tokens. Tarifas de terceros, descritas y enlazadas.

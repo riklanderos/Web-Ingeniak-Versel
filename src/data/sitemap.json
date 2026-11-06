@@ -8947,7 +8947,7 @@
         "order": 3,
         "id": "grid",
         "name": "Artículos",
-        "spec": "6 tarjetas (imagen 16:9, categoría, título, autor, fecha 'Actualizado: …', tiempo de lectura).",
+        "spec": "Índice automático: todo artículo T-ARTICLE publicado, del más reciente al más antiguo, con su portada 16:9, categoría, título, autor y fecha 'Actualizado: …'.",
         "cinematic": false
       },
       {
@@ -11841,7 +11841,7 @@
         "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: servicios como software.",
         "cinematic": true,
         "plate": {
-          "id": "home-sistema-2-atender",
+          "id": "art-servicios-software-hero",
           "component": "ImageSection hero",
           "layout": "subject-right",
           "mirror": false,
