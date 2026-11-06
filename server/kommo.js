@@ -29,7 +29,7 @@
  * { evento, folio, status, leadId, delivered, ms }: nunca correo, teléfono, nombre ni token.
  */
 import { envName } from './http.js';
-import { CAMPOS, EMBUDOS } from '../shared/kommo-esquema.js';
+import { CAMPOS, EMBUDOS, ORIGEN_PROSPECTO } from '../shared/kommo-esquema.js';
 import { SITE_URL } from '../shared/agenda.js';
 
 const CALL_TIMEOUT_MS = 8000;
@@ -77,7 +77,7 @@ const ALERTAS = Object.freeze({
  * @typedef {{ id: number, name: string, type: number }} Etapa
  * @typedef {{ id: number, name: string, isMain: boolean, etapas: Etapa[] }} Embudo
  * @typedef {{ id: number, type: string, enums: Map<string, number> }} Campo
- * @typedef {{ embudos: Embudo[], campos: Map<string, Campo[]>, rastreo: Map<string, number> }} Estructura
+ * @typedef {{ embudos: Embudo[], campos: Map<string, Campo[]>, porId: Map<number, Campo>, rastreo: Map<string, number> }} Estructura
  * @typedef {'variable' | 'nombre' | 'respaldo' | 'principal'} OrigenDestino
  * @typedef {{ pipelineId?: number, statusId?: number, origen: OrigenDestino, etapaPorNombre?: boolean }} Destino
  * @typedef {keyof typeof EMBUDOS} ClaveEmbudo
@@ -360,6 +360,8 @@ async function leerCampos(deadline) {
 function armarEstructura(embudos, campos) {
   /** @type {Map<string, Campo[]>} */
   const porNombre = new Map();
+  /** @type {Map<number, Campo>} */
+  const porId = new Map();
   /** @type {Map<string, number>} */
   const rastreo = new Map();
   for (const f of campos) {
@@ -374,11 +376,13 @@ function armarEstructura(embudos, campos) {
       const k = normalizar(e?.value);
       if (k && Number.isSafeInteger(e?.id) && !enums.has(k)) enums.set(k, e.id);
     }
+    const campo = { id: f.id, type: String(f.type ?? ''), enums };
+    porId.set(f.id, campo);
     const lista = porNombre.get(nombre) ?? [];
-    lista.push({ id: f.id, type: String(f.type ?? ''), enums });
+    lista.push(campo);
     porNombre.set(nombre, lista);
   }
-  return { embudos, campos: porNombre, rastreo };
+  return { embudos, campos: porNombre, porId, rastreo };
 }
 
 /**
@@ -571,6 +575,17 @@ export function valoresDeCampos(est, campos) {
     }
   }
   return { valores, enviados, omitidos };
+}
+
+/**
+ * «Origen de Prospecto» = «Form Web», con el id de la opción leído de la propia cuenta.
+ * Null si el campo o la opción no existen: mandar un id inválido haría que Kommo rechace todos los campos del lead.
+ * @param {Estructura} est
+ * @returns {{ field_id: number, values: { enum_id: number }[] } | null}
+ */
+function origenProspecto(est) {
+  const enumOpcion = est.porId.get(ORIGEN_PROSPECTO.fieldId)?.enums.get(normalizar(ORIGEN_PROSPECTO.opcion));
+  return enumOpcion ? { field_id: ORIGEN_PROSPECTO.fieldId, values: [{ enum_id: enumOpcion }] } : null;
 }
 
 /**
@@ -824,7 +839,9 @@ export async function createLeadWithNote(input) {
     }
     const destino = resolverDestino(est, input);
     const campos = valoresDeCampos(est, input.campos);
-    const customFields = [...campos.valores, ...(est ? trackingValues(tracking, est.rastreo) : [])];
+    const origen = est ? origenProspecto(est) : null;
+    if (est && !origen) log({ evento: 'kommo.origen-prospecto', folio: ctx.folio, status: 0, ms: Date.now() - t0 });
+    const customFields = [...campos.valores, ...(origen ? [origen] : []), ...(est ? trackingValues(tracking, est.rastreo) : [])];
 
     // 3 · Lead + contacto + empresa (con campos y etapa); si Kommo rechaza algo de la estructura, se reintenta sin ello
     let r = await call('/leads/complex', { method: 'POST', body: complexBody(input, contactId, customFields, destino), deadline });

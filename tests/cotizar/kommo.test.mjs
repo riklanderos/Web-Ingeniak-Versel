@@ -155,6 +155,73 @@ test('§3.9-3 · contacto existente por correo → contacts: [{ id }] y sin comp
   assert.match(llamadas[4].body[0].params.text, /\nIndustria: Salud · Equipo: 11–50 personas\n/);
 });
 
+/** Campos de la cuenta más «Origen de Prospecto» con las opciones dadas. */
+const camposConOrigen = (opciones) => ({
+  match: 'GET /leads/custom_fields',
+  json: {
+    _embedded: {
+      custom_fields: [
+        ...KOMMO.campos._embedded.custom_fields,
+        { id: 773494, name: 'Origen de Prospecto', type: 'select', enums: opciones.map((value, i) => ({ id: 9000 + i, value })) },
+      ],
+    },
+  },
+});
+const LEAD_DISCOVERY = {
+  name: 'Discovery Session · Clínica Ejemplo',
+  contact: { name: 'Ana Pérez', phoneE164: '+523312345678', email: 'ana@empresa.mx' },
+  embudo: 'ventas',
+  etapa: 'discovery',
+  source: 'agenda-discovery',
+};
+
+test('Origen de Prospecto: la cotización lo manda con la opción Form Web de la cuenta', async (t) => {
+  entorno(t, kommoVars());
+  logs(t);
+  const llamadas = simularFetch(t, [
+    { match: 'GET /contacts', status: 204 },
+    { match: 'GET /leads/pipelines', json: KOMMO.pipelines },
+    camposConOrigen(['Referido', 'Form Web']),
+    { match: 'POST /leads/complex', json: KOMMO.complexOk },
+    { match: 'POST /leads/notes', json: KOMMO.notaOk },
+  ]);
+  assert.equal((await handler.fetch(peticion(valido()))).status, 200);
+  const cfv = llamadas.find((c) => c.path === '/leads/complex').body[0].custom_fields_values;
+  assert.deepEqual(cfv.find((c) => c.field_id === 773494), { field_id: 773494, values: [{ enum_id: 9001 }] });
+  assert.equal(cfv.filter((c) => c.field_id !== 773494).length, CAMPOS_EJEMPLO.length + 1, 'los demás campos siguen iguales');
+});
+
+test('Origen de Prospecto: las reservas de la agenda también lo mandan', async (t) => {
+  entorno(t, kommoVars());
+  logs(t);
+  const llamadas = simularFetch(t, [
+    { match: 'GET /contacts', status: 204 },
+    { match: 'GET /leads/pipelines', json: KOMMO.pipelines },
+    camposConOrigen(['Form Web']),
+    { match: 'POST /leads/complex', json: KOMMO.complexOk },
+  ]);
+  const r = await kommo.createLeadWithNote(LEAD_DISCOVERY);
+  assert.equal(r.ok, true);
+  const cfv = llamadas.find((c) => c.path === '/leads/complex').body[0].custom_fields_values;
+  assert.deepEqual(cfv, [{ field_id: 773494, values: [{ enum_id: 9000 }] }]);
+});
+
+test('Origen de Prospecto: sin la opción Form Web se omite, el lead entra y queda en el log', async (t) => {
+  entorno(t, kommoVars());
+  const registro = logs(t);
+  const llamadas = simularFetch(t, [
+    { match: 'GET /contacts', status: 204 },
+    { match: 'GET /leads/pipelines', json: KOMMO.pipelines },
+    camposConOrigen(['Referido']),
+    { match: 'POST /leads/complex', json: KOMMO.complexOk },
+  ]);
+  const r = await kommo.createLeadWithNote(LEAD_DISCOVERY);
+  assert.equal(r.ok, true);
+  assert.equal(r.reintento, false);
+  assert.equal(llamadas.find((c) => c.path === '/leads/complex').body[0].custom_fields_values, undefined);
+  assert.ok(registro.some((l) => l.includes('kommo.origen-prospecto')));
+});
+
 /** Contacto encontrado por correo, con los teléfonos dados. */
 const porCorreo = (telefonos) => ({
   match: 'GET /contacts?query=ana%40empresa.mx',

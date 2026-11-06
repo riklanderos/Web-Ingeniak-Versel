@@ -96,6 +96,13 @@ export const CAMPOS = {
   origen: { nombre: 'Página de origen', tipo: 'url' },
 };
 
+/**
+ * «Origen de Prospecto» (cliente, 2026-11-06): todo lead que entra por un formulario del sitio lleva esta opción.
+ * El campo ya existe en la cuenta y lo usa el equipo, por eso va por id y fuera de CAMPOS: el script de configuración
+ * no debe crearlo ni tocar sus opciones.
+ */
+export const ORIGEN_PROSPECTO = Object.freeze({ fieldId: 773494, opcion: 'Form Web' });
+
 /** Etiquetas de leads (máximo 10). */
 export const ETIQUETAS = ['web-cotizar', 'web-agenda', 'discovery', 'power-session', 'campaña', 'orgánico', 'referido', 'hot-lead', 'reactivación', 'entorno-preview'];
 
