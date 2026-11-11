@@ -13,6 +13,26 @@ function track(name: string, detail: Record<string, unknown> = {}) {
   } catch { /* nada */ }
 }
 
+/**
+ * Escritorio (ImageSection safeCol): scene.ts acota la columna del intro al borde de la zona segura de la placa con las
+ * medidas reales; la de `more` (estado y "ten a la mano") toma ese mismo ancho para no entrar al calendario de cristal.
+ * La usan /agendar/confirmado/ y /agendar/gracias/.
+ */
+export function syncMoreCol(root: HTMLElement) {
+  const sec = root.closest<HTMLElement>('section.is');
+  const introCol = sec?.querySelector<HTMLElement>(':scope > .is__copy > .is__text');
+  const moreCol = sec?.querySelector<HTMLElement>(':scope > .is__more > .is__text');
+  if (!introCol || !moreCol || !('ResizeObserver' in window)) return;
+  const desk = matchMedia('(min-width: 768px) and (min-aspect-ratio: 5/6)');
+  const sync = () => {
+    const w = desk.matches ? `${Math.floor(introCol.getBoundingClientRect().width)}px` : '';
+    if (moreCol.style.maxWidth !== w) moreCol.style.maxWidth = w;
+  };
+  new ResizeObserver(sync).observe(introCol);
+  desk.addEventListener?.('change', sync);
+  sync();
+}
+
 export function initConfirmado() {
   const root = document.querySelector<HTMLElement>('[data-confirmado]');
   if (!root || root.dataset.cfReady) return;
@@ -100,21 +120,7 @@ export function initConfirmado() {
     }
   }
 
-  // Escritorio (ImageSection safeCol): scene.ts acota la columna del intro al borde de la zona segura de la placa con las
-  // medidas reales; la de `more` (estado y "ten a la mano") toma ese mismo ancho para no entrar al calendario de cristal.
-  const sec = root.closest<HTMLElement>('section.is');
-  const introCol = sec?.querySelector<HTMLElement>(':scope > .is__copy > .is__text');
-  const moreCol = sec?.querySelector<HTMLElement>(':scope > .is__more > .is__text');
-  if (introCol && moreCol && 'ResizeObserver' in window) {
-    const desk = matchMedia('(min-width: 768px) and (min-aspect-ratio: 5/6)');
-    const sync = () => {
-      const w = desk.matches ? `${Math.floor(introCol.getBoundingClientRect().width)}px` : '';
-      if (moreCol.style.maxWidth !== w) moreCol.style.maxWidth = w;
-    };
-    new ResizeObserver(sync).observe(introCol);
-    desk.addEventListener?.('change', sync);
-    sync();
-  }
+  syncMoreCol(root);
 
   $('[data-cf-retry]')?.addEventListener('click', () => void confirmar());
   for (const a of root.querySelectorAll<HTMLAnchorElement>('a[data-wa]')) {

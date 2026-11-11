@@ -88,6 +88,7 @@ export const RUTAS = Object.freeze({
   '/power-session/': 'power-session',
   '/agendar/': 'agendar',
   '/agendar/confirmado/': 'agendar-confirmado',
+  '/agendar/gracias/': 'agendar-gracias',
   '/contacto/': 'contacto',
   '/aviso-privacidad/': 'aviso',
 });

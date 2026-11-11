@@ -1,0 +1,78 @@
+---
+// /agendar/gracias/ · página de gracias de la Discovery Session (petición del cliente, 2026-11-11): la reserva de /discovery/
+// y de /agendar/ termina aquí, con dirección propia para medir la conversión por URL (Meta, Google Ads) además del evento
+// booking_confirmed de GA4. Página oculta (R17): noindex,follow + X-Robots-Tag (vercel.json /agendar/(.*)), encabezado
+// reducido sin CTA, footer mínimo, sin riel. Misma escena que /agendar/confirmado/ (Power): ImageSection hero con
+// gohighlevel-hero, sujeto a la derecha, móvil split; clases .cfm de agenda.css.
+// Datos: src/scripts/agenda/gracias.ts los lee de sessionStorage (los deja booking.ts; nunca van en la URL). Estados:
+// ok (con la reserva) · sin-datos (otra pestaña, más de 24 h o visita directa; también sin JavaScript).
+// Copy: src/content/paginas/agendar-gracias.json (borrador). Sin [data-primary]: el único azul es "Abrir enlace de Meet".
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ImageSection from '../../../components/cine/ImageSection.astro';
+import Icon from '../../../components/ui/Icon.astro';
+import { plateReady } from '../../../components/cine/plate';
+import { getPage, getCopy, section, waHref } from '../../../lib/site';
+import { CONTACT } from '../../../../shared/agenda.js';
+import '../../../styles/agenda.css';
+
+const page = getPage('/agendar/gracias/');
+const c = getCopy('agendar-gracias').sections.estado;
+const E = c.estados;
+const sec = section(page, 'estado') ?? {};
+const pl = sec.plate ?? { id: 'gohighlevel-hero', srcsetMax: 2752 };
+const fallback = pl.launchFallback ?? { plate: 'home-sistema-5-medir', mirror: false };
+const fbId = typeof fallback === 'string' ? fallback : fallback.plate;
+const lcpPlate = plateReady(pl.id) ? pl.id : plateReady(fbId) ? fbId : undefined;
+const wa = waHref(c.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage);
+const waMover = waHref(c.waMover);
+const mail = `mailto:${CONTACT.email}`;
+const [h1a, h1b] = c.h1.text.split(c.h1.lit);
+const [mov1, movResto] = c.mover.split('{wa}');
+const [mov2, mov3] = movResto.split('{email}');
+---
+<BaseLayout page={page} nav="reduced" lcpPlate={lcpPlate} lcpSrcsetMax={pl.srcsetMax ?? 2752} rail={false} noindex waHref={wa} bodyClass="cfm-page">
+  <ImageSection id="estado" plate={pl.id} fallbackPlate={fallback} layout={pl.layout ?? 'subject-right'} height="hero" mobile="split" priority
+    safeCol srcsetMax={pl.srcsetMax} class="cfm-hero gr-hero tpl-hero">
+    <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>
+    <h1 id="estado-t" class="t-display-2 cfm__h1">{h1a}<span class="lit">{c.h1.lit}</span>{h1b}</h1>
+
+    <div slot="more" class="cfm" data-gracias aria-live="polite" aria-busy="true" data-cuando={E.ok.cuando} data-local={E.ok.local}>
+      {/* Sesión agendada (datos de esta pestaña) */}
+      <div class="cfm__s" data-cf="ok" hidden>
+        <p class="t-label t-label--cyan cfm__k"><span class="node" aria-hidden="true"></span>{E.ok.kicker}</p>
+        <p class="cfm__state"><span class="cfm__check" aria-hidden="true"><Icon name="check" size={22} stroke={2} /></span><span data-gr-titulo data-tpl={E.ok.titulo}>{E.ok.tituloSinNombre}</span></p>
+        <p class="cfm__when"><span data-gr-when></span><span class="cfm__local" data-gr-local hidden></span></p>
+        <p class="cfm__p" data-gr-inv data-tpl={E.ok.invitacion}>{E.ok.invitacionSinCorreo}</p>
+        <div class="ctas">
+          <a class="btn" target="_blank" rel="noopener" data-gr-meet hidden>
+            <span class="btn__t">{E.ok.meet}</span>
+            <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1"/><path class="r" d="M8 8h6M11 5l3 3-3 3"/></svg></span>
+          </a>
+          <a class="btn btn--ghost" href={wa} target="_blank" rel="noopener" data-wa><Icon name="whatsapp" size={18} /><span class="btn__t">{c.ctaSecondary.label}</span></a>
+        </div>
+        <p><a class="lnk" href="/">{E.ok.inicio}</a></p>
+      </div>
+
+      {/* Sin reserva reciente en esta pestaña (o sin JavaScript) */}
+      <div class="cfm__s" data-cf="sin-datos" hidden>
+        <p class="t-label cfm__k"><span class="node" aria-hidden="true"></span>{E.sinDatos.kicker}</p>
+        <p class="cfm__state">{E.sinDatos.titulo}</p>
+        <p class="cfm__p">{E.sinDatos.text}</p>
+        <div class="ctas">
+          <a class="btn btn--ghost" href="/agendar/">{E.sinDatos.agendar}</a>
+          <a class="btn btn--ghost" href={wa} target="_blank" rel="noopener" data-wa><Icon name="whatsapp" size={18} /><span class="btn__t">{c.ctaSecondary.label}</span></a>
+        </div>
+      </div>
+    </div>
+    <div slot="more" class="cfm__prep">
+      <p class="t-label">{c.prep.title}</p>
+      <ul>{c.prep.items.map((it: string) => <li><span class="node" aria-hidden="true"></span><span>{it}</span></li>)}</ul>
+      <p class="t-small">{mov1}<a href={waMover} target="_blank" rel="noopener" data-wa>{c.moverWa}</a>{mov2}<a href={mail}>{CONTACT.email}</a>{mov3}</p>
+    </div>
+  </ImageSection>
+
+  <script>
+    import { initGracias } from '../../../scripts/agenda/gracias';
+    initGracias();
+  </script>
+</BaseLayout>

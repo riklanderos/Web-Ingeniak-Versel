@@ -9,6 +9,7 @@ import {
   type BookingForm, type DayAvailability, type FormErrors, type SessionType,
 } from '../../../shared/agenda.js';
 import { bindPhone, readPhone } from '../forms/phone';
+import { GRACIAS_URL, guardarGracias } from './gracias-store';
 
 type Step = 1 | 2 | 3 | 'done';
 type FieldKey = keyof BookingForm;
@@ -532,9 +533,24 @@ export function initBooking(root: HTMLElement) {
         location.assign(j.url);
         return;
       }
-      renderDone(j.when ?? formatSlotEs(S.slot), j.meetLink ?? null);
-      track('booking_confirmed', { tipo: type });
+      const when = j.when ?? formatSlotEs(S.slot);
       try { sessionStorage.removeItem(STORE); } catch { /* nada */ }
+      // Discovery confirmada: a la página de gracias, que manda booking_confirmed (una sola vez por reserva).
+      // Si el navegador no deja guardar los datos, se confirma aquí mismo como antes.
+      const guardado = guardarGracias({
+        nombre: S.form.fullName.trim().split(/\s+/)[0] ?? '',
+        when,
+        start: S.slot,
+        email: S.form.email.trim(),
+        meetLink: j.meetLink ?? null,
+        desde: location.pathname.slice(0, 120),
+      });
+      if (guardado) {
+        location.assign(GRACIAS_URL);
+        return;
+      }
+      renderDone(when, j.meetLink ?? null);
+      track('booking_confirmed', { tipo: type });
       setBusy(false);
     } catch {
       setBusy(false);

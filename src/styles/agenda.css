@@ -205,6 +205,8 @@ html.no-js .cfm-hero .cfm__lede{display:none}
 .cfm__s{display:grid;gap:14px;justify-items:start}
 html.no-js .cfm [data-cf="cargando"]{display:none!important}
 html.no-js .cfm [data-cf="error"][hidden]{display:grid!important}
+/* /agendar/gracias/ (Discovery): sin JavaScript no hay datos de la reserva → "sin-datos" */
+html.no-js .cfm [data-cf="sin-datos"][hidden]{display:grid!important}
 .cfm__s:not([hidden]){animation:bk-step .45s var(--ease-cine) both}
 .cfm__k{display:inline-flex;align-items:center;gap:10px}
 .cfm__state{display:flex;align-items:center;gap:14px;font:500 clamp(1.25rem,1.05rem + .7vw,1.625rem)/1.25 var(--f-display);letter-spacing:-.015em;color:var(--text)}

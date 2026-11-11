@@ -11267,6 +11267,88 @@
     "notes": "Página oculta (R17): BaseLayout nav=\"reduced\" sin CTA en el encabezado, footer mínimo; BookingFlow tipo=\"discovery\" dentro de section#agenda. Sin [data-primary]. El enlace que se comparte es https://ingeniak.mx/agendar/."
   },
   {
+    "id": "agendar-gracias",
+    "group": "Conversión",
+    "url": "/agendar/gracias/",
+    "canonical": "https://ingeniak.mx/agendar/gracias/",
+    "indexable": false,
+    "hidden": true,
+    "status": "página oculta (nueva, cambio 2026-11-11): página de gracias de la Discovery Session para medir la conversión por URL (petición del cliente); noindex,follow + X-Robots-Tag noindex (vercel.json /agendar/(.*))",
+    "template": "T-CONFIRM",
+    "purpose": "Confirmar la Discovery Session recién agendada (fecha, hora, invitación y enlace de Google Meet) con dirección propia para medir la conversión en GA4, Meta y Google Ads.",
+    "primaryKeyword": "—",
+    "secondaryKeywords": [],
+    "title": "Gracias por agendar tu Discovery Session | Ingeniak",
+    "titleLength": 51,
+    "metaDescription": "Tu Discovery Session quedó agendada: aquí ves la fecha, el enlace de Google Meet y cómo aprovechar los 30 minutos.",
+    "metaLength": 114,
+    "h1": "Gracias por agendar tu Discovery Session",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Discovery Session",
+        "url": "/discovery/"
+      },
+      {
+        "name": "Gracias",
+        "url": "/agendar/gracias/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "estado",
+        "name": "Tu reserva",
+        "cinematic": true,
+        "spec": "ImageSection hero (como /agendar/confirmado/); H1 'Gracias por agendar tu Discovery Session' (.lit 'Gracias'); región aria-live con los estados ok / sin-datos: en ok, fecha y hora, invitación de Google Calendar, 'Abrir enlace de Meet' (sin data-primary), Escríbele a Kain y 'Volver al inicio'; abajo, qué preparar y cómo mover la llamada.",
+        "plate": {
+          "id": "gohighlevel-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "split",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "estado"
+    ],
+    "primaryCta": null,
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola, agendé mi Discovery Session y quiero confirmar un detalle.",
+      "href": "https://wa.me/523321017799?text=Hola%2C%20agend%C3%A9%20mi%20Discovery%20Session%20y%20quiero%20confirmar%20un%20detalle."
+    },
+    "internalLinks": [
+      "/",
+      "/agendar/",
+      "/aviso-privacidad/"
+    ],
+    "jsonLd": [
+      "WebPage",
+      "BreadcrumbList"
+    ],
+    "faq": [],
+    "redirectsFrom": [],
+    "sitemap": null,
+    "folio": "606",
+    "copy": {
+      "status": "borrador",
+      "minWords": 60,
+      "owner": "agenda",
+      "note": "Página utilitaria: el copy vive en src/content/paginas/agendar-gracias.json (borrador, R1)."
+    },
+    "footerAnchors": [],
+    "notes": "Página oculta (R17): BaseLayout nav=\"reduced\" sin CTA en el encabezado, footer mínimo; raíz con data-gracias. Sin [data-primary]. Llega aquí la reserva de la Discovery (/discovery/ y /agendar/); los datos van por sessionStorage, nunca en la URL."
+  },
+  {
     "id": "aviso",
     "group": "Legal",
     "url": "/aviso-privacidad/",

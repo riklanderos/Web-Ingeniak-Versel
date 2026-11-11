@@ -1,0 +1,58 @@
+{
+  "pageId": "agendar-gracias",
+  "url": "/agendar/gracias/",
+  "estado": "borrador",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": null,
+  "actualizado": "2026-11-11",
+  "pendientes": [
+    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "PÁGINA NUEVA (petición del cliente, 2026-11-11): página de gracias con dirección propia para la Discovery Session, para medir la conversión por URL en Meta y Google Ads. Antes la confirmación se veía en la misma página de la agenda.",
+    "MISMO TEXTO: la confirmación, la lista 'Para aprovechar los 30 minutos' y '¿Necesitas mover la llamada?' son las de la vista final de la agenda (src/components/agenda/textos.ts), que sigue como respaldo si el navegador no deja pasar los datos."
+  ],
+  "sections": {
+    "estado": {
+      "_componente": "ImageSection hero · gohighlevel-hero (Kain confirma una cita en un calendario de cristal; sujeto a la derecha; móvil split), como /agendar/confirmado/. Estados ok · sin-datos.",
+      "eyebrow": "Discovery Session · reserva",
+      "h1": {
+        "text": "Gracias por agendar tu Discovery Session",
+        "lit": "Gracias"
+      },
+      "estados": {
+        "ok": {
+          "kicker": "Sesión agendada",
+          "titulo": "Listo, {nombre}. Tu llamada quedó en la agenda.",
+          "tituloSinNombre": "Listo. Tu llamada quedó en la agenda.",
+          "cuando": "{when} (hora del centro de México)",
+          "local": "en tu zona horaria",
+          "invitacion": "Te enviamos la invitación de Google Calendar a {email} con el enlace de Google Meet. Si no la ves en tu bandeja de entrada, revisa promociones o spam.",
+          "invitacionSinCorreo": "Te enviamos la invitación de Google Calendar con el enlace de Google Meet. Si no la ves en tu bandeja de entrada, revisa promociones o spam.",
+          "meet": "Abrir enlace de Meet",
+          "inicio": "Volver al inicio"
+        },
+        "sinDatos": {
+          "kicker": "Tu reserva",
+          "titulo": "No vemos una reserva reciente en este navegador.",
+          "text": "Si ya agendaste, la invitación de Google Calendar con el enlace de Google Meet está en tu correo. Si todavía no, elige tu horario: son 30 minutos y no tienen costo.",
+          "agendar": "Elegir mi horario"
+        }
+      },
+      "prep": {
+        "title": "Para aprovechar los 30 minutos",
+        "items": [
+          "Conéctate cinco minutos antes desde una computadora, si puedes.",
+          "Ten claro qué parte de tu operación se siente más trabada.",
+          "Si tienes números a la mano (ventas, leads, tiempos), mejor todavía.",
+          "No necesitas preparar presentación: nosotros hacemos las preguntas."
+        ]
+      },
+      "mover": "¿Necesitas mover la llamada? Escríbenos por {wa} o a {email}.",
+      "moverWa": "WhatsApp",
+      "waMover": "Hola, agendé mi Discovery Session y necesito cambiar el horario.",
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola, agendé mi Discovery Session y quiero confirmar un detalle."
+      }
+    }
+  }
+}
