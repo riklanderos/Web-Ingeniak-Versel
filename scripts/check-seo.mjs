@@ -51,6 +51,10 @@ export async function run(opts) {
     const noindex = /noindex/i.test(robots);
     robotsByRoute.set(route, noindex);
     if (!page && !route.startsWith('/dev/')) R.fail(route, 'la página construida no está en sitemap.json');
+    // Search Console: conservar la verificación en el HTML inicial, dentro del head compartido.
+    const head = find(root, (x) => x.tag === 'head');
+    const verification = head ? findAll(head, (x) => x.tag === 'meta' && x.attrs.name === 'google-site-verification') : [];
+    if (verification.length !== 1 || verification[0].attrs.content !== 'o2wBitvRnS8xvYel800kz9ZlhQ7gLCexN1MLIFqX_E0') R.fail(route, 'falta la meta google-site-verification correcta y única en <head>');
     // title y meta
     const title = norm(textOf(find(root, (x) => x.tag === 'title') ?? { children: [] }));
     const desc = norm(metaContent(root, 'description') ?? '');
@@ -230,7 +234,7 @@ export async function run(opts) {
     const want = new Set(expected.filter(inScope)), got = new Set(xmlUrls.filter(inScope));
     for (const u of want) if (!got.has(u)) R.fail(u, 'página indexable fuera de sitemap.xml');
     for (const u of got) if (!want.has(u)) R.fail(u, 'sitemap.xml incluye una página que no es indexable/construida');
-    R.info(`sitemap.xml: ${got.size} URL(s) · esperadas ${want.size} (indexables sin puerta pendiente${opts.release ? ', todas' : ', construidas'}${scope ? `; solo las ${scope.size} ruta(s) de --only` : ''})`);
+    R.info(`sitemap.xml: ${got.size} URL(s) · esperadas ${want.size} (indexables${opts.release ? ', todas' : ', construidas'}${scope ? `; solo las ${scope.size} ruta(s) de --only` : ''})`);
   }
   const llms = await loadText(opts, '/llms.txt');
   const full = await loadText(opts, '/llms-full.txt');

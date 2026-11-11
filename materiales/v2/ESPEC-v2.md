@@ -1,6 +1,6 @@
 # ESPEC v2 · Ingeniak — especificación definitiva
 
-> **Fuente única de verdad para construir ingeniak.mx v2.** Fecha: 18 de octubre de 2026 · Versión 1.2 (revisión crítica r1, ver §12; cambio r2 del 20 de octubre de 2026 "Cotizar proyecto" y landings ocultas, ver §12.6) · Estado: lista para construcción, con las puertas de contenido de §12.3.
+> **Fuente única de verdad para construir ingeniak.mx v2.** Fecha: 18 de octubre de 2026 · Versión 1.3 (revisión crítica r1, ver §12; cambio r2 del 20 de octubre de 2026 "Cotizar proyecto" y landings ocultas, ver §12.6; cambio r3 del 29 de octubre de 2026, indexación de casos breves, ver §12.7) · Estado: lista para construcción, con las puertas de contenido de §12.3.
 > Stack fijo: Astro (SSG, MPA puro, sin ClientRouter) · GSAP 3.13 (ScrollTrigger, SplitText, Flip) · Lenis 1.3.11 · Vercel. Imágenes: Magnific (Nano Banana Pro con referencias de Kain). Video: Remotion / HyperFrames.
 > Base: concepto ganador **"Plano secuencia — el turno de noche de Kain"** (`concepto-cinematic.md`), con injertos de **FOLIO** (`concepto-authority.md`) y **SISTEMA VIVO** (`concepto-system.md`) votados por los 3 jueces.
 > Insumos: `A-sitio-actual.md`, `B-referencias.md`, `C-benchmark.md`, `D-arquitectura.md`, `D-sitemap.json`, `D-navegacion.json`, `D-redirects.json`, `materiales/magnific/v2/RECETA.md`.
@@ -1801,5 +1801,13 @@ Secciones que nacen en `split`: inicio 06 (Kain), servicios `senales`, `/kain/#s
 **R19 · Reserva.** La reserva de Discovery y Power replica el flujo de riklanderos.tech (Google Calendar en vivo, Meet, Stripe solo para Power, `/agendar/confirmado/`, cron de limpieza) y además registra cada reserva en Kommo. Kommo nunca bloquea una reserva; Google Calendar es la fuente de verdad.
 
 **R20 · Medición (sustituye la lista de R10).** `cta_cotizar_click`, `cotizar_open`, `cotizar_step`, `cotizar_submit`, `cotizar_success`, `cotizar_error`, `cotizar_close`, `cta_agenda_click`, `booking_view`, `booking_step`, `booking_submit`, `booking_checkout_start`, `booking_confirmed`, `booking_slot_taken`, `booking_error`, `ps_diagnostico`, `whatsapp_click`, `search_open`, `search_submit`, `video_play`/`video_50`/`video_complete`, `faq_open`, `chat_sim_tab`. Atribución en `sessionStorage`: `ingeniak-utm`, `ingeniak-clid`, `ingeniak-landing`, `ingeniak-src`, `ingeniak-agenda-desde`. Nunca texto escrito por la persona.
+
+### 12.7 Cambio del 29 de octubre de 2026 · indexación de casos breves (r3)
+
+Por solicitud del propietario en chat, los casos retail, e-commerce CDMX, HoReCa y logística deben incluirse en el sitemap. Esta excepción sustituye la exclusión de indexación de R2/R8 para esos casos, **no** la puerta de confirmación de contenido: `publishGate.ok` permanece en `false`.
+
+- `copy.publishGate.indexBrief: true` autoriza indexar la versión breve con sus datos ya publicables; sin esa autorización, una puerta pendiente sigue en `noindex`.
+- La misma regla se aplica al filtro de `@astrojs/sitemap`, robots y llms. `hidden: true`, `indexable: false`, 404 y demos siguen excluidos.
+- El HTML y `llms-full.txt` conservan solo las secciones del caso breve, la entradilla breve y las filas confirmadas de la ficha (más las cifras de `metrics.ts`). Indexar no permite publicar los borradores de implementación, resultados ni testimonios.
 
 *Fin de la especificación. Cualquier cambio a este documento se registra con fecha y versión en su encabezado; la versión vigente es la única que el equipo de construcción usa.*

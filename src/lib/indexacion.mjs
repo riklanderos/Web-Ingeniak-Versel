@@ -14,7 +14,11 @@ export function isHidden(page) {
   return page?.hidden === true;
 }
 
-/** La página sale con `noindex,follow`: 404, `indexable: false`, landing oculta o puerta de publicación pendiente. */
+/** Secciones públicas de un caso con la puerta editorial pendiente; indexarlo no publica el borrador completo. */
+export const CASE_BRIEF_SECTIONS = ['hero', 'ficha', 'cifra', 'replicar', 'relacionados', 'cta-final'];
+
+/** La página sale con `noindex,follow`: 404, `indexable: false`, landing oculta o puerta pendiente sin autorización
+ *  explícita de indexar el caso breve (`copy.publishGate.indexBrief === true`). Esa autorización no cambia gatePending. */
 export function isNoindex(page, copy) {
-  return !page || page.template === 'T-404' || page.indexable === false || isHidden(page) || gatePending(page, copy);
+  return !page || page.template === 'T-404' || page.indexable === false || isHidden(page) || (gatePending(page, copy) && copy?.publishGate?.indexBrief !== true);
 }

@@ -185,9 +185,9 @@ export function copyOrNull(pageId: string): any | null {
 }
 /** Caso breve (R2): publishGate en sitemap.json sin confirmar en el copy. */
 export function isGatePending(page: Page): boolean { return gatePending(page, copyOrNull(page.id)); }
-/** noindex,follow: 404, indexable:false o puerta pendiente (misma regla que astro.config → sitemap.xml y check-seo). */
+/** noindex,follow: 404, indexable:false, landing oculta o puerta pendiente sin indexBrief (misma regla que astro.config → sitemap.xml y check-seo). */
 export function pageNoindex(page: Page): boolean { return isNoindex(page, copyOrNull(page.id)); }
-/** Páginas que van a sitemap.xml, llms.txt y llms-full.txt (R8): construidas, indexables y sin puerta pendiente. */
+/** Páginas que van a sitemap.xml, llms.txt y llms-full.txt (R8): construidas e indexables (incluye casos breves con indexBrief). */
 export function indexablePages(): Page[] { return pages.filter((p) => builtRoutes.has(p.url) && !pageNoindex(p)); }
 
 /* ───────────────────────── Landings ocultas (ESPEC §12.6 R17) ─────────────────────────
