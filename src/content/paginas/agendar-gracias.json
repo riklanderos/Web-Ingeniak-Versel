@@ -1,12 +1,12 @@
 {
   "pageId": "agendar-gracias",
   "url": "/agendar/gracias/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-11-11",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PÁGINA NUEVA (petición del cliente, 2026-11-11): página de gracias con dirección propia para la Discovery Session, para medir la conversión por URL en Meta y Google Ads. Antes la confirmación se veía en la misma página de la agenda.",
     "MISMO TEXTO: la confirmación, la lista 'Para aprovechar los 30 minutos' y '¿Necesitas mover la llamada?' son las de la vista final de la agenda (src/components/agenda/textos.ts), que sigue como respaldo si el navegador no deja pasar los datos."
   ],

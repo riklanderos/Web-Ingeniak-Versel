@@ -1,12 +1,12 @@
 {
   "pageId": "ind-retail",
   "url": "/industrias/retail-ecommerce/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "APROBACIÓN DE PREGUNTAS · R2 pide al menos cuatro preguntas propias por industria y el banco no tiene ninguna de retail y e-commerce (K03 es de Kommo). Propuesta en materiales/v2/build/peticiones.md (Construcción · industrias · copy): T01 '¿El agente sabe qué tengo en existencia?', T02 '¿Funciona en Instagram además de WhatsApp?', T03 '¿Cómo sé qué campaña generó cada venta?', T04 '¿Sirve para tienda física y tienda en línea al mismo tiempo?'. Al aprobarse, entran a faq.json y a faq.faqIds de esta página, delante de las compartidas.",
     "CAMBIO DE AFIRMACIÓN · portada: el brief decía 'Que cada chat de Instagram y WhatsApp termine en una venta registrada' (no todo chat termina en venta). Ahora: 'Que cada chat de Instagram y WhatsApp tenga respuesta y seguimiento hasta la venta.'",
     "CAMBIO DE AFIRMACIÓN · jornada: el brief hablaba de 'carritos olvidados'. La página no promete recuperar carritos conectándose a la tienda en línea (no está confirmado): el seguimiento que describe es dentro del chat, con el mensaje que aprueba el equipo. Tampoco escribe 'siete lugares' (sería la cifra ecom-tablero redactada con letra fuera de su fila).",

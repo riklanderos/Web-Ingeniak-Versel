@@ -1,12 +1,12 @@
 {
   "pageId": "seo",
   "url": "/servicios/seo/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "FAQ N04 (¿Qué es la visibilidad en IA o GEO?) sigue en validar: true en faq.json: no sale en el acordeón ni en el FAQPage hasta que se apruebe. #definicion usa un texto propio que dice lo mismo que N04 de D (sin depender del banco).",
     "FAQ DISTINTA DE D · G14: agrega 'medido hasta la venta' y la cifra como token (horeca-roas, 'sostenido').",
     "FAQ DISTINTA DE D · G08: ya no promete '60 a 90 días'; dice el rango confirmado de implementación (7 a 30 días, según el alcance). En SEO los resultados tardan más que la implementación: la página no promete plazos de posiciones ni de tráfico.",

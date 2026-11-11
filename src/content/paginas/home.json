@@ -1,12 +1,12 @@
 {
   "pageId": "home",
   "url": "/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-22",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'. Nadie del equipo de construcción cambia ese campo.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "FAQ DISTINTA DE D · G01: agrega 'conectados en un solo sistema' y 'Somos partner oficial de Kommo en Latinoamérica'; las cifras van como token (sistemas, paises).",
     "FAQ DISTINTA DE D · G02: misma respuesta con sujeto explícito ('Un agente de IA para WhatsApp es…') para que se pueda citar sola.",
     "FAQ DISTINTA DE D · G04: agrega 'Por eso podemos encargarnos de todo el proceso: desde elegir las licencias que necesitas hasta dejar el CRM operando con tu equipo.'",

@@ -1,12 +1,12 @@
 {
   "pageId": "agendar-confirmado",
   "url": "/agendar/confirmado/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "CAMBIO DE TEXTO: es la página a la que Stripe regresa después de pagar la Power Session (antes en riklanderos.tech/agendar/confirmado, en primera persona de Rik). Pasa a la voz de Ingeniak ('Te enviamos…', 'escríbenos'), con contacto@ingeniak.mx y WhatsApp.",
     "CAMBIO DE AFIRMACIÓN: se quitaron los plazos del original ('Si en una hora no la tienes…', 'se confirma sola en unos minutos'). La invitación y el recibo llegan cuando el sistema confirma el pago; aquí se dice sin plazo.",
     "CAMBIO DE TEXTO (QA 2026-10-20): la entrada se acortó a una frase y solo se ve mientras se confirma o con el pago en proceso; la frase de la invitación pasó a la nota de 'Confirmando tu pago…' (antes se repetía arriba de 'Tu Power Session quedó confirmada').",

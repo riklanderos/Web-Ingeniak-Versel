@@ -1,12 +1,12 @@
 {
   "pageId": "ind-salud",
   "url": "/industrias/salud/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "APROBACIÓN DE PREGUNTAS · S02, S03, S04 y S05 (propias de salud; R2 pide al menos cuatro por industria): redacción nueva, con validar: true en faq.json, así que hoy no salen en el acordeón ni en el FAQPage. S05 (urgencias) es nueva en la ronda 2. Al aprobarse, el orquestador suma sus ids a sitemap.json → ind-salud.faq y pasan a validar: false. S01 también sigue en validar y ya no alimenta la definición.",
     "FAQ DISTINTA DE D · W01 (texto de D con las cifras como token; desde el 2026-10-19 vuelve lo que hace el agente en la clínica, ya confirmado: contesta, califica, agenda directo en el calendario, confirma y da seguimiento, a cualquier hora), W02 (agrega mover de etapa, crear tareas, avisar y 'Cada conversación queda registrada en tu CRM.'), N01 (agrega el paso a tu equipo con el contexto completo) y G07 (agrega 'No publicamos paquetes cerrados…'). G02 ya no está en esta página.",
     "CAMBIO DE AFIRMACIÓN · cifras.lede (2026-10-19): sin reserva de plazo y sin prometer plazo en las tres cifras (salud-citas-mes no lo tiene en metrics.ts). Ahora: 'Tres cifras del sector salud, cada una con su fuente: dos de una clínica dental en Monterrey y un promedio de nuestros clientes de salud.' La fila del promedio dice qué especialidades entran.",

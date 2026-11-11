@@ -1,12 +1,12 @@
 {
   "pageId": "404",
   "url": "/404",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): copy nuevo de la 404 (eyebrow, líneas de rescate y etiquetas). Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar estado a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "DATO PENDIENTE · rutas de rescate: /servicios/, /casos/ y /blog/ todavía no están construidas. Mientras no existan, la plantilla no las pinta (solo enlaza rutas construidas) y completa la lista con páginas que sí existen, con su primera oración de portada; en cuanto se construyan, salen las cuatro filas de la ESPEC §5.13 con estas líneas.",
     "CAMBIO DE TEXTO (2026-10-20) · CTA «Cotizar proyecto»: la portada suma hero.ctaPrimary 'Cotizar proyecto' sin href (la plantilla abre el modal de cotización con data-section=\"404\"; sin JS lleva a /contacto/#cotizar), en fila con 'Escríbele a Kain' (WhatsApp); 'Buscar en el sitio' (⌘K) se queda como botón de contorno. La microcopia sale de _comun.cta.micro ('Sin compromiso · Te contactamos por WhatsApp y correo'). Sin promesa de tiempo de respuesta, sin cifras ni hechos nuevos. Pedido del cliente del 2026-10-20 (CAMBIO-COTIZAR.md §1)."
   ],

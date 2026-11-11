@@ -1,12 +1,12 @@
 {
   "pageId": "software",
   "url": "/servicios/desarrollo-software/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "FAQ DISTINTA DE D · N08: el banco cambia '7 fuentes' escrito a mano por el token ecom-tablero y agrega 'tráfico, conversión y retorno de campañas en la misma pantalla, sin exportar reportes a mano'. Sigue en validar: true, así que no sale en el acordeón ni en el FAQPage; #definicion usa un texto propio armado con N08 de D y las tres señales del brief.",
     "FAQ DISTINTA DE D · G09: agrega el criterio de elección (calidad, velocidad y costo de uso) y 'Si más adelante conviene otro modelo, lo evaluamos con tus propias conversaciones.'",
     "FAQ DISTINTA DE D · G08: ya no promete '60 a 90 días'; dice el rango confirmado de implementación (7 a 30 días, según el alcance).",

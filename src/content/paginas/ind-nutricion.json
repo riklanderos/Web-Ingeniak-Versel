@@ -1,12 +1,12 @@
 {
   "pageId": "ind-nutricion",
   "url": "/industrias/nutricion/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "APROBACIÓN DE TONO · #kain-sector: la escena ya muestra su propio guion (src/data/chats/nutricion.json, SIMULACIÓN): reagendar una consulta de seguimiento; Kain no da recomendaciones de alimentación y deja la duda para la nutrióloga. Falta que apruebes el tono.",
     "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos de nutrición que podamos mencionar por tipo (sin nombre)? La página no afirma que los haya. Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
     "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas U01–U04 (seguimiento, planes de alimentación, consulta en línea, pacientes inactivos) con su texto en peticiones.md. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-nutricion.faq.",

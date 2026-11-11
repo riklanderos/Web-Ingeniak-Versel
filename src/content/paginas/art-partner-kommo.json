@@ -16,9 +16,9 @@
   },
   "pageId": "art-partner-kommo",
   "url": "/blog/como-verificar-partner-oficial-kommo/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
   "actualizado": "2026-10-20",
   "articulo": {
@@ -30,7 +30,7 @@
     ]
   },
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · URGENTE · ficha de Ingeniak en el directorio de Kommo: el 2026-10-19 Ingeniak NO aparece en el directorio público, ni en la versión en español (236 fichas) ni en la versión en inglés (458 fichas); tampoco con otro nombre que reconozcamos. D pide enlazar la ficha real antes de publicar, y este artículo le dice al lector que busque ahí primero. Kommo pide para listarse: una sección de Kommo en el sitio (ya está: /kommo/), el sello en el sitio con enlace a kommo.com (ya está: KommoBadge), un logo de buena calidad y la solicitud en el Portal de partners (Resources → Get listed), que revisa su equipo. ¿Tienen ficha con otro nombre o razón social? Si no, recomendamos solicitarla ya. Mientras tanto, la sección 7 se llama 'Cómo verificar a Ingeniak' (D: 'Ingeniak en el directorio de Kommo') y no dice que estemos en el directorio.",
     "PREGUNTA AL CLIENTE · certificado: la sección 7 invita a pedir nuestro certificado de partner por WhatsApp o por correo (antes, en la Discovery Session; Kommo lo entrega al aprobar el examen). ¿Lo tienen y se puede mostrar? Si no, se quita ese renglón.",
     "PREGUNTA AL CLIENTE · cuentas de Kommo: la guía recomienda que la cuenta quede a nombre y con el correo del cliente (así lo describe el portal de partners). No lo afirmamos de Ingeniak: ¿así crean las cuentas? Si sí, se suma a la sección 7.",

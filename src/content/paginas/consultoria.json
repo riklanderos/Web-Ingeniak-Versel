@@ -1,12 +1,12 @@
 {
   "pageId": "consultoria",
   "url": "/servicios/consultoria-ia-empresas/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "APROBACIÓN DE PREGUNTA · N06 sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. La definición de #definicion usa un texto propio de la página (definition.text, 48 palabras) armado con lo que ya dicen N06, la meta de D y la metodología: detectar dónde la IA ahorra tiempo o trae ventas, diseñar, poner en producción con métricas; diagnóstico, roadmap, casos de uso, implementación y seguimiento mensual con VKTOR™.",
     "CAMBIO DE AFIRMACIÓN · 'retorno medible en 90 días' (brief de la portada) y 'resultados en 60–90 días' (brief de #definicion) NO se publican: el cliente no los ha confirmado (RESPUESTAS-CLIENTE 2026-10-19 solo confirma la implementación de 7 a 30 días según el alcance). En su lugar: métricas definidas desde el inicio, la cifra tiempo-operativo (que ya trae su ventana: promedio, primeros 90 días) y el plazo confirmado de implementación.",
     "CAMBIO DE TEXTO · portada: los chips '+73 sistemas · 7 países' del brief van dentro del lede como tokens ({{metric:sistemas|full}} y {{metric:paises}}), porque ServiceTemplate no pinta chips en la portada. Repetición de cifras: sistemas y paises salen en la portada y en la fila de #definicion (dos veces cada una); tiempo-operativo en #definicion y en el registro de #caso; logistica-procesos solo en el montaje de #caso.",

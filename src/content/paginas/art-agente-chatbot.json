@@ -16,9 +16,9 @@
   },
   "pageId": "art-agente-chatbot",
   "url": "/blog/agente-ia-whatsapp-vs-chatbot/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
   "actualizado": "2026-10-20",
   "articulo": {
@@ -29,7 +29,7 @@
     ]
   },
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Alonso Vega como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
     "PREGUNTA AL CLIENTE · '¿Kain se presenta siempre como asistente de IA?' La sección 'Qué no debe hacer' recomienda que el agente no se haga pasar por una persona y que el cliente pueda pedir a alguien del equipo en cualquier momento. Es una recomendación general, no se afirma de Kain; si así opera Kain, se puede decir en primera persona.",
     "FUENTE · D pedía el Centro de ayuda de WhatsApp sobre el agente de Meta (faq.whatsapp.com/291930066973116). Ese sitio no se pudo leer con nuestras herramientas el 2026-10-19 (solo cargó el título). Se citan, en su lugar, la página oficial del producto en whatsappbusiness.com (que enlaza a ese centro de ayuda) y el anuncio de Meta del 3 de junio de 2026. Si alguien del equipo lo revisa, confirmar que no contradice la sección 5.",

@@ -1,12 +1,12 @@
 {
   "pageId": "paid-media",
   "url": "/servicios/paid-media/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "APROBACIÓN DE PREGUNTA · N02 ('¿La inversión en pauta está incluida?') sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. El dato que la sostiene viene del sitio actual ('inversión en pauta siempre por separado') y se dice en #inversion.remate.",
     "CAMBIO DE TEXTO · la definición (#definicion) es un párrafo propio de la página, sin faqId, como pide el brief ('párrafo citable de 40–60 palabras'); mide 50 palabras.",
     "CAMBIO DE TEXTO · repetición de cifras: horeca-roas sale en la portada, en la fila de #definicion y en #caso. ecom-cpl ya no sale en la página (QA servicios r3): encabezaba la fila 'Resultados medidos con su fuente' y #relacionados enlazaba ese caso, y las dos cosas daban a entender que el resultado vino de paid media. Los chips 'ROAS 4.8× · −58% CPL' del brief de la portada no se pintan (ServiceTemplate no pinta chips).",

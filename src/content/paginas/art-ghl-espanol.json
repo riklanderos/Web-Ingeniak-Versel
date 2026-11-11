@@ -16,9 +16,9 @@
   },
   "pageId": "art-ghl-espanol",
   "url": "/blog/gohighlevel-en-espanol/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
   "actualizado": "2026-10-20",
   "articulo": {
@@ -37,7 +37,7 @@
     ]
   },
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Marcos González como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
     "PREGUNTA AL CLIENTE · suscripción de GoHighLevel: ¿el cliente la contrata a su nombre o va desde la cuenta de agencia de Ingeniak? ¿Los cargos por uso (SMS, correo, IA, WhatsApp) se le pasan a costo? El texto solo recomienda preguntárselo a quien implemente; no afirma cómo lo hace Ingeniak.",
     "PREGUNTA AL CLIENTE · agente de IA en GoHighLevel: ¿usan Conversation AI de HighLevel, su propio agente (Kain) conectado a GoHighLevel, o según el caso? El texto describe los dos caminos y de Ingeniak solo afirma lo que ya dice H03 (aprobada): conectamos un agente que atiende los canales confirmados, califica y agenda en el calendario de GoHighLevel.",

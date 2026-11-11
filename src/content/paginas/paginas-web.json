@@ -1,12 +1,12 @@
 {
   "pageId": "paginas-web",
   "url": "/servicios/paginas-web/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "FAQ DISTINTA DE D · N09: agrega 'Así sabes qué página, qué anuncio y qué formulario te traen clientes, y no solo visitas.' Sigue en validar: true en faq.json, así que no sale en el acordeón ni en el FAQPage hasta que se apruebe.",
     "FAQ DISTINTA DE D · G14: agrega 'medido hasta la venta' y la cifra como token (horeca-roas, 'sostenido').",
     "FAQ DISTINTA DE D · G08: ya no promete '60 a 90 días'; dice el rango confirmado de implementación (7 a 30 días, según el alcance) y deja los resultados a la propuesta.",

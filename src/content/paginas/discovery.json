@@ -1,12 +1,12 @@
 {
   "pageId": "discovery",
   "url": "/discovery/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "FAQ DISTINTA DE D · D01: agrega 'no tiene sentido proponerte un sistema sin haber visto cómo vendes, atiendes y operas hoy. Si después decides implementar, eso sí se cotiza aparte.'",
     "FAQ DISTINTA DE D · D02: agrega 'No hay presentación de ventas disfrazada de diagnóstico ni compromiso de compra: tú decides si avanzas.'",
     "FAQ DISTINTA DE D · D03: agrega ejemplos de números útiles (mensajes o prospectos por semana, tiempo de respuesta, herramientas de venta).",

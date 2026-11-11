@@ -1,12 +1,12 @@
 {
   "pageId": "crm-ia",
   "url": "/servicios/crm-con-ia/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "APROBACIÓN DE PREGUNTA · N03 sigue con validar: true en faq.json: hoy no sale en el acordeón ni en el FAQPage. La definición de #definicion usa el mismo texto de N03 con sujeto explícito ('Un CRM con IA es un CRM que…') como definition.text; al aprobarse N03 conviene dejarlos idénticos.",
     "CAMBIO DE TEXTO · #selector: el brief pedía dos tarjetas lado a lado; va como comparación por criterio (filas pareadas 'Elige Kommo si…' / 'Elige GoHighLevel si…', las dos en cian porque ninguna es dolor) para que la sección pueda llevar los enlaces a /kommo/, /gohighlevel/ y /blog/kommo-vs-gohighlevel/ (la variante de dos columnas sin filas no pinta enlaces). Mismo criterio que G05: Kommo para vender por mensajería; GoHighLevel para CRM, embudos, páginas, calendarios y campañas en una sola plataforma.",
     "CAMBIO DE TEXTO · repetición de cifras: retail-conversiones sale en la fila de #definicion y en el montaje de #caso (dos veces). Por eso #crm-vivo no repite la cifra +340% que pedía su brief. dental-respuesta solo en #definicion y dental-citas solo en #caso.",

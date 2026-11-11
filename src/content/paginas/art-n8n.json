@@ -16,9 +16,9 @@
   },
   "pageId": "art-n8n",
   "url": "/blog/n8n-vs-zapier-vs-make/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
   "actualizado": "2026-10-20",
   "articulo": {
@@ -47,7 +47,7 @@
     ]
   },
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Alonso Vega como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
     "PREGUNTA AL CLIENTE · regla de elección (misma que /servicios/automatizacion-n8n/ #comparativa): 'Zapier para conexiones simples que necesitas hoy; Make para escenarios visuales que tu equipo quiera ajustar; n8n cuando el proceso es central y va a crecer'. ¿Coincide con cómo eligen ustedes? Sale en la respuesta corta, la tabla (fila 'Con Ingeniak') y #cuando-elegimos.",
     "PREGUNTA AL CLIENTE · ¿instalan n8n en la infraestructura del cliente (autoalojado)? El texto lo presenta solo como capacidad de n8n, con su documentación como fuente; no afirma que Ingeniak lo ofrezca.",

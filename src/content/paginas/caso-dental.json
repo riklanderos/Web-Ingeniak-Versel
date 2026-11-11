@@ -1,9 +1,9 @@
 {
   "pageId": "caso-dental",
   "url": "/casos/clinica-dental-monterrey/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "publishGate": {
     "ok": true,
@@ -11,7 +11,7 @@
     "_nota": "Puerta R2 confirmada por escrito (materiales/v2/RESPUESTAS-CLIENTE-2026-10-19.md, respuestas 13–16 y 19): ficha (sector, ciudad, servicio, canal, CRM GoHighLevel, funciones del agente, 24/7, aviso de urgencias), punto de partida (solo el dato confirmado: ocho minutos de respuesta, dental-respuesta) e implementación. El plazo de este caso no se afirma: solo el rango general de Ingeniak (de 7 a 30 días, según el alcance) en #vktor. CaseTemplate e indexacion.mjs leen publishGate.ok."
   },
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "CAMBIO DE AFIRMACIÓN (QA ronda 1) · lo que se quitó mientras la puerta R2 estaba abierta vuelve con la confirmación del 2026-10-19: 'Horario de atención 24/7' (ficha), 'de día y de noche' (lede de portada), 'a cualquier hora' (entradilla e implementación), 'califica', 'agenda', 'confirma' y 'da seguimiento' (entradilla, implementación y nodos), 'propone horarios y aparta la cita' (nodo Agenda y cuerpo) y 'Cita agendada por Kain' (agenda simulada; antes 'Cita nueva'). Lo que NO vuelve: la frase de esperas 'de horas' de noche o en fin de semana (reto), porque es situación inicial sin dato (respuesta 17).",
     "CAMBIO DE AFIRMACIÓN · implementacion: nodos confirmados (2026-10-19) WhatsApp de la clínica → Agente de IA (Kain) → Agenda → CRM: GoHighLevel → Seguimiento → Urgencia: aviso al doctor. Sale el nodo 'Medición' (con seis nodos el diagrama se lee en 1024 px; la medición queda en el cuerpo).",
     "CAMBIO DE AFIRMACIÓN · ficha.note: antes 'Este reportaje publica solo datos confirmados.'; ahora 'El nombre de la clínica está anonimizado. Las cifras son datos internos de Ingeniak.'",

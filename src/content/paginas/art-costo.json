@@ -16,9 +16,9 @@
   },
   "pageId": "art-costo",
   "url": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
   "actualizado": "2026-10-20",
   "articulo": {
@@ -28,7 +28,7 @@
     ]
   },
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Rik Landeros como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
     "PREGUNTA AL CLIENTE · consumo del modelo de IA: ¿la mensualidad de Ingeniak incluye los tokens del modelo, o se facturan aparte? El texto solo dice que depende de cómo se construya el agente.",
     "PREGUNTA AL CLIENTE · costos de terceros: ¿la propuesta separa las licencias de Kommo/GoHighLevel y los cargos de Meta, o alguno va incluido? El texto dice que el alcance y la inversión se definen en la propuesta, sin afirmar qué incluye.",

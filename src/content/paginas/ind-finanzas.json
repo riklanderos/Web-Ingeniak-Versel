@@ -1,12 +1,12 @@
 {
   "pageId": "ind-finanzas",
   "url": "/industrias/finanzas/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · subsectores (D lo marcaba '[VALIDAR subsectores que atiende Ingeniak]'): la página habla a financieras de crédito, aseguradoras y despachos contables o fiscales como público, igual que el title y la meta de D, sin afirmar que sean clientes. Confirma si son los subsectores que quieres atender o si alguno sobra (p. ej. despachos fiscales, cajas de ahorro, Sofomes).",
     "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos del sector financiero que podamos mencionar por tipo (sin nombre)? La página no afirma que los haya. Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
     "APROBACIÓN DE TONO · #kain-sector: la escena ya muestra su propio guion (src/data/chats/finanzas.json, SIMULACIÓN): crédito para un negocio, tres preguntas de calificación, sin prometer aprobación ni tasa, llamada con asesor y lista de documentos. Falta que apruebes el tono (y la revisión legal de abajo).",

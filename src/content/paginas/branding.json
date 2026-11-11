@@ -1,12 +1,12 @@
 {
   "pageId": "branding",
   "url": "/servicios/branding/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "FAQ DISTINTA DE D · N10: agrega 'Lo hace el mismo equipo que construye la parte técnica, así el anuncio, la página y la conversación con Kain dicen lo mismo.' Sigue en validar: true, así que no sale en el acordeón ni en el FAQPage hasta que se apruebe. La página no repite 'el mismo equipo' en el cuerpo: dice que la marca se trabaja junto con la web, las campañas y los agentes.",
     "FAQ DISTINTA DE D · G14: agrega 'medido hasta la venta' y la cifra como token (horeca-roas, 'sostenido').",
     "FAQ DISTINTA DE D · G07: agrega por qué no hay paquetes cerrados.",

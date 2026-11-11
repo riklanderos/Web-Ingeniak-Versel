@@ -2,12 +2,12 @@
   "_schema": "Hub /recursos/ · HubTemplate (T-HUB, ESPEC §5.5). Mismo patrón del blog: categorias {eyebrow, all, chips[] {slug, label}, status, empty} (chips de TIPO de recurso que filtran #grid sin recargar) · grid.items[] {href, category, title, line, ask?, related?} (índice editorial: cada recurso gratuito es una fila; los descargables futuros —plantillas, calculadoras, videos— se suman aquí con su chip nuevo) · grid.author / grid.labels / grid.note / grid.links. Campos comunes: _ESQUEMA.md §3–§6.",
   "pageId": "recursos",
   "url": "/recursos/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-22",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PLACA · recursos-hero sin exportar: la portada usa el respaldo home-sistema-5-medir (launchFallback en sitemap.json). Cuando la placa llegue, la escena la toma sola.",
     "PRÓXIMOS RECURSOS · los descargables (plantillas, calculadoras, videos) se suman como items del grid con su categoría nueva en los chips; cada descargable necesita su archivo en /public/ y su fila aquí. Nada se anuncia antes de existir.",
     "NAVEGACIÓN · el menú 'Recursos' ahora abre este hub (/recursos/); el blog sigue como primera entrada del menú y primera categoría de esta biblioteca."

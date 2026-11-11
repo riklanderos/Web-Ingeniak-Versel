@@ -1,12 +1,12 @@
 {
   "pageId": "agendar",
   "url": "/agendar/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-11-05",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "ORIGEN: página pedida por el cliente el 2026-11-05 — un enlace directo para compartir la agenda de la Discovery (WhatsApp, correo, bio) sin mandar la landing completa de /discovery/."
   ],
   "sections": {

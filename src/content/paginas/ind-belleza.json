@@ -1,12 +1,12 @@
 {
   "pageId": "ind-belleza",
   "url": "/industrias/belleza-estetica/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos de belleza, spa o salón que podamos mencionar por tipo de negocio (sin nombre)? La página no afirma que los haya: solo dice que el promedio de salud incluye medicina estética (confirmado el 2026-10-19). Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
     "PREGUNTA AL CLIENTE · kain-sector: el brief de D pedía 'clienta pregunta por un facial en Instagram'. La página usa el guion ya existente de src/data/chats/belleza.json (uñas y pedicure por WhatsApp, dos profesionales, lista de precios, recordatorio) y el lede lo describe tal cual. Si prefieres el facial por Instagram, hay que cambiar el guion (área copy/orquestador) y el lede de kain-sector.",
     "PREGUNTA AL CLIENTE · anticipos: definicion.body dice que Kain explica 'tus políticas de anticipo y cancelación'. No afirma que cobre anticipos ni que mande ligas de pago. Confirma si en belleza Kain manda liga de pago del anticipo; si sí, se puede decir.",

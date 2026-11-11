@@ -1,12 +1,12 @@
 {
   "pageId": "agentes-whatsapp",
   "url": "/servicios/agentes-ia-whatsapp/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "FAQ DISTINTA DE D · G02: misma respuesta con sujeto explícito ('Un agente de IA para WhatsApp es…'); es también la definición de #definicion.",
     "FAQ DISTINTA DE D · G03: agrega 'Por eso puede atender conversaciones reales de venta y servicio, no solo preguntas previstas.'",
     "FAQ W01: texto de D con las cifras como token y la de respuesta en prosa ('…bajó el tiempo de respuesta en WhatsApp de 8 minutos a 12 segundos…'). Desde el 2026-10-19 vuelve lo que hace el agente en la clínica, ya confirmado: 'contesta, califica a cada paciente, le agenda su cita directo en el calendario, confirma y da seguimiento, a cualquier hora'. Sigue fuera la afirmación de que el agente trabaja sin que intervenga ninguna persona.",

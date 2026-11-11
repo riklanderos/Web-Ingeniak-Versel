@@ -1,12 +1,12 @@
 {
   "pageId": "power-session",
   "url": "/power-session/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'. Landing oculta de campañas (CAMBIO-COTIZAR §4.3): noindex,follow, fuera de menús, sitemap.xml, llms y de todo enlace desde páginas públicas.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · precio: la sesión cuesta USD 297, pago único (sale de OFFERS['power-price'] con el token {{offer:power-price}}; nunca a mano). ¿Sigue vigente?",
     "PREGUNTA AL CLIENTE · garantía: \"si en la sesión no identificamos al menos 3 fugas por más de $10,000 MXN al mes, te devolvemos los USD 297 completos\" (OFFERS['power-guarantee']) y el reclamo por correo dentro de las 48 horas siguientes (P07). Se porta porque ya se publica en agenda.ingeniak.tech/powersession; confirmar antes del lanzamiento.",
     "PREGUNTA AL CLIENTE · cupo: \"Abrimos 4 sesiones por semana, por orden de pago.\" (#agenda y #oferta; el código de reserva lo aplica). ¿Sigue siendo 4?",

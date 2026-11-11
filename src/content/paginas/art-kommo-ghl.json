@@ -16,9 +16,9 @@
   },
   "pageId": "art-kommo-ghl",
   "url": "/blog/kommo-vs-gohighlevel/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
   "actualizado": "2026-10-20",
   "articulo": {
@@ -29,7 +29,7 @@
     ]
   },
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Rik Landeros como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
     "PREGUNTA AL CLIENTE · ¿Ingeniak implementa HubSpot? El texto no lo afirma ni lo niega: solo dice que, si otra herramienta conviene más, lo decimos en la Discovery Session.",
     "PREGUNTA AL CLIENTE · ¿Ingeniak revende las licencias de Kommo en pesos? Kommo dice que algunos partners oficiales revenden en moneda local; no lo afirmamos de Ingeniak hasta confirmarlo.",

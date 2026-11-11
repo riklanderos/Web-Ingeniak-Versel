@@ -1,12 +1,12 @@
 {
   "pageId": "ind-inmobiliario",
   "url": "/industrias/inmobiliario/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "pendientes": [
-    "APROBACIÓN (R1): estado 'borrador'. Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar esta página a 'aprobado'.",
+    "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · portales: la página dice que Kain contesta a los leads 'de tus anuncios y portales' cuando escriben por WhatsApp, Instagram, Facebook Messenger, tu web o el correo (canales confirmados el 2026-10-19). No nombra portales ni afirma una integración directa con alguno. Confirma si hay portales que conectemos directo (y cuáles) para decirlo.",
     "PREGUNTA AL CLIENTE · ¿Hoy hay clientes activos de inmobiliarias o desarrolladoras que podamos mencionar por tipo (sin nombre)? La página no afirma que los haya. Si existe un caso que se pueda publicar, sustituye las cifras transversales.",
     "PREGUNTA AL CLIENTE · R2 pide al menos cuatro preguntas propias por industria. Propuestas I01–I04 (portales, fichas y precios, asignación de asesor, montos de crédito) con su texto en materiales/v2/build/peticiones.md → 'Construcción · industrias (copy)'. Hoy no existen en faq.json; al aprobarse, se suman a faq.faqIds y a sitemap.json → ind-inmobiliario.faq.",
