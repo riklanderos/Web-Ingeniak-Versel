@@ -1,0 +1,67 @@
+---
+// Píxel de Meta (petición del cliente, 2026-11-11). Va en el <head> de todas las páginas desde BaseLayout, solo en el build
+// de producción y solo si META_PIXEL_ID tiene un identificador válido; vacío, no imprime nada.
+// - PageView en cada página. fbevents.js se descarga cuando la página termina de cargar (no compite con la imagen principal);
+//   la cola de fbq guarda lo que pase antes.
+// - autoConfig apagado: Meta no lee botones ni formularios por su cuenta. En el Administrador de eventos, la
+//   "Coincidencia avanzada automática" debe quedar desactivada: así el sitio no le manda nombre, correo ni teléfono.
+// - Puente con los eventos 'ingeniak:track' del sitio (los mismos que van a GA4):
+//     booking_confirmed {tipo:'discovery'} → Schedule  (una vez por reserva: gracias.ts no la repite al recargar ni en
+//                                                       una visita directa a /agendar/gracias/)
+//     cotizar_success (no simulación)       → Lead
+//     whatsapp_click                        → Contact (un clic que avisa dos veces cuenta una)
+//   La Power Session no se manda a Meta: es otra oferta y mezclarla ensuciaría la optimización de "Discovery agendada".
+// - Verificación del dominio en Meta: META_DOMAIN_VERIFICATION con el valor de la metaetiqueta que da Meta
+//   (Configuración del negocio → Seguridad de la marca → Dominios). Así no hace falta tocar el DNS.
+
+/** Identificador del píxel "INGK Pixel ingeniak.mx" (cuenta publicitaria Ingeniak 977668987818005). Es público: aparece en el código de cualquier sitio que lo usa. */
+const META_PIXEL_ID = '3013598825644799';
+/** Valor de content de <meta name="facebook-domain-verification">. Público. */
+const META_DOMAIN_VERIFICATION = '';
+
+const pixelId = /^\d{10,20}$/.test(META_PIXEL_ID) ? META_PIXEL_ID : '';
+const verificacion = /^[a-z0-9]{10,64}$/i.test(META_DOMAIN_VERIFICATION) ? META_DOMAIN_VERIFICATION : '';
+const prod = import.meta.env.PROD;
+---
+{verificacion && <meta name="facebook-domain-verification" content={verificacion} />}
+{prod && pixelId && (
+  <script is:inline define:vars={{ pixelId }}>
+    (function (id) {
+      if (window.fbq) return;
+      var n = (window.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      });
+      if (!window._fbq) window._fbq = n;
+      n.push = n;
+      n.loaded = true;
+      n.version = '2.0';
+      n.queue = [];
+      n('set', 'autoConfig', false, id);
+      n('init', id);
+      n('track', 'PageView');
+
+      function cargar() {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://connect.facebook.net/en_US/fbevents.js';
+        document.head.appendChild(s);
+      }
+      if (document.readyState === 'complete') cargar();
+      else window.addEventListener('load', cargar, { once: true });
+
+      var ultimoWa = 0;
+      document.addEventListener('ingeniak:track', function (e) {
+        var d = e.detail || {};
+        if (d.name === 'booking_confirmed' && d.tipo === 'discovery') {
+          n('track', 'Schedule', { content_name: 'Discovery Session' });
+        } else if (d.name === 'cotizar_success' && !d.dryRun) {
+          n('track', 'Lead', { content_name: 'Cotización' });
+        } else if (d.name === 'whatsapp_click') {
+          if (Date.now() - ultimoWa < 800) return;
+          ultimoWa = Date.now();
+          n('track', 'Contact', { content_name: 'WhatsApp Kain' });
+        }
+      });
+    })(pixelId);
+  </script>
+)}

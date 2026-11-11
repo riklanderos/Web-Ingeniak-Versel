@@ -27,6 +27,7 @@ import '../styles/content.css';
 import '../styles/pages.css';
 import type { Page } from '../lib/site';
 import SEOHead from '../components/layout/SEOHead.astro';
+import MetaPixel from '../components/layout/MetaPixel.astro';
 import BrandSymbols from '../components/nav/BrandSymbols.astro';
 import Header from '../components/nav/Header.astro';
 import MobileMenu from '../components/nav/MobileMenu.astro';
@@ -171,6 +172,7 @@ const showRail = full && p.rail !== false && page.template !== 'T-404';
         </script>
       </>
     )}
+    <MetaPixel />
     <meta name="format-detection" content="telephone=no" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
