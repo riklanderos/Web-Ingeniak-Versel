@@ -53,7 +53,7 @@ export function initGracias() {
     }
     show('ok');
     if (!g.medido) {
-      track('booking_confirmed', { tipo: 'discovery', desde: g.desde });
+      track('booking_confirmed', { tipo: 'discovery', desde: g.desde, metaId: g.metaId });
       marcarMedido(g);
     }
   }

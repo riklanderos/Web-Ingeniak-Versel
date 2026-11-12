@@ -506,7 +506,7 @@ export function initBooking(root: HTMLElement) {
         }),
       });
       const j = (await r.json().catch(() => ({}))) as {
-        ok?: boolean; kind?: 'confirmed' | 'checkout'; url?: string; when?: string; meetLink?: string | null;
+        ok?: boolean; kind?: 'confirmed' | 'checkout'; url?: string; when?: string; meetLink?: string | null; metaEventId?: string;
         error?: string; slotTaken?: boolean; errors?: FormErrors;
       };
       if (!j.ok) {
@@ -544,13 +544,14 @@ export function initBooking(root: HTMLElement) {
         email: S.form.email.trim(),
         meetLink: j.meetLink ?? null,
         desde: location.pathname.slice(0, 120),
+        metaId: typeof j.metaEventId === 'string' ? j.metaEventId.slice(0, 64) : undefined,
       });
       if (guardado) {
         location.assign(GRACIAS_URL);
         return;
       }
       renderDone(when, j.meetLink ?? null);
-      track('booking_confirmed', { tipo: type });
+      track('booking_confirmed', { tipo: type, metaId: j.metaEventId });
       setBusy(false);
     } catch {
       setBusy(false);

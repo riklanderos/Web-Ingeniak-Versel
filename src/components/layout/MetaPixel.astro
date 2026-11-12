@@ -10,6 +10,7 @@
 //                                                       una visita directa a /agendar/gracias/)
 //     cotizar_success (no simulación)       → Lead
 //     whatsapp_click                        → Contact (un clic que avisa dos veces cuenta una)
+//   Schedule lleva el eventID que devuelve /api/agenda/reservar/ (el mismo que el servidor manda por la API de conversiones).
 //   La Power Session no se manda a Meta: es otra oferta y mezclarla ensuciaría la optimización de "Discovery agendada".
 // - Verificación del dominio en Meta: META_DOMAIN_VERIFICATION con el valor de la metaetiqueta que da Meta
 //   (Configuración del negocio → Seguridad de la marca → Dominios). Así no hace falta tocar el DNS.
@@ -53,7 +54,9 @@ const prod = import.meta.env.PROD;
       document.addEventListener('ingeniak:track', function (e) {
         var d = e.detail || {};
         if (d.name === 'booking_confirmed' && d.tipo === 'discovery') {
-          n('track', 'Schedule', { content_name: 'Discovery Session' });
+          // eventID = el que mandó el servidor por la API de conversiones (server/meta-capi.js): Meta los junta en uno.
+          if (typeof d.metaId === 'string' && d.metaId) n('track', 'Schedule', { content_name: 'Discovery Session' }, { eventID: d.metaId });
+          else n('track', 'Schedule', { content_name: 'Discovery Session' });
         } else if (d.name === 'cotizar_success' && !d.dryRun) {
           n('track', 'Lead', { content_name: 'Cotización' });
         } else if (d.name === 'whatsapp_click') {
