@@ -1051,6 +1051,43 @@ export async function addLeadNote(leadId, text, ctx = {}) {
 }
 
 /**
+ * Tarea de aviso en Kommo (sin lead): la ve el responsable en su lista de tareas y en la app del celular. Si ya hay una
+ * tarea abierta cuyo texto empieza con `marcador`, no crea otra (la alerta no se repite cada 10 min mientras dure la
+ * falla; al marcarla como hecha, la siguiente falla vuelve a avisar). Nunca lanza.
+ * @param {string} marcador  p. ej. '[Agenda caída]'
+ * @param {string} texto     texto completo (empieza con el marcador)
+ * @param {{ responsableId?: number, venceEnMin?: number }} [opts]
+ * @returns {Promise<{ ok: boolean, creada?: boolean, existente?: boolean, status?: number, reason?: string }>}
+ */
+export async function crearTareaAviso(marcador, texto, opts = {}) {
+  const t0 = Date.now();
+  try {
+    if (!kommoConfigured()) return { ok: false, reason: 'not-configured' };
+    const abiertas = await call('/tasks?filter[is_completed]=0&limit=250', { deadline: t0 + CALL_TIMEOUT_MS });
+    if (abiertas.status === 200) {
+      const lista = /** @type {any} */ (abiertas.data)?._embedded?.tasks ?? [];
+      if (lista.some((/** @type {any} */ x) => typeof x?.text === 'string' && x.text.startsWith(marcador))) {
+        log({ evento: 'kommo.tarea-aviso', status: 200, existente: true, ms: Date.now() - t0 });
+        return { ok: true, existente: true };
+      }
+    } else if (abiertas.status !== 204) {
+      log({ evento: 'kommo.tarea-aviso', status: abiertas.status, paso: 'leer', ms: Date.now() - t0 });
+    }
+    const tarea = {
+      text: texto.slice(0, 2000),
+      complete_till: Math.floor(Date.now() / 1000) + (opts.venceEnMin ?? 60) * 60,
+      task_type_id: 1,
+      ...(posInt(opts.responsableId) ? { responsible_user_id: opts.responsableId } : {}),
+    };
+    const r = await call('/tasks', { method: 'POST', body: [tarea], deadline: Date.now() + CALL_TIMEOUT_MS });
+    log({ evento: 'kommo.tarea-aviso', status: r.status, creada: r.status === 200, ms: Date.now() - t0 });
+    return r.status === 200 ? { ok: true, creada: true, status: 200 } : { ok: false, status: r.status, reason: r.reason };
+  } catch {
+    return { ok: false, status: 0, reason: 'network' };
+  }
+}
+
+/**
  * Diagnóstico de la estructura aprobada (para /api/agenda/estado/ en Preview): consulta fresca, sin ids.
  * `estado` y `faltan` cuentan solo lo que el sitio usa: los embudos «Ventas» y «Power Session» (con sus etapas)
  * y los 15 campos con sus opciones. `faltan` lista los nombres que el sitio no encontró (máximo 30).
