@@ -13,6 +13,8 @@ export type Gracias = {
   meetLink: string | null;
   /** Página donde se agendó (/discovery/ o /agendar/): solo la ruta. */
   desde: string;
+  /** Identificador del evento de Meta que ya mandó el servidor (API de conversiones); el píxel lo repite para no contar doble. */
+  metaId?: string;
   t: number;
   /** booking_confirmed ya se mandó (recargar la página no cuenta otra conversión). */
   medido?: boolean;

@@ -8,6 +8,7 @@ import { clean, clientIp, json, readJson, sameOrigin, throttle } from '../../ser
 import { agenda, baseUrl, SlotTakenError } from '../../server/agenda/booking.js';
 import { bookingAttribution } from '../../server/agenda/leads.js';
 import { toForm, validateForm } from '../../shared/agenda.js';
+import { newEventId, sendSchedule } from '../../server/meta-capi.js';
 
 const ERROR_RESERVA = 'No pudimos completar la reserva. Inténtalo de nuevo o escríbenos por WhatsApp y te agendamos nosotros.';
 
@@ -65,6 +66,13 @@ export default {
         baseUrl: baseUrl(request),
         attribution: bookingAttribution(body.atribucion),
       });
+      // Discovery confirmada: el mismo evento va a Meta desde el servidor (API de conversiones) y desde el navegador,
+      // con este identificador para que cuente una sola vez. Nunca detiene ni rompe la reserva.
+      if (result.kind === 'confirmed') {
+        const metaEventId = newEventId();
+        await sendSchedule({ request, eventId: metaEventId, sourceUrl: `${baseUrl(request)}/agendar/gracias/`, email: form.email, phone: form.whatsapp });
+        return json({ ok: true, ...result, metaEventId });
+      }
       return json({ ok: true, ...result });
     } catch (e) {
       if (e instanceof SlotTakenError) return json({ ok: false, error: e.message, slotTaken: true }, 409);
