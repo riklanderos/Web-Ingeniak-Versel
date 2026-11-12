@@ -15,7 +15,8 @@ import { INDUSTRIES, REVENUES, TEAM_SIZES } from '../../shared/agenda.js';
 import estado from '../../api/agenda/estado.js';
 import { env, REAL, FAKE, FakeGoogle, FakeStripe, KommoSimulado, TOKEN_SIMULADO, mockFetch, NOW, form, ATRIB, req, read, captureLogs, ORIGIN } from './_util.mjs';
 
-const START = '2026-10-21T16:00:00.000Z'; // miércoles 21, 10:00 CDMX
+const START = '2026-10-21T16:00:00.000Z'; // miércoles 21, 10:00 CDMX (Power)
+const DISC_START = '2026-10-21T16:30:00.000Z'; // miércoles 21, 10:30 CDMX (horario de la Discovery)
 const book = () => createBooking({ google, stripe, leads, now: () => NOW });
 
 /**
@@ -53,7 +54,7 @@ function webhook() {
 
 /** @param {'discovery' | 'power'} type @param {Record<string, any>} [over] */
 const reservar = (type, over = {}) =>
-  book().reserve({ type, form: form(type), startIso: START, origin: 'Sección: hero', baseUrl: ORIGIN, attribution: bookingAttribution(ATRIB), ...over });
+  book().reserve({ type, form: form(type), startIso: type === 'discovery' ? DISC_START : START, origin: 'Sección: hero', baseUrl: ORIGIN, attribution: bookingAttribution(ATRIB), ...over });
 
 /** Id del lead guardado en el evento (ik_kommo). @param {FakeGoogle} g */
 const leadDelEvento = (g) => Number([...g.events.values()][0].extendedProperties.private.ik_kommo);
@@ -76,7 +77,7 @@ test('kommo · Discovery → su destino fijo (DISCOVERY_DESTINO) con tipo, fecha
   assert.deepEqual(sim.ubicacion(id), { embudo: 'Discovery', etapa: 'Discovery agendada' });
   assert.deepEqual(sim.valores(id), {
     'Tipo de sesión': 'Discovery Session',
-    'Fecha de la sesión': Date.parse(START) / 1000,
+    'Fecha de la sesión': Date.parse(DISC_START) / 1000,
     'Enlace de Meet': r.meetLink,
     'Industria': 'Salud y bienestar',
     'Tamaño de empresa': '6–10',

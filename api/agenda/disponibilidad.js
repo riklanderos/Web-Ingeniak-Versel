@@ -1,5 +1,5 @@
 /**
- * GET /api/agenda/disponibilidad/?tipo=discovery|power → próximos 5 días hábiles con sus horarios libres
+ * GET /api/agenda/disponibilidad/?tipo=discovery|power → días hábiles de cada sesión (SESSION_RULES: Discovery hoy + 10, Power 5) con sus horarios libres
  * (contrato de flujo-agenda.md §2.2 con las diferencias de CAMBIO-COTIZAR §5.3).
  * 200 { ok: true, days: [{ date, slots: [iso…] }], simulacion? } · 400 tipo inválido · 503 agenda ilegible.
  */

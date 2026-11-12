@@ -7,6 +7,7 @@
   "actualizado": "2026-10-20",
   "pendientes": [
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
+    "CAMBIO DE TEXTO · 2026-11-11, pedido por Rik Landeros para las campañas: la agenda abre hoy y los próximos 10 días hábiles (antes 5), de 9:00 a 17:45 con comida de 14:00 a 15:00 y 3 h de anticipación (antes 12 h). El paso 02 lo dice así.",
     "FAQ DISTINTA DE D · D01: agrega 'no tiene sentido proponerte un sistema sin haber visto cómo vendes, atiendes y operas hoy. Si después decides implementar, eso sí se cotiza aparte.'",
     "FAQ DISTINTA DE D · D02: agrega 'No hay presentación de ventas disfrazada de diagnóstico ni compromiso de compra: tú decides si avanzas.'",
     "FAQ DISTINTA DE D · D03: agrega ejemplos de números útiles (mensajes o prospectos por semana, tiempo de respuesta, herramientas de venta).",
@@ -94,7 +95,7 @@
         {
           "n": "02",
           "title": "Horario",
-          "line": "Próximos 5 días hábiles, en hora del centro de México."
+          "line": "Hoy y los próximos 10 días hábiles, en hora del centro de México."
         },
         {
           "n": "03",

@@ -10,8 +10,8 @@
  * `agenda()` arma el de producción o, en local sin credenciales, el simulado (server/agenda/mock.js).
  */
 import {
-  BUFFER_MINUTES, CONFIRM_PATH, HOLD_MINUTES, LANDING, MARKER, MIN_HOURS_AHEAD, POWER_CURRENCY, POWER_PRICE_CENTS,
-  POWER_WEEKLY_LIMIT, SESSION_RULES, SITE_TAG, SITE_URL, bookableDates, cdmxToIso, formatSlotEs, weekKey,
+  BUFFER_MINUTES, CONFIRM_PATH, HOLD_MINUTES, LANDING, MARKER, POWER_CURRENCY, POWER_PRICE_CENTS,
+  POWER_WEEKLY_LIMIT, SESSION_RULES, SITE_TAG, SITE_URL, bookableDates, cdmxDateKey, cdmxToIso, formatSlotEs, weekKey,
 } from '../../shared/agenda.js';
 import { AgendaConfigError } from './google-auth.js';
 import { google as realGoogle } from './google.js';
@@ -102,19 +102,19 @@ export function createBooking(a) {
     new Date(Date.parse(startIso) + SESSION_RULES[type].minutes * 60_000).toISOString();
 
   /**
-   * Próximos 5 días hábiles con sus horarios libres.
+   * Días hábiles de la sesión (SESSION_RULES[tipo]: days, sameDay) con sus horarios libres; hoy solo si le queda alguno.
    * @param {SessionType} type @param {Date} [at]
    * @returns {Promise<DayAvailability[]>}
    */
   async function availability(type, at = now()) {
     const rule = SESSION_RULES[type];
-    const dates = bookableDates(at);
+    const dates = bookableDates(at, rule);
     const timeMin = cdmxToIso(dates[0], '00:00');
     const timeMax = cdmxToIso(dates[dates.length - 1], '23:59');
     const busy = (await google.freeBusy(busyCalendars(), timeMin, timeMax, /** @type {any} */ ({ type }))).map(
       (b) => /** @type {const} */ ([Date.parse(b.start), Date.parse(b.end)]),
     );
-    const earliest = at.getTime() + MIN_HOURS_AHEAD * 3600_000;
+    const earliest = at.getTime() + rule.minHoursAhead * 3600_000;
     const pad = BUFFER_MINUTES * 60_000;
 
     // Cupo semanal de Power Sessions: cuenta las confirmadas y las apartadas (de los dos sitios, mismo calendario).
@@ -128,6 +128,7 @@ export function createBooking(a) {
       }
     }
 
+    const today = rule.sameDay ? cdmxDateKey(at) : null;
     return dates.map((date) => {
       if (fullWeeks.has(weekKey(date))) return { date, slots: [] };
       const slots = rule.times
@@ -139,7 +140,7 @@ export function createBooking(a) {
           return !busy.some(([bs, be]) => overlaps(s - pad, e + pad, bs, be));
         });
       return { date, slots };
-    });
+    }).filter((d) => d.date !== today || d.slots.length);
   }
 
   /** @param {SessionType} type @param {string} startIso */

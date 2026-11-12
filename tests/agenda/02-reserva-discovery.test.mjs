@@ -12,7 +12,7 @@ import { DISCOVERY_DESTINO } from '../../shared/kommo-esquema.js';
 import reservar from '../../api/agenda/reservar.js';
 import { env, REAL, KOMMO, FAKE, IDS, FakeGoogle, FakeKommo, FakeStripe, mockFetch, NOW, form, ATRIB, req, read, captureLogs, ORIGIN } from './_util.mjs';
 
-const START = '2026-10-21T16:00:00.000Z'; // miércoles 21, 10:00 CDMX
+const START = '2026-10-21T16:30:00.000Z'; // miércoles 21, 10:30 CDMX
 const book = () => createBooking({ google, stripe, leads, now: () => NOW });
 const reserve = (over = {}) =>
   book().reserve({ type: 'discovery', form: form('discovery'), startIso: START, origin: 'Sección: hero · meta · prueba', baseUrl: ORIGIN, attribution: bookingAttribution(ATRIB), ...over });
@@ -61,7 +61,7 @@ test('reserva discovery · evento con Meet, invitación, propiedades rl_* + rl_s
   const logs = captureLogs(t);
   const r = await reserve();
   assert.equal(r.kind, 'confirmed');
-  assert.equal(r.when, 'Miércoles 21 de octubre · 10:00 AM');
+  assert.equal(r.when, 'Miércoles 21 de octubre · 10:30 AM');
   assert.match(r.meetLink, /^https:\/\/meet\.google\.test\//);
 
   const ins = g.calls.find((c) => c.method === 'POST' && c.path.endsWith('/events'));
@@ -72,7 +72,7 @@ test('reserva discovery · evento con Meet, invitación, propiedades rl_* + rl_s
   assert.deepEqual(ins.body.attendees, [{ email: 'ana@ejemplo.test' }]);
   assert.equal(ins.body.conferenceData.createRequest.conferenceSolutionKey.type, 'hangoutsMeet');
   assert.deepEqual(ins.body.start, { dateTime: START, timeZone: 'America/Mexico_City' });
-  assert.equal(ins.body.end.dateTime, '2026-10-21T16:30:00.000Z');
+  assert.equal(ins.body.end.dateTime, '2026-10-21T17:00:00.000Z');
   assert.deepEqual(ins.body.extendedProperties.private, {
     rl_tipo: 'discovery', rl_email: 'ana@ejemplo.test', rl_nombre: 'Ana Prueba Ejemplo', rl_sitio: 'ingeniak', rl_estado: 'confirmada',
   });
@@ -106,7 +106,7 @@ test('reserva discovery · evento con Meet, invitación, propiedades rl_* + rl_s
   assert.deepEqual(lead._embedded.companies, [{ name: 'Clínica Ejemplo' }]);
   const note = k.calls.find((c) => c.path === '/leads/notes').body[0].params.text;
   assert.match(note, /^Reserva de Discovery Session · sitio web · Folio IK-AG-/);
-  assert.match(note, /Horario: Miércoles 21 de octubre · 10:00 AM \(hora del centro de México\) · 30 min · 2026-10-21T16:00:00.000Z/);
+  assert.match(note, /Horario: Miércoles 21 de octubre · 10:30 AM \(hora del centro de México\) · 30 min · 2026-10-21T16:30:00.000Z/);
   assert.match(note, /Google Meet: https:\/\/meet\.google\.test\//);
   assert.match(note, /UTM: source=meta · medium=paid · campaign=prueba/);
   assert.doesNotMatch(note, /undefined|null|\n\n/);
@@ -163,7 +163,7 @@ test('reserva discovery · producción: sin entorno-preview; gclid cuenta como c
 test('reserva discovery · horario ocupado → SlotTakenError (y nada se inserta)', async (t) => {
   env(t, REAL);
   const g = new FakeGoogle();
-  g.busy.primary = [{ start: START, end: '2026-10-21T16:30:00.000Z' }];
+  g.busy.primary = [{ start: START, end: '2026-10-21T17:00:00.000Z' }];
   mockFetch(t, g);
   await assert.rejects(reserve(), SlotTakenError);
   assert.equal(g.events.size, 0);
@@ -175,7 +175,7 @@ test('api · POST /api/agenda/reservar/: 200 confirmada, 409 slotTaken, 422 con 
   mockFetch(t, g, new FakeStripe());
   captureLogs(t);
   const day = bookableDates(new Date())[1];
-  const start = cdmxToIso(day, '12:15');
+  const start = cdmxToIso(day, '12:00');
   const body = (over = {}) => ({
     tipo: 'discovery', form: form('discovery'), start, origen: 'Sección: hero', atribucion: ATRIB, website_url: '', elapsed_ms: 48231, ...over,
   });
@@ -184,7 +184,7 @@ test('api · POST /api/agenda/reservar/: 200 confirmada, 409 slotTaken, 422 con 
   assert.equal(r.status, 200);
   assert.equal(r.body.ok, true);
   assert.equal(r.body.kind, 'confirmed');
-  assert.ok(r.body.when.endsWith('12:15 PM'));
+  assert.ok(r.body.when.endsWith('12:00 PM'));
 
   // El mismo horario ya está tomado por la cita anterior.
   r = await read(await reservar.fetch(req('/api/agenda/reservar/', { method: 'POST', body: body() })));

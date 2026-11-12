@@ -1,4 +1,4 @@
-// 1 · Disponibilidad: 5 días hábiles desde mañana, 12 h de anticipación, colchón de 15 min, horarios exactos de cada
+// 1 · Disponibilidad: Power 5 días hábiles desde mañana con 12 h de anticipación; Discovery hoy + 10 días hábiles con 3 h; colchón de 15 min, horarios exactos de cada
 // tipo, ocupación cruzada de 3 calendarios (Power, Discovery, primary) y cupo de 4 Power por semana.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,6 +18,12 @@ test('agenda · los próximos 5 días hábiles empiezan mañana y saltan el fin 
   assert.deepEqual(bookableDates(NOW), ['2026-10-21', '2026-10-22', '2026-10-23', '2026-10-26', '2026-10-27']);
   // Viernes en la noche (CDMX): empieza el lunes.
   assert.deepEqual(bookableDates(new Date('2026-10-24T03:00:00Z')), ['2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30']);
+  // Discovery: hoy (si es hábil) y los 10 días hábiles siguientes.
+  assert.deepEqual(bookableDates(NOW, { days: 10, sameDay: true }), [
+    '2026-10-20', '2026-10-21', '2026-10-22', '2026-10-23', '2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30', '2026-11-02', '2026-11-03',
+  ]);
+  // Sábado: hoy no cuenta.
+  assert.deepEqual(bookableDates(new Date('2026-10-24T18:00:00Z'), { days: 2, sameDay: true }), ['2026-10-26', '2026-10-27']);
 });
 
 test('agenda · horarios exactos de cada tipo sin nada ocupado', async (t) => {
@@ -25,16 +31,20 @@ test('agenda · horarios exactos de cada tipo sin nada ocupado', async (t) => {
   const g = new FakeGoogle();
   mockFetch(t, g);
   const d = await book().availability('discovery');
-  assert.equal(d.length, 5);
-  assert.deepEqual(d[0].slots.map(cdmx), ['10:00', '10:45', '11:30', '12:15', '13:00', '15:00', '15:45', '16:30']);
+  // Martes 20 a las 10:00 CDMX: hoy quedan los horarios desde las 13:00 (3 h) y siguen 10 días hábiles completos.
+  assert.equal(d.length, 11);
+  assert.equal(d[0].date, '2026-10-20');
+  assert.deepEqual(d[0].slots.map(cdmx), ['13:30', '15:00', '15:45', '16:30', '17:15']);
+  assert.deepEqual(d[1].slots.map(cdmx), ['09:00', '09:45', '10:30', '11:15', '12:00', '12:45', '13:30', '15:00', '15:45', '16:30', '17:15']);
+  assert.equal(d[10].date, '2026-11-03');
   const p = await book().availability('power');
   assert.deepEqual(p[0].slots.map(cdmx), ['10:00', '11:45', '13:30', '15:15']);
   // freeBusy cruza los dos calendarios y el principal, en hora de CDMX.
   const fb = g.calls.find((c) => c.path === '/freeBusy');
   assert.deepEqual(fb.body.items, [{ id: FAKE.power }, { id: FAKE.discovery }, { id: 'primary' }]);
   assert.equal(fb.body.timeZone, 'America/Mexico_City');
-  assert.equal(fb.body.timeMin, z('2026-10-21', '00:00'));
-  assert.equal(fb.body.timeMax, z('2026-10-27', '23:59'));
+  assert.equal(fb.body.timeMin, z('2026-10-20', '00:00'));
+  assert.equal(fb.body.timeMax, z('2026-11-03', '23:59'));
 });
 
 test('agenda · ocupación cruzada de 3 calendarios con colchón de 15 min', async (t) => {
@@ -46,9 +56,10 @@ test('agenda · ocupación cruzada de 3 calendarios con colchón de 15 min', asy
   mockFetch(t, g);
 
   const d = await book().availability('discovery');
-  assert.deepEqual(d[0].slots.map(cdmx), ['12:15', '13:00', '15:00', '15:45', '16:30']);
-  assert.deepEqual(d[1].slots.map(cdmx), ['10:00', '10:45', '11:30', '12:15', '13:00', '15:45', '16:30']);
-  assert.deepEqual(d[2].slots.map(cdmx), ['10:00', '10:45', '13:00', '15:00', '15:45', '16:30']);
+  // d[0] es hoy (martes 20); los días ocupados son d[1] (21), d[2] (22) y d[3] (23).
+  assert.deepEqual(d[1].slots.map(cdmx), ['09:00', '12:00', '12:45', '13:30', '15:00', '15:45', '16:30', '17:15']);
+  assert.deepEqual(d[2].slots.map(cdmx), ['09:00', '09:45', '10:30', '11:15', '12:00', '12:45', '13:30', '15:45', '16:30', '17:15']);
+  assert.deepEqual(d[3].slots.map(cdmx), ['09:00', '09:45', '10:30', '11:15', '12:45', '13:30', '15:00', '15:45', '16:30', '17:15']);
 
   const p = await book().availability('power');
   assert.deepEqual(p[0].slots.map(cdmx), ['11:45', '13:30', '15:15']);
@@ -56,13 +67,22 @@ test('agenda · ocupación cruzada de 3 calendarios con colchón de 15 min', asy
   assert.deepEqual(p[2].slots.map(cdmx), ['10:00', '13:30', '15:15']);
 });
 
-test('agenda · 12 horas de anticipación mínima', async (t) => {
+test('agenda · anticipación mínima: 12 h en la Power, 3 h en la Discovery (el mismo día si quedan horarios)', async (t) => {
   env(t, REAL);
   mockFetch(t, new FakeGoogle());
-  // Martes 20, 23:00 en CDMX → lo más pronto es el miércoles a las 11:00.
-  const d = await book(new Date('2026-10-21T05:00:00Z')).availability('discovery');
+  // Martes 20, 23:00 en CDMX → la Power más pronto es el miércoles a las 11:00.
+  const p = await book(new Date('2026-10-21T05:00:00Z')).availability('power');
+  assert.equal(p[0].date, '2026-10-21');
+  assert.deepEqual(p[0].slots.map(cdmx), ['11:45', '13:30', '15:15']);
+  // Miércoles 21, 10:00 en CDMX → la Discovery ofrece hoy desde las 13:00.
+  const d = await book(new Date('2026-10-21T16:00:00Z')).availability('discovery');
   assert.equal(d[0].date, '2026-10-21');
-  assert.deepEqual(d[0].slots.map(cdmx), ['11:30', '12:15', '13:00', '15:00', '15:45', '16:30']);
+  assert.deepEqual(d[0].slots.map(cdmx), ['13:30', '15:00', '15:45', '16:30', '17:15']);
+  // Miércoles 21, 15:00 en CDMX → hoy ya no queda ninguno: el día no aparece y empieza el jueves completo.
+  const tarde = await book(new Date('2026-10-21T21:00:00Z')).availability('discovery');
+  assert.equal(tarde[0].date, '2026-10-22');
+  assert.equal(tarde[0].slots.length, 11);
+  assert.equal(tarde.length, 10);
 });
 
 test('agenda · cupo de 4 Power por semana (apartadas + confirmadas, de los dos sitios) → slots vacíos', async (t) => {

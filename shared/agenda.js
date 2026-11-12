@@ -20,9 +20,10 @@
 export const CDMX_TZ = 'America/Mexico_City';
 export const CDMX_OFFSET = '-06:00';
 
-/** Días hábiles (lunes a viernes) que se ofrecen, contados a partir de mañana. */
+/** Días hábiles (lunes a viernes) que se ofrecen por omisión, contados a partir de mañana (Power Session). Cada sesión
+ *  fija los suyos en SESSION_RULES[tipo].days. */
 export const BOOKABLE_BUSINESS_DAYS = 5;
-/** Anticipación mínima para reservar (horas). */
+/** Anticipación mínima por omisión para reservar (horas); cada sesión fija la suya en SESSION_RULES[tipo].minHoursAhead. */
 export const MIN_HOURS_AHEAD = 12;
 /** Colchón entre citas: un horario se descarta si choca con algo ocupado ± este margen (minutos). */
 export const BUFFER_MINUTES = 15;
@@ -31,19 +32,30 @@ export const POWER_WEEKLY_LIMIT = 4;
 /** Minutos que se aparta un horario mientras se paga en Stripe (Stripe exige ≥ 30; al visitante se le dicen 30). */
 export const HOLD_MINUTES = 31;
 
-/** @type {Record<SessionType, { minutes: number, times: readonly string[], label: string }>} */
+/**
+ * days: días hábiles que se ofrecen · minHoursAhead: anticipación mínima (horas) · sameDay: si el día de hoy (hábil) también
+ * se ofrece, con los horarios que aún cumplan la anticipación (si no le queda ninguno, no aparece).
+ * @type {Record<SessionType, { minutes: number, times: readonly string[], label: string, days: number, minHoursAhead: number, sameDay: boolean }>}
+ */
 export const SESSION_RULES = {
   power: {
     minutes: 90,
     // 90 min + 15 de colchón, 10:00–17:00 CDMX
     times: ['10:00', '11:45', '13:30', '15:15'],
     label: 'Power Session',
+    days: BOOKABLE_BUSINESS_DAYS,
+    minHoursAhead: MIN_HOURS_AHEAD,
+    sameDay: false,
   },
   discovery: {
     minutes: 30,
-    // 30 min + 15 de colchón, con descanso de 13:45 a 15:00
-    times: ['10:00', '10:45', '11:30', '12:15', '13:00', '15:00', '15:45', '16:30'],
+    // 30 min + 15 de colchón, 9:00–17:45 CDMX con comida de 14:00 a 15:00 (más agenda para campañas, pedido del cliente,
+    // 2026-11-11: antes 10:00–17:00 con 8 horarios, 5 días hábiles y 12 h de anticipación)
+    times: ['09:00', '09:45', '10:30', '11:15', '12:00', '12:45', '13:30', '15:00', '15:45', '16:30', '17:15'],
     label: 'Discovery Session',
+    days: 10,
+    minHoursAhead: 3,
+    sameDay: true,
   },
 };
 
@@ -219,15 +231,20 @@ export function cdmxDateKey(d) {
 }
 
 /**
- * Los próximos N días hábiles (lunes a viernes) en CDMX, empezando mañana.
+ * Los próximos N días hábiles (lunes a viernes) en CDMX, empezando mañana; con sameDay, hoy (si es hábil) va antes de ellos.
  * @param {Date} [now]
+ * @param {{ days?: number, sameDay?: boolean }} [opts]
  * @returns {string[]}
  */
-export function bookableDates(now = new Date()) {
+export function bookableDates(now = new Date(), opts = {}) {
+  const days = opts.days ?? BOOKABLE_BUSINESS_DAYS;
   /** @type {string[]} */
   const out = [];
   const base = new Date(`${cdmxDateKey(now)}T12:00:00Z`);
-  for (let i = 1; out.length < BOOKABLE_BUSINESS_DAYS && i < 15; i++) {
+  const wd0 = base.getUTCDay();
+  if (opts.sameDay && wd0 !== 0 && wd0 !== 6) out.push(base.toISOString().slice(0, 10));
+  const total = out.length + days;
+  for (let i = 1; out.length < total && i < days * 2 + 7; i++) {
     const d = new Date(base);
     d.setUTCDate(base.getUTCDate() + i);
     const wd = d.getUTCDay();

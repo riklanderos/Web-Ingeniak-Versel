@@ -31,7 +31,7 @@ test('simulación · disponibilidad con el 2.º horario de cada día ocupado y s
   const net = mockFetch(t);
   const d = await days('discovery');
   assert.equal(d.simulacion, true);
-  assert.equal(d.days.length, 5);
+  assert.ok(d.days.length === 10 || d.days.length === 11, 'hoy (si le quedan horarios) y 10 días hábiles');
   for (const day of d.days.slice(1)) assert.ok(!day.slots.map(cdmx).includes(SESSION_RULES.discovery.times[1]), day.date);
   const p = await days('power');
   for (const day of p.days.slice(1)) {

@@ -49,7 +49,7 @@ export const T = {
   /* Paso 2 */
   s2: {
     h: 'Elige día y hora',
-    sub: (type: SessionType) => `Próximos 5 días hábiles · ${SESSION_RULES[type].minutes} min · Horarios en hora del centro de México (CDMX).`,
+    sub: (type: SessionType) => `${SESSION_RULES[type].sameDay ? 'Hoy y los próximos' : 'Próximos'} ${SESSION_RULES[type].days} días hábiles · ${SESSION_RULES[type].minutes} min · Horarios en hora del centro de México (CDMX).`,
     dias: 'Días disponibles',
     cargando: 'Cargando horarios…',
     reintentar: 'Reintentar',
