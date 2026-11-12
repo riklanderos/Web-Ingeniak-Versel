@@ -1,6 +1,6 @@
 /**
  * Salud de la agenda (petición del cliente, 2026-11-11, tras la caída del permiso de Google de ese día).
- * El cron de /api/agenda/limpiar/ (cada 10 min) pide la disponibilidad de la Discovery como la pediría un visitante.
+ * El cron diario de /api/agenda/salud/ (8:00 CDMX) pide la disponibilidad de la Discovery como la pediría un visitante.
  * Si falla, avisa:
  *   - Tarea en Kommo «[Agenda caída] …» con el enlace para renovar el permiso (una sola mientras siga abierta).
  *   - Webhook `agenda.alerta` a NOTIFY_WEBHOOK_URL, si algún día se configura.
@@ -32,7 +32,7 @@ export function enlaceAutorizar(env = process.env) {
 export function textoCaida(motivo, cuando, env = process.env) {
   const enlace = enlaceAutorizar(env);
   return [
-    `${MARCADOR_CAIDA} La agenda de ingeniak.mx no puede leer Google Calendar desde ${formatSlotEs(cuando.toISOString())} (hora del centro de México): nadie puede agendar la Discovery ni la Power Session.`,
+    `${MARCADOR_CAIDA} La revisión diaria del ${formatSlotEs(cuando.toISOString())} (hora del centro de México) encontró que la agenda de ingeniak.mx no puede leer Google Calendar: nadie puede agendar la Discovery ni la Power Session.`,
     enlace
       ? `Arreglo: abre ${enlace} con tu sesión de Vercel y acepta los permisos en Google. Si la última pantalla dice «Autorización guardada», marca esta tarea como hecha.`
       : 'Arreglo: en Vercel abre el despliegue de Production, entra a /api/agenda/autorizar/ y acepta los permisos en Google. Luego marca esta tarea como hecha.',

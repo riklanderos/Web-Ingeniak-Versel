@@ -39,7 +39,7 @@ test('api · limpiar: con el secreto correcto → 200 { ok, revisados, confirmad
   captureLogs(t);
   const r = await read(await limpiar.fetch(req('/api/agenda/limpiar/', { headers: { authorization: `Bearer ${FAKE.cron}` } })));
   assert.equal(r.status, 200);
-  assert.deepEqual(r.body, { ok: true, agenda: 'ok', revisados: 0, confirmados: 0, liberados: 0, errores: 0, kommo: 0 });
+  assert.deepEqual(r.body, { ok: true, revisados: 0, confirmados: 0, liberados: 0, errores: 0, kommo: 0 });
 });
 
 test('barrido · confirma pagados, libera vencidos y sin rl_stripe; un retrieve que falla no detiene el resto', async (t) => {

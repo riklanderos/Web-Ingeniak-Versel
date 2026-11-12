@@ -1,11 +1,11 @@
-// 12 · Salud de la agenda: el cron revisa la disponibilidad; si Google no deja leer, deja UNA tarea en Kommo con el
+// 12 · Salud de la agenda: el cron diario (8:00 CDMX) revisa la disponibilidad; si Google no deja leer, deja UNA tarea en Kommo con el
 // enlace para renovar el permiso (sin repetirla mientras siga abierta); un error suelto de Google no avisa.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { revisarAgenda, MARCADOR_CAIDA, enlaceAutorizar } from '../../server/agenda/salud.js';
 import { AgendaConfigError } from '../../server/agenda/google-auth.js';
-import limpiar from '../../api/agenda/limpiar.js';
-import { env, REAL, KOMMO, FAKE, mockFetch, req, read, captureLogs } from './_util.mjs';
+import salud from '../../api/agenda/salud.js';
+import { env, REAL, KOMMO, FAKE, FakeGoogle, mockFetch, req, read, captureLogs } from './_util.mjs';
 
 const json = (b, status = 200) => new Response(JSON.stringify(b), { status, headers: { 'content-type': 'application/json' } });
 
@@ -111,12 +111,24 @@ test('salud · enlace de autorizar: la URL interna del despliegue (VERCEL_URL)',
   assert.equal(enlaceAutorizar({}), null);
 });
 
-test('api · limpiar con Google caído → 200/500 con agenda: caida y la tarea creada', async (t) => {
-  env(t, { ...REAL, ...KOMMO, ...VERCEL, CRON_SECRET: FAKE.cron });
+test('api · salud (cron diario): 401 sin el secreto; con Google caído → agenda: caida y la tarea creada', async (t) => {
+  env(t, { ...REAL, ...KOMMO, ...VERCEL });
   const k = new KommoTareas();
   mockFetch(t, k, { handle: (u) => (u.hostname.endsWith('googleapis.com') ? json({}, 500) : null) });
   captureLogs(t);
-  const r = await read(await limpiar.fetch(req('/api/agenda/limpiar/', { headers: { authorization: `Bearer ${FAKE.cron}` } })));
-  assert.equal(r.body.agenda, 'caida');
+  assert.equal((await salud.fetch(req('/api/agenda/salud/'))).status, 401, 'sin CRON_SECRET');
+  process.env.CRON_SECRET = FAKE.cron;
+  assert.equal((await salud.fetch(req('/api/agenda/salud/', { headers: { authorization: 'Bearer otro' } }))).status, 401);
+  const r = await read(await salud.fetch(req('/api/agenda/salud/', { headers: { authorization: `Bearer ${FAKE.cron}` } })));
+  assert.equal(r.status, 200);
+  assert.deepEqual(r.body, { ok: true, agenda: 'caida', aviso: 'tarea-creada' });
   assert.equal(k.creadas.length, 1);
+});
+
+test('api · salud (cron diario) con la agenda sana → { ok, agenda: ok }', async (t) => {
+  env(t, { ...REAL, CRON_SECRET: FAKE.cron });
+  mockFetch(t, new FakeGoogle());
+  captureLogs(t);
+  const r = await read(await salud.fetch(req('/api/agenda/salud/', { headers: { authorization: `Bearer ${FAKE.cron}` } })));
+  assert.deepEqual(r.body, { ok: true, agenda: 'ok' });
 });

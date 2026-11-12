@@ -445,6 +445,10 @@
     {
       "path": "/api/agenda/limpiar/",
       "schedule": "5-59/10 * * * *"
+    },
+    {
+      "path": "/api/agenda/salud/",
+      "schedule": "0 14 * * *"
     }
   ],
   "functions": {
