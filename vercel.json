@@ -352,6 +352,326 @@
       "source": "/servicios/desarrollo-de-software/",
       "destination": "/servicios/desarrollo-software/",
       "statusCode": 301
+    },
+    {
+      "source": "/blog/chatbots-para-empresas-cuando-conviene",
+      "destination": "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/chatbots-para-empresas-cuando-conviene/",
+      "destination": "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/automatizacion-ventas-ia-kommo",
+      "destination": "/kommo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/automatizacion-ventas-ia-kommo/",
+      "destination": "/kommo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/ia-industria-manufacturera-mexico",
+      "destination": "/industrias/industrial-logistica/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/ia-industria-manufacturera-mexico/",
+      "destination": "/industrias/industrial-logistica/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/cuanto-cuesta-implementar-ia-empresa",
+      "destination": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/cuanto-cuesta-implementar-ia-empresa/",
+      "destination": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/compliance-ia-mexico-lfpdppp",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/compliance-ia-mexico-lfpdppp/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/transformacion-digital-pymes-mexico",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/transformacion-digital-pymes-mexico/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/casos-exito-ia-empresas-mexico",
+      "destination": "/casos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/casos-exito-ia-empresas-mexico/",
+      "destination": "/casos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/mejores-herramientas-ia-empresas-2026",
+      "destination": "/tecnologias/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/mejores-herramientas-ia-empresas-2026/",
+      "destination": "/tecnologias/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/roi-agentes-ia-atencion-cliente",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "statusCode": 301
+    },
+    {
+      "source": "/blog/roi-agentes-ia-atencion-cliente/",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/n8n",
+      "destination": "/servicios/automatizacion-n8n/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/n8n/",
+      "destination": "/servicios/automatizacion-n8n/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/automatizacion-ia",
+      "destination": "/servicios/automatizacion-n8n/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/automatizacion-ia/",
+      "destination": "/servicios/automatizacion-n8n/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/make",
+      "destination": "/blog/n8n-vs-zapier-vs-make/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/make/",
+      "destination": "/blog/n8n-vs-zapier-vs-make/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/whatsapp-business-api",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/whatsapp-business-api/",
+      "destination": "/servicios/agentes-ia-whatsapp/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/seo-tecnico",
+      "destination": "/servicios/seo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/seo-tecnico/",
+      "destination": "/servicios/seo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/rag",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/rag/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/embeddings-multimodales",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/embeddings-multimodales/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/compliance-ia",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/compliance-ia/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/mcp",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/mcp/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/prompt-engineering",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/prompt-engineering/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/context-window",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/context-window/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/lora",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/lora/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/embeddings",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/embeddings/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/guardabarreras-pii",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/guardabarreras-pii/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/fine-tuning",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/glosario/fine-tuning/",
+      "destination": "/recursos/",
+      "statusCode": 301
+    },
+    {
+      "source": "/comparativas/n8n-vs-make-vs-zapier",
+      "destination": "/blog/n8n-vs-zapier-vs-make/",
+      "statusCode": 301
+    },
+    {
+      "source": "/comparativas/n8n-vs-make-vs-zapier/",
+      "destination": "/blog/n8n-vs-zapier-vs-make/",
+      "statusCode": 301
+    },
+    {
+      "source": "/comparativas/ghl-vs-kommo",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "statusCode": 301
+    },
+    {
+      "source": "/comparativas/ghl-vs-kommo/",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "statusCode": 301
+    },
+    {
+      "source": "/comparativas/kommo-vs-hubspot",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "statusCode": 301
+    },
+    {
+      "source": "/comparativas/kommo-vs-hubspot/",
+      "destination": "/blog/kommo-vs-gohighlevel/",
+      "statusCode": 301
+    },
+    {
+      "source": "/comparativas/chatgpt-vs-claude-vs-gemini",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/comparativas/chatgpt-vs-claude-vs-gemini/",
+      "destination": "/blog/",
+      "statusCode": 301
+    },
+    {
+      "source": "/consultoria-ia/tijuana",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/consultoria-ia/tijuana/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/consultoria-ia/monterrey",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/consultoria-ia/monterrey/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/consultoria-ia/queretaro",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/consultoria-ia/queretaro/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/consultoria-ia/puebla",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
+    },
+    {
+      "source": "/consultoria-ia/puebla/",
+      "destination": "/servicios/consultoria-ia-empresas/",
+      "statusCode": 301
     }
   ],
   "headers": [
