@@ -53,7 +53,7 @@ function covered(text, a, b, strings) {
 }
 function priceOk(text, a, b, M) {
   const low = text.toLowerCase();
-  for (const p of [M.PRICE_FROM, M.PRICE_FROM_CAP, 'USD 997 al mes']) {
+  for (const p of [M.PRICE_FROM, M.PRICE_FROM_CAP, 'USD 997 al mes', ...Object.values(M.PRICES ?? {})]) {
     if (!p) continue;
     const n = p.toLowerCase();
     let i = low.indexOf(n);

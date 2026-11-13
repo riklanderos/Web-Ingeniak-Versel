@@ -6,7 +6,7 @@ import navegacion from '../data/navegacion.json';
 import plates from '../data/plates.json';
 import fs from 'node:fs';
 import { isNoindex, gatePending, isHidden } from './indexacion.mjs';
-import { METRICS, OFFERS, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE } from './metrics';
+import { METRICS, OFFERS, PRICES, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE } from './metrics';
 import path from 'node:path';
 
 export const SITE = {
@@ -40,10 +40,16 @@ export type Page = (typeof sitemap)[number];
  * {{metric:ID|prose}}, {{price}}, {{Price}}, {{source}}), igual que el copy, y se resuelven aquí desde metrics.ts
  * (QA ronda 1: la meta de /industrias/salud/ llevaba "3.2× … y respuesta en 12 s" escrito a mano). Así <title>,
  * meta description, og:*, JSON-LD y llms.txt cambian solos con METRICS. check-cifras falla si queda una cifra suelta. */
-const SITE_TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price|Price|source)\}\}/g;
+const SITE_TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price:([a-z0-9-]+)|price|Price|source)\}\}/g;
 export function resolveTokens<T>(s: T): T {
   if (typeof s !== 'string' || !s.includes('{{')) return s;
-  return s.replace(SITE_TOKEN_RX, (all, k: string, id: string, mod?: string, offer?: string) => {
+  return s.replace(SITE_TOKEN_RX, (all, k: string, id: string, mod?: string, offer?: string, priceId?: string) => {
+    // {{price:ID}}: precio "desde" de un servicio (PRICES de metrics.ts).
+    if (priceId) {
+      const p = (PRICES as Record<string, string>)[priceId];
+      if (!p) throw new Error(`[site] sitemap.json: precio desconocido ${all}`);
+      return p;
+    }
     // {{offer:ID}}: oferta de una landing oculta (OFFERS de metrics.ts, R18). Solo se publica en OFFER_ROUTES (check-cifras).
     if (offer) {
       const o = (OFFERS as Record<string, string>)[offer];

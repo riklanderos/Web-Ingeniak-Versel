@@ -915,5 +915,53 @@
     "categoria": "Inteligencia artificial",
     "validar": false,
     "editada": false
+  },
+  {
+    "id": "B05",
+    "q": "¿Cuánto cuesta un software a la medida en México?",
+    "a": "En Ingeniak un proyecto de software a la medida cuesta {{price:software}}. El precio final depende de las funcionalidades, las conexiones con otros sistemas, las bases de datos, las actualizaciones y el mantenimiento que requiera. Para darte una cifra de tu caso necesitamos conocer tu proceso y los sistemas que usas hoy.",
+    "short": "En Ingeniak un proyecto de software a la medida cuesta {{price:software}}.",
+    "pages": [
+      "/blog/cuanto-cuesta-software-a-la-medida-mexico/"
+    ],
+    "categoria": "Precios y decisiones",
+    "validar": true,
+    "editada": false
+  },
+  {
+    "id": "B06",
+    "q": "¿Por qué no hay un precio fijo para el software a la medida?",
+    "a": "Porque cada sistema resuelve un proceso distinto. Un cotizador interno y un portal para clientes con cobros en línea son proyectos muy diferentes, aunque los dos se llamen software a la medida. El precio se define cuando se conoce el alcance: qué hace el sistema, con qué se conecta y cuánta información maneja.",
+    "short": "Porque cada sistema resuelve un proceso distinto.",
+    "pages": [
+      "/blog/cuanto-cuesta-software-a-la-medida-mexico/"
+    ],
+    "categoria": "Precios y decisiones",
+    "validar": true,
+    "editada": false
+  },
+  {
+    "id": "B07",
+    "q": "¿Qué debe incluir una cotización de software a la medida?",
+    "a": "Debe decir por escrito qué funciones incluye y cuáles quedan fuera, con qué sistemas se conecta, quién migra los datos anteriores, cuál es el plazo de entrega, qué mantenimiento incluye y cómo se cotizan los cambios posteriores. Si la cotización solo trae un precio y una fecha, pide el detalle antes de firmar.",
+    "short": "Debe decir por escrito qué funciones incluye y cuáles quedan fuera, con qué sistemas se conecta, quién migra los datos anteriores, cuál…",
+    "pages": [
+      "/blog/cuanto-cuesta-software-a-la-medida-mexico/"
+    ],
+    "categoria": "Precios y decisiones",
+    "validar": true,
+    "editada": false
+  },
+  {
+    "id": "B08",
+    "q": "¿Cuándo no conviene desarrollar software a la medida?",
+    "a": "Cuando una herramienta que ya existe resuelve el problema bien configurada y conectada. Muchas veces alcanza con un CRM como Kommo o GoHighLevel, o con una automatización en n8n. Por eso, antes de proponer código, revisamos qué usas hoy y si basta con conectarlo. Construimos solo cuando eso ya no alcanza.",
+    "short": "Cuando una herramienta que ya existe resuelve el problema bien configurada y conectada.",
+    "pages": [
+      "/blog/cuanto-cuesta-software-a-la-medida-mexico/"
+    ],
+    "categoria": "Precios y decisiones",
+    "validar": true,
+    "editada": false
   }
 ]

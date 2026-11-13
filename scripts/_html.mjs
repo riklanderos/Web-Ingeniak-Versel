@@ -71,12 +71,13 @@ const readJSON = (p) => JSON.parse(readFileSync(p, 'utf8'));
 export const SITEMAP_RAW = readJSON(join(ROOT, 'src/data/sitemap.json'));
 /** Tokens de cifra en los textos de sitemap.json (misma sintaxis que el copy y src/lib/site.ts → resolveTokens).
  *  {{offer:ID}} = oferta de una landing oculta (OFFERS de metrics.ts, ESPEC §12.6 R18). */
-export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price|Price|source)\}\}/g;
+export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price:([a-z0-9-]+)|price|Price|source)\}\}/g;
 let metricsCache = null;
 export function resolveTokens(s) {
   if (typeof s !== 'string' || !s.includes('{{')) return s;
   const M = (metricsCache ??= loadMetrics());
-  return s.replace(new RegExp(TOKEN_RX.source, 'g'), (all, k, id, mod, offer) => {
+  return s.replace(new RegExp(TOKEN_RX.source, 'g'), (all, k, id, mod, offer, priceId) => {
+    if (priceId) { const p = M.PRICES[priceId]; if (!p) throw new Error(`[check] sitemap.json: precio desconocido ${all}`); return p; }
     if (offer) { const o = M.OFFERS[offer]; if (!o) throw new Error(`[check] sitemap.json: oferta desconocida ${all}`); return o; }
     if (k === 'price') return M.PRICE_FROM; if (k === 'Price') return M.PRICE_FROM_CAP; if (k === 'source') return M.SOURCE_NOTE;
     const m = M.metrics[id];
@@ -112,9 +113,13 @@ export function loadMetrics() {
   const OFFERS = {};
   const ob = src.match(/export const OFFERS\s*=\s*\{([\s\S]*?)\}\s*as const/);
   if (ob) for (const m of ob[1].matchAll(/'([a-z0-9-]+)':\s*'([^']*)'/g)) OFFERS[m[1]] = m[2];
+  // Precios "desde" por servicio (PRICES, token {{price:ID}})
+  const PRICES = {};
+  const pb = src.match(/export const PRICES\s*=\s*\{([\s\S]*?)\}\s*as const/);
+  if (pb) for (const m of pb[1].matchAll(/'([a-z0-9-]+)':\s*'([^']*)'/g)) PRICES[m[1]] = m[2];
   const or = src.match(/export const OFFER_ROUTES\s*=\s*\[([^\]]*)\]/);
   const OFFER_ROUTES = or ? [...or[1].matchAll(/'([^']+)'/g)].map((m) => m[1]) : [];
-  return { metrics: out, PRICE_FROM: price, PRICE_FROM_CAP: priceCap, SOURCE_NOTE: source, OFFERS, OFFER_ROUTES };
+  return { metrics: out, PRICE_FROM: price, PRICE_FROM_CAP: priceCap, SOURCE_NOTE: source, OFFERS, OFFER_ROUTES, PRICES };
 }
 /** Caso breve (R2): sitemap trae publishGate y el copy no lo marca confirmado. */
 export function gatePending(page) {

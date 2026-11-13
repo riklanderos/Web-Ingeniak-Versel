@@ -250,7 +250,8 @@ export async function run(opts) {
     else for (const f of VKTOR_OK) if (!vk[1].includes(f)) R.fail('/llms.txt', `VKTOR™ sin la fase ${f}`);
     for (const m of llms.matchAll(/USD\s?\d[\d.,]*/g)) {
       const around = llms.slice(Math.max(0, m.index - 6), m.index + 20).toLowerCase();
-      if (!around.includes(M.PRICE_FROM.toLowerCase().replace(/^desde /, '').slice(0, 7))) R.fail('/llms.txt', `precio distinto de PRICE_FROM: "${around}"`);
+      const oficiales = [M.PRICE_FROM, ...Object.values(M.PRICES ?? {})].map((p) => p.toLowerCase().replace(/^desde /, '').replace(/^(usd\s?[\d.,]+).*$/, '$1'));
+      if (!oficiales.some((p) => around.includes(p))) R.fail('/llms.txt', `precio distinto de PRICE_FROM: "${around}"`);
     }
     if (!llms.includes(M.PRICE_FROM)) R.fail('/llms.txt', `no menciona el precio oficial "${M.PRICE_FROM}"`);
     R.info(`llms.txt: ${new Set(links).size} página(s) enlazada(s)`);

@@ -25,6 +25,15 @@ export type MetricId = keyof typeof METRICS;
 export const SOURCE_NOTE = 'Datos internos de Ingeniak, octubre de 2026';
 export const PRICE_FROM = 'desde USD 997 al mes';
 export const PRICE_FROM_CAP = 'Desde USD 997 al mes';
+/** Precios "desde" por servicio (token {{price:ID}} en el copy y en sitemap.json). Cada uno es una cifra oficial que da el
+ *  cliente; check-cifras acepta un importe en USD solo si es PRICE_FROM o uno de estos, escrito tal cual (lleva unidad al
+ *  final para que una coma o un punto de la oración no se peguen al número).
+ *  software: Rik Landeros, 2026-11-13 ("el costo va desde los 1500 USD; depende de funcionalidades, conexiones, bases de
+ *  datos, actualizaciones y mantenimiento"). "por proyecto" es redacción nuestra: por confirmar. */
+export const PRICES = {
+  'software': 'desde USD 1,500 por proyecto',
+} as const;
+export type PriceId = keyof typeof PRICES;
 
 /** Ofertas de las landings ocultas (cambio 2026-10-20). Solo se imprimen en OFFER_ROUTES, siempre dentro de [data-offer];
  *  check-cifras las acepta solo ahí. Nunca con {{price}} (esa es la inversión mensual "desde USD 997 al mes"). */

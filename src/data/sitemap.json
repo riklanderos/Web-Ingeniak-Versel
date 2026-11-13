@@ -12083,5 +12083,211 @@
       "owner": "SEO Studio (brief + redacción + aprobación)",
       "note": "Generado por SEO Studio (artículo 06ba448d-a313-465d-bb02-f9129872550d) el 2026-11-06."
     }
+  },
+  {
+    "id": "art-cuesta-software",
+    "group": "Recursos",
+    "url": "/blog/cuanto-cuesta-software-a-la-medida-mexico/",
+    "canonical": "https://ingeniak.mx/blog/cuanto-cuesta-software-a-la-medida-mexico/",
+    "indexable": true,
+    "status": "nueva",
+    "template": "T-ARTICLE",
+    "purpose": "Intención informativa · Buyer/etapa: dueño o director de operaciones que ya probó herramientas genéricas y está pidiendo cotizaciones",
+    "primaryKeyword": "cuánto cuesta desarrollar software a la medida",
+    "secondaryKeywords": [
+      "agencia de desarrollo de software",
+      "desarrollo de software a la medida México",
+      "precio de software a la medida",
+      "agencias de software en México",
+      "software a la medida para empresas"
+    ],
+    "title": "Cuánto cuesta desarrollar software a la medida en México",
+    "titleLength": 56,
+    "metaDescription": "Un software a la medida cuesta {{price:software}} con Ingeniak. Revisa qué mueve el precio y cómo pedir una cotización con alcance por escrito.",
+    "metaLength": 143,
+    "h1": "Cuánto cuesta desarrollar software a la medida en México",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Blog",
+        "url": "/blog/"
+      },
+      {
+        "name": "Cuánto cuesta desarrollar software a la",
+        "url": "/blog/cuanto-cuesta-software-a-la-medida-mexico/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: cuánto cuesta desarrollar software a la medida.",
+        "cinematic": true,
+        "plate": {
+          "id": "home-sistema-2-atender",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "respuesta",
+        "name": "Respuesta corta",
+        "spec": "40–60 palabras citables que responden \"cuánto cuesta desarrollar software a la medida\" en la primera oración.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "indice",
+        "name": "Índice",
+        "spec": "Tabla de contenidos fija en escritorio, plegable en celular.",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cuerpo",
+        "name": "Cuerpo (H2)",
+        "spec": "1) Cuánto cuesta un software a la medida en México · 2) Los cinco factores que mueven el precio · 3) Qué tipo de sistema necesitas · 4) Software a la medida o plataforma en renta · 5) Cuándo conviene construir y cuándo no · 6) Cómo se cotiza un proyecto de software a la medida · 7) Errores que encarecen un proyecto · 8) Con qué construimos en Ingeniak",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "cta-medio",
+        "name": "CTA intermedio",
+        "spec": "Tarjeta a /servicios/desarrollo-software/ + WhatsApp.",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "faq",
+        "name": "Preguntas frecuentes",
+        "spec": "Acordeón (B05, B06, B07, B08); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 7,
+        "id": "autor",
+        "name": "Sobre el autor",
+        "spec": "Tarjeta de Equipo de Ingeniak hasta confirmar autor (R8).",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "fuentes",
+        "name": "Fuentes",
+        "spec": "Pendiente: el brief no trajo fuentes.",
+        "cinematic": false
+      },
+      {
+        "order": 9,
+        "id": "relacionados",
+        "name": "Sigue explorando",
+        "spec": "3 tarjetas: /servicios/desarrollo-software/ · /servicios/automatizacion-n8n/ · /tecnologias/.",
+        "cinematic": false
+      },
+      {
+        "order": 10,
+        "id": "cta-final",
+        "name": "Cierre",
+        "spec": "Cierre cinematográfico compartido (cta-amanecer).",
+        "cinematic": true,
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola Kain, leí cuánto cuesta desarrollar software a la medida en México y quiero ver cómo aplica a mi negocio.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20cu%C3%A1nto%20cuesta%20desarrollar%20software%20a%20la%20medida%20en%20M%C3%A9xico%20y%20quiero%20ver%20c%C3%B3mo%20aplica%20a%20mi%20negocio."
+    },
+    "internalLinks": [
+      "/servicios/desarrollo-software/",
+      "/servicios/automatizacion-n8n/",
+      "/tecnologias/"
+    ],
+    "jsonLd": [
+      "BlogPosting (author Person, datePublished, dateModified)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "B05",
+        "q": "¿Cuánto cuesta un software a la medida en México?",
+        "a": "En Ingeniak un proyecto de software a la medida cuesta {{price:software}}. El precio final depende de las funcionalidades, las conexiones con otros sistemas, las bases de datos, las actualizaciones y el mantenimiento que requiera. Para darte una cifra de tu caso necesitamos conocer tu proceso y los sistemas que usas hoy.",
+        "estado": "por validar"
+      },
+      {
+        "id": "B06",
+        "q": "¿Por qué no hay un precio fijo para el software a la medida?",
+        "a": "Porque cada sistema resuelve un proceso distinto. Un cotizador interno y un portal para clientes con cobros en línea son proyectos muy diferentes, aunque los dos se llamen software a la medida. El precio se define cuando se conoce el alcance: qué hace el sistema, con qué se conecta y cuánta información maneja.",
+        "estado": "por validar"
+      },
+      {
+        "id": "B07",
+        "q": "¿Qué debe incluir una cotización de software a la medida?",
+        "a": "Debe decir por escrito qué funciones incluye y cuáles quedan fuera, con qué sistemas se conecta, quién migra los datos anteriores, cuál es el plazo de entrega, qué mantenimiento incluye y cómo se cotizan los cambios posteriores. Si la cotización solo trae un precio y una fecha, pide el detalle antes de firmar.",
+        "estado": "por validar"
+      },
+      {
+        "id": "B08",
+        "q": "¿Cuándo no conviene desarrollar software a la medida?",
+        "a": "Cuando una herramienta que ya existe resuelve el problema bien configurada y conectada. Muchas veces alcanza con un CRM como Kommo o GoHighLevel, o con una automatización en n8n. Por eso, antes de proponer código, revisamos qué usas hoy y si basta con conectarlo. Construimos solo cuando eso ya no alcanza.",
+        "estado": "por validar"
+      }
+    ],
+    "sitemap": {
+      "priority": 0.6,
+      "changefreq": "monthly"
+    },
+    "author": "Equipo de Ingeniak",
+    "wordCount": 1599,
+    "outline": [
+      "Cuánto cuesta un software a la medida en México",
+      "Los cinco factores que mueven el precio",
+      "Qué tipo de sistema necesitas",
+      "Software a la medida o plataforma en renta",
+      "Cuándo conviene construir y cuándo no",
+      "Cómo se cotiza un proyecto de software a la medida",
+      "Errores que encarecen un proyecto",
+      "Con qué construimos en Ingeniak"
+    ],
+    "sources": "Pendiente.",
+    "notes": "Sin cifras de terceros ni plazos: el único número es el precio oficial ({{price:software}}) y {{metric:sistemas}}. No se menciona el precio mensual ({{price}}) para no mezclar dos modelos de cobro. Tono: directo, de tú, sin promesas.",
+    "folio": "508",
+    "copy": {
+      "status": "borrador",
+      "minWords": 1200,
+      "owner": "Equipo SEO (brief) + agente (redacción)",
+      "note": "Generado por scripts/blog-nuevo.mjs desde materiales/briefs/2026-11-13-cuanto-cuesta-software-a-la-medida-mexico.md el 2026-11-13. No se publica hasta estado \"aprobado\" (R1)."
+    }
   }
 ]

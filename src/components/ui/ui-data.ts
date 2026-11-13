@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import sitemap from '../../data/sitemap.json';
-import { METRICS, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { METRICS, PRICES, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 import * as metricsMod from '../../lib/metrics';
 
 /** Microcopia de la Discovery Session: solo la usa la landing oculta /discovery/ (CAMBIO-COTIZAR §4.2, MICRO_29).
@@ -59,7 +59,13 @@ const ALLOW_PATTERNS: RegExp[] = [
  *  {{metric:ID|prose}} (la cifra redactada para una oración: METRICS[id].prose, p. ej. "de 8 minutos a 12 segundos"),
  *  {{offer:ID}} (oferta de una landing oculta: OFFERS[id] de metrics.ts, CAMBIO-COTIZAR §4.4), {{price}}, {{Price}}, {{source}}.
  *  Grupos: 1 = token, 2 = id de la cifra, 3 = modificador (full | prose), 4 = id de la oferta. */
-export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price|Price|source)\}\}/g;
+export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price:([a-z0-9-]+)|price|Price|source)\}\}/g;
+/** {{price:ID}} → PRICES[id] de metrics.ts (precio "desde" de un servicio). */
+const priceOf = (id: string) => {
+  const p = (PRICES as Record<string, string>)[id];
+  if (!p) throw new Error(`[ui/copy] precio desconocido en el texto: {{price:${id}}}`);
+  return p;
+};
 const metricOf = (id: string) => {
   const m = (METRICS as any)[id];
   if (!m) throw new Error(`[ui/copy] cifra desconocida en el texto: {{metric:${id}}}`);
@@ -77,7 +83,8 @@ const metricText = (id: string, mod?: string) => {
 };
 /** Texto plano con los tokens resueltos (JSON-LD FAQPage, ⌘K, meta, aria-label). */
 export function tokensToText(s: string): string {
-  return String(s ?? '').replace(TOKEN_RX, (_, k, id, mod, offer) => {
+  return String(s ?? '').replace(TOKEN_RX, (_, k, id, mod, offer, priceId) => {
+    if (priceId) return priceOf(priceId);
     if (k === 'price') return PRICE_FROM; if (k === 'Price') return PRICE_FROM_CAP; if (k === 'source') return SOURCE_NOTE;
     if (offer) return offerOf(offer);
     return metricText(id, mod);
@@ -100,8 +107,9 @@ export function annotateFigures(text: string): string {
   const rx = new RegExp(TOKEN_RX.source, 'g');
   while ((m = rx.exec(src))) {
     out += legacyFigures(src.slice(last, m.index));
-    const [, k, id, mod, offer] = m;
-    if (offer) out += `<span data-offer="${esc(offer)}">${esc(offerOf(offer))}</span>`;
+    const [, k, id, mod, offer, priceId] = m;
+    if (priceId) out += `<span data-allow-number>${esc(priceOf(priceId))}</span>`;
+    else if (offer) out += `<span data-offer="${esc(offer)}">${esc(offerOf(offer))}</span>`;
     else if (k === 'price' || k === 'Price') out += `<span data-allow-number>${esc(k === 'price' ? PRICE_FROM : PRICE_FROM_CAP)}</span>`;
     else if (k === 'source') out += esc(SOURCE_NOTE);
     else if (mod === 'prose') out += `<span class="metric metric--prose" data-metric="${id}">${esc(metricText(id, 'prose'))}</span>`;
