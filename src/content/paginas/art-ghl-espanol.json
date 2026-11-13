@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-20",
+  "actualizado": "2026-11-13",
   "articulo": {
     "categoria": "CRM",
     "about": [
@@ -37,6 +37,7 @@
     ]
   },
   "pendientes": [
+    "CAMBIO DE TEXTO · 2026-11-13, aprobado por Rik Landeros (Search Console: 'qué es y para qué sirve GoHighLevel' ≈ 95 impresiones en posición 7): title 'GoHighLevel: qué es y para qué sirve, en español', meta description con 'para qué sirve', H1 '…qué es, para qué sirve y cómo se implementa' (antes 'para quién es') y H2 'Para qué sirve GoHighLevel: qué junta en una sola plataforma'. No cambia ninguna afirmación.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Marcos González como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
     "PREGUNTA AL CLIENTE · suscripción de GoHighLevel: ¿el cliente la contrata a su nombre o va desde la cuenta de agencia de Ingeniak? ¿Los cargos por uso (SMS, correo, IA, WhatsApp) se le pasan a costo? El texto solo recomienda preguntárselo a quien implemente; no afirma cómo lo hace Ingeniak.",
@@ -54,7 +55,7 @@
       "eyebrow": "CRM",
       "h1": {
         "text": "GoHighLevel en español:",
-        "soft": "qué es, para quién es y cómo se implementa",
+        "soft": "qué es, para qué sirve y cómo se implementa",
         "lit": "español"
       },
       "deck": "Qué junta en una sola cuenta, cómo se pone en español de verdad, a quién le conviene y los seis pasos para implementarlo sin rehacer nada. Con el sitio y el centro de ayuda de HighLevel en la mano.",
@@ -105,7 +106,7 @@
         {
           "variant": "h2",
           "id": "que-junta",
-          "text": "Qué junta en una sola plataforma",
+          "text": "Para qué sirve GoHighLevel: qué junta en una sola plataforma",
           "rail": "Qué junta"
         },
         "La lista oficial de funciones es larga. Estas son las piezas que más pesan cuando una empresa la usa para vender y agendar. Según HighLevel, la mayoría de sus usuarios reemplaza con la plataforma su CRM, su constructor de embudos, su herramienta de correo, su agenda, sus SMS y su gestión de reseñas.[^1]",
