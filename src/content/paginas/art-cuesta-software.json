@@ -1,9 +1,9 @@
 {
   "pageId": "art-cuesta-software",
   "url": "/blog/cuanto-cuesta-software-a-la-medida-mexico/",
-  "estado": "borrador",
+  "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
-  "aprobadoPor": null,
+  "aprobadoPor": "Rik Landeros",
   "publicado": "2026-11-13",
   "actualizado": "2026-11-13",
   "articulo": {
@@ -17,10 +17,10 @@
     ]
   },
   "pendientes": [
-    "APROBACIÓN (R1): estado \"borrador\". Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a \"aprobado\".",
+    "RESUELTO 2026-11-13 · aprobación R1 por escrito en el chat de construcción, tras revisar la vista previa · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
     "PLACA · RESUELTO 2026-11-13: portada propia art-cuesta-software-hero (Kain con el tablero y las herramientas que conecta), pedida por Rik Landeros; el cierre usa la placa compartida cta-amanecer.",
-    "FAQ · B05, B06, B07, B08 entran al banco con validar: true: no se publican hasta que el cliente las apruebe.",
+    "RESUELTO 2026-11-13 · FAQ B05, B06, B07 y B08 aprobadas por Rik Landeros (validar: false).",
     "CAMBIO DE TEXTO · revisar \"relacionados\" (línea de cada tarjeta) y el deck de la portada: salen de la meta description de cada página, no de redacción propia.",
     "RESUELTO 2026-11-13 · Rik Landeros (chat de construcción): \"desde USD 1,500 por proyecto\" es correcto, y la redacción sobre mantenimiento y actualizaciones (\"dependen de lo que el sistema requiera\") queda como está.",
     "RESUELTO 2026-11-13 · Rik Landeros: está bien que este artículo no mencione el precio mensual (\"desde USD 997 al mes\"); los dos precios conviven.",

@@ -12243,25 +12243,25 @@
         "id": "B05",
         "q": "¿Cuánto cuesta un software a la medida en México?",
         "a": "En Ingeniak un proyecto de software a la medida cuesta {{price:software}}. El precio final depende de las funcionalidades, las conexiones con otros sistemas, las bases de datos, las actualizaciones y el mantenimiento que requiera. Para darte una cifra de tu caso necesitamos conocer tu proceso y los sistemas que usas hoy.",
-        "estado": "por validar"
+        "estado": "aprobada"
       },
       {
         "id": "B06",
         "q": "¿Por qué no hay un precio fijo para el software a la medida?",
         "a": "Porque cada sistema resuelve un proceso distinto. Un cotizador interno y un portal para clientes con cobros en línea son proyectos muy diferentes, aunque los dos se llamen software a la medida. El precio se define cuando se conoce el alcance: qué hace el sistema, con qué se conecta y cuánta información maneja.",
-        "estado": "por validar"
+        "estado": "aprobada"
       },
       {
         "id": "B07",
         "q": "¿Qué debe incluir una cotización de software a la medida?",
         "a": "Debe decir por escrito qué funciones incluye y cuáles quedan fuera, con qué sistemas se conecta, quién migra los datos anteriores, cuál es el plazo de entrega, qué mantenimiento incluye y cómo se cotizan los cambios posteriores. Si la cotización solo trae un precio y una fecha, pide el detalle antes de firmar.",
-        "estado": "por validar"
+        "estado": "aprobada"
       },
       {
         "id": "B08",
         "q": "¿Cuándo no conviene desarrollar software a la medida?",
         "a": "Cuando una herramienta que ya existe resuelve el problema bien configurada y conectada. Muchas veces alcanza con un CRM como Kommo o GoHighLevel, o con una automatización en n8n. Por eso, antes de proponer código, revisamos qué usas hoy y si basta con conectarlo. Construimos solo cuando eso ya no alcanza.",
-        "estado": "por validar"
+        "estado": "aprobada"
       }
     ],
     "sitemap": {
@@ -12284,10 +12284,10 @@
     "notes": "Sin cifras de terceros ni plazos: el único número es el precio oficial ({{price:software}}) y {{metric:sistemas}}. No se menciona el precio mensual ({{price}}) para no mezclar dos modelos de cobro. Tono: directo, de tú, sin promesas.",
     "folio": "508",
     "copy": {
-      "status": "borrador",
+      "status": "aprobado",
       "minWords": 1200,
       "owner": "Equipo SEO (brief) + agente (redacción)",
-      "note": "Generado por scripts/blog-nuevo.mjs desde materiales/briefs/2026-11-13-cuanto-cuesta-software-a-la-medida-mexico.md el 2026-11-13. No se publica hasta estado \"aprobado\" (R1)."
+      "note": "Generado por scripts/blog-nuevo.mjs desde materiales/briefs/2026-11-13-cuanto-cuesta-software-a-la-medida-mexico.md el 2026-11-13. No se publica hasta estado \"aprobado\" (R1). Aprobado por Rik Landeros el 2026-11-13."
     }
   }
 ]
