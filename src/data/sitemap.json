@@ -12128,7 +12128,7 @@
         "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: cuánto cuesta desarrollar software a la medida.",
         "cinematic": true,
         "plate": {
-          "id": "home-sistema-2-atender",
+          "id": "art-cuesta-software-hero",
           "component": "ImageSection hero",
           "layout": "subject-right",
           "mirror": false,

@@ -19,16 +19,16 @@
   "pendientes": [
     "APROBACIÓN (R1): estado \"borrador\". Solo una persona del cliente, con su nombre en aprobadoPor, puede pasar este artículo a \"aprobado\".",
     "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
-    "PLACA · portada y cierre usan placas compartidas por defecto (home-sistema-2-atender y cta-amanecer). Si el artículo pide placa propia, cambiarla en sitemap.json y aquí.",
+    "PLACA · RESUELTO 2026-11-13: portada propia art-cuesta-software-hero (Kain con el tablero y las herramientas que conecta), pedida por Rik Landeros; el cierre usa la placa compartida cta-amanecer.",
     "FAQ · B05, B06, B07, B08 entran al banco con validar: true: no se publican hasta que el cliente las apruebe.",
     "CAMBIO DE TEXTO · revisar \"relacionados\" (línea de cada tarjeta) y el deck de la portada: salen de la meta description de cada página, no de redacción propia.",
-    "PREGUNTA AL CLIENTE · precio: Rik Landeros dio \"desde los 1500 USD\" (2026-11-13). El sitio lo publica como \"desde USD 1,500 por proyecto\" (PRICES.software en metrics.ts). ¿\"por proyecto\" es correcto, o es otra unidad? ¿El mantenimiento y las actualizaciones se cobran aparte (mensual) o dentro del proyecto? El artículo dice que \"dependen de lo que el sistema requiera\", sin afirmar ninguna de las dos.",
-    "PREGUNTA AL CLIENTE · el sitio ya publica \"desde USD 997 al mes\" como inversión de los proyectos (FAQ G07). Este artículo no lo menciona para no mezclar un cobro mensual con uno por proyecto. Confirmar cómo conviven los dos precios.",
+    "RESUELTO 2026-11-13 · Rik Landeros (chat de construcción): \"desde USD 1,500 por proyecto\" es correcto, y la redacción sobre mantenimiento y actualizaciones (\"dependen de lo que el sistema requiera\") queda como está.",
+    "RESUELTO 2026-11-13 · Rik Landeros: está bien que este artículo no mencione el precio mensual (\"desde USD 997 al mes\"); los dos precios conviven.",
     "CAMBIO DE TEXTO · se agregaron al cuerpo una nota \"En corto\" y la tabla \"Qué pesa más en la cotización de cada tipo de sistema\" (no venían en el brief; resumen de lo que ya dice el texto)."
   ],
   "sections": {
     "hero": {
-      "_componente": "ImageSection hero (placa compartida por defecto; ver pendientes)",
+      "_componente": "ImageSection hero (art-cuesta-software-hero: Kain presenta un tablero de cristal con siete herramientas conectadas)",
       "eyebrow": "Precios y decisiones",
       "h1": {
         "text": "Cuánto cuesta desarrollar software a la medida en México",

@@ -29,7 +29,7 @@ export const PRICE_FROM_CAP = 'Desde USD 997 al mes';
  *  cliente; check-cifras acepta un importe en USD solo si es PRICE_FROM o uno de estos, escrito tal cual (lleva unidad al
  *  final para que una coma o un punto de la oración no se peguen al número).
  *  software: Rik Landeros, 2026-11-13 ("el costo va desde los 1500 USD; depende de funcionalidades, conexiones, bases de
- *  datos, actualizaciones y mantenimiento"). "por proyecto" es redacción nuestra: por confirmar. */
+ *  datos, actualizaciones y mantenimiento"). "por proyecto": confirmado por Rik Landeros el 2026-11-13. */
 export const PRICES = {
   'software': 'desde USD 1,500 por proyecto',
 } as const;
