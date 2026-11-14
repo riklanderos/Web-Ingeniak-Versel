@@ -30,7 +30,7 @@
   },
   "pendientes": [
     "RESUELTO 2026-11-14 · fuentes: se volvieron a consultar las cinco páginas oficiales (precios e idiomas de Kommo, precios e idiomas de HighLevel, precios de HubSpot). Lo que el artículo dice de ellas sigue vigente; se actualiza la fecha de consulta.",
-    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agregan a \"Sigue explorando\" las tarjetas hacia los artículos nuevos del blog, que no recibían enlaces desde esta página.",
+    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agrega al final del cuerpo un párrafo con enlaces a los artículos nuevos del blog, que no recibían enlaces desde aquí. Ninguna afirmación cambia.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Rik Landeros como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
     "PREGUNTA AL CLIENTE · ¿Ingeniak implementa HubSpot? El texto no lo afirma ni lo niega: solo dice que, si otra herramienta conviene más, lo decimos en la Discovery Session.",
@@ -135,7 +135,8 @@
           "**Kommo:** somos partner oficial de Kommo en Latinoamérica. Te ayudamos a contratar las licencias que necesitas, implementamos el CRM, conectamos WhatsApp y ponemos agentes de IA que responden, califican y agendan.",
           "**GoHighLevel:** lo implementamos completo en español: configuración de la cuenta, embudos, calendarios, mensajes, automatizaciones, agente de IA y capacitación de tu equipo. Somos partners de GoHighLevel, igual que de Kommo: te recomendamos uno u otro según tu proceso comercial, no según la etiqueta."
         ] },
-        "Cuando cotizas tu proyecto, revisamos cómo vendes hoy y te decimos cuál conviene, con qué plan y qué costos de terceros considerar. Nuestros proyectos empiezan {{price}}, y implementar un sistema toma de 7 a 30 días, según el alcance."
+        "Cuando cotizas tu proyecto, revisamos cómo vendes hoy y te decimos cuál conviene, con qué plan y qué costos de terceros considerar. Nuestros proyectos empiezan {{price}}, y implementar un sistema toma de 7 a 30 días, según el alcance.",
+        "Para comparar costos con calma, tenemos una guía de cada plataforma: [Kommo precios 2026](/blog/kommo-precios/) y [GoHighLevel precios en México](/blog/gohighlevel-precios-mexico/)."
       ]
     },
     "cta-medio": {
@@ -175,9 +176,7 @@
       "items": [
         { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con Ingeniak", "line": "Licencias, implementación y agentes de IA." },
         { "href": "/gohighlevel/", "label": "Plataforma", "title": "GoHighLevel en español", "line": "Implementación completa para tu equipo." },
-        { "href": "/servicios/crm-con-ia/", "label": "Servicio", "title": "CRM con IA", "line": "Cada conversación en su etapa, sin capturas a mano." },
-        { "href":"/blog/kommo-precios/", "label":"Blog", "title":"Kommo precios 2026", "line":"Cómo cobra por usuario, qué incluye cada plan y qué se paga aparte." },
-        { "href":"/blog/gohighlevel-precios-mexico/", "label":"Blog", "title":"GoHighLevel precios en México", "line":"Planes, cargos por uso y cómo calcular tu costo real." }
+        { "href": "/servicios/crm-con-ia/", "label": "Servicio", "title": "CRM con IA", "line": "Cada conversación en su etapa, sin capturas a mano." }
       ]
     },
     "cta-final": {

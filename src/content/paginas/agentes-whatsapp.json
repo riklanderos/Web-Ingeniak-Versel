@@ -6,7 +6,7 @@
   "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-11-14",
   "pendientes": [
-    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agregan a \"Sigue explorando\" las tarjetas hacia los artículos nuevos del blog, que no recibían enlaces desde esta página.",
+    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): \"Sigue explorando\" muestra tres tarjetas; ahora la primera es la guía nueva \"Qué es un agente de IA para WhatsApp\" (la de Kain pasa al cuarto lugar y ya no se pinta).",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "FAQ DISTINTA DE D · G02: misma respuesta con sujeto explícito ('Un agente de IA para WhatsApp es…'); es también la definición de #definicion.",
     "FAQ DISTINTA DE D · G03: agrega 'Por eso puede atender conversaciones reales de venta y servicio, no solo preguntas previstas.'",
@@ -251,10 +251,10 @@
       "eyebrow": "Sigue explorando",
       "h2": { "text": "Otras piezas", "soft": "del mismo sistema." },
       "items": [
-        { "href": "/kain/", "label": "Kain", "title": "Conoce a Kain", "line": "El agente de IA de tu empresa, en primera persona." },
-        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con agentes de IA", "line": "Licencias, implementación y agentes dentro de Kommo." },
+        { "href": "/blog/que-es-agente-ia-whatsapp/", "label": "Guía", "title": "Qué es un agente de IA para WhatsApp", "line": "Cómo funciona por dentro, qué hace y ejemplos por industria." },
         { "href": "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/", "label": "Guía", "title": "Guía de precios: agente de IA para WhatsApp en México", "line": "Qué mueve el precio y qué preguntar antes de contratar." },
-        { "href":"/blog/que-es-agente-ia-whatsapp/", "label":"Guía", "title":"Qué es un agente de IA para WhatsApp", "line":"Cómo funciona por dentro, qué hace y ejemplos por industria." }
+        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con agentes de IA", "line": "Licencias, implementación y agentes dentro de Kommo." },
+        { "href": "/kain/", "label": "Kain", "title": "Conoce a Kain", "line": "El agente de IA de tu empresa, en primera persona." }
       ]
     },
     "cta-final": {

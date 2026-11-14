@@ -37,7 +37,7 @@
     ]
   },
   "pendientes": [
-    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agregan a \"Sigue explorando\" las tarjetas hacia los artículos nuevos del blog, que no recibían enlaces desde esta página.",
+    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agrega al final del cuerpo un párrafo con enlaces a los artículos nuevos del blog, que no recibían enlaces desde aquí. Ninguna afirmación cambia.",
     "CAMBIO DE TEXTO · 2026-11-13, aprobado por Rik Landeros (Search Console: 'qué es y para qué sirve GoHighLevel' ≈ 95 impresiones en posición 7): title 'GoHighLevel: qué es y para qué sirve, en español', meta description con 'para qué sirve', H1 '…qué es, para qué sirve y cómo se implementa' (antes 'para quién es') y H2 'Para qué sirve GoHighLevel: qué junta en una sola plataforma'. No cambia ninguna afirmación.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Marcos González como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
@@ -336,7 +336,8 @@
           "variant": "note",
           "label": "Para que quede claro",
           "text": "GoHighLevel es una plataforma de la que somos partners y que implementamos completa en español. También somos partners oficiales de Kommo en Latinoamérica: entre una y otro, la recomendación depende de tu proceso comercial."
-        }
+        },
+        "Si quieres el desglose completo de costos, lo tienes en [GoHighLevel precios en México](/blog/gohighlevel-precios-mexico/). Y si tu siguiente paso es conectar el canal, sigue con [cómo conectar WhatsApp a GoHighLevel con la API oficial](/blog/gohighlevel-whatsapp/)."
       ]
     },
     "cta-medio": {
@@ -444,26 +445,9 @@
       "eyebrow": "Sigue explorando",
       "h2": { "text": "De la plataforma", "soft": "al sistema completo." },
       "items": [
-        {
-          "href": "/gohighlevel/",
-          "label": "Plataforma",
-          "title": "GoHighLevel en español",
-          "line": "Implementación completa para tu equipo, con agente de IA."
-        },
-        {
-          "href": "/blog/kommo-vs-gohighlevel/",
-          "label": "Blog",
-          "title": "Kommo vs GoHighLevel",
-          "line": "Cuál conviene según cómo vendes."
-        },
-        {
-          "href": "/servicios/crm-con-ia/",
-          "label": "Servicio",
-          "title": "CRM con IA",
-          "line": "Un agente que atiende y un CRM que no deja a nadie sin seguimiento."
-        },
-        { "href":"/blog/gohighlevel-precios-mexico/", "label":"Blog", "title":"GoHighLevel precios en México", "line":"Planes, cargos por uso y cómo calcular tu costo real." },
-        { "href":"/blog/gohighlevel-whatsapp/", "label":"Blog", "title":"GoHighLevel con WhatsApp", "line":"Cómo conectar la API oficial y sumar un agente de IA." }
+        { "href": "/gohighlevel/", "label": "Plataforma", "title": "GoHighLevel en español", "line": "Implementación completa para tu equipo, con agente de IA." },
+        { "href": "/blog/kommo-vs-gohighlevel/", "label": "Blog", "title": "Kommo vs GoHighLevel", "line": "Cuál conviene según cómo vendes." },
+        { "href": "/servicios/crm-con-ia/", "label": "Servicio", "title": "CRM con IA", "line": "Un agente que atiende y un CRM que no deja a nadie sin seguimiento." }
       ]
     },
     "cta-final": {

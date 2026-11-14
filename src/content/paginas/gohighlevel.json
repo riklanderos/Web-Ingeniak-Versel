@@ -7,7 +7,7 @@
   "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-11-14",
   "pendientes": [
-    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agregan a \"Sigue explorando\" las tarjetas hacia los artículos nuevos del blog, que no recibían enlaces desde esta página.",
+    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): \"Sigue explorando\" muestra tres tarjetas; ahora son las tres guías de GoHighLevel (precios, WhatsApp y la guía en español). Las de Kommo, agentes y la comparativa quedan después y ya no se pintan.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "APROBACIÓN · FAQ H04 '¿Ingeniak es partner de GoHighLevel?' está en 'validar' en el banco: no se publica (ni en el acordeón ni en el FAQPage) hasta que la apruebes. Hoy la página muestra cinco preguntas.",
     "PREGUNTA AL CLIENTE · suscripción de GoHighLevel: ¿el cliente la contrata a su nombre o Ingeniak la da desde su cuenta de agencia? La página no lo dice (#inversion solo habla del alcance de la implementación).",
@@ -245,12 +245,12 @@
       "eyebrow": "Sigue explorando",
       "h2": { "text": "Otras piezas", "soft": "del mismo sistema." },
       "items": [
-        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con agentes de IA", "line": "Licencias, implementación y agentes dentro de Kommo." },
+        { "href": "/blog/gohighlevel-precios-mexico/", "label": "Guía", "title": "GoHighLevel precios en México", "line": "Planes, cargos por uso y cómo calcular tu costo real." },
+        { "href": "/blog/gohighlevel-whatsapp/", "label": "Guía", "title": "GoHighLevel con WhatsApp", "line": "Cómo conectar la API oficial y sumar un agente de IA." },
         { "href": "/blog/gohighlevel-en-espanol/", "label": "Guía", "title": "GoHighLevel en español", "line": "Qué es, para quién sirve y cómo se implementa bien." },
+        { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con agentes de IA", "line": "Licencias, implementación y agentes dentro de Kommo." },
         { "href": "/servicios/agentes-ia-whatsapp/", "label": "Servicio", "title": "Agentes de IA para WhatsApp", "line": "Responden, califican y agendan 24/7, conectados a tu CRM." },
-        { "href": "/blog/kommo-vs-gohighlevel/", "label": "Guía", "title": "Kommo vs GoHighLevel", "line": "Cuál conviene según cómo vendes, punto por punto.", "_nota": "Respaldo: solo se pinta mientras alguna de las tres de D no esté construida (máximo 3 stills)." },
-        { "href":"/blog/gohighlevel-precios-mexico/", "label":"Guía", "title":"GoHighLevel precios en México", "line":"Planes, cargos por uso y cómo calcular tu costo real." },
-        { "href":"/blog/gohighlevel-whatsapp/", "label":"Guía", "title":"GoHighLevel con WhatsApp", "line":"Cómo conectar la API oficial y sumar un agente de IA." }
+        { "href": "/blog/kommo-vs-gohighlevel/", "label": "Guía", "title": "Kommo vs GoHighLevel", "line": "Cuál conviene según cómo vendes, punto por punto.", "_nota": "Respaldo: solo se pinta mientras alguna de las tres de D no esté construida (máximo 3 stills)." }
       ]
     },
     "cta-final": {
