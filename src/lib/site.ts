@@ -5,7 +5,7 @@ import sitemap from '../data/sitemap.json';
 import navegacion from '../data/navegacion.json';
 import plates from '../data/plates.json';
 import fs from 'node:fs';
-import { isNoindex, gatePending, isHidden } from './indexacion.mjs';
+import { isNoindex, gatePending, isHidden, isOpenLanding } from './indexacion.mjs';
 import { METRICS, OFFERS, PRICES, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE } from './metrics';
 import path from 'node:path';
 
@@ -209,6 +209,13 @@ export function isHiddenRoute(href: string | null | undefined): boolean {
   if (/agenda\.ingeniak\.tech/i.test(href)) return true;
   const r = normRoute(href);
   return !!r && (hiddenRoutes.has(r) || r.startsWith('/agendar/'));
+}
+/** Landings abiertas (cambio 2026-11-14): indexables y enlazables desde el cuerpo de un artículo del blog. */
+export const openLandingRoutes: Set<string> = new Set(pages.filter((p) => isOpenLanding(p)).map((p) => p.url));
+/** ¿El href lleva a una landing abierta ('/discovery/', '/power-session/')? Devuelve la ruta normalizada o null. */
+export function openLandingRoute(href: string | null | undefined): string | null {
+  const r = href ? normRoute(href) : null;
+  return r && openLandingRoutes.has(r) && builtRoutes.has(r) ? r : null;
 }
 /** Páginas públicas construidas: ni ocultas ni el 404 (lo que pueden listar menús, footer, ⌘K y "Sigue explorando"). */
 export function publicPages(): Page[] {

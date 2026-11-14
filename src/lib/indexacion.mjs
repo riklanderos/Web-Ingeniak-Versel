@@ -14,7 +14,15 @@ export function isHidden(page) {
   return page?.hidden === true;
 }
 
-/** La página sale con `noindex,follow`: 404, `indexable: false`, landing oculta o puerta de publicación pendiente. */
+/** Landing abierta (cambio 2026-11-14, petición del cliente): landing de campaña que conserva su formato (`hidden: true`:
+ *  encabezado reducido, fuera de menús, footer, ⌘K y "Sigue explorando") pero se indexa (`indexable: true`: sitemap.xml,
+ *  llms*.txt, sin noindex) y puede enlazarse desde el cuerpo de un artículo del blog. Hoy: /discovery/ y /power-session/. */
+export function isOpenLanding(page) {
+  return isHidden(page) && page.indexable === true;
+}
+
+/** La página sale con `noindex,follow`: 404, `indexable: false`, landing oculta que no está abierta o puerta de
+ *  publicación pendiente. */
 export function isNoindex(page, copy) {
-  return !page || page.template === 'T-404' || page.indexable === false || isHidden(page) || gatePending(page, copy);
+  return !page || page.template === 'T-404' || page.indexable === false || (isHidden(page) && !isOpenLanding(page)) || gatePending(page, copy);
 }

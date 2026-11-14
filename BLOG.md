@@ -79,3 +79,26 @@ y su PDF.
 - Nada inventado: ni testimonios, ni clientes, ni resultados, ni precios distintos de `{{price}}`.
 - Toda cifra con fuente y fecha, o no se publica.
 - `estado: "aprobado"` solo lo pone el cliente, con nombre. La automatización termina en el PR; la aprobación siempre es humana.
+
+## Escenas con CTA dentro del artículo
+
+Desde el 2026-11-14 un artículo puede invitar a agendar desde su cuerpo. Es un bloque `scene` en
+`sections.cuerpo.blocks`, colocado al final de la sección H2 con la que conecta:
+
+```json
+{ "variant": "scene", "id": "escena-1",
+  "plate": { "id": "<page.id>-escena-1", "layout": "subject-right", "mirror": false },
+  "eyebrow": "Discovery Session", "title": "…", "text": "…",
+  "links": [ { "label": "Agenda tu Discovery Session", "href": "/discovery/", "cta": "discovery" } ] }
+```
+
+- `cta: "discovery"` con `href: "/discovery/"` y `cta: "power-session"` con `href: "/power-session/"`: botón que lleva a
+  la landing. Son las únicas páginas públicas que pueden enlazarlas (ESPEC §12.6, R17, apertura del 2026-11-14).
+- `cta: "whatsapp"` con `waMessage`: botón de WhatsApp con Kain. El enlace lo arma el sitio con su número; el `href`
+  del bloque no se usa.
+- Sin `cta`, el enlace sale como texto con flecha, igual que antes.
+- Los botones son de cristal, no azules: el único azul del sitio es "Cotizar proyecto".
+- La nota de fuente de la escena solo aparece si trae cifra (`metricId` o un `{{metric:…}}` en el texto).
+- La placa se registra como la del hero (sección "Placa del hero" de `materiales/v2/blog/guia-portadas-blog.md`),
+  con Kain a la derecha y el 41 % izquierdo en penumbra. Si la placa no existe, se pinta una de respaldo.
+- Cada clic en los dos primeros botones manda a GA4 el evento `cta_landing_click` con `destino`.

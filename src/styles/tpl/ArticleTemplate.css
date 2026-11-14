@@ -316,6 +316,8 @@ html[data-overlay] .art-progress{opacity:0}
 .art-scene__txt .metric b{font-weight:500;color:var(--cyan-soft)}
 /* La nota de fuente puede caer sobre el resplandor del piso de la placa: en --text-2 conserva AA */
 .art-scene__src{display:inline-flex;align-items:center;gap:10px;margin-top:var(--s-4);color:var(--text-2)}
+/* Escena con CTA (2026-11-14): botón de cristal; el azul sigue siendo solo «Cotizar proyecto» (F15) */
+.art-scene__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:var(--s-6)}
 .art-scene__links{display:flex;flex-wrap:wrap;gap:4px 28px;margin-top:var(--s-4)}
 .art-scene__links .icon{width:16px;height:16px}
 .art-scene .is__aside{grid-column:9 / -1;grid-row:1;align-self:end;justify-self:end;text-align:right}

@@ -5,7 +5,7 @@
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { isNoindex, isHidden as isHiddenPageRule, gatePending as gatePendingRule } from '../src/lib/indexacion.mjs';
+import { isNoindex, isHidden as isHiddenPageRule, isOpenLanding as isOpenLandingRule, gatePending as gatePendingRule } from '../src/lib/indexacion.mjs';
 
 export const ROOT = fileURLToPath(new URL('..', import.meta.url));
 export const DIST = join(ROOT, 'dist');
@@ -150,6 +150,15 @@ export const BUILT = new Set(SITEMAP.filter(isBuiltPage).map((p) => p.url));
 export const SITEMAP_URLS = new Set(SITEMAP.map((p) => p.url));
 /** Landings ocultas (sitemap.json → hidden: true; ESPEC §12.6 R17): /discovery/, /power-session/, /agendar/confirmado/. */
 export const HIDDEN = new Set(SITEMAP.filter((p) => isHiddenPageRule(p)).map((p) => p.url));
+/** Landings abiertas (hidden + indexable: true, cambio 2026-11-14): indexables y enlazables desde el cuerpo de un artículo. */
+export const OPEN_LANDINGS = new Set(SITEMAP.filter((p) => isOpenLandingRule(p)).map((p) => p.url));
+/** ¿El enlace es el permitido por la apertura de R17? Solo en un artículo (T-ARTICLE), dentro de su cuerpo (#cuerpo) y
+ *  hacia una landing abierta. `inBody` lo decide quien llama (closest de #cuerpo). */
+export function isOpenLandingLink(page, href, inBody) {
+  if (!inBody || page?.template !== 'T-ARTICLE') return false;
+  const r = normRoute(href);
+  return !!r && OPEN_LANDINGS.has(r);
+}
 /** ¿El href (ruta, URL de ingeniak.mx, con hash o query) lleva a una landing oculta, a /agendar/… o a la agenda externa de v1? */
 export function isHiddenHref(href) {
   if (!href) return false;

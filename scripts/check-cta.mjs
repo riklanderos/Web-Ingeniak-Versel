@@ -4,14 +4,17 @@
 //    · todo a[data-primary] dentro de <main> es .btn con data-cotizar, href /contacto/#cotizar (o #cotizar en /contacto/) y
 //      texto "Cotizar proyecto";
 //    · [data-hdr-cta] y .mbar__cta llevan data-cotizar;
-//    · ningún href del documento apunta a /discovery/, /power-session/, /agendar/, #agenda ni agenda.ingeniak.tech;
+//    · ningún href del documento apunta a /discovery/, /power-session/, /agendar/, #agenda ni agenda.ingeniak.tech.
+//      Apertura del 2026-11-14 (petición del cliente): en un artículo (T-ARTICLE), dentro de #cuerpo, sí se puede enlazar
+//      una landing abierta (hidden + indexable: true en sitemap.json: /discovery/ y /power-session/);
 //    · ningún .btn-micro dice "Google Meet" ni "30 min";
 //    · ni <title>, meta description, og:/twitter: title/description ni los name/description/headline del JSON-LD (lo que
 //      ven Google, ⌘K, llms.txt y las tarjetas al compartir) llaman a reservar la llamada de v1 (STALE_META_RX). La misma
 //      regla se aplica en la fuente: title y metaDescription de toda página pública de sitemap.json.
 // 3. Landings (/discovery/, /power-session/): todo a[data-primary] fuera de [data-agenda] va a #agenda con data-section;
 //    exactamente un [data-agenda="<tipo>"] (el de la página) dentro de section#agenda; ningún .btn[data-cotizar] y al menos un
-//    [data-cotizar] (.lnk); ningún enlace a agenda.ingeniak.tech; robots con noindex;
+//    [data-cotizar] (.lnk); ningún enlace a agenda.ingeniak.tech; robots con noindex salvo en una landing abierta, que
+//    no debe llevarlo;
 //    orden de riklanderos.tech (portada → VSL → reserva): section#video antes de section#agenda; sin #video es puerta del
 //    cliente (CAMBIO §9-4, autorizar la descarga del VSL; fatal con --release); og:image propia (/img/og/<id>.jpg), nunca la
 //    genérica: son las tarjetas que se ven al compartir el enlace de la campaña.
@@ -26,7 +29,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import {
   ROOT, SITEMAP, parseArgs, reporter, loadPages, onlyRoutes, parseHTML, find, findAll, closest, hasClass, textOf, norm, metaContent,
-  normRoute, isHiddenPage, jsonLd, jsonStrings, graphNodes,
+  normRoute, isHiddenPage, isOpenLandingLink, OPEN_LANDINGS, jsonLd, jsonStrings, graphNodes,
 } from './_html.mjs';
 
 const QUOTE_LABEL = 'Cotizar proyecto';
@@ -136,6 +139,8 @@ export async function run(opts) {
       for (const el of findAll(root, (x) => x.attrs.href != null)) {
         const f = forbiddenHref(el.attrs.href);
         if (!f) continue;
+        // Apertura de R17 (2026-11-14): el cuerpo de un artículo puede enlazar una landing abierta
+        if (isOpenLandingLink(page, el.attrs.href, !!closest(el, (x) => x.attrs.id === 'cuerpo'))) continue;
         const k = `${f}|${el.attrs.href}`;
         if (seen.has(k)) continue;
         seen.add(k);
@@ -166,7 +171,8 @@ export async function run(opts) {
       for (const el of findAll(root, (x) => hasClass(x, 'btn') && 'data-cotizar' in x.attrs)) R.fail(route, `.btn[data-cotizar] en una landing (la cotización va como .lnk, nunca azul): "${label(el)}"${where(el)}`);
       if (!findAll(root, (x) => 'data-cotizar' in x.attrs && !('data-cotizar-dialog' in x.attrs)).length) R.fail(route, 'sin ningún [data-cotizar] (.lnk "Cotizar proyecto" en el cierre o el footer mínimo)');
       for (const el of findAll(root, (x) => x.attrs.href != null && /agenda\.ingeniak\.tech/i.test(x.attrs.href))) R.fail(route, `enlace a agenda.ingeniak.tech: ${el.attrs.href}`);
-      if (!/noindex/i.test(robots)) R.fail(route, `robots "${robots || '—'}" sin noindex (landing oculta)`);
+      if (OPEN_LANDINGS.has(route)) { if (/noindex/i.test(robots)) R.fail(route, `robots "${robots}" con noindex en una landing abierta (indexable: true en sitemap.json)`); }
+      else if (!/noindex/i.test(robots)) R.fail(route, `robots "${robots || '—'}" sin noindex (landing oculta)`);
       const order = findAll(main ?? root, (x) => x.tag === 'section' && x.attrs.id && closest(x.parent, (y) => y.tag === 'section') == null).map((x) => x.attrs.id);
       const iV = order.indexOf('video'), iA = order.indexOf('agenda');
       if (iV < 0) R.gate(route, 'sin VSL (section#video) antes de la reserva: el flujo de riklanderos.tech es portada → VSL → "Reserva en 3 pasos" (CAMBIO-COTIZAR §9-4, falta autorizar la descarga del VSL; lanzamiento.md)');

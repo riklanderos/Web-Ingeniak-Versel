@@ -4,7 +4,8 @@
 // sitemap.json (orquestador) es la fuente: secciones y placas (§4.2/§4.3), hidden/indexable, primaryCta '#agenda',
 // footerAnchors y folio. Aquí solo se blindan las dos reglas de R17 que, si un dato cambiara por error, romperían la
 // landing (check-cta §6.2-3), sin pisar nada que ya venga bien:
-//   · hidden !== true → hidden: true, indexable: false (noindex,follow);
+//   · hidden !== true → hidden: true, indexable: false (noindex,follow). Con hidden: true se respeta indexable: desde el
+//     2026-11-14 las dos son landings abiertas (indexable: true; ESPEC §12.6 R17, apertura);
 //   · primaryCta que no reserva en la página → mismo texto con href '#agenda' (nunca la agenda externa de v1);
 //   · secciones del copy con _kind (agenda, quiz, twin, offer, guarantee, host) que el sitemap no liste → se insertan tras
 //     su vecina anterior del copy (la reserva nunca desaparece de la página por un dato faltante);

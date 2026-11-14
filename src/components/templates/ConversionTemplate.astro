@@ -50,7 +50,7 @@ import KommoBadge from '../ui/KommoBadge.astro';
 import FAQAccordion from '../ui/FAQAccordion.astro';
 import { annotateFigures, tokensToText, TEAM } from '../ui/ui-data';
 import { plateReady } from '../cine/plate';
-import { getCopy, getPlate, waHref, linkTarget, SITE, type Page } from '../../lib/site';
+import { getCopy, getPlate, waHref, linkTarget, pageNoindex, SITE, type Page } from '../../lib/site';
 import '../../styles/tpl/ConversionTemplate.css';
 
 // Componente de reserva (área agenda, CAMBIO-COTIZAR §5.5). Mientras no exista, la sección #agenda pinta un respaldo
@@ -194,7 +194,7 @@ const vslDur = vslOk ? mp4Duration(vsl!.src) : null;
 const folio = page.folio ?? page.id;
 const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.faqIds;
 ---
-<BaseLayout page={page} nav="reduced" lcpPlate={lcpPlate} lcpSrcsetMax={lcpMax} bodyClass="cv" rail={false} faqIds={faqIds} noindex={page.indexable === false || page.hidden === true}>
+<BaseLayout page={page} nav="reduced" lcpPlate={lcpPlate} lcpSrcsetMax={lcpMax} bodyClass="cv" rail={false} faqIds={faqIds} noindex={pageNoindex(page)}>
   {sections.map(({ s, c, kind }) => {
     const pl = s.plate ?? {};
     const pid = plateId(pl);

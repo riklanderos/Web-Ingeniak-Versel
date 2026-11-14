@@ -533,6 +533,7 @@ function initPrimaryRule() {
 //   ingeniak-src          `${folio}-${sección}` del PRIMER clic en un [data-cotizar] o en un a[data-primary][href="#agenda"]
 //   ingeniak-agenda-desde data-section del ÚLTIMO clic en un a[href="#agenda"] (landings ocultas)
 // Eventos (ingeniak:track): cta_cotizar_click {section, folio, src} · cta_agenda_click {section, folio} · whatsapp_click {section, folio}.
+//   cta_landing_click {section, destino, folio}: botón de una escena del blog hacia /discovery/ o /power-session/.
 const UTM = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 const CLID = ['gclid', 'fbclid', 'gbraid', 'wbraid'];
 const ssGet = (k: string): string | null => { try { return sessionStorage.getItem(k); } catch { return null; } };
@@ -581,6 +582,12 @@ function initAttribution() {
   document.addEventListener('click', (e) => {
     const wa = (e.target as Element | null)?.closest?.('a[href*="wa.me/"]') as HTMLElement | null;
     if (wa) track('whatsapp_click', { section: sectionOf(wa), folio: folio() });
+  });
+  // Escenas del blog con botón a una landing abierta (/discovery/, /power-session/; cambio 2026-11-14): qué artículo manda
+  // a agendar. `destino` = 'discovery' | 'power-session'.
+  document.addEventListener('click', (e) => {
+    const a = (e.target as Element | null)?.closest?.('a[data-cta="discovery"],a[data-cta="power-session"]') as HTMLElement | null;
+    if (a) track('cta_landing_click', { section: sectionOf(a), destino: a.dataset.cta, folio: folio() });
   });
 }
 

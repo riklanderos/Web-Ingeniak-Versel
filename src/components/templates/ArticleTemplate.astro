@@ -8,6 +8,11 @@
 //   indice        TOC: fijo a la izquierda en escritorio (≥ 1024 px, se retira sobre escenas a sangre), plegable en móvil
 //   cuerpo        Prose por bloques (h2/h3, párrafos, listas, tablas, notas, pasos, calculadora) + escenas a sangre
 //                 (ImageSection mid dentro del artículo) + CTA intermedio en la posición que marque el copy
+//                 · escena con CTA (cambio 2026-11-14, petición del cliente): un enlace de la escena con `cta`
+//                   ('discovery' | 'power-session' | 'whatsapp') se pinta como botón de cristal (.btn--ghost: el azul
+//                   sigue siendo solo «Cotizar proyecto», F15). Los dos primeros llevan a la landing abierta
+//                   (/discovery/, /power-session/: apertura de R17 para el cuerpo del blog); 'whatsapp' abre el chat
+//                   con Kain con `waMessage`. La nota de fuente solo sale si la escena trae una cifra.
 //   cta-medio     InlineCTA (primario + página comercial + WhatsApp)
 //   faq           FAQAccordion (banco src/data/faq.json; FAQPage lo emite SEOHead con el mismo texto)
 //   autor         AuthorCard (Organization "Equipo de Ingeniak" mientras no haya autor confirmado, R8)
@@ -36,7 +41,7 @@ import Still from '../ui/Still.astro';
 import Icon from '../ui/Icon.astro';
 import AuthorCard from '../content/AuthorCard.astro';
 import { builtCrumbs, builtRelated, ledeParts, sentences } from './heroKit';
-import { getCopy, getPlate, plateAlt, waHref, linkTarget, copyOrNull, pages, SITE, type Page } from '../../lib/site';
+import { getCopy, getPlate, plateAlt, waHref, linkTarget, openLandingRoute, copyOrNull, pages, SITE, type Page } from '../../lib/site';
 import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 import { annotateFigures, tokensToText, esc, getFaqItems } from '../ui/ui-data';
 import { primaryLabel, quoteLink, isHiddenHref } from '../layout/cta';
@@ -106,8 +111,9 @@ function inl(s?: string | null): string {
     } else if (m[2]) {
       const href = m[3];
       const external = /^https?:\/\//.test(href) && !/^https?:\/\/(www\.)?ingeniak\.mx/.test(href);
-      // Una landing oculta nunca se enlaza (R17): queda como texto. /contacto/#cotizar abre el modal (CAMBIO-COTIZAR §1.2).
-      const target = external ? href : isHiddenHref(href) ? null : linkTarget(href);
+      // Una landing oculta nunca se enlaza (R17): queda como texto; las dos abiertas (/discovery/, /power-session/) sí,
+      // dentro del cuerpo del artículo. /contacto/#cotizar abre el modal (CAMBIO-COTIZAR §1.2).
+      const target = external ? href : openLandingRoute(href) ? href : isHiddenHref(href) ? null : linkTarget(href);
       const label = annotateFigures(m[2]);
       const quote = !external && /^(?:\/contacto\/)?#cotizar$/.test(href) ? ' data-cotizar data-section="enlace" aria-haspopup="dialog" aria-controls="cotizar"' : '';
       out += !target
@@ -175,6 +181,18 @@ for (const b of blocks) {
   else segs.push({ kind: 'prose', items: [b] });
 }
 const ctaInBody = blocks.some((b) => b?.variant === 'cta-medio');
+/** Enlace de una escena. Con `cta` se pinta como botón: 'discovery' y 'power-session' llevan a su landing abierta (si la
+ *  landing dejara de estarlo, cae a la regla general y abre la cotización); 'whatsapp' arma el enlace con el número del
+ *  sitio y `waMessage` (el href del copy no se usa: ningún wa.me escrito a mano). Sin `cta`: enlace de texto (.lnk). */
+function sceneLink(l: any): any {
+  if (l?.cta === 'whatsapp') return { ...l, kind: 'wa', to: wa(l.waMessage) };
+  if (l?.cta === 'discovery' || l?.cta === 'power-session') {
+    const r = openLandingRoute(l.href);
+    if (r === `/${l.cta}/`) return { ...l, kind: 'cta', to: r };
+  }
+  const q = quoteLink(l, 'enlace', page.url);
+  return { ...q, kind: 'lnk', to: linkTarget(q.href) };
+}
 // Escenas: placa resuelta (respaldo si falta), lado del texto y borde de su penumbra
 const scenes = new Map<any, { r: Resolved; p: any; fb: Fallback; safe: number }>();
 for (const s of segs) if (s.kind === 'scene') {
@@ -386,7 +404,10 @@ const H = (h: any) => h ?? { text: '' };
         if (seg.kind === 'scene') {
           const b = seg.b;
           const sc = scenes.get(b)!;
-          const links = (b.links ?? []).map((l: any) => quoteLink(l, 'enlace', page.url)).map((l: any) => ({ ...l, to: linkTarget(l.href) })).filter((l: any) => l.to);
+          const all = (b.links ?? []).map((l: any) => sceneLink(l));
+          const ctas = all.filter((l: any) => l.to && l.kind !== 'lnk');
+          const links = all.filter((l: any) => l.to && l.kind === 'lnk');
+          const hasFigure = !!(b.metricId && (METRICS as any)[b.metricId]) || /\{\{metric:/.test(`${b.title ?? ''} ${b.text ?? ''}`);
           return (
             <ImageSection
               id={b.id}
@@ -411,7 +432,14 @@ const H = (h: any) => h ?? { text: '' };
                   </p>
                 )}
                 {b.text && <p class="t-lede t-lede--2 art-scene__txt" set:html={inl(b.text)} />}
-                <p class="t-micro art-scene__src"><span class="node" aria-hidden="true"></span>{SOURCE_NOTE}.</p>
+                {hasFigure && <p class="t-micro art-scene__src"><span class="node" aria-hidden="true"></span>{SOURCE_NOTE}.</p>}
+                {ctas.length > 0 && (
+                  <p class="art-scene__cta">
+                    {ctas.map((l: any) => l.kind === 'wa'
+                      ? <Btn variant="ghost" wa href={l.to} label={l.label} data-section="escena" data-cta="whatsapp" />
+                      : <Btn variant="ghost" node href={l.to} label={l.label} data-section="escena" data-cta={l.cta} />)}
+                  </p>
+                )}
                 {links.length > 0 && (
                   <p class="art-scene__links">{links.map((l: any) => <a class="lnk" href={l.to} {...l.attrs}>{l.label}<Icon name="arrow" size={16} /></a>)}</p>
                 )}
