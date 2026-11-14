@@ -81,6 +81,13 @@
         "No todas las respuestas necesitan el mismo modelo. Una pregunta de horario se resuelve con un modelo ligero; una conversación de venta con objeciones, catálogo y excepciones pide uno más capaz. También cuenta cuánta autonomía le das: un agente que solo sugiere respuestas a tu equipo cuesta distinto que uno que conversa, agenda y registra por su cuenta.",
         { "variant": "note", "label": "En corto", "text": "Si alguien te da un precio sin preguntarte por tus canales, tu volumen, tu CRM y tus procesos, te está vendiendo un paquete, no un agente para tu negocio." },
 
+        { "variant": "scene", "id": "escena-kain",
+          "plate": { "id": "home-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Kain",
+          "title": "Mira cómo conversa un agente de IA",
+          "text": "Antes de hablar de precio, conoce la pieza. Escríbele a Kain, el agente de IA de Ingeniak, y prueba en tu propio WhatsApp cómo responde.",
+          "links": [ { "label": "Escríbele a Kain", "cta": "whatsapp", "waMessage": "Hola Kain, leí cuánto cuesta un agente de IA para WhatsApp y quiero ver cómo conversas." } ] },
+
         { "variant": "h2", "id": "costos-de-terceros", "text": "Los costos de terceros que debes considerar", "rail": "Costos de terceros" },
         "Además de lo que cobra quien diseña y opera el agente, hay costos que paga cualquier empresa, contrate a quien contrate. Conviene conocerlos para comparar propuestas en igualdad de condiciones.",
         { "variant": "h3", "text": "Mensajes de WhatsApp: lo que cobra Meta" },
@@ -142,6 +149,13 @@
         "Compara el resultado con lo que costaría atender a tiempo cada conversación, ya sea con más personas en más horarios o con un agente que trabaje 24/7. Si quieres afinarla, suma lo que vale tu tiempo: cada hora que pasas contestando lo mismo es una hora que no dedicas a vender ni a operar.",
         "Tres consejos para que la cuenta sea honesta: usa los datos de un mes normal, no los del mejor; cuenta solo los leads que de verdad eran clientes potenciales; y usa tu tasa de cierre real, no la que te gustaría tener.",
 
+        { "variant": "scene", "id": "escena-discovery",
+          "plate": { "id": "gohighlevel-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Discovery Session",
+          "title": "Revisa tus números con nosotros",
+          "text": "En una Discovery Session, una llamada sin costo, mapeamos tu operación contigo, vemos dónde se pierden conversaciones y sales con sugerencias concretas para tu caso.",
+          "links": [ { "label": "Agendar mi Discovery Session", "href": "/discovery/", "cta": "discovery" } ] },
+
         { "variant": "h2", "id": "mas-que-un-agente", "text": "¿Y si quiero más que un agente?", "rail": "Más que un agente" },
         "El agente atiende. Pero una venta perdida rara vez se pierde solo en la respuesta: también se pierde en el seguimiento que nadie dio, en el lead que nunca entró al CRM o en la campaña que se mide por clics y no por ventas. Cuando implementas IA en toda la operación, el presupuesto deja de ser el de un bot y pasa a ser el de un sistema.",
         { "variant": "ul", "items": [
@@ -162,7 +176,13 @@
           "**Operación.** Operamos el sistema junto con tu equipo: lo medimos, lo ajustamos y te contamos cómo va, con datos y sin humo."
         ] },
         "Kain, nuestro agente de IA, atiende WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo. Qué canales activa en tu caso, y con qué reglas, es parte del alcance que definimos juntos.",
-        "Si antes de hablar de precio quieres entender bien la pieza, empieza por [qué es un agente de IA para WhatsApp y cómo funciona](/blog/que-es-agente-ia-whatsapp/)."
+        "Si antes de hablar de precio quieres entender bien la pieza, empieza por [qué es un agente de IA para WhatsApp y cómo funciona](/blog/que-es-agente-ia-whatsapp/).",
+        { "variant": "scene", "id": "escena-power-session",
+          "plate": { "id": "consultoria-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Power Session",
+          "title": "Convierte la cuenta en un plan",
+          "text": "En una Power Session auditamos tu operación, ubicamos los cuellos de botella y sales con un plan por etapas: qué implementar primero y qué puede esperar.",
+          "links": [ { "label": "Agendar mi Power Session", "href": "/power-session/", "cta": "power-session" } ] }
       ]
     },
     "cta-medio": {

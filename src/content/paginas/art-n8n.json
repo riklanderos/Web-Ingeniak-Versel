@@ -123,6 +123,13 @@
           "label": "En corto",
           "text": "Zapier es la entrada más rápida. Make da más control sin escribir código. n8n llega más lejos, pero pide a alguien que sepa construir y mantener los flujos."
         },
+        { "variant": "scene", "id": "escena-discovery",
+          "plate": { "id": "gohighlevel-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Discovery Session",
+          "title": "Primero tu proceso, luego la herramienta",
+          "text": "En una Discovery Session, una llamada sin costo, mapeamos tu operación contigo y sales con sugerencias concretas de qué automatizar primero, sin casarte todavía con una plataforma.",
+          "links": [ { "label": "Agendar mi Discovery Session", "href": "/discovery/", "cta": "discovery" } ] },
+
         {
           "variant": "h2",
           "id": "comparativa",
@@ -208,6 +215,13 @@
         },
         "Las tres ya traen agentes de IA, pero no con el mismo nivel de control. En n8n el agente es un nodo más del flujo: eliges el modelo y le das herramientas (consultar el CRM, registrar un pedido, mandar un mensaje),[^4] y puedes pedir que una persona apruebe antes de que ejecute una acción.[^1] Zapier vende sus agentes como producto aparte, con planes por número de actividades, y sus pasos de IA consumen tareas del plan.[^5] Make incluye sus agentes, todavía en beta, en todos sus planes, y puedes usarlos con su proveedor de IA o con tu propia llave.[^7]",
         "Para un agente que solo resume o clasifica un texto, cualquiera sirve. Para uno que tiene que consultar varios sistemas, decidir y actuar dentro de tu operación, preferimos n8n: el flujo completo queda a la vista, en un solo lugar y bajo tu control.",
+        { "variant": "scene", "id": "escena-kain",
+          "plate": { "id": "home-sistema-2-atender", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Kain",
+          "title": "Conoce a un agente de IA en producción",
+          "text": "Kain es el agente de IA de Ingeniak. Escríbele por WhatsApp y mira cómo conversa un agente antes de decidir con qué herramienta construir el tuyo.",
+          "links": [ { "label": "Escríbele a Kain", "cta": "whatsapp", "waMessage": "Hola Kain, leí la comparativa n8n vs Zapier vs Make y quiero ver cómo trabaja un agente de IA." } ] },
+
         {
           "variant": "h3",
           "text": "Curva de aprendizaje"
@@ -303,7 +317,13 @@
           ]
         },
         "Para elegir el primero, haz una lista de las tareas que tu equipo repite cada semana y anota tres cosas de cada una: cuántas veces pasa, cuánto tarda y qué cuesta un error. La que gane en las tres es tu primer flujo, y casi siempre conviene construirla con la herramienta más sencilla que la resuelva.",
-        "En Ingeniak los proyectos empiezan {{price}}, e implementar un sistema toma de 7 a 30 días, según el alcance. Cuando cotizas tu proyecto, revisamos tus procesos y te decimos cuál automatizar primero y con qué herramienta. Si basta con Zapier, te lo decimos."
+        "En Ingeniak los proyectos empiezan {{price}}, e implementar un sistema toma de 7 a 30 días, según el alcance. Cuando cotizas tu proyecto, revisamos tus procesos y te decimos cuál automatizar primero y con qué herramienta. Si basta con Zapier, te lo decimos.",
+        { "variant": "scene", "id": "escena-power-session",
+          "plate": { "id": "consultoria-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Power Session",
+          "title": "Ordena qué automatizar y en qué orden",
+          "text": "En una Power Session auditamos tu operación, ubicamos los cuellos de botella y sales con un plan de automatización y las herramientas recomendadas.",
+          "links": [ { "label": "Agendar mi Power Session", "href": "/power-session/", "cta": "power-session" } ] }
       ]
     },
     "cta-medio": {

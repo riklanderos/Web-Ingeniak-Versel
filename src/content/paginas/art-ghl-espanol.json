@@ -174,6 +174,13 @@
         },
         "Cambiar el idioma traduce los botones, no tu negocio. Los nombres de las etapas, los campos personalizados, los formularios, las páginas, los correos, los SMS, las plantillas de WhatsApp y las instrucciones del agente de IA son contenido tuyo, y salen en el idioma en que se escribieron. Si partes de una plantilla en inglés, así se queda hasta que alguien la reescriba.",
         "Por eso GoHighLevel en español significa dos cosas. La interfaz, que se resuelve en un menú. Y la implementación, que es el trabajo de escribir, probar y ajustar en español cada pieza que usa tu equipo y cada mensaje que reciben tus clientes, con el tono de tu marca y las palabras con las que tus clientes preguntan.",
+        { "variant": "scene", "id": "escena-kain",
+          "plate": { "id": "home-sistema-2-atender", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Kain",
+          "title": "Prueba un agente que atiende en español",
+          "text": "Kain es el agente de IA de Ingeniak. Escríbele por WhatsApp y mira cómo conversa en español antes de configurar el tuyo.",
+          "links": [ { "label": "Escríbele a Kain", "cta": "whatsapp", "waMessage": "Hola Kain, leí la guía de GoHighLevel en español y quiero ver cómo atiende un agente de IA." } ] },
+
         {
           "variant": "h2",
           "id": "para-quien",
@@ -291,6 +298,13 @@
           "label": "Una regla",
           "text": "Configura primero lo que tu equipo va a usar todos los días. Lo demás puede esperar a que eso funcione."
         },
+        { "variant": "scene", "id": "escena-discovery",
+          "plate": { "id": "home-sistema-4-automatizar", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Discovery Session",
+          "title": "Evita estos errores desde el diagnóstico",
+          "text": "En una Discovery Session, una llamada sin costo, mapeamos contigo cómo captas, das seguimiento y agendas hoy, y sales con sugerencias concretas de qué configurar primero.",
+          "links": [ { "label": "Agendar mi Discovery Session", "href": "/discovery/", "cta": "discovery" } ] },
+
         {
           "variant": "h2",
           "id": "precio",
@@ -337,7 +351,13 @@
           "label": "Para que quede claro",
           "text": "GoHighLevel es una plataforma de la que somos partners y que implementamos completa en español. También somos partners oficiales de Kommo en Latinoamérica: entre una y otro, la recomendación depende de tu proceso comercial."
         },
-        "Si quieres el desglose completo de costos, lo tienes en [GoHighLevel precios en México](/blog/gohighlevel-precios-mexico/). Y si tu siguiente paso es conectar el canal, sigue con [cómo conectar WhatsApp a GoHighLevel con la API oficial](/blog/gohighlevel-whatsapp/)."
+        "Si quieres el desglose completo de costos, lo tienes en [GoHighLevel precios en México](/blog/gohighlevel-precios-mexico/). Y si tu siguiente paso es conectar el canal, sigue con [cómo conectar WhatsApp a GoHighLevel con la API oficial](/blog/gohighlevel-whatsapp/).",
+        { "variant": "scene", "id": "escena-power-session",
+          "plate": { "id": "consultoria-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Power Session",
+          "title": "Llega a GoHighLevel con un plan",
+          "text": "En una Power Session auditamos tu operación, ubicamos tus cuellos de botella y sales con un plan de implementación y las herramientas recomendadas para tu negocio.",
+          "links": [ { "label": "Agendar mi Power Session", "href": "/power-session/", "cta": "power-session" } ] }
       ]
     },
     "cta-medio": {

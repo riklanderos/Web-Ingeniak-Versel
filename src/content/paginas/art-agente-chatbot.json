@@ -83,6 +83,13 @@
           ["Mantenimiento", "Cada cambio es un camino nuevo en el árbol", "Se actualiza la información y se ajustan las reglas"]
         ], "note": "El chatbot no es una mala herramienta: resuelve otro problema. Más abajo te decimos cuándo te basta." },
 
+        { "variant": "scene", "id": "escena-discovery",
+          "plate": { "id": "gohighlevel-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Discovery Session",
+          "title": "¿Chatbot o agente? Míralo con tu operación",
+          "text": "En una Discovery Session, una llamada sin costo, mapeamos contigo cómo te llegan los clientes y sales con sugerencias concretas: qué conviene atender con un agente y qué no.",
+          "links": [ { "label": "Agendar mi Discovery Session", "href": "/discovery/", "cta": "discovery" } ] },
+
         { "variant": "h2", "id": "que-puede-hacer", "text": "Qué puede hacer un agente de IA en tu WhatsApp", "rail": "Qué puede hacer" },
         "Un agente bien implementado cubre el recorrido completo de una conversación comercial, desde el primer «hola» hasta que alguien de tu equipo retoma el caso. Estas son las cinco tareas que más tiempo le quitan a un equipo y que un agente puede asumir:",
         { "variant": "steps", "items": [
@@ -93,6 +100,13 @@
           { "title": "Dar seguimiento", "text": "Retoma a quien dejó de contestar y envía recordatorios con reglas claras. Ojo con una regla de WhatsApp: cada mensaje del cliente abre una ventana de 24 horas para responder libremente; cerrada esa ventana, solo puedes escribirle con plantillas de mensaje.[^3]" }
         ] },
         "Kain, el agente de IA de Ingeniak, hace estas cinco tareas en WhatsApp, Instagram, Facebook Messenger, el chat de tu web y el correo. Cuando un caso necesita a una persona, se lo pasa a tu equipo con toda la conversación.",
+
+        { "variant": "scene", "id": "escena-kain",
+          "plate": { "id": "home-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Kain",
+          "title": "Compruébalo: escríbele a Kain",
+          "text": "Kain atiende el WhatsApp de Ingeniak. Hazle las preguntas que le harían tus clientes y mira cómo responde un agente de IA en una conversación real.",
+          "links": [ { "label": "Escríbele a Kain", "cta": "whatsapp", "waMessage": "Hola Kain, leí la diferencia entre un agente de IA y un chatbot y quiero ver cómo respondes." } ] },
 
         { "variant": "h2", "id": "que-no-debe-hacer", "text": "Qué no debe hacer un agente de IA", "rail": "Qué no debe hacer" },
         "Que un agente pueda conversar no significa que deba contestarlo todo. Un buen diseño empieza por los límites, y conviene escribirlos antes de encenderlo:",
@@ -166,7 +180,13 @@
           "**Conecta lo mínimo.** Tu WhatsApp, tu CRM y tu agenda. Lo demás se suma cuando la primera pieza ya da resultados.",
           "**Mide antes y después.** Tiempo de respuesta, citas o ventas: los mismos indicadores, con los mismos criterios."
         ] },
-        "En Ingeniak lo hacemos contigo. Cuando cotizas tu proyecto, revisamos cómo te llegan los clientes y te decimos si un agente tiene sentido para tu negocio o si, por ahora, te basta con algo más sencillo. Implementar un sistema toma de 7 a 30 días, según el alcance, y nuestros proyectos empiezan {{price}}. Si quieres el detalle de costos, lee [cuánto cuesta un agente de IA para WhatsApp en México](/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/)."
+        "En Ingeniak lo hacemos contigo. Cuando cotizas tu proyecto, revisamos cómo te llegan los clientes y te decimos si un agente tiene sentido para tu negocio o si, por ahora, te basta con algo más sencillo. Implementar un sistema toma de 7 a 30 días, según el alcance, y nuestros proyectos empiezan {{price}}. Si quieres el detalle de costos, lee [cuánto cuesta un agente de IA para WhatsApp en México](/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/).",
+        { "variant": "scene", "id": "escena-power-session",
+          "plate": { "id": "consultoria-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Power Session",
+          "title": "Del primer paso al plan completo",
+          "text": "En una Power Session auditamos tu operación, ubicamos tus cuellos de botella y sales con un plan para implementar tu agente por etapas.",
+          "links": [ { "label": "Agendar mi Power Session", "href": "/power-session/", "cta": "power-session" } ] }
       ]
     },
     "cta-medio": {

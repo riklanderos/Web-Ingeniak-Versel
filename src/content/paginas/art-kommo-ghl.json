@@ -71,6 +71,13 @@
         "GoHighLevel, también llamado HighLevel o GHL, combina CRM y pipelines con un constructor de sitios y embudos, calendarios de reservas, correo y SMS, redes sociales, automatizaciones, pagos, reputación e IA conversacional.[^3] Su modelo también está pensado para agencias: los planes se miden por subcuentas y el más alto permite revender la plataforma como software propio.[^3]",
         { "variant": "note", "label": "En corto", "text": "Kommo organiza tu venta alrededor de la conversación. GoHighLevel organiza tu marketing y tu venta alrededor del embudo." },
 
+        { "variant": "scene", "id": "escena-discovery",
+          "plate": { "id": "home-sistema-4-automatizar", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Discovery Session",
+          "title": "Antes de comparar funciones, mira tu venta",
+          "text": "En una Discovery Session, una llamada sin costo, mapeamos contigo cómo vendes hoy, por chat, por embudo o por citas, y sales con sugerencias concretas de cuál plataforma encaja.",
+          "links": [ { "label": "Agendar mi Discovery Session", "href": "/discovery/", "cta": "discovery" } ] },
+
         { "variant": "h2", "id": "comparativa-por-criterio", "text": "Comparativa por criterio", "rail": "Comparativa" },
         "Esta tabla resume lo que publican Kommo y HighLevel en sus páginas oficiales, consultadas el 19 de octubre de 2026, y lo que vemos al implementarlos. Abajo explicamos cada criterio.",
         { "variant": "table", "caption": "Kommo y GoHighLevel, lado a lado", "head": ["Criterio", "Kommo", "GoHighLevel"], "rows": [
@@ -119,6 +126,13 @@
         "HubSpot aparece seguido en esta comparación. Ofrece herramientas gratuitas y planes de pago por asiento, organizados en módulos (hubs) de marketing, ventas, servicio, contenido y datos.[^5] Suele tener sentido cuando tu empresa tiene ciclos de venta B2B más largos, varios equipos que trabajan sobre la misma base de datos y alguien que administre la herramienta.",
         "Si tu venta es rápida y conversacional, o si lo que necesitas es agenda y embudos sin armar un stack completo, Kommo o GoHighLevel suelen ser una entrada más directa. Y si al revisar tu operación vemos que otra herramienta te conviene más, te lo decimos.",
 
+        { "variant": "scene", "id": "escena-kain",
+          "plate": { "id": "home-sistema-2-atender", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Kain",
+          "title": "Mira cómo atiende un agente de IA",
+          "text": "Las dos plataformas se pueden conectar con un agente. Escríbele a Kain, el agente de IA de Ingeniak, y prueba en tu WhatsApp cómo conversa.",
+          "links": [ { "label": "Escríbele a Kain", "cta": "whatsapp", "waMessage": "Hola Kain, leí la comparativa Kommo vs GoHighLevel y quiero ver cómo atiende un agente de IA." } ] },
+
         { "variant": "h2", "id": "cinco-preguntas", "text": "5 preguntas para decidir", "rail": "5 preguntas" },
         "Antes de pedir una demo, contesta estas preguntas con tu equipo. Casi siempre la respuesta aparece sola.",
         { "variant": "steps", "items": [
@@ -136,7 +150,13 @@
           "**GoHighLevel:** lo implementamos completo en español: configuración de la cuenta, embudos, calendarios, mensajes, automatizaciones, agente de IA y capacitación de tu equipo. Somos partners de GoHighLevel, igual que de Kommo: te recomendamos uno u otro según tu proceso comercial, no según la etiqueta."
         ] },
         "Cuando cotizas tu proyecto, revisamos cómo vendes hoy y te decimos cuál conviene, con qué plan y qué costos de terceros considerar. Nuestros proyectos empiezan {{price}}, y implementar un sistema toma de 7 a 30 días, según el alcance.",
-        "Para comparar costos con calma, tenemos una guía de cada plataforma: [Kommo precios 2026](/blog/kommo-precios/) y [GoHighLevel precios en México](/blog/gohighlevel-precios-mexico/)."
+        "Para comparar costos con calma, tenemos una guía de cada plataforma: [Kommo precios 2026](/blog/kommo-precios/) y [GoHighLevel precios en México](/blog/gohighlevel-precios-mexico/).",
+        { "variant": "scene", "id": "escena-power-session",
+          "plate": { "id": "consultoria-hero", "layout": "subject-right", "mirror": false },
+          "eyebrow": "Power Session",
+          "title": "Decide con un plan, no con una demo",
+          "text": "En una Power Session auditamos tu operación, ubicamos tus cuellos de botella y sales con un plan de implementación y las herramientas recomendadas, sea Kommo o GoHighLevel.",
+          "links": [ { "label": "Agendar mi Power Session", "href": "/power-session/", "cta": "power-session" } ] }
       ]
     },
     "cta-medio": {
