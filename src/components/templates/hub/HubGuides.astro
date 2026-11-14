@@ -43,9 +43,12 @@ const items = lista.map((it, i) => {
   // Fecha real de la guía publicada: el `actualizado` de su texto (lo mismo que imprime el artículo)
   const pg = (pages as any[]).find((p) => p.url === it.href);
   const updated: string | undefined = href && pg ? copyOrNull(pg.id)?.actualizado : undefined;
-  const coverTitle: string | null = plate && pg && plate !== `${pg.id}-hero` ? pg.breadcrumbs?.at(-1)?.name ?? it.title : null;
+  // Portada con título (scripts/portadas.mjs): imagen diseñada con el título dentro. Si existe, sustituye a la placa en la
+  // tarjeta y no lleva el nombre corto encima.
+  const cover: string | null = pg && publicExists(`/img/portadas/${pg.id}-1280.webp`) ? `/img/portadas/${pg.id}` : null;
+  const coverTitle: string | null = !cover && plate && pg && plate !== `${pg.id}-hero` ? pg.breadcrumbs?.at(-1)?.name ?? it.title : null;
   const titleRight = plate ? getPlate(plate)?.layout === 'subject-left' : false;
-  return { ...it, i, href, rel, plate, updated, coverTitle, titleRight };
+  return { ...it, i, href, rel, plate, updated, cover, coverTitle, titleRight };
 });
 const usedCats = chips.filter((c) => items.some((it) => it.category === c.slug));
 const L = g?.labels ?? {};
@@ -80,12 +83,19 @@ const builtLinks = ((g?.links ?? []) as any[]).map((l) => quoteLink(l)).filter((
     <ol class="hub-guides__list" role="list">
       {items.map((it) => { const Cover = it.href ? 'a' : 'div'; return (
         <li class:list={['hub-guide', it.href ? 'is-live' : 'is-draft']} data-cat={it.category} style={`--i:${it.i};`}>
-          {it.plate && (
+          {(it.cover || it.plate) && (
             <Cover class="hub-guide__cover" href={it.href ?? undefined} tabindex={it.href ? -1 : undefined} aria-hidden="true">
+              {it.cover ? (
+                <picture>
+                  <source type="image/avif" srcset={`${it.cover}-640.avif 640w, ${it.cover}-1280.avif 1280w`} sizes="(min-width: 900px) 520px, 92vw" />
+                  <img src={`${it.cover}-1280.webp`} srcset={`${it.cover}-640.webp 640w, ${it.cover}-1280.webp 1280w`} sizes="(min-width: 900px) 520px, 92vw" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+                </picture>
+              ) : (
               <picture>
                 <source type="image/avif" srcset={`/img/cine/${it.plate}-1280.avif`} />
                 <img src={`/img/cine/${it.plate}-1280.webp`} alt="" width="1280" height="714" loading="lazy" decoding="async" />
               </picture>
+              )}
               {it.coverTitle && <span class:list={['hub-guide__cover-t', it.titleRight && 'is-right']}>{it.coverTitle}</span>}
             </Cover>
           )}

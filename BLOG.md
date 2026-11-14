@@ -44,6 +44,15 @@ y su PDF.
 - Para darle portada propia: registra la placa `<page.id>-hero` (`materiales/v2/placas/`, masters en `src/assets/cine/`,
   `node scripts/plates.mjs <id>`), apunta a ella el hero en `sitemap.json` y regenera su tarjeta con `npm run og -- <page.id>`.
 
+### Portada con título (tarjeta del blog y redes)
+
+- Además de la placa del hero, un artículo puede tener una **portada con título**: una imagen 16:9 diseñada con el título
+  dentro (Kain juega con las letras). Se usa en la tarjeta del índice de `/blog/` y en la tarjeta para redes (OG).
+  Dentro del artículo no se usa: ahí el título es el H1 real sobre la placa limpia.
+- Master en `src/assets/portadas/<page.id>.jpg` (16:9, 2048 px o más) → `node scripts/portadas.mjs <page.id>` →
+  `npm run og -- <page.id>`. Sin master, la tarjeta sigue usando la placa del hero, como antes.
+- El texto de la imagen se revisa letra por letra (acentos, signos de apertura) antes de subirla.
+
 ## Qué verifica el build (no negociable)
 
 - `check-cifras`: ninguna cifra comercial escrita a mano; solo tokens. Tarifas de terceros, descritas y enlazadas.

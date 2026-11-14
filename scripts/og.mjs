@@ -145,6 +145,25 @@ ${illus ? '<span class="illus">Imagen ilustrativa</span>' : ''}
 </body></html>`;
 }
 
+/** Portada con título del artículo (scripts/portadas.mjs), si existe. */
+function coverOf(id) {
+  for (const ext of ['jpg', 'png']) { const p = join(ROOT, 'src/assets/portadas', `${id}.${ext}`); if (existsSync(p)) return p; }
+  return null;
+}
+/** Tarjeta desde una portada con título: recorte 1200 × 630 + imagotipo real arriba a la izquierda. Sin Chrome. */
+async function renderCover(name, cover) {
+  const logo = await sharp(Buffer.from(LOGO.replace('<svg', '<svg fill="#fff" color="#fff"'))).resize({ height: 30 }).png().toBuffer();
+  const out = join(OUT, `${name}.jpg`);
+  let q = 84, buf;
+  do {
+    buf = await sharp(cover).resize(W, H, { fit: 'cover', position: 'centre' }).composite([{ input: logo, left: 56, top: 44 }])
+      .jpeg({ quality: q, mozjpeg: true, chromaSubsampling: '4:2:0' }).toBuffer();
+    q -= 4;
+  } while (buf.length > MAX && q >= 50);
+  writeFileSync(out, buf);
+  console.log(`[og] ${name}.jpg · ${Math.round(buf.length / 1024)} KB · q${q + 4} · portada con título`);
+}
+
 async function render(name, opts) {
   const dir = join(tmpdir(), `og-${process.pid}-${name}`);
   mkdirSync(dir, { recursive: true });
@@ -169,6 +188,8 @@ const jobs = [];
 for (const p of sitemap) {
   if (p.template === 'T-404' || !built(p)) continue;
   if (only.length && !only.includes(p.id)) continue;
+  const cover = coverOf(p.id);
+  if (cover) { jobs.push([p.id, { cover }]); continue; }
   const hero = (p.sections ?? []).find((s) => s.id === 'hero');
   const pid = Array.isArray(hero?.plate?.id) ? hero.plate.id[0] : hero?.plate?.id;
   const fb = hero?.plate?.launchFallback;
@@ -184,4 +205,4 @@ for (const p of sitemap) {
 if (!only.length || only.includes('ingeniak')) {
   jobs.push(['ingeniak', { plate: masterOf('home-hero'), fx: plates['home-hero']?.d?.fx, head: { a: 'Agentes de IA, CRM y automatización', b: 'en un solo sistema.' }, chip: 'Partner oficial de Kommo en LATAM' }]);
 }
-for (const [name, o] of jobs) await render(name, o);
+for (const [name, o] of jobs) { if (o.cover) await renderCover(name, o.cover); else await render(name, o); }
