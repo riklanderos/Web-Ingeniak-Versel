@@ -12289,5 +12289,821 @@
       "owner": "Equipo SEO (brief) + agente (redacción)",
       "note": "Generado por scripts/blog-nuevo.mjs desde materiales/briefs/2026-11-13-cuanto-cuesta-software-a-la-medida-mexico.md el 2026-11-13. No se publica hasta estado \"aprobado\" (R1). Aprobado por Rik Landeros el 2026-11-13."
     }
+  },
+  {
+    "id": "art-agente-ia",
+    "group": "Recursos",
+    "url": "/blog/que-es-agente-ia-whatsapp/",
+    "canonical": "https://ingeniak.mx/blog/que-es-agente-ia-whatsapp/",
+    "indexable": true,
+    "status": "nueva",
+    "template": "T-ARTICLE",
+    "purpose": "Intención informativa · Buyer/etapa: Dueño, director comercial o gerente de operación de una pyme en México o LATAM que recibe prospectos por WhatsApp y quiere entender qué es un agente de IA y qué necesita antes de invertir (etapa: descubrimiento y consideración).",
+    "primaryKeyword": "agente de ia para whatsapp",
+    "secondaryKeywords": [
+      "qué es un agente de whatsapp",
+      "agentes de ia",
+      "whatsapp business api"
+    ],
+    "title": "Agente de IA para WhatsApp: qué es, cómo funciona y ejemplos",
+    "titleLength": 60,
+    "metaDescription": "Qué es un agente de IA para WhatsApp y cómo funciona con la API oficial, tu CRM y tu agenda: qué hace, qué no, ejemplos por industria y qué necesitas.",
+    "metaLength": 150,
+    "h1": "Agente de IA para WhatsApp: qué es, cómo funciona y ejemplos",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Blog",
+        "url": "/blog/"
+      },
+      {
+        "name": "Agente de IA para WhatsApp",
+        "url": "/blog/que-es-agente-ia-whatsapp/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: agente de ia para whatsapp.",
+        "cinematic": true,
+        "plate": {
+          "id": "home-sistema-2-atender",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "respuesta",
+        "name": "Respuesta corta",
+        "spec": "40–60 palabras citables que responden \"agente de ia para whatsapp\" en la primera oración.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "indice",
+        "name": "Índice",
+        "spec": "Tabla de contenidos fija en escritorio, plegable en celular.",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cuerpo",
+        "name": "Cuerpo (H2)",
+        "spec": "1) ¿Qué es un agente de WhatsApp con IA? · 2) Cómo funciona un agente de IA para WhatsApp por dentro · 3) Qué hace y qué no hace un agente de IA en WhatsApp · 4) Ejemplos por industria: qué responde, qué califica y qué agenda · 5) Qué necesitas para implementar un agente de IA en WhatsApp · 6) Errores comunes al implementar agentes de IA · 7) ¿Por dónde empezar con tu agente?",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "cta-medio",
+        "name": "CTA intermedio",
+        "spec": "Tarjeta a /servicios/agentes-ia-whatsapp/ + WhatsApp.",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "faq",
+        "name": "Preguntas frecuentes",
+        "spec": "Acordeón (B09, B10, B11, B12); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 7,
+        "id": "autor",
+        "name": "Sobre el autor",
+        "spec": "Tarjeta de Equipo de Ingeniak hasta confirmar autor (R8).",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "fuentes",
+        "name": "Fuentes",
+        "spec": "3 fuente(s) con fecha de consulta.",
+        "cinematic": false
+      },
+      {
+        "order": 9,
+        "id": "relacionados",
+        "name": "Sigue explorando",
+        "spec": "3 tarjetas: /servicios/agentes-ia-whatsapp/ · /blog/agente-ia-whatsapp-vs-chatbot/ · /kommo/.",
+        "cinematic": false
+      },
+      {
+        "order": 10,
+        "id": "cta-final",
+        "name": "Cierre",
+        "spec": "Cierre cinematográfico compartido (cta-amanecer).",
+        "cinematic": true,
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Agendar mi Discovery Session",
+      "href": "/discovery/",
+      "action": "agendar"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola Kain, leí agente de IA para WhatsApp: qué es, cómo funciona y ejemplos y quiero ver cómo aplica a mi negocio.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20agente%20de%20IA%20para%20WhatsApp%3A%20qu%C3%A9%20es%2C%20c%C3%B3mo%20funciona%20y%20ejemplos%20y%20quiero%20ver%20c%C3%B3mo%20aplica%20a%20mi%20negocio."
+    },
+    "internalLinks": [
+      "/servicios/agentes-ia-whatsapp/",
+      "/blog/agente-ia-whatsapp-vs-chatbot/",
+      "/kommo/"
+    ],
+    "jsonLd": [
+      "BlogPosting (author Person, datePublished, dateModified)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "B09",
+        "q": "¿Necesito la API oficial de WhatsApp Business para tener un agente de IA?",
+        "a": "Sí. Para que un agente de IA atienda tu número, este debe estar en la WhatsApp Business Platform de Meta, conectado directo o a través de un partner. Así recibes cada mensaje en tus sistemas, puedes usar plantillas de mensaje y trabajas dentro de las reglas del canal, sin poner en riesgo el número con el que vendes.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B10",
+        "q": "¿Qué pasa cuando el agente de IA no sabe una respuesta?",
+        "a": "Si la respuesta no está en su base de conocimiento, un agente bien configurado no la inventa. Le dice al cliente que lo va a comunicar con alguien del equipo, avisa al responsable en el CRM y le deja un resumen de la conversación. Después, esa pregunta se agrega a la base para que la próxima vez la conteste solo.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B11",
+        "q": "¿El agente de IA puede escribirle primero a mis clientes?",
+        "a": "Solo en ciertos casos. Mientras está abierta la ventana de atención que inicia cada mensaje del cliente, el agente responde libremente. Fuera de esa ventana, WhatsApp solo permite escribir con plantillas de mensaje, como recordatorios de cita o avisos de pedido, y el cliente debe haber aceptado recibirlos. Por eso los seguimientos se diseñan desde el inicio.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B12",
+        "q": "¿Puedo usar mi número de WhatsApp actual con un agente de IA?",
+        "a": "Por lo general sí. El número que ya conocen tus clientes se puede registrar en la plataforma oficial de WhatsApp Business, aunque el procedimiento cambia según cómo está dado de alta hoy y qué uso le das. Lo revisamos contigo antes de conectar nada, para que sepas qué pasa con tu historial y tu equipo siga atendiendo sin interrupciones.",
+        "estado": "aprobada"
+      }
+    ],
+    "sitemap": {
+      "priority": 0.6,
+      "changefreq": "monthly"
+    },
+    "author": "Equipo de Ingeniak",
+    "wordCount": 2006,
+    "outline": [
+      "¿Qué es un agente de WhatsApp con IA?",
+      "Cómo funciona un agente de IA para WhatsApp por dentro",
+      "Qué hace y qué no hace un agente de IA en WhatsApp",
+      "Ejemplos por industria: qué responde, qué califica y qué agenda",
+      "Qué necesitas para implementar un agente de IA en WhatsApp",
+      "Errores comunes al implementar agentes de IA",
+      "¿Por dónde empezar con tu agente?"
+    ],
+    "sources": "About the WhatsApp Business Platform · WhatsApp Business Platform | Business messaging APIs · Pricing on the WhatsApp Business Platform",
+    "notes": "Artículo PILAR de la intención «qué es»: empuja /servicios/agentes-ia-whatsapp/ con dos enlaces de ancla descriptiva (en la introducción, para que también sea el primer enlace interno del cuerpo y alimente la tarjeta del CTA intermedio y los relacionados, y en el cierre). Enlaza brevemente a /blog/agente-ia-whatsapp-vs-chatbot/ (diferencias) y /blog/cuanto-cuesta-agente-ia-whatsapp-mexico/ (costos) sin repetir su contenido.\nSearch Console (últimos 28 días): «agente ia para whatsapp» posición 14.5; «que es un agente de whatsapp» posición 9; «agentes de ia» posición 9; «agente de ia para whatsapp» posición 71. Por eso la keyword va al inicio del título y del primer párrafo, «qué es un agente de WhatsApp» va literal en el primer H2 (en pregunta) y «agentes de IA» aparece en un H3 y en el cierre de errores.\nCambios frente al encargo: (1) título afinado a «Agente de IA para WhatsApp: qué es, cómo funciona y ejemplos» (60 caracteres; «por industria» no cabía en el límite de 65 con la keyword al inicio), se usa igual como meta title; (2) se suma un cuarto enlace interno, /kommo/, en la sección de CRM, porque la conexión al CRM es la pieza que diferencia al servicio y refuerza la autoridad de partner; (3) se añadió el paso a paso de una conversación (lista numerada) y una sección de cierre «¿Por dónde empezar?» con Discovery y Kain.\nCanibalización: /blog/agente-ia-whatsapp-vs-chatbot/ tiene como secundaria «qué es un agente de IA» y un H2 «Qué es un agente de IA para WhatsApp». Sugerencia: dejar que este pilar se quede con la intención «qué es» y, en la próxima edición del artículo vs chatbot, enlazar aquí desde esa sección y quitar esa secundaria.\nCifras: ninguna escrita a mano. Un solo token, {{metric:dental-respuesta|prose}}, en la sección de ejemplos (caso de salud). La ventana de veinticuatro horas va en palabras. No se mencionan tarifas de Meta: se describe el cobro por mensaje y se manda al artículo de costos.\nFuentes de Meta consultadas el 2026-11-13. Las FAQs no repiten el banco (G02/G03 ya cubren definición y diferencia con chatbot). La FAQ del número actual es deliberadamente prudente: confirmar con el equipo cómo manejan hoy la migración y el historial de chats antes de aprobar.",
+    "folio": "509",
+    "copy": {
+      "status": "aprobado",
+      "minWords": 1200,
+      "owner": "SEO Studio (brief + redacción + aprobación)",
+      "note": "Redactado en SEO Studio el 2026-11-13 (borrador local, sin id del Estudio todavía). Aprobado por Rik Landeros y publicado desde el repo el 2026-11-14; el Estudio lo importa después."
+    }
+  },
+  {
+    "id": "art-gohighlevel-precios",
+    "group": "Recursos",
+    "url": "/blog/gohighlevel-precios-mexico/",
+    "canonical": "https://ingeniak.mx/blog/gohighlevel-precios-mexico/",
+    "indexable": true,
+    "status": "nueva",
+    "template": "T-ARTICLE",
+    "purpose": "Intención comparativa · Buyer/etapa: Dueño o director comercial de una pyme mexicana, o una agencia, que compara cuánto cuesta GoHighLevel antes de contratarlo (etapa de consideración).",
+    "primaryKeyword": "gohighlevel precios",
+    "secondaryKeywords": [
+      "planes de gohighlevel",
+      "highlevel precio",
+      "costo de gohighlevel en méxico"
+    ],
+    "title": "GoHighLevel precios en México: planes y costos extra",
+    "titleLength": 52,
+    "metaDescription": "Cómo cobra GoHighLevel en México: planes Starter, Unlimited y Founder, cargos por uso de WhatsApp, SMS, correo e IA, y cómo calcular tu costo real.",
+    "metaLength": 147,
+    "h1": "GoHighLevel precios en México: planes, extras y cuándo conviene",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Blog",
+        "url": "/blog/"
+      },
+      {
+        "name": "GoHighLevel precios en México",
+        "url": "/blog/gohighlevel-precios-mexico/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: gohighlevel precios.",
+        "cinematic": true,
+        "plate": {
+          "id": "home-sistema-2-atender",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "respuesta",
+        "name": "Respuesta corta",
+        "spec": "40–60 palabras citables que responden \"gohighlevel precios\" en la primera oración.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "indice",
+        "name": "Índice",
+        "spec": "Tabla de contenidos fija en escritorio, plegable en celular.",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cuerpo",
+        "name": "Cuerpo (H2)",
+        "spec": "1) Cómo cobra GoHighLevel: por cuenta, no por usuario · 2) Planes de GoHighLevel: qué incluye cada uno · 3) GoHighLevel precios: los costos extra que nadie te dice · 4) ¿Cuál es el costo de GoHighLevel en México? · 5) Cuándo conviene GoHighLevel y cuándo no · 6) Cómo calcular tu costo total en cinco pasos · 7) Cotiza la implementación de GoHighLevel con Ingeniak",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "cta-medio",
+        "name": "CTA intermedio",
+        "spec": "Tarjeta a /blog/gohighlevel-en-espanol/ + WhatsApp.",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "faq",
+        "name": "Preguntas frecuentes",
+        "spec": "Acordeón (B13, B14, B15, B16); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 7,
+        "id": "autor",
+        "name": "Sobre el autor",
+        "spec": "Tarjeta de Equipo de Ingeniak hasta confirmar autor (R8).",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "fuentes",
+        "name": "Fuentes",
+        "spec": "4 fuente(s) con fecha de consulta.",
+        "cinematic": false
+      },
+      {
+        "order": 9,
+        "id": "relacionados",
+        "name": "Sigue explorando",
+        "spec": "3 tarjetas: /blog/gohighlevel-en-espanol/ · /blog/kommo-vs-gohighlevel/ · /gohighlevel/.",
+        "cinematic": false
+      },
+      {
+        "order": 10,
+        "id": "cta-final",
+        "name": "Cierre",
+        "spec": "Cierre cinematográfico compartido (cta-amanecer).",
+        "cinematic": true,
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola Kain, leí goHighLevel precios en México: planes, extras y cuándo conviene y quiero ver cómo aplica a mi negocio.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20goHighLevel%20precios%20en%20M%C3%A9xico%3A%20planes%2C%20extras%20y%20cu%C3%A1ndo%20conviene%20y%20quiero%20ver%20c%C3%B3mo%20aplica%20a%20mi%20negocio."
+    },
+    "internalLinks": [
+      "/blog/gohighlevel-en-espanol/",
+      "/blog/kommo-vs-gohighlevel/",
+      "/gohighlevel/"
+    ],
+    "jsonLd": [
+      "BlogPosting (author Person, datePublished, dateModified)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "B13",
+        "q": "¿GoHighLevel cobra por usuario?",
+        "a": "No. HighLevel cobra una suscripción por cuenta y todos sus planes incluyen usuarios y contactos ilimitados. Lo que cambia entre planes es el número de subcuentas y lo que puedes revender. Sumar vendedores no cambia la suscripción, pero sí puede subir lo que pagas por uso en SMS, llamadas, correos y WhatsApp.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B14",
+        "q": "¿Qué plan de GoHighLevel necesita un solo negocio?",
+        "a": "Para un solo negocio suele bastar Starter, que incluye hasta tres subcuentas con usuarios y contactos ilimitados. Unlimited y Founder están pensados para agencias que administran muchos clientes o quieren revender la plataforma con su marca. Antes de elegir, revisa la página oficial de precios de HighLevel y estima tus cargos por uso.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B15",
+        "q": "¿WhatsApp está incluido en el precio de GoHighLevel?",
+        "a": "No. WhatsApp es un complemento con cuota mensual por cada subcuenta que lo activa, y además se paga cada mensaje entregado según su categoría (marketing, utilidad, autenticación o servicio) y el país del destinatario. Las conversaciones que llegan desde anuncios de clic a WhatsApp y las llamadas que inicia tu cliente no se cobran.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B16",
+        "q": "¿Puedo pagar GoHighLevel en pesos mexicanos?",
+        "a": "HighLevel publica sus precios en dólares y los carga a tu tarjeta, así que tu banco hace la conversión con su tipo de cambio y, a veces, cobra una comisión. Si contratas a través de una agencia, pregúntale en qué moneda te factura la suscripción, los cargos por uso y la implementación, y si emite factura mexicana.",
+        "estado": "aprobada"
+      }
+    ],
+    "sitemap": {
+      "priority": 0.6,
+      "changefreq": "monthly"
+    },
+    "author": "Equipo de Ingeniak",
+    "wordCount": 1989,
+    "outline": [
+      "Cómo cobra GoHighLevel: por cuenta, no por usuario",
+      "Planes de GoHighLevel: qué incluye cada uno",
+      "GoHighLevel precios: los costos extra que nadie te dice",
+      "¿Cuál es el costo de GoHighLevel en México?",
+      "Cuándo conviene GoHighLevel y cuándo no",
+      "Cómo calcular tu costo total en cinco pasos",
+      "Cotiza la implementación de GoHighLevel con Ingeniak"
+    ],
+    "sources": "HighLevel Pricing · HighLevel Pricing Guide (Pricing & Billing: Wallets, Charges, Rebilling) · WhatsApp Billing & Pricing Guide · AI Products Pricing",
+    "notes": "POR QUÉ: el grupo de consultas de GoHighLevel es lo que más visibilidad da hoy a ingeniak.mx (unas 1,630 impresiones en 28 días, posición media 6 en Search Console). Este artículo toma la intención de precio ('gohighlevel precios', 'planes de gohighlevel', 'highlevel precio', 'costo de gohighlevel en méxico') y la lleva a /gohighlevel/ con CTA de cotizar la implementación. NO PISA: /blog/gohighlevel-en-espanol/ (qué es y para qué sirve; se enlaza para eso) ni /blog/kommo-vs-gohighlevel/ (comparativa; se enlaza para quien compara cobro por usuario vs por cuenta). Aquí solo se cubre precio: estructura de cobro, planes, cargos por uso, costo en México y cálculo del costo total. CAMBIOS FRENTE AL ENCARGO: título afinado a 63 caracteres ('…planes, extras y cuándo conviene'); se sumó un H3 para la empresa de un solo negocio y una tabla de cargos por uso además de la de planes; un solo token de cifra propia ({{metric:dental-citas|full}}, caso dental de Monterrey con GoHighLevel). DATOS DE TERCEROS (consultados 2026-11-13, sin montos): los planes públicos de HighLevel ahora se llaman Starter, Unlimited y Founder (más Enterprise a la medida); en las FAQ de la misma página aparecen como Agency Starter, Agency Unlimited y Pro/Agency Pro. Discrepancia oficial: la FAQ de precios dice que Unlimited y Pro pueden revender cargos por uso con margen; la guía de precios del centro de ayuda (más específica) dice sin margen en Unlimited y con margen solo en Founder. El texto sigue la guía. Desde el 1 de octubre de 2026 WhatsApp cobra mensajes de servicio tras un bloque gratuito mensual por número y subió la tarifa de marketing en México. REVISAR: /blog/kommo-vs-gohighlevel/ (fuentes del 2026-10-19) dice que 'el plan más alto permite revender la plataforma como software propio': sigue siendo cierto (Founder), pero conviene actualizar su fecha de consulta. PREGUNTAS A RIK: (1) ¿Ingeniak factura en pesos y emite CFDI por la implementación? El texto no lo afirma; solo recomienda preguntarlo a la agencia. (2) ¿Los clientes quedan como subcuenta en la cuenta de agencia de Ingeniak o contratan HighLevel a su nombre, y los cargos por uso se pasan a costo? El texto no lo afirma. (3) Confirmar el uso del token dental-citas en este contexto.",
+    "folio": "510",
+    "copy": {
+      "status": "aprobado",
+      "minWords": 1200,
+      "owner": "SEO Studio (brief + redacción + aprobación)",
+      "note": "Redactado en SEO Studio el 2026-11-13 (borrador local, sin id del Estudio todavía). Aprobado por Rik Landeros y publicado desde el repo el 2026-11-14; el Estudio lo importa después."
+    }
+  },
+  {
+    "id": "art-gohighlevel-whatsapp",
+    "group": "Recursos",
+    "url": "/blog/gohighlevel-whatsapp/",
+    "canonical": "https://ingeniak.mx/blog/gohighlevel-whatsapp/",
+    "indexable": true,
+    "status": "nueva",
+    "template": "T-ARTICLE",
+    "purpose": "Intención informativa · Buyer/etapa: Dueño o gerente comercial de un negocio que vende con citas, ya usa o evalúa GoHighLevel y quiere atender WhatsApp desde el CRM con un agente de IA (etapa de consideración).",
+    "primaryKeyword": "gohighlevel whatsapp",
+    "secondaryKeywords": [
+      "conectar whatsapp a gohighlevel",
+      "api oficial de whatsapp",
+      "agente de ia en gohighlevel",
+      "whatsapp business"
+    ],
+    "title": "GoHighLevel WhatsApp: cómo conectar la API oficial",
+    "titleLength": 50,
+    "metaDescription": "Cómo conectar WhatsApp a GoHighLevel con la API oficial: requisitos, coexistencia, número nuevo o migración, plantillas, cobros y agente de IA que agenda.",
+    "metaLength": 154,
+    "h1": "GoHighLevel WhatsApp: conecta la API oficial y un agente de IA",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Blog",
+        "url": "/blog/"
+      },
+      {
+        "name": "GoHighLevel WhatsApp",
+        "url": "/blog/gohighlevel-whatsapp/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: gohighlevel whatsapp.",
+        "cinematic": true,
+        "plate": {
+          "id": "home-sistema-2-atender",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "respuesta",
+        "name": "Respuesta corta",
+        "spec": "40–60 palabras citables que responden \"gohighlevel whatsapp\" en la primera oración.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "indice",
+        "name": "Índice",
+        "spec": "Tabla de contenidos fija en escritorio, plegable en celular.",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cuerpo",
+        "name": "Cuerpo (H2)",
+        "spec": "1) Qué necesitas antes de conectar WhatsApp a GoHighLevel · 2) Las tres formas de conectar GoHighLevel con WhatsApp · 3) Cómo conectar WhatsApp en tu subcuenta, paso a paso · 4) ¿Qué son las plantillas y la ventana de atención? · 5) Cómo se suma un agente de IA en GoHighLevel · 6) Errores comunes al conectar WhatsApp · 7) ¿Cuánto cobran Meta y GoHighLevel por los mensajes de WhatsApp? · 8) Conecta WhatsApp con un plan, no a prueba y error",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "cta-medio",
+        "name": "CTA intermedio",
+        "spec": "Tarjeta a /blog/gohighlevel-en-espanol/ + WhatsApp.",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "faq",
+        "name": "Preguntas frecuentes",
+        "spec": "Acordeón (B17, B18, B19, B20); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 7,
+        "id": "autor",
+        "name": "Sobre el autor",
+        "spec": "Tarjeta de Equipo de Ingeniak hasta confirmar autor (R8).",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "fuentes",
+        "name": "Fuentes",
+        "spec": "4 fuente(s) con fecha de consulta.",
+        "cinematic": false
+      },
+      {
+        "order": 9,
+        "id": "relacionados",
+        "name": "Sigue explorando",
+        "spec": "3 tarjetas: /blog/gohighlevel-en-espanol/ · /servicios/agentes-ia-whatsapp/ · /gohighlevel/.",
+        "cinematic": false
+      },
+      {
+        "order": 10,
+        "id": "cta-final",
+        "name": "Cierre",
+        "spec": "Cierre cinematográfico compartido (cta-amanecer).",
+        "cinematic": true,
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Agendar mi Discovery Session",
+      "href": "/discovery/",
+      "action": "agendar"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola Kain, leí goHighLevel WhatsApp: conecta la API oficial y un agente de IA y quiero ver cómo aplica a mi negocio.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20goHighLevel%20WhatsApp%3A%20conecta%20la%20API%20oficial%20y%20un%20agente%20de%20IA%20y%20quiero%20ver%20c%C3%B3mo%20aplica%20a%20mi%20negocio."
+    },
+    "internalLinks": [
+      "/blog/gohighlevel-en-espanol/",
+      "/servicios/agentes-ia-whatsapp/",
+      "/gohighlevel/"
+    ],
+    "jsonLd": [
+      "BlogPosting (author Person, datePublished, dateModified)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "B17",
+        "q": "¿Puedo seguir usando la app de WhatsApp Business si conecto GoHighLevel?",
+        "a": "Sí, con la modalidad de coexistencia. Conectas tu número actual a GoHighLevel y la app de WhatsApp Business sigue funcionando, así que tu equipo puede contestar desde los dos lados. Las plantillas solo se envían desde el CRM y el perfil de WhatsApp se administra desde la app. HighLevel admite un solo número en coexistencia.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B18",
+        "q": "¿Pierdo mi historial de chats al conectar WhatsApp a GoHighLevel?",
+        "a": "Depende del camino. Con coexistencia puedes importar tus contactos y hasta seis meses de historial desde la app de WhatsApp Business. Con la migración desde otro proveedor, el historial, los archivos y la lista de contactos no se pasan, así que conviene exportarlos antes. Con un número nuevo no hay historial que mover.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B19",
+        "q": "¿Por qué necesito plantillas aprobadas para escribirle a un cliente?",
+        "a": "Porque la API oficial de WhatsApp solo deja mandar mensajes libres mientras está abierta la ventana de atención, que empieza cuando el cliente te escribe. Fuera de ella, Meta solo permite plantillas aprobadas, como un recordatorio de cita o una promoción. Cada plantilla lleva categoría de marketing, utilidad o autenticación, y eso define su costo.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B20",
+        "q": "¿Quién me cobra los mensajes de WhatsApp en GoHighLevel?",
+        "a": "Meta define la tarifa de cada mensaje entregado según su categoría y el país de quien lo recibe. En GoHighLevel ese uso se cobra a través de HighLevel, junto con una cuota mensual por cada subcuenta con WhatsApp. Si tu cuenta la administra una agencia, puede revenderte el uso con margen: pregúntale cómo te lo cobra.",
+        "estado": "aprobada"
+      }
+    ],
+    "sitemap": {
+      "priority": 0.6,
+      "changefreq": "monthly"
+    },
+    "author": "Equipo de Ingeniak",
+    "wordCount": 1944,
+    "outline": [
+      "Qué necesitas antes de conectar WhatsApp a GoHighLevel",
+      "Las tres formas de conectar GoHighLevel con WhatsApp",
+      "Cómo conectar WhatsApp en tu subcuenta, paso a paso",
+      "¿Qué son las plantillas y la ventana de atención?",
+      "Cómo se suma un agente de IA en GoHighLevel",
+      "Errores comunes al conectar WhatsApp",
+      "¿Cuánto cobran Meta y GoHighLevel por los mensajes de WhatsApp?",
+      "Conecta WhatsApp con un plan, no a prueba y error"
+    ],
+    "sources": "How to Set Up WhatsApp for a Sub-Account · WhatsApp Pricing, Billing and Rebilling Guide · Pricing on the WhatsApp Business Platform · Template fundamentals",
+    "notes": "POR QUÉ: une el tema más visible del sitio (GoHighLevel) con el servicio estrella (agentes de IA en WhatsApp). Empuja /gohighlevel/ (ancla 'implementación de GoHighLevel', en el cierre) y /servicios/agentes-ia-whatsapp/ (ancla 'agentes de IA para WhatsApp Business'), y enlaza /blog/gohighlevel-en-espanol/ para el 'qué es'; aquí solo va el cómo, sin repetir definición ni funciones. CAMBIOS RESPECTO AL ENCARGO: (1) título 'GoHighLevel WhatsApp: conecta la API oficial y un agente de IA' (62 caracteres): la regla del Estudio pide la keyword exacta en el título y el de trabajo pasaba de 65; (2) secundarias: se suma 'conectar whatsapp a gohighlevel' (la forma en que se busca el cómo, va en un H2); 'whatsapp business', 'api oficial de whatsapp' y 'agente de ia en gohighlevel' se mantienen. CIFRAS: ningún monto; la tabla de cobros describe estructura (cuota mensual por subcuenta en HighLevel, cobro por mensaje entregado según categoría y país en Meta, tramo gratuito de mensajes de servicio, reventa con margen) y manda a las páginas oficiales consultadas el 13 de noviembre de 2026. Un solo token: {{metric:dental-respuesta|prose}} (caso dental con GoHighLevel). DATO A VIGILAR: Meta empezó a cobrar los mensajes de servicio que pasan del tramo gratuito el 1 de octubre de 2026; el artículo de HighLevel se actualizó el 12 de noviembre de 2026. Revisar cada trimestre. PREGUNTA A RIK: ¿el agente que conectan en GoHighLevel es Kain o Conversation AI según el caso? El texto solo afirma lo de la FAQ H03 aprobada y menciona Conversation AI como opción de HighLevel. Las etiquetas del agente se presentan como algo que 'definimos contigo'. SEARCH CONSOLE: no recibí datos de esta keyword para este encargo.",
+    "folio": "511",
+    "copy": {
+      "status": "aprobado",
+      "minWords": 1200,
+      "owner": "SEO Studio (brief + redacción + aprobación)",
+      "note": "Redactado en SEO Studio el 2026-11-13 (borrador local, sin id del Estudio todavía). Aprobado por Rik Landeros y publicado desde el repo el 2026-11-14; el Estudio lo importa después."
+    }
+  },
+  {
+    "id": "art-kommo-precios",
+    "group": "Recursos",
+    "url": "/blog/kommo-precios/",
+    "canonical": "https://ingeniak.mx/blog/kommo-precios/",
+    "indexable": true,
+    "status": "nueva",
+    "template": "T-ARTICLE",
+    "purpose": "Intención comparativa · Buyer/etapa: Dueño o director comercial de una pyme en México que vende por WhatsApp y está evaluando contratar Kommo; quiere saber cuánto le costará de verdad (licencias, mensajes, IA e implementación) antes de pedir cotización.",
+    "primaryKeyword": "kommo precios",
+    "secondaryKeywords": [
+      "precios kommo",
+      "planes de kommo",
+      "costo de kommo en méxico",
+      "licencias de kommo"
+    ],
+    "title": "Kommo precios 2026: planes, qué incluye y costo en México",
+    "titleLength": 57,
+    "metaDescription": "Kommo precios 2026: cómo cobra por usuario, qué incluye cada plan y qué pagas aparte (WhatsApp, IA, implementación). Calcula tu costo real en México.",
+    "metaLength": 149,
+    "h1": "Kommo precios 2026: planes, qué incluyen y costo real en México",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Blog",
+        "url": "/blog/"
+      },
+      {
+        "name": "Kommo precios 2026",
+        "url": "/blog/kommo-precios/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: kommo precios.",
+        "cinematic": true,
+        "plate": {
+          "id": "home-sistema-2-atender",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "respuesta",
+        "name": "Respuesta corta",
+        "spec": "40–60 palabras citables que responden \"kommo precios\" en la primera oración.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "indice",
+        "name": "Índice",
+        "spec": "Tabla de contenidos fija en escritorio, plegable en celular.",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cuerpo",
+        "name": "Cuerpo (H2)",
+        "spec": "1) Precios de Kommo en 2026: cómo cobra · 2) Planes de Kommo: qué incluye cada uno · 3) ¿Qué no incluye la licencia de Kommo? · 4) ¿Cuál es el costo real de Kommo en México? · 5) Cuándo conviene cada plan de Kommo · 6) Cómo calcular tu costo total de Kommo, paso a paso · 7) Por qué contratar Kommo con un partner oficial · 8) Cotiza Kommo con tu operación real",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "cta-medio",
+        "name": "CTA intermedio",
+        "spec": "Tarjeta a /blog/kommo-vs-gohighlevel/ + WhatsApp.",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "faq",
+        "name": "Preguntas frecuentes",
+        "spec": "Acordeón (B21, B22, B23, B24); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 7,
+        "id": "autor",
+        "name": "Sobre el autor",
+        "spec": "Tarjeta de Equipo de Ingeniak hasta confirmar autor (R8).",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "fuentes",
+        "name": "Fuentes",
+        "spec": "3 fuente(s) con fecha de consulta.",
+        "cinematic": false
+      },
+      {
+        "order": 9,
+        "id": "relacionados",
+        "name": "Sigue explorando",
+        "spec": "3 tarjetas: /blog/kommo-vs-gohighlevel/ · /blog/como-verificar-partner-oficial-kommo/ · /kommo/.",
+        "cinematic": false
+      },
+      {
+        "order": 10,
+        "id": "cta-final",
+        "name": "Cierre",
+        "spec": "Cierre cinematográfico compartido (cta-amanecer).",
+        "cinematic": true,
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Cotizar proyecto",
+      "href": "/contacto/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola Kain, leí kommo precios 2026: planes, qué incluyen y costo real en México y quiero ver cómo aplica a mi negocio.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20kommo%20precios%202026%3A%20planes%2C%20qu%C3%A9%20incluyen%20y%20costo%20real%20en%20M%C3%A9xico%20y%20quiero%20ver%20c%C3%B3mo%20aplica%20a%20mi%20negocio."
+    },
+    "internalLinks": [
+      "/blog/kommo-vs-gohighlevel/",
+      "/blog/como-verificar-partner-oficial-kommo/",
+      "/kommo/"
+    ],
+    "jsonLd": [
+      "BlogPosting (author Person, datePublished, dateModified)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "B21",
+        "q": "¿Kommo tiene prueba gratis o plan gratuito?",
+        "a": "Kommo ofrece una prueba gratis de catorce días, sin tarjeta y con todas las funciones de la plataforma. En su página de precios no aparece un plan gratuito permanente: al terminar la prueba eliges Básico, Avanzado, Pro o Empresarial. Aprovecha esos días para conectar WhatsApp y probar tu embudo con conversaciones reales.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B22",
+        "q": "¿Se puede pagar Kommo mes a mes?",
+        "a": "No. Kommo no ofrece pago mensual por ahora: el periodo mínimo de suscripción es de seis meses, y también puedes contratar nueve meses, un año o dos años. La tarifa por usuario cambia según el periodo que elijas, así que compara cada opción en la página oficial antes de pagar por adelantado.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B23",
+        "q": "¿Los mensajes de WhatsApp están incluidos en la licencia de Kommo?",
+        "a": "No. Kommo no cobra por los mensajes de WhatsApp: los cobra Meta directamente, aparte de tu suscripción. Meta cobra por mensaje entregado según la categoría (marketing, utilidad, autenticación o servicio) y el país del destinatario. México tiene tarifa propia en la tabla oficial de Meta, que conviene revisar antes de lanzar campañas.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B24",
+        "q": "¿Puedo tener usuarios con planes distintos en la misma cuenta de Kommo?",
+        "a": "No. Kommo pide que todos los usuarios de una cuenta tengan el mismo plan. Si una sola persona necesita funciones de Pro, como la página de reservas, toda la cuenta sube a Pro. Por eso conviene elegir el plan según el proceso del equipo completo y no según las necesidades de un solo puesto.",
+        "estado": "aprobada"
+      }
+    ],
+    "sitemap": {
+      "priority": 0.6,
+      "changefreq": "monthly"
+    },
+    "author": "Equipo de Ingeniak",
+    "wordCount": 1906,
+    "outline": [
+      "Precios de Kommo en 2026: cómo cobra",
+      "Planes de Kommo: qué incluye cada uno",
+      "¿Qué no incluye la licencia de Kommo?",
+      "¿Cuál es el costo real de Kommo en México?",
+      "Cuándo conviene cada plan de Kommo",
+      "Cómo calcular tu costo total de Kommo, paso a paso",
+      "Por qué contratar Kommo con un partner oficial",
+      "Cotiza Kommo con tu operación real"
+    ],
+    "sources": "Planes y precios de Kommo · Pricing on the WhatsApp Business Platform · Costo de WhatsApp Business en 2026: 6 formas de controlar tus gastos",
+    "notes": "Empuja /kommo/ (Ingeniak es partner oficial de Kommo en México y LATAM) y lleva a cotizar. Search Console: 'kommo precios' en posición 13.5 y 'precios kommo' en posición 27; el artículo busca subir ambas a primera página con una respuesta citable (cómo cobra, tabla de planes, qué se paga aparte, pasos para calcular el costo total). Cambios frente al brief de trabajo: título afinado a 'Kommo precios 2026: planes, qué incluyen y costo real en México' (63 caracteres); se suma la secundaria 'licencias de kommo' (búsqueda transaccional que usan los clientes al pedir cotización); se agrega una sección sobre créditos de IA (no se acumulan) y otra de 'cuándo conviene cada plan'. Regla de cifras: no hay montos; se describe la estructura de cobro y se manda a la página oficial (consultada el 2026-11-13). Cantidades no comerciales en palabras (seis meses, catorce días, tres y cincuenta agentes de IA). Un solo token: {{metric:retail-conversiones}} (retail multimarca con Kommo + IA). PREGUNTA A RIK: ¿Ingeniak revende las licencias de Kommo en pesos y emite factura en México? Kommo dice que algunos partners revenden en moneda local; el texto no lo afirma de Ingeniak, solo invita a preguntarlo al cotizar. Si se confirma, conviene decirlo explícito en 'Periodo de pago, tipo de cambio y factura' y en el cierre. DATO DE TERCEROS: el blog de Kommo de WhatsApp (2026-09-30) y la documentación de Meta coinciden en cobro por mensaje; Meta cambió el cobro de mensajes de utilidad dentro de la ventana el 1 de octubre de 2026. Revisar planes, créditos de IA y tarifas cada trimestre. No pisa /blog/kommo-vs-gohighlevel/ (se enlaza para la comparación) ni /blog/cuanto-cuesta-agente-ia-whatsapp-mexico/ (aquí no se cotiza el agente, solo los créditos de IA de Kommo).",
+    "folio": "512",
+    "copy": {
+      "status": "aprobado",
+      "minWords": 1200,
+      "owner": "SEO Studio (brief + redacción + aprobación)",
+      "note": "Redactado en SEO Studio el 2026-11-13 (borrador local, sin id del Estudio todavía). Aprobado por Rik Landeros y publicado desde el repo el 2026-11-14; el Estudio lo importa después."
+    }
   }
 ]

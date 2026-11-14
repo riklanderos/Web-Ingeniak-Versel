@@ -1,0 +1,384 @@
+{
+  "pageId": "art-agente-ia",
+  "url": "/blog/que-es-agente-ia-whatsapp/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": "Rik Landeros",
+  "publicado": "2026-11-14",
+  "actualizado": "2026-11-14",
+  "articulo": {
+    "categoria": "Agentes de IA",
+    "about": [
+      {
+        "type": "Service",
+        "name": "Agentes de IA para WhatsApp Business | Ingeniak",
+        "url": "/servicios/agentes-ia-whatsapp/"
+      }
+    ]
+  },
+  "pendientes": [
+    "RESUELTO 2026-11-14 · redactado en SEO Studio (2026-11-13) · aprobado por Rik Landeros por escrito en el chat de construcción (\"ya puedes publicarlos\"). Se publicó desde el repo; el Estudio lo importa después.",
+    "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
+    "PLACA · portada y cierre usan placas compartidas por defecto (home-sistema-2-atender y cta-amanecer).",
+    "PREGUNTAS AL CLIENTE (de la sesión del Estudio, sin contestar al publicar): facturación en pesos con CFDI y reventa de licencias; si el cliente de GoHighLevel queda como subcuenta de la agencia; qué agente se conecta en GoHighLevel. El texto no afirma ninguna de las tres: remite a preguntarlo al cotizar."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (placa compartida por defecto)",
+      "eyebrow": "Agentes de IA",
+      "h1": {
+        "text": "Agente de IA para WhatsApp:",
+        "soft": "qué es, cómo funciona y ejemplos",
+        "lit": "Agente"
+      },
+      "deck": "Qué es un agente de IA para WhatsApp y cómo funciona con la API oficial, tu CRM y tu agenda: qué hace, qué no, ejemplos por industria y qué necesitas.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta"
+    },
+    "respuesta": {
+      "_componente": "Intertitle + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "La respuesta corta",
+      "text": "Un agente de IA para WhatsApp es un asistente que atiende las conversaciones de tu WhatsApp Business: entiende lo que escribe cada cliente, responde con la información de tu negocio, lo califica, lo registra en tu CRM y agenda citas. Funciona sobre la API oficial de Meta y pasa la conversación a una persona cuando hace falta."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con CTA intermedio",
+      "blocks": [
+        "Un **agente de IA para WhatsApp** hace que tu número de WhatsApp Business conteste, califique y agende sin que alguien de tu equipo esté pegado al teléfono. No es un menú de botones ni una respuesta automática: entiende lo que escribe cada cliente y actúa con las reglas de tu negocio.",
+        "En esta guía te explicamos qué es, cómo funciona por dentro, qué hace y qué no, cómo se ve en seis industrias y qué necesitas para implementarlo. Es lo que vemos todos los días al implementar [agentes de IA para WhatsApp conectados al CRM y la agenda](/servicios/agentes-ia-whatsapp/) de empresas en México y Latinoamérica.",
+        {
+          "variant": "h2",
+          "id": "agente-whatsapp-ia",
+          "text": "¿Qué es un agente de WhatsApp con IA?",
+          "rail": "Qué es un agente"
+        },
+        "Un agente de IA para WhatsApp es un asistente basado en un modelo de lenguaje que atiende las conversaciones de tu número de WhatsApp Business a través de la API oficial de Meta. Lee cada mensaje, entiende qué quiere el cliente, responde con la información de tu negocio y ejecuta acciones en tus sistemas: crea el contacto en tu CRM, aparta una cita o avisa a tu equipo.",
+        "La palabra importante es *acciones*. Un agente no solo platica: hace trabajo dentro de tu operación. En la práctica cubre cinco tareas:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Responde** preguntas con tu información: servicios, horarios, requisitos, sucursales y políticas.",
+            "**Califica** al prospecto con las mismas preguntas que haría tu mejor vendedor.",
+            "**Registra** el contacto, la conversación y el interés en tu CRM.",
+            "**Agenda** citas, visitas o llamadas en tu calendario real.",
+            "**Pasa la conversación** a una persona cuando el caso lo pide, con un resumen de lo que ya se habló."
+          ]
+        },
+        "Si vienes de un chatbot de menús, el cambio es grande: el chatbot sigue un árbol de opciones y el agente interpreta lenguaje natural. Lo comparamos a detalle en [agente de IA vs chatbot en WhatsApp: diferencias y cuándo conviene cada uno](/blog/agente-ia-whatsapp-vs-chatbot/).",
+        {
+          "variant": "h3",
+          "text": "Qué tienen en común los agentes de IA"
+        },
+        "Los agentes de IA combinan tres cosas: un modelo de lenguaje que entiende y redacta, herramientas que le permiten actuar (consultar una agenda, escribir en un CRM, crear una tarea) y reglas que delimitan qué puede hacer. WhatsApp es solo el canal. La misma lógica puede atender Instagram, el chat de tu sitio o el correo, pero en México y Latinoamérica la mayoría de las ventas empieza en WhatsApp.",
+        {
+          "variant": "h2",
+          "id": "funciona-agente-ia-whatsapp",
+          "text": "Cómo funciona un agente de IA para WhatsApp por dentro",
+          "rail": "Cómo funciona un agente"
+        },
+        "Por fuera ves una conversación. Por dentro hay cinco piezas que trabajan juntas, y si falta una, el agente se queda corto.",
+        {
+          "variant": "h3",
+          "text": "El canal: la API oficial de WhatsApp Business"
+        },
+        "El agente no vive en la app de WhatsApp de un celular. Se conecta a la WhatsApp Business Platform, el conjunto de APIs de Meta para empresas que mucha gente conoce como WhatsApp Business API. Su pieza central es la API de la nube (Cloud API), que permite enviar y recibir mensajes de forma programada, según la [documentación oficial de la WhatsApp Business Platform](https://developers.facebook.com/documentation/business-messaging/whatsapp/about-the-platform).",
+        "Meta ofrece dos caminos para conectarse: directo, si tienes equipo de desarrollo, o a través de un partner con un registro integrado y casi sin código, como explica la [página oficial de la plataforma para empresas](https://whatsappbusiness.com/products/business-platform/). Cada mensaje que llega se entrega al agente por un webhook, y el agente contesta por la misma API.",
+        "Dos reglas del canal definen cómo se diseña el agente:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Ventana de atención al cliente.** Cuando el cliente te escribe, se abre una ventana de veinticuatro horas en la que puedes responder con mensajes libres. Si vuelve a escribir, la ventana se reinicia.",
+            "**Plantillas.** Fuera de esa ventana solo puedes escribirle con plantillas de mensaje, que se clasifican en marketing, utilidad y autenticación. Por eso los recordatorios y seguimientos se planean desde el inicio."
+          ]
+        },
+        "Ambas reglas, junto con qué mensajes cobra Meta y cuáles no, están en la [página de precios de la WhatsApp Business Platform](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing).",
+        {
+          "variant": "h3",
+          "text": "La base de conocimiento"
+        },
+        "Es lo que el agente sabe de tu negocio: servicios, precios vigentes, horarios, zonas de cobertura, requisitos, preguntas frecuentes y políticas. La armamos con tus documentos y, sobre todo, con conversaciones reales de tu equipo, porque ahí están las preguntas que de verdad hacen tus clientes. Un agente bien configurado no inventa: si la respuesta no está en su base, lo dice y pasa el caso.",
+        {
+          "variant": "h3",
+          "text": "Las reglas del agente"
+        },
+        "Las reglas son el guion de negocio. Definen qué preguntar para calificar, qué tono usar, qué temas evitar, cuándo ofrecer una cita y cuándo detenerse. Aquí se decide, por ejemplo, que el agente nunca confirme un descuento que no existe o que no dé diagnósticos. Escribir estas reglas es trabajo de proceso comercial, no de tecnología.",
+        {
+          "variant": "h3",
+          "text": "La conexión con tu CRM y tu calendario"
+        },
+        "Sin CRM, el agente responde y la información se pierde en el chat. Conectado, cada conversación crea o actualiza un contacto, mueve la oportunidad de etapa y deja notas para tu equipo. Lo implementamos sobre todo con Kommo, del que somos [partner oficial de Kommo en México y Latinoamérica](/kommo/), y con GoHighLevel. Con el calendario conectado, el agente ofrece horarios reales y aparta la cita sin pasar por nadie.",
+        {
+          "variant": "h3",
+          "text": "El traspaso a una persona"
+        },
+        "Un buen agente sabe cuándo soltar la conversación. Se definen disparadores claros: el cliente pide hablar con alguien, hay una queja, el tema es sensible o la venta ya está lista para cerrarse. En ese momento el agente avisa al responsable en el CRM, le deja un resumen y deja de contestar en ese chat hasta que la persona lo libere.",
+        {
+          "variant": "h3",
+          "text": "Una conversación, paso a paso"
+        },
+        {
+          "variant": "ol",
+          "items": [
+            "El cliente escribe a tu número de WhatsApp Business.",
+            "Meta entrega el mensaje al agente por la API oficial.",
+            "El agente identifica qué quiere el cliente y consulta tu base de conocimiento.",
+            "Responde y, si aplica, hace las preguntas de calificación.",
+            "Registra el contacto y sus respuestas en el CRM.",
+            "Ofrece horarios disponibles y agenda la cita en tu calendario.",
+            "Si el caso lo pide, pasa la conversación a tu equipo con el contexto completo."
+          ]
+        },
+        {
+          "variant": "cta-medio"
+        },
+        {
+          "variant": "h2",
+          "id": "hace-no-hace-agente",
+          "text": "Qué hace y qué no hace un agente de IA en WhatsApp",
+          "rail": "Qué hace y qué"
+        },
+        "Lo que sí hace bien:",
+        {
+          "variant": "ul",
+          "items": [
+            "Contesta al momento, de día, de noche y en fin de semana.",
+            "Atiende muchas conversaciones a la vez sin bajar la calidad de la respuesta.",
+            "Hace siempre las preguntas de calificación, sin saltarse ninguna por prisa.",
+            "Agenda, confirma y recuerda citas.",
+            "Deja todo registrado en el CRM para que nadie capture datos a mano."
+          ]
+        },
+        "Lo que no hace, o no debe hacer:",
+        {
+          "variant": "ul",
+          "items": [
+            "No sustituye el criterio de tu equipo en negociaciones, quejas o casos complejos.",
+            "No da diagnósticos médicos ni asesoría legal o financiera.",
+            "No inventa precios, promociones ni disponibilidad: responde solo con lo que está en su base.",
+            "No escribe en frío a quien no te ha contactado. Fuera de la ventana de atención necesitas plantillas y el permiso del cliente.",
+            "No se hace pasar por una persona. Te recomendamos que se presente como asistente y que el cliente pueda pedir a alguien del equipo.",
+            "No arregla un proceso de venta que no existe. Si hoy no sabes cómo calificas a un prospecto, el agente tampoco lo sabrá."
+          ]
+        },
+        {
+          "variant": "h2",
+          "id": "ejemplos-industria-responde-califica",
+          "text": "Ejemplos por industria: qué responde, qué califica y qué agenda",
+          "rail": "Ejemplos por industria: qué"
+        },
+        "El agente cambia según el negocio. Estos son los usos que más implementamos, con el punto en el que la conversación pasa a una persona.",
+        {
+          "variant": "table",
+          "head": [
+            "Industria",
+            "Qué responde",
+            "Qué califica",
+            "Qué agenda o resuelve",
+            "Cuándo pasa a una persona"
+          ],
+          "rows": [
+            [
+              "Salud y clínicas",
+              "Tratamientos, horarios, sucursales y preparación previa",
+              "Motivo de consulta, paciente nuevo o recurrente, pago particular o aseguradora",
+              "Citas de valoración, confirmaciones y recordatorios",
+              "Urgencias, dudas clínicas, quejas"
+            ],
+            [
+              "Inmobiliaria",
+              "Disponibilidad, ubicación, características y requisitos de crédito",
+              "Presupuesto, zona, forma de pago y plazo para comprar o rentar",
+              "Visitas a la propiedad o llamada con el asesor",
+              "Negociación de precio, oferta formal, revisión de documentos"
+            ],
+            [
+              "Educación",
+              "Programas, modalidades, fechas de inicio y requisitos de admisión",
+              "Programa de interés, modalidad, quién decide y quién paga",
+              "Sesiones informativas, visitas al campus, entrevistas de admisión",
+              "Becas, casos de pago especiales, alumnos inscritos con un problema"
+            ],
+            [
+              "Retail y e-commerce",
+              "Catálogo, tallas, existencias, envíos y cambios",
+              "Producto, cantidad, compra de menudeo o de mayoreo",
+              "Seguimiento de pedidos, apartados y envío del enlace de compra",
+              "Devoluciones fuera de política, pedidos grandes, reclamaciones"
+            ],
+            [
+              "Servicios profesionales",
+              "Servicios, alcance y documentos que se necesitan",
+              "Tipo de caso, urgencia y tamaño de la empresa",
+              "Llamada de diagnóstico con el especialista",
+              "Cualquier opinión legal, fiscal o técnica"
+            ],
+            [
+              "HoReCa (hoteles, restaurantes y cafeterías)",
+              "Menú, horarios, ubicación, eventos y políticas",
+              "Fecha, tamaño del grupo y tipo de evento",
+              "Reservaciones y solicitudes de cotización de eventos",
+              "Eventos privados, alergias severas, quejas"
+            ]
+          ]
+        },
+        "En salud ya lo vimos en producción: en una clínica dental de Monterrey, el tiempo de respuesta pasó {{metric:dental-respuesta|prose}} con un agente conectado a su CRM y a su agenda.",
+        {
+          "variant": "h2",
+          "id": "necesitas-implementar-agente-ia",
+          "text": "Qué necesitas para implementar un agente de IA en WhatsApp",
+          "rail": "Qué necesitas para implementar"
+        },
+        "Antes de conectar nada, revisa que tengas estas piezas:",
+        {
+          "variant": "ol",
+          "items": [
+            "**Un número de WhatsApp Business en la plataforma oficial**, conectado a través de un partner o directo con Meta, y un portafolio comercial de Meta para tu empresa.",
+            "**Un proceso de venta claro:** qué preguntas califican, qué es un buen prospecto y qué pasa después de calificarlo.",
+            "**Tu información ordenada:** servicios, precios, políticas, preguntas frecuentes y conversaciones reales con clientes.",
+            "**Un CRM** donde quede cada contacto y cada conversación.",
+            "**Un calendario conectado**, si el agente va a agendar.",
+            "**Reglas de traspaso** y una persona responsable de tomar los casos que suelta el agente.",
+            "**Plantillas de mensaje** para recordatorios y seguimientos fuera de la ventana de atención.",
+            "**Un presupuesto para el uso:** Meta cobra por mensaje según la categoría y el país, y se suman la licencia del CRM y el consumo del modelo de IA."
+          ]
+        },
+        "Ese último punto lo desglosamos en [cuánto cuesta un agente de IA para WhatsApp en México](/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/), con los costos de terceros que conviene prever.",
+        "Las piezas técnicas son la mitad. La otra mitad es quien escribe las reglas, conecta el CRM, prueba con conversaciones reales y capacita a tu equipo. Ese es el trabajo que hacemos en cada implementación, no solo la conexión técnica.",
+        {
+          "variant": "h2",
+          "id": "errores-comunes-implementar-agentes",
+          "text": "Errores comunes al implementar agentes de IA",
+          "rail": "Errores comunes al implementar"
+        },
+        {
+          "variant": "ul",
+          "items": [
+            "**Conectar el agente antes de definir el proceso.** Si no está claro qué es un buen prospecto, el agente califica al azar.",
+            "**Darle una base de conocimiento pobre.** Un archivo con cuatro preguntas no alcanza. Usa conversaciones reales de tu equipo.",
+            "**Dejar el CRM fuera.** El agente responde bien, pero nadie da seguimiento y los datos se quedan en el chat.",
+            "**No definir el traspaso.** El cliente pide a una persona y nadie llega, o llega sin contexto y vuelve a preguntar todo.",
+            "**Usar atajos no oficiales.** La plataforma oficial te da plantillas, webhooks y reglas claras. Un atajo pone en riesgo el número con el que vendes.",
+            "**Olvidar la ventana de atención.** Si el seguimiento depende de escribir días después, necesitas plantillas listas desde el principio.",
+            "**Dejarlo solo después del lanzamiento.** Revisa conversaciones cada semana, corrige respuestas y actualiza la base cuando cambien tus precios o servicios."
+          ]
+        },
+        {
+          "variant": "h2",
+          "id": "donde-empezar-agente",
+          "text": "¿Por dónde empezar con tu agente?",
+          "rail": "Por dónde empezar con"
+        },
+        "Empieza por tu proceso, no por la herramienta. Haz una lista de las preguntas que más te hacen por WhatsApp, de lo que necesitas saber para decidir si un prospecto vale una llamada y del momento en el que quieres que entre tu equipo. Con eso ya tienes la base de las reglas.",
+        "Si quieres verlo aplicado a tu negocio, en nuestra página de [agentes de IA para WhatsApp de Ingeniak](/servicios/agentes-ia-whatsapp/) te mostramos cómo lo implementamos, de la conexión del número al traspaso a tu equipo. Agenda una Discovery Session y revisamos tu caso, o escríbele a Kain, nuestro asistente de IA, para ver un agente funcionando desde tu propio WhatsApp."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Quieres ver cómo aplica a tu negocio? Escríbele a Kain y cuéntale cómo te llegan tus clientes.",
+      "link": {
+        "label": "Agentes de IA para WhatsApp Business",
+        "href": "/servicios/agentes-ia-whatsapp/"
+      },
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí agente de IA para WhatsApp: qué es, cómo funciona y ejemplos y quiero ver cómo aplica a mi negocio."
+      }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Lo que más nos preguntan"
+      },
+      "faqIds": [
+        "B09",
+        "B10",
+        "B11",
+        "B12"
+      ]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo que diseña, implementa y opera agentes de IA, CRM y automatizaciones en Ingeniak."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": {
+        "text": "Fuentes y fecha de consulta"
+      },
+      "lede": "Los datos de terceros cambian; antes de decidir, revisa la versión vigente de cada fuente.",
+      "items": [
+        {
+          "title": "About the WhatsApp Business Platform",
+          "publisher": "Meta for Developers",
+          "href": "https://developers.facebook.com/documentation/business-messaging/whatsapp/about-the-platform",
+          "consultado": "2026-11-13",
+          "nota": "Qué es la WhatsApp Business Platform y la API de la nube (Cloud API) para enviar y recibir mensajes de forma programada; uso de webhooks para mensajes entrantes; números de negocio; plantillas como único tipo de mensaje fuera de la ventana de atención; requisito de portafolio comercial."
+        },
+        {
+          "title": "WhatsApp Business Platform | Business messaging APIs",
+          "publisher": "WhatsApp (Meta)",
+          "href": "https://whatsappbusiness.com/products/business-platform/",
+          "consultado": "2026-11-13",
+          "nota": "Dos caminos de conexión: integración directa con tu propio número o a través de un partner con registro integrado y poco o nada de código; integración con sistemas como CRM y automatización de marketing."
+        },
+        {
+          "title": "Pricing on the WhatsApp Business Platform",
+          "publisher": "Meta for Developers",
+          "href": "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing",
+          "consultado": "2026-11-13",
+          "nota": "Ventana de atención al cliente de veinticuatro horas que se abre y se reinicia con cada mensaje del cliente; fuera de ella solo plantillas; categorías de plantillas (marketing, utilidad, autenticación); cobro por mensaje entregado según categoría y país."
+        }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "h2": {
+        "text": "Sigue explorando"
+      },
+      "items": [
+        {
+          "href": "/servicios/agentes-ia-whatsapp/",
+          "label": "Servicios",
+          "title": "Agentes de IA para WhatsApp Business",
+          "line": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM."
+        },
+        {
+          "href": "/blog/agente-ia-whatsapp-vs-chatbot/",
+          "label": "Blog",
+          "title": "Agente de IA para WhatsApp vs chatbot",
+          "line": "Un chatbot sigue un menú; un agente de IA entiende, consulta tu CRM y agenda."
+        },
+        {
+          "href": "/kommo/",
+          "label": "Servicios",
+          "title": "Partner oficial de Kommo en México y LATAM",
+          "line": "Licencias, implementación y automatización de Kommo con agentes de IA en WhatsApp."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer, placa compartida)",
+      "eyebrow": "Siguiente paso",
+      "h2": {
+        "text": "¿Hablamos de tu caso?",
+        "soft": "Agenda tu Discovery Session."
+      },
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí agente de IA para WhatsApp: qué es, cómo funciona y ejemplos y quiero ver cómo aplica a mi negocio."
+      }
+    }
+  }
+}

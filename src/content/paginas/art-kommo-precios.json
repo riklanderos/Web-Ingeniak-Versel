@@ -1,0 +1,348 @@
+{
+  "pageId": "art-kommo-precios",
+  "url": "/blog/kommo-precios/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": "Rik Landeros",
+  "publicado": "2026-11-14",
+  "actualizado": "2026-11-14",
+  "articulo": {
+    "categoria": "Kommo",
+    "about": [
+      {
+        "type": "Service",
+        "name": "Kommo vs GoHighLevel: ¿cuál conviene a tu empresa?",
+        "url": "/blog/kommo-vs-gohighlevel/"
+      }
+    ]
+  },
+  "pendientes": [
+    "RESUELTO 2026-11-14 · redactado en SEO Studio (2026-11-13) · aprobado por Rik Landeros por escrito en el chat de construcción (\"ya puedes publicarlos\"). Se publicó desde el repo; el Estudio lo importa después.",
+    "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
+    "PLACA · portada y cierre usan placas compartidas por defecto (home-sistema-2-atender y cta-amanecer).",
+    "PREGUNTAS AL CLIENTE (de la sesión del Estudio, sin contestar al publicar): facturación en pesos con CFDI y reventa de licencias; si el cliente de GoHighLevel queda como subcuenta de la agencia; qué agente se conecta en GoHighLevel. El texto no afirma ninguna de las tres: remite a preguntarlo al cotizar."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (placa compartida por defecto)",
+      "eyebrow": "Kommo",
+      "h1": {
+        "text": "Kommo precios 2026:",
+        "soft": "planes, qué incluyen y costo real en México",
+        "lit": "Kommo"
+      },
+      "deck": "Kommo precios 2026: cómo cobra por usuario, qué incluye cada plan y qué pagas aparte (WhatsApp, IA, implementación). Calcula tu costo real en México.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta"
+    },
+    "respuesta": {
+      "_componente": "Intertitle + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "La respuesta corta",
+      "text": "En Kommo precios y planes se calculan por usuario al mes, en dólares, con un periodo mínimo de seis meses. Hay cuatro planes: Básico, Avanzado, Pro y Empresarial. La licencia no incluye los mensajes de WhatsApp, que cobra Meta, ni créditos de IA extra, integraciones de pago o implementación. Consulta la tarifa vigente en la página oficial de Kommo."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con CTA intermedio",
+      "blocks": [
+        "Si buscaste «Kommo precios», lo primero que encuentras es una tabla en dólares con cuatro planes. Esa tabla responde la mitad de la pregunta. La otra mitad es lo que no aparece en la licencia: los mensajes de WhatsApp que cobra Meta, los créditos de IA extra, las integraciones de pago y la implementación.",
+        "En esta guía te explicamos cómo cobra Kommo, qué incluye cada plan, qué se paga aparte y cómo calcular el costo real en México antes de firmar. No copiamos montos porque cambian: te mandamos a la página oficial, que consultamos el 13 de noviembre de 2026. Somos partner oficial de Kommo en México y LATAM, y esto es lo que revisamos con cada cliente antes de cotizar.",
+        {
+          "variant": "h2",
+          "id": "precios-kommo-2026-cobra",
+          "text": "Precios de Kommo en 2026: cómo cobra",
+          "rail": "Precios de Kommo en"
+        },
+        "Kommo cobra **por usuario, al mes**, y factura en dólares. Así lo dice su [página oficial de planes y precios](https://www.kommo.com/es/buy/tariff/), que consultamos el 13 de noviembre de 2026. Las reglas que más pesan en tu presupuesto son estas:",
+        {
+          "variant": "ul",
+          "items": [
+            "**No hay pago mes a mes.** El periodo mínimo de suscripción es de seis meses.",
+            "**Eliges el periodo:** seis meses, nueve meses, un año o dos años. La tarifa por usuario cambia según el periodo, así que compara cada opción en la página oficial.",
+            "**Todos los usuarios llevan el mismo plan.** No puedes tener a tu gerente en Pro y a tus vendedores en Básico dentro de la misma cuenta.",
+            "**Pagas con tarjeta o PayPal**, en dólares.",
+            "**Hay prueba gratis de catorce días**, sin tarjeta y con todas las funciones.",
+            "**El plan Empresarial no tiene precio publicado:** se cotiza a la medida."
+          ]
+        },
+        "Kommo también aclara que algunos partners oficiales revenden sus licencias en moneda local. Si te importa pagar en pesos o recibir factura en México, pregúntalo antes de contratar.",
+        "Por eso, cuando alguien nos pide precios Kommo en una llamada, la primera pregunta no es el plan. Es cuántas personas van a usar el CRM y por cuánto tiempo quieres comprometerte.",
+        {
+          "variant": "h2",
+          "id": "planes-kommo-incluye-cada",
+          "text": "Planes de Kommo: qué incluye cada uno",
+          "rail": "Planes de Kommo: qué"
+        },
+        "Kommo tiene cuatro planes. En su página en español se llaman Básico, Avanzado, Pro y Empresarial; en la versión en inglés aparecen como Base, Advanced, Pro y Enterprise. Cada plan incluye todo lo del anterior y suma funciones.",
+        {
+          "variant": "table",
+          "head": [
+            "Plan",
+            "Para quién",
+            "Qué incluye",
+            "Qué se paga aparte"
+          ],
+          "rows": [
+            [
+              "Básico",
+              "Equipos chicos que quieren ordenar sus chats en un embudo",
+              "Embudos de venta, bandeja unificada, tablero, calendario, IA básica (respuestas sugeridas, resúmenes, ayuda para redactar), un número de WhatsApp y una cuenta de Instagram",
+              "Mensajes de WhatsApp, créditos de IA extra, integraciones de terceros de pago"
+            ],
+            [
+              "Avanzado",
+              "Equipos que quieren automatizar el seguimiento",
+              "Automatización del embudo, difusiones, bots sin código, hasta tres agentes de IA, detección de mensajes sin responder, tres números de WhatsApp y tres cuentas de Instagram",
+              "Lo mismo que Básico"
+            ],
+            [
+              "Pro",
+              "Negocios que agendan citas o miden campañas",
+              "Página de reservas y agenda, citas agendadas por IA, hasta cincuenta agentes de IA, sincronización con plataformas de anuncios, retorno por campaña, reportes de ventas y marketing, canales ilimitados",
+              "Mensajes de WhatsApp, créditos de IA extra, integraciones de terceros de pago"
+            ],
+            [
+              "Empresarial",
+              "Empresas con requisitos de seguridad y soporte",
+              "Inicio de sesión único, controles de seguridad, nivel de servicio prioritario, respaldos programados, soporte prioritario y gerente de cuenta dedicado",
+              "Se negocia en la cotización, incluidos los créditos de IA"
+            ]
+          ]
+        },
+        "Fuente: [planes y precios de Kommo](https://www.kommo.com/es/buy/tariff/), consulta del 13 de noviembre de 2026. Cada plan también trae un tope de leads por usuario que sube de Básico a Pro.",
+        {
+          "variant": "h3",
+          "text": "Créditos de IA: el detalle que más se pasa por alto"
+        },
+        "Cada plan incluye una bolsa mensual de créditos de IA **por usuario**. Esa bolsa se reinicia en tu fecha de facturación y no se acumula: lo que no usas, se pierde. Si tus agentes de IA atienden muchas conversaciones, puedes quedarte sin créditos antes de fin de mes. En ese caso Kommo vende paquetes de créditos adicionales.",
+        "Sumar usuarios también suma créditos y canales. Pero comprar licencias solo para tener más IA casi nunca es la decisión más barata. Primero revisa cuánto consume tu agente con tu volumen real.",
+        {
+          "variant": "cta-medio"
+        },
+        {
+          "variant": "h2",
+          "id": "no-incluye-licencia-kommo",
+          "text": "¿Qué no incluye la licencia de Kommo?",
+          "rail": "Qué no incluye la"
+        },
+        "La licencia cubre el uso del CRM. Hay costos que viven fuera de ella y que conviene poner en tu presupuesto desde el inicio:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Mensajes de WhatsApp.** Los cobra Meta, no Kommo.",
+            "**Créditos de IA adicionales**, si tu bolsa mensual no alcanza.",
+            "**Usuarios nuevos.** Cada persona que entra al CRM es una licencia más, por el periodo que contrataste.",
+            "**Integraciones o servicios de terceros de pago**, como herramientas externas que conectas desde el marketplace.",
+            "**Implementación y capacitación.** Kommo te da la herramienta; alguien tiene que configurar los embudos, conectar WhatsApp, escribir las reglas del agente y enseñar a tu equipo a usarlo."
+          ]
+        },
+        {
+          "variant": "h3",
+          "text": "Los mensajes de WhatsApp los cobra Meta"
+        },
+        "Kommo lo dice sin rodeos en su guía sobre [el costo de WhatsApp Business en 2026](https://www.kommo.com/es/blog/precios-de-whatsapp-actualizacion/): no cobra por los mensajes de WhatsApp, y Meta cobra esas tarifas directamente y por separado de tu suscripción.",
+        "Según la [documentación oficial de precios de la plataforma de WhatsApp Business](https://developers.facebook.com/docs/whatsapp/pricing/), consultada el 13 de noviembre de 2026, así funciona ese cobro:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Meta cobra por mensaje entregado**, no por conversación. Los mensajes que te mandan tus clientes no se cobran.",
+            "**La tarifa depende de la categoría y del país del destinatario.** Las plantillas pueden ser de marketing, de utilidad o de autenticación, y cada categoría tiene su propia tarifa.",
+            "**México tiene tarifa propia** en la tabla de Meta. No cae en un grupo regional.",
+            "**Las respuestas dentro de la ventana de atención** de veinticuatro horas son mensajes de servicio, y cada número tiene una cantidad mensual gratuita de ellos.",
+            "**Si el cliente llega desde un anuncio de clic a WhatsApp**, se abre una ventana gratuita para escribirle.",
+            "**Desde el 1 de octubre de 2026**, los mensajes de utilidad dentro de la ventana de atención ya se cobran."
+          ]
+        },
+        "En la práctica, una cuenta que solo responde a quien escribe gasta poco en Meta. Una cuenta que manda campañas de marketing por plantilla gasta bastante más. Eso no depende de tu plan de Kommo, sino de cómo usas WhatsApp.",
+        {
+          "variant": "h2",
+          "id": "costo-real-kommo",
+          "text": "¿Cuál es el costo real de Kommo en México?",
+          "rail": "Cuál es el costo"
+        },
+        "El costo de Kommo en México es la suma de cinco piezas, no solo de la licencia. Así lo armamos con cada cliente.",
+        {
+          "variant": "h3",
+          "text": "Cuántos usuarios necesitas de verdad"
+        },
+        "Cuenta a las personas que van a contestar chats, mover leads o dar seguimiento. No cuentes a quien solo mira reportes una vez al mes si puede verlos desde otra cuenta. Y haz la cuenta dos veces: con tu equipo de hoy y con el que piensas tener en un año, porque cada contratación nueva es una licencia más.",
+        {
+          "variant": "h3",
+          "text": "Periodo de pago, tipo de cambio y factura"
+        },
+        "Como el mínimo son seis meses, pagas por adelantado ese periodo completo. Si pagas directo a Kommo, el cargo es en dólares y tu costo en pesos depende del tipo de cambio del día. Si necesitas pagar en moneda local o deducir la licencia, pregunta a tu partner cómo factura antes de elegir el periodo.",
+        {
+          "variant": "h3",
+          "text": "Mensajes, créditos e integraciones"
+        },
+        "Estima cuántas plantillas de marketing y de utilidad vas a mandar al mes. Revisa si tus agentes de IA van a gastar más créditos de los que trae tu plan. Y anota cualquier integración de pago que ya uses.",
+        {
+          "variant": "h3",
+          "text": "Implementación y capacitación con un partner"
+        },
+        "Aquí está la diferencia entre un CRM que se usa y uno que se abandona. La implementación incluye diseñar tus embudos, conectar WhatsApp con la API oficial, crear automatizaciones, configurar los agentes de IA y capacitar a tu equipo. Su costo depende de cuántos embudos, canales y agentes necesitas, así que se cotiza según tu proceso.",
+        {
+          "variant": "h2",
+          "id": "cuando-conviene-cada-plan",
+          "text": "Cuándo conviene cada plan de Kommo",
+          "rail": "Cuándo conviene cada plan"
+        },
+        "Te recomendamos el plan según tu proceso de venta, no según la lista de funciones:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Básico:** si hoy vendes por WhatsApp con un equipo chico y tu problema es el desorden. Te da embudo, bandeja unificada e historial por cliente.",
+            "**Avanzado:** si pierdes ventas por falta de seguimiento. Aquí aparecen la automatización del embudo, las difusiones, los bots sin código y los primeros agentes de IA. Es el plan que más recomendamos para equipos comerciales.",
+            "**Pro:** si agendas citas (clínicas, consultorios, servicios) o inviertes en anuncios y quieres medir qué campaña vende. Suma reservas, citas por IA y reportes de marketing.",
+            "**Empresarial:** si tu área de sistemas pide inicio de sesión único, controles de seguridad o un nivel de servicio por contrato."
+          ]
+        },
+        "Si dudas entre Kommo y otra plataforma, lee nuestra [comparativa de Kommo vs GoHighLevel](/blog/kommo-vs-gohighlevel/). Kommo cobra por usuario y GoHighLevel por cuenta, y eso cambia mucho la cuenta según el tamaño de tu equipo.",
+        {
+          "variant": "h2",
+          "id": "calcular-costo-total-kommo",
+          "text": "Cómo calcular tu costo total de Kommo, paso a paso",
+          "rail": "Cómo calcular tu costo"
+        },
+        "Antes de pedir una cotización, junta estos datos. Con ellos cualquier partner te puede dar un número serio:",
+        {
+          "variant": "ol",
+          "items": [
+            "**Define el plan** según las funciones que de verdad vas a usar en los próximos seis meses.",
+            "**Cuenta los usuarios** de hoy y los que esperas sumar en el año.",
+            "**Elige el periodo** (seis meses, nueve meses, un año o dos años) y revisa la tarifa por usuario de ese periodo en la página oficial de Kommo.",
+            "**Multiplica** usuarios por tarifa por meses del periodo. Ese es tu pago de licencias por adelantado.",
+            "**Estima los mensajes de WhatsApp** con la tabla de Meta para México, separando marketing, utilidad y servicio.",
+            "**Calcula los créditos de IA** que consumirán tus agentes y si necesitas paquetes extra.",
+            "**Suma integraciones de pago, implementación y capacitación.**",
+            "**Convierte a pesos** con el tipo de cambio del día, o pide la cotización en moneda local si tu partner la ofrece."
+          ]
+        },
+        "El resultado es tu costo del primer periodo. Del segundo en adelante normalmente solo pagas licencias, mensajes y créditos, porque la implementación ya está hecha.",
+        {
+          "variant": "h2",
+          "id": "contratar-kommo-partner-oficial",
+          "text": "Por qué contratar Kommo con un partner oficial",
+          "rail": "Por qué contratar Kommo"
+        },
+        "La herramienta es la mitad. La otra mitad es quien configura los embudos, conecta WhatsApp, escribe las reglas del agente y capacita a tu equipo, en tu idioma. Un partner oficial te ayuda a elegir el plan y el número de licencias correctos, así que no pagas un plan que te queda grande ni te quedas corto a los tres meses.",
+        "Antes de contratar, revisa que el partner sea real. En esta guía te explicamos [cómo verificar si una agencia es partner oficial de Kommo](/blog/como-verificar-partner-oficial-kommo/). Nosotros lo somos en México y LATAM, y lo hemos aplicado en casos como un retail multimarca que logró {{metric:retail-conversiones}} en conversiones con Kommo y calificación de leads por IA.",
+        "Con [Kommo implementado por Ingeniak](/kommo/) te ayudamos a contratar las licencias que necesitas, configuramos el CRM, conectamos WhatsApp con la API oficial y ponemos agentes de IA que responden, califican y agendan.",
+        {
+          "variant": "h2",
+          "id": "cotiza-kommo-operacion-real",
+          "text": "Cotiza Kommo con tu operación real",
+          "rail": "Cotiza Kommo con tu"
+        },
+        "Mándanos cuántas personas atienden tus chats, cómo vendes hoy y qué quieres automatizar. Te decimos qué plan te conviene, cuántas licencias necesitas y cuánto costaría la implementación, todo por separado y sin sorpresas. Cotiza tu proyecto y sal con un costo total claro, no solo con el precio de una licencia."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Quieres ver cómo aplica a tu negocio? Escríbele a Kain y cuéntale cómo te llegan tus clientes.",
+      "link": {
+        "label": "Kommo vs GoHighLevel: cuál conviene a tu empresa",
+        "href": "/blog/kommo-vs-gohighlevel/"
+      },
+      "ctaPrimary": {
+        "label": "Cotizar proyecto"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí kommo precios 2026: planes, qué incluyen y costo real en México y quiero ver cómo aplica a mi negocio."
+      }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Lo que más nos preguntan"
+      },
+      "faqIds": [
+        "B21",
+        "B22",
+        "B23",
+        "B24"
+      ]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo que diseña, implementa y opera agentes de IA, CRM y automatizaciones en Ingeniak."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": {
+        "text": "Fuentes y fecha de consulta"
+      },
+      "lede": "Los datos de terceros cambian; antes de decidir, revisa la versión vigente de cada fuente.",
+      "items": [
+        {
+          "title": "Planes y precios de Kommo",
+          "publisher": "Kommo",
+          "href": "https://www.kommo.com/es/buy/tariff/",
+          "consultado": "2026-11-13",
+          "nota": "Nombres de los planes (Básico, Avanzado, Pro, Empresarial), cobro por usuario al mes en dólares, sin pago mensual y con mínimo de seis meses (también nueve meses, un año y dos años), mismo plan para todos los usuarios, pago con tarjeta o PayPal, prueba gratis de catorce días, qué incluye cada plan, créditos de IA por usuario que no se acumulan y paquetes extra, integraciones de terceros de pago, partners que revenden en moneda local."
+        },
+        {
+          "title": "Pricing on the WhatsApp Business Platform",
+          "publisher": "Meta",
+          "href": "https://developers.facebook.com/docs/whatsapp/pricing/",
+          "consultado": "2026-11-13",
+          "nota": "Meta cobra por mensaje entregado (no por conversación) según categoría y país del destinatario; México tiene tarifa propia; mensajes de servicio con cantidad mensual gratuita por número; ventana gratuita desde anuncios de clic a WhatsApp; mensajes de utilidad dentro de la ventana se cobran desde el 1 de octubre de 2026."
+        },
+        {
+          "title": "Costo de WhatsApp Business en 2026: 6 formas de controlar tus gastos",
+          "publisher": "Kommo",
+          "href": "https://www.kommo.com/es/blog/precios-de-whatsapp-actualizacion/",
+          "consultado": "2026-11-13",
+          "nota": "Kommo no cobra por los mensajes de WhatsApp; Meta los cobra directamente y por separado de la suscripción de Kommo."
+        }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "h2": {
+        "text": "Sigue explorando"
+      },
+      "items": [
+        {
+          "href": "/blog/kommo-vs-gohighlevel/",
+          "label": "Blog",
+          "title": "Kommo vs GoHighLevel",
+          "line": "Kommo brilla si vendes por chat; GoHighLevel si vendes con embudos, páginas y calendarios."
+        },
+        {
+          "href": "/blog/como-verificar-partner-oficial-kommo/",
+          "label": "Blog",
+          "title": "Cómo verificar que una agencia es partner oficial de Kommo",
+          "line": "4 pasos para confirmar que tu proveedor es partner oficial de Kommo antes de comprar licencias o pagar una implementación, y señales de alerta."
+        },
+        {
+          "href": "/kommo/",
+          "label": "Servicios",
+          "title": "Partner oficial de Kommo en México y LATAM",
+          "line": "Licencias, implementación y automatización de Kommo con agentes de IA en WhatsApp."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer, placa compartida)",
+      "eyebrow": "Siguiente paso",
+      "h2": {
+        "text": "¿Hablamos de tu caso?",
+        "soft": "Te lo cotizamos con tus números."
+      },
+      "ctaPrimary": {
+        "label": "Cotizar proyecto"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí kommo precios 2026: planes, qué incluyen y costo real en México y quiero ver cómo aplica a mi negocio."
+      }
+    }
+  }
+}

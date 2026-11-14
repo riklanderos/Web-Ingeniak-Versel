@@ -1,0 +1,378 @@
+{
+  "pageId": "art-gohighlevel-precios",
+  "url": "/blog/gohighlevel-precios-mexico/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": "Rik Landeros",
+  "publicado": "2026-11-14",
+  "actualizado": "2026-11-14",
+  "articulo": {
+    "categoria": "GoHighLevel",
+    "about": [
+      {
+        "type": "Service",
+        "name": "GoHighLevel: qué es y para qué sirve, en español",
+        "url": "/blog/gohighlevel-en-espanol/"
+      }
+    ]
+  },
+  "pendientes": [
+    "RESUELTO 2026-11-14 · redactado en SEO Studio (2026-11-13) · aprobado por Rik Landeros por escrito en el chat de construcción (\"ya puedes publicarlos\"). Se publicó desde el repo; el Estudio lo importa después.",
+    "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
+    "PLACA · portada y cierre usan placas compartidas por defecto (home-sistema-2-atender y cta-amanecer).",
+    "PREGUNTAS AL CLIENTE (de la sesión del Estudio, sin contestar al publicar): facturación en pesos con CFDI y reventa de licencias; si el cliente de GoHighLevel queda como subcuenta de la agencia; qué agente se conecta en GoHighLevel. El texto no afirma ninguna de las tres: remite a preguntarlo al cotizar."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (placa compartida por defecto)",
+      "eyebrow": "GoHighLevel",
+      "h1": {
+        "text": "GoHighLevel precios en México:",
+        "soft": "planes, extras y cuándo conviene",
+        "lit": "GoHighLevel"
+      },
+      "deck": "Cómo cobra GoHighLevel en México: planes Starter, Unlimited y Founder, cargos por uso de WhatsApp, SMS, correo e IA, y cómo calcular tu costo real.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta"
+    },
+    "respuesta": {
+      "_componente": "Intertitle + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "La respuesta corta",
+      "text": "GoHighLevel precios, en corto: HighLevel cobra una suscripción por cuenta, mensual o anual y en dólares, con tres planes (Starter, Unlimited y Founder) y uno Enterprise a la medida. Usuarios y contactos son ilimitados. Aparte se pagan por uso teléfono, SMS, correo, IA y WhatsApp. La cifra vigente está en su página oficial."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con CTA intermedio",
+      "blocks": [
+        "Si buscas GoHighLevel precios en México, la cifra del plan es lo de menos. Lo que define cuánto vas a pagar es cómo cobra HighLevel: una suscripción por cuenta, en dólares, más cargos por uso que cambian cada mes según tus SMS, correos, llamadas, mensajes de WhatsApp e IA. Y luego está lo que nunca aparece en la página de precios: la implementación y la capacitación.",
+        "En esta guía no copiamos montos, porque HighLevel los ajusta y cualquier número que pongamos aquí envejece rápido. Te explicamos la estructura completa, plan por plan y cargo por cargo, con la [página oficial de precios de HighLevel](https://www.gohighlevel.com/pricing) y su centro de ayuda consultados el 13 de noviembre de 2026, para que hagas la cuenta con tus propios números. Si todavía no sabes qué es la plataforma, empieza por nuestra guía de [qué es GoHighLevel y para qué sirve](/blog/gohighlevel-en-espanol/).",
+        {
+          "variant": "h2",
+          "id": "cobra-gohighlevel-cuenta-no",
+          "text": "Cómo cobra GoHighLevel: por cuenta, no por usuario",
+          "rail": "Cómo cobra GoHighLevel: por"
+        },
+        "La diferencia más importante frente a otros CRM es la unidad de cobro. HighLevel no cobra por usuario: todos sus planes incluyen usuarios y contactos ilimitados.[^1] Lo que pagas es una suscripción por cuenta, y lo que cambia entre planes es sobre todo cuántas subcuentas puedes tener y qué puedes revender.",
+        "Una subcuenta es el espacio de un negocio: sus contactos, embudos, calendarios y conversaciones. Si eres una empresa, tu negocio vive en una subcuenta. Si eres una agencia, cada cliente tiene la suya.",
+        "Esto tiene una consecuencia práctica. Sumar a cinco vendedores más no cambia tu suscripción, pero sí puede cambiar tu gasto por uso, porque más gente enviando mensajes y haciendo llamadas consume más. Si estás comparando con un CRM que cobra por usuario, revisa nuestra comparativa de [Kommo vs GoHighLevel](/blog/kommo-vs-gohighlevel/): la cuenta cambia según el tamaño de tu equipo hoy y dentro de un año.",
+        {
+          "variant": "h2",
+          "id": "planes-gohighlevel-incluye-cada",
+          "text": "Planes de GoHighLevel: qué incluye cada uno",
+          "rail": "Planes de GoHighLevel: qué"
+        },
+        "La página de precios muestra tres planes con prueba gratis y uno a la medida. Cuando alguien busca «HighLevel precio» casi siempre espera una sola cifra, pero cada plan responde a un tipo de cliente distinto. Este es el mapa, con los nombres que usa HighLevel.",
+        {
+          "variant": "table",
+          "head": [
+            "Plan",
+            "Para quién es",
+            "Qué incluye",
+            "Qué se cobra aparte"
+          ],
+          "rows": [
+            [
+              "Starter",
+              "Un negocio o una agencia con pocos clientes",
+              "Hasta tres subcuentas, usuarios y contactos ilimitados, CRM, embudos, calendarios, flujos, SMS y correo bidireccionales",
+              "Uso de teléfono, SMS, correo e IA; complementos como WhatsApp"
+            ],
+            [
+              "Unlimited",
+              "Agencias que administran muchos clientes",
+              "Todo lo de Starter, subcuentas ilimitadas, app de escritorio con tu marca (marca blanca), acceso básico a la API y traspaso de cargos por uso a tus clientes",
+              "Los mismos cargos por uso y complementos; el traspaso de cargos es a costo"
+            ],
+            [
+              "Founder",
+              "Agencias, consultores y fundadores que quieren revender la plataforma",
+              "Todo lo de Unlimited, modo SaaS para vender la plataforma como software propio y soluciones listas por industria",
+              "Los mismos cargos por uso; aquí sí puedes revenderlos con tu margen"
+            ],
+            [
+              "Enterprise",
+              "Negocios y agencias de alto volumen",
+              "Plan a la medida con gerente de cuenta dedicado, soporte premium, app móvil con tu marca y cumplimiento HIPAA incluidos",
+              "Se negocia con el equipo comercial de HighLevel"
+            ]
+          ]
+        },
+        "Fuente: página de precios y guía de precios de HighLevel, consultadas el 13 de noviembre de 2026.[^1][^2] Ojo con los nombres: en las preguntas frecuentes de la misma página, Starter aparece como Agency Starter, Unlimited como Agency Unlimited y Founder como Pro o Agency Pro. Son los mismos planes.",
+        {
+          "variant": "h3",
+          "text": "Mensual o anual, y la prueba gratis"
+        },
+        "Starter, Unlimited y Founder se pueden pagar de forma mensual o anual; la página indica que el pago anual sale más barato.[^1] No hay contrato de largo plazo: puedes subir, bajar o cancelar el plan desde el tablero, y si subes a mitad de mes solo pagas la diferencia proporcional.[^1]",
+        "La prueba gratis dura catorce días. Dos detalles que conviene saber antes de activarla: el cobro empieza solo al terminar la prueba si no cancelas, y los cargos por uso pueden aplicar desde la prueba.[^1]",
+        {
+          "variant": "h3",
+          "text": "¿Y si soy una sola empresa?"
+        },
+        "Para un solo negocio, el plan de entrada suele bastar en número de subcuentas. Unlimited y Founder tienen sentido cuando administras varios negocios o quieres revender. Si contratas a través de una agencia, es probable que tu negocio viva como subcuenta dentro de la cuenta de esa agencia, y que ella te cobre su propia tarifa.",
+        {
+          "variant": "cta-medio"
+        },
+        {
+          "variant": "h2",
+          "id": "gohighlevel-precios-costos-extra",
+          "text": "GoHighLevel precios: los costos extra que nadie te dice",
+          "rail": "GoHighLevel precios: los costos"
+        },
+        "La propia página de precios lo admite en sus preguntas frecuentes: la suscripción cubre la plataforma, pero la telefonía, los correos y la IA se cobran por uso.[^1] Esos cargos se pagan desde una cartera de saldo (Agency Wallet) que HighLevel recarga con tu tarjeta cada vez que baja de un mínimo que tú defines.[^2]",
+        {
+          "variant": "table",
+          "head": [
+            "Concepto",
+            "Cómo se cobra",
+            "Dónde ver la tarifa vigente"
+          ],
+          "rows": [
+            [
+              "Números de teléfono, SMS y llamadas",
+              "Por número, por segmento de SMS y por minuto; varía por país",
+              "Guía de precios de HighLevel, sección Phone System"
+            ],
+            [
+              "Correo",
+              "Por bloque de correos enviados, igual en todos los planes",
+              "Guía de precios, sección Email System"
+            ],
+            [
+              "WhatsApp",
+              "Cuota mensual por subcuenta, más cada mensaje entregado según su categoría y país",
+              "Guía de precios de WhatsApp de HighLevel"
+            ],
+            [
+              "IA (agentes)",
+              "Pago por uso o un plan mensual de IA por subcuenta",
+              "Guía de precios de IA de HighLevel"
+            ],
+            [
+              "Acciones premium de flujos",
+              "Por ejecución, o un plan por volumen",
+              "Guía de precios, sección Workflow"
+            ],
+            [
+              "Dominios y complementos",
+              "Según el dominio o el complemento, por subcuenta",
+              "Página de precios, sección Add-ons"
+            ]
+          ]
+        },
+        {
+          "variant": "h3",
+          "text": "Teléfono, SMS y correo"
+        },
+        "El sistema de teléfono de HighLevel (LC Phone) cobra los números, los SMS y las llamadas con la misma tarifa de su proveedor de telefonía, y esa tarifa cambia según el país.[^2] Los SMS se cobran por segmento: un mensaje largo se divide en varios y cuesta más. El correo (LC Email) se cobra por cada bloque de correos enviados.[^2] Si vas a mandar campañas grandes, esto pesa más que la suscripción.",
+        {
+          "variant": "h3",
+          "text": "WhatsApp"
+        },
+        "WhatsApp es un complemento con cuota mensual por cada subcuenta que lo activa. Además se paga cada mensaje entregado según su categoría: marketing, utilidad, autenticación o servicio, y según el país del destinatario.[^3] Desde el 1 de octubre de 2026, los mensajes de servicio pasaron a cobrarse después de un bloque mensual gratuito por número, y la tarifa de mensajes de marketing en México subió.[^3]",
+        "Hay dos cosas que bajan la cuenta. Las conversaciones que empiezan desde un anuncio de clic a WhatsApp siguen gratis durante su ventana.[^3] Y las llamadas de WhatsApp que inicia tu cliente no se cobran; solo las que inicia tu negocio, por minuto.[^3]",
+        {
+          "variant": "h3",
+          "text": "Inteligencia artificial"
+        },
+        "Aquí está la confusión más común. Los asistentes de IA que ayudan a crear contenido o armar embudos vienen incluidos para los usuarios de agencia, con límites de uso justo. Los agentes que trabajan por ti, como Conversation AI para chats, Voice AI para llamadas y Reviews AI para reseñas, se pagan aparte.[^4] Cada subcuenta puede pagarlos por uso o contratar un plan mensual de IA (AI Employee) con uso incluido.[^4] Y aunque el plan cubra el agente de voz, las llamadas siguen cobrándose como telefonía.[^2]",
+        {
+          "variant": "h3",
+          "text": "Complementos, dominios y anuncios"
+        },
+        "La lista de complementos incluye, entre otros, IP dedicada para correo, compra de dominios, cumplimiento HIPAA, soporte premium, app móvil con tu marca, SEO y hospedaje de WordPress.[^1] El administrador de anuncios no cuesta, pero tu inversión en pauta va por separado.[^2]",
+        {
+          "variant": "h2",
+          "id": "costo-gohighlevel",
+          "text": "¿Cuál es el costo de GoHighLevel en México?",
+          "rail": "Cuál es el costo"
+        },
+        "El costo de GoHighLevel en México no es solo el plan convertido a pesos. Estos son los factores locales que vemos en cada proyecto:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Cobro en dólares.** HighLevel publica sus precios en dólares y los carga a tu tarjeta.[^4] Tu gasto en pesos sube o baja con el tipo de cambio, aunque la tarifa no cambie.",
+            "**Comisiones de tu banco.** Muchas tarjetas cobran una comisión por compras en moneda extranjera. Revisa la tuya antes de dar de alta la cartera de saldo.",
+            "**Factura e IVA.** HighLevel es una empresa de Estados Unidos. Pregunta a tu contador cómo deducir el gasto y cómo tratar el IVA de un servicio digital extranjero.",
+            "**WhatsApp con tarifa de México.** Si tus clientes están en México, pagas la tarifa por mensaje de México, que cambió en octubre de 2026.[^3]",
+            "**Implementación y capacitación.** Configurar pipelines, embudos, calendarios, WhatsApp y el agente de IA en español, y enseñarle a tu equipo a usarlo, es trabajo aparte de la suscripción.",
+            "**Quién es dueño de la cuenta.** Si una agencia te da de alta en su cuenta, pregunta si los cargos por uso se te pasan a costo o con margen. HighLevel permite ambas cosas según el plan de la agencia.[^2]"
+          ]
+        },
+        "La herramienta es la mitad. La otra mitad es quien configura los embudos, conecta WhatsApp, escribe las reglas del agente y capacita a tu equipo, en tu idioma. En el caso de una clínica dental de Monterrey que agenda con GoHighLevel y un agente de IA, el resultado fue {{metric:dental-citas|full}}, y eso salió del sistema completo, no de la suscripción sola.",
+        {
+          "variant": "h2",
+          "id": "cuando-conviene-gohighlevel-cuando",
+          "text": "Cuándo conviene GoHighLevel y cuándo no",
+          "rail": "Cuándo conviene GoHighLevel y"
+        },
+        "El precio solo tiene sentido frente a lo que reemplaza. Usa estas señales para decidir.",
+        {
+          "variant": "h3",
+          "text": "Te conviene si…"
+        },
+        {
+          "variant": "ul",
+          "items": [
+            "**Pagas varias herramientas sueltas** para páginas, formularios, agenda, correo, SMS y CRM, y ninguna le pasa datos a la otra.",
+            "**Tu equipo va a crecer**, porque sumar usuarios no cambia la suscripción.",
+            "**Vendes con citas**: clínicas, estética, bienes raíces, educación o servicios profesionales.",
+            "**Eres agencia** y quieres dar a cada cliente su propio espacio, con tu marca y tus cargos por uso."
+          ]
+        },
+        {
+          "variant": "h3",
+          "text": "No te conviene si…"
+        },
+        {
+          "variant": "ul",
+          "items": [
+            "**Casi toda tu venta se cierra dentro de WhatsApp**, sin páginas ni calendarios: un CRM conversacional suele salir más simple.",
+            "**Solo necesitas un CRM básico** para dos o tres personas y no vas a usar embudos ni campañas.",
+            "**No tienes quién lo opere.** Pagarías una plataforma completa para usar una parte.",
+            "**Tu presupuesto no aguanta variaciones** por tipo de cambio o por volumen de mensajes."
+          ]
+        },
+        {
+          "variant": "h2",
+          "id": "calcular-costo-total-cinco",
+          "text": "Cómo calcular tu costo total en cinco pasos",
+          "rail": "Cómo calcular tu costo"
+        },
+        "Haz esta cuenta con tus números reales antes de contratar. Toma las tarifas de las páginas oficiales del día en que la hagas.",
+        {
+          "variant": "ol",
+          "items": [
+            "**Elige el plan por subcuentas, no por funciones.** Un negocio, o una agencia con pocos clientes, empieza en Starter; muchos clientes o reventa, en Unlimited o Founder.",
+            "**Estima tu volumen mensual de uso**: SMS, correos, minutos de llamada y mensajes de WhatsApp por categoría. Usa el historial de tus herramientas actuales.",
+            "**Decide cómo vas a pagar la IA**: por uso o con un plan mensual por subcuenta. Si el agente va a atender mucho, compara las dos opciones.",
+            "**Convierte a pesos con un margen**: aplica el tipo de cambio actual, la comisión de tu tarjeta y un colchón para meses con más volumen.",
+            "**Suma implementación, capacitación y operación**, y réstale lo que dejas de pagar en las herramientas que GoHighLevel reemplaza."
+          ]
+        },
+        "El resultado de esa resta es tu costo real. Si sale positivo, GoHighLevel te ahorra dinero además de ordenar tu venta.",
+        {
+          "variant": "h2",
+          "id": "cotiza-implementacion-gohighlevel-ingeniak",
+          "text": "Cotiza la implementación de GoHighLevel con Ingeniak",
+          "rail": "Cotiza la implementación de"
+        },
+        "Implementamos GoHighLevel en español para empresas en México y Latinoamérica: pipelines, embudos, calendarios, WhatsApp, agente de IA y capacitación de tu equipo. Antes de cotizar te ayudamos a estimar tu gasto por uso con tu volumen real, para que no haya sorpresas en la cartera de saldo. Conoce lo que configuramos en nuestra página de [implementación de GoHighLevel en español](/gohighlevel/) y pide tu cotización con tu proceso de venta en la mano."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Quieres ver cómo aplica a tu negocio? Escríbele a Kain y cuéntale cómo te llegan tus clientes.",
+      "link": {
+        "label": "GoHighLevel en español: qué es, para qué sirve y cómo se implementa",
+        "href": "/blog/gohighlevel-en-espanol/"
+      },
+      "ctaPrimary": {
+        "label": "Cotizar proyecto"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí goHighLevel precios en México: planes, extras y cuándo conviene y quiero ver cómo aplica a mi negocio."
+      }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Lo que más nos preguntan"
+      },
+      "faqIds": [
+        "B13",
+        "B14",
+        "B15",
+        "B16"
+      ]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo que diseña, implementa y opera agentes de IA, CRM y automatizaciones en Ingeniak."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": {
+        "text": "Fuentes y fecha de consulta"
+      },
+      "lede": "Los datos de terceros cambian; antes de decidir, revisa la versión vigente de cada fuente.",
+      "items": [
+        {
+          "title": "HighLevel Pricing",
+          "publisher": "HighLevel",
+          "href": "https://www.gohighlevel.com/pricing",
+          "consultado": "2026-11-13",
+          "nota": "Planes Starter, Unlimited, Founder (en sus FAQ: Agency Starter, Agency Unlimited y Pro/Agency Pro) y Enterprise; pago mensual o anual; usuarios y contactos ilimitados; tres subcuentas en Starter e ilimitadas en Unlimited y Founder; marca blanca, API básica y traspaso de cargos en Unlimited; modo SaaS en Founder; cargos por uso (IA de conversación, voz y reseñas, correo y SMS, llamadas); complementos (WhatsApp por subcuenta, IA, IP dedicada, dominios, HIPAA, app móvil); prueba de catorce días con cobro automático; mes a mes sin contrato y prorrateo."
+        },
+        {
+          "title": "HighLevel Pricing Guide (Pricing & Billing: Wallets, Charges, Rebilling)",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/en/support/solutions/articles/155000001156-highlevel-pricing-guide",
+          "consultado": "2026-11-13",
+          "nota": "Agency Wallet con recarga automática a tarjeta; LC Phone al precio de su proveedor de telefonía y variable por país; SMS por segmento; LC Email por bloque de correos en todos los planes; acciones premium de flujos por ejecución; rebilling sin margen en Unlimited y Founder y con margen solo en Founder (modo SaaS); Ad Manager sin costo y pauta aparte; las llamadas se cobran aunque Voice AI esté cubierto."
+        },
+        {
+          "title": "WhatsApp Billing & Pricing Guide",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/155000001428-whatsapp-pricing-billing-and-rebilling-guide",
+          "consultado": "2026-11-13",
+          "nota": "Cuota mensual por subcuenta con WhatsApp; cobro por mensaje entregado según categoría y país; desde el 1 de octubre de 2026, mensajes de servicio cobrables tras un bloque mensual gratuito por número, utilidad dentro de ventana cobrable y alza de la tarifa de marketing en México; conversaciones desde anuncios de clic a WhatsApp gratis; llamadas iniciadas por el usuario gratis y las del negocio por minuto; reventa con multiplicador."
+        },
+        {
+          "title": "AI Products Pricing",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/155000006652-ai-product-pricing",
+          "consultado": "2026-11-13",
+          "nota": "Asistentes de IA incluidos para usuarios de agencia con uso justo; agentes (Conversation AI, Voice AI, Reviews AI) de pago; planes AI Employee por subcuenta o pago por uso; precios en dólares; telefonía aparte."
+        }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "h2": {
+        "text": "Sigue explorando"
+      },
+      "items": [
+        {
+          "href": "/blog/gohighlevel-en-espanol/",
+          "label": "Blog",
+          "title": "GoHighLevel en español",
+          "line": "Qué es GoHighLevel (HighLevel) y para qué sirve: qué junta en una sola plataforma, para quién sí y para quién no, y cómo se implementa en español."
+        },
+        {
+          "href": "/blog/kommo-vs-gohighlevel/",
+          "label": "Blog",
+          "title": "Kommo vs GoHighLevel",
+          "line": "Kommo brilla si vendes por chat; GoHighLevel si vendes con embudos, páginas y calendarios."
+        },
+        {
+          "href": "/gohighlevel/",
+          "label": "Servicios",
+          "title": "Implementación de GoHighLevel en español",
+          "line": "Configuramos GoHighLevel en español: CRM, embudos, calendarios y automatizaciones con IA para que tu equipo venda más sin perseguir leads."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer, placa compartida)",
+      "eyebrow": "Siguiente paso",
+      "h2": {
+        "text": "¿Hablamos de tu caso?",
+        "soft": "Te lo cotizamos con tus números."
+      },
+      "ctaPrimary": {
+        "label": "Cotizar proyecto"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí goHighLevel precios en México: planes, extras y cuándo conviene y quiero ver cómo aplica a mi negocio."
+      }
+    }
+  }
+}

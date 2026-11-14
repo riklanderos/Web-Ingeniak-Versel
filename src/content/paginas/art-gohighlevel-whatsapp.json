@@ -1,0 +1,390 @@
+{
+  "pageId": "art-gohighlevel-whatsapp",
+  "url": "/blog/gohighlevel-whatsapp/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": "Rik Landeros",
+  "publicado": "2026-11-14",
+  "actualizado": "2026-11-14",
+  "articulo": {
+    "categoria": "GoHighLevel",
+    "about": [
+      {
+        "type": "Service",
+        "name": "GoHighLevel: qué es y para qué sirve, en español",
+        "url": "/blog/gohighlevel-en-espanol/"
+      }
+    ]
+  },
+  "pendientes": [
+    "RESUELTO 2026-11-14 · redactado en SEO Studio (2026-11-13) · aprobado por Rik Landeros por escrito en el chat de construcción (\"ya puedes publicarlos\"). Se publicó desde el repo; el Estudio lo importa después.",
+    "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
+    "PLACA · portada y cierre usan placas compartidas por defecto (home-sistema-2-atender y cta-amanecer).",
+    "PREGUNTAS AL CLIENTE (de la sesión del Estudio, sin contestar al publicar): facturación en pesos con CFDI y reventa de licencias; si el cliente de GoHighLevel queda como subcuenta de la agencia; qué agente se conecta en GoHighLevel. El texto no afirma ninguna de las tres: remite a preguntarlo al cotizar."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (placa compartida por defecto)",
+      "eyebrow": "GoHighLevel",
+      "h1": {
+        "text": "GoHighLevel WhatsApp:",
+        "soft": "conecta la API oficial y un agente de IA",
+        "lit": "GoHighLevel"
+      },
+      "deck": "Cómo conectar WhatsApp a GoHighLevel con la API oficial: requisitos, coexistencia, número nuevo o migración, plantillas, cobros y agente de IA que agenda.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta"
+    },
+    "respuesta": {
+      "_componente": "Intertitle + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "La respuesta corta",
+      "text": "La integración GoHighLevel WhatsApp se hace con la API oficial de WhatsApp Business, desde la configuración de WhatsApp de tu subcuenta, de tres formas: coexistencia con tu app actual, número nuevo o migración desde otro proveedor. Necesitas acceso de administrador a tu portafolio de Meta y un número que reciba códigos. Después sumas el agente de IA."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con CTA intermedio",
+      "blocks": [
+        "Conectar GoHighLevel + WhatsApp es de lo primero que pide un negocio que vende con citas: que cada mensaje entre al CRM, que nadie copie datos a mano y que el seguimiento salga solo. La integración usa la API oficial de WhatsApp Business, no un truco con el teléfono, y eso cambia cómo se conecta, qué mensajes puedes mandar y cómo se cobra.",
+        "Si todavía no tienes claro qué es la plataforma, empieza por nuestra guía de [GoHighLevel en español: qué es y para qué sirve](/blog/gohighlevel-en-espanol/). Aquí vamos al cómo: qué preparar, cuál de las tres formas de conexión elegir, cómo funcionan las plantillas y la ventana de atención, cómo se suma un agente de IA y qué cobran Meta y HighLevel. Todo con la ayuda oficial de HighLevel y la documentación de Meta en la mano, consultadas el 13 de noviembre de 2026.",
+        {
+          "variant": "h2",
+          "id": "necesitas-antes-conectar-whatsapp",
+          "text": "Qué necesitas antes de conectar WhatsApp a GoHighLevel",
+          "rail": "Qué necesitas antes de"
+        },
+        "La conexión en sí es corta. Lo que se tarda es tener en orden lo que Meta revisa. Antes de empezar, junta esto:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Acceso de administrador a tu portafolio comercial de Meta**, el antiguo Business Manager. Es el que será dueño de tu cuenta de WhatsApp Business.",
+            "**Un número que reciba SMS o llamadas.** Meta manda un código de verificación por una de esas dos vías.",
+            "**La cuenta de Facebook ligada a tu negocio**, porque con ella inicias sesión durante la conexión.",
+            "**Un nombre visible aprobado** y sin cambios pendientes, si tu número ya opera en WhatsApp.",
+            "**La verificación en dos pasos apagada**, si vas a mover un número que hoy está con otro proveedor.",
+            "**Tu portafolio verificado y tu cuenta de WhatsApp Business en buen estado**, que HighLevel pide para migrar un número."
+          ]
+        },
+        "Los tres últimos puntos los pide la [guía oficial de HighLevel para configurar WhatsApp en una subcuenta](https://help.gohighlevel.com/support/solutions/articles/155000001980-how-to-set-up-whatsapp-for-a-sub-account) en su lista previa a la migración. Aunque vayas por otro camino, te recomendamos dejar verificado el negocio desde el principio: es un trámite que no vas a querer hacer con campañas detenidas.",
+        {
+          "variant": "h2",
+          "id": "tres-formas-conectar-gohighlevel",
+          "text": "Las tres formas de conectar GoHighLevel con WhatsApp",
+          "rail": "Las tres formas de"
+        },
+        "HighLevel ofrece tres caminos. La decisión depende de una pregunta: ¿qué pasa hoy con tu número?",
+        {
+          "variant": "table",
+          "head": [
+            "Forma",
+            "Para quién",
+            "Qué conservas",
+            "Lo que debes saber"
+          ],
+          "rows": [
+            [
+              "Coexistencia",
+              "Ya atiendes con la app de WhatsApp Business y quieres seguir usándola",
+              "El número, tus contactos y hasta seis meses de historial de chats",
+              "HighLevel admite un solo número en coexistencia; las plantillas se mandan desde el CRM, no desde la app"
+            ],
+            [
+              "Número nuevo",
+              "Empiezas de cero o quieres un número solo para la operación",
+              "Nada que migrar: la cuenta nace en la plataforma",
+              "Creas la cuenta de WhatsApp Business durante la conexión y verificas el número con un código"
+            ],
+            [
+              "Migración",
+              "Tu número ya está conectado a otro proveedor de la API",
+              "El número, el nombre visible y las plantillas aprobadas de buena calidad",
+              "El historial, los archivos y la lista de contactos no se pasan: expórtalos antes"
+            ]
+          ]
+        },
+        {
+          "variant": "h3",
+          "text": "Cuál te conviene"
+        },
+        {
+          "variant": "ul",
+          "items": [
+            "**Elige coexistencia** si tu equipo vive en la app de WhatsApp Business y no quieres cambiarle el hábito de un día para otro. Los mensajes llegan a GoHighLevel y la app sigue funcionando.",
+            "**Elige número nuevo** si vas a separar la atención comercial de tu número personal, o si tu número actual tiene un historial que no te sirve.",
+            "**Elige migración** si ya pagas la API con otro proveedor y quieres juntar todo en GoHighLevel sin perder el número ni las plantillas."
+          ]
+        },
+        {
+          "variant": "cta-medio"
+        },
+        {
+          "variant": "h2",
+          "id": "conectar-whatsapp-subcuenta-paso",
+          "text": "Cómo conectar WhatsApp en tu subcuenta, paso a paso",
+          "rail": "Cómo conectar WhatsApp en"
+        },
+        "El orden general es el mismo en los tres caminos. Los nombres de los menús pueden variar un poco entre versiones de la plataforma.",
+        {
+          "variant": "ol",
+          "items": [
+            "**Entra a la subcuenta correcta.** WhatsApp se conecta por subcuenta, no en la cuenta de agencia.",
+            "**Abre la configuración de WhatsApp** e inicia la conexión.",
+            "**Elige el camino:** la app de WhatsApp Business (coexistencia), una cuenta nueva o la migración.",
+            "**Inicia sesión con la cuenta de Facebook del negocio** y elige o crea tu portafolio comercial y tu cuenta de WhatsApp Business.",
+            "**Escribe el número y verifícalo** con el código que llega por SMS o por llamada.",
+            "**Completa el perfil del negocio:** nombre, país y sitio web.",
+            "**En coexistencia, actualiza la app y escanea los códigos QR** para importar contactos e historial y para ligar la app con la plataforma.",
+            "**Confirma y revisa** que las conversaciones entren al CRM y, si migraste, que tus plantillas aprobadas aparezcan."
+          ]
+        },
+        "En la migración hay un detalle que asusta a más de uno: si tu número también se usa en la app, primero desconectas al proveedor anterior desde la app. Según HighLevel, desconectar la plataforma no es lo mismo que borrar tu cuenta de WhatsApp. No borres la cuenta.",
+        {
+          "variant": "h2",
+          "id": "son-plantillas-ventana-atencion",
+          "text": "¿Qué son las plantillas y la ventana de atención?",
+          "rail": "Qué son las plantillas"
+        },
+        "Aquí está la diferencia más grande entre la app y la API oficial de WhatsApp. En la app escribes cuando quieres. En la API, cuándo puedes escribir depende de quién habló al último.",
+        {
+          "variant": "h3",
+          "text": "La ventana de atención"
+        },
+        "Cuando un cliente te escribe o te llama, se abre una **ventana de atención de 24 horas**. Cada vez que vuelve a escribir, el reloj se reinicia. Mientras está abierta, tú o tu agente pueden contestar con mensajes libres, como en cualquier chat. Así lo define Meta en su [página de precios de la WhatsApp Business Platform](https://developers.facebook.com/docs/whatsapp/pricing).",
+        {
+          "variant": "h3",
+          "text": "Las plantillas"
+        },
+        "Si la ventana ya se cerró, solo puedes escribirle con una **plantilla**: un mensaje que registras antes, con variables como el nombre o la fecha, y que Meta revisa. Según los [fundamentos de plantillas de Meta](https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates), una plantilla solo se puede enviar cuando su estado es aprobado.",
+        "Cada plantilla lleva una de tres categorías:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Marketing:** promociones, lanzamientos, reactivar a quien dejó de escribir.",
+            "**Utilidad:** confirmaciones, recordatorios de cita, avisos de un pedido.",
+            "**Autenticación:** códigos para verificar identidad."
+          ]
+        },
+        "La categoría no es un trámite: define cuánto cuesta cada envío. Meta también califica la calidad de cada plantilla con base en cómo responde la gente. Si hay muchos reportes o casi nadie la lee, puede pausarla o desactivarla.",
+        {
+          "variant": "h2",
+          "id": "suma-agente-ia-gohighlevel",
+          "text": "Cómo se suma un agente de IA en GoHighLevel",
+          "rail": "Cómo se suma un"
+        },
+        "Con WhatsApp conectado, cada conversación ya entra al CRM. El siguiente paso es que alguien la conteste a cualquier hora. Ese es el trabajo del agente de IA en GoHighLevel. HighLevel tiene su propio agente, Conversation AI, y también se puede conectar uno construido aparte; las dos opciones las explicamos en la guía de GoHighLevel en español.",
+        "En Ingeniak conectamos un agente que atiende WhatsApp, califica al prospecto, lo registra en GoHighLevel con su etapa y le agenda cita en tu calendario. Así se reparte el trabajo:",
+        {
+          "variant": "h3",
+          "text": "Qué contesta"
+        },
+        "Lo que tu equipo contesta todos los días: servicios, horarios, ubicación, requisitos y políticas. Antes de encenderlo cargamos esa información y las palabras con las que tus clientes preguntan. Lo que no sabe, no lo inventa: lo pasa a una persona.",
+        {
+          "variant": "h3",
+          "text": "Cómo califica"
+        },
+        "Hace las preguntas que haría tu mejor vendedor, en conversación y no con un menú. Con las respuestas mueve al prospecto a la etapa que corresponde en tu pipeline y deja las etiquetas que definimos contigo, como el servicio que le interesa o de qué campaña llegó.",
+        {
+          "variant": "h3",
+          "text": "Cómo agenda"
+        },
+        "Consulta la disponibilidad de tu calendario de GoHighLevel, ofrece horarios y aparta la cita en el que eligió el cliente. Después, la confirmación y el recordatorio salen con plantillas de utilidad, porque para entonces la ventana de atención ya se cerró.",
+        {
+          "variant": "h3",
+          "text": "Cuándo entra una persona"
+        },
+        "Tu equipo recibe la conversación completa y entra solo cuando hace falta: cerrar una venta, resolver un caso especial o atender una queja. El traspaso se define por escrito antes de lanzar, con quién recibe el aviso y qué datos le llegan.",
+        {
+          "variant": "note",
+          "label": "El orden importa",
+          "text": "Primero el proceso, luego la conexión y al final el agente. En una clínica dental de Monterrey que agenda con GoHighLevel, el tiempo de respuesta bajó {{metric:dental-respuesta|prose}} con ese orden."
+        },
+        "Si quieres ver qué más hace el agente, revisa nuestro servicio de [agentes de IA para WhatsApp Business](/servicios/agentes-ia-whatsapp/).",
+        {
+          "variant": "h2",
+          "id": "errores-comunes-conectar-whatsapp",
+          "text": "Errores comunes al conectar WhatsApp",
+          "rail": "Errores comunes al conectar"
+        },
+        "Casi todos los problemas que vemos se evitan antes de dar clic en conectar:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Intentar migrar con la verificación en dos pasos encendida.** Meta no completa el cambio mientras esté activa.",
+            "**Borrar la cuenta de la app para \"liberar\" el número.** En la migración se desconecta al proveedor, no se borra la cuenta.",
+            "**Perder el historial.** En la migración no se pasan chats, archivos ni contactos. Exporta todo antes del cambio.",
+            "**Dejar el nombre visible con un cambio pendiente.** Hay que resolverlo en el administrador de WhatsApp antes de conectar.",
+            "**Plantillas rechazadas o en pausa.** Se rechazan por una categoría mal elegida o por textos que rompen las políticas de Meta. Se pausan cuando la gente las reporta o no las lee, algo común al mandar promociones a quien nunca las pidió.",
+            "**Creer que las plantillas se mandan desde la app.** En coexistencia solo salen desde el CRM.",
+            "**Encender el agente sin probarlo** con conversaciones reales. Empieza con un grupo chico de casos y ajusta antes de abrirlo a todos."
+          ]
+        },
+        {
+          "variant": "h2",
+          "id": "cobran-meta-gohighlevel-mensajes",
+          "text": "¿Cuánto cobran Meta y GoHighLevel por los mensajes de WhatsApp?",
+          "rail": "Cuánto cobran Meta y"
+        },
+        "No copiamos tarifas porque cambian y dependen del país. Lo que sí conviene entender es la estructura, porque de eso depende tu cuenta del mes.",
+        {
+          "variant": "table",
+          "head": [
+            "Concepto",
+            "Quién lo define",
+            "Cómo se cobra"
+          ],
+          "rows": [
+            [
+              "WhatsApp en la subcuenta",
+              "HighLevel",
+              "Cuota mensual por cada subcuenta con WhatsApp activo"
+            ],
+            [
+              "Mensajes de marketing, utilidad y autenticación",
+              "Meta",
+              "Por mensaje entregado, según la categoría y el país del número que lo recibe"
+            ],
+            [
+              "Mensajes de servicio (respuestas dentro de la ventana)",
+              "Meta",
+              "Gratis los primeros mil de cada mes por número; los que pasan de ahí se cobran"
+            ],
+            [
+              "Conversaciones que empiezan en un anuncio que lleva a WhatsApp",
+              "Meta",
+              "Abren una ventana gratuita temporal, sin cargo por mensaje"
+            ],
+            [
+              "Reventa del uso",
+              "La agencia que te da la cuenta",
+              "Puede cobrarte el uso con su propio margen"
+            ]
+          ]
+        },
+        "Tres detalles de las fuentes oficiales. Meta solo cobra los mensajes que el negocio manda y que sí se entregan; lo que te escribe el cliente no se cobra. El cobro de los mensajes de servicio que pasan del tramo gratuito empezó el 1 de octubre de 2026, según la [página de precios de Meta](https://developers.facebook.com/docs/whatsapp/pricing). Y en GoHighLevel ese uso se cobra a través de HighLevel, que permite a la agencia revenderlo con margen, como explica su [guía de precios, cobro y reventa de WhatsApp](https://help.gohighlevel.com/support/solutions/articles/155000001428-whatsapp-pricing-billing-and-rebilling-guide).",
+        "Por eso, pregúntale a quien te implemente si el uso de WhatsApp se te cobra a costo o con margen, y en qué categoría van a quedar tus plantillas. Un recordatorio de cita bien categorizado como utilidad no cuesta lo mismo que una promoción.",
+        {
+          "variant": "h2",
+          "id": "conecta-whatsapp-plan-no",
+          "text": "Conecta WhatsApp con un plan, no a prueba y error",
+          "rail": "Conecta WhatsApp con un"
+        },
+        "La conexión es la parte fácil. Lo que hace que GoHighLevel con WhatsApp venda es lo que va encima: el camino de conexión correcto para tu número, plantillas que Meta aprueba, un pipeline que refleja cómo vendes y un agente que contesta, califica y agenda sin que nadie capture nada.",
+        "Lo hacemos completo y en español en nuestra [implementación de GoHighLevel](/gohighlevel/): conexión de WhatsApp, calendarios, pipelines, plantillas y agente de IA. Si quieres saber cuál de las tres formas te conviene y qué haría el agente con tus conversaciones, agenda una Discovery Session sin costo y lo revisamos con tu operación real."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Quieres ver cómo aplica a tu negocio? Escríbele a Kain y cuéntale cómo te llegan tus clientes.",
+      "link": {
+        "label": "GoHighLevel en español: qué es, para qué sirve y cómo se implementa",
+        "href": "/blog/gohighlevel-en-espanol/"
+      },
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí goHighLevel WhatsApp: conecta la API oficial y un agente de IA y quiero ver cómo aplica a mi negocio."
+      }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Lo que más nos preguntan"
+      },
+      "faqIds": [
+        "B17",
+        "B18",
+        "B19",
+        "B20"
+      ]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo que diseña, implementa y opera agentes de IA, CRM y automatizaciones en Ingeniak."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": {
+        "text": "Fuentes y fecha de consulta"
+      },
+      "lede": "Los datos de terceros cambian; antes de decidir, revisa la versión vigente de cada fuente.",
+      "items": [
+        {
+          "title": "How to Set Up WhatsApp for a Sub-Account",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/155000001980-how-to-set-up-whatsapp-for-a-sub-account",
+          "consultado": "2026-11-13",
+          "nota": "Tres formas de conexión (coexistencia, número nuevo, migración), pasos de cada una, requisitos para migrar (administrador del portafolio, número que recibe SMS o llamada, verificación en dos pasos apagada, nombre visible aprobado, portafolio verificado), límites de la coexistencia, importación de hasta seis meses de historial y lo que no se pasa al migrar."
+        },
+        {
+          "title": "WhatsApp Pricing, Billing and Rebilling Guide",
+          "publisher": "Centro de ayuda de HighLevel",
+          "href": "https://help.gohighlevel.com/support/solutions/articles/155000001428-whatsapp-pricing-billing-and-rebilling-guide",
+          "consultado": "2026-11-13",
+          "nota": "Cuota mensual por subcuenta con WhatsApp, cobro por mensaje entregado según categoría y mercado, y reventa del uso con margen por parte de la agencia."
+        },
+        {
+          "title": "Pricing on the WhatsApp Business Platform",
+          "publisher": "Meta for Developers",
+          "href": "https://developers.facebook.com/docs/whatsapp/pricing",
+          "consultado": "2026-11-13",
+          "nota": "Cobro por mensaje entregado del negocio al usuario, categorías, tarifas por mercado según el código de país, ventana de atención de 24 horas, tramo gratuito mensual de mensajes de servicio por número (cobro del excedente desde el 1 de octubre de 2026) y ventana gratuita de anuncios que llevan a WhatsApp."
+        },
+        {
+          "title": "Template fundamentals",
+          "publisher": "Meta for Developers",
+          "href": "https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates",
+          "consultado": "2026-11-13",
+          "nota": "Las plantillas son el único mensaje que se puede enviar fuera de la ventana de atención; categorías de marketing, utilidad y autenticación; solo se envían aprobadas; calificación de calidad y estados de pausa o desactivación."
+        }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "h2": {
+        "text": "Sigue explorando"
+      },
+      "items": [
+        {
+          "href": "/blog/gohighlevel-en-espanol/",
+          "label": "Blog",
+          "title": "GoHighLevel en español",
+          "line": "Qué es GoHighLevel (HighLevel) y para qué sirve: qué junta en una sola plataforma, para quién sí y para quién no, y cómo se implementa en español."
+        },
+        {
+          "href": "/servicios/agentes-ia-whatsapp/",
+          "label": "Servicios",
+          "title": "Agentes de IA para WhatsApp Business",
+          "line": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM."
+        },
+        {
+          "href": "/gohighlevel/",
+          "label": "Servicios",
+          "title": "Implementación de GoHighLevel en español",
+          "line": "Configuramos GoHighLevel en español: CRM, embudos, calendarios y automatizaciones con IA para que tu equipo venda más sin perseguir leads."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer, placa compartida)",
+      "eyebrow": "Siguiente paso",
+      "h2": {
+        "text": "¿Hablamos de tu caso?",
+        "soft": "Agenda tu Discovery Session."
+      },
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí goHighLevel WhatsApp: conecta la API oficial y un agente de IA y quiero ver cómo aplica a mi negocio."
+      }
+    }
+  }
+}

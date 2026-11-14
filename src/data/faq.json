@@ -963,5 +963,197 @@
     "categoria": "Precios y decisiones",
     "validar": false,
     "editada": false
+  },
+  {
+    "id": "B09",
+    "q": "¿Necesito la API oficial de WhatsApp Business para tener un agente de IA?",
+    "a": "Sí. Para que un agente de IA atienda tu número, este debe estar en la WhatsApp Business Platform de Meta, conectado directo o a través de un partner. Así recibes cada mensaje en tus sistemas, puedes usar plantillas de mensaje y trabajas dentro de las reglas del canal, sin poner en riesgo el número con el que vendes.",
+    "short": "Sí.",
+    "pages": [
+      "/blog/que-es-agente-ia-whatsapp/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B10",
+    "q": "¿Qué pasa cuando el agente de IA no sabe una respuesta?",
+    "a": "Si la respuesta no está en su base de conocimiento, un agente bien configurado no la inventa. Le dice al cliente que lo va a comunicar con alguien del equipo, avisa al responsable en el CRM y le deja un resumen de la conversación. Después, esa pregunta se agrega a la base para que la próxima vez la conteste solo.",
+    "short": "Si la respuesta no está en su base de conocimiento, un agente bien configurado no la inventa.",
+    "pages": [
+      "/blog/que-es-agente-ia-whatsapp/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B11",
+    "q": "¿El agente de IA puede escribirle primero a mis clientes?",
+    "a": "Solo en ciertos casos. Mientras está abierta la ventana de atención que inicia cada mensaje del cliente, el agente responde libremente. Fuera de esa ventana, WhatsApp solo permite escribir con plantillas de mensaje, como recordatorios de cita o avisos de pedido, y el cliente debe haber aceptado recibirlos. Por eso los seguimientos se diseñan desde el inicio.",
+    "short": "Solo en ciertos casos.",
+    "pages": [
+      "/blog/que-es-agente-ia-whatsapp/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B12",
+    "q": "¿Puedo usar mi número de WhatsApp actual con un agente de IA?",
+    "a": "Por lo general sí. El número que ya conocen tus clientes se puede registrar en la plataforma oficial de WhatsApp Business, aunque el procedimiento cambia según cómo está dado de alta hoy y qué uso le das. Lo revisamos contigo antes de conectar nada, para que sepas qué pasa con tu historial y tu equipo siga atendiendo sin interrupciones.",
+    "short": "Por lo general sí.",
+    "pages": [
+      "/blog/que-es-agente-ia-whatsapp/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B13",
+    "q": "¿GoHighLevel cobra por usuario?",
+    "a": "No. HighLevel cobra una suscripción por cuenta y todos sus planes incluyen usuarios y contactos ilimitados. Lo que cambia entre planes es el número de subcuentas y lo que puedes revender. Sumar vendedores no cambia la suscripción, pero sí puede subir lo que pagas por uso en SMS, llamadas, correos y WhatsApp.",
+    "short": "No.",
+    "pages": [
+      "/blog/gohighlevel-precios-mexico/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B14",
+    "q": "¿Qué plan de GoHighLevel necesita un solo negocio?",
+    "a": "Para un solo negocio suele bastar Starter, que incluye hasta tres subcuentas con usuarios y contactos ilimitados. Unlimited y Founder están pensados para agencias que administran muchos clientes o quieren revender la plataforma con su marca. Antes de elegir, revisa la página oficial de precios de HighLevel y estima tus cargos por uso.",
+    "short": "Para un solo negocio suele bastar Starter, que incluye hasta tres subcuentas con usuarios y contactos ilimitados.",
+    "pages": [
+      "/blog/gohighlevel-precios-mexico/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B15",
+    "q": "¿WhatsApp está incluido en el precio de GoHighLevel?",
+    "a": "No. WhatsApp es un complemento con cuota mensual por cada subcuenta que lo activa, y además se paga cada mensaje entregado según su categoría (marketing, utilidad, autenticación o servicio) y el país del destinatario. Las conversaciones que llegan desde anuncios de clic a WhatsApp y las llamadas que inicia tu cliente no se cobran.",
+    "short": "No.",
+    "pages": [
+      "/blog/gohighlevel-precios-mexico/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B16",
+    "q": "¿Puedo pagar GoHighLevel en pesos mexicanos?",
+    "a": "HighLevel publica sus precios en dólares y los carga a tu tarjeta, así que tu banco hace la conversión con su tipo de cambio y, a veces, cobra una comisión. Si contratas a través de una agencia, pregúntale en qué moneda te factura la suscripción, los cargos por uso y la implementación, y si emite factura mexicana.",
+    "short": "HighLevel publica sus precios en dólares y los carga a tu tarjeta, así que tu banco hace la conversión con su tipo…",
+    "pages": [
+      "/blog/gohighlevel-precios-mexico/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B17",
+    "q": "¿Puedo seguir usando la app de WhatsApp Business si conecto GoHighLevel?",
+    "a": "Sí, con la modalidad de coexistencia. Conectas tu número actual a GoHighLevel y la app de WhatsApp Business sigue funcionando, así que tu equipo puede contestar desde los dos lados. Las plantillas solo se envían desde el CRM y el perfil de WhatsApp se administra desde la app. HighLevel admite un solo número en coexistencia.",
+    "short": "Sí, con la modalidad de coexistencia.",
+    "pages": [
+      "/blog/gohighlevel-whatsapp/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B18",
+    "q": "¿Pierdo mi historial de chats al conectar WhatsApp a GoHighLevel?",
+    "a": "Depende del camino. Con coexistencia puedes importar tus contactos y hasta seis meses de historial desde la app de WhatsApp Business. Con la migración desde otro proveedor, el historial, los archivos y la lista de contactos no se pasan, así que conviene exportarlos antes. Con un número nuevo no hay historial que mover.",
+    "short": "Depende del camino.",
+    "pages": [
+      "/blog/gohighlevel-whatsapp/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B19",
+    "q": "¿Por qué necesito plantillas aprobadas para escribirle a un cliente?",
+    "a": "Porque la API oficial de WhatsApp solo deja mandar mensajes libres mientras está abierta la ventana de atención, que empieza cuando el cliente te escribe. Fuera de ella, Meta solo permite plantillas aprobadas, como un recordatorio de cita o una promoción. Cada plantilla lleva categoría de marketing, utilidad o autenticación, y eso define su costo.",
+    "short": "Porque la API oficial de WhatsApp solo deja mandar mensajes libres mientras está abierta la ventana de atención, que empieza cuando el cliente te escribe.",
+    "pages": [
+      "/blog/gohighlevel-whatsapp/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B20",
+    "q": "¿Quién me cobra los mensajes de WhatsApp en GoHighLevel?",
+    "a": "Meta define la tarifa de cada mensaje entregado según su categoría y el país de quien lo recibe. En GoHighLevel ese uso se cobra a través de HighLevel, junto con una cuota mensual por cada subcuenta con WhatsApp. Si tu cuenta la administra una agencia, puede revenderte el uso con margen: pregúntale cómo te lo cobra.",
+    "short": "Meta define la tarifa de cada mensaje entregado según su categoría y el país de quien lo recibe.",
+    "pages": [
+      "/blog/gohighlevel-whatsapp/"
+    ],
+    "categoria": "GoHighLevel",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B21",
+    "q": "¿Kommo tiene prueba gratis o plan gratuito?",
+    "a": "Kommo ofrece una prueba gratis de catorce días, sin tarjeta y con todas las funciones de la plataforma. En su página de precios no aparece un plan gratuito permanente: al terminar la prueba eliges Básico, Avanzado, Pro o Empresarial. Aprovecha esos días para conectar WhatsApp y probar tu embudo con conversaciones reales.",
+    "short": "Kommo ofrece una prueba gratis de catorce días, sin tarjeta y con todas las funciones de la plataforma.",
+    "pages": [
+      "/blog/kommo-precios/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B22",
+    "q": "¿Se puede pagar Kommo mes a mes?",
+    "a": "No. Kommo no ofrece pago mensual por ahora: el periodo mínimo de suscripción es de seis meses, y también puedes contratar nueve meses, un año o dos años. La tarifa por usuario cambia según el periodo que elijas, así que compara cada opción en la página oficial antes de pagar por adelantado.",
+    "short": "No.",
+    "pages": [
+      "/blog/kommo-precios/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B23",
+    "q": "¿Los mensajes de WhatsApp están incluidos en la licencia de Kommo?",
+    "a": "No. Kommo no cobra por los mensajes de WhatsApp: los cobra Meta directamente, aparte de tu suscripción. Meta cobra por mensaje entregado según la categoría (marketing, utilidad, autenticación o servicio) y el país del destinatario. México tiene tarifa propia en la tabla oficial de Meta, que conviene revisar antes de lanzar campañas.",
+    "short": "No.",
+    "pages": [
+      "/blog/kommo-precios/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B24",
+    "q": "¿Puedo tener usuarios con planes distintos en la misma cuenta de Kommo?",
+    "a": "No. Kommo pide que todos los usuarios de una cuenta tengan el mismo plan. Si una sola persona necesita funciones de Pro, como la página de reservas, toda la cuenta sube a Pro. Por eso conviene elegir el plan según el proceso del equipo completo y no según las necesidades de un solo puesto.",
+    "short": "No.",
+    "pages": [
+      "/blog/kommo-precios/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": false
   }
 ]
