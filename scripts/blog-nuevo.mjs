@@ -270,7 +270,8 @@ const entry = {
     { order: 8, id: 'fuentes', name: 'Fuentes', spec: fuentes.length ? `${fuentes.length} fuente(s) con fecha de consulta; cifras de Ingeniak con nota "datos internos".` : 'Pendiente: el brief no trajo fuentes.', cinematic: false },
     { order: 9, id: 'relacionados', name: 'Sigue explorando', spec: `3 tarjetas: ${relacionados.map((p) => p.url).join(' · ')}.`, cinematic: false },
     { order: 10, id: 'cta-final', name: 'Cierre', spec: 'Cierre cinematográfico compartido (cta-amanecer).', cinematic: true,
-      plate: { id: 'cta-amanecer', component: 'Dawn', layout: 'subject-left', mirror: false, height: 'cta', tone: 'sol', mobile: 'top', srcsetMax: 1920, priority: 'P1' } },
+      // mirror: true — en cta-amanecer Kain está a la derecha; con subject-left sin espejo el texto del cierre cae sobre él
+      plate: { id: 'cta-amanecer', component: 'Dawn', layout: 'subject-left', mirror: true, height: 'cta', tone: 'sol', mobile: 'top', srcsetMax: 1920, priority: 'P1' } },
   ],
   cinematicSections: ['hero', 'cta-final'],
   primaryCta,
