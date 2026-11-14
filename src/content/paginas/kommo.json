@@ -5,8 +5,9 @@
   "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": "Rik Landeros",
-  "actualizado": "2026-10-20",
+  "actualizado": "2026-11-14",
   "pendientes": [
+    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agregan a \"Sigue explorando\" las tarjetas hacia los artículos nuevos del blog, que no recibían enlaces desde esta página.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · URL de la ficha de Ingeniak en el directorio de partners de Kommo (D la pide en #licencias, '[VALIDAR URL]'). Mientras no la tengamos, #licencias no enlaza al directorio: solo el sello, que enlaza a kommo.com como pide el programa de partners.",
     "PREGUNTA AL CLIENTE · TikTok: la página v1 decía 'Conectamos WhatsApp Business, Instagram y TikTok'. Los canales confirmados el 2026-10-19 son WhatsApp, Instagram, Facebook Messenger, el chat de la web y el correo, así que esta página no promete TikTok. ¿Lo conectan a Kommo? Si sí, se agrega a #que-hacemos y #como-funciona.",
@@ -285,7 +286,8 @@
         { "href": "/gohighlevel/", "label": "Plataforma", "title": "GoHighLevel en español", "line": "CRM, embudos, calendarios y automatizaciones con IA, configurados en español." },
         { "href": "/servicios/agentes-ia-whatsapp/", "label": "Servicio", "title": "Agentes de IA para WhatsApp", "line": "Responden, califican y agendan 24/7, conectados a tu CRM." },
         { "href": "/agentes-ia-guadalajara/", "label": "Guadalajara", "title": "Agentes de IA en Guadalajara", "line": "Agencia de IA con oficina en Tlajomulco de Zúñiga, para empresas de Jalisco y de toda Latinoamérica." },
-        { "href": "/blog/kommo-vs-gohighlevel/", "label": "Guía", "title": "Kommo vs GoHighLevel", "line": "Cuál conviene según cómo vendes, punto por punto.", "_nota": "Respaldo: solo se pinta mientras alguna de las tres de D no esté construida (máximo 3 stills)." }
+        { "href": "/blog/kommo-vs-gohighlevel/", "label": "Guía", "title": "Kommo vs GoHighLevel", "line": "Cuál conviene según cómo vendes, punto por punto.", "_nota": "Respaldo: solo se pinta mientras alguna de las tres de D no esté construida (máximo 3 stills)." },
+        { "href":"/blog/kommo-precios/", "label":"Guía", "title":"Kommo precios 2026", "line":"Cómo cobra por usuario, qué incluye cada plan y qué se paga aparte." }
       ]
     },
     "cta-final": {

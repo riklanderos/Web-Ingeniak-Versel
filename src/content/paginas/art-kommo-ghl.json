@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-20",
+  "actualizado": "2026-11-14",
   "articulo": {
     "categoria": "CRM",
     "about": [
@@ -29,6 +29,8 @@
     ]
   },
   "pendientes": [
+    "RESUELTO 2026-11-14 · fuentes: se volvieron a consultar las cinco páginas oficiales (precios e idiomas de Kommo, precios e idiomas de HighLevel, precios de HubSpot). Lo que el artículo dice de ellas sigue vigente; se actualiza la fecha de consulta.",
+    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agregan a \"Sigue explorando\" las tarjetas hacia los artículos nuevos del blog, que no recibían enlaces desde esta página.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Rik Landeros como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
     "PREGUNTA AL CLIENTE · ¿Ingeniak implementa HubSpot? El texto no lo afirma ni lo niega: solo dice que, si otra herramienta conviene más, lo decimos en la Discovery Session.",
@@ -157,13 +159,13 @@
     "fuentes": {
       "eyebrow": "Fuentes",
       "h2": { "text": "Fuentes y fecha de consulta" },
-      "lede": "Comparamos con lo que cada empresa publica en sus páginas oficiales, consultadas el 19 de octubre de 2026. Planes y funciones cambian: revisa la versión vigente antes de contratar.",
+      "lede": "Comparamos con lo que cada empresa publica en sus páginas oficiales, consultadas el 14 de noviembre de 2026. Planes y funciones cambian: revisa la versión vigente antes de contratar.",
       "items": [
-        { "title": "Pricing", "publisher": "Kommo", "href": "https://www.kommo.com/pricing/", "consultado": "2026-10-19", "nota": "Planes Base, Advanced, Pro y Enterprise; cobro por usuario en dólares con mínimo de seis meses; canales, Salesbot, agentes y créditos de IA, reservas y prueba de 14 días." },
-        { "title": "Cambia el idioma en Kommo", "publisher": "Centro de ayuda de Kommo", "href": "https://support.kommo.com/docs/es/change-your-language", "consultado": "2026-10-19", "nota": "Idiomas de la interfaz: inglés, portugués (Brasil), español (LATAM) y ruso." },
-        { "title": "HighLevel Pricing", "publisher": "HighLevel", "href": "https://www.gohighlevel.com/pricing", "consultado": "2026-10-19", "nota": "Planes por cuenta con subcuentas, usuarios y contactos ilimitados, funciones incluidas, cargos por uso, complemento de WhatsApp y prueba de 14 días." },
-        { "title": "The Internationalization of HighLevel", "publisher": "Centro de ayuda de HighLevel", "href": "https://help.gohighlevel.com/support/solutions/articles/155000000566-the-internationalization-of-highlevel-has-begun-", "consultado": "2026-10-19", "nota": "Español como idioma de la plataforma por subcuenta y por usuario, con respaldo en inglés." },
-        { "title": "Free Tools · pricing", "publisher": "HubSpot", "href": "https://www.hubspot.com/pricing/crm", "consultado": "2026-10-19", "nota": "Herramientas gratuitas y planes de pago por asiento por hub." }
+        { "title": "Pricing", "publisher": "Kommo", "href": "https://www.kommo.com/pricing/", "consultado": "2026-11-14", "nota": "Planes Base, Advanced, Pro y Enterprise; cobro por usuario en dólares con mínimo de seis meses; canales, Salesbot, agentes y créditos de IA, reservas y prueba de 14 días." },
+        { "title": "Cambia el idioma en Kommo", "publisher": "Centro de ayuda de Kommo", "href": "https://support.kommo.com/docs/es/change-your-language", "consultado": "2026-11-14", "nota": "Idiomas de la interfaz: inglés, portugués (Brasil), español (LATAM) y ruso." },
+        { "title": "HighLevel Pricing", "publisher": "HighLevel", "href": "https://www.gohighlevel.com/pricing", "consultado": "2026-11-14", "nota": "Planes por cuenta con subcuentas, usuarios y contactos ilimitados, funciones incluidas, cargos por uso, complemento de WhatsApp y prueba de 14 días." },
+        { "title": "The Internationalization of HighLevel", "publisher": "Centro de ayuda de HighLevel", "href": "https://help.gohighlevel.com/support/solutions/articles/155000000566-the-internationalization-of-highlevel-has-begun-", "consultado": "2026-11-14", "nota": "Español como idioma de la plataforma por subcuenta y por usuario, con respaldo en inglés." },
+        { "title": "Free Tools · pricing", "publisher": "HubSpot", "href": "https://www.hubspot.com/pricing/crm", "consultado": "2026-11-14", "nota": "Herramientas gratuitas y planes de pago por asiento por hub." }
       ],
       "internas": "Cifras de Ingeniak: {{source}}. Los nombres de los clientes están anonimizados."
     },
@@ -173,7 +175,9 @@
       "items": [
         { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con Ingeniak", "line": "Licencias, implementación y agentes de IA." },
         { "href": "/gohighlevel/", "label": "Plataforma", "title": "GoHighLevel en español", "line": "Implementación completa para tu equipo." },
-        { "href": "/servicios/crm-con-ia/", "label": "Servicio", "title": "CRM con IA", "line": "Cada conversación en su etapa, sin capturas a mano." }
+        { "href": "/servicios/crm-con-ia/", "label": "Servicio", "title": "CRM con IA", "line": "Cada conversación en su etapa, sin capturas a mano." },
+        { "href":"/blog/kommo-precios/", "label":"Blog", "title":"Kommo precios 2026", "line":"Cómo cobra por usuario, qué incluye cada plan y qué se paga aparte." },
+        { "href":"/blog/gohighlevel-precios-mexico/", "label":"Blog", "title":"GoHighLevel precios en México", "line":"Planes, cargos por uso y cómo calcular tu costo real." }
       ]
     },
     "cta-final": {

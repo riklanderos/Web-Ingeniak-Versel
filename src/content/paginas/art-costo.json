@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-20",
+  "actualizado": "2026-11-14",
   "articulo": {
     "categoria": "Precios y decisiones",
     "about": [
@@ -28,6 +28,7 @@
     ]
   },
   "pendientes": [
+    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agregan a \"Sigue explorando\" las tarjetas hacia los artículos nuevos del blog, que no recibían enlaces desde esta página.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Rik Landeros como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
     "PREGUNTA AL CLIENTE · consumo del modelo de IA: ¿la mensualidad de Ingeniak incluye los tokens del modelo, o se facturan aparte? El texto solo dice que depende de cómo se construya el agente.",
@@ -199,7 +200,8 @@
       "items": [
         { "href": "/servicios/agentes-ia-whatsapp/", "label": "Servicio", "title": "Agentes de IA para WhatsApp", "line": "Cómo atiende, califica y agenda un agente conectado a tu CRM.", "plate": "home-kain" },
         { "href": "/blog/agente-ia-whatsapp-vs-chatbot/", "label": "Blog", "title": "Agente de IA vs chatbot", "line": "Qué cambia y cuándo conviene cada uno." },
-        { "href": "/kain/", "label": "kain", "title": "Conoce a Kain", "line": "El agente de IA de Ingeniak." }
+        { "href": "/kain/", "label": "kain", "title": "Conoce a Kain", "line": "El agente de IA de Ingeniak." },
+        { "href":"/blog/que-es-agente-ia-whatsapp/", "label":"Blog", "title":"Qué es un agente de IA para WhatsApp", "line":"Cómo funciona por dentro, qué hace y ejemplos por industria." }
       ]
     },
     "cta-final": {

@@ -6702,7 +6702,8 @@
         "punto-partida",
         "implementacion"
       ],
-      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando."
+      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando.",
+      "confirmado": "2026-11-14 · Rik Landeros, chat de construcción, 2026-11-14: autoriza publicar el caso completo e indexable con lo ya redactado; lo no confirmado (ciudad, punto de partida, plazo, testimonio) se omite. El interruptor es \"publishGate\": { \"ok\": true } en el copy."
     }
   },
   {
@@ -6924,7 +6925,8 @@
         "punto-partida",
         "implementacion"
       ],
-      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando."
+      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando.",
+      "confirmado": "2026-11-14 · Rik Landeros, chat de construcción, 2026-11-14: autoriza publicar el caso completo e indexable con lo ya redactado; lo no confirmado (ciudad, punto de partida, plazo, testimonio) se omite. El interruptor es \"publishGate\": { \"ok\": true } en el copy."
     }
   },
   {
@@ -7150,7 +7152,8 @@
         "punto-partida",
         "implementacion"
       ],
-      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando."
+      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando.",
+      "confirmado": "2026-11-14 · Rik Landeros, chat de construcción, 2026-11-14: autoriza publicar el caso completo e indexable con lo ya redactado; lo no confirmado (ciudad, punto de partida, plazo, testimonio) se omite. El interruptor es \"publishGate\": { \"ok\": true } en el copy."
     }
   },
   {
@@ -7378,7 +7381,8 @@
         "punto-partida",
         "implementacion"
       ],
-      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando."
+      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando.",
+      "confirmado": "2026-11-14 · Rik Landeros, chat de construcción, 2026-11-14: autoriza publicar el caso completo e indexable con lo ya redactado; lo no confirmado (ciudad, punto de partida, plazo, testimonio) se omite. El interruptor es \"publishGate\": { \"ok\": true } en el copy."
     }
   },
   {

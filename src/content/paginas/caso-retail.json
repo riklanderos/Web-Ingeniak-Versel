@@ -6,11 +6,12 @@
   "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "publishGate": {
-    "ok": false,
-    "fuente": null,
-    "_nota": "Puerta R2 cerrada: la página sale como caso breve (noindex,follow; solo portada, ficha con filas confirmed:true, cifra, replicar, relacionados y cierre). Lo publicable hoy: la cifra y su contexto de metrics.ts (retail-conversiones · 'Retail multimarca · Kommo + IA'), la descripción del sistema que ya publica ingeniak.mx y aprobó la FAQ K03 (Kommo automatizado con calificación de leads por IA y un embudo de conversión que se ve en tiempo real; el equipo sabe a quién atender primero) y que el sistema sigue operando (RESPUESTAS-CLIENTE 2026-10-19 #3). Para abrirla hace falta, por escrito: ficha (ciudad, herramientas y canales, plazo del proyecto), punto de partida e implementación. Solo una confirmación escrita del cliente cambia ok a true."
+    "ok": true,
+    "fuente": "Rik Landeros, chat de construcción, 2026-11-14",
+    "_nota": "Puerta R2 abierta el 2026-11-14: Rik Landeros confirma por escrito publicar el caso completo e indexable (\"confirmo con los 4 casos\") con lo que ya estaba redactado. Los datos que el cliente no dio (ciudad, punto de partida, plazo, testimonio) siguen sin publicarse: esas filas y secciones se omiten. CaseTemplate e indexacion.mjs leen publishGate.ok."
   },
   "pendientes": [
+    "RESUELTO 2026-11-14 · puerta R2: Rik Landeros, chat de construcción, 2026-11-14 confirma publicar el caso completo e indexable. Quedan sin contestar (y sin publicarse) las preguntas de ficha, punto de partida y cifra que siguen en esta lista.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · puerta R2: ¿autorizas publicar este caso completo e indexable? Para hacerlo necesitamos por escrito los tres bloques que siguen (ficha, punto de partida, implementación). Mientras tanto sale como caso breve en noindex, enlazado desde /casos/ y desde el inicio.",
     "PREGUNTA AL CLIENTE · ficha: (1) ¿en qué ciudad opera el retail? (si no se puede decir, la fila se omite); (2) ¿qué vende? (ropa, calzado, electrónica, hogar…; basta la categoría, sin nombre); (3) ¿por qué canales entran sus leads a Kommo? (WhatsApp, Instagram, Facebook Messenger, chat web, correo, tienda física); (4) ¿cuánto tardó la implementación? Si no se confirma, solo se usa el rango general de Ingeniak (de 7 a 30 días según el alcance), rotulado como general.",
@@ -86,9 +87,9 @@
       "h2": { "text": "Kommo ordena,", "soft": "la IA califica." },
       "lede": "Automatizamos el embudo de Kommo del retail con calificación de leads por IA y un embudo de conversión que se ve en tiempo real.",
       "nodes": [
-        { "label": "Kommo", "line": "El embudo de ventas, con cada lead en su etapa.", "logos": ["kommo"], "confirmed": false },
-        { "label": "Calificación con IA", "line": "Cada lead se califica para saber a quién atender primero.", "confirmed": false },
-        { "label": "Embudo en tiempo real", "line": "Las conversiones se ven etapa por etapa, sin armar reportes a mano.", "confirmed": false }
+        { "label": "Kommo", "line": "El embudo de ventas, con cada lead en su etapa.", "logos": ["kommo"], "confirmed": true },
+        { "label": "Calificación con IA", "line": "Cada lead se califica para saber a quién atender primero.", "confirmed": true },
+        { "label": "Embudo en tiempo real", "line": "Las conversiones se ven etapa por etapa, sin armar reportes a mano.", "confirmed": true }
       ],
       "body": [
         "Kommo es el CRM donde vive el embudo de ventas: cada prospecto es una tarjeta que avanza por etapas. Lo que sumamos fue criterio: la IA califica cada lead para que el equipo no trate igual al que pregunta por curiosidad que al que ya decidió comprar.",

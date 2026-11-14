@@ -6,11 +6,12 @@
   "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "publishGate": {
-    "ok": false,
-    "fuente": null,
-    "_nota": "Puerta R2 cerrada: la página sale como caso breve (noindex,follow; solo portada, ficha con filas confirmed:true, cifra, replicar, relacionados y cierre). Lo publicable hoy: la cifra de metrics.ts (ecom-cpl, 'costo por lead en 60 días', contexto 'E-commerce · CDMX') y que el sistema sigue operando (RESPUESTAS-CLIENTE 2026-10-19 #3). A diferencia de los otros casos, aquí NO hay descripción publicada de lo que se implementó (D: 'Página bloqueada hasta confirmar con el cliente qué se implementó'): la página no dice qué servicio ni qué herramientas se usaron. Para abrir la puerta hace falta, por escrito: ficha (servicio, herramientas, plazo), punto de partida e implementación."
+    "ok": true,
+    "fuente": "Rik Landeros, chat de construcción, 2026-11-14",
+    "_nota": "Puerta R2 abierta el 2026-11-14: Rik Landeros confirma por escrito publicar el caso completo e indexable (\"confirmo con los 4 casos\") con lo que ya estaba redactado. Los datos que el cliente no dio (ciudad, punto de partida, plazo, testimonio) siguen sin publicarse: esas filas y secciones se omiten. CaseTemplate e indexacion.mjs leen publishGate.ok."
   },
   "pendientes": [
+    "RESUELTO 2026-11-14 · puerta R2: Rik Landeros, chat de construcción, 2026-11-14 confirma publicar el caso completo e indexable. Quedan sin contestar (y sin publicarse) las preguntas de ficha, punto de partida y cifra que siguen en esta lista.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · puerta R2: ¿autorizas publicar este caso completo e indexable? Necesitamos por escrito ficha, punto de partida e implementación. Mientras tanto sale como caso breve en noindex, enlazado desde /casos/, el inicio, /servicios/paid-media/ y /industrias/retail-ecommerce/.",
     "PREGUNTA AL CLIENTE · implementación (lo más urgente: sin esto el caso no puede contar cómo se logró): ¿qué implementó Ingeniak en este e-commerce? ¿Paid media (en qué plataformas: Meta Ads, Google Ads, TikTok Ads), CRM (Kommo o GoHighLevel), agente de IA en WhatsApp, página o tienda en línea, tablero de datos? Cada pieza confirmada se vuelve un nodo del diagrama.",

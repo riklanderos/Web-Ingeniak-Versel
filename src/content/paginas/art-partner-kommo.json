@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-20",
+  "actualizado": "2026-11-14",
   "articulo": {
     "categoria": "CRM",
     "about": [
@@ -30,6 +30,7 @@
     ]
   },
   "pendientes": [
+    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agregan a \"Sigue explorando\" las tarjetas hacia los artículos nuevos del blog, que no recibían enlaces desde esta página.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · URGENTE · ficha de Ingeniak en el directorio de Kommo: el 2026-10-19 Ingeniak NO aparece en el directorio público, ni en la versión en español (236 fichas) ni en la versión en inglés (458 fichas); tampoco con otro nombre que reconozcamos. D pide enlazar la ficha real antes de publicar, y este artículo le dice al lector que busque ahí primero. Kommo pide para listarse: una sección de Kommo en el sitio (ya está: /kommo/), el sello en el sitio con enlace a kommo.com (ya está: KommoBadge), un logo de buena calidad y la solicitud en el Portal de partners (Resources → Get listed), que revisa su equipo. ¿Tienen ficha con otro nombre o razón social? Si no, recomendamos solicitarla ya. Mientras tanto, la sección 7 se llama 'Cómo verificar a Ingeniak' (D: 'Ingeniak en el directorio de Kommo') y no dice que estemos en el directorio.",
     "PREGUNTA AL CLIENTE · certificado: la sección 7 invita a pedir nuestro certificado de partner por WhatsApp o por correo (antes, en la Discovery Session; Kommo lo entrega al aprobar el examen). ¿Lo tienen y se puede mostrar? Si no, se quita ese renglón.",
@@ -180,7 +181,8 @@
       "items": [
         { "href": "/kommo/", "label": "Partner oficial", "title": "Kommo con Ingeniak", "line": "Licencias, implementación y agentes de IA dentro de Kommo.", "plate": "home-kain" },
         { "href": "/blog/kommo-vs-gohighlevel/", "label": "Blog", "title": "Kommo vs GoHighLevel", "line": "Cuál conviene según cómo vende tu equipo." },
-        { "href": "/servicios/crm-con-ia/", "label": "Servicio", "title": "CRM con IA", "line": "Cada conversación en su etapa y con su seguimiento.", "plate": "home-sistema-3-organizar" }
+        { "href": "/servicios/crm-con-ia/", "label": "Servicio", "title": "CRM con IA", "line": "Cada conversación en su etapa y con su seguimiento.", "plate": "home-sistema-3-organizar" },
+        { "href":"/blog/kommo-precios/", "label":"Blog", "title":"Kommo precios 2026", "line":"Cómo cobra por usuario, qué incluye cada plan y qué se paga aparte." }
       ]
     },
     "cta-final": {

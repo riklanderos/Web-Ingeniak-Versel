@@ -4,8 +4,9 @@
   "estado": "aprobado",
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": "Rik Landeros",
-  "actualizado": "2026-10-20",
+  "actualizado": "2026-11-14",
   "pendientes": [
+    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (revisión SEO): se agregan a \"Sigue explorando\" las tarjetas hacia los artículos nuevos del blog, que no recibían enlaces desde esta página.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "FAQ DISTINTA DE D · N08: el banco cambia '7 fuentes' escrito a mano por el token ecom-tablero y agrega 'tráfico, conversión y retorno de campañas en la misma pantalla, sin exportar reportes a mano'. Sigue en validar: true, así que no sale en el acordeón ni en el FAQPage; #definicion usa un texto propio armado con N08 de D y las tres señales del brief.",
     "FAQ DISTINTA DE D · G09: agrega el criterio de elección (calidad, velocidad y costo de uso) y 'Si más adelante conviene otro modelo, lo evaluamos con tus propias conversaciones.'",
@@ -187,7 +188,8 @@
       "items": [
         { "href": "/servicios/automatizacion-n8n/", "label": "Servicio", "title": "Automatización con n8n", "line": "Flujos entre tus sistemas, para lo que no necesita una aplicación propia." },
         { "href": "/tecnologias/", "label": "Stack", "title": "Tecnologías", "line": "Las herramientas con las que construimos y conectamos cada sistema." },
-        { "href": "/casos/ecommerce-cdmx-costo-por-lead/", "label": "Caso de estudio", "title": "E-commerce en la Ciudad de México", "line": "Un caso de e-commerce medido: el costo por lead, antes y después." }
+        { "href": "/casos/ecommerce-cdmx-costo-por-lead/", "label": "Caso de estudio", "title": "E-commerce en la Ciudad de México", "line": "Un caso de e-commerce medido: el costo por lead, antes y después." },
+        { "href":"/blog/cuanto-cuesta-software-a-la-medida-mexico/", "label":"Guía", "title":"Cuánto cuesta el software a la medida", "line":"Los cinco factores que mueven el precio y qué pedir en una cotización." }
       ]
     },
     "cta-final": {

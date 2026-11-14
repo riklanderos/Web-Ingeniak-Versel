@@ -87,8 +87,8 @@ const builtLinks = ((g?.links ?? []) as any[]).map((l) => quoteLink(l)).filter((
             <Cover class="hub-guide__cover" href={it.href ?? undefined} tabindex={it.href ? -1 : undefined} aria-hidden="true">
               {it.cover ? (
                 <picture>
-                  <source type="image/avif" srcset={`${it.cover}-640.avif 640w, ${it.cover}-1280.avif 1280w`} sizes="(min-width: 900px) 520px, 92vw" />
-                  <img src={`${it.cover}-1280.webp`} srcset={`${it.cover}-640.webp 640w, ${it.cover}-1280.webp 1280w`} sizes="(min-width: 900px) 520px, 92vw" alt="" width="1280" height="720" loading="lazy" decoding="async" />
+                  <source type="image/avif" srcset={`${it.cover}-640.avif 640w, ${it.cover}-1080.avif 1080w, ${it.cover}-1280.avif 1280w`} sizes="(min-width: 900px) 520px, 92vw" />
+                  <img src={`${it.cover}-1280.webp`} srcset={`${it.cover}-640.webp 640w, ${it.cover}-1080.webp 1080w, ${it.cover}-1280.webp 1280w`} sizes="(min-width: 900px) 520px, 92vw" alt="" width="1280" height="720" loading="lazy" decoding="async" />
                 </picture>
               ) : (
               <picture>

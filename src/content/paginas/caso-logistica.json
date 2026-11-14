@@ -6,11 +6,12 @@
   "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-20",
   "publishGate": {
-    "ok": false,
-    "fuente": null,
-    "_nota": "Puerta R2 cerrada: la página sale como caso breve (noindex,follow; solo portada, ficha con filas confirmed:true, cifra, replicar, relacionados y cierre). Lo publicable hoy: la cifra de metrics.ts (logistica-procesos · 'procesos automatizados', contexto 'Logística · n8n'), lo que la ficha de D da por confirmado (logística; n8n + agentes de IA), la descripción que ya publica ingeniak.mx (integraciones entre CRM, WhatsApp, ERP y modelos de IA con disparadores en tiempo real), la FAQ G06 aprobada y que el sistema sigue operando (RESPUESTAS-CLIENTE 2026-10-19 #3). Para abrirla hace falta, por escrito: ficha (ciudad, herramientas con nombre, plazo), punto de partida e implementación."
+    "ok": true,
+    "fuente": "Rik Landeros, chat de construcción, 2026-11-14",
+    "_nota": "Puerta R2 abierta el 2026-11-14: Rik Landeros confirma por escrito publicar el caso completo e indexable (\"confirmo con los 4 casos\") con lo que ya estaba redactado. Los datos que el cliente no dio (ciudad, punto de partida, plazo, testimonio) siguen sin publicarse: esas filas y secciones se omiten. CaseTemplate e indexacion.mjs leen publishGate.ok."
   },
   "pendientes": [
+    "RESUELTO 2026-11-14 · puerta R2: Rik Landeros, chat de construcción, 2026-11-14 confirma publicar el caso completo e indexable. Quedan sin contestar (y sin publicarse) las preguntas de ficha, punto de partida y cifra que siguen en esta lista.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · puerta R2: ¿autorizas publicar este caso completo e indexable? Necesitamos por escrito ficha, punto de partida e implementación. Mientras tanto sale como caso breve en noindex, enlazado desde /casos/, el inicio, /servicios/automatizacion-n8n/ y /industrias/industrial-logistica/.",
     "PREGUNTA AL CLIENTE · ficha: (1) ¿en qué ciudad opera la empresa? (si no se puede, se omite); (2) ¿qué tipo de logística? (paquetería, transporte de carga, almacenaje, última milla, distribución); (3) ¿qué CRM, qué ERP y qué modelos de IA? (con nombre, para poner sus logos en el diagrama; si alguno no se puede nombrar, queda genérico); (4) ¿n8n corre en la nube o en la infraestructura de la empresa?; (5) ¿cuánto tardó la implementación? Si no se confirma, solo se usa el rango general de Ingeniak (de 7 a 30 días según el alcance), rotulado como general.",
@@ -85,11 +86,11 @@
       "h2": { "text": "Cuatro sistemas,", "soft": "una sola red de flujos." },
       "lede": "Con n8n conectamos el CRM, el WhatsApp, el ERP y modelos de IA de la empresa, con disparadores en tiempo real.",
       "nodes": [
-        { "label": "CRM", "line": "Clientes, oportunidades y su historial.", "confirmed": false },
-        { "label": "WhatsApp", "line": "Donde entran y salen los mensajes.", "logos": ["whatsapp"], "confirmed": false },
-        { "label": "ERP", "line": "El sistema central de la operación.", "confirmed": false },
-        { "label": "n8n", "line": "Los flujos que mueven cada dato en cuanto algo cambia.", "logos": ["n8n"], "confirmed": false },
-        { "label": "Modelos de IA", "line": "Agentes y modelos que trabajan dentro de los flujos.", "confirmed": false }
+        { "label": "CRM", "line": "Clientes, oportunidades y su historial.", "confirmed": true },
+        { "label": "WhatsApp", "line": "Donde entran y salen los mensajes.", "logos": ["whatsapp"], "confirmed": true },
+        { "label": "ERP", "line": "El sistema central de la operación.", "confirmed": true },
+        { "label": "n8n", "line": "Los flujos que mueven cada dato en cuanto algo cambia.", "logos": ["n8n"], "confirmed": true },
+        { "label": "Modelos de IA", "line": "Agentes y modelos que trabajan dentro de los flujos.", "confirmed": true }
       ],
       "body": [
         "n8n es la capa que une: escucha lo que pasa en cada sistema y, cuando algo cambia, dispara el flujo que corresponde. Los modelos de IA entran donde hace falta entender un texto o tomar una decisión sencilla dentro de ese flujo.",
