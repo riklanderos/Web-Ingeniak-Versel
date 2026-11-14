@@ -31,8 +31,9 @@ legend.fld__label + *{clear:both}
   transition:border-color var(--d-cut) var(--ease-ui),background-color var(--d-cut) var(--ease-ui),box-shadow var(--d-cut) var(--ease-ui)}
 .fld__textarea{height:auto;min-height:128px;padding:12px 14px;line-height:1.55;resize:vertical}
 .fld__input::placeholder,.fld__textarea::placeholder{color:rgb(158 176 199 / .72);opacity:1}
-.fld__input:hover,.fld__select:hover,.fld__textarea:hover{border-color:rgb(158 176 199 / .55);background:rgb(255 255 255 / .06)}
-.fld__input:focus,.fld__select:focus,.fld__textarea:focus{border-color:var(--hair-cyan);background:rgb(0 229 255 / .04)}
+/* Cambiar solo el color conserva tamaño, posición y no-repeat de la flecha del select. */
+.fld__input:hover,.fld__select:hover,.fld__textarea:hover{border-color:rgb(158 176 199 / .55);background-color:rgb(255 255 255 / .06)}
+.fld__input:focus,.fld__select:focus,.fld__textarea:focus{border-color:var(--hair-cyan);background-color:rgb(0 229 255 / .04)}
 .fld__input:focus-visible,.fld__select:focus-visible,.fld__textarea:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-color:transparent}
 .fld__input:disabled,.fld__select:disabled,.fld__textarea:disabled{opacity:.55;cursor:not-allowed}
 .fld__input:-webkit-autofill,.fld__input:-webkit-autofill:hover,.fld__input:-webkit-autofill:focus{
@@ -46,7 +47,7 @@ legend.fld__label + *{clear:both}
 
 /* ---------- Error ---------- */
 .fld[data-invalid] .fld__input,.fld[data-invalid] .fld__select,.fld[data-invalid] .fld__textarea,
-.fld__input[aria-invalid="true"],.fld__select[aria-invalid="true"],.fld__textarea[aria-invalid="true"]{border-color:var(--err);background:rgb(255 107 112 / .06)}
+.fld__input[aria-invalid="true"],.fld__select[aria-invalid="true"],.fld__textarea[aria-invalid="true"]{border-color:var(--err);background-color:rgb(255 107 112 / .06)}
 .fld[data-invalid] .chip-opt,.fld[data-invalid] .seg{box-shadow:inset 0 0 0 1px rgb(255 107 112 / .5)}
 .fld[data-invalid] .chip-opt:has(input:checked){box-shadow:inset 0 0 0 1px rgb(0 229 255 / .6)}
 .fld[data-invalid] .check__box{border-color:var(--err)}
