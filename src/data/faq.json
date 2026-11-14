@@ -1051,7 +1051,7 @@
   {
     "id": "B16",
     "q": "¿Puedo pagar GoHighLevel en pesos mexicanos?",
-    "a": "HighLevel publica sus precios en dólares y los carga a tu tarjeta, así que tu banco hace la conversión con su tipo de cambio y, a veces, cobra una comisión. Si contratas a través de una agencia, pregúntale en qué moneda te factura la suscripción, los cargos por uso y la implementación, y si emite factura mexicana.",
+    "a": "HighLevel publica sus precios en dólares y los carga a tu tarjeta, así que tu banco hace la conversión con su tipo de cambio y, a veces, cobra una comisión. Si contratas con una agencia, pregunta en qué moneda te factura. En Ingeniak facturamos la implementación en pesos mexicanos con CFDI o en dólares, según tu caso.",
     "short": "HighLevel publica sus precios en dólares y los carga a tu tarjeta, así que tu banco hace la conversión con su tipo…",
     "pages": [
       "/blog/gohighlevel-precios-mexico/"
@@ -1099,7 +1099,7 @@
   {
     "id": "B20",
     "q": "¿Quién me cobra los mensajes de WhatsApp en GoHighLevel?",
-    "a": "Meta define la tarifa de cada mensaje entregado según su categoría y el país de quien lo recibe. En GoHighLevel ese uso se cobra a través de HighLevel, junto con una cuota mensual por cada subcuenta con WhatsApp. Si tu cuenta la administra una agencia, puede revenderte el uso con margen: pregúntale cómo te lo cobra.",
+    "a": "Meta define la tarifa de cada mensaje entregado según su categoría y el país de quien lo recibe. En GoHighLevel ese uso se cobra a través de HighLevel, junto con una cuota mensual por cada subcuenta con WhatsApp. Si tu cuenta la administra una agencia, puede revenderte el uso con margen: pregúntale cómo te lo cobra. En Ingeniak no lo revendemos: lo pagas tú directo.",
     "short": "Meta define la tarifa de cada mensaje entregado según su categoría y el país de quien lo recibe.",
     "pages": [
       "/blog/gohighlevel-whatsapp/"

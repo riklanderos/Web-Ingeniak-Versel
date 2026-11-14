@@ -20,7 +20,7 @@
     "RESUELTO 2026-11-14 · redactado en SEO Studio (2026-11-13) · aprobado por Rik Landeros por escrito en el chat de construcción (\"ya puedes publicarlos\"). Se publicó desde el repo; el Estudio lo importa después.",
     "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
     "PLACA · RESUELTO 2026-11-14: portada propia art-gohighlevel-precios-hero, pedida por Rik Landeros; el cierre usa la placa compartida cta-amanecer.",
-    "PREGUNTAS AL CLIENTE (de la sesión del Estudio, sin contestar al publicar): facturación en pesos con CFDI y reventa de licencias; si el cliente de GoHighLevel queda como subcuenta de la agencia; qué agente se conecta en GoHighLevel. El texto no afirma ninguna de las tres: remite a preguntarlo al cotizar."
+    "RESUELTO 2026-11-14 · Rik Landeros (chat de construcción) contestó las preguntas del Estudio: la implementación se factura en pesos con CFDI o en dólares, según el cliente; Ingeniak cobra las licencias de Kommo en dólares o en pesos mexicanos; en GoHighLevel la cuenta queda a nombre del cliente o como subcuenta de Ingeniak, según el caso, y los cargos por uso los paga el cliente directo; el agente que se conecta en GoHighLevel es Kain, a la medida; la FAQ del número actual (B12) y las cifras de los casos dental y retail se quedan como están."
   ],
   "sections": {
     "hero": {
@@ -197,8 +197,8 @@
             "**Comisiones de tu banco.** Muchas tarjetas cobran una comisión por compras en moneda extranjera. Revisa la tuya antes de dar de alta la cartera de saldo.",
             "**Factura e IVA.** HighLevel es una empresa de Estados Unidos. Pregunta a tu contador cómo deducir el gasto y cómo tratar el IVA de un servicio digital extranjero.",
             "**WhatsApp con tarifa de México.** Si tus clientes están en México, pagas la tarifa por mensaje de México, que cambió en octubre de 2026.[^3]",
-            "**Implementación y capacitación.** Configurar pipelines, embudos, calendarios, WhatsApp y el agente de IA en español, y enseñarle a tu equipo a usarlo, es trabajo aparte de la suscripción.",
-            "**Quién es dueño de la cuenta.** Si una agencia te da de alta en su cuenta, pregunta si los cargos por uso se te pasan a costo o con margen. HighLevel permite ambas cosas según el plan de la agencia.[^2]"
+            "**Implementación y capacitación.** Configurar pipelines, embudos, calendarios, WhatsApp y el agente de IA en español, y enseñarle a tu equipo a usarlo, es trabajo aparte de la suscripción. En Ingeniak la facturamos en pesos mexicanos con CFDI o en dólares, según tu caso.",
+            "**Quién es dueño de la cuenta.** Si una agencia te da de alta en su cuenta, pregunta si los cargos por uso se te pasan a costo o con margen. HighLevel permite ambas cosas según el plan de la agencia.[^2] Con Ingeniak, la cuenta puede quedar a tu nombre o como subcuenta nuestra, según el caso, y los cargos por uso los pagas tú directo: no los revendemos."
           ]
         },
         "La herramienta es la mitad. La otra mitad es quien configura los embudos, conecta WhatsApp, escribe las reglas del agente y capacita a tu equipo, en tu idioma. En el caso de una clínica dental de Monterrey que agenda con GoHighLevel y un agente de IA, el resultado fue {{metric:dental-citas|full}}, y eso salió del sistema completo, no de la suscripción sola.",

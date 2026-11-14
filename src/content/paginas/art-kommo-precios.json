@@ -20,7 +20,7 @@
     "RESUELTO 2026-11-14 · redactado en SEO Studio (2026-11-13) · aprobado por Rik Landeros por escrito en el chat de construcción (\"ya puedes publicarlos\"). Se publicó desde el repo; el Estudio lo importa después.",
     "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
     "PLACA · RESUELTO 2026-11-14: portada propia art-kommo-precios-hero, pedida por Rik Landeros; el cierre usa la placa compartida cta-amanecer.",
-    "PREGUNTAS AL CLIENTE (de la sesión del Estudio, sin contestar al publicar): facturación en pesos con CFDI y reventa de licencias; si el cliente de GoHighLevel queda como subcuenta de la agencia; qué agente se conecta en GoHighLevel. El texto no afirma ninguna de las tres: remite a preguntarlo al cotizar."
+    "RESUELTO 2026-11-14 · Rik Landeros (chat de construcción) contestó las preguntas del Estudio: la implementación se factura en pesos con CFDI o en dólares, según el cliente; Ingeniak cobra las licencias de Kommo en dólares o en pesos mexicanos; en GoHighLevel la cuenta queda a nombre del cliente o como subcuenta de Ingeniak, según el caso, y los cargos por uso los paga el cliente directo; el agente que se conecta en GoHighLevel es Kain, a la medida; la FAQ del número actual (B12) y las cifras de los casos dental y retail se quedan como están."
   ],
   "sections": {
     "hero": {
@@ -67,7 +67,7 @@
             "**El plan Empresarial no tiene precio publicado:** se cotiza a la medida."
           ]
         },
-        "Kommo también aclara que algunos partners oficiales revenden sus licencias en moneda local. Si te importa pagar en pesos o recibir factura en México, pregúntalo antes de contratar.",
+        "Kommo también aclara que algunos partners oficiales revenden sus licencias en moneda local. Si te importa pagar en pesos o recibir factura en México, pregúntalo antes de contratar. Con Ingeniak puedes pagar tus licencias de Kommo en dólares o en pesos mexicanos.",
         "Por eso, cuando alguien nos pide precios Kommo en una llamada, la primera pregunta no es el plan. Es cuántas personas van a usar el CRM y por cuánto tiempo quieres comprometerte.",
         {
           "variant": "h2",
@@ -172,7 +172,7 @@
           "variant": "h3",
           "text": "Periodo de pago, tipo de cambio y factura"
         },
-        "Como el mínimo son seis meses, pagas por adelantado ese periodo completo. Si pagas directo a Kommo, el cargo es en dólares y tu costo en pesos depende del tipo de cambio del día. Si necesitas pagar en moneda local o deducir la licencia, pregunta a tu partner cómo factura antes de elegir el periodo.",
+        "Como el mínimo son seis meses, pagas por adelantado ese periodo completo. Si pagas directo a Kommo, el cargo es en dólares y tu costo en pesos depende del tipo de cambio del día. Si necesitas pagar en moneda local o deducir la licencia, pregunta a tu partner cómo factura antes de elegir el periodo. En Ingeniak cobramos las licencias en dólares o en pesos mexicanos, y la implementación la facturamos en pesos con CFDI o en dólares, según tu caso.",
         {
           "variant": "h3",
           "text": "Mensajes, créditos e integraciones"
@@ -217,7 +217,7 @@
             "**Estima los mensajes de WhatsApp** con la tabla de Meta para México, separando marketing, utilidad y servicio.",
             "**Calcula los créditos de IA** que consumirán tus agentes y si necesitas paquetes extra.",
             "**Suma integraciones de pago, implementación y capacitación.**",
-            "**Convierte a pesos** con el tipo de cambio del día, o pide la cotización en moneda local si tu partner la ofrece."
+            "**Convierte a pesos** con el tipo de cambio del día, o pide la cotización en moneda local si tu partner la ofrece. Nosotros la damos en dólares o en pesos mexicanos."
           ]
         },
         "El resultado es tu costo del primer periodo. Del segundo en adelante normalmente solo pagas licencias, mensajes y créditos, porque la implementación ya está hecha.",

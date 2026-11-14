@@ -20,7 +20,7 @@
   "autor": "Equipo de Ingeniak (redactado con IA)",
   "aprobadoPor": "Rik Landeros",
   "publicado": "2026-10-19",
-  "actualizado": "2026-10-20",
+  "actualizado": "2026-11-14",
   "articulo": {
     "categoria": "Agentes de IA",
     "about": [
@@ -29,6 +29,7 @@
     ]
   },
   "pendientes": [
+    "CAMBIO DE TEXTO · 2026-11-14, pedido por Rik Landeros (sugerencia de SEO Studio): este artículo deja de apuntar a 'qué es un agente de IA' para no competir con /blog/que-es-agente-ia-whatsapp/. El primer H2 pasa de 'Qué es un agente de IA para WhatsApp' a 'Agente de IA y chatbot: en qué se diferencian' y se agrega un párrafo que enlaza al artículo pilar. Ninguna afirmación cambia.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · autoría (R8): D sugiere a Alonso Vega como autor. Mientras no se confirme por escrito, el crédito visible dice 'Equipo de Ingeniak' y el JSON-LD usa la Organization. ¿Quién firma este artículo?",
     "PREGUNTA AL CLIENTE · '¿Kain se presenta siempre como asistente de IA?' La sección 'Qué no debe hacer' recomienda que el agente no se haga pasar por una persona y que el cliente pueda pedir a alguien del equipo en cualquier momento. Es una recomendación general, no se afirma de Kain; si así opera Kain, se puede decir en primera persona.",
@@ -60,9 +61,10 @@
     "cuerpo": {
       "_componente": "Prose (bloques) con dos escenas a sangre y CTA intermedio",
       "blocks": [
-        { "variant": "h2", "id": "que-es-un-agente", "text": "Qué es un agente de IA para WhatsApp", "rail": "Qué es un agente" },
+        { "variant": "h2", "id": "que-es-un-agente", "text": "Agente de IA y chatbot: en qué se diferencian", "rail": "La diferencia" },
         "Un agente de IA para WhatsApp es un asistente basado en modelos de lenguaje que atiende las conversaciones de tu WhatsApp Business. Lee lo que escribe el cliente con sus propias palabras, entiende qué necesita, responde con la información de tu negocio y hace algo con esa conversación: la registra, califica al prospecto, aparta una cita o se la pasa a la persona correcta.",
         "La palabra que importa es **agente**. Un asistente que solo contesta preguntas sigue siendo, en el fondo, un buscador amable. Un agente tiene herramientas: consulta tu catálogo, revisa tu agenda, crea el registro en tu CRM y avisa a tu equipo. Por eso la conversación no termina en una respuesta, sino en un siguiente paso.",
+        "Si quieres la explicación completa, con ejemplos por industria y lo que necesitas para implementarlo, la tienes en [qué es un agente de IA para WhatsApp y cómo funciona](/blog/que-es-agente-ia-whatsapp/). Aquí nos quedamos con la comparación.",
         { "variant": "h3", "text": "Cómo funciona un chatbot de menús" },
         "El chatbot tradicional es un árbol de decisiones. Saluda, muestra opciones y espera a que elijas una. En WhatsApp, esas opciones suelen llegar como botones o listas: la plataforma permite hasta tres botones de respuesta por mensaje y listas de hasta diez opciones.[^1][^2] Cada camino lo escribió alguien antes, y el bot solo puede recorrer los caminos que ya existen.",
         "Funciona bien mientras el cliente pregunte lo que el menú prevé. El problema llega con mensajes como «¿tienen algo para mañana temprano y aceptan tarjeta?», que mezclan dos temas y no caben en ningún botón. Ahí el chatbot repite el menú, contesta otra cosa o deja al cliente esperando a que alguien lo rescate.",

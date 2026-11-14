@@ -9503,7 +9503,7 @@
     "purpose": "Ganar la intención informativa '¿qué es un agente de IA para WhatsApp?' y la diferencia con chatbots y con el agente de Meta.",
     "primaryKeyword": "agente de IA para WhatsApp vs chatbot",
     "secondaryKeywords": [
-      "qué es un agente de IA",
+      "diferencia entre agente de IA y chatbot",
       "agente de IA vs chatbot",
       "Meta Business AI vs agente a la medida"
     ],
@@ -9571,7 +9571,7 @@
         "order": 4,
         "id": "cuerpo",
         "name": "Cuerpo (H2)",
-        "spec": "1) Qué es un agente de IA para WhatsApp · 2) Tabla: agente de IA vs chatbot de menús · 3) Qué puede hacer un agente: responder, calificar, agendar, registrar en el CRM, dar seguimiento · 4) Qué no debe hacer: consejo médico o legal, inventar precios o existencias · 5) El agente de Meta vs un agente a la medida conectado a tu CRM · 6) Cuándo basta un chatbot · 7) Caso: de 8 minutos a 12 segundos",
+        "spec": "1) Agente de IA y chatbot: en qué se diferencian · 2) Tabla: agente de IA vs chatbot de menús · 3) Qué puede hacer un agente: responder, calificar, agendar, registrar en el CRM, dar seguimiento · 4) Qué no debe hacer: consejo médico o legal, inventar precios o existencias · 5) El agente de Meta vs un agente a la medida conectado a tu CRM · 6) Cuándo basta un chatbot · 7) Caso: de 8 minutos a 12 segundos",
         "cinematic": false
       },
       {
@@ -9655,7 +9655,8 @@
       "/servicios/agentes-ia-whatsapp/",
       "/kain/",
       "/casos/clinica-dental-monterrey/",
-      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/"
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+      "/blog/que-es-agente-ia-whatsapp/"
     ],
     "jsonLd": [
       "BlogPosting (author Person, datePublished, dateModified)",
@@ -9665,7 +9666,7 @@
     "faq": [
       {
         "id": "G02",
-        "q": "¿Qué es un agente de IA para WhatsApp?",
+        "q": "¿Agente de IA y chatbot: en qué se diferencian?",
         "a": "Es un asistente basado en modelos de lenguaje que atiende las conversaciones de tu WhatsApp Business: entiende lo que escribe el cliente, responde con la información de tu negocio, califica al prospecto, lo registra en tu CRM y puede agendarle una cita. A diferencia de un chatbot de menús, no obliga al cliente a elegir entre opciones fijas.",
         "estado": "aprobada"
       },
@@ -9699,7 +9700,7 @@
     "author": "Alonso Vega (sugerido)",
     "wordCount": 2000,
     "outline": [
-      "Qué es un agente de IA para WhatsApp",
+      "Agente de IA y chatbot: en qué se diferencian",
       "Tabla: agente de IA vs chatbot de menús",
       "Qué puede hacer un agente: responder, calificar, agendar, registrar en el CRM, dar seguimiento",
       "Qué no debe hacer: consejo médico o legal, inventar precios o existencias",
@@ -12667,7 +12668,7 @@
       {
         "id": "B16",
         "q": "¿Puedo pagar GoHighLevel en pesos mexicanos?",
-        "a": "HighLevel publica sus precios en dólares y los carga a tu tarjeta, así que tu banco hace la conversión con su tipo de cambio y, a veces, cobra una comisión. Si contratas a través de una agencia, pregúntale en qué moneda te factura la suscripción, los cargos por uso y la implementación, y si emite factura mexicana.",
+        "a": "HighLevel publica sus precios en dólares y los carga a tu tarjeta, así que tu banco hace la conversión con su tipo de cambio y, a veces, cobra una comisión. Si contratas con una agencia, pregunta en qué moneda te factura. En Ingeniak facturamos la implementación en pesos mexicanos con CFDI o en dólares, según tu caso.",
         "estado": "aprobada"
       }
     ],
@@ -12871,7 +12872,7 @@
       {
         "id": "B20",
         "q": "¿Quién me cobra los mensajes de WhatsApp en GoHighLevel?",
-        "a": "Meta define la tarifa de cada mensaje entregado según su categoría y el país de quien lo recibe. En GoHighLevel ese uso se cobra a través de HighLevel, junto con una cuota mensual por cada subcuenta con WhatsApp. Si tu cuenta la administra una agencia, puede revenderte el uso con margen: pregúntale cómo te lo cobra.",
+        "a": "Meta define la tarifa de cada mensaje entregado según su categoría y el país de quien lo recibe. En GoHighLevel ese uso se cobra a través de HighLevel, junto con una cuota mensual por cada subcuenta con WhatsApp. Si tu cuenta la administra una agencia, puede revenderte el uso con margen: pregúntale cómo te lo cobra. En Ingeniak no lo revendemos: lo pagas tú directo.",
         "estado": "aprobada"
       }
     ],

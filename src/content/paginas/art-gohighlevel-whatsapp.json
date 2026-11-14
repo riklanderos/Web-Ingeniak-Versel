@@ -20,7 +20,7 @@
     "RESUELTO 2026-11-14 · redactado en SEO Studio (2026-11-13) · aprobado por Rik Landeros por escrito en el chat de construcción (\"ya puedes publicarlos\"). Se publicó desde el repo; el Estudio lo importa después.",
     "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
     "PLACA · RESUELTO 2026-11-14: portada propia art-gohighlevel-whatsapp-hero, pedida por Rik Landeros; el cierre usa la placa compartida cta-amanecer.",
-    "PREGUNTAS AL CLIENTE (de la sesión del Estudio, sin contestar al publicar): facturación en pesos con CFDI y reventa de licencias; si el cliente de GoHighLevel queda como subcuenta de la agencia; qué agente se conecta en GoHighLevel. El texto no afirma ninguna de las tres: remite a preguntarlo al cotizar."
+    "RESUELTO 2026-11-14 · Rik Landeros (chat de construcción) contestó las preguntas del Estudio: la implementación se factura en pesos con CFDI o en dólares, según el cliente; Ingeniak cobra las licencias de Kommo en dólares o en pesos mexicanos; en GoHighLevel la cuenta queda a nombre del cliente o como subcuenta de Ingeniak, según el caso, y los cargos por uso los paga el cliente directo; el agente que se conecta en GoHighLevel es Kain, a la medida; la FAQ del número actual (B12) y las cifras de los casos dental y retail se quedan como están."
   ],
   "sections": {
     "hero": {
@@ -173,7 +173,7 @@
           "text": "Cómo se suma un agente de IA en GoHighLevel",
           "rail": "Cómo se suma un"
         },
-        "Con WhatsApp conectado, cada conversación ya entra al CRM. El siguiente paso es que alguien la conteste a cualquier hora. Ese es el trabajo del agente de IA en GoHighLevel. HighLevel tiene su propio agente, Conversation AI, y también se puede conectar uno construido aparte; las dos opciones las explicamos en la guía de GoHighLevel en español.",
+        "Con WhatsApp conectado, cada conversación ya entra al CRM. El siguiente paso es que alguien la conteste a cualquier hora. Ese es el trabajo del agente de IA en GoHighLevel. HighLevel tiene su propio agente, Conversation AI, y también se puede conectar uno construido aparte; las dos opciones las explicamos en la guía de GoHighLevel en español. En nuestros proyectos conectamos a Kain, el agente de IA de Ingeniak, construido a la medida de cada negocio.",
         "En Ingeniak conectamos un agente que atiende WhatsApp, califica al prospecto, lo registra en GoHighLevel con su etapa y le agenda cita en tu calendario. Así se reparte el trabajo:",
         {
           "variant": "h3",
@@ -263,7 +263,7 @@
           ]
         },
         "Tres detalles de las fuentes oficiales. Meta solo cobra los mensajes que el negocio manda y que sí se entregan; lo que te escribe el cliente no se cobra. El cobro de los mensajes de servicio que pasan del tramo gratuito empezó el 1 de octubre de 2026, según la [página de precios de Meta](https://developers.facebook.com/docs/whatsapp/pricing). Y en GoHighLevel ese uso se cobra a través de HighLevel, que permite a la agencia revenderlo con margen, como explica su [guía de precios, cobro y reventa de WhatsApp](https://help.gohighlevel.com/support/solutions/articles/155000001428-whatsapp-pricing-billing-and-rebilling-guide).",
-        "Por eso, pregúntale a quien te implemente si el uso de WhatsApp se te cobra a costo o con margen, y en qué categoría van a quedar tus plantillas. Un recordatorio de cita bien categorizado como utilidad no cuesta lo mismo que una promoción.",
+        "Por eso, pregúntale a quien te implemente si el uso de WhatsApp se te cobra a costo o con margen, y en qué categoría van a quedar tus plantillas. Un recordatorio de cita bien categorizado como utilidad no cuesta lo mismo que una promoción. En los proyectos de Ingeniak, esos cargos los pagas tú directo: no los revendemos.",
         {
           "variant": "h2",
           "id": "conecta-whatsapp-plan-no",
