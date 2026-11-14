@@ -4,7 +4,8 @@
 Datos de páginas: `src/data/sitemap.json` (= `D-sitemap.json` con §0.3 aplicado). Navegación: `src/data/navegacion.json`. Plan de imágenes: `materiales/v2/IMAGENES-v2.json`. Receta Magnific: `materiales/magnific/v2/RECETA.md`.
 
 ## Stack (versiones exactas, ya instaladas)
-astro 5.18.2 · @astrojs/mdx 4.3.13 · @astrojs/sitemap 3.6.0 · gsap 3.13.0 (ScrollTrigger, SplitText, Flip incluidos) · lenis 1.3.11 · @vercel/connect 2.5.2 (token de Google de la agenda, solo servidor) · sharp 0.34.4 (dev).
+Node 24.x · astro 7.4.12 · @astrojs/mdx 8.1.6 · @astrojs/sitemap 3.7.5 · gsap 3.15.1 (ScrollTrigger, SplitText, Flip incluidos) · lenis 1.3.27 · @vercel/connect 2.9.3 (token de Google de la agenda, solo servidor) · sharp 0.35.5 (dev).
+Actualización de seguridad del 2026-11-14: versiones exactas y lockfile generado con npm. `compressHTML: true` conserva los espacios entre elementos inline de Astro 5; no usar el nuevo valor por defecto `'jsx'` sin revisar el copy renderizado. `npm test` ejecuta las pruebas de cotización, agenda y configuración de Kommo en simulación.
 Importa GSAP desde npm: `import gsap from 'gsap'; import { ScrollTrigger } from 'gsap/ScrollTrigger'; import { SplitText } from 'gsap/SplitText'; import { Flip } from 'gsap/Flip';`. Lenis: `import Lenis from 'lenis'`. **No** uses CDNs ni `vendor/`. **No** ClientRouter de Astro (MPA puro).
 
 ## Servidor de desarrollo compartido
