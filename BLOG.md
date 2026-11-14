@@ -52,6 +52,8 @@ y su PDF.
 - Master en `src/assets/portadas/<page.id>.jpg` (16:9, 2048 px o más) → `node scripts/portadas.mjs <page.id>` →
   `npm run og -- <page.id>`. Sin master, la tarjeta sigue usando la placa del hero, como antes.
 - El texto de la imagen se revisa letra por letra (acentos, signos de apertura) antes de subirla.
+- Guía completa (estilo, prompts, referencias, revisión y pasos): `materiales/v2/blog/guia-portadas-blog.md`.
+  Para despejar el lado del texto en una placa del hero: `scripts/extender-placa.mjs`.
 
 ## Qué verifica el build (no negociable)
 
