@@ -136,7 +136,25 @@ El índice del blog tiene un tope de 1.2 MB de imágenes en celular; con 12 port
 
 ## 7. Qué puede hacer hoy el Estudio y qué no
 
-- El conector de ingeniak conserva la placa propia del hero al volver a publicar (commit 7468cc0 de seo-studio).
-- La portada con título es un archivo aparte: si el Estudio la genera, debe entregar el master en
-  `src/assets/portadas/<page.id>.jpg` y las exportaciones de `public/img/portadas/` y `public/img/og/` en el mismo PR,
-  porque el build de Vercel no corre `portadas.mjs` ni `og.mjs`.
+Desde el commit a6abf4f de seo-studio (2026-11-14), el Estudio genera las dos imágenes de cada artículo con esta guía.
+Requiere que la actualización 0009 esté aplicada en Sitios.
+
+**Qué entrega en el PR del artículo**
+- Portada con título: `src/assets/portadas/<page.id>.jpg`, las 6 exportaciones de `public/img/portadas/` y
+  `public/img/og/<page.id>.jpg`. Van en el PR porque el build de Vercel no corre `portadas.mjs` ni `og.mjs`.
+- Placa del hero: `src/assets/cine/<page.id>-hero.jpg` y `-hero-m.jpg`, las 21 exportaciones de `public/img/cine/`,
+  la ficha `materiales/v2/placas/<page.id>-hero.json` y `src/data/plates.json`.
+- La placa del `hero` en `src/data/sitemap.json` y la línea `PLACA ·` de `pendientes` como RESUELTO.
+- Al volver a publicar un artículo, el conector conserva la placa propia del hero (commit 7468cc0).
+
+**En qué se diferencia de lo hecho a mano**
+- Genera a 2560 × 1440, no en 4k. Los rellenos de `extender-placa.mjs` (346/194 sobre 3840) y la ventana de celular
+  (2506 sobre 3840) se escalan a ese tamaño. Los masters salen igual: 2752 × 1536 y 1536 × 1920.
+- La ficha copia la geometría de `art-kommo-precios-hero` (`safe`, `subject`, `anchors`). Si Kain sale fuera de esa
+  zona, la ficha se ajusta a mano en este repositorio.
+- El panel no deja publicar sin marcar los cinco puntos de la revisión de la sección 5.
+
+**Qué revisar al recibir el primer PR con imágenes generadas**
+Al escribir esto, el Estudio solo se había probado con la portada y la placa reales de `art-kommo-precios`, no con una
+generación nueva. En el primer PR real: abrir las dos imágenes y pasar la sección 5, ver el hero del artículo en
+computadora y en celular (que Kain no tape el título), y correr `npm run build` y los tests.
