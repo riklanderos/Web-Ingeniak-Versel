@@ -13110,5 +13110,211 @@
       "owner": "SEO Studio (brief + redacción + aprobación)",
       "note": "Redactado en SEO Studio el 2026-11-13 (borrador local, sin id del Estudio todavía). Aprobado por Rik Landeros y publicado desde el repo el 2026-11-14; el Estudio lo importa después."
     }
+  },
+  {
+    "id": "art-agentes-ia",
+    "group": "Recursos",
+    "url": "/blog/agentes-ia-para-empresas/",
+    "canonical": "https://ingeniak.mx/blog/agentes-ia-para-empresas/",
+    "indexable": true,
+    "status": "nueva",
+    "template": "T-ARTICLE",
+    "purpose": "Intención informativa · Buyer/etapa: Dueño, director comercial o gerente de operación de una pyme en México o LATAM que ya oyó de agentes de IA y quiere saber qué procesos de su empresa puede delegarles primero (etapa: descubrimiento y consideración).",
+    "primaryKeyword": "agentes de IA para empresas",
+    "secondaryKeywords": [
+      "automatizar procesos con IA",
+      "agentizar una empresa",
+      "agentes de IA para ventas",
+      "prospección con IA",
+      "automatización con inteligencia artificial"
+    ],
+    "title": "Agentes de IA para empresas: cómo agentizar tu operación",
+    "titleLength": 56,
+    "metaDescription": "Descubre cómo usar agentes de IA para empresas en prospección, marketing, ventas y sistemas, y cómo escalar tus procesos sin perder el control.",
+    "metaLength": 143,
+    "h1": "Agentes de IA para empresas: cómo agentizar tu operación",
+    "breadcrumbs": [
+      {
+        "name": "Inicio",
+        "url": "/"
+      },
+      {
+        "name": "Blog",
+        "url": "/blog/"
+      },
+      {
+        "name": "Agentes de IA para empresas",
+        "url": "/blog/agentes-ia-para-empresas/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Portada",
+        "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: agentes de IA para empresas.",
+        "cinematic": true,
+        "plate": {
+          "id": "art-agentes-ia-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "respuesta",
+        "name": "Respuesta corta",
+        "spec": "40–60 palabras citables que responden \"agentes de IA para empresas\" en la primera oración.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "indice",
+        "name": "Índice",
+        "spec": "Tabla de contenidos fija en escritorio, plegable en celular.",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cuerpo",
+        "name": "Cuerpo (H2)",
+        "spec": "1) ¿Qué significa agentizar una empresa? · 2) Por qué ahora: lo que dicen los datos · 3) Agentizar la prospección · 4) Agentizar el marketing · 5) Agentizar las ventas · 6) Agentizar los sistemas · 7) Cómo escalar procesos con IA sin perder el control · 8) Por dónde empezar con agentes de IA para empresas",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "cta-medio",
+        "name": "CTA intermedio",
+        "spec": "Tarjeta a /blog/que-es-agente-ia-whatsapp/ + WhatsApp.",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "faq",
+        "name": "Preguntas frecuentes",
+        "spec": "Acordeón (B25, B26, B27, B28); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 7,
+        "id": "autor",
+        "name": "Sobre el autor",
+        "spec": "Tarjeta de Equipo de Ingeniak hasta confirmar autor (R8).",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "fuentes",
+        "name": "Fuentes",
+        "spec": "8 fuente(s) con fecha de consulta.",
+        "cinematic": false
+      },
+      {
+        "order": 9,
+        "id": "relacionados",
+        "name": "Sigue explorando",
+        "spec": "3 tarjetas: /blog/que-es-agente-ia-whatsapp/ · /servicios/paid-media/ · /servicios/agentes-ia-whatsapp/.",
+        "cinematic": false
+      },
+      {
+        "order": 10,
+        "id": "cta-final",
+        "name": "Cierre",
+        "spec": "Cierre cinematográfico compartido (cta-amanecer).",
+        "cinematic": true,
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Agendar mi Discovery Session",
+      "href": "/discovery/",
+      "action": "agendar"
+    },
+    "secondaryCta": {
+      "label": "Escríbele a Kain",
+      "waMessage": "Hola Kain, leí agentes de IA para empresas: cómo agentizar tu operación y quiero ver cómo aplica a mi negocio.",
+      "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20agentes%20de%20IA%20para%20empresas%3A%20c%C3%B3mo%20agentizar%20tu%20operaci%C3%B3n%20y%20quiero%20ver%20c%C3%B3mo%20aplica%20a%20mi%20negocio."
+    },
+    "internalLinks": [
+      "/blog/que-es-agente-ia-whatsapp/",
+      "/servicios/paid-media/",
+      "/servicios/agentes-ia-whatsapp/"
+    ],
+    "jsonLd": [
+      "BlogPosting (author Person, datePublished, dateModified)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "B25",
+        "q": "¿Qué es agentizar una empresa?",
+        "a": "Agentizar una empresa es delegar a agentes de IA tareas completas de un proceso, como calificar prospectos o dar seguimiento a cotizaciones. El agente trabaja con reglas claras, conectado a tus sistemas como el CRM o WhatsApp, y una persona de tu equipo supervisa y toma las decisiones que requieren criterio humano.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B26",
+        "q": "¿Qué proceso conviene agentizar primero?",
+        "a": "Conviene empezar por un proceso repetitivo, con mucho volumen y reglas que ya puedes explicar, como responder y calificar prospectos que llegan por WhatsApp. Si tu equipo contesta lo mismo todos los días y los datos ya viven en un CRM, ese proceso está listo para un primer agente con supervisión.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B27",
+        "q": "¿Un agente de IA reemplaza a mi equipo?",
+        "a": "No. Un agente de IA se encarga de las tareas repetitivas y le devuelve tiempo a tu equipo para lo que requiere criterio: negociar, resolver casos complejos y cuidar la relación con el cliente. La clave está en definir cuándo el agente escala a una persona y en usar ese tiempo liberado en actividades de alto valor.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "B28",
+        "q": "¿Qué necesito tener listo antes de implementar agentes de IA?",
+        "a": "Necesitas un proceso documentado, datos ordenados en un solo lugar, como tu CRM, y accesos a las herramientas que el agente usará. También define quién supervisa, qué decisiones nunca se delegan y qué vas a medir, como tiempo de respuesta, tareas resueltas sin intervención y casos escalados a una persona.",
+        "estado": "aprobada"
+      }
+    ],
+    "sitemap": {
+      "priority": 0.6,
+      "changefreq": "monthly"
+    },
+    "author": "Equipo de Ingeniak",
+    "wordCount": 2937,
+    "outline": [
+      "¿Qué significa agentizar una empresa?",
+      "Por qué ahora: lo que dicen los datos",
+      "Agentizar la prospección",
+      "Agentizar el marketing",
+      "Agentizar las ventas",
+      "Agentizar los sistemas",
+      "Cómo escalar procesos con IA sin perder el control",
+      "Por dónde empezar con agentes de IA para empresas"
+    ],
+    "sources": "Inteligencia artificial en México: de la promesa al impacto económico · Economic and Workforce Impacts of AI in Latin America · Estudio muestra cómo la IA puede impulsar las ventas de las pymes mexicanas en temporada de fin de año · 40 Sales Statistics that Reveal How Teams Can Succeed in 2026 · Gartner Survey Finds AI Saves Sellers Nearly Five Hours per Week, Yet 72% of Sales Organizations Fail to Reinvest Time in High-Value Activities · 88% of enterprises now use or test AI agents, but most still need a human in the loop · New Study of 2,025 Agentic AI Leaders: First To Launch Isn’t Fastest to ROI · AI Agents are Only the Beginning: Deloitte Survey Examines the AI Readiness Gap",
+    "notes": "No repetir lo que ya explican /blog/que-es-agente-ia-whatsapp/ y /blog/servicios-como-software/; enlazarlos.\nEspañol de México, directo, de \"tú\", sin jerga vacía. Mínimo 1,200 palabras.\nREGLA DEL SITIO: no escribir porcentajes, montos ni \"N min\" con números. Los datos van en palabras (\"ocho de cada cien\", \"casi cinco horas a la semana\", \"seis de cada diez\") y con su fuente enlazada en la misma oración.\nSi un dato es de empresas grandes de EE. UU., decirlo explícitamente.\nSin promesas de resultados ni cifras, casos o resultados propios de Ingeniak. No usar tokens {{metric:…}}.\nEn cada H2 \"Agentizar…\": qué hace el agente, qué necesita para funcionar, cuándo entra una persona y un ejemplo por industria.",
+    "folio": "513",
+    "copy": {
+      "status": "aprobado",
+      "minWords": 1200,
+      "owner": "SEO Studio (brief + redacción + aprobación)",
+      "note": "Generado por SEO Studio (artículo d6bd23c5-f50b-4000-a7b0-7500eb391445) el 2026-11-14."
+    }
   }
 ]

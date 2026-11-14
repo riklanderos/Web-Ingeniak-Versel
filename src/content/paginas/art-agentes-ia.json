@@ -1,0 +1,451 @@
+{
+  "pageId": "art-agentes-ia",
+  "url": "/blog/agentes-ia-para-empresas/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (redactado con IA)",
+  "aprobadoPor": "Rik Landeros",
+  "publicado": "2026-11-14",
+  "actualizado": "2026-11-14",
+  "articulo": {
+    "categoria": "Agentes de IA",
+    "about": [
+      {
+        "type": "Service",
+        "name": "Agente de IA para WhatsApp: qué es, cómo funciona y ejemplos",
+        "url": "/blog/que-es-agente-ia-whatsapp/"
+      }
+    ]
+  },
+  "pendientes": [
+    "RESUELTO 2026-11-14 · SEO Studio · aprobado por Rik Landeros.",
+    "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
+    "PLACA · RESUELTO 2026-11-14: portada propia art-agentes-ia-hero generada en SEO Studio; el cierre usa la placa compartida cta-amanecer."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (art-agentes-ia-hero: presenta un organigrama de cristal con cuatro áreas, cada una con un agente, supervisadas por una persona)",
+      "eyebrow": "Agentes de IA",
+      "h1": {
+        "text": "Agentes de IA para empresas:",
+        "soft": "cómo agentizar tu operación",
+        "lit": "Agentes"
+      },
+      "deck": "Descubre cómo usar agentes de IA para empresas en prospección, marketing, ventas y sistemas, y cómo escalar tus procesos sin perder el control.",
+      "byline": "Equipo de Ingeniak",
+      "jump": "Ir a la respuesta corta"
+    },
+    "respuesta": {
+      "_componente": "Intertitle + DefinitionBlock variant=answer",
+      "label": "Respuesta corta",
+      "heading": "La respuesta corta",
+      "text": "Los agentes de IA para empresas son sistemas que entienden una solicitud, deciden el siguiente paso y actúan dentro de tus herramientas. Agentizar significa delegarles tareas completas de un proceso, con reglas claras, conexión a tus sistemas como el CRM o WhatsApp y una persona que supervisa los casos que requieren criterio humano."
+    },
+    "indice": {
+      "label": "En este artículo"
+    },
+    "cuerpo": {
+      "_componente": "Prose (bloques) con CTA intermedio",
+      "blocks": [
+        "Los agentes de IA para empresas dejaron de ser tema exclusivo de conferencias y ya aparecen en las juntas comerciales de cualquier pyme. Alguien pregunta si se puede «poner un agente» a contestar WhatsApp, a calificar prospectos o a mantener al día el CRM. Probablemente ya viste demos y leíste promesas, pero te falta lo más práctico: saber qué procesos de tu empresa conviene delegarles primero y cuáles todavía no.",
+        "Esta guía recorre las cuatro áreas donde suelen aparecer las primeras oportunidades: prospección, marketing, ventas y sistemas. En cada una verás qué hace el agente, qué necesita para funcionar, en qué momento entra una persona de tu equipo y un ejemplo de una industria concreta. Al final encontrarás una tabla para decidir por dónde empezar.",
+        {
+          "variant": "h2",
+          "id": "significa-agentizar-empresa",
+          "text": "¿Qué significa agentizar una empresa?",
+          "rail": "Qué significa agentizar una"
+        },
+        "Agentizar una empresa significa delegar a agentes de IA tareas completas de un proceso, no solo pasos sueltos. El agente trabaja con reglas claras, conectado a tus sistemas, y una persona supervisa los casos que requieren criterio.",
+        "La automatización tradicional funciona con reglas fijas: si pasa A, haz B. Por ejemplo, si llega un formulario, se crea un contacto en el CRM y se manda un correo de bienvenida. Es confiable mientras la entrada sea predecible, pero cuando el cliente escribe algo que la regla no contempla, el flujo se detiene o hace algo equivocado.",
+        "Un agente agrega una capa de criterio. Entiende lo que le piden aunque venga escrito de forma desordenada y decide el siguiente paso según tus reglas. Después actúa dentro de tus herramientas: consulta inventario, registra una nota en el CRM, agenda una cita o pasa la conversación a alguien de tu equipo.",
+        {
+          "variant": "table",
+          "head": [
+            "Aspecto",
+            "Automatización con reglas fijas",
+            "Agente de IA"
+          ],
+          "rows": [
+            [
+              "Cómo decide",
+              "Sigue una secuencia predefinida",
+              "Interpreta la solicitud y elige el siguiente paso dentro de tus reglas"
+            ],
+            [
+              "Qué entrada maneja",
+              "Datos estructurados y predecibles",
+              "Mensajes en lenguaje natural, documentos, datos incompletos"
+            ],
+            [
+              "Cuándo falla",
+              "Cuando aparece un caso no previsto",
+              "Cuando le faltan datos, reglas o límites claros"
+            ],
+            [
+              "Qué necesitas",
+              "Mapear el flujo paso a paso",
+              "Mapear el proceso, conectar sistemas y definir cuándo escala a una persona"
+            ]
+          ]
+        },
+        "Por eso agentizar no se reduce a contratar una herramienta. Necesitas tres ingredientes:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Reglas claras:** qué puede hacer el agente, qué no y con qué información responde.",
+            "**Conexión a tus sistemas:** el CRM, WhatsApp, el calendario, el inventario o la facturación, según el proceso.",
+            "**Supervisión humana:** una persona responsable que revisa, corrige y toma las decisiones que no se delegan."
+          ]
+        },
+        "Si quieres la explicación básica de cómo funciona un agente en un canal concreto, la cubrimos en [qué es un agente de IA para WhatsApp](/blog/que-es-agente-ia-whatsapp/). Aquí nos enfocamos en otra pregunta: qué partes de tu operación conviene delegar.",
+        {
+          "variant": "scene",
+          "id": "escena-1",
+          "plate": {
+            "id": "art-agentes-ia-escena-1",
+            "layout": "subject-right",
+            "mirror": false
+          },
+          "eyebrow": "Discovery Session",
+          "title": "Antes del agente, entiende tu proceso",
+          "text": "En una Discovery Session mapeamos tu operación contigo y sales con sugerencias concretas de qué tareas delegar primero y cuáles todavía no.",
+          "links": [
+            {
+              "label": "Agendar mi Discovery Session",
+              "href": "/discovery/",
+              "cta": "discovery"
+            }
+          ]
+        },
+        {
+          "variant": "h2",
+          "id": "ahora-lo-dicen-datos",
+          "text": "Por qué ahora: lo que dicen los datos",
+          "rail": "Por qué ahora: lo"
+        },
+        "En México la adopción todavía es baja, así que hay espacio para diferenciarse. Según [el reporte de Centro México Digital sobre inteligencia artificial en México](https://centromexico.digital/wp-content/uploads/2026/02/IA_en_Mx.pdf), ocho de cada cien empresas formales con más de diez empleados usan IA, frente a veinte de cada cien en promedio en la OCDE, con datos del Censo Económico 2024 del INEGI.",
+        "Entre los negocios que sí dieron el paso, los resultados reportados son alentadores. [El estudio de la Linux Foundation sobre el impacto económico de la IA en Latinoamérica](https://www.linuxfoundation.org/research/open-source-ai-latam) indica que más de ocho de cada diez negocios en México que adoptaron IA reportan más ingresos, con un aumento promedio cercano a una sexta parte. Además, más de nueve de cada diez negocios mexicanos con IA reportan mejoras de eficiencia, de acuerdo con datos de la Linux Foundation que recoge [Meta en su estudio sobre pymes mexicanas](https://about.fb.com/ltam/news/2026/10/estudio-muestra-como-la-ia-puede-impulsar-las-ventas-de-las-pymes-mexicanas-en-temporada-de-fin-de-ano/). Son datos que reportan los propios negocios: sirven como señal y no garantizan resultados para tu empresa.",
+        "Los datos globales vienen de estudios con empresas grandes, sobre todo de Estados Unidos. No describen a una pyme mexicana, pero muestran hacia dónde va el mercado y dónde se atoran las empresas que ya empezaron:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Tiempo fuera de la venta:** los vendedores pasan seis de cada diez horas en tareas que no son venta, según [las estadísticas de ventas de Salesforce](https://www.salesforce.com/sales/state-of-sales/sales-statistics/).",
+            "**Tiempo ahorrado que no se aprovecha:** la IA ahorra a los vendedores casi cinco horas a la semana, pero siete de cada diez organizaciones de ventas no reinvierten ese tiempo en actividades de alto valor, según [una encuesta de Gartner publicada en mayo de 2026](https://www.gartner.com/en/newsroom/press-releases/2026-05-19-gartner-survey-finds-ai-saves-sellers-nearly-five-hours-per-week-yet-seventy-two-percent-of-sales-organizations-fail-to-reinvest-time-in-high-value-activities).",
+            "**Agentes en producción, con supervisión:** en empresas de EE. UU. con más de mil empleados, los agentes en producción pasaron de cuatro a siete de cada diez en un año, y solo tres de cada diez dicen que resuelven la mayoría de las tareas sin una persona, según [la encuesta de Zapier sobre agentes de IA](https://zapier.com/blog/ai-agents-survey/).",
+            "**Retorno y valor de la integración:** las empresas que despliegan agentes de IA ven retorno en unos ocho meses, y más de nueve de cada diez dicen que la IA integrada al flujo de trabajo da más valor que una herramienta suelta, según [el estudio de Salesforce con líderes de IA agéntica](https://www.salesforce.com/news/stories/agentic-ai-leaders-survey-on-roi/).",
+            "**Datos e integración:** en empresas de EE. UU., siete de cada diez no tienen datos unificados y casi siete de cada diez ven la integración cara y compleja, según [la encuesta de Deloitte sobre preparación para la IA](https://www.deloitte.com/us/en/about/press-room/deloitte-survey-examines-ai-readiness-agentic-ai-success.html)."
+          ]
+        },
+        "La lectura para una pyme es clara: el reto no está en el modelo de IA. Está en integrarlo al flujo de trabajo, ordenar los datos y decidir qué hace tu equipo con el tiempo que libera.",
+        {
+          "variant": "cta-medio"
+        },
+        {
+          "variant": "h2",
+          "id": "agentizar-prospeccion",
+          "text": "Agentizar la prospección",
+          "rail": "Agentizar la prospección"
+        },
+        "La prospección con IA consiste en que un agente atienda, califique y dé seguimiento a los prospectos en cuanto llegan, sin importar la hora ni el canal.",
+        "**Qué hace el agente.** Responde a los leads que entran por formularios, anuncios o WhatsApp y hace las preguntas de calificación que hoy hace tu equipo. Registra las respuestas en el CRM, asigna el prospecto al asesor correcto y da seguimiento a quienes dejaron de contestar.",
+        "**Qué necesita para funcionar.** Una definición escrita de qué es un buen prospecto para tu negocio y las preguntas que lo distinguen. También necesita acceso al CRM, un catálogo o lista de opciones actualizada y los canales de entrada conectados. Los mensajes base deben estar aprobados por alguien de tu equipo.",
+        "**Cuándo entra una persona.** Cuando el prospecto ya está calificado y quiere una llamada o una visita. También entra si pregunta algo fuera del catálogo, si muestra molestia o si la conversación pasa a negociación.",
+        "**Ejemplo en una inmobiliaria.** Un desarrollo de departamentos recibe muchas consultas de sus anuncios en fin de semana, cuando los asesores no están conectados. El agente pregunta qué tipo de propiedad busca la persona, en qué zona, cómo piensa pagar (crédito bancario, Infonavit o recursos propios) y en qué plazo quiere comprar. Con eso comparte las fichas de las unidades disponibles que coinciden y agenda la visita en el calendario del asesor.",
+        "El lunes, el asesor recibe un resumen de cada prospecto calificado en lugar de una lista de mensajes sin leer. Quien solo está explorando entra a un seguimiento más espaciado. La negociación de precio y el apartado de una unidad siempre los lleva una persona.",
+        {
+          "variant": "scene",
+          "id": "escena-2",
+          "plate": {
+            "id": "art-agentes-ia-escena-2",
+            "layout": "subject-right",
+            "mirror": false
+          },
+          "eyebrow": "Kain",
+          "title": "Mira a un agente calificar en tu WhatsApp",
+          "text": "Escríbele a Kain y prueba en tu propio WhatsApp cómo responde, hace preguntas de calificación y cómo aplicaría a los prospectos de tu negocio.",
+          "links": [
+            {
+              "label": "Escríbele a Kain",
+              "href": "https://wa.me/523321017799?text=Hola%20Kain%2C%20le%C3%AD%20agentes%20de%20IA%20para%20empresas%3A%20c%C3%B3mo%20agentizar%20tu%20operaci%C3%B3n%20y%20quiero%20ver%20c%C3%B3mo%20aplica%20a%20mi%20negocio.",
+              "cta": "whatsapp",
+              "waMessage": "Hola Kain, leí agentes de IA para empresas: cómo agentizar tu operación y quiero ver cómo aplica a mi negocio."
+            }
+          ]
+        },
+        {
+          "variant": "h2",
+          "id": "agentizar-marketing",
+          "text": "Agentizar el marketing",
+          "rail": "Agentizar el marketing"
+        },
+        "En marketing, el agente se encarga del trabajo operativo que rodea a las campañas: analizar, clasificar, preparar y proponer. Las decisiones de estrategia y presupuesto se quedan con tu equipo.",
+        "**Qué hace el agente.** Cruza los datos de campañas con el CRM para saber qué anuncios generan clientes y no solo formularios. Prepara reportes de desempeño, detecta anuncios que pierden rendimiento y propone variantes de texto alineadas con tu marca. También clasifica comentarios y mensajes entrantes y envía contenido útil a los prospectos según su interés.",
+        "**Qué necesita para funcionar.** Conversiones bien medidas, de modo que se sepa qué pasó con cada lead después del clic. Además, una guía de tono y mensajes de la marca, acceso de lectura a las plataformas de anuncios y al CRM, y objetivos claros por campaña.",
+        "**Cuándo entra una persona.** Para aprobar cualquier creatividad o mensaje antes de publicarlo y para decidir cambios de presupuesto o de estrategia. También entra en cualquier tema sensible para la reputación de la marca. El agente puede recomendar mover inversión entre campañas, pero no debería ejecutarlo sin aprobación.",
+        "**Ejemplo en educación.** Una escuela de idiomas o una universidad privada en temporada de inscripciones recibe prospectos de varios programas a la vez. El agente identifica qué campañas terminan en inscripciones reales y prepara un resumen semanal para el equipo de marketing. Además, propone variantes de anuncios por programa y responde dudas frecuentes sobre fechas de inicio y requisitos con la información oficial.",
+        "Las preguntas sobre becas, revalidación de estudios o casos especiales pasan al área de admisiones. Si tus campañas son la principal fuente de prospectos, conviene que el agente trabaje junto a una estrategia de [paid media con datos conectados al CRM](/servicios/paid-media/): sin una medición confiable, el agente optimiza a ciegas.",
+        {
+          "variant": "h2",
+          "id": "agentizar-ventas",
+          "text": "Agentizar las ventas",
+          "rail": "Agentizar las ventas"
+        },
+        "Los agentes de IA para ventas atienden la conversación con el cliente desde la primera duda hasta la cita o la cotización, y le dejan al vendedor los momentos que requieren criterio.",
+        "El canal importa. Casi seis de cada diez usuarios de las tecnologías de Meta enviaron mensajes directos a un negocio durante la temporada de fin de año, según un estudio de Ipsos citado por [Meta en su análisis sobre pymes mexicanas](https://about.fb.com/ltam/news/2026/10/estudio-muestra-como-la-ia-puede-impulsar-las-ventas-de-las-pymes-mexicanas-en-temporada-de-fin-de-ano/). Si tus clientes te escriben por mensaje, ahí es donde se gana o se pierde la venta.",
+        "**Qué hace el agente.** Responde dudas sobre productos o servicios y comparte precios de la lista vigente. Agenda, confirma y reagenda citas, envía recordatorios y da seguimiento a cotizaciones abiertas. Todo queda registrado en el CRM con un resumen para que el vendedor retome la conversación sin preguntar lo mismo dos veces.",
+        "**Qué necesita para funcionar.** Un catálogo con precios vigentes y políticas escritas de pagos, cancelaciones y reagendas. Además, un calendario conectado, el CRM integrado y límites claros sobre lo que el agente puede ofrecer.",
+        "**Cuándo entra una persona.** Cuando el cliente pide un descuento fuera de política o presenta una queja. También cuando la venta es compleja o la pregunta requiere conocimiento experto.",
+        "**Ejemplo en una clínica.** Una clínica dental o dermatológica recibe muchas preguntas repetidas por WhatsApp: qué incluye una limpieza, cuánto cuesta una consulta, qué horarios hay. El agente explica cada servicio con la información aprobada por la clínica, agenda en el calendario del especialista, envía la confirmación y manda un recordatorio antes de la cita.",
+        "Si el paciente describe dolor, un síntoma o una duda clínica, el agente no diagnostica ni recomienda tratamientos: escala la conversación a recepción o al personal médico. El manejo de datos de salud también debe respetar tu aviso de privacidad y la regulación de datos personales. Para ver cómo se implementa este tipo de atención, revisa nuestros [agentes de IA para WhatsApp](/servicios/agentes-ia-whatsapp/).",
+        {
+          "variant": "h2",
+          "id": "agentizar-sistemas",
+          "text": "Agentizar los sistemas",
+          "rail": "Agentizar los sistemas"
+        },
+        "Agentizar los sistemas significa que un agente mantenga en orden la información que mueve tu operación. Su trabajo abarca el CRM, las integraciones entre herramientas, las automatizaciones y, cuando hace falta, el software a la medida. Es el área menos visible y la que sostiene a las demás.",
+        "**Qué hace el agente.** Mantiene limpio el CRM: detecta contactos duplicados, completa campos vacíos y actualiza etapas a partir de las conversaciones. También mueve datos entre sistemas como tienda en línea, inventario, facturación o ERP, y dispara flujos de automatización con inteligencia artificial. Además, detecta excepciones, como un pedido sin pago o un inventario que no cuadra, y genera los reportes que hoy alguien arma a mano.",
+        "**Qué necesita para funcionar.** Un mapa de qué sistemas usas y cuál es la fuente de verdad para cada dato. También accesos o integraciones (APIs) a esas herramientas, permisos mínimos para cada acción y una bitácora de lo que el agente hace. Esto conecta con lo que señalan los datos de Deloitte: si tu información está dispersa, ordenarla es el primer proyecto, no un detalle.",
+        "**Cuándo entra una persona.** En cualquier acción irreversible o con impacto financiero: emitir facturas, procesar reembolsos o borrar registros. También en las excepciones que el agente detecta y no sabe resolver con las reglas que tiene.",
+        "**Ejemplo en retail.** Una tienda con venta en línea y sucursales físicas vive con inventarios que no cuadran entre canales. El agente concilia los pedidos de la tienda en línea con el inventario y avisa cuando un producto está por agotarse. También registra a cada cliente en el CRM y dispara el seguimiento posventa. Cuando aparece una devolución o un reembolso, prepara el caso con toda la información y una persona lo autoriza.",
+        "Para automatizar procesos con IA a este nivel suelen combinarse varias piezas:",
+        {
+          "variant": "ul",
+          "items": [
+            "Un [CRM con IA](/servicios/crm-con-ia/) como fuente central de clientes y oportunidades.",
+            "Flujos de [automatización con n8n](/servicios/automatizacion-n8n/) que conectan tus herramientas. Si todavía no eliges plataforma, compara opciones en [n8n vs. Zapier vs. Make](/blog/n8n-vs-zapier-vs-make/).",
+            "[Desarrollo de software a la medida](/servicios/desarrollo-software/) cuando ninguna herramienta existente cubre tu proceso."
+          ]
+        },
+        "Si te interesa el modelo en el que un servicio completo opera como software, lo explicamos en [servicios como software](/blog/servicios-como-software/).",
+        {
+          "variant": "h2",
+          "id": "escalar-procesos-ia-sin",
+          "text": "Cómo escalar procesos con IA sin perder el control",
+          "rail": "Cómo escalar procesos con"
+        },
+        "Escalar con agentes funciona cuando el control está diseñado desde el inicio. Se necesitan tres cosas: personas en el circuito, datos ordenados y métricas que revises con regularidad.",
+        "**Persona en el circuito: lo que nunca se delega.** Incluso en empresas grandes, la mayoría de los agentes todavía trabaja con supervisión humana, y una pyme no debería apostar por lo contrario. Hay decisiones que conviene reservar siempre para una persona:",
+        {
+          "variant": "ul",
+          "items": [
+            "Precios, descuentos o condiciones fuera de política.",
+            "Temas médicos, legales o financieros que requieren criterio profesional.",
+            "Quejas, cancelaciones y conversaciones con clientes clave.",
+            "Acciones irreversibles: reembolsos, facturas, eliminación de datos.",
+            "Cambios de estrategia, presupuesto o mensajes públicos de la marca."
+          ]
+        },
+        "**Datos ordenados antes de agentizar.** Un agente con datos desordenados se equivoca con más rapidez que una persona. Antes de arrancar, define una fuente única para clientes, productos y precios, homologa los campos del CRM y documenta el proceso como lo hace hoy tu mejor colaborador. Si no puedes explicarle el proceso a una persona nueva, todavía no puedes explicárselo a un agente.",
+        "**Qué medir.** Elige pocas métricas y revísalas cada semana durante las primeras etapas:",
+        {
+          "variant": "ul",
+          "items": [
+            "**Tiempo de respuesta:** cuánto tarda el cliente en recibir una respuesta útil, no solo un acuse automático.",
+            "**Tareas resueltas sin intervención:** qué parte de las conversaciones o tareas termina el agente de principio a fin dentro de sus reglas.",
+            "**Escalamientos a persona:** cuántos casos pasan a tu equipo y por qué. Si un motivo se repite, probablemente falta una regla o un dato.",
+            "**Calidad de conversación:** revisa una muestra de conversaciones reales para ver si el agente respondió con precisión, con el tono correcto y escaló cuando debía."
+          ]
+        },
+        "Hay una métrica más, que no mide al agente sino a tu equipo: qué hace con el tiempo que recupera. Los datos de Gartner muestran que ese tiempo suele diluirse si nadie decide en qué invertirlo. Asígnalo desde el principio a seguimiento de clientes, negociación o mejora del proceso.",
+        {
+          "variant": "scene",
+          "id": "escena-3",
+          "plate": {
+            "id": "art-agentes-ia-escena-3",
+            "layout": "subject-right",
+            "mirror": false
+          },
+          "eyebrow": "Power Session",
+          "title": "Escala con un plan, no con improvisación",
+          "text": "En una Power Session auditamos tu operación, ubicamos los cuellos de botella y sales con un plan para agentizar por etapas sin perder el control.",
+          "links": [
+            {
+              "label": "Agendar mi Power Session",
+              "href": "/power-session/",
+              "cta": "power-session"
+            }
+          ]
+        },
+        {
+          "variant": "h2",
+          "id": "donde-empezar-agentes-ia",
+          "text": "Por dónde empezar con agentes de IA para empresas",
+          "rail": "Por dónde empezar con"
+        },
+        "Empieza por un proceso repetitivo, con volumen constante y reglas que tu equipo ya puede explicar. Arranca con un piloto en un solo canal y revisa conversaciones reales antes de ampliarlo. Esta tabla te ayuda a ubicar cuál está más listo en tu empresa:",
+        {
+          "variant": "table",
+          "head": [
+            "Proceso",
+            "Señal de que está listo",
+            "Primer paso"
+          ],
+          "rows": [
+            [
+              "Prospección",
+              "Llegan prospectos fuera de horario y nadie los atiende a tiempo; las preguntas de calificación son siempre las mismas",
+              "Escribir los criterios de un prospecto calificado y conectar el canal principal de entrada al CRM"
+            ],
+            [
+              "Marketing",
+              "Ya inviertes en anuncios, pero no sabes qué campañas terminan en clientes",
+              "Medir conversiones de punta a punta y unir los datos de campañas con el CRM"
+            ],
+            [
+              "Ventas",
+              "Tu equipo contesta las mismas dudas por WhatsApp todos los días y se le escapan seguimientos",
+              "Documentar precios, políticas y respuestas frecuentes, y definir cuándo escala la conversación a un vendedor"
+            ],
+            [
+              "Sistemas",
+              "Alguien pasa horas copiando datos entre herramientas o armando reportes a mano",
+              "Mapear tus sistemas, elegir la fuente de verdad de cada dato y automatizar un primer flujo con supervisión"
+            ]
+          ]
+        },
+        "No necesitas agentizar todo a la vez. Un buen primer agente resuelve un proceso acotado, deja datos ordenados para el siguiente y le enseña a tu equipo a trabajar con supervisión en lugar de ejecución manual.",
+        "Si quieres ver qué proceso de tu operación conviene agentizar primero, una Discovery Session es un buen punto de partida. En esa conversación revisamos contigo tus procesos, sistemas y datos para identificar la primera oportunidad y lo que falta tener listo. Puedes conocer el enfoque completo en nuestra [consultoría de IA para empresas](/servicios/consultoria-ia-empresas/)."
+      ]
+    },
+    "cta-medio": {
+      "_componente": "EditorNote variant=cta (InlineCTA) dentro del cuerpo",
+      "label": "Siguiente paso",
+      "text": "¿Quieres ver cómo aplica a tu negocio? Escríbele a Kain y cuéntale cómo te llegan tus clientes.",
+      "link": {
+        "label": "Agente de IA para WhatsApp: qué es, cómo funciona y ejemplos",
+        "href": "/blog/que-es-agente-ia-whatsapp/"
+      },
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí agentes de IA para empresas: cómo agentizar tu operación y quiero ver cómo aplica a mi negocio."
+      }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (banco src/data/faq.json)",
+      "eyebrow": "Preguntas frecuentes",
+      "h2": {
+        "text": "Lo que más nos preguntan"
+      },
+      "faqIds": [
+        "B25",
+        "B26",
+        "B27",
+        "B28"
+      ]
+    },
+    "autor": {
+      "_componente": "AuthorCard (Organization hasta confirmar autor, R8)",
+      "bio": "Lo escribe el equipo que diseña, implementa y opera agentes de IA, CRM y automatizaciones en Ingeniak."
+    },
+    "fuentes": {
+      "eyebrow": "Fuentes",
+      "h2": {
+        "text": "Fuentes y fecha de consulta"
+      },
+      "lede": "Los datos de terceros cambian; antes de decidir, revisa la versión vigente de cada fuente.",
+      "items": [
+        {
+          "title": "Inteligencia artificial en México: de la promesa al impacto económico",
+          "publisher": "Centro México Digital",
+          "href": "https://centromexico.digital/wp-content/uploads/2026/02/IA_en_Mx.pdf",
+          "consultado": "2026-11-14",
+          "nota": "Ocho de cada cien empresas formales de México con más de diez empleados usan IA, frente a veinte de cada cien en promedio en la OCDE (con datos del Censo Económico 2024 del INEGI)."
+        },
+        {
+          "title": "Economic and Workforce Impacts of AI in Latin America",
+          "publisher": "Linux Foundation",
+          "href": "https://www.linuxfoundation.org/research/open-source-ai-latam",
+          "consultado": "2026-11-14",
+          "nota": "Más de ocho de cada diez negocios en México que adoptaron IA reportan más ingresos, con un aumento promedio cercano a una sexta parte."
+        },
+        {
+          "title": "Estudio muestra cómo la IA puede impulsar las ventas de las pymes mexicanas en temporada de fin de año",
+          "publisher": "Meta",
+          "href": "https://about.fb.com/ltam/news/2026/10/estudio-muestra-como-la-ia-puede-impulsar-las-ventas-de-las-pymes-mexicanas-en-temporada-de-fin-de-ano/",
+          "consultado": "2026-11-14",
+          "nota": "Más de nueve de cada diez negocios mexicanos con IA reportan mejoras de eficiencia (Linux Foundation); casi seis de cada diez usuarios de las tecnologías de Meta enviaron mensajes directos a un negocio en la temporada (Ipsos)."
+        },
+        {
+          "title": "40 Sales Statistics that Reveal How Teams Can Succeed in 2026",
+          "publisher": "Salesforce",
+          "href": "https://www.salesforce.com/sales/state-of-sales/sales-statistics/",
+          "consultado": "2026-11-14",
+          "nota": "Los vendedores pasan seis de cada diez horas de su tiempo en tareas que no son venta."
+        },
+        {
+          "title": "Gartner Survey Finds AI Saves Sellers Nearly Five Hours per Week, Yet Seventy-Two Percent of Sales Organizations Fail to Reinvest Time in High-Value Activities",
+          "publisher": "Gartner",
+          "href": "https://www.gartner.com/en/newsroom/press-releases/2026-05-19-gartner-survey-finds-ai-saves-sellers-nearly-five-hours-per-week-yet-seventy-two-percent-of-sales-organizations-fail-to-reinvest-time-in-high-value-activities",
+          "consultado": "2026-11-14",
+          "nota": "La IA ahorra a los vendedores casi cinco horas a la semana, pero siete de cada diez organizaciones de ventas no reinvierten ese tiempo en actividades de alto valor."
+        },
+        {
+          "title": "Eighty-eight percent of enterprises now use or test AI agents, but most still need a human in the loop",
+          "publisher": "Zapier",
+          "href": "https://zapier.com/blog/ai-agents-survey/",
+          "consultado": "2026-11-14",
+          "nota": "En empresas de EE. UU. con más de mil empleados, los agentes en producción pasaron de cuatro a siete de cada diez en un año; solo tres de cada diez dicen que resuelven la mayoría de las tareas sin una persona."
+        },
+        {
+          "title": "New Study of 2,025 Agentic AI Leaders: First To Launch Isn’t Fastest to ROI",
+          "publisher": "Salesforce",
+          "href": "https://www.salesforce.com/news/stories/agentic-ai-leaders-survey-on-roi/",
+          "consultado": "2026-11-14",
+          "nota": "Las empresas que despliegan agentes de IA ven retorno en unos ocho meses; más de nueve de cada diez dicen que la IA integrada al flujo de trabajo da más valor que una herramienta suelta."
+        },
+        {
+          "title": "AI Agents are Only the Beginning: Deloitte Survey Examines the AI Readiness Gap",
+          "publisher": "Deloitte",
+          "href": "https://www.deloitte.com/us/en/about/press-room/deloitte-survey-examines-ai-readiness-agentic-ai-success.html",
+          "consultado": "2026-11-14",
+          "nota": "En empresas de EE. UU., siete de cada diez no tienen datos unificados y casi siete de cada diez ven la integración cara y compleja."
+        }
+      ],
+      "internas": "Cifras de Ingeniak: {{source}}."
+    },
+    "relacionados": {
+      "eyebrow": "Sigue explorando",
+      "h2": {
+        "text": "Sigue explorando"
+      },
+      "items": [
+        {
+          "href": "/blog/que-es-agente-ia-whatsapp/",
+          "label": "Blog",
+          "title": "Agente de IA para WhatsApp",
+          "line": "Qué es un agente de IA para WhatsApp y cómo funciona con la API oficial, tu CRM y tu agenda: qué hace, qué no, ejemplos por industria y qué necesitas."
+        },
+        {
+          "href": "/servicios/paid-media/",
+          "label": "Servicios",
+          "title": "Paid media conectado a tu CRM",
+          "line": "Agencia de paid media: campañas en Meta, Google y TikTok conectadas a tu CRM para medir ventas, no clics."
+        },
+        {
+          "href": "/servicios/agentes-ia-whatsapp/",
+          "label": "Servicios",
+          "title": "Agentes de IA para WhatsApp Business",
+          "line": "Tu WhatsApp responde, califica y agenda 24/7 con un agente de IA conectado a tu CRM."
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer, placa compartida)",
+      "eyebrow": "Siguiente paso",
+      "h2": {
+        "text": "¿Hablamos de tu caso?",
+        "soft": "Agenda tu Discovery Session."
+      },
+      "ctaPrimary": {
+        "label": "Agendar mi Discovery Session"
+      },
+      "ctaSecondary": {
+        "label": "Escríbele a Kain",
+        "waMessage": "Hola Kain, leí agentes de IA para empresas: cómo agentizar tu operación y quiero ver cómo aplica a mi negocio."
+      }
+    }
+  }
+}
