@@ -83,6 +83,8 @@ function apiLocal() {
 export default defineConfig({
   site: 'https://ingeniak.mx',
   trailingSlash: 'always',
+  // Conserva los espacios entre elementos inline al migrar a Astro 7 (su nuevo valor por defecto es 'jsx').
+  compressHTML: true,
   build: { format: 'directory', inlineStylesheets: 'auto' },
   prefetch: { defaultStrategy: 'hover' },
   integrations: [
