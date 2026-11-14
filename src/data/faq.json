@@ -1155,5 +1155,53 @@
     "categoria": "Kommo",
     "validar": false,
     "editada": false
+  },
+  {
+    "id": "B25",
+    "q": "¿Qué es agentizar una empresa?",
+    "a": "Agentizar una empresa es delegar a agentes de IA tareas completas de un proceso, como calificar prospectos o dar seguimiento a cotizaciones. El agente trabaja con reglas claras, conectado a tus sistemas como el CRM o WhatsApp, y una persona de tu equipo supervisa y toma las decisiones que requieren criterio humano.",
+    "short": "Agentizar una empresa es delegar a agentes de IA tareas completas de un proceso, como calificar prospectos o dar seguimiento a cotizaciones.",
+    "pages": [
+      "/blog/agentes-ia-para-empresas/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B26",
+    "q": "¿Qué proceso conviene agentizar primero?",
+    "a": "Conviene empezar por un proceso repetitivo, con mucho volumen y reglas que ya puedes explicar, como responder y calificar prospectos que llegan por WhatsApp. Si tu equipo contesta lo mismo todos los días y los datos ya viven en un CRM, ese proceso está listo para un primer agente con supervisión.",
+    "short": "Conviene empezar por un proceso repetitivo, con mucho volumen y reglas que ya puedes explicar, como responder y calificar prospectos que llegan por WhatsApp.",
+    "pages": [
+      "/blog/agentes-ia-para-empresas/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B27",
+    "q": "¿Un agente de IA reemplaza a mi equipo?",
+    "a": "No. Un agente de IA se encarga de las tareas repetitivas y le devuelve tiempo a tu equipo para lo que requiere criterio: negociar, resolver casos complejos y cuidar la relación con el cliente. La clave está en definir cuándo el agente escala a una persona y en usar ese tiempo liberado en actividades de alto valor.",
+    "short": "No.",
+    "pages": [
+      "/blog/agentes-ia-para-empresas/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": false
+  },
+  {
+    "id": "B28",
+    "q": "¿Qué necesito tener listo antes de implementar agentes de IA?",
+    "a": "Necesitas un proceso documentado, datos ordenados en un solo lugar, como tu CRM, y accesos a las herramientas que el agente usará. También define quién supervisa, qué decisiones nunca se delegan y qué vas a medir, como tiempo de respuesta, tareas resueltas sin intervención y casos escalados a una persona.",
+    "short": "Necesitas un proceso documentado, datos ordenados en un solo lugar, como tu CRM, y accesos a las herramientas que el agente usará.",
+    "pages": [
+      "/blog/agentes-ia-para-empresas/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": false
   }
 ]
