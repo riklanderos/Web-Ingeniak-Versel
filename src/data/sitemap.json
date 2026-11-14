@@ -12332,7 +12332,7 @@
         "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: agente de ia para whatsapp.",
         "cinematic": true,
         "plate": {
-          "id": "home-sistema-2-atender",
+          "id": "art-agente-ia-hero",
           "component": "ImageSection hero",
           "layout": "subject-right",
           "mirror": false,
@@ -12535,7 +12535,7 @@
         "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: gohighlevel precios.",
         "cinematic": true,
         "plate": {
-          "id": "home-sistema-2-atender",
+          "id": "art-gohighlevel-precios-hero",
           "component": "ImageSection hero",
           "layout": "subject-right",
           "mirror": false,
@@ -12739,7 +12739,7 @@
         "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: gohighlevel whatsapp.",
         "cinematic": true,
         "plate": {
-          "id": "home-sistema-2-atender",
+          "id": "art-gohighlevel-whatsapp-hero",
           "component": "ImageSection hero",
           "layout": "subject-right",
           "mirror": false,
@@ -12944,7 +12944,7 @@
         "spec": "Breadcrumb + categoría + H1 + byline + fecha. Keyword: kommo precios.",
         "cinematic": true,
         "plate": {
-          "id": "home-sistema-2-atender",
+          "id": "art-kommo-precios-hero",
           "component": "ImageSection hero",
           "layout": "subject-right",
           "mirror": false,

@@ -1,0 +1,94 @@
+{
+  "art-gohighlevel-whatsapp-hero": {
+    "alt": "Kain conecta con un cable de luz un teléfono de cristal con burbujas de chat a un tablero de cristal con columnas de tarjetas, como un embudo de ventas",
+    "srcsetMax": 2752,
+    "d": {
+      "src": "/img/cine/art-gohighlevel-whatsapp-hero",
+      "w": 2752,
+      "h": 1536,
+      "ar": 1.7917,
+      "fx": 0.78,
+      "fy": 0.5,
+      "fadeFrom": 0.9
+    },
+    "m": {
+      "src": "/img/cine/art-gohighlevel-whatsapp-hero-m",
+      "w": 1536,
+      "h": 1920,
+      "ar": 0.8,
+      "fx": 0.6,
+      "fy": 1,
+      "subjTop": 0.38
+    },
+    "layout": "subject-right",
+    "pose": "enchufa un conector de luz en un tablero de cristal de tres columnas (embudo); un cable luminoso lo une a un teléfono de cristal con burbujas de chat",
+    "safe": {
+      "d": [
+        [
+          0.03,
+          0.1,
+          0.41,
+          0.9
+        ]
+      ],
+      "m": [
+        [
+          0.05,
+          0.03,
+          0.95,
+          0.33
+        ]
+      ]
+    },
+    "subject": {
+      "d": [
+        0.42,
+        0.17,
+        0.97,
+        0.95
+      ],
+      "m": [
+        0.04,
+        0.38,
+        0.94,
+        0.95
+      ]
+    },
+    "anchors": {
+      "pecho": {
+        "d": [
+          0.853,
+          0.495
+        ],
+        "m": [
+          0.756,
+          0.625
+        ],
+        "scrW": 0.035
+      },
+      "mano": {
+        "d": [
+          0.75,
+          0.56
+        ],
+        "m": [
+          0.6,
+          0.665
+        ]
+      },
+      "piso": {
+        "d": [
+          0.5,
+          0.95
+        ],
+        "m": [
+          0.5,
+          0.95
+        ]
+      }
+    },
+    "grade": 0,
+    "deskNote": "GPT Image 2.6 (Higgsfield) nativo 3840×2160. Referencias: master home-hero + art-servicios-software-hero. Sin logotipos ni texto. Portada pedida por Rik Landeros (2026-11-14). Penumbra extra a la izquierda (346 px, espejo del borde) y arriba (194 px, sintetizada desde la franja superior) → 2752×1536.",
+    "mobileNote": "Reencuadre de la generación de escritorio (ventana 2506×2160 con Kain y el objeto) + reencuadre-movil.mjs padTop 0.45 (penumbra superior sintetizada, tClean 0.33) → 1536×1920 (4:5). Tercio superior limpio para el texto (modo top)."
+  }
+}

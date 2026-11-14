@@ -19,12 +19,12 @@
   "pendientes": [
     "RESUELTO 2026-11-14 · redactado en SEO Studio (2026-11-13) · aprobado por Rik Landeros por escrito en el chat de construcción (\"ya puedes publicarlos\"). Se publicó desde el repo; el Estudio lo importa después.",
     "PREGUNTA AL CLIENTE · autoría (R8): mientras no se confirme autor por escrito, el crédito visible dice \"Equipo de Ingeniak\".",
-    "PLACA · portada y cierre usan placas compartidas por defecto (home-sistema-2-atender y cta-amanecer).",
+    "PLACA · RESUELTO 2026-11-14: portada propia art-agente-ia-hero, pedida por Rik Landeros; el cierre usa la placa compartida cta-amanecer.",
     "PREGUNTAS AL CLIENTE (de la sesión del Estudio, sin contestar al publicar): facturación en pesos con CFDI y reventa de licencias; si el cliente de GoHighLevel queda como subcuenta de la agencia; qué agente se conecta en GoHighLevel. El texto no afirma ninguna de las tres: remite a preguntarlo al cotizar."
   ],
   "sections": {
     "hero": {
-      "_componente": "ImageSection hero (placa compartida por defecto)",
+      "_componente": "ImageSection hero (art-agente-ia-hero: presenta con la mano abierta una esfera de cristal con luz en espiral)",
       "eyebrow": "Agentes de IA",
       "h1": {
         "text": "Agente de IA para WhatsApp:",
