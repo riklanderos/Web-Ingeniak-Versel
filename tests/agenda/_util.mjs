@@ -342,7 +342,7 @@ export function form(type = 'discovery', over = {}) {
     whatsapp: '+52 3312345678',
     businessName: 'Clínica Ejemplo',
     website: 'ejemplo.test',
-    industry: 'Salud y bienestar',
+    industry: 'Salud',
     teamSize: '6–10',
     revenue: '$100K–$300K MXN',
     timeDrains: type === 'power' ? ['Cotizar', 'Supervisar al equipo'] : [],

@@ -38,10 +38,18 @@
     { "slug": "industrial-logistica", "label": "Industrial y logística" },
     { "slug": "retail-ecommerce", "label": "Retail y e-commerce" },
     { "slug": "horeca", "label": "Restaurantes y hoteles" },
+    { "slug": "servicios-profesionales", "label": "Servicios profesionales" },
+    { "slug": "construccion", "label": "Construcción" },
+    { "slug": "educacion", "label": "Educación" },
+    { "slug": "agencia-marketing", "label": "Agencia o marketing" },
+    { "slug": "automotriz", "label": "Automotriz" },
+    { "slug": "tecnologia-software", "label": "Tecnología y software" },
     { "slug": "otra", "label": "Otra" }
   ],
   "tamanos": [
-    { "slug": "1-10", "label": "1–10" },
+    { "slug": "solo", "label": "Solo yo" },
+    { "slug": "2-5", "label": "2–5" },
+    { "slug": "6-10", "label": "6–10" },
     { "slug": "11-50", "label": "11–50" },
     { "slug": "51-200", "label": "51–200" },
     { "slug": "200+", "label": "Más de 200" }

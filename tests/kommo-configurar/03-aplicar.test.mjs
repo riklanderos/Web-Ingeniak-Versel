@@ -207,7 +207,7 @@ describe('kommo-configurar · --aplicar en una cuenta a medias', () => {
     const i = mock.peticiones.indexOf(patch);
     assert.equal(mock.peticiones[i - 1].ruta, `/leads/custom_fields/${c.id}`);
     assert.equal(mock.peticiones[i - 1].metodo, 'GET');
-    assert.match(r.stdout, /➕ Opciones agregadas · Campo «Industria» · id \d+ — \+16: /);
+    assert.match(r.stdout, /➕ Opciones agregadas · Campo «Industria» · id \d+ — \+13: /);
     assert.match(r.stdout, /Mi opción propia/);
     assert.equal(ids.campos.industria.opciones.Salud, antes.industria.find((e) => e.value === 'Salud').id);
   });

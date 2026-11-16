@@ -37,8 +37,6 @@ export const EMBUDOS = {
   },
 };
 
-const unir = (...listas) => [...new Set(listas.flat())];
-
 /** Campos personalizados del lead. `opciones` en el orden en que se crean. */
 export const CAMPOS = {
   servicios: {
@@ -51,13 +49,15 @@ export const CAMPOS = {
   },
   industria: {
     nombre: 'Industria', tipo: 'select',
-    // Las del sitio (cotización) + las de la agenda que no coinciden; "Otro" de la agenda se guarda como "Otra".
-    opciones: unir(['Salud', 'Belleza y estética', 'Nutrición', 'Finanzas', 'Inmobiliario', 'Industrial y logística', 'Retail y e-commerce', 'Restaurantes y hoteles'], AGENDA_INDUSTRIAS.filter((x) => x !== 'Otro'), ['Otra']),
+    // Lista única: la cotización y la agenda ofrecen las mismas opciones (shared/agenda.js → INDUSTRIES).
+    // El alias conserva las reservas guardadas antes de la unificación, que decían «Otro».
+    opciones: [...AGENDA_INDUSTRIAS],
     alias: { Otro: 'Otra' },
   },
   tamano: {
     nombre: 'Tamaño de empresa', tipo: 'select',
-    opciones: unir(['1–10', '11–50', '51–200', 'Más de 200'], AGENDA_EQUIPOS),
+    // Lista única: la cotización y la agenda ofrecen los mismos rangos (shared/agenda.js → TEAM_SIZES).
+    opciones: [...AGENDA_EQUIPOS],
   },
   presupuesto: {
     nombre: 'Presupuesto estimado', tipo: 'select',

@@ -380,3 +380,14 @@ test('resolverDestino · la etapa de respaldo nunca le gana a la etapa por nombr
   // statusId (KOMMO_STATUS_ID de la cotización) sí manda sobre el nombre.
   assert.deepEqual(r({ embudo: 'ventas', etapa: 'discovery', pipelineId: ventas, statusId: contactado }), { pipelineId: ventas, statusId: contactado, origen: 'variable' });
 });
+
+test('lista única · «Cotizar proyecto» y la agenda ofrecen las mismas industrias y tamaños, en el mismo orden que Kommo', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const cat = JSON.parse(await readFile(new URL('../../src/data/cotizar.json', import.meta.url), 'utf8'));
+  assert.deepEqual(cat.industrias.map((x) => x.label), [...INDUSTRIES], 'industrias de cotizar.json = INDUSTRIES de shared/agenda.js');
+  assert.deepEqual(cat.tamanos.map((x) => x.label), [...TEAM_SIZES], 'tamanos de cotizar.json = TEAM_SIZES de shared/agenda.js');
+  assert.deepEqual(CAMPOS.industria.opciones, [...INDUSTRIES], 'Industria en Kommo = la misma lista');
+  assert.deepEqual(CAMPOS.tamano.opciones, [...TEAM_SIZES], 'Tamaño de empresa en Kommo = la misma lista');
+  assert.equal(new Set(cat.industrias.map((x) => x.slug)).size, cat.industrias.length, 'slugs de industria sin repetir');
+  assert.equal(new Set(cat.tamanos.map((x) => x.slug)).size, cat.tamanos.length, 'slugs de tamaño sin repetir');
+});
