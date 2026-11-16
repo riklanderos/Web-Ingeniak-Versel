@@ -83,20 +83,28 @@ export const EVENT_ID_RE = /^[a-z0-9_-]{5,1024}$/i;
 
 /* ── Opciones del formulario ─────────────────────────────────── */
 
+// Lista única de giros: es la misma que usa «Cotizar proyecto» (src/data/cotizar.json → industrias) y el campo
+// «Industria» de Kommo (shared/kommo-esquema.js). Las ocho primeras coinciden con las páginas de /industrias/.
 export const INDUSTRIES = /** @type {const} */ ([
+  'Salud',
+  'Belleza y estética',
+  'Nutrición',
+  'Finanzas',
+  'Inmobiliario',
+  'Industrial y logística',
+  'Retail y e-commerce',
+  'Restaurantes y hoteles',
   'Servicios profesionales',
-  'Salud y bienestar',
-  'Retail o tienda física',
-  'E-commerce',
-  'Restaurantes y alimentos',
-  'Construcción e inmobiliaria',
-  'Manufactura o industria',
+  'Construcción',
   'Educación',
   'Agencia o marketing',
-  'Otro',
+  'Automotriz',
+  'Tecnología y software',
+  'Otra',
 ]);
 
-export const TEAM_SIZES = /** @type {const} */ (['Solo yo', '2–5', '6–10', '11–25', '26–50', 'Más de 50']);
+// Lista única de tamaños: la misma de «Cotizar proyecto» (src/data/cotizar.json → tamanos) y de «Tamaño de empresa» en Kommo.
+export const TEAM_SIZES = /** @type {const} */ (['Solo yo', '2–5', '6–10', '11–50', '51–200', 'Más de 200']);
 
 export const REVENUES = /** @type {const} */ ([
   'Menos de $100K MXN al mes',
