@@ -26,7 +26,7 @@ describe('kommo-configurar · --aplicar con nombres escritos casi igual y un emb
     dir = carpetaTemporal();
     vta = embudo('VENTAS', ['nueva cotización', 'Contactado', 'Calificado', 'Discovery agendada', 'Sesión realizada', 'Propuesta enviada', 'Negociación'], { sort: 2 });
     powerArchivado = archivado(embudo('Power Session', ['Power Session por pagar'], { sort: 4 }));
-    tamano = campo('Tamaño de empresa', 'select', ['1-10', '11-50', 'Mi rango']);
+    tamano = campo('Tamaño de empresa', 'select', ['2-5', '11-50', 'Mi rango']);
     mock = await crearMockKommo({
       estado: {
         pipelines: [embudo('Embudo de ventas', ['Contacto inicial'], { is_main: true, sort: 1 }), vta, powerArchivado],
@@ -67,15 +67,15 @@ describe('kommo-configurar · --aplicar con nombres escritos casi igual y un emb
     assert.ok(!r.stdout.includes(String(powerArchivado.id)), 'ni en la pantalla');
   });
 
-  test('opciones «1-10» y «11-50» ya existen con guion corto: no agrega «1–10» ni «11–50» y usa las que hay', () => {
+  test('opciones «2-5» y «11-50» ya existen con guion corto: no agrega «2–5» ni «11–50» y usa las que hay', () => {
     const c = mock.estado.campos.find((x) => x.name === 'Tamaño de empresa');
     const valores = c.enums.map((e) => e.value);
-    assert.ok(!valores.includes('1–10') && !valores.includes('11–50'), valores.join(', '));
+    assert.ok(!valores.includes('2–5') && !valores.includes('11–50'), valores.join(', '));
     for (const o of CAMPOS.tamano.opciones) assert.equal(c.enums.filter((e) => mismoNombre(e.value, o)).length, 1, o);
     assert.equal(c.enums.length, CAMPOS.tamano.opciones.length + 1, 'más «Mi rango», que se queda');
-    assert.equal(ids.campos.tamano.opciones['1–10'], tamano.enums.find((e) => e.value === '1-10').id);
+    assert.equal(ids.campos.tamano.opciones['2–5'], tamano.enums.find((e) => e.value === '2-5').id);
     assert.equal(ids.campos.tamano.opciones['11–50'], tamano.enums.find((e) => e.value === '11-50').id);
-    assert.match(r.stdout, /➕ Opciones agregadas · Campo «Tamaño de empresa» · id \d+ — \+8: 51–200, .*2 opción\(es\) existen escritas distinto y el sitio las usa así: «1-10» \(= «1–10»\), «11-50» \(= «11–50»\)/);
+    assert.match(r.stdout, /➕ Opciones agregadas · Campo «Tamaño de empresa» · id \d+ — \+4: Solo yo, .*2 opción\(es\) existen escritas distinto y el sitio las usa así: «2-5» \(= «2–5»\), «11-50» \(= «11–50»\)/);
   });
 
   test('campo con otras mayúsculas («industria»): le agrega opciones en vez de crear «Industria»', () => {
