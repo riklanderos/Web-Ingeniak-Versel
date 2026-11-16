@@ -344,7 +344,7 @@ export function form(type = 'discovery', over = {}) {
     website: 'ejemplo.test',
     industry: 'Salud',
     teamSize: '6–10',
-    revenue: '$100K–$300K MXN',
+    revenue: 'USD 15,000 a 20,000',
     timeDrains: type === 'power' ? ['Cotizar', 'Supervisar al equipo'] : [],
     tools: type === 'power' ? 'Excel y WhatsApp Business' : '',
     goal: type === 'power' ? 'Ordenar el seguimiento de prospectos y dejar de cotizar a mano.' : 'Responder más rápido por WhatsApp.',

@@ -81,7 +81,7 @@ test('kommo · Discovery → su destino fijo (DISCOVERY_DESTINO) con tipo, fecha
     'Enlace de Meet': r.meetLink,
     'Industria': 'Salud',
     'Tamaño de empresa': '6–10',
-    'Facturación mensual': '$100K–$300K MXN',
+    'Facturación mensual': 'USD 15,000 a 20,000',
     'Página de origen': 'https://ingeniak.mx/discovery/',
     'UTM_SOURCE': 'meta', 'UTM_MEDIUM': 'paid', 'UTM_CAMPAIGN': 'prueba', 'REFERRER': 'https://www.ejemplo.test/',
   });
@@ -166,7 +166,7 @@ test('kommo · sin la estructura → Discovery al embudo principal; Power pagada
   const d = leadDelEvento(g);
   assert.deepEqual(sim.ubicacion(d), { embudo: 'Embudo de ventas', etapa: 'Contacto inicial' });
   assert.deepEqual(Object.keys(sim.valores(d)).sort(), ['REFERRER', 'UTM_CAMPAIGN', 'UTM_MEDIUM', 'UTM_SOURCE'], 'solo rastreo');
-  assert.match(sim.notasDe(d)[0], /Giro: Salud · Equipo: 6–10 · Facturación mensual: \$100K–\$300K MXN/);
+  assert.match(sim.notasDe(d)[0], /Giro: Salud · Equipo: 6–10 · Facturación mensual: USD 15,000 a 20,000/);
 
   g.events.clear();
   await reservar('power');
