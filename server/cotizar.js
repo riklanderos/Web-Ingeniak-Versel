@@ -460,11 +460,14 @@ export function noteFor(data, meta, env, now) {
       (k) => meta[`utm_${k}`] && `${k}=${meta[`utm_${k}`]}`,
     ),
   );
+  // «Solo yo» no lleva la palabra «personas»; los rangos con cifras sí.
+  const tamano = etiqueta(c.tamanos, data.tamano);
+  const equipo = /\d/.test(tamano) ? `${tamano} personas` : tamano;
   const lineas = [
     `Solicitud de cotización · sitio web · Folio ${data.folio}`,
     `Servicios: ${data.servicios.map((s) => etiqueta(c.servicios, s)).join(', ')}`,
     `Qué quiere lograr primero: ${etiqueta(c.objetivos, data.objetivo)}`,
-    fila([`Industria: ${etiqueta(c.industrias, data.industria)}`, `Equipo: ${etiqueta(c.tamanos, data.tamano)} personas`]),
+    fila([`Industria: ${etiqueta(c.industrias, data.industria)}`, `Equipo: ${equipo}`]),
     fila([`Presupuesto estimado: ${etiqueta(c.presupuestos, data.presupuesto)}`, `Plazo: ${etiqueta(c.plazos, data.plazo)}`]),
     fila([
       data.canales.length > 0 && `Canales que usan hoy: ${data.canales.map((s) => etiqueta(c.canales, s)).join(', ')}`,
