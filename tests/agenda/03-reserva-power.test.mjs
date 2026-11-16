@@ -94,7 +94,7 @@ test('reserva power · apartado → Checkout → rl_stripe → Kommo «Power Ses
   assert.deepEqual(lead.custom_fields_values.filter((c) => c.field_id >= 7000), [
     sel('Tipo de sesión', 'Power Session'),
     { field_id: IDS.campo('Fecha de la sesión'), values: [{ value: Date.parse(START) / 1000 }] },
-    sel('Industria', 'Salud y bienestar'),
+    sel('Industria', 'Salud'),
     sel('Tamaño de empresa', '6–10'),
     sel('Facturación mensual', '$100K–$300K MXN'),
     { field_id: IDS.campo('Página de origen'), values: [{ value: 'https://ingeniak.mx/discovery/' }] },

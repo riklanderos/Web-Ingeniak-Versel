@@ -79,7 +79,7 @@ test('kommo · Discovery → su destino fijo (DISCOVERY_DESTINO) con tipo, fecha
     'Tipo de sesión': 'Discovery Session',
     'Fecha de la sesión': Date.parse(DISC_START) / 1000,
     'Enlace de Meet': r.meetLink,
-    'Industria': 'Salud y bienestar',
+    'Industria': 'Salud',
     'Tamaño de empresa': '6–10',
     'Facturación mensual': '$100K–$300K MXN',
     'Página de origen': 'https://ingeniak.mx/discovery/',
@@ -136,7 +136,7 @@ test('kommo · Power: apartado → «Power Session por pagar» (Pendiente); pago
   assert.equal(v1['Pago Power Session'], 'Pagado');
   assert.equal(v1['Enlace de Meet'], c.meetLink);
   assert.equal(v1['Fecha de la sesión'], Date.parse(START) / 1000);
-  assert.equal(v1['Industria'], 'Salud y bienestar', 'lo demás se conserva');
+  assert.equal(v1['Industria'], 'Salud', 'lo demás se conserva');
   assert.match(sim.notasDe(id).at(-1), /^Pago confirmado en Stripe · Miércoles 21 de octubre · 10:00 AM/);
   const ev = [...g.events.values()][0];
   assert.equal(ev.extendedProperties.private.ik_kommo_pago, '1');
@@ -166,7 +166,7 @@ test('kommo · sin la estructura → Discovery al embudo principal; Power pagada
   const d = leadDelEvento(g);
   assert.deepEqual(sim.ubicacion(d), { embudo: 'Embudo de ventas', etapa: 'Contacto inicial' });
   assert.deepEqual(Object.keys(sim.valores(d)).sort(), ['REFERRER', 'UTM_CAMPAIGN', 'UTM_MEDIUM', 'UTM_SOURCE'], 'solo rastreo');
-  assert.match(sim.notasDe(d)[0], /Giro: Salud y bienestar · Equipo: 6–10 · Facturación mensual: \$100K–\$300K MXN/);
+  assert.match(sim.notasDe(d)[0], /Giro: Salud · Equipo: 6–10 · Facturación mensual: \$100K–\$300K MXN/);
 
   g.events.clear();
   await reservar('power');

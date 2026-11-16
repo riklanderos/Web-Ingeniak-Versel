@@ -94,7 +94,7 @@ test('reserva discovery · evento con Meet, invitación, propiedades rl_* + rl_s
     sel('Tipo de sesión', 'Discovery Session'),
     { field_id: IDS.campo('Fecha de la sesión'), values: [{ value: Date.parse(START) / 1000 }] },
     { field_id: IDS.campo('Enlace de Meet'), values: [{ value: r.meetLink }] },
-    sel('Industria', 'Salud y bienestar'),
+    sel('Industria', 'Salud'),
     sel('Tamaño de empresa', '6–10'),
     sel('Facturación mensual', '$100K–$300K MXN'),
     { field_id: IDS.campo('Página de origen'), values: [{ value: 'https://ingeniak.mx/discovery/' }] },
