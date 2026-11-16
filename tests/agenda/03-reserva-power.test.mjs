@@ -96,7 +96,7 @@ test('reserva power · apartado → Checkout → rl_stripe → Kommo «Power Ses
     { field_id: IDS.campo('Fecha de la sesión'), values: [{ value: Date.parse(START) / 1000 }] },
     sel('Industria', 'Salud'),
     sel('Tamaño de empresa', '6–10'),
-    sel('Facturación mensual', '$100K–$300K MXN'),
+    sel('Facturación mensual', 'USD 15,000 a 20,000'),
     { field_id: IDS.campo('Página de origen'), values: [{ value: 'https://ingeniak.mx/discovery/' }] },
     sel('Pago Power Session', 'Pendiente'),
   ], 'sin Meet todavía (llega al pagar)');

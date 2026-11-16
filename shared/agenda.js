@@ -106,12 +106,16 @@ export const INDUSTRIES = /** @type {const} */ ([
 // Lista única de tamaños: la misma de «Cotizar proyecto» (src/data/cotizar.json → tamanos) y de «Tamaño de empresa» en Kommo.
 export const TEAM_SIZES = /** @type {const} */ (['Solo yo', '2–5', '6–10', '11–50', '51–200', 'Más de 200']);
 
+// Facturación mensual en dólares (mismo formato que los presupuestos de «Cotizar proyecto»). Es la lista del campo
+// «Facturación mensual» de Kommo (shared/kommo-esquema.js): los rangos se tocan para que ninguna cifra quede fuera.
 export const REVENUES = /** @type {const} */ ([
-  'Menos de $100K MXN al mes',
-  '$100K–$300K MXN',
-  '$300K–$800K MXN',
-  '$800K–$2M MXN',
-  'Más de $2M MXN',
+  'Menos de USD 15,000',
+  'USD 15,000 a 20,000',
+  'USD 20,000 a 30,000',
+  'USD 30,000 a 50,000',
+  'USD 50,000 a 100,000',
+  'USD 100,000 a 150,000',
+  'Más de USD 150,000',
   'Apenas voy a empezar',
 ]);
 

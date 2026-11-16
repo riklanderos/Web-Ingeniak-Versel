@@ -35,7 +35,7 @@ test('validateForm · paridad con las reglas originales (tabla de casos)', () =>
     ['sitio > 200', 'discovery', { website: 'x'.repeat(201) }, ['website']],
     ['giro fuera de lista', 'discovery', { industry: 'Minería' }, ['industry']],
     ['equipo fuera de lista', 'discovery', { teamSize: '2-5' }, ['teamSize']],
-    ['facturación fuera de lista', 'discovery', { revenue: '$100K-$300K MXN' }, ['revenue']],
+    ['facturación fuera de lista', 'discovery', { revenue: 'USD 15,000 - 20,000' }, ['revenue']],
     ['discovery: objetivo de 9', 'discovery', { goal: '123456789' }, ['goal']],
     ['discovery: objetivo de 601', 'discovery', { goal: 'x'.repeat(601) }, ['goal']],
     ['discovery: ignora tiempo y herramientas', 'discovery', { timeDrains: ['nada'], tools: '' }, []],
@@ -96,7 +96,7 @@ test('reserva discovery · evento con Meet, invitación, propiedades rl_* + rl_s
     { field_id: IDS.campo('Enlace de Meet'), values: [{ value: r.meetLink }] },
     sel('Industria', 'Salud'),
     sel('Tamaño de empresa', '6–10'),
-    sel('Facturación mensual', '$100K–$300K MXN'),
+    sel('Facturación mensual', 'USD 15,000 a 20,000'),
     { field_id: IDS.campo('Página de origen'), values: [{ value: 'https://ingeniak.mx/discovery/' }] },
   ]);
   assert.deepEqual(lead._embedded.contacts[0].custom_fields_values, [
