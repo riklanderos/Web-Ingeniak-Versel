@@ -32,12 +32,13 @@ const UTM_KEYS = /** @type {const} */ (['utm_source', 'utm_medium', 'utm_campaig
 const CLID_KEYS = /** @type {const} */ (['gclid', 'fbclid', 'gbraid', 'wbraid']);
 const TZ_RE = /^[A-Za-z0-9_+-]+(?:\/[A-Za-z0-9_+-]+){0,2}$/;
 
-/** Rangos de facturación que acepta el check de `revenue_range` (el resto queda null y va en details). */
-const REVENUE_CODE = new Map([
-  ['Menos de $100K MXN al mes', 'lt-100k'],
-  ['$100K–$300K MXN', '100k-300k'],
-  ['$300K–$800K MXN', '300k-1m'],
-]);
+/**
+ * Rangos de facturación que acepta el check de `revenue_range` (el resto queda null y va en details).
+ * Los códigos de ese check son rangos en pesos (lt-100k, 100k-300k, 300k-1m). Desde que el formulario pregunta en
+ * dólares ningún rango coincide con ellos, así que la columna queda en null y el rango elegido viaja completo en
+ * `details.revenue`. Si el check se amplía con códigos en USD, se agregan aquí.
+ */
+const REVENUE_CODE = new Map(/** @type {[string, string][]} */ ([]));
 
 /**
  * @typedef {import('../../shared/agenda.js').BookingForm} BookingForm
