@@ -26,6 +26,7 @@ import '../styles/ui.css';
 import '../styles/content.css';
 import '../styles/pages.css';
 import type { Page } from '../lib/site';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import SEOHead from '../components/layout/SEOHead.astro';
 import MetaPixel from '../components/layout/MetaPixel.astro';
 import BrandSymbols from '../components/nav/BrandSymbols.astro';
@@ -209,6 +210,7 @@ const showRail = full && p.rail !== false && page.template !== 'T-404';
     {full && <MobileMenu waHref={wa} current={page.url} />}
     {full && <SearchDialog waHref={wa} current={page.url} />}
     {p.quoteModal !== false && QuoteModal && <QuoteModal waHref={wa} page={page} />}
+    <SpeedInsights />
     <script>
       import '../scripts/main.ts';
     </script>
