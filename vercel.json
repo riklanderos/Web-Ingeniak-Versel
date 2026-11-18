@@ -768,6 +768,15 @@
           "value": "noindex"
         }
       ]
+    },
+    {
+      "source": "/correo/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     }
   ],
   "crons": [
