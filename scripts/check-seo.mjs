@@ -14,7 +14,7 @@ import { pathToFileURL } from 'node:url';
 import {
   ROOT, SITE_URL, SITEMAP, SITEMAP_URLS, BUILT, parseArgs, reporter, loadPages, loadText, loadMetrics, parseHTML, find, findAll,
   closest, isEl, hasClass, textOf, norm, loose, metaContent, jsonLd, graphNodes, normRoute, copyOf, gatePending, indexablePages, sectionIdOf,
-  onlyRoutes, HIDDEN, isHiddenPage, isOpenLandingLink,
+  onlyRoutes, HIDDEN, isHiddenPage, isOpenLandingLink, isHomeAgendaLink,
 } from './_html.mjs';
 import { isNoindex } from '../src/lib/indexacion.mjs';
 
@@ -117,6 +117,8 @@ export async function run(opts) {
         const r = normRoute(el.attrs.href);
         // Apertura de R17 (2026-11-14): el cuerpo de un artículo puede enlazar una landing abierta (/discovery/, /power-session/)
         if (r && isOpenLandingLink(page, el.attrs.href, !!closest(el, (x) => x.attrs.id === 'cuerpo'))) continue;
+        // Apertura de R17 (2026-11-19): la portada enlaza la agenda directa con [data-agenda-link]
+        if (r && isHomeAgendaLink(page, el)) continue;
         if (r && (HIDDEN.has(r) || r.startsWith('/agendar/')) && !bad.has(r)) { bad.add(r); R.fail(route, `página pública enlaza a la landing oculta ${el.attrs.href} (<${el.tag}>${sectionIdOf(el) ? ` en #${sectionIdOf(el)}` : ''}) · R17`); }
       }
     }

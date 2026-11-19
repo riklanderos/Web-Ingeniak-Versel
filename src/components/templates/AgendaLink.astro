@@ -1,0 +1,19 @@
+---
+// AgendaLink · enlace secundario a la agenda directa (/agendar/) bajo los CTA de la portada (hero y cta-final).
+// Petición del cliente del 2026-11-19 tras una auditoría de la competencia: quien ya quiere una llamada la aparta sin pasar
+// por el formulario. «Cotizar proyecto» sigue siendo el único primario: esto es texto con enlace, nunca un .btn.
+// Apertura de R17 solo en la portada: los checks lo permiten por [data-agenda-link] (scripts/_html.mjs → isHomeAgendaLink).
+// Copy en home.json → sections.<id>.agendaLink {pre, label, href}.
+interface Props { link: { pre?: string; label: string; href: string }; section: string }
+const { link, section } = Astro.props;
+---
+<p class="t-small hm-agenda">
+  {link.pre && <span class="hm-agenda__pre">{link.pre}</span>}
+  <a class="lnk hm-agenda__a" href={link.href} data-agenda-link data-section={section}>{link.label}<span aria-hidden="true">→</span></a>
+</p>
+
+<style>
+  .hm-agenda{display:flex;flex-wrap:wrap;align-items:center;column-gap:.5em;row-gap:0;margin:18px 0 0;max-width:34rem}
+  .hm-agenda__pre{color:var(--soft)}
+  .hm-agenda__a{font-size:.9375rem;line-height:1.3;padding:12px 0;gap:8px}
+</style>

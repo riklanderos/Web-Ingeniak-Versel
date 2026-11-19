@@ -19,6 +19,7 @@ import Dawn from '../cine/Dawn.astro';
 import { resolvePlate, anchorStyle } from '../cine/plate';
 import Btn from '../ui/Btn.astro';
 import HeroCtas from './HeroCtas.astro';
+import AgendaLink from './AgendaLink.astro';
 import Metric from '../ui/Metric.astro';
 import Copy from '../ui/Copy.astro';
 import SumarioCover from '../ui/SumarioCover.astro';
@@ -253,6 +254,7 @@ const railGroups = [3, 6, 4];
     <h1 id="hero-t" data-split><span class="t-display" set:html={voice(hero.h1?.text, hero.h1?.lit)} />{hero.h1?.soft && <> <span class="t-deck" set:html={annotateFigures(hero.h1.soft)} /></>}</h1>
     <HeroCtas label={primaryLabel(hero)} section="hero"
       waHref={wa(hero.ctaSecondary?.waMessage)} waLabel={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+    {hero.agendaLink && <AgendaLink link={hero.agendaLink} section="hero" />}
     <LightBranch from="mano" />
     {hero.fig && <FigCaption slot="anchors" n={1} title={(hero.fig.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '')} anchor="fig" target="mano"><Copy text={hero.fig.text} /></FigCaption>}
     {/* R3: la línea de confianza y el Fig. 01 en línea (§5.1.1: el Fig. 01 se queda en la portada) van después de la placa en móvil;
@@ -543,6 +545,7 @@ const railGroups = [3, 6, 4];
         <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(fin)} micro />
         <Btn variant="ghost" href={wa(fin.ctaSecondary?.waMessage)} label={fin.ctaSecondary?.label ?? 'Escríbele a Kain'} />
       </div>
+      {fin.agendaLink && <AgendaLink link={fin.agendaLink} section="cta-final" />}
     </Dawn>
   )}
 </BaseLayout>

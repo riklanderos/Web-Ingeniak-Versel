@@ -604,7 +604,9 @@ function success(json: any, data: Datos) {
   const fo = $('[data-qm-folio]');
   if (fo) fo.textContent = fill(T.exito.folio, { folio });
   const sim = $('[data-qm-sim]');
-  if (sim) sim.hidden = json.dryRun !== true;
+  // El aviso de prueba no viaja en el HTML (los buscadores y los lectores de páginas leían el texto oculto): se escribe solo
+  // cuando el servidor responde en modo de prueba.
+  if (sim) { sim.hidden = json.dryRun !== true; sim.textContent = json.dryRun === true ? T.exito.simulacion : ''; }
   const canal = (T.exito.canal as Record<string, string>)[data.canal_preferido] ?? T.exito.canal.whatsapp;
   const s2 = $('[data-qm-sigue="1"]');
   if (s2) s2.textContent = fill(T.exito.pasos[1], { canal });

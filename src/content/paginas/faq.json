@@ -297,7 +297,7 @@
         "text": "El primer paso",
         "soft": "es cotizar tu proyecto."
       },
-      "lede": "Todo empieza con «Cotizar proyecto»: un formulario de tres pasos sobre lo que necesitas y tu negocio. Te contactamos por WhatsApp y correo y, si tiene sentido para los dos, te enviamos una propuesta con alcance, tiempos y costo.",
+      "lede": "Todo empieza con «Cotizar proyecto»: un formulario de tres pasos sobre lo que necesitas y tu negocio. Te contactamos por WhatsApp y correo en menos de 2 horas hábiles y, si tiene sentido para los dos, te enviamos una propuesta con alcance, tiempos y costo.",
       "steps": [
         {
           "title": "Cuentas qué necesitas",
@@ -305,7 +305,7 @@
         },
         {
           "title": "Te contactamos",
-          "line": "Por WhatsApp y correo, para entender tu operación."
+          "line": "En menos de 2 horas hábiles, por WhatsApp y correo, para entender tu operación."
         },
         {
           "title": "Recibes una propuesta",

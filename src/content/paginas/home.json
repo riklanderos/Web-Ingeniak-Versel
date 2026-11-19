@@ -6,6 +6,7 @@
   "aprobadoPor": "Rik Landeros",
   "actualizado": "2026-10-22",
   "pendientes": [
+    "CAMBIO DE TEXTO (2026-11-19) · agenda directa: hero y cta-final suman agendaLink ('¿Prefieres hablar ya? Agenda una videollamada de 30 minutos' → /agendar/), enlace secundario bajo los CTA. «Cotizar proyecto» sigue como único primario. Abre R17 solo para la portada (scripts/_html.mjs → isHomeAgendaLink). Decisión de Rik Landeros en el chat (2026-11-19) a partir de una auditoría que comparó la web con la competencia.",
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "FAQ DISTINTA DE D · G01: agrega 'conectados en un solo sistema' y 'Somos partner oficial de Kommo en Latinoamérica'; las cifras van como token (sistemas, paises).",
     "FAQ DISTINTA DE D · G02: misma respuesta con sujeto explícito ('Un agente de IA para WhatsApp es…') para que se pueda citar sola.",
@@ -52,6 +53,11 @@
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de inicio de ingeniak.mx y quiero ver cómo un agente de IA atendería mi negocio."
+      },
+      "agendaLink": {
+        "pre": "¿Prefieres hablar ya?",
+        "label": "Agenda una videollamada de 30 minutos",
+        "href": "/agendar/"
       },
       "trust": "Partner oficial de Kommo en LATAM · {{metric:sistemas|full}} · {{metric:paises|full}}",
       "sumario": {
@@ -886,6 +892,11 @@
       "ctaSecondary": {
         "label": "Escríbele a Kain",
         "waMessage": "Hola Kain, vengo de la página de inicio de ingeniak.mx y quiero ver cómo un agente de IA atendería mi negocio."
+      },
+      "agendaLink": {
+        "pre": "¿Prefieres hablar ya?",
+        "label": "Agenda una videollamada de 30 minutos",
+        "href": "/agendar/"
       },
       "hud": [
         {

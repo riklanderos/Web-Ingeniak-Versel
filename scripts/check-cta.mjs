@@ -5,6 +5,7 @@
 //      texto "Cotizar proyecto";
 //    · [data-hdr-cta] y .mbar__cta llevan data-cotizar;
 //    · ningún href del documento apunta a /discovery/, /power-session/, /agendar/, #agenda ni agenda.ingeniak.tech.
+//      Apertura del 2026-11-19 (petición del cliente): la portada (/) puede enlazar /agendar/ con a[data-agenda-link];
 //      Apertura del 2026-11-14 (petición del cliente): en un artículo (T-ARTICLE), dentro de #cuerpo, sí se puede enlazar
 //      una landing abierta (hidden + indexable: true en sitemap.json: /discovery/ y /power-session/);
 //    · ningún .btn-micro dice "Google Meet" ni "30 min";
@@ -29,7 +30,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import {
   ROOT, SITEMAP, parseArgs, reporter, loadPages, onlyRoutes, parseHTML, find, findAll, closest, hasClass, textOf, norm, metaContent,
-  normRoute, isHiddenPage, isOpenLandingLink, OPEN_LANDINGS, jsonLd, jsonStrings, graphNodes,
+  normRoute, isHiddenPage, isOpenLandingLink, isHomeAgendaLink, OPEN_LANDINGS, jsonLd, jsonStrings, graphNodes,
 } from './_html.mjs';
 
 const QUOTE_LABEL = 'Cotizar proyecto';
@@ -141,6 +142,8 @@ export async function run(opts) {
         if (!f) continue;
         // Apertura de R17 (2026-11-14): el cuerpo de un artículo puede enlazar una landing abierta
         if (isOpenLandingLink(page, el.attrs.href, !!closest(el, (x) => x.attrs.id === 'cuerpo'))) continue;
+        // Apertura de R17 (2026-11-19): la portada enlaza la agenda directa con [data-agenda-link]
+        if (isHomeAgendaLink(page, el)) continue;
         const k = `${f}|${el.attrs.href}`;
         if (seen.has(k)) continue;
         seen.add(k);

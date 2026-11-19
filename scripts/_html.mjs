@@ -159,6 +159,12 @@ export function isOpenLandingLink(page, href, inBody) {
   const r = normRoute(href);
   return !!r && OPEN_LANDINGS.has(r);
 }
+/** Apertura de R17 (2026-11-19, decisión de Rik Landeros en el chat tras una auditoría de la competencia): la portada puede
+ *  enlazar la agenda directa (/agendar/) con un enlace secundario marcado data-agenda-link. «Cotizar proyecto» sigue siendo el
+ *  único primario; ninguna otra página ni otro enlace de la portada puede llevar a /agendar/. */
+export function isHomeAgendaLink(page, el) {
+  return page?.url === '/' && el?.tag === 'a' && 'data-agenda-link' in (el.attrs ?? {}) && normRoute(el.attrs.href) === '/agendar/';
+}
 /** ¿El href (ruta, URL de ingeniak.mx, con hash o query) lleva a una landing oculta, a /agendar/… o a la agenda externa de v1? */
 export function isHiddenHref(href) {
   if (!href) return false;

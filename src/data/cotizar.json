@@ -2,7 +2,7 @@
   "version": 1,
   "titulo": "Cotizar proyecto",
   "h": "Cuéntanos qué necesitas",
-  "desc": "Tres pasos cortos. Te contactamos por WhatsApp y correo.",
+  "desc": "Tres pasos cortos. Te contactamos en menos de 2 horas hábiles.",
   "pasos": [
     { "n": 1, "id": "necesidad", "titulo": "Qué necesitas", "h": "¿Qué quieres resolver?" },
     { "n": 2, "id": "negocio", "titulo": "Tu negocio", "h": "Cuéntanos de tu negocio" },
@@ -134,9 +134,9 @@
         "Si tiene sentido para los dos, preparamos tu cotización con alcance, tiempos y costo."
       ],
       "canal": {
-        "whatsapp": "Te contactamos por WhatsApp y por correo",
-        "correo": "Te contactamos por correo",
-        "llamada": "Te llamamos al número que registraste y te escribimos por correo"
+        "whatsapp": "En menos de 2 horas hábiles te contactamos por WhatsApp y por correo",
+        "correo": "En menos de 2 horas hábiles te contactamos por correo",
+        "llamada": "En menos de 2 horas hábiles te llamamos al número que registraste y te escribimos por correo"
       },
       "wa": "Escríbele a Kain ahora",
       "listo": "Listo",

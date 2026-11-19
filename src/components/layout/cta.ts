@@ -27,13 +27,13 @@ export const QUOTE = {
   /** Respaldo sin JS (SITE.quote.href). En /contacto/ se usa HREF_LOCAL. */
   href: typeof Q.href === 'string' && Q.href ? (Q.href as string) : '/contacto/#cotizar',
   /** Microcopia bajo el primario (D2): sin cifras ni promesa de tiempo. */
-  micro: pick(C.micro, pick(Q.micro, 'Sin compromiso · Te contactamos por WhatsApp y correo')),
+  micro: pick(C.micro, pick(Q.micro, 'Sin compromiso · Te contactamos en menos de 2 horas hábiles')),
   /** Subtítulo de la acción fija del ⌘K. */
-  sub: pick(C.cotizarSub, 'Te contactamos por WhatsApp y correo'),
+  sub: pick(C.cotizarSub, 'Te contactamos en menos de 2 horas hábiles'),
   /** Enlace de texto del footer mínimo de las landings. */
   lnk: pick(C.cotizarLnk, '¿Tienes un proyecto en mente? Cotizar proyecto'),
   /** Valor de la fila "Primer paso" de EntitySheet (la etiqueta se enlaza al modal). */
-  primerPaso: pick(C.primerPaso, 'Cotizar proyecto · te contactamos por WhatsApp y correo'),
+  primerPaso: pick(C.primerPaso, 'Cotizar proyecto · te contactamos en menos de 2 horas hábiles'),
 } as const;
 export const QUOTE_HREF_LOCAL = '#cotizar';
 export const QUOTE_DIALOG_ID = 'cotizar';

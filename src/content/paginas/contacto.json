@@ -87,7 +87,7 @@
           "tag": "Recomendada",
           "contact": "Formulario de 3 pasos",
           "when": "Tienes un proyecto en mente y quieres una cotización.",
-          "then": "Llenas un formulario corto con lo que necesitas y te contactamos por WhatsApp y correo para conocer los detalles y preparar tu cotización.",
+          "then": "Llenas un formulario corto con lo que necesitas y te contactamos por WhatsApp y correo en menos de 2 horas hábiles para conocer los detalles y preparar tu cotización.",
           "action": "Cotizar",
           "cotizar": true
         },
@@ -127,7 +127,7 @@
         {
           "n": "02",
           "title": "Te contactamos",
-          "line": "Por WhatsApp y por correo, para conocer los detalles."
+          "line": "En menos de 2 horas hábiles, por WhatsApp y por correo, para conocer los detalles."
         },
         {
           "n": "03",
