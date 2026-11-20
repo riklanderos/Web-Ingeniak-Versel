@@ -13,6 +13,7 @@
 import cat from '../../data/cotizar.json';
 import { lock, unlock, track, reducedMotion } from '../nav/overlay';
 import { bindPhone } from '../forms/phone';
+import { gaClientId } from '../ga-cliente';
 import { PASOS, ORDEN, pasoDe, sanear, validar, primerError, type Campo, type Datos, type Errores } from './validar';
 
 type Origen = 'cta' | 'hash' | 'api';
@@ -528,6 +529,7 @@ function payload(data: Datos) {
       utm_content: str(utm.utm_content, 120),
       gclid: str(clid.gclid, 200),
       fbclid: str(clid.fbclid, 200),
+      ga_client_id: gaClientId(),
       zona: zona(),
       t_llenado_ms: openedAt ? Math.max(0, Math.round(performance.now() - openedAt)) : 0,
       hp: hp.slice(0, 200),

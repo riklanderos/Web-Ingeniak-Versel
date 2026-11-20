@@ -14,7 +14,7 @@
     "check:escenas": "node scripts/check-escenas.mjs",
     "check:contraste": "node scripts/check-contraste.mjs",
     "postbuild": "npm run check",
-    "test": "node --test tests/cotizar/ tests/agenda/ tests/kommo-configurar/"
+    "test": "node --test tests/cotizar/ tests/agenda/ tests/kommo-configurar/ tests/analytics/"
   },
   "dependencies": {
     "@astrojs/mdx": "8.1.6",

@@ -31,6 +31,8 @@ export const KOMMO_MS = 9000;
 const UTM_KEYS = /** @type {const} */ (['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']);
 const CLID_KEYS = /** @type {const} */ (['gclid', 'fbclid', 'gbraid', 'wbraid']);
 const TZ_RE = /^[A-Za-z0-9_+-]+(?:\/[A-Za-z0-9_+-]+){0,2}$/;
+/** ID de Analytics (cookie `_ga` sin "GA1.1."); igual que GA_CLIENT_ID_RE de server/cotizar.js. */
+const GA_CLIENT_ID_RE = /^\d{1,20}\.\d{1,20}$/;
 
 /**
  * Rangos de facturación que acepta el check de `revenue_range` (el resto queda null y va en details).
@@ -46,7 +48,8 @@ const REVENUE_CODE = new Map(/** @type {[string, string][]} */ ([]));
  * @typedef {{
  *   utm: Record<string, string | null>, referrer: string | null, pagePath: string | null, visitorTimezone: string | null,
  *   src: string | null, desde: string | null, clid: Record<string, string | null>,
- *   landing: { path: string | null, referrer: string | null, t: string | null }
+ *   landing: { path: string | null, referrer: string | null, t: string | null },
+ *   gaClientId?: string | null
  * }} BookingAttribution
  * @typedef {{
  *   kommoConfigured: () => boolean,
@@ -98,6 +101,7 @@ export function bookingAttribution(raw) {
     desde: clip(b.desde, 40),
     clid,
     landing: { path: okPath(lPath), referrer: okUrl(lRef), t: clip(l.t, 40) },
+    gaClientId: typeof b.ga_client_id === 'string' && GA_CLIENT_ID_RE.test(b.ga_client_id) ? b.ga_client_id : null,
   };
 }
 
@@ -134,6 +138,7 @@ export function kommoNote(i) {
     a.landing.path || a.referrer ? `Llegó por: ${a.landing.path ?? '—'}${a.landing.referrer || a.referrer ? ` · Referrer: ${a.landing.referrer ?? a.referrer}` : ''}` : null,
     utm ? `UTM: ${utm}` : null,
     clid || null,
+    a.gaClientId ? `ID de Analytics: ${a.gaClientId}` : null,
     a.visitorTimezone ? `Zona horaria del visitante: ${a.visitorTimezone}` : null,
     `Calendario: evento ${i.eventId}`,
     i.env ? `Entorno: ${i.env}` : null,
@@ -338,6 +343,7 @@ export function createLeads({ kommo, env = process.env } = {}) {
           UTM_SOURCE: a.utm.utm_source ?? '', UTM_MEDIUM: a.utm.utm_medium ?? '', UTM_CAMPAIGN: a.utm.utm_campaign ?? '',
           UTM_TERM: a.utm.utm_term ?? '', UTM_CONTENT: a.utm.utm_content ?? '',
           REFERRER: a.landing.referrer ?? a.referrer ?? '', GCLID: a.clid.gclid ?? '', FBCLID: a.clid.fbclid ?? '',
+          GCLIENTID: a.gaClientId ?? '',
         },
         // Estructura aprobada, por nombre. «Industria: Otro» se guarda como «Otra» (alias del esquema).
         // Discovery cae en «Ventas» (el P1 de la cuenta) y Power en su propio embudo «Power Session».

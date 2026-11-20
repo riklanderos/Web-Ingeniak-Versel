@@ -24,7 +24,7 @@ import { etiquetasDeOrigen, opcionKommo, urlDePagina } from './kommo.js';
  * @typedef {{
  *   pagina: string, folio: string, cta: string, src: string, landing: string, referrer: string,
  *   utm_source: string, utm_medium: string, utm_campaign: string, utm_term: string, utm_content: string,
- *   gclid: string, fbclid: string, gbraid: string, wbraid: string,
+ *   gclid: string, fbclid: string, gbraid: string, wbraid: string, ga_client_id: string,
  *   zona: string, t_llenado_ms: number | null, hp: string
  * }} Meta
  */
@@ -103,13 +103,18 @@ export const TRACKING = Object.freeze({
   REFERRER: 'referrer',
   GCLID: 'gclid',
   FBCLID: 'fbclid',
+  // ID de Analytics del visitante (2026-11-19): api/kommo/etapa.js lo usa para avisar a GA4 cuando el lead avanza.
+  GCLIENTID: 'ga_client_id',
 });
+
+/** Forma del ID de Analytics (cookie `_ga` sin el prefijo "GA1.1."): dos números separados por punto. */
+export const GA_CLIENT_ID_RE = /^\d{1,20}\.\d{1,20}$/;
 
 /** Longitudes máximas de los campos de `meta` (se recortan, no se rechazan: son de atribución). */
 const META_MAX = Object.freeze({
   pagina: 300, folio: 40, cta: 40, src: 120, landing: 300, referrer: 500,
   utm_source: 200, utm_medium: 200, utm_campaign: 200, utm_term: 200, utm_content: 200,
-  gclid: 200, fbclid: 200, gbraid: 200, wbraid: 200, zona: 64, hp: 200,
+  gclid: 200, fbclid: 200, gbraid: 200, wbraid: 200, ga_client_id: 41, zona: 64, hp: 200,
 });
 
 const LIM = catalogo.limites ?? { nombre: [3, 120], empresa: [2, 160], email: 200, sitio: 200, vision: 1000 };
@@ -323,6 +328,7 @@ export function cleanMeta(raw) {
     const v = m[k];
     out[k] = clean(typeof v === 'number' ? String(v) : v, max);
   }
+  if (!GA_CLIENT_ID_RE.test(String(out.ga_client_id ?? ''))) out.ga_client_id = '';
   const t = m.t_llenado_ms;
   const n = t === undefined || t === null || t === '' ? NaN : Number(t);
   out.t_llenado_ms = Number.isFinite(n) ? Math.round(n) : null;
@@ -488,6 +494,7 @@ export function noteFor(data, meta, env, now) {
     fila([meta.landing && `Llegó por: ${meta.landing}`, meta.referrer && `Referrer: ${meta.referrer}`]),
     utm && `UTM: ${utm}`,
     fila(/** @type {const} */ (['gclid', 'fbclid', 'gbraid', 'wbraid']).map((k) => meta[k] && `${k}=${meta[k]}`)),
+    meta.ga_client_id && `ID de Analytics: ${meta.ga_client_id}`,
     fila([meta.zona && `Zona horaria: ${meta.zona}`, `Enviado: ${fechaCdmx(now)} (hora del centro de México)`]),
     `Consentimiento de contacto por WhatsApp y correo: sí (${now.toISOString()})`,
     `Entorno: ${entornoDe(env)}`,

@@ -59,7 +59,7 @@ const EMBUDOS_DEL_SITIO = Object.freeze(['ventas', 'power']);
 
 /** Campos `tracking_data` que se mandan si existen en la cuenta. */
 export const TRACKING_CODES = Object.freeze([
-  'UTM_SOURCE', 'UTM_MEDIUM', 'UTM_CAMPAIGN', 'UTM_TERM', 'UTM_CONTENT', 'REFERRER', 'GCLID', 'FBCLID',
+  'UTM_SOURCE', 'UTM_MEDIUM', 'UTM_CAMPAIGN', 'UTM_TERM', 'UTM_CONTENT', 'REFERRER', 'GCLID', 'FBCLID', 'GCLIENTID',
 ]);
 
 /** Alertas al webhook por error de Kommo (§3.4). */
@@ -1133,6 +1133,73 @@ export async function revisarEstructura() {
   }
 }
 
+/* ── Puente Kommo → Google Analytics (2026-11-19, api/kommo/etapa.js) ─────────────────────────── */
+
+/** Moneda de la cuenta (GET /account → `currency`), una vez por instancia. `null` = aún sin leer. */
+let monedaCache = /** @type {string | null} */ (null);
+
+/** @param {number} deadline @returns {Promise<string>} código ISO de 3 letras o '' si Kommo no lo da */
+async function monedaCuenta(deadline) {
+  if (monedaCache !== null) return monedaCache;
+  const r = await call('/account', { deadline });
+  const c = typeof r.data?.currency === 'string' ? r.data.currency.trim().toUpperCase() : '';
+  if (r.status === 200) monedaCache = /^[A-Z]{3}$/.test(c) ? c : '';
+  return /^[A-Z]{3}$/.test(c) ? c : '';
+}
+
+/**
+ * Lo que el puente a Analytics necesita de un lead: etapa actual (con nombres), monto, moneda de la cuenta, ID de
+ * Analytics (campo de rastreo GCLIENTID), fuente (UTM_SOURCE o REFERRER) y etiquetas. Nunca lanza.
+ * @param {number | string} leadId
+ * @param {{ budgetMs?: number }} [o]
+ * @returns {Promise<{ ok: true, lead: { id: number, statusId: number | null, pipelineId: number | null, embudo: string | null,
+ *   etapa: string | null, precio: number | null, moneda: string, gaClientId: string | null, fuente: string | null, tags: string[] } }
+ *   | { ok: false, status?: number, reason: Reason | 'validation' }>}
+ */
+export async function leadParaAnalytics(leadId, { budgetMs = 6000 } = {}) {
+  try {
+    const id = validLeadId(leadId);
+    if (!id) return { ok: false, reason: 'validation' };
+    if (!kommoConfigured()) return { ok: false, reason: 'not-configured' };
+    const deadline = Date.now() + budgetMs;
+    const [lr, e, moneda] = await Promise.all([call(`/leads/${id}`, { deadline }), estructura(deadline), monedaCuenta(deadline)]);
+    if (lr.status !== 200) return { ok: false, status: lr.status, reason: lr.reason ?? 'server' };
+    const l = lr.data ?? {};
+    const est = e.ok ? e.data : null;
+    /** @type {Map<number, string>} id del campo → código de rastreo */
+    const codigoDe = new Map([...(est?.rastreo ?? new Map())].map(([code, fid]) => [fid, code]));
+    /** @type {Record<string, string>} */
+    const rastreo = {};
+    for (const f of Array.isArray(l.custom_fields_values) ? l.custom_fields_values : []) {
+      const code = (typeof f?.field_code === 'string' && f.field_code ? f.field_code : codigoDe.get(f?.field_id) ?? '').toUpperCase();
+      const v = f?.values?.[0]?.value;
+      if (code && (typeof v === 'string' || typeof v === 'number') && String(v).trim()) rastreo[code] = String(v).trim();
+    }
+    const pipelineId = posInt(l.pipeline_id) ?? null;
+    const statusId = posInt(l.status_id) ?? null;
+    const embudo = est?.embudos.find((p) => p.id === pipelineId);
+    const etapa = embudo?.etapas.find((s) => s.id === statusId);
+    const gaId = rastreo.GCLIENTID ?? '';
+    return {
+      ok: true,
+      lead: {
+        id,
+        statusId,
+        pipelineId,
+        embudo: embudo?.name ?? null,
+        etapa: etapa?.name ?? null,
+        precio: typeof l.price === 'number' && Number.isFinite(l.price) && l.price >= 0 ? l.price : null,
+        moneda,
+        gaClientId: /^\d{1,20}\.\d{1,20}$/.test(gaId) ? gaId : null,
+        fuente: rastreo.UTM_SOURCE || rastreo.REFERRER || null,
+        tags: (Array.isArray(l._embedded?.tags) ? l._embedded.tags : []).map((t) => String(t?.name ?? '')).filter(Boolean),
+      },
+    };
+  } catch {
+    return { ok: false, reason: 'network' };
+  }
+}
+
 /**
  * Webhook de aviso (opcional): POST JSON a NOTIFY_WEBHOOK_URL con `x-webhook-secret` si existe; 5 s.
  * Cuerpo: { event, site: 'ingeniak.mx', source, env, folio, kommo, data, … }. Nunca lanza.
@@ -1172,6 +1239,7 @@ export async function notify(event, payload = {}) {
 export function __resetKommo() {
   cache = null;
   enCurso = null;
+  monedaCache = null;
   lastAlert.clear();
 }
 

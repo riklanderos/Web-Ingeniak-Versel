@@ -9,6 +9,7 @@ import {
   type BookingForm, type DayAvailability, type FormErrors, type SessionType,
 } from '../../../shared/agenda.js';
 import { bindPhone, readPhone } from '../forms/phone';
+import { gaClientId } from '../ga-cliente';
 import { GRACIAS_URL, guardarGracias } from './gracias-store';
 
 type Step = 1 | 2 | 3 | 'done';
@@ -165,6 +166,7 @@ export function initBooking(root: HTMLElement) {
       desde: desde || undefined,
       clid,
       landing: { path: clip(landing.path, 300), referrer: clip(landing.referrer, 500), t: clip(landing.t, 40) },
+      ga_client_id: gaClientId() || undefined,
     };
     return desde;
   }

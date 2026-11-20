@@ -795,6 +795,9 @@
     },
     "api/agenda/*.js": {
       "maxDuration": 30
+    },
+    "api/kommo/*.js": {
+      "maxDuration": 15
     }
   }
 }

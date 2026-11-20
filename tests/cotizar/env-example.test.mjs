@@ -14,6 +14,8 @@ const VARIABLES = [
   'GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REFRESH_TOKEN', 'AGENDA_MOCK', 'AGENDA_MOCK_LLENO',
   // Meta · API de conversiones (server/meta-capi.js)
   'META_PIXEL_ID', 'META_CAPI_TOKEN', 'META_CAPI_TEST_CODE', 'META_CAPI_DATOS',
+  // Puente Kommo → GA4 (api/kommo/etapa.js, server/analytics.js)
+  'KOMMO_WEBHOOK_SECRET', 'GA4_API_SECRET', 'GA4_MEASUREMENT_ID',
 ];
 
 test('.env.example · todas las variables, vacías, con comentario y sin repetir', () => {
