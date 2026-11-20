@@ -26,6 +26,16 @@ const MAX_LEADS = 20;
 export const ETAPA_GANADO = 142;
 /** Nombre de la etapa de calificación del esquema aprobado (shared/kommo-esquema.js, embudo «Ventas»). */
 export const ETAPA_CALIFICADO = 'Calificado';
+/**
+ * ¿La etapa cuenta como «Calificado»? Vale el nombre exacto o con un detalle después de un separador, como
+ * «Calificado · Agenda propuesta» (así se llama en el embudo CALIFICACIÓN de Ingeniak). «No calificado» no cuenta.
+ * @param {string | null | undefined} etapa
+ */
+export function esEtapaCalificado(etapa) {
+  const n = normalizar(etapa);
+  const base = normalizar(ETAPA_CALIFICADO);
+  return n === base || new RegExp(`^${base}\\s*[·\\-:|(/]`).test(n);
+}
 export const ETIQUETA = Object.freeze({ qualify_lead: 'ga-calificado', close_convert_lead: 'ga-venta' });
 
 /** Leads en proceso en esta instancia: evita mandar dos veces si Kommo repite el aviso mientras se procesa. */
@@ -68,7 +78,7 @@ export function idsDelWebhook(texto) {
 export function eventosPara(lead) {
   const ya = new Set(lead.tags.map((t) => normalizar(t)));
   const ganado = lead.statusId === ETAPA_GANADO;
-  const calificado = ganado || normalizar(lead.etapa) === normalizar(ETAPA_CALIFICADO);
+  const calificado = ganado || esEtapaCalificado(lead.etapa);
   /** @type {Array<'qualify_lead' | 'close_convert_lead'>} */
   const out = [];
   if (calificado && !ya.has(ETIQUETA.qualify_lead)) out.push('qualify_lead');

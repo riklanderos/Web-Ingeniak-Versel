@@ -100,6 +100,11 @@ test('eventosPara · Calificado, ganado y lo ya enviado', () => {
   assert.deepEqual(eventosPara({ statusId: 142, etapa: null, tags: ['ga-calificado'] }), ['close_convert_lead']);
   assert.deepEqual(eventosPara({ statusId: 142, etapa: null, tags: ['GA-Calificado', 'ga-venta'] }), []);
   assert.deepEqual(eventosPara({ statusId: CONTACTADO, etapa: 'Contactado', tags: [] }), []);
+  // la etapa real del embudo CALIFICACIÓN lleva un detalle después del nombre
+  assert.deepEqual(eventosPara({ statusId: CALIFICADO, etapa: 'Calificado · Agenda propuesta', tags: [] }), ['qualify_lead']);
+  assert.deepEqual(eventosPara({ statusId: CALIFICADO, etapa: 'CALIFICADO - agenda', tags: [] }), ['qualify_lead']);
+  assert.deepEqual(eventosPara({ statusId: CONTACTADO, etapa: 'No calificado', tags: [] }), []);
+  assert.deepEqual(eventosPara({ statusId: CONTACTADO, etapa: 'Calificados fríos', tags: [] }), []);
 });
 
 test('sin clave en Vercel → 503 · clave incorrecta → 403 · GET → 405, sin llamar a nadie', async (t) => {
