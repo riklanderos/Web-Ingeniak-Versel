@@ -1149,11 +1149,13 @@ async function monedaCuenta(deadline) {
 
 /**
  * Lo que el puente a Analytics necesita de un lead: etapa actual (con nombres), monto, moneda de la cuenta, ID de
- * Analytics (campo de rastreo GCLIENTID), fuente (UTM_SOURCE o REFERRER) y etiquetas. Nunca lanza.
+ * Analytics (campo de rastreo GCLIENTID), fuente (UTM_SOURCE o REFERRER), el lead del que salió («Lead de origen») y
+ * etiquetas. Nunca lanza.
  * @param {number | string} leadId
  * @param {{ budgetMs?: number }} [o]
  * @returns {Promise<{ ok: true, lead: { id: number, statusId: number | null, pipelineId: number | null, embudo: string | null,
- *   etapa: string | null, precio: number | null, moneda: string, gaClientId: string | null, fuente: string | null, tags: string[] } }
+ *   etapa: string | null, precio: number | null, moneda: string, gaClientId: string | null, fuente: string | null,
+ *   origenId: number | null, tags: string[] } }
  *   | { ok: false, status?: number, reason: Reason | 'validation' }>}
  */
 export async function leadParaAnalytics(leadId, { budgetMs = 6000 } = {}) {
@@ -1170,7 +1172,13 @@ export async function leadParaAnalytics(leadId, { budgetMs = 6000 } = {}) {
     const codigoDe = new Map([...(est?.rastreo ?? new Map())].map(([code, fid]) => [fid, code]));
     /** @type {Record<string, string>} */
     const rastreo = {};
+    let origenId = /** @type {number | null} */ (null);
     for (const f of Array.isArray(l.custom_fields_values) ? l.custom_fields_values : []) {
+      if (normalizar(f?.field_name) === 'lead de origen') {
+        const m = /\/leads\/detail\/(\d{1,15})(?:\D|$)/.exec(String(f?.values?.[0]?.value ?? ''));
+        const oid = m ? Number(m[1]) : NaN;
+        if (Number.isSafeInteger(oid) && oid > 0 && oid !== id) origenId = oid;
+      }
       const code = (typeof f?.field_code === 'string' && f.field_code ? f.field_code : codigoDe.get(f?.field_id) ?? '').toUpperCase();
       const v = f?.values?.[0]?.value;
       if (code && (typeof v === 'string' || typeof v === 'number') && String(v).trim()) rastreo[code] = String(v).trim();
@@ -1192,6 +1200,7 @@ export async function leadParaAnalytics(leadId, { budgetMs = 6000 } = {}) {
         moneda,
         gaClientId: /^\d{1,20}\.\d{1,20}$/.test(gaId) ? gaId : null,
         fuente: rastreo.UTM_SOURCE || rastreo.REFERRER || null,
+        origenId,
         tags: (Array.isArray(l._embedded?.tags) ? l._embedded.tags : []).map((t) => String(t?.name ?? '')).filter(Boolean),
       },
     };
