@@ -177,3 +177,104 @@ test('fuera de producción y sin GA4_API_SECRET → simulación, sin etiquetar',
   assert.deepEqual((await r.json()).leads, { 8: 'simulacion:qualify_lead+close_convert_lead' });
   assert.equal(llamadas.filter((c) => c.url.includes('google-analytics') || c.method === 'PATCH').length, 0);
 });
+
+// ---- Tres embudos de Ingeniak: solo PRESUPUESTOS es venta (2026-11-19) ----
+
+test('eventosPara · ganar significa algo distinto en cada embudo', () => {
+  const ganado = (embudo, tags = []) => eventosPara({ statusId: 142, etapa: 'Logrado con éxito', embudo, tags });
+  assert.deepEqual(ganado('CALIFICACIÓN'), ['qualify_lead'], 'cita realizada: calificado, no venta');
+  assert.deepEqual(ganado('CALIFICACIÓN', ['ga-calificado']), [], 'ya se había mandado al entrar a Calificado');
+  assert.deepEqual(ganado('DISCOVERY SESSION'), ['working_lead'], 'cotizado: en negociación');
+  assert.deepEqual(ganado('DISCOVERY SESSION', ['ga-negociacion']), []);
+  assert.deepEqual(ganado('PRESUPUESTOS'), ['close_convert_lead'], 'contrató: la única venta');
+  assert.deepEqual(ganado('PRESUPUESTOS', ['ga-venta']), []);
+  for (const otro of ['CAMPAÑAS', 'NUTRICIÓN', 'CLIENTES', 'POWER SESSION', 'P0 · OUTBOUND B2B']) assert.deepEqual(ganado(otro), [], otro);
+  assert.deepEqual(ganado('Ventas'), ['qualify_lead', 'close_convert_lead'], 'embudo único del esquema aprobado');
+  assert.deepEqual(eventosPara({ statusId: CALIFICADO, etapa: 'Calificado · Agenda propuesta', embudo: 'CALIFICACIÓN', tags: [] }), ['qualify_lead']);
+});
+
+/**
+ * Kommo con tres embudos y varios leads encadenados por «Lead de origen».
+ * @param {import('node:test').TestContext} t
+ * @param {Record<number, Record<string, any>>} leads
+ */
+function simularCadena(t, leads) {
+  /** @type {{ method: string, url: string, body: any }[]} */
+  const llamadas = [];
+  t.mock.method(console, 'log', () => {});
+  t.mock.method(globalThis, 'fetch', async (input, init = {}) => {
+    const url = String(input);
+    const method = (init.method ?? 'GET').toUpperCase();
+    const body = typeof init.body === 'string' ? JSON.parse(init.body) : init.body;
+    llamadas.push({ method, url, body });
+    const r = (status, data) => new Response(data === undefined ? null : JSON.stringify(data), { status });
+    if (url.startsWith('https://www.google-analytics.com/mp/collect')) return r(204);
+    const path = url.slice(KOMMO.length);
+    const etapas = { _embedded: { statuses: [{ id: 1, name: 'Nuevo', type: 0 }, { id: 142, name: 'Logrado con éxito', type: 0 }] } };
+    if (method === 'GET' && path.startsWith('/leads/pipelines')) {
+      return r(200, { _embedded: { pipelines: [
+        { id: 901, name: 'CALIFICACIÓN', is_main: true, is_archive: false, ...etapas },
+        { id: 902, name: 'DISCOVERY SESSION', is_main: false, is_archive: false, ...etapas },
+        { id: 903, name: 'PRESUPUESTOS', is_main: false, is_archive: false, ...etapas },
+      ] } });
+    }
+    if (method === 'GET' && path.startsWith('/leads/custom_fields')) {
+      return r(200, { _embedded: { custom_fields: [{ id: 510, code: 'GCLIENTID', name: 'gclientid', type: 'tracking_data' }, { id: 501, code: 'UTM_SOURCE', name: 'utm_source', type: 'tracking_data' }] } });
+    }
+    if (method === 'GET' && path === '/account') return r(200, { id: 1, currency: 'USD' });
+    const m = /^\/leads\/(\d+)$/.exec(path);
+    if (m && method === 'GET') return leads[Number(m[1])] ? r(200, { id: Number(m[1]), ...leads[Number(m[1])] }) : r(404, {});
+    if (m && method === 'PATCH') return r(200, { id: Number(m[1]) });
+    throw new TypeError(`sin ruta simulada: ${method} ${url}`);
+  });
+  return { llamadas };
+}
+
+const origen = (id) => ({ field_id: 777, field_name: 'Lead de origen', field_type: 'url', values: [{ value: `https://ingeniak.kommo.com/leads/detail/${id}` }] });
+
+test('ganado en PRESUPUESTOS sin ID propio → lo toma del lead de origen (dos saltos) y manda solo la venta', async (t) => {
+  entorno(t, configurado);
+  const { llamadas } = simularCadena(t, {
+    31: { pipeline_id: 903, status_id: 142, price: 4500, custom_fields_values: [origen(21)], _embedded: { tags: [] } },
+    21: { pipeline_id: 902, status_id: 142, price: 0, custom_fields_values: [origen(11)], _embedded: { tags: [] } },
+    11: { pipeline_id: 901, status_id: 142, price: 0, custom_fields_values: rastreo('555.666', 'chatgpt.com'), _embedded: { tags: ['ga-calificado'] } },
+  });
+  const r = await handler.fetch(aviso(cambio(31, 142)));
+  assert.deepEqual((await r.json()).leads, { 31: 'enviado:close_convert_lead' });
+  const ga = llamadas.find((c) => c.url.startsWith('https://www.google-analytics.com/'));
+  assert.equal(ga?.body.client_id, '555.666');
+  assert.deepEqual(ga?.body.events, [{ name: 'close_convert_lead', params: { lead_source: 'chatgpt.com', kommo_embudo: 'PRESUPUESTOS', value: 4500, currency: 'USD' } }]);
+  const patch = llamadas.filter((c) => c.method === 'PATCH');
+  assert.equal(patch.length, 1, 'solo se etiqueta el lead que cambió');
+  assert.match(patch[0].url, /\/leads\/31$/);
+  assert.deepEqual(patch[0].body, { tags_to_add: [{ name: 'ga-venta' }] });
+});
+
+test('ganado en DISCOVERY → working_lead · ganado en CALIFICACIÓN → qualify_lead, nunca venta', async (t) => {
+  entorno(t, configurado);
+  await t.test('discovery', async (tt) => {
+    const { llamadas } = simularCadena(tt, { 21: { pipeline_id: 902, status_id: 142, price: 800, custom_fields_values: rastreo(), _embedded: { tags: [] } } });
+    const r = await handler.fetch(aviso(cambio(21, 142)));
+    assert.deepEqual((await r.json()).leads, { 21: 'enviado:working_lead' });
+    const ga = llamadas.find((c) => c.url.startsWith('https://www.google-analytics.com/'));
+    assert.deepEqual(ga?.body.events, [{ name: 'working_lead', params: { lead_source: 'chatgpt.com', kommo_embudo: 'DISCOVERY SESSION' } }]);
+  });
+  __resetKommo();
+  await t.test('calificación', async (tt) => {
+    const { llamadas } = simularCadena(tt, { 11: { pipeline_id: 901, status_id: 142, price: 800, custom_fields_values: rastreo(), _embedded: { tags: [] } } });
+    const r = await handler.fetch(aviso(cambio(11, 142)));
+    assert.deepEqual((await r.json()).leads, { 11: 'enviado:qualify_lead' });
+    assert.equal(llamadas.filter((c) => JSON.stringify(c.body ?? '').includes('close_convert_lead')).length, 0);
+  });
+});
+
+test('sin ID en toda la cadena, o cadena en círculo → sin-id-analytics', async (t) => {
+  entorno(t, configurado);
+  const { llamadas } = simularCadena(t, {
+    31: { pipeline_id: 903, status_id: 142, price: 10, custom_fields_values: [origen(21)], _embedded: { tags: [] } },
+    21: { pipeline_id: 902, status_id: 142, custom_fields_values: [origen(31)], _embedded: { tags: [] } },
+  });
+  const r = await handler.fetch(aviso(cambio(31, 142)));
+  assert.deepEqual((await r.json()).leads, { 31: 'sin-id-analytics' });
+  assert.equal(llamadas.filter((c) => c.url.includes('google-analytics')).length, 0);
+});

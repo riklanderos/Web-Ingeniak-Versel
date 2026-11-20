@@ -10,7 +10,7 @@ Cambio del 2026-11-19. Con esto, Google Analytics sabe qué leads se calificaron
 2. **Kommo avisa al sitio.** Cada vez que un lead cambia de etapa, Kommo llama a `https://ingeniak.mx/api/kommo/etapa/`.
 3. **El sitio avisa a Analytics:**
    - **Lead que entra a la etapa «Calificado»** (o una que empiece así, como «Calificado · Agenda propuesta»): manda el evento `qualify_lead`.
-   - **Lead ganado** (etapa «Logrado con éxito» de Kommo): manda `close_convert_lead` con el monto del lead y la moneda de la cuenta de Kommo. Si el lead nunca pasó por «Calificado», manda también `qualify_lead`.
+   - **Lead ganado** (etapa «Logrado con éxito» de Kommo), según el embudo: en CALIFICACIÓN (cita realizada) manda `qualify_lead` si aún no se había mandado; en DISCOVERY SESSION (cotizado) manda `working_lead`; en PRESUPUESTOS (contrató) manda `close_convert_lead` con el monto del lead y la moneda de la cuenta. En otros embudos no manda nada. Si el lead no trae ID de Analytics, se toma del «Lead de origen».
    - **Etiqueta de control:** al enviar, el lead recibe la etiqueta `ga-calificado` o `ga-venta`, para no mandar dos veces el mismo evento. **No borres esas etiquetas.**
 4. **Los leads que no traen ID de Analytics no se mandan.** Pasa con los que llegan por WhatsApp o los que el equipo captura a mano. Esos se miden en Kommo, por ejemplo con la etiqueta "ChatGPT" de los mensajes que dicen "Te encontré en ChatGPT".
 
