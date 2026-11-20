@@ -2,6 +2,7 @@
 // Índice estático /indice.json (sitemap.json + banco de FAQ). Buscador propio: prefijo y palabras, sin acentos.
 // Grupos: Páginas · Servicios · Casos · Preguntas · Acciones. ↑↓ moverse · Enter abrir · Tab cambiar de grupo · Esc cerrar.
 import { lock, unlock, track } from './overlay';
+import { conOrigenIA } from '../ia-origen';
 
 type PageDoc = { u: string; t: string; h: string; k: string; s: string; g: string; f: string; d: string };
 type FaqDoc = { id: string; q: string; a: string; u: string };
@@ -109,7 +110,7 @@ function setActive(i: number, scroll = true) {
 
 function waHref(q: string) {
   const base = dlg.dataset.waBase || 'https://wa.me/523321017799';
-  return `${base}?text=${encodeURIComponent(`Hola Kain, ${q}`)}`;
+  return conOrigenIA(`${base}?text=${encodeURIComponent(`Hola Kain, ${q}`)}`);
 }
 
 function group(id: string, title: string) {

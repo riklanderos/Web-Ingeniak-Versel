@@ -20,6 +20,8 @@
 //   [data-vrail] · [data-flow] · [data-pain] · [data-count] · [data-toc]
 // Medición (R20): document dispatch "ingeniak:track" {name, …} — cta_cotizar_click, cta_agenda_click, faq_open, chat_sim_tab, video_play/50/complete.
 
+import { conOrigenIA, iaOrigen } from './ia-origen';
+
 type GSAP = typeof import('gsap').gsap;
 const root = document.documentElement;
 let motionKilled = false;   // interruptor "Reducir movimiento" del footer en vivo (evento ingeniak:motion)
@@ -589,6 +591,17 @@ function initAttribution() {
     const a = (e.target as Element | null)?.closest?.('a[data-cta="discovery"],a[data-cta="power-session"]') as HTMLElement | null;
     if (a) track('cta_landing_click', { section: sectionOf(a), destino: a.dataset.cta, folio: folio() });
   });
+  // Origen en IA (cambio 2026-11-19, ia-origen.ts): si la sesión llegó desde ChatGPT u otra IA, todo enlace a wa.me lleva al
+  // final del mensaje "Te encontré en <IA>." Se marca al cargar y otra vez en captura (clic, clic medio, menú contextual)
+  // para los enlaces que se arman o cambian después (modal, agenda).
+  const tagWa = (a: HTMLAnchorElement) => { const h = conOrigenIA(a.href); if (h !== a.href) a.href = h; };
+  if (iaOrigen()) $$<HTMLAnchorElement>('a[href*="wa.me/"]').forEach(tagWa);
+  for (const ev of ['click', 'auxclick', 'contextmenu'] as const) {
+    document.addEventListener(ev, (e) => {
+      const a = (e.target as Element | null)?.closest?.('a[href*="wa.me/"]') as HTMLAnchorElement | null;
+      if (a) tagWa(a);
+    }, true);
+  }
 }
 
 /* ───────────── VktorRail: la línea se dibuja con scrub ───────────── */
