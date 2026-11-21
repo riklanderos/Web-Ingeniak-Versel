@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hi, do you have the white sneakers from the ad in a size 26?", "delay": 900, "time": "10:58 PM" },
+  { "who": "kain", "text": "Hi! Yes, we have size 26 in white and in black. Should I ship them to you, or would you rather pick them up in store?", "delay": 1000 },
+  { "who": "cliente", "text": "Ship them, to Guadalajara. How long does it take?", "delay": 1500 },
+  { "who": "kain", "text": "Delivery to Guadalajara takes two to three business days. Want me to send you the payment link for the white ones?", "delay": 1100 },
+  { "who": "cliente", "text": "Yes, send it.", "delay": 1200 },
+  { "who": "kain", "text": "Here's your payment link. As soon as it's confirmed, I'll share the tracking number in this chat.", "delay": 1000, "event": "Order logged in your CRM · source: ad" },
+  { "who": "cliente", "text": "What if they don't fit?", "delay": 1400 },
+  { "who": "kain", "text": "We'll exchange them for another size under the store's exchange policy. I'll leave it here so you have it handy.", "delay": 1100 }
+]

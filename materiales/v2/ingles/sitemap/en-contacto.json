@@ -1,0 +1,33 @@
+{
+  "title": "Contact: WhatsApp, Email and Guadalajara Office | Ingeniak",
+  "metaDescription": "Talk to Ingeniak: get a quote in three steps, message Kain on WhatsApp or send us an email. We'll reach out by WhatsApp and email.",
+  "h1": "Talk to Ingeniak",
+  "primaryKeyword": "contact Ingeniak",
+  "secondaryKeywords": [
+    "Ingeniak phone number",
+    "Ingeniak address",
+    "AI agency in Tlajomulco"
+  ],
+  "breadcrumbs": [
+    { "name": "Home", "url": "/en/" },
+    { "name": "Contact", "url": "/en/contact/" }
+  ],
+  "sections": [
+    { "id": "hero", "name": "Intro" },
+    { "id": "rutas", "name": "Choose how to reach us" },
+    { "id": "cotizar", "name": "Get a quote for your project" },
+    { "id": "oficina", "name": "Office" },
+    { "id": "redes", "name": "Social" },
+    { "id": "cta-final", "name": "Next step" }
+  ],
+  "primaryCta": {
+    "label": "Get a quote",
+    "href": "/en/contact/#cotizar",
+    "action": "cotizar"
+  },
+  "secondaryCta": {
+    "label": "Message Kain",
+    "waMessage": "Hi Kain, I'm coming from the Contact page on Ingeniak's English site and I'd like to talk to the team."
+  },
+  "faq": []
+}

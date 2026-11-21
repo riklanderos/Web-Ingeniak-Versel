@@ -13316,5 +13316,1716 @@
       "owner": "SEO Studio (brief + redacción + aprobación)",
       "note": "Generado por SEO Studio (artículo d6bd23c5-f50b-4000-a7b0-7500eb391445) el 2026-11-14."
     }
+  },
+  {
+    "id": "en-home",
+    "group": "Núcleo",
+    "url": "/en/",
+    "canonical": "https://ingeniak.mx/en/",
+    "indexable": true,
+    "status": "versión en inglés de / (2026-11-20)",
+    "template": "T-HOME",
+    "purpose": "Explicar en 10 segundos qué es Ingeniak, probarlo con cifras y llevar a la Discovery Session; repartir autoridad a servicios, industrias y casos.",
+    "primaryKeyword": "AI agency for businesses",
+    "secondaryKeywords": [
+      "Ingeniak",
+      "AI agents for businesses",
+      "AI consulting firm in Mexico",
+      "we put AI agents to work"
+    ],
+    "title": "AI Agency: AI Agents, CRM and Automation | Ingeniak",
+    "titleLength": 51,
+    "metaDescription": "WhatsApp AI agents, Kommo and GoHighLevel CRM, and n8n automation, connected in one system. Official Kommo partner in Latin America.",
+    "metaLength": 132,
+    "h1": "We put AI agents to work in your business. AI agents, CRM and automation, all in one system.",
+    "breadcrumbs": [],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Intro",
+        "spec": "H1 + subtítulo 'Diseñamos e implementamos agentes de IA, CRM y automatizaciones conectados en un solo sistema que atiende, califica y, según tu negocio, agenda o vende por ti, 24/7.' (como en home.json; nunca 'cierra por ti': RESPUESTAS-CLIENTE 2026-10-19 #4) + Discovery + 'Escríbele a Kain' + línea de confianza 'Partner oficial de Kommo en LATAM · +73 sistemas en producción · 7 países'. Chips de cristal (Agente IA, CRM, Automatización, Datos) conectados por las ramas del isotipo.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/home-hero",
+          "subject": "Kain presentando con la palma abierta el isotipo de cristal de Ingeniak, entre ramas de luz cian.",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Portada del inicio y plano de la firma \"Del nodo al pecho\". YA APROBADA: no se regenera; solo se producen derivados.",
+          "mobile": "9:16 aprobada (hero-home-movil-d): mitad superior vacía para el texto, Kain en la mitad inferior; el CTA queda en el primer pantallazo."
+        },
+        "plate": {
+          "id": "home-hero",
+          "component": "ColdOpen + ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "stack",
+        "name": "Tools",
+        "spec": "Franja de logos en blanco (n8n, OpenAI, Claude, Gemini, WhatsApp Business, Meta Ads, Google Ads, TikTok Ads, Make, Zapier, Supabase, Stripe) + sello Kommo Partner enlazado a kommo.com.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "problema",
+        "name": "The problem",
+        "spec": "Eyebrow 'El problema' + 'Tu negocio no necesita más esfuerzo. Necesita dejar de depender de ti.' + 4 dolores en ámbar (Mensajes sin responder, Un CRM que nadie usa, Anuncios que no se traducen en ventas, Todo pasa por ti), cada uno con su salida en cian. Remate: 'No te falta esfuerzo. Te falta un sistema.'",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/home-problema-a | /img/cine/home-problema-b",
+          "subject": "El mismo encuadre de A: el banco vacío, el celular en el mostrador ahora cian y Kain de pie donde estaba el dueño.",
+          "side": "izquierda",
+          "textSide": "derecha",
+          "brief": "Plano B de los gemelos: la solución. Se revela con un barrido de luz sobre A (TwinScene). Debe coincidir píxel a píxel fuera de la zona editada.",
+          "mobile": "4:5 · modo top: Edición del móvil de A con la misma instrucción; Kain centrado en x≈0.42, pies en y≈0.88."
+        },
+        "plate": {
+          "id": [
+            "home-problema-a",
+            "home-problema-b"
+          ],
+          "component": "TwinScene",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "mid",
+          "tone": "dolor",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 4,
+        "id": "que-es",
+        "name": "What is Ingeniak?",
+        "spec": "Bloque definicional de 50 palabras citable tal cual (G01) + manifiesto: la frase 'No hacemos marketing.' no va tal cual (Ingeniak sí vende pauta, web y branding; RESPUESTAS-CLIENTE 2026-10-19 #5: mejorarla; copy: 'Nuestro marketing no termina en el clic. Termina en un sistema que atiende, da seguimiento y mide hasta la venta.') + 'Ingeniak en datos' (se queda, RESPUESTAS-CLIENTE 2026-10-19 #9): +73 sistemas, 7 países, 12 → 47 citas/mes (promedio de clientes de salud: odontología, medicina estética, quiropráctica y gastroenterología; sin periodo, #1–2), −58% CPL en 60 días (e-commerce CDMX) + lista de los 7 países. Nota 'datos internos, octubre de 2026'.",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "sistema",
+        "name": "The Ingeniak system",
+        "spec": "H2 'Creamos el tráfico, lo convertimos y lo operamos con IA y con nuestro equipo.' (sin 'automáticamente': en la operación interviene todo el equipo, RESPUESTAS-CLIENTE 2026-10-19 #6). 5 etapas fijadas al scroll (Atraer, Atender, Organizar, Automatizar, Medir) con el motion graphic de Remotion (video/sistema-1920) sincronizado; cada etapa enlaza a su servicio.",
+        "cinematic": true,
+        "plate": {
+          "id": [
+            "home-sistema-1-atraer",
+            "home-sistema-2-atender",
+            "home-sistema-3-organizar",
+            "home-sistema-4-automatizar",
+            "home-sistema-5-medir"
+          ],
+          "component": "SystemRuntime",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        },
+        "image": {
+          "file": "/img/cine/home-sistema-1-atraer | /img/cine/home-sistema-2-atender | /img/cine/home-sistema-3-organizar | /img/cine/home-sistema-4-automatizar | /img/cine/home-sistema-5-medir",
+          "subject": "Kain en la estación 5 · Medir.",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Kain frente a una pantalla curva y ancha, en blanco, a la que llegan 7 hilos de luz (7 fuentes sin nombre) que convergen en un punto. Ahí va el tablero \"1 vista · 7 fuentes\". Serie de 5 con cámara, horizonte (66 %) y riel de luz idénticos: SystemRuntime del inicio y, a la vez, portada del servicio de esa etapa (corte por coincidencia entre páginas).",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Mismo objeto de estación junto a Kain dentro del 60 % inferior; riel a ras de piso en y≈0.93."
+        }
+      },
+      {
+        "order": 6,
+        "id": "kain",
+        "name": "Meet Kain",
+        "spec": "'Soy Kain, el agente de IA de tu empresa. Respondo, agendo y confirmo por ti en WhatsApp, Instagram y tu web, y registro cada conversación en tu CRM.' + 4 viñetas + slogan 'Tu negocio trabajando, sin depender más de ti.' + video del chat (kain-chat) en un celular de cristal junto a KAIN + 'Escríbele a Kain' + enlace /kain/ y app.kain.mx.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/home-kain",
+          "subject": "Kain saludando junto a un teléfono de cristal flotante con la pantalla vacía (ahí corre el chat en HTML/video).",
+          "side": "izquierda",
+          "textSide": "derecha",
+          "brief": "Escena \"Conoce a Kain\" (ESC 06): push-in hacia el teléfono. También portada de /contacto/ (\"Escríbele a Kain\").",
+          "mobile": "4:5 · modo split: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Kain en x≈0.40 y el teléfono flotante a su derecha (x≈0.62) dentro del 60 % inferior. Si la pantalla mide <180 px a 390 de ancho, el chat baja al flujo del texto (ESPEC §3…"
+        },
+        "plate": {
+          "id": "home-kain",
+          "component": "ImageSection mid + ChatSim",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "split",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 7,
+        "id": "servicios",
+        "name": "Services",
+        "spec": "11 tarjetas de cristal en 3 grupos (Atraer · Atender y vender · Operar y escalar), cada una con una línea y enlace a su página; botón 'Ver todos los servicios' → /servicios/.",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "casos",
+        "name": "Case studies",
+        "spec": "'Sistemas reales, operando hoy mismo.' (confirmado: los cinco siguen activos, RESPUESTAS-CLIENTE 2026-10-19 #3) 5 tarjetas con la cifra como titular (3.2×, +340%, −58%, ROAS 4.8×, 27 procesos) → /casos/*; botón 'Ver todos los casos'.",
+        "cinematic": true,
+        "plate": {
+          "id": [
+            "caso-dental-hero",
+            "caso-retail-hero",
+            "caso-ecommerce-hero",
+            "caso-horeca-hero",
+            "caso-logistica-hero"
+          ],
+          "component": "Montage",
+          "layout": "sin sujeto",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        },
+        "image": {
+          "file": "/img/cine/caso-dental-hero | /img/cine/caso-retail-hero | /img/cine/caso-ecommerce-hero | /img/cine/caso-horeca-hero | /img/cine/caso-logistica-hero",
+          "subject": "Logística: persona ilustrativa del sector, siempre a la derecha.",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Portada de caso tipo reportaje: la cifra mega del H1 vive en la penumbra izquierda. Se reutiliza en el Montaje del inicio (dentro de las letras), en \"Siguiente reportaje\" y en los fotogramas.",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío; persona en el 60 % inferior (coronilla y≈0.44), el torso se disuelve en sombra abajo. subjTop ≈ 0.44. Persona centrada en x≈0.58; la cifra va arriba en el vacío."
+        }
+      },
+      {
+        "order": 9,
+        "id": "vktor",
+        "name": "VKTOR™ methodology",
+        "spec": "'Tu crecimiento tiene un protocolo. Nosotros lo activamos.' 5 fases en línea de tiempo con trazo cian que se dibuja al hacer scroll → /metodologia/.",
+        "cinematic": true,
+        "plate": {
+          "id": "metodologia-hero",
+          "component": "ImageSection mid + cutout + GhostWord",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        },
+        "image": {
+          "file": "/img/cine/metodologia-hero",
+          "subject": "Kain de pie sobre la quinta de cinco losas de cristal que suben en diagonal (V·K·T·O·R), con un haz de luz vertical detrás (Rise).",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "ESC 09 del inicio (con \"VKTOR\" gigante detrás del recorte) y portada de /metodologia/. La VktorSequence de fases se filma sobre esta misma placa (push-in escalón por escalón).",
+          "mobile": "4:5 · modo top: Losas en zigzag de abajo hacia arriba dentro del 60 % inferior (losa 1 en y≈0.95, losa 5 en y≈0.66); Kain sobre la losa 5 (antenas y≈0.45); 40 % superior vacío."
+        }
+      },
+      {
+        "order": 10,
+        "id": "industrias",
+        "name": "Industries",
+        "spec": "8 tarjetas con imagen (Salud, Belleza, Nutrición, Finanzas, Inmobiliario, Industrial y logística, Retail y e-commerce, HoReCa) → /industrias/*. Cifra solo si metrics.ts tiene una real para ese sector; sin cifra donde no la hay (nunca inventada, RESPUESTAS-CLIENTE 2026-10-19 #10).",
+        "cinematic": true,
+        "plate": {
+          "id": [
+            "ind-salud-hero",
+            "ind-belleza-hero",
+            "ind-nutricion-hero",
+            "ind-finanzas-hero",
+            "ind-inmobiliario-hero",
+            "ind-industrial-hero",
+            "ind-retail-hero",
+            "ind-horeca-hero"
+          ],
+          "component": "LocationSwitcher",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        },
+        "image": {
+          "file": "/img/cine/ind-salud-hero | /img/cine/ind-belleza-hero | /img/cine/ind-nutricion-hero | /img/cine/ind-finanzas-hero | /img/cine/ind-inmobiliario-hero | /img/cine/ind-industrial-hero | /img/cine/ind-retail-hero | /img/cine/ind-horeca-hero",
+          "subject": "Kain en el ambiente de HoReCa (mandil negro corto de mesero, bajo la pantalla del pecho); una persona del sector, secundaria y desenfocada, al fondo de su lado.",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Portada de la industria HoReCa. Kain es el protagonista nítido; la persona del sector da contexto, desenfocada y detrás. También es fondo del LocationSwitcher del inicio (ESC 10) y de /industrias/.",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87). subjTop ≈ 0.44. Kain en x≈0.52; la persona desenfocada al fondo en x≈0.80; ambiente solo en el 60 % inferior."
+        }
+      },
+      {
+        "order": 11,
+        "id": "equipo",
+        "name": "The team",
+        "spec": "'Estrategas que construyen, operan y miden.' + 'No somos una agencia tradicional…' + nombres y cargos del equipo en línea + enlace /nosotros/. El texto no dice cuántas personas son (pueden ser más, RESPUESTAS-CLIENTE 2026-10-19 #7).",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/equipo-real",
+          "subject": "Las 6 personas reales del equipo (Rik Landeros, Barb Mendoza, Alonso Vega, César Ovalle, Richard Vela, Marcos González) en duotono, emergiendo de la niebla a la izquierda; al centro Rik, con Alonso a su izquierda y Barb a su derecha.",
+          "side": "izquierda",
+          "textSide": "derecha",
+          "brief": "NO se genera gente: se componen las fotos reales sobre un set vacío generado con la misma luz de la serie. Sirve para el inicio (ESC 11) y la portada de /nosotros/.",
+          "mobile": "4:5 · modo top: Misma composición reacomodada: 6 bustos en 2 filas dentro del 60 % inferior (cabezas de la fila trasera en y≈0.46), 40 % superior vacío."
+        },
+        "plate": {
+          "id": "equipo-real",
+          "component": "ImageSection mid + Credits",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 12,
+        "id": "faq",
+        "name": "FAQ",
+        "spec": "Acordeón de 6 preguntas sobre Ingeniak (G01, G02, G04, G07, G08, G11); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 13,
+        "id": "cta-final",
+        "name": "Next step",
+        "spec": "Cierre cinematográfico con H2 propio, distinto del H1 de /discovery/ (esa frase se queda solo allá; RESPUESTAS-CLIENTE 2026-10-19 #8): la propuesta es el siguiente paso, la Discovery Session de 30 minutos sin costo (copy: 'Que tu negocio amanezca al día, aunque tú sí hayas dormido.'). La Power Session (90 min) es otra oferta con su propia propuesta: decisión abierta en materiales/v2/build/lanzamiento.md, no se menciona en el sitio. + botón Discovery + WhatsApp + microcopy \"Sin costo · Sin compromiso · 30 minutos por Google Meet\". Imagen de la variante compartida A: KAIN de cuerpo completo saludando en el tercio derecho, texto a la izquierda.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/cta-amanecer",
+          "subject": "Kain saludando de pie sobre un horizonte curvo con filo de amanecer frío cian-blanco (\"06:00 · Rise\").",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Cierre compartido (Dawn) de casi todo el sitio. Sustituye a cta-kain-saluda y cta-kain-senala (esta = espejo). Su placa limpia es el fondo de cta-equipo.",
+          "mobile": "4:5 · modo top: Cielo vacío en el 40 % superior; cresta del horizonte en y≈0.86; Kain sobre ella centrado en x≈0.58 (antenas y≈0.46).",
+          "shared": true
+        },
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "problema",
+      "kain",
+      "equipo",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Get a quote",
+      "href": "/en/contact/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Message Kain",
+      "waMessage": "Hi Kain, I'm coming from the home page of Ingeniak's English site and I'd like to see how an AI agent would handle my business.",
+      "href": "https://wa.me/523321017799?text=Hi%20Kain%2C%20I'm%20coming%20from%20the%20home%20page%20of%20Ingeniak's%20English%20site%20and%20I'd%20like%20to%20see%20how%20an%20AI%20agent%20would%20handle%20my%20business."
+    },
+    "internalLinks": [
+      "/en/services/",
+      "/servicios/agentes-ia-whatsapp/",
+      "/servicios/crm-con-ia/",
+      "/kommo/",
+      "/gohighlevel/",
+      "/servicios/automatizacion-n8n/",
+      "/industrias/",
+      "/casos/",
+      "/kain/",
+      "/metodologia/",
+      "/nosotros/",
+      "/preguntas-frecuentes/"
+    ],
+    "jsonLd": [
+      "Organization",
+      "ProfessionalService",
+      "WebSite",
+      "WebPage",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "G01",
+        "q": "What is Ingeniak?",
+        "a": "Ingeniak is an artificial intelligence consulting firm headquartered in Guadalajara, Jalisco, Mexico. We implement WhatsApp AI agents, Kommo and GoHighLevel CRM, n8n automations, paid media, high-converting websites, custom software and SEO. We have more than 73 systems in production in 7 countries.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "G02",
+        "q": "What is a WhatsApp AI agent?",
+        "a": "It's an assistant built on language models that handles the conversations on your WhatsApp Business account: it understands what the customer writes, answers with your business's information, qualifies the prospect, logs them in your CRM and can book them an appointment. Unlike a menu-based chatbot, it doesn't force the customer to choose from fixed options.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "G04",
+        "q": "Is Ingeniak an official Kommo partner?",
+        "a": "Yes. Ingeniak is an official Kommo partner and reseller in Latin America. We help you with licenses, CRM implementation, connecting WhatsApp and automating follow-up with AI agents.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "G07",
+        "q": "How much does it cost to work with Ingeniak?",
+        "a": "Our projects start {{price}}. The exact scope and cost depend on the size of your operation and how many processes you want to automate; for a number specific to your business, request a quote. We don't publish fixed packages because two companies of the same size can need very different systems.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "G08",
+        "q": "How soon will I see results?",
+        "a": "Implementing a system takes 7 to 30 days, depending on scope. When you start seeing results depends on what gets implemented and on your operation; we go over it with you in the proposal that follows your quote request. For reference, a dental clinic in Monterrey got {{metric:dental-citas}} more appointments in 90 days, and an e-commerce business in Mexico City cut its cost per lead in 60 days: {{metric:ecom-cpl}}. {{source}}.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "G11",
+        "q": "How do I get started with Ingeniak?",
+        "a": "With “Get a quote”: a three-step form where you tell us what you need, what your business is like and how you'd like us to reach you. We then reach out by WhatsApp and email to learn the details. If it makes sense for both of us, we send you a proposal with scope, timeline and cost. If you'd rather start with a message, send Kain a message on WhatsApp.",
+        "estado": "aprobada"
+      }
+    ],
+    "redirectsFrom": [],
+    "sitemap": {
+      "priority": 1,
+      "changefreq": "weekly"
+    },
+    "folio": "001",
+    "copy": {
+      "status": "brief",
+      "minWords": 900,
+      "owner": "[POR ASIGNAR]",
+      "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
+    },
+    "lang": "en",
+    "alternate": "/"
+  },
+  {
+    "id": "en-servicios",
+    "group": "Servicios",
+    "url": "/en/services/",
+    "canonical": "https://ingeniak.mx/en/services/",
+    "indexable": true,
+    "status": "versión en inglés de /servicios/ (2026-11-20)",
+    "template": "T-HUB",
+    "purpose": "Presentar los 11 servicios como un solo sistema y enrutar a cada página; capturar búsquedas genéricas de servicios de IA.",
+    "primaryKeyword": "AI services for businesses",
+    "secondaryKeywords": [
+      "AI services",
+      "AI automation for businesses",
+      "AI implementation"
+    ],
+    "title": "AI, CRM and Automation Services for Businesses | Ingeniak",
+    "titleLength": 57,
+    "metaDescription": "AI consulting, WhatsApp AI agents, Kommo and GoHighLevel CRM, n8n, paid media, web, custom software and SEO, all connected in one system.",
+    "metaLength": 137,
+    "h1": "AI services for businesses, connected in one system",
+    "breadcrumbs": [
+      {
+        "name": "Home",
+        "url": "/en/"
+      },
+      {
+        "name": "Services",
+        "url": "/en/services/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Intro",
+        "spec": "Breadcrumb + H1 + 'No vendemos servicios sueltos: conectamos atracción, atención, CRM, automatización y datos para que cada lead llegue, se atienda y se mida.' + Discovery + WhatsApp.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/servicios-hero",
+          "subject": "Kain como arquitecto del sistema: al pie de un árbol de luz con la geometría del isotipo del que cuelgan 11 placas de cristal en blanco (los 11 servicios en 3 grupos).",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Portada del hub /servicios/. El árbol es el sistema completo; las placas no llevan nada escrito.",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. El árbol de luz detrás de Kain, recortado en y≈0.42 para no invadir el vacío superior."
+        },
+        "plate": {
+          "id": "servicios-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-4-automatizar"
+          }
+        }
+      },
+      {
+        "order": 2,
+        "id": "definicion",
+        "name": "One system, not standalone services",
+        "spec": "Párrafo citable de 40–60 palabras sobre cómo se conectan los servicios + 3 cifras transversales (+73 sistemas, 7 países, −60% tiempo operativo en 90 días).",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "mapa",
+        "name": "Service map",
+        "spec": "3 columnas con las 11 tarjetas: Atraer (Paid media, Páginas web, SEO y visibilidad en IA, Branding y contenido) · Atender y vender (Agentes de IA para WhatsApp, CRM con IA, Kommo, GoHighLevel) · Operar y escalar (Consultoría en IA, Automatización con n8n, Software a la medida).",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "conexion",
+        "name": "How they connect",
+        "spec": "Diagrama animado con las ramas del isotipo: anuncio → web → agente de IA → CRM → automatización → tablero; al pasar el cursor se ilumina el servicio de cada tramo.",
+        "cinematic": true,
+        "plate": {
+          "id": "riel-servicios",
+          "component": "SystemFlow",
+          "layout": "sin sujeto",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        },
+        "image": {
+          "file": "/img/cine/riel-servicios",
+          "subject": "Sin sujeto: piso oscuro con un riel de luz cian y 5 nodos cuadrados (el pilar del isotipo acostado).",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Fondo compartido de SystemFlow (\"Cómo funciona\") en las 11 páginas de servicio y del bloque \"conexión\" de /servicios/. Los logos y nombres van en HTML sobre los nodos.",
+          "mobile": "4:5 · modo top: Versión vertical: un pilar de luz vertical en x≈0.12 desde y 0.20 hasta 0.95 con 5 nodos cuadrados en y 0.30 / 0.45 / 0.60 / 0.75 / 0.90; el resto es vacío (el flujo baja en vertical en móvil)."
+        }
+      },
+      {
+        "order": 5,
+        "id": "no-se",
+        "name": "Not sure where to start?",
+        "spec": "'Para eso existe la Discovery Session: 30 minutos para ver qué conviene automatizar primero.' + lista de 3 señales + Discovery.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/servicios-no-se",
+          "subject": "Kain señalando hacia el texto, con tres paneles de cristal vacíos flotando detrás de él (las opciones).",
+          "side": "izquierda",
+          "textSide": "derecha",
+          "brief": "\"¿No sabes por dónde empezar?\" en /servicios/. En espejo es la portada de /blog/kommo-vs-gohighlevel/ (elegir camino).",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Kain en x≈0.44 señalando hacia arriba a la derecha (hacia el CTA)."
+        },
+        "plate": {
+          "id": "servicios-no-se",
+          "component": "ImageSection mid",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "home-sistema-1-atraer",
+            "mirror": true
+          }
+        }
+      },
+      {
+        "order": 6,
+        "id": "vktor",
+        "name": "VKTOR™ methodology",
+        "spec": "Las 5 fases (Verify, Koncept, Transform, Operate, Rise) con una línea por fase aplicada a cualquier servicio; enlace a /metodologia/.",
+        "cinematic": false
+      },
+      {
+        "order": 7,
+        "id": "faq",
+        "name": "FAQ",
+        "spec": "Acordeón de 5 preguntas sobre servicios (G05, G07, G08, G09, N07); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "cta-final",
+        "name": "Next step",
+        "spec": "Cierre cinematográfico: \"¿Qué pieza del sistema te falta? Lo vemos en 30 minutos.\" + botón Discovery + WhatsApp + microcopy \"Sin costo · Sin compromiso · 30 minutos por Google Meet\". Imagen de la variante compartida B: KAIN de cuerpo completo a la izquierda señalando hacia el botón, texto a la derecha.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/cta-amanecer",
+          "subject": "Kain saludando de pie sobre un horizonte curvo con filo de amanecer frío cian-blanco (\"06:00 · Rise\").",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Cierre compartido (Dawn) de casi todo el sitio. Sustituye a cta-kain-saluda y cta-kain-senala (esta = espejo). Su placa limpia es el fondo de cta-equipo.",
+          "mobile": "4:5 · modo top: Cielo vacío en el 40 % superior; cresta del horizonte en y≈0.86; Kain sobre ella centrado en x≈0.58 (antenas y≈0.46).",
+          "shared": true
+        },
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "no-se",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Get a quote",
+      "href": "/en/contact/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Message Kain",
+      "waMessage": "Hi Kain, I'm coming from the Services page on Ingeniak's English site and I'd like to know which service makes sense for me first.",
+      "href": "https://wa.me/523321017799?text=Hi%20Kain%2C%20I'm%20coming%20from%20the%20Services%20page%20on%20Ingeniak's%20English%20site%20and%20I'd%20like%20to%20know%20which%20service%20makes%20sense%20for%20me%20first."
+    },
+    "internalLinks": [
+      "/servicios/consultoria-ia-empresas/",
+      "/servicios/agentes-ia-whatsapp/",
+      "/servicios/crm-con-ia/",
+      "/kommo/",
+      "/gohighlevel/",
+      "/servicios/automatizacion-n8n/",
+      "/servicios/paid-media/",
+      "/servicios/paginas-web/",
+      "/servicios/desarrollo-software/",
+      "/servicios/seo/",
+      "/servicios/branding/",
+      "/metodologia/",
+      "/casos/"
+    ],
+    "jsonLd": [
+      "CollectionPage",
+      "ItemList (Service)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "G05",
+        "q": "Should I choose Kommo or GoHighLevel?",
+        "a": "It depends on how you sell. Kommo is built for selling through messaging (WhatsApp, Instagram, TikTok), with pipelines and automations inside the chat. GoHighLevel brings CRM, funnels, landing pages, calendars and campaigns together in one platform. We work with both and recommend one based on your sales process.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "G07",
+        "q": "How much does it cost to work with Ingeniak?",
+        "a": "Our projects start {{price}}. The exact scope and cost depend on the size of your operation and how many processes you want to automate; for a number specific to your business, request a quote. We don't publish fixed packages because two companies of the same size can need very different systems.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "G08",
+        "q": "How soon will I see results?",
+        "a": "Implementing a system takes 7 to 30 days, depending on scope. When you start seeing results depends on what gets implemented and on your operation; we go over it with you in the proposal that follows your quote request. For reference, a dental clinic in Monterrey got {{metric:dental-citas}} more appointments in 90 days, and an e-commerce business in Mexico City cut its cost per lead in 60 days: {{metric:ecom-cpl}}. {{source}}.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "G09",
+        "q": "Which AI models do you use?",
+        "a": "We work with models from OpenAI, Anthropic (Claude) and Google (Gemini), and choose the one that best handles each process. We integrate them with tools like Kommo, GoHighLevel, n8n, Make, Zapier, Supabase and Stripe.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "N07",
+        "q": "Do you work with small and midsize businesses?",
+        "a": "Yes. We work with small and midsize businesses with 3 to 40 employees, in any industry: the size at which the business still depends on its owner to run, and a system gives that owner time back. If you're outside that range, tell us when you request a quote and we'll point you to the right option.",
+        "estado": "aprobada"
+      }
+    ],
+    "redirectsFrom": [],
+    "sitemap": {
+      "priority": 0.9,
+      "changefreq": "monthly"
+    },
+    "folio": "100",
+    "copy": {
+      "status": "brief",
+      "minWords": 350,
+      "owner": "[POR ASIGNAR]",
+      "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
+    },
+    "lang": "en",
+    "alternate": "/servicios/"
+  },
+  {
+    "id": "en-discovery",
+    "group": "Conversión",
+    "url": "/en/discovery/",
+    "canonical": "https://ingeniak.mx/en/discovery/",
+    "indexable": true,
+    "status": "versión en inglés de /discovery/ (2026-11-20)",
+    "template": "T-CONVERSION",
+    "purpose": "Landing de campañas (tráfico de anuncios): explicar la llamada 1:1 sin costo de 30 minutos y reservarla en la propia página (#agenda, flujo de reserva portado de riklanderos.tech con Google Calendar y Meet).",
+    "primaryKeyword": "Ingeniak Discovery Session",
+    "secondaryKeywords": [
+      "free AI assessment",
+      "free discovery call",
+      "free automation consultation"
+    ],
+    "title": "Book a Free 30-Minute Discovery Session | Ingeniak",
+    "titleLength": 50,
+    "metaDescription": "A free 1:1, 30-minute call for small business owners: we map your operation, spot opportunities, and you leave with concrete recommendations.",
+    "metaLength": 141,
+    "h1": "30 minutes to see your operation as it is, not as you think it is",
+    "breadcrumbs": [
+      {
+        "name": "Home",
+        "url": "/en/"
+      },
+      {
+        "name": "Discovery Session",
+        "url": "/en/discovery/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Cover",
+        "spec": "Etiqueta 'Llamada 1:1 · 30 minutos · sin costo' + H1 + texto de v1 ('…Cotizar sin diagnóstico es adivinar con dinero ajeno.') + 3 chips + botón 'Agendar mi Discovery Session' → #agenda (data-section=\"hero\").",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/discovery-hero",
+          "subject": "Dueño de pyme (45) tranquilo junto al ventanal de su oficina al anochecer; en primer término, su silla ejecutiva VACÍA (\"la silla vacía\").",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Portada de /discovery/. Su gemela (discovery-cta-final) pone a Kain en esa silla al amanecer.",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío; persona en el 60 % inferior (coronilla y≈0.44), el torso se disuelve en sombra abajo. subjTop ≈ 0.44. Silla vacía en x≈0.40 y el dueño en x≈0.70, ambos en el 60 % inferior."
+        },
+        "plate": {
+          "id": "discovery-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "video",
+        "name": "Watch this before you book",
+        "spec": "VSL 'la silla vacía' (discovery-vsl-720.mp4, póster) + botón 'Agendar mi Discovery Session' → #agenda (data-section=\"video\") + 'Si reconociste tu negocio en este video, esta llamada es tu siguiente paso.' (r1: VideoScene = ImageSection subject-center con la placa discovery-vsl-poster; el póster actual trae texto horneado. Video recomprimido a 720p, ≤ 12 MB, preload=\"none\", subtítulos VTT, se abre a pantalla completa al hacer clic.)",
+        "cinematic": true,
+        "plate": {
+          "id": "discovery-vsl-poster",
+          "component": "VideoScene (ImageSection subject-center + VideoPoster)",
+          "layout": "subject-center",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        },
+        "image": {
+          "file": "/img/cine/discovery-vsl-poster",
+          "subject": "La silla vacía del VSL al centro, sin persona, frente al escritorio con pantallas de cristal apagadas.",
+          "side": "centro",
+          "textSide": "abajo (izquierda) y botones abajo (derecha)",
+          "brief": "Fondo de la escena del VSL. La imagen es la sección: póster a sangre, H2 abajo a la izquierda y botón de reproducir abajo a la derecha flanqueando la silla (patrón subject-center). El video abre a pantalla completa al hacer clic.",
+          "mobile": "4:5 · modo top: 4:5. 40 % superior vacío; silla en el 60 % inferior centrada; botón de reproducir en el flujo del texto."
+        }
+      },
+      {
+        "order": 3,
+        "id": "agenda",
+        "name": "Book in 3 steps",
+        "spec": "Intertitle split + BookingFlow tipo=\"discovery\" (CAMBIO-COTIZAR §4.2 y §5.5). Izquierda: eyebrow 'Reserva en 3 pasos', H2 'Aparta tu lugar' / 'en minutos.', pasos 01 Tus datos · 02 Horario · 03 Confirmas, 'Sales con' y nota sin costo ni tarjeta. Derecha: el componente de reserva (Google Calendar en vivo, Meet al confirmar).",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "que-es",
+        "name": "What a Discovery Session is",
+        "spec": "'Lo que sí es' (cian) / 'Lo que no es' (ámbar) de v1.",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "para-quien",
+        "name": "Who this call is for",
+        "spec": "'Es para ti si…' / 'No es para ti si…' de v1 sobre la imagen.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/discovery-para-quien",
+          "subject": "Dueña de pyme (38) en su oficina pequeña y ordenada, en videollamada con la laptop, postura abierta y segura.",
+          "side": "izquierda",
+          "textSide": "derecha",
+          "brief": "\"Es para ti si… / No es para ti si…\" en /discovery/.",
+          "mobile": "4:5 · modo split: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío; persona en el 60 % inferior (coronilla y≈0.44), el torso se disuelve en sombra abajo. subjTop ≈ 0.44. Modo below: la lista larga corre debajo."
+        },
+        "plate": {
+          "id": "discovery-para-quien",
+          "component": "ImageSection mid (móvil below)",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "split",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 6,
+        "id": "despues",
+        "name": "After the call",
+        "spec": "Texto de v1 'Si hay sentido, te cotizamos la implementación…' + botón 'Agendar mi Discovery Session' → #agenda (data-section=\"despues\").",
+        "cinematic": false
+      },
+      {
+        "order": 7,
+        "id": "faq",
+        "name": "Frequently asked questions",
+        "spec": "Acordeón de 6 preguntas sobre la Discovery Session (D01, D02, D03, D04, D05, D06); texto idéntico al FAQPage del <head>.",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "cta-final",
+        "name": "Closing",
+        "spec": "Cierre cinematográfico: '30 minutos hoy valen más que una cotización a ciegas mañana.' + cita 'No cotizamos lo que no hemos visto…' + botón 'Agendar mi Discovery Session' → #agenda, Escríbele a Kain y .lnk[data-cotizar] '¿Ya sabes lo que necesitas? Cotizar proyecto' + 'Construimos empresarios libres, no héroes cansados.' Imagen propia: KAIN de cuerpo completo sentado en la silla vacía del dueño, a la derecha.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/discovery-cta-final",
+          "subject": "El mismo encuadre de la portada de Discovery, ahora al amanecer frío, con Kain sentado en la silla del dueño saludando.",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Cierre propio de /discovery/: la silla ya no está vacía; el sistema ocupa el lugar y el dueño recupera su tiempo.",
+          "mobile": "4:5 · modo top: Edición del móvil de discovery-hero con la misma instrucción."
+        },
+        "plate": {
+          "id": "discovery-cta-final",
+          "component": "Dawn",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "para-quien",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Book my Discovery Session",
+      "short": "Book",
+      "href": "#agenda"
+    },
+    "secondaryCta": {
+      "label": "Message Kain",
+      "waMessage": "Hi, I'm coming from the English site (Discovery Session page) and have a question before booking.",
+      "href": "https://wa.me/523321017799?text=Hi%2C%20I'm%20coming%20from%20the%20English%20site%20(Discovery%20Session%20page)%20and%20have%20a%20question%20before%20booking."
+    },
+    "internalLinks": [
+      "/en/privacy/"
+    ],
+    "jsonLd": [
+      "WebPage",
+      "Service (Offer price 0)",
+      "BreadcrumbList",
+      "FAQPage"
+    ],
+    "faq": [
+      {
+        "id": "D01",
+        "q": "Is it really free?",
+        "a": "Yes. The 30 minutes cost nothing and we don't ask for a credit card. The call exists because diagnosing before quoting is the only serious way to work.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "D02",
+        "q": "Are you going to sell to me on the call?",
+        "a": "It's a discovery call: we map your operation and tell you what we see. At the end, if it makes sense, we share an implementation proposal. If it doesn't, we tell you that too.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "D03",
+        "q": "What should I prepare for the call?",
+        "a": "Nothing special. Knowing how your business runs day to day is enough. If you have numbers on hand, even better: the diagnosis gets more precise.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "D04",
+        "q": "What happens after the call?",
+        "a": "If your project makes sense for both sides, we prepare an implementation proposal with scope and timeline. You decide whether to move forward.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "D05",
+        "q": "Can I reschedule?",
+        "a": "Yes, with at least 24 hours' notice. Message us on WhatsApp at +52 33 2101 7799 or email contacto@ingeniak.mx and we'll move it.",
+        "estado": "aprobada"
+      },
+      {
+        "id": "D06",
+        "q": "What if my business is too small or too big?",
+        "a": "We work with small and midsize businesses of 3 to 40 employees in any industry. If you're outside that range, the call makes it clear in the first few minutes and we point you to the right option.",
+        "estado": "aprobada"
+      }
+    ],
+    "redirectsFrom": [],
+    "sitemap": {
+      "priority": 0.9,
+      "changefreq": "monthly"
+    },
+    "notes": "Landing oculta (R17): nav reducida (logo + \"Agendar\"), barra móvil propia, footer mínimo; primario → #agenda (reserva en la página); la cotización solo como .lnk[data-cotizar] en el cierre y el footer mínimo. Sin enlaces a agenda.ingeniak.tech.",
+    "folio": "600",
+    "copy": {
+      "status": "brief",
+      "minWords": 600,
+      "owner": "[POR ASIGNAR]",
+      "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
+    },
+    "hidden": true,
+    "footerAnchors": [
+      {
+        "label": "Book",
+        "href": "#agenda"
+      },
+      {
+        "label": "What it is",
+        "href": "#que-es"
+      },
+      {
+        "label": "Who it's for",
+        "href": "#para-quien"
+      },
+      {
+        "label": "FAQ",
+        "href": "#faq"
+      }
+    ],
+    "lang": "en",
+    "alternate": "/discovery/"
+  },
+  {
+    "id": "en-agendar-gracias",
+    "group": "Conversión",
+    "url": "/en/book/thank-you/",
+    "canonical": "https://ingeniak.mx/en/book/thank-you/",
+    "indexable": false,
+    "hidden": true,
+    "status": "versión en inglés de /agendar/gracias/ (2026-11-20)",
+    "template": "T-CONFIRM",
+    "purpose": "Confirmar la Discovery Session recién agendada (fecha, hora, invitación y enlace de Google Meet) con dirección propia para medir la conversión en GA4, Meta y Google Ads.",
+    "primaryKeyword": "—",
+    "secondaryKeywords": [],
+    "title": "Thanks for Booking Your Discovery Session | Ingeniak",
+    "titleLength": 52,
+    "metaDescription": "Your Discovery Session is booked. Here you'll find the date and time, your Google Meet link, and how to make the most of the 30 minutes.",
+    "metaLength": 136,
+    "h1": "Thanks for booking your Discovery Session",
+    "breadcrumbs": [
+      {
+        "name": "Home",
+        "url": "/en/"
+      },
+      {
+        "name": "Discovery Session",
+        "url": "/en/discovery/"
+      },
+      {
+        "name": "Thank you",
+        "url": "/en/book/thank-you/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "estado",
+        "name": "Your booking",
+        "cinematic": true,
+        "spec": "ImageSection hero (como /agendar/confirmado/); H1 'Gracias por agendar tu Discovery Session' (.lit 'Gracias'); región aria-live con los estados ok / sin-datos: en ok, fecha y hora, invitación de Google Calendar, 'Abrir enlace de Meet' (sin data-primary), Escríbele a Kain y 'Volver al inicio'; abajo, qué preparar y cómo mover la llamada.",
+        "plate": {
+          "id": "gohighlevel-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "split",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "estado"
+    ],
+    "primaryCta": null,
+    "secondaryCta": {
+      "label": "Message Kain",
+      "waMessage": "Hi, I'm coming from the English site. I booked my Discovery Session and want to confirm a detail.",
+      "href": "https://wa.me/523321017799?text=Hi%2C%20I'm%20coming%20from%20the%20English%20site.%20I%20booked%20my%20Discovery%20Session%20and%20want%20to%20confirm%20a%20detail."
+    },
+    "internalLinks": [
+      "/en/",
+      "/agendar/",
+      "/en/privacy/"
+    ],
+    "jsonLd": [
+      "WebPage",
+      "BreadcrumbList"
+    ],
+    "faq": [],
+    "redirectsFrom": [],
+    "sitemap": null,
+    "folio": "606",
+    "copy": {
+      "status": "borrador",
+      "minWords": 60,
+      "owner": "agenda",
+      "note": "Página utilitaria: el copy vive en src/content/paginas/agendar-gracias.json (borrador, R1)."
+    },
+    "footerAnchors": [],
+    "notes": "Página oculta (R17): BaseLayout nav=\"reduced\" sin CTA en el encabezado, footer mínimo; raíz con data-gracias. Sin [data-primary]. Llega aquí la reserva de la Discovery (/discovery/ y /agendar/); los datos van por sessionStorage, nunca en la URL.",
+    "lang": "en",
+    "alternate": "/agendar/gracias/"
+  },
+  {
+    "id": "en-contacto",
+    "group": "Conversión",
+    "url": "/en/contact/",
+    "canonical": "https://ingeniak.mx/en/contact/",
+    "indexable": true,
+    "status": "versión en inglés de /contacto/ (2026-11-20)",
+    "template": "T-CONTACT",
+    "purpose": "Dar todas las rutas de contacto con \"Cotizar proyecto\" como la recomendada (abre el modal; sin JS, la sección #cotizar); datos NAP idénticos a la ficha.",
+    "primaryKeyword": "contact Ingeniak",
+    "secondaryKeywords": [
+      "Ingeniak phone number",
+      "Ingeniak address",
+      "AI agency in Tlajomulco"
+    ],
+    "title": "Contact: WhatsApp, Email and Guadalajara Office | Ingeniak",
+    "titleLength": 58,
+    "metaDescription": "Talk to Ingeniak: get a quote in three steps, message Kain on WhatsApp or send us an email. We'll reach out by WhatsApp and email.",
+    "metaLength": 130,
+    "h1": "Talk to Ingeniak",
+    "breadcrumbs": [
+      {
+        "name": "Home",
+        "url": "/en/"
+      },
+      {
+        "name": "Contact",
+        "url": "/en/contact/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Intro",
+        "spec": "Breadcrumb + H1 + rutas como tarjetas de cristal pequeñas sobre la imagen: Cotizar proyecto (recomendada, abre el modal), WhatsApp con Kain, correo.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/home-kain",
+          "subject": "Kain saludando junto a un teléfono de cristal flotante con la pantalla vacía (ahí corre el chat en HTML/video).",
+          "side": "izquierda",
+          "textSide": "derecha",
+          "brief": "Escena \"Conoce a Kain\" (ESC 06): push-in hacia el teléfono. También portada de /contacto/ (\"Escríbele a Kain\").",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío (navy → #03040B) para H1/CTA; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87), centrado x≈0.56; último 10 % piso que cae a #03040B. subjTop ≈ 0.44. Kain en x≈0.40 y el teléfono flotante a su derecha (x≈0.62) dentro del 60 % inferior. Si la pantalla mide <180 px a 390 de ancho, el chat baja al flujo del texto (ESPEC §3…"
+        },
+        "plate": {
+          "id": "home-kain",
+          "component": "ImageSection hero",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "kain-si-no",
+            "note": "Mismo lado (izquierda) y misma penumbra que home-kain."
+          }
+        }
+      },
+      {
+        "order": 2,
+        "id": "rutas",
+        "name": "Choose how to reach us",
+        "spec": "Tabla de rutas sin promesa de tiempos de respuesta: Cotizar proyecto (id cotizar, acción \"Cotizar\", abre el modal), WhatsApp +52 33 2101 7799 (atiende Kain), contacto@ingeniak.mx.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "cotizar",
+        "name": "Get a quote for your project",
+        "spec": "Intertitle split (CAMBIO-COTIZAR §1.4, fila /contacto/#cotizar): eyebrow 'Cotizar proyecto', H2, 'qué sigue' en 3 pasos, .btn[data-cotizar] href=\"#cotizar\" (abre el modal) y debajo las rutas directas (WhatsApp, correo) que sirven sin JS.",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "oficina",
+        "name": "Office",
+        "spec": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640 (zona metropolitana de Guadalajara) + horario [VALIDAR L–V 09:00–18:00] + mapa estático con enlace a Google Maps.",
+        "cinematic": false
+      },
+      {
+        "order": 5,
+        "id": "redes",
+        "name": "Social",
+        "spec": "Instagram, Facebook y LinkedIn (ingeniakmx).",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "cta-final",
+        "name": "Next step",
+        "spec": "Cierre cinematográfico + botón \"Cotizar proyecto\" (abre el modal) + WhatsApp + microcopia \"Sin compromiso · Te contactamos por WhatsApp y correo\". Imagen de la variante compartida C: dueña de negocio tranquila al amanecer en su oficina, a la derecha (espejo); texto a la izquierda. [2026-10-19 · QA] Antes variante A (Kain saludando): repetía el saludo de la portada en dos escenas seguidas (R13). No se usa cta-equipo: los recortes del equipo no alcanzan el nivel premium hasta la sesión de fotos (R6; ver /servicios/branding/ y /casos/).",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/cta-duena-tranquila",
+          "subject": "Dueña de negocio (42) tranquila junto a la ventana de su oficina al amanecer frío, café en mano; su celular brilla en cian sobre el escritorio.",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Cierre compartido \"el sistema trabajó toda la noche\" (variante C, en espejo). En /contacto/ cierra la historia de la portada: escribiste a Kain y tu teléfono queda atendido.",
+          "mobile": "4:5 · modo top: 40 % superior vacío para texto; persona en el 60 % inferior (subjTop ≈ 0.44).",
+          "shared": true
+        },
+        "plate": {
+          "id": "cta-duena-tranquila",
+          "component": "Dawn",
+          "layout": "subject-right",
+          "mirror": true,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "launchFallback": {
+            "plate": "cta-amanecer",
+            "mirror": false,
+            "note": "Mismo amanecer, persona y texto del mismo lado, si cta-duena-tranquila no estuviera exportada."
+          },
+          "note": "[2026-10-19 · QA] Antes cta-amanecer (Kain saludando): la portada home-kain también saluda (R13, dos escenas seguidas con la misma pose). cta-duena-tranquila en espejo: persona a la derecha, texto a la izquierda; alterna lado con la portada (Kain a la izquierda)."
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Get a quote",
+      "href": "/en/contact/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Message Kain",
+      "waMessage": "Hi Kain, I'm coming from the Contact page on Ingeniak's English site and I'd like to talk to the team.",
+      "href": "https://wa.me/523321017799?text=Hi%20Kain%2C%20I'm%20coming%20from%20the%20Contact%20page%20on%20Ingeniak's%20English%20site%20and%20I'd%20like%20to%20talk%20to%20the%20team."
+    },
+    "internalLinks": [
+      "/agentes-ia-guadalajara/",
+      "/nosotros/",
+      "/en/privacy/"
+    ],
+    "jsonLd": [
+      "ContactPage",
+      "Organization (contactPoint)",
+      "BreadcrumbList"
+    ],
+    "faq": [],
+    "redirectsFrom": [],
+    "sitemap": {
+      "priority": 0.6,
+      "changefreq": "yearly"
+    },
+    "notes": "Teléfono: el sitio usa +52 33 2101 7799 y el Sales Brief +52 33 2101 2962; publicar solo el confirmado.",
+    "folio": "601",
+    "copy": {
+      "status": "brief",
+      "minWords": 200,
+      "owner": "[POR ASIGNAR]",
+      "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
+    },
+    "lang": "en",
+    "alternate": "/contacto/"
+  },
+  {
+    "id": "en-aviso",
+    "group": "Legal",
+    "url": "/en/privacy/",
+    "canonical": "https://ingeniak.mx/en/privacy/",
+    "indexable": true,
+    "status": "versión en inglés de /aviso-privacidad/ (2026-11-20)",
+    "template": "T-LEGAL",
+    "purpose": "Cumplir la LFPDPPP; texto sin cambios (versión del 1 de agosto de 2026).",
+    "primaryKeyword": "Ingeniak privacy policy",
+    "secondaryKeywords": [],
+    "title": "Privacy Policy under Mexican Data Protection Law | Ingeniak",
+    "titleLength": 59,
+    "metaDescription": "Ingeniak's Privacy Policy under Mexico's Federal Law on the Protection of Personal Data Held by Private Parties (LFPDPPP).",
+    "metaLength": 122,
+    "h1": "Privacy Policy",
+    "breadcrumbs": [
+      {
+        "name": "Home",
+        "url": "/en/"
+      },
+      {
+        "name": "Privacy Policy",
+        "url": "/en/privacy/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "encabezado",
+        "name": "Header",
+        "spec": "Encabezado sobrio sin imagen (excepción a la regla cinematográfica: página legal sin imagen): breadcrumb + H1 + 'Última actualización: 1 de agosto de 2026'.",
+        "cinematic": false
+      },
+      {
+        "order": 2,
+        "id": "indice",
+        "name": "Contents",
+        "spec": "11 anclas (Responsable … Consentimiento).",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "texto",
+        "name": "Legal text",
+        "spec": "Texto íntegro sin cambios; ancho de lectura 68 caracteres.",
+        "cinematic": false
+      }
+    ],
+    "cinematicSections": [],
+    "primaryCta": {
+      "label": "Get a quote",
+      "href": "/en/contact/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Message Kain",
+      "waMessage": "Hi, I'm coming from the English site and have a question about Ingeniak's privacy policy.",
+      "href": "https://wa.me/523321017799?text=Hi%2C%20I'm%20coming%20from%20the%20English%20site%20and%20have%20a%20question%20about%20Ingeniak's%20privacy%20policy."
+    },
+    "internalLinks": [
+      "/en/contact/",
+      "/en/"
+    ],
+    "jsonLd": [
+      "WebPage",
+      "BreadcrumbList"
+    ],
+    "faq": [],
+    "redirectsFrom": [],
+    "sitemap": {
+      "priority": 0.2,
+      "changefreq": "yearly"
+    },
+    "folio": "900",
+    "copy": {
+      "status": "brief",
+      "minWords": 0,
+      "owner": "[POR ASIGNAR]",
+      "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
+    },
+    "lang": "en",
+    "alternate": "/aviso-privacidad/"
+  },
+  {
+    "id": "en-caso-retail",
+    "group": "Casos",
+    "url": "/en/case-studies/multi-brand-retail-kommo/",
+    "canonical": "https://ingeniak.mx/en/case-studies/multi-brand-retail-kommo/",
+    "indexable": true,
+    "status": "versión en inglés de /casos/retail-multimarca-kommo/ (2026-11-20)",
+    "template": "T-CASE",
+    "purpose": "Caso de CRM Kommo + IA; prueba del partnership con Kommo.",
+    "primaryKeyword": "Kommo case study",
+    "secondaryKeywords": [
+      "Kommo for retail",
+      "AI lead qualification",
+      "CRM for multi-brand stores"
+    ],
+    "title": "Multi-brand retail: {{metric:retail-conversiones}} in conversions with Kommo + AI",
+    "titleLength": 81,
+    "metaDescription": "Kommo automated with AI lead qualification and a real-time conversion funnel: how a multi-brand retailer achieved {{metric:retail-conversiones}} in conversions.",
+    "metaLength": 160,
+    "h1": "Multi-brand retail: {{metric:retail-conversiones}} in conversions with Kommo and AI",
+    "breadcrumbs": [
+      {
+        "name": "Home",
+        "url": "/en/"
+      },
+      {
+        "name": "Case studies",
+        "url": "/casos/"
+      },
+      {
+        "name": "Multi-brand retail",
+        "url": "/en/case-studies/multi-brand-retail-kommo/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Overview",
+        "spec": "Breadcrumb + H1 + cifra gigante en HTML (+340%) + una línea de contexto + Discovery + WhatsApp. Etiqueta 'Imagen ilustrativa del sector' en la esquina.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/caso-retail-hero",
+          "subject": "Retail multimarca: persona ilustrativa del sector, siempre a la derecha.",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Portada de caso tipo reportaje: la cifra mega del H1 vive en la penumbra izquierda. Se reutiliza en el Montaje del inicio (dentro de las letras), en \"Siguiente reportaje\" y en los fotogramas.",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío; persona en el 60 % inferior (coronilla y≈0.44), el torso se disuelve en sombra abajo. subjTop ≈ 0.44. Persona centrada en x≈0.58; la cifra va arriba en el vacío."
+        },
+        "plate": {
+          "id": "caso-retail-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "ficha",
+        "name": "Case snapshot",
+        "spec": "Tabla: sector, ciudad, servicio, herramientas, plazo, cifra. Confirmado: retail multimarca; Kommo + IA; +340% en conversiones. Lo demás: [POR CONFIRMAR CON CLIENTE] o se omite.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "punto-partida",
+        "name": "Starting point",
+        "spec": "Situación inicial con números del cliente [POR CONFIRMAR]. Borrador permitido: 'Tenían Kommo, pero nadie le daba seguimiento' [VALIDAR con cliente; viene del borrador de testimonio de v1].",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cifra",
+        "name": "The figure",
+        "spec": "CaseFigure index-up: barra-índice de 100 a 440 con la leyenda \"índice: base 100 = antes\" (retail-conversiones). Sin valores absolutos.",
+        "cinematic": false,
+        "origin": "ESPEC r1"
+      },
+      {
+        "order": 5,
+        "id": "implementacion",
+        "name": "What we implemented",
+        "spec": "Pipeline en Kommo con calificación de leads por IA y embudo de conversión en tiempo real (descripción confirmada del sitio actual).",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "resultado",
+        "name": "Result",
+        "spec": "Cifra con contexto citable en una oración: 'Un retail multimarca logró +340% en conversiones con Kommo automatizado y calificación de leads por IA.' + nota 'datos internos de Ingeniak, octubre de 2026'.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/ind-retail-kain-sector",
+          "subject": "Kain trabajando en Retail y e-commerce junto a un panel de cristal alto en blanco (pantalla de chat/agenda); un cliente desenfocado al fondo.",
+          "side": "izquierda",
+          "textSide": "derecha",
+          "brief": "\"Así trabaja Kain en tu…\" (escena fijada con push-in 1 → 1.6 hacia el panel y ChatSim encima). Es también la escena \"Resultado\" de /casos/ (caso-retail).",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87). subjTop ≈ 0.44. Kain en x≈0.36 y el panel a su derecha (x 0.52–0.72); el chat baja al texto si el panel mide <180 px."
+        },
+        "plate": {
+          "id": "ind-retail-kain-sector",
+          "component": "ImageSection mid",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "launchFallback": {
+            "plate": "home-sistema-2-atender",
+            "mirror": true,
+            "note": "Kain con teléfono de cristal en blanco (estación Atender) en espejo para quedar a la izquierda; la UI de ChatSim se registra en su teléfono."
+          },
+          "priority": "P2"
+        }
+      },
+      {
+        "order": 7,
+        "id": "vktor",
+        "name": "How we did it with VKTOR™",
+        "spec": "Las 5 fases con lo que pasó en cada una; solo hitos confirmados por el equipo, si no hay, mostrar las fases genéricas con enlace /metodologia/.",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "replicar",
+        "name": "What you can replicate in your business",
+        "spec": "3 ideas: calificar cada lead al entrar, mover etapas sin captura manual, ver el embudo en tiempo real; enlace /kommo/.",
+        "cinematic": false
+      },
+      {
+        "order": 9,
+        "id": "testimonio",
+        "name": "Testimonial",
+        "spec": "Solo si el cliente aprueba por escrito la frase, su nombre, cargo y empresa; si no, la sección no existe (no usar borradores).",
+        "cinematic": false,
+        "status": "conditional",
+        "renderIf": "Aprobación escrita del cliente (frase, nombre, cargo y empresa). Sin ella, la sección no existe en el HTML."
+      },
+      {
+        "order": 10,
+        "id": "relacionados",
+        "name": "Keep exploring",
+        "spec": "3 tarjetas a páginas relacionadas: /kommo/ · /industrias/retail-ecommerce/ · /casos/ecommerce-cdmx-costo-por-lead/.",
+        "cinematic": false
+      },
+      {
+        "order": 11,
+        "id": "cta-final",
+        "name": "Next step",
+        "spec": "Cierre cinematográfico: \"¿Tu Kommo vende o solo guarda contactos? Lo vemos en 30 minutos.\" + botón Discovery + WhatsApp + microcopy \"Sin costo · Sin compromiso · 30 minutos por Google Meet\". Imagen de la variante compartida B: KAIN de cuerpo completo a la izquierda señalando hacia el botón, texto a la derecha.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/cta-amanecer",
+          "subject": "Kain saludando de pie sobre un horizonte curvo con filo de amanecer frío cian-blanco (\"06:00 · Rise\").",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Cierre compartido (Dawn) de casi todo el sitio. Sustituye a cta-kain-saluda y cta-kain-senala (esta = espejo). Su placa limpia es el fondo de cta-equipo.",
+          "mobile": "4:5 · modo top: Cielo vacío en el 40 % superior; cresta del horizonte en y≈0.86; Kain sobre ella centrado en x≈0.58 (antenas y≈0.46).",
+          "shared": true
+        },
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "resultado",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Get a quote",
+      "href": "/en/contact/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Message Kain",
+      "waMessage": "Hi Kain, I'm coming from the English site. I read the multi-brand retail case study with Kommo and I want to improve my conversions.",
+      "href": "https://wa.me/523321017799?text=Hi%20Kain%2C%20I'm%20coming%20from%20the%20English%20site.%20I%20read%20the%20multi-brand%20retail%20case%20study%20with%20Kommo%20and%20I%20want%20to%20improve%20my%20conversions."
+    },
+    "internalLinks": [
+      "/kommo/",
+      "/servicios/crm-con-ia/",
+      "/industrias/retail-ecommerce/",
+      "/casos/"
+    ],
+    "jsonLd": [
+      "Article",
+      "BreadcrumbList",
+      "Person (autor)"
+    ],
+    "faq": [],
+    "redirectsFrom": [],
+    "sitemap": {
+      "priority": 0.7,
+      "changefreq": "yearly"
+    },
+    "folio": "302",
+    "copy": {
+      "status": "brief",
+      "minWords": 600,
+      "owner": "[POR ASIGNAR]",
+      "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
+    },
+    "publishGate": {
+      "required": [
+        "ficha (sector, ciudad, servicio, herramientas, plazo)",
+        "punto-partida",
+        "implementacion"
+      ],
+      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando.",
+      "confirmado": "2026-11-14 · Rik Landeros, chat de construcción, 2026-11-14: autoriza publicar el caso completo e indexable con lo ya redactado; lo no confirmado (ciudad, punto de partida, plazo, testimonio) se omite. El interruptor es \"publishGate\": { \"ok\": true } en el copy."
+    },
+    "lang": "en",
+    "alternate": "/casos/retail-multimarca-kommo/"
+  },
+  {
+    "id": "en-caso-logistica",
+    "group": "Casos",
+    "url": "/en/case-studies/logistics-n8n/",
+    "canonical": "https://ingeniak.mx/en/case-studies/logistics-n8n/",
+    "indexable": true,
+    "status": "versión en inglés de /casos/logistica-n8n/ (2026-11-20)",
+    "template": "T-CASE",
+    "purpose": "Caso de automatización de procesos con n8n.",
+    "primaryKeyword": "n8n automation case study",
+    "secondaryKeywords": [
+      "logistics automation",
+      "n8n real-world case study",
+      "ERP WhatsApp integration"
+    ],
+    "title": "Logistics: {{metric:logistica-procesos|full}} with n8n | Ingeniak",
+    "titleLength": 65,
+    "metaDescription": "CRM, WhatsApp, ERP and AI models connected with real-time triggers: how a logistics company reached {{metric:logistica-procesos|full}} with n8n.",
+    "metaLength": 144,
+    "h1": "Logistics: {{metric:logistica-procesos|full}} with n8n and AI agents",
+    "breadcrumbs": [
+      {
+        "name": "Home",
+        "url": "/en/"
+      },
+      {
+        "name": "Case studies",
+        "url": "/casos/"
+      },
+      {
+        "name": "Logistics",
+        "url": "/en/case-studies/logistics-n8n/"
+      }
+    ],
+    "sections": [
+      {
+        "order": 1,
+        "id": "hero",
+        "name": "Overview",
+        "spec": "Breadcrumb + H1 + cifra gigante en HTML (27 procesos) + una línea de contexto + Discovery + WhatsApp. Etiqueta 'Imagen ilustrativa del sector' en la esquina.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/caso-logistica-hero",
+          "subject": "Logística: persona ilustrativa del sector, siempre a la derecha.",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Portada de caso tipo reportaje: la cifra mega del H1 vive en la penumbra izquierda. Se reutiliza en el Montaje del inicio (dentro de las letras), en \"Siguiente reportaje\" y en los fotogramas.",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío; persona en el 60 % inferior (coronilla y≈0.44), el torso se disuelve en sombra abajo. subjTop ≈ 0.44. Persona centrada en x≈0.58; la cifra va arriba en el vacío."
+        },
+        "plate": {
+          "id": "caso-logistica-hero",
+          "component": "ImageSection hero",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "hero",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 2752,
+          "priority": "P1"
+        }
+      },
+      {
+        "order": 2,
+        "id": "ficha",
+        "name": "Case snapshot",
+        "spec": "Tabla: sector, ciudad, servicio, herramientas, plazo, cifra. Confirmado: logística; n8n + agentes de IA; 27 procesos automatizados. Lo demás: [POR CONFIRMAR CON CLIENTE] o se omite.",
+        "cinematic": false
+      },
+      {
+        "order": 3,
+        "id": "punto-partida",
+        "name": "Starting point",
+        "spec": "Situación inicial con números del cliente [POR CONFIRMAR]. Borrador permitido: [POR CONFIRMAR CON CLIENTE: procesos manuales, horas y sistemas previos].",
+        "cinematic": false
+      },
+      {
+        "order": 4,
+        "id": "cifra",
+        "name": "The figure",
+        "spec": "CaseFigure nodes: 27 nodos cuadrados que se conectan con ramas del isotipo (logistica-procesos).",
+        "cinematic": false,
+        "origin": "ESPEC r1"
+      },
+      {
+        "order": 5,
+        "id": "implementacion",
+        "name": "What we implemented",
+        "spec": "Integraciones entre CRM, WhatsApp, ERP y modelos de IA con disparadores en tiempo real (descripción confirmada del sitio actual).",
+        "cinematic": false
+      },
+      {
+        "order": 6,
+        "id": "resultado",
+        "name": "Result",
+        "spec": "Cifra con contexto citable en una oración: 'En una empresa de logística automatizamos 27 procesos con n8n, conectando CRM, WhatsApp, ERP y modelos de IA.' + nota 'datos internos de Ingeniak, octubre de 2026'.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/ind-industrial-kain-sector",
+          "subject": "Kain trabajando en Industrial y logística (chaleco de seguridad abierto, sin casco (las antenas deben verse)) junto a un panel de cristal alto en blanco (pantalla de chat/agenda); un cliente desenfocado al fondo.",
+          "side": "izquierda",
+          "textSide": "derecha",
+          "brief": "\"Así trabaja Kain en tu…\" (escena fijada con push-in 1 → 1.6 hacia el panel y ChatSim encima). Es también la escena \"Resultado\" de /casos/ (caso-logistica).",
+          "mobile": "4:5 · modo top: 4:5 (master 1536×1920 → 1080×1350). 40 % superior vacío; Kain de cuerpo completo en el 60 % inferior (antenas y≈0.45, pies y≈0.87). subjTop ≈ 0.44. Kain en x≈0.36 y el panel a su derecha (x 0.52–0.72); el chat baja al texto si el panel mide <180 px."
+        },
+        "plate": {
+          "id": "ind-industrial-kain-sector",
+          "component": "ImageSection mid",
+          "layout": "subject-left",
+          "mirror": false,
+          "height": "mid",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "launchFallback": {
+            "plate": "home-sistema-2-atender",
+            "mirror": true,
+            "note": "Kain con teléfono de cristal en blanco (estación Atender) en espejo para quedar a la izquierda; la UI de ChatSim se registra en su teléfono."
+          },
+          "priority": "P2"
+        }
+      },
+      {
+        "order": 7,
+        "id": "vktor",
+        "name": "How we did it with VKTOR™",
+        "spec": "Las 5 fases con lo que pasó en cada una; solo hitos confirmados por el equipo, si no hay, mostrar las fases genéricas con enlace /metodologia/.",
+        "cinematic": false
+      },
+      {
+        "order": 8,
+        "id": "replicar",
+        "name": "What you can replicate in your business",
+        "spec": "3 ideas: empezar por el proceso que más se repite, conectar antes de reemplazar sistemas, poner alertas en tiempo real; enlace /servicios/automatizacion-n8n/.",
+        "cinematic": false
+      },
+      {
+        "order": 9,
+        "id": "testimonio",
+        "name": "Testimonial",
+        "spec": "Solo si el cliente aprueba por escrito la frase, su nombre, cargo y empresa; si no, la sección no existe (no usar borradores).",
+        "cinematic": false,
+        "status": "conditional",
+        "renderIf": "Aprobación escrita del cliente (frase, nombre, cargo y empresa). Sin ella, la sección no existe en el HTML."
+      },
+      {
+        "order": 10,
+        "id": "relacionados",
+        "name": "Keep exploring",
+        "spec": "3 tarjetas a páginas relacionadas: /servicios/automatizacion-n8n/ · /industrias/industrial-logistica/ · /casos/clinica-dental-monterrey/.",
+        "cinematic": false
+      },
+      {
+        "order": 11,
+        "id": "cta-final",
+        "name": "Next step",
+        "spec": "Cierre cinematográfico: \"¿Qué procesos de tu operación podrían moverse solos? Lo vemos en 30 minutos.\" + botón Discovery + WhatsApp + microcopy \"Sin costo · Sin compromiso · 30 minutos por Google Meet\". Imagen de la variante compartida D: foto real del equipo (team-hero) extendida con outpainting; texto a la izquierda.",
+        "cinematic": true,
+        "image": {
+          "file": "/img/cine/cta-equipo",
+          "subject": "El equipo real (mismos 6 recortes) asomando detrás de la cresta del horizonte al amanecer frío, a la derecha.",
+          "side": "derecha",
+          "textSide": "izquierda",
+          "brief": "Cierre compartido con el equipo. Fondo = placa limpia de cta-amanecer (sin Kain); los torsos se esconden detrás de la cresta: el equipo \"amanece\".",
+          "mobile": "4:5 · modo top: Fondo = móvil de cta-amanecer limpio; bustos en dos filas tras la cresta (y≈0.86), cabezas en y≈0.62–0.78; 40 % superior vacío.",
+          "shared": true
+        },
+        "plate": {
+          "id": "cta-amanecer",
+          "component": "Dawn",
+          "layout": "subject-right",
+          "mirror": false,
+          "height": "cta",
+          "tone": "sol",
+          "mobile": "top",
+          "srcsetMax": 1920,
+          "priority": "P1",
+          "note": "[2026-10-19: cta-equipo (recortes del equipo) no alcanza el nivel premium; se usa cta-amanecer hasta la sesión de fotos R6.]"
+        }
+      }
+    ],
+    "cinematicSections": [
+      "hero",
+      "resultado",
+      "cta-final"
+    ],
+    "primaryCta": {
+      "label": "Get a quote",
+      "href": "/en/contact/#cotizar",
+      "action": "cotizar"
+    },
+    "secondaryCta": {
+      "label": "Message Kain",
+      "waMessage": "Hi Kain, I'm coming from the English site. I read the logistics case study with n8n and I want to automate my operation.",
+      "href": "https://wa.me/523321017799?text=Hi%20Kain%2C%20I'm%20coming%20from%20the%20English%20site.%20I%20read%20the%20logistics%20case%20study%20with%20n8n%20and%20I%20want%20to%20automate%20my%20operation."
+    },
+    "internalLinks": [
+      "/servicios/automatizacion-n8n/",
+      "/industrias/industrial-logistica/",
+      "/servicios/desarrollo-software/",
+      "/casos/"
+    ],
+    "jsonLd": [
+      "Article",
+      "BreadcrumbList",
+      "Person (autor)"
+    ],
+    "faq": [],
+    "redirectsFrom": [],
+    "sitemap": {
+      "priority": 0.7,
+      "changefreq": "yearly"
+    },
+    "folio": "305",
+    "copy": {
+      "status": "brief",
+      "minWords": 600,
+      "owner": "[POR ASIGNAR]",
+      "note": "Los campos spec son briefs, no copy final. La página no se publica hasta tener su copy aprobado en src/content/ (ESPEC §12.2 R1–R2)."
+    },
+    "publishGate": {
+      "required": [
+        "ficha (sector, ciudad, servicio, herramientas, plazo)",
+        "punto-partida",
+        "implementacion"
+      ],
+      "ifMissing": "Sale como \"caso breve\" (hero, ficha solo con lo confirmado, cifra, replicar, relacionados, cierre) con <meta name=\"robots\" content=\"noindex,follow\">, fuera de sitemap.xml y de llms-full.txt hasta completarse. El hub y el inicio la siguen enlazando.",
+      "confirmado": "2026-11-14 · Rik Landeros, chat de construcción, 2026-11-14: autoriza publicar el caso completo e indexable con lo ya redactado; lo no confirmado (ciudad, punto de partida, plazo, testimonio) se omite. El interruptor es \"publishGate\": { \"ok\": true } en el copy."
+    },
+    "lang": "en",
+    "alternate": "/casos/logistica-n8n/"
   }
 ]

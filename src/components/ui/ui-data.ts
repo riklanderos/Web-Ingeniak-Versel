@@ -6,10 +6,17 @@ import path from 'node:path';
 import sitemap from '../../data/sitemap.json';
 import { METRICS, PRICES, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
 import * as metricsMod from '../../lib/metrics';
+import { metricText as metricTextL, priceText } from '../../lib/metrics';
+import { currentLang, L } from '../../lib/i18n';
 
 /** Microcopia de la Discovery Session: solo la usa la landing oculta /discovery/ (CAMBIO-COTIZAR §4.2, MICRO_29).
  *  Fuera de /discovery/ la microcopia del primario es _comun.cta.micro (src/components/layout/cta.ts → QUOTE.micro). */
-export const DISCOVERY_MICRO = '30 min · 1:1 · Google Meet · sin costo';
+export const DISCOVERY_MICRO_ES = '30 min · 1:1 · Google Meet · sin costo';
+/** En inglés (versión /en/, 2026-11-20). */
+export const DISCOVERY_MICRO_EN = '30 min · 1:1 · Google Meet · free';
+/** @deprecated usa discoveryMicro(): depende del idioma de la página. */
+export const DISCOVERY_MICRO = DISCOVERY_MICRO_ES;
+export const discoveryMicro = () => L({ es: DISCOVERY_MICRO_ES, en: DISCOVERY_MICRO_EN });
 
 /* ───────────────────────── Ofertas de las landings ocultas (CAMBIO-COTIZAR §4.4) ─────────────────────────
  * OFFERS vive en src/lib/metrics.ts (orquestador). Se lee por espacio de nombres para que el build no se caiga mientras
@@ -22,7 +29,7 @@ const OFFERS_FALLBACK: Record<string, string> = {
 export const OFFERS: Record<string, string> = ((metricsMod as any).OFFERS as Record<string, string> | undefined) ?? OFFERS_FALLBACK;
 if (!(metricsMod as any).OFFERS && import.meta.env?.DEV) console.warn('[ui/copy] metrics.ts todavía no exporta OFFERS: {{offer:…}} usa el respaldo de CAMBIO-COTIZAR §4.4');
 const offerOf = (id: string): string => {
-  const v = Object.prototype.hasOwnProperty.call(OFFERS, id) ? OFFERS[id] : undefined;
+  const v = Object.prototype.hasOwnProperty.call(OFFERS, id) ? (currentLang() === 'en' ? priceText('offer:' + id, 'en') : OFFERS[id]) : undefined;
   if (typeof v !== 'string' || !v) throw new Error(`[ui/copy] oferta desconocida en el texto: {{offer:${id}}} (src/lib/metrics.ts → OFFERS)`);
   return v;
 };
@@ -46,11 +53,22 @@ const FIGURE_PATTERNS: [RegExp, string][] = [
   [/1 vista · 7 fuentes/g, 'ecom-tablero'],
   [/(?:más de |\+)73(?:\ssistemas)?/g, 'sistemas'],
   [/\b7\spaíses/g, 'paises'],
+  // Inglés (versión /en/, 2026-11-20): las mismas cifras redactadas.
+  [/3\.2\s?times/g, 'dental-citas'],
+  [/(?:from\s)?8\s?min(?:utes)?\s?(?:to|→)\s?12\s?s(?:econds)?\b/g, 'dental-respuesta'],
+  [/27\s(?:automated\s)?(?:processes|workflows)/g, 'logistica-procesos'],
+  [/(?:from\s)?12\s(?:to|→)\s47(?:\sappointments)?/g, 'salud-citas-mes'],
+  [/1 view · 7 sources/g, 'ecom-tablero'],
+  [/(?:more than |over |\+)73(?:\ssystems)?/g, 'sistemas'],
+  [/\b7\scountries/g, 'paises'],
 ];
 /** Datos no comerciales con números permitidos (precio oficial, duración de la Discovery, horas, contacto). */
 const ALLOW_PATTERNS: RegExp[] = [
   /(?:[Dd]esde\s)?USD\s?997(?:\sal\smes)?/g,
   /\b30\s(?:minutos|min)\b/g,
+  /(?:[Ff]rom\s)?USD\s?997(?:\sper\smonth)?/g,
+  /\b30[\s-](?:minutes?|min)\b/g,
+  /\b\d{1,2}:\d{2}\s?(?:AM|PM|am|pm)\b/g,
   /\b\d{1,2}:\d{2}\b(?:\s?[ap]\.\s?m\.)?/g,
   /\+52\s?33\s?2101\s?7799/g,
 ];
@@ -64,7 +82,7 @@ export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z
 const priceOf = (id: string) => {
   const p = (PRICES as Record<string, string>)[id];
   if (!p) throw new Error(`[ui/copy] precio desconocido en el texto: {{price:${id}}}`);
-  return p;
+  return priceText('price:' + id, currentLang());
 };
 const metricOf = (id: string) => {
   const m = (METRICS as any)[id];
@@ -73,19 +91,16 @@ const metricOf = (id: string) => {
 };
 /** Texto de una cifra según el modificador del token. |prose sin prose en metrics.ts → valor + rótulo (y aviso en dev). */
 const metricText = (id: string, mod?: string) => {
-  const m = metricOf(id);
-  if (mod === 'prose') {
-    if (m.prose) return m.prose;
-    if (import.meta.env?.DEV) console.warn(`[ui/copy] {{metric:${id}|prose}}: metrics.ts no trae "prose"; se usa valor + rótulo`);
-    return `${m.value} ${m.label}`;
-  }
-  return mod === 'full' ? `${m.value} ${m.label}` : m.value;
+  metricOf(id);
+  return metricTextL(id as MetricId, mod === 'prose' ? 'prose' : mod === 'full' ? 'full' : 'value', currentLang());
 };
+/** Valor y rótulo de una cifra en el idioma de la página. */
+const metricPair = (id: string) => ({ value: metricText(id), label: metricTextL(id as MetricId, 'label', currentLang()) });
 /** Texto plano con los tokens resueltos (JSON-LD FAQPage, ⌘K, meta, aria-label). */
 export function tokensToText(s: string): string {
   return String(s ?? '').replace(TOKEN_RX, (_, k, id, mod, offer, priceId) => {
     if (priceId) return priceOf(priceId);
-    if (k === 'price') return PRICE_FROM; if (k === 'Price') return PRICE_FROM_CAP; if (k === 'source') return SOURCE_NOTE;
+    if (k === 'price' || k === 'Price' || k === 'source') return priceText(k, currentLang());
     if (offer) return offerOf(offer);
     return metricText(id, mod);
   });
@@ -110,10 +125,10 @@ export function annotateFigures(text: string): string {
     const [, k, id, mod, offer, priceId] = m;
     if (priceId) out += `<span data-allow-number>${esc(priceOf(priceId))}</span>`;
     else if (offer) out += `<span data-offer="${esc(offer)}">${esc(offerOf(offer))}</span>`;
-    else if (k === 'price' || k === 'Price') out += `<span data-allow-number>${esc(k === 'price' ? PRICE_FROM : PRICE_FROM_CAP)}</span>`;
-    else if (k === 'source') out += esc(SOURCE_NOTE);
+    else if (k === 'price' || k === 'Price') out += `<span data-allow-number>${esc(priceText(k, currentLang()))}</span>`;
+    else if (k === 'source') out += esc(priceText('source', currentLang()));
     else if (mod === 'prose') out += `<span class="metric metric--prose" data-metric="${id}">${esc(metricText(id, 'prose'))}</span>`;
-    else { const x = metricOf(id); out += `<span class="metric metric--inline" data-metric="${id}"><b>${esc(x.value)}</b>${mod === 'full' ? ' ' + esc(x.label) : ''}</span>`; }
+    else { const x = metricPair(id); out += `<span class="metric metric--inline" data-metric="${id}"><b>${esc(x.value)}</b>${mod === 'full' ? ' ' + esc(x.label) : ''}</span>`; }
     last = m.index + m[0].length;
   }
   return out + legacyFigures(src.slice(last));
@@ -123,6 +138,8 @@ export const renderCopy = annotateFigures;
 /* ───────────────────────── Banco de FAQ ───────────────────────── */
 export type FaqItem = { id: string; q: string; a: string; short?: string; estado?: string; validar?: boolean; categoria?: string; pages?: string[] };
 const faqFiles = import.meta.glob('../../data/faq.json', { eager: true, import: 'default' }) as Record<string, any>;
+/** Banco en inglés (versión /en/, 2026-11-20): src/data/faq-en.json, mismos ids (lo arma scripts/ingles.mjs). */
+const faqFilesEn = import.meta.glob('../../data/faq-en.json', { eager: true, import: 'default' }) as Record<string, any>;
 
 function normalizeFaq(raw: any): FaqItem[] {
   if (!raw) return [];
@@ -132,11 +149,19 @@ function normalizeFaq(raw: any): FaqItem[] {
     .filter((f: FaqItem) => f.id && f.q && f.a);
 }
 let BANK: Map<string, FaqItem> | null = null;
+let BANK_EN: Map<string, FaqItem> | null = null;
 function bank() {
+  if (currentLang() === 'en') {
+    if (BANK_EN) return BANK_EN;
+    BANK_EN = new Map();
+    for (const p of sitemap as any[]) if (p.lang === 'en') for (const f of p.faq ?? []) if (!BANK_EN.has(f.id)) BANK_EN.set(f.id, f);
+    for (const raw of Object.values(faqFilesEn)) for (const f of normalizeFaq(raw)) BANK_EN.set(f.id, f);
+    return BANK_EN;
+  }
   if (BANK) return BANK;
   BANK = new Map();
   // 1) Banco de D en sitemap.json (respaldo) · 2) src/data/faq.json del área copy (manda si existe)
-  for (const p of sitemap as any[]) for (const f of p.faq ?? []) if (!BANK.has(f.id)) BANK.set(f.id, f);
+  for (const p of sitemap as any[]) if (p.lang !== 'en') for (const f of p.faq ?? []) if (!BANK.has(f.id)) BANK.set(f.id, f);
   for (const raw of Object.values(faqFiles)) for (const f of normalizeFaq(raw)) BANK.set(f.id, f);   // el banco del copy manda por id
   return BANK;
 }
@@ -166,9 +191,24 @@ export function faqPageLd(ids: string[], pageUrl?: string) {
 }
 
 const comunFiles = import.meta.glob('../../content/paginas/_comun.json', { eager: true, import: 'default' }) as Record<string, any>;
-/** Microcopia compartida del área copy (_comun.json), con respaldo. */
-export const COMUN: any = Object.values(comunFiles)[0] ?? {};
-export const SIM = { label: 'SIMULACIÓN', demo: 'VISTA DEMO', typing: 'escribiendo…', pause: 'Pausar la conversación', play: 'Reanudar la conversación', horaIlustrativa: 'Hora ilustrativa', tabsAria: 'Elige un sector para ver la conversación', ...(COMUN.sim ?? {}) };
+const comunFilesEn = import.meta.glob('../../content/paginas/en-_comun.json', { eager: true, import: 'default' }) as Record<string, any>;
+const COMUN_ES: any = Object.values(comunFiles)[0] ?? {};
+const COMUN_EN: any = Object.values(comunFilesEn)[0] ?? COMUN_ES;
+const SIM_ES = { label: 'SIMULACIÓN', demo: 'VISTA DEMO', typing: 'escribiendo…', pause: 'Pausar la conversación', play: 'Reanudar la conversación', horaIlustrativa: 'Hora ilustrativa', tabsAria: 'Elige un sector para ver la conversación', ...(COMUN_ES.sim ?? {}) };
+const SIM_EN = { label: 'SIMULATION', demo: 'DEMO VIEW', typing: 'typing…', pause: 'Pause the conversation', play: 'Resume the conversation', horaIlustrativa: 'Illustrative time', tabsAria: 'Pick an industry to see the conversation', ...(COMUN_EN.sim ?? {}) };
+/** Microcopia compartida del área copy (_comun.json; en inglés, en-_comun.json): se lee en el idioma de la página. */
+/** Nombre visible de cada sector de los guiones de chat (ChatSim, ChatTabs), en el idioma de la página. */
+export const sectorLabels = (): Record<string, string> => L({
+  es: { salud: 'Salud', belleza: 'Belleza', nutricion: 'Nutrición', finanzas: 'Finanzas', inmobiliario: 'Inmobiliario', industrial: 'Industrial', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'HoReCa', default: 'General' },
+  en: { salud: 'Healthcare', belleza: 'Beauty', nutricion: 'Nutrition', finanzas: 'Finance', inmobiliario: 'Real estate', industrial: 'Industrial', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'Hospitality', default: 'General' },
+});
+/** Rótulo corto de la barra SIMULACIÓN (en versalitas por CSS). */
+export const simChipLabel = () => {
+  const up = String(SIM.label).toUpperCase();
+  return up === 'SIMULACIÓN' ? 'Simulación' : up === 'SIMULATION' ? 'Simulation' : SIM.label;
+};
+export const COMUN: any = new Proxy({}, { get: (_, k) => (currentLang() === 'en' ? COMUN_EN : COMUN_ES)[k as string], has: (_, k) => k in (currentLang() === 'en' ? COMUN_EN : COMUN_ES) });
+export const SIM: any = new Proxy({}, { get: (_, k) => (currentLang() === 'en' ? SIM_EN : SIM_ES)[k as keyof typeof SIM_ES] });
 
 /* ───────────────────────── Imágenes publicadas ───────────────────────── */
 const PUBLIC = path.join(process.cwd(), 'public');
@@ -189,17 +229,31 @@ export function stillOf(plate?: string) {
 }
 
 /* ───────────────────────── Entidad ───────────────────────── */
-export const COUNTRIES: { name: string; sede: boolean }[] = METRICS.paises.ctx
-  .replace(/\sy\s/, ', ').split(',').map((s) => s.trim()).filter(Boolean)
-  .map((s) => ({ name: s.replace(/\s*\(sede\)/, ''), sede: /\(sede\)/.test(s) }));
+/** Lista que cambia con el idioma de la página (versión /en/, 2026-11-20): se usa igual que un arreglo normal. */
+function byLang<T extends object>(es: T[], en: T[]): T[] {
+  return new Proxy(es, { get: (_, k) => { const a = currentLang() === 'en' ? en : es; const v = (a as any)[k]; return typeof v === 'function' ? v.bind(a) : v; } });
+}
+const countriesOf = (ctx: string, sep: RegExp, hq: RegExp) => ctx
+  .replace(sep, ', ').split(',').map((s) => s.trim()).filter(Boolean)
+  .map((s) => ({ name: s.replace(hq, ''), sede: hq.test(s) }));
+export const COUNTRIES: { name: string; sede: boolean }[] = byLang(
+  countriesOf(METRICS.paises.ctx, /\sy\s/, /\s*\(sede\)/),
+  countriesOf(metricTextL('paises', 'ctx', 'en'), /,?\sand\s/, /\s*\(HQ\)/),
+);
 
-export const VKTOR = [
+export const VKTOR = byLang([
   { l: 'V', name: 'Verify', verb: 'Verificamos tu operación' },
   { l: 'K', name: 'Koncept', verb: 'Diseñamos el concepto' },
   { l: 'T', name: 'Transform', verb: 'Transformamos' },
   { l: 'O', name: 'Operate', verb: 'Operamos junto con tu equipo' },
   { l: 'R', name: 'Rise', verb: 'Hacemos crecer los resultados' },
-] as const;
+], [
+  { l: 'V', name: 'Verify', verb: 'We verify how you operate' },
+  { l: 'K', name: 'Koncept', verb: 'We design the concept' },
+  { l: 'T', name: 'Transform', verb: 'We transform' },
+  { l: 'O', name: 'Operate', verb: 'We operate alongside your team' },
+  { l: 'R', name: 'Rise', verb: 'We grow the results' },
+]);
 
 /** crop: encuadre de cabeza y hombros de la foto actual (fracciones de la foto cuadrada de 600 px): fx = centro del rostro,
  *  ey = línea de los ojos, hw = ancho de la cabeza. Con esto todas las caras quedan del mismo tamaño y con la mirada a la
@@ -207,7 +261,7 @@ export const VKTOR = [
 export type TeamCrop = { fx: number; ey: number; hw: number };
 export type TeamMember = { slug: string; name: string; role: string; photo: string; linkedin?: string; crop?: TeamCrop };
 /** Equipo de 6 (ESPEC §5.1 ESC 11). Las fotos actuales traen la placa del nombre impresa: Credits/AuthorCard las recortan. */
-export const TEAM: TeamMember[] = [
+const TEAM_ES: TeamMember[] = [
   { slug: 'rik-landeros', name: 'Rik Landeros', role: 'Director de Estrategia Comercial', photo: '/img/equipo/rik-landeros.webp', crop: { fx: 0.535, ey: 0.3, hw: 0.2 } },
   { slug: 'alonso-vega', name: 'Alonso Vega', role: 'Arquitecto de IA y Automatización', photo: '/img/equipo/alonso-vega.webp', crop: { fx: 0.47, ey: 0.39, hw: 0.175 } },
   { slug: 'cesar-ovalle', name: 'César Ovalle', role: 'Director Creativo', photo: '/img/equipo/cesar-ovalle.webp', crop: { fx: 0.5, ey: 0.35, hw: 0.155 } },
@@ -215,6 +269,11 @@ export const TEAM: TeamMember[] = [
   { slug: 'barb-mendoza', name: 'Barb Mendoza', role: 'Project Manager', photo: '/img/equipo/barb-mendoza.webp', crop: { fx: 0.5, ey: 0.37, hw: 0.3 } },
   { slug: 'marcos-gonzalez', name: 'Marcos González', role: 'Líder Comercial', photo: '/img/equipo/marcos-gonzalez.webp', crop: { fx: 0.5, ey: 0.33, hw: 0.165 } },
 ];
+const ROLE_EN: Record<string, string> = {
+  'rik-landeros': 'Director of Sales Strategy', 'alonso-vega': 'AI & Automation Architect', 'cesar-ovalle': 'Creative Director',
+  'richard-vela': 'Performance Media', 'barb-mendoza': 'Project Manager', 'marcos-gonzalez': 'Sales Lead',
+};
+export const TEAM: TeamMember[] = byLang(TEAM_ES, TEAM_ES.map((m) => ({ ...m, role: ROLE_EN[m.slug] ?? m.role })));
 
 /** Herramientas con logo en public/img/logos (pintadas con máscara currentColor). Partners oficiales (Kommo, GoHighLevel, Google y Meta): su franja es PartnerBadges; aquí aparecen como herramientas del stack. */
 export const TOOLS: Record<string, { name: string; logo: string; wide?: boolean }> = {
@@ -236,7 +295,8 @@ export const logoUrl = (slug?: string) => (slug ? `/img/logos/${TOOLS[slug]?.log
 
 /* ───────────────────────── Registro de resultados ───────────────────────── */
 /** Contexto confirmado por cifra (sitemap.json → ficha de cada caso). Lo no confirmado queda en null y se muestra "—". */
-export const LEDGER: Partial<Record<MetricId, { sector: string; sectorSlug: string; city?: string; window?: string; service?: { name: string; slug: string; href: string } }>> = {
+type LedgerRow = { sector: string; sectorSlug: string; city?: string; window?: string; service?: { name: string; slug: string; href: string } };
+const LEDGER_ES: Partial<Record<MetricId, LedgerRow>> = {
   'dental-citas': { sector: 'Salud · clínica dental', sectorSlug: 'salud', city: 'Monterrey, N.L.', window: '90 días', service: { name: 'Agente de IA en WhatsApp', slug: 'agentes', href: '/servicios/agentes-ia-whatsapp/' } },
   'dental-respuesta': { sector: 'Salud · clínica dental', sectorSlug: 'salud', city: 'Monterrey, N.L.', service: { name: 'Agente de IA en WhatsApp', slug: 'agentes', href: '/servicios/agentes-ia-whatsapp/' } },
   'retail-conversiones': { sector: 'Retail multimarca', sectorSlug: 'retail', service: { name: 'CRM Kommo + IA', slug: 'crm', href: '/kommo/' } },
@@ -247,6 +307,31 @@ export const LEDGER: Partial<Record<MetricId, { sector: string; sectorSlug: stri
   'tiempo-operativo': { sector: 'Varios sectores', sectorSlug: 'varios', window: 'Primeros 90 días' },
   'ecom-tablero': { sector: 'E-commerce', sectorSlug: 'ecommerce', service: { name: 'Tablero unificado', slug: 'datos', href: '/servicios/desarrollo-software/#dashboard' } },
 };
+/** Inglés (versión /en/, 2026-11-20): mismos datos; solo cambian los nombres (los enlaces siguen en español: esas páginas no están traducidas). */
+const LEDGER_SECTOR_EN: Record<string, string> = {
+  'Salud · clínica dental': 'Healthcare · dental clinic', 'Retail multimarca': 'Multi-brand retail', 'E-commerce': 'E-commerce',
+  'HoReCa': 'Hospitality (HoReCa)', 'Logística': 'Logistics', 'Salud · varios clientes': 'Healthcare · several clients', 'Varios sectores': 'Several industries',
+};
+const LEDGER_CITY_EN: Record<string, string> = { 'Monterrey, N.L.': 'Monterrey, N.L.', 'Ciudad de México': 'Mexico City' };
+const LEDGER_WINDOW_EN: Record<string, string> = { '90 días': '90 days', '60 días': '60 days', 'Sostenido': 'Sustained', 'Promedio mensual': 'Monthly average', 'Primeros 90 días': 'First 90 days' };
+const LEDGER_SERVICE_EN: Record<string, string> = {
+  'Agente de IA en WhatsApp': 'WhatsApp AI agent', 'CRM Kommo + IA': 'Kommo CRM + AI', 'Paid media en Meta Ads': 'Paid media on Meta Ads',
+  'Automatización con n8n': 'Automation with n8n', 'Tablero unificado': 'Unified dashboard',
+};
+const LEDGER_EN: Partial<Record<MetricId, LedgerRow>> = Object.fromEntries(Object.entries(LEDGER_ES).map(([k, r]) => [k, {
+  ...r!,
+  sector: LEDGER_SECTOR_EN[r!.sector] ?? r!.sector,
+  city: r!.city && (LEDGER_CITY_EN[r!.city] ?? r!.city),
+  window: r!.window && (LEDGER_WINDOW_EN[r!.window] ?? r!.window),
+  service: r!.service && { ...r!.service, name: LEDGER_SERVICE_EN[r!.service.name] ?? r!.service.name },
+}]));
+/** Contexto por cifra en el idioma de la página (se usa igual que un objeto normal). */
+export const LEDGER: Partial<Record<MetricId, LedgerRow>> = new Proxy({}, {
+  get: (_, k) => (currentLang() === 'en' ? LEDGER_EN : LEDGER_ES)[k as MetricId],
+  has: (_, k) => k in LEDGER_ES,
+  ownKeys: () => Reflect.ownKeys(LEDGER_ES),
+  getOwnPropertyDescriptor: (_, k) => ({ enumerable: true, configurable: true, value: (currentLang() === 'en' ? LEDGER_EN : LEDGER_ES)[k as MetricId] }),
+});
 
 /* ───────────────────────── Tipografía de cifras ───────────────────────── */
 /** Parte el valor de una cifra para su tipografía: número intacto, símbolo (% ×) en voladita, signo (+ −) y palabras (min, s, →, ROAS) a menor cuerpo. */

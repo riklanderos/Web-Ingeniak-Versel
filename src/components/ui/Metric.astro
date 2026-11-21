@@ -7,9 +7,10 @@
 //   mega   → valor en --fs-mega (Lexend 200)               cover → línea de portada (valor + rótulo), la usa SumarioCover
 //   row    → fila "en datos" con varios ids + SOURCE_NOTE (MetricRow)
 // count: conteo visual solo en cifras contables (sin signo); el valor final SIEMPRE está en el HTML.
-import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { METRICS, metricText, priceText, type MetricId } from '../../lib/metrics';
 import { figureParts } from './ui-data';
 import { linkTarget } from '../../lib/site';
+import { currentLang, localHref } from '../../lib/i18n';
 
 interface Props {
   id?: MetricId; ids?: MetricId[];
@@ -29,11 +30,17 @@ interface Props {
 const { id, ids, variant = 'inline', link = false, count = false, label: labelProp, full, prose = false, ctx, glass = true, fn, note = true, heading, as = 'span', class: cls } = Astro.props;
 
 const label = labelProp ?? full;
+const lang = currentLang();
+// Textos de la cifra en el idioma de la página (metricText); en español, idénticos a METRICS.
 const get = (k: MetricId) => {
   const m = (METRICS as any)[k];
   if (!m) throw new Error(`[ui/Metric] cifra desconocida: "${k}" (solo ids de src/lib/metrics.ts)`);
-  return m as { value: string; label: string; ctx: string; href?: string; countable?: boolean; from?: number; prose?: string };
+  return { ...m, value: metricText(k, 'value', lang), label: metricText(k, 'label', lang), ctx: metricText(k, 'ctx', lang) } as { value: string; label: string; ctx: string; href?: string; countable?: boolean; from?: number };
 };
+/** Enlace al caso: solo si la página ya existe; en inglés, su gemela /en/ cuando está traducida. */
+const caseHref = (h?: string) => { const t = h ? linkTarget(h) : null; return t ? localHref(t, lang) : undefined; };
+const SOURCE_NOTE = priceText('source', lang);
+const seeCase = lang === 'en' ? 'See case study' : 'Ver caso';
 /** Divide el valor en partes para tipografía: signos y unidades a menor tamaño, número intacto. */
 const parts = figureParts;
 /** El "×" de las cifras de multiplicación va en la línea base (se lee "3.2 veces", no como exponente); % y signos, en voladita. */
@@ -44,9 +51,9 @@ if (variant !== 'row' && !id) throw new Error('[ui/Metric] falta id');
 const m = id ? get(id) : null;
 const Tag = as;
 // Enlace solo si la página del caso ya existe (linkTarget: nunca un enlace a una ruta sin construir).
-const href = link && m?.href ? linkTarget(m.href) ?? undefined : undefined;
+const href = link && m?.href ? caseHref(m.href) : undefined;
 const showCtx = ctx ?? (variant === 'chip');
-const proseText = prose && m ? (m.prose ?? `${m.value} ${m.label}`) : null;
+const proseText = prose && m && id ? metricText(id, 'prose', lang) : null;
 ---
 {variant === 'inline' && m && (proseText
   ? (href
@@ -62,7 +69,7 @@ const proseText = prose && m ? (m.prose ?? `${m.value} ${m.label}`) : null;
     <span class="metric__v">{parts(m.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <small class={symCls(p)}>{p.t}</small>)}</span>
     <span class="metric__l">{m.label}{fn && <sup class="fn">{fn}</sup>}</span>
     {showCtx && <span class="metric__c">{m.ctx}</span>}
-    {href && <a class="metric__a" href={href} aria-label={`Ver caso: ${m.ctx}`}></a>}
+    {href && <a class="metric__a" href={href} aria-label={`${seeCase}: ${m.ctx}`}></a>}
   </Tag>
 )}
 
@@ -73,7 +80,7 @@ const proseText = prose && m ? (m.prose ?? `${m.value} ${m.label}`) : null;
       : parts(m.value).map((p) => p.k === 'num' ? <span>{p.t}</span> : <span class={symCls(p)}>{p.t}</span>)}</span>
     {(label ?? true) && <span class="metric__l">{m.label}{fn && <sup class="fn">{fn}</sup>}</span>}
     {showCtx && <span class="metric__c t-label">{m.ctx}</span>}
-    {href && <a class="metric__a" href={href} aria-label={`Ver caso: ${m.ctx}`}></a>}
+    {href && <a class="metric__a" href={href} aria-label={`${seeCase}: ${m.ctx}`}></a>}
   </Tag>
 )}
 
@@ -89,7 +96,7 @@ const proseText = prose && m ? (m.prose ?? `${m.value} ${m.label}`) : null;
     <dl class="metric-row__list" data-ui-stagger>
       {(ids ?? (id ? [id] : [])).map((k, i) => {
         const x = get(k);
-        const h = link && x.href ? linkTarget(x.href) ?? undefined : undefined;
+        const h = link && x.href ? caseHref(x.href) : undefined;
         return (
           <div class="metric-row__item" data-metric={k} style={`--i:${i}`}>
             <dt class="metric-row__v">

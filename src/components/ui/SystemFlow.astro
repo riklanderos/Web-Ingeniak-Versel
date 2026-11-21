@@ -7,16 +7,17 @@
 // sin JS se ve una línea guía estática. Los nodos con confirmed:false NO se renderizan (casos sin confirmar).
 // Logos: public/img/logos/<slug>.svg pintados con máscara currentColor (blanco al 55 %, 100 % en hover).
 import { logoUrl, logoWide, TOOLS } from './ui-data';
+import { L } from '../../lib/i18n';
 
 type Node = { label: string; logo?: string; line?: string; role?: string; group?: string; kain?: boolean; confirmed?: boolean };
 interface Props { nodes: Node[]; variant?: 'flow' | 'hub'; plate?: string; title?: string; fig?: string; class?: string }
-const { nodes, variant = 'flow', plate, title = 'Cómo se conecta el sistema', fig, class: cls } = Astro.props;
+const { nodes, variant = 'flow', plate, title = L({ es: 'Cómo se conecta el sistema', en: 'How the system connects' }), fig, class: cls } = Astro.props;
 
 const shown = nodes.filter((n) => n.confirmed !== false);
 if (import.meta.env.DEV && shown.length < nodes.length) console.warn(`[ui/SystemFlow] ${nodes.length - shown.length} nodo(s) sin confirmar no se publican`);
 const groups: { label: string; items: Node[] }[] = [];
 if (variant === 'hub') for (const n of shown) {
-  const g = n.group ?? 'Herramientas';
+  const g = n.group ?? L({ es: 'Herramientas', en: 'Tools' });
   let G = groups.find((x) => x.label === g); if (!G) groups.push((G = { label: g, items: [] }));
   G.items.push(n);
 }

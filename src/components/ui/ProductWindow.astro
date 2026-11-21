@@ -3,10 +3,13 @@
 // para capturas o demos (app.kain.mx con VISTA DEMO, Runtime en móvil con SIMULACIÓN).
 // Solo sobre placa o aura (aura=true pinta el aura del isotipo detrás); nunca sobre negro plano.
 // Slot por defecto: la captura (<img>) o la demo en HTML. Slot "aside": controles o leyenda a la derecha de la barra.
-interface Props { title: string; label?: 'SIMULACIÓN' | 'VISTA DEMO'; fig?: string; url?: string; aura?: boolean; ratio?: string; class?: string }
-const { title, label = 'VISTA DEMO', fig, url, aura = false, ratio, class: cls } = Astro.props;
+import { L } from '../../lib/i18n';
+interface Props { title: string; label?: 'SIMULACIÓN' | 'VISTA DEMO' | 'SIMULATION' | 'DEMO VIEW'; fig?: string; url?: string; aura?: boolean; ratio?: string; class?: string }
+const { title, label: label0 = 'VISTA DEMO', fig, url, aura = false, ratio, class: cls } = Astro.props;
+// En inglés, los rótulos fijos pasan a su versión en inglés (versión /en/, 2026-11-20).
+const label = L({ es: label0, en: label0 === 'SIMULACIÓN' ? 'SIMULATION' : label0 === 'VISTA DEMO' ? 'DEMO VIEW' : label0 });
 ---
-<figure class:list={['pwin', aura && 'pwin--aura', cls]} data-nosnippet={label === "SIMULACIÓN" ? "" : undefined} data-ui-reveal="lift">
+<figure class:list={['pwin', aura && 'pwin--aura', cls]} data-nosnippet={label === "SIMULACIÓN" || label === "SIMULATION" ? "" : undefined} data-ui-reveal="lift">
   {aura && <span class="pwin__aura" aria-hidden="true"><img src="/img/marca/isotipo-cristal-640.webp" alt="" width="640" height="640" loading="lazy" decoding="async" /></span>}
   <div class="pwin__frame glass-panel">
     <span class="pwin__mark pwin__mark--tl" aria-hidden="true"></span><span class="pwin__mark pwin__mark--tr" aria-hidden="true"></span>

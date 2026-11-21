@@ -6,13 +6,15 @@
 // máscara currentColor con su nombre en mono. KommoBadge sigue existiendo para los contextos solo-Kommo (/kommo/, FAQ hub).
 //   label → rótulo "PARTNERS DE" al frente (por defecto sí) · link → el sello de Kommo enlaza a kommo.com (por defecto sí)
 import { SITE } from '../../lib/site';
+import { L } from '../../lib/i18n';
 interface Props { size?: 'sm' | 'md'; label?: boolean; link?: boolean; class?: string }
 const { size = 'md', label = true, link = true, class: cls } = Astro.props;
 const BADGE = '/img/logos/kommo-partner-blanco.webp'; // 318 × 144, blanco sobre transparente
 const h = size === 'sm' ? 26 : 32;
 const w = Math.round((h * 318) / 144);
 const KTag = link ? 'a' : 'span';
-const kAttrs = link ? { href: SITE.kommo, target: '_blank', rel: 'noopener', 'aria-label': 'Partner oficial de Kommo en LATAM (abre kommo.com)' } : {};
+const kAttrs = link ? { href: SITE.kommo, target: '_blank', rel: 'noopener', 'aria-label': L({ es: 'Partner oficial de Kommo en LATAM (abre kommo.com)', en: 'Official Kommo partner in Latin America (opens kommo.com)' }) } : {};
+const sealAlt = L({ es: 'Sello de partner oficial de Kommo', en: 'Official Kommo partner seal' });
 // Logos en máscara currentColor (public/img/logos). GoHighLevel: logotipo completo (172×38); Google y Meta: símbolo + nombre.
 const MARKS = [
   { name: 'GoHighLevel', logo: '/img/logos/gohighlevel.svg', ar: 172 / 38, word: true },
@@ -20,10 +22,10 @@ const MARKS = [
   { name: 'Meta', logo: '/img/logos/meta.svg', ar: 1 },
 ];
 ---
-<div class:list={['partners', `partners--${size}`, cls]} role="group" aria-label="Partners oficiales de Ingeniak: Kommo, GoHighLevel, Google y Meta">
-  {label && <span class="partners__k">Partners de</span>}
+<div class:list={['partners', `partners--${size}`, cls]} role="group" aria-label={L({ es: 'Partners oficiales de Ingeniak: Kommo, GoHighLevel, Google y Meta', en: 'Ingeniak’s official partners: Kommo, GoHighLevel, Google, and Meta' })}>
+  {label && <span class="partners__k">{L({ es: 'Partners de', en: 'Partnered with' })}</span>}
   <KTag class="partners__item partners__item--kommo" {...kAttrs}>
-    <span class="partners__seal"><img src={BADGE} alt="Sello de partner oficial de Kommo" width={w} height={h} loading="lazy" decoding="async" /></span>
+    <span class="partners__seal"><img src={BADGE} alt={sealAlt} width={w} height={h} loading="lazy" decoding="async" /></span>
   </KTag>
   {MARKS.map((m) => (
     <span class="partners__item">

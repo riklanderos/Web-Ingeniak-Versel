@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Good afternoon. Can you help me with the status of order 4512? We need it at the plant this week.", "delay": 900, "time": "4:37 PM" },
+  { "who": "kain", "text": "Hi! I'm Kain, from customer service. I just checked: order 4512 left the warehouse today at 1:20 PM and is on its way. Estimated delivery: Thursday morning.", "delay": 1100, "event": "Status checked in your ERP" },
+  { "who": "cliente", "text": "Perfect. Can you send me the tracking number and the invoice?", "delay": 1500 },
+  { "who": "kain", "text": "Sure. Here's the tracking info and the PDF invoice for order 4512.", "delay": 1000, "event": "Documents sent · conversation logged in your CRM" },
+  { "who": "cliente", "text": "One more thing: how many units of that part number do you have left? I want to order another two hundred.", "delay": 1600 },
+  { "who": "kain", "text": "I can't share inventory levels here. I'll pass your request to your account rep, with the part number and quantity, so they can confirm and send you a quote.", "delay": 1200, "event": "Task created for your account rep · quote" },
+  { "who": "cliente", "text": "OK, thanks.", "delay": 1100 },
+  { "who": "kain", "text": "Thank you. As soon as the order is delivered, I'll let you know in this chat.", "delay": 900 }
+]

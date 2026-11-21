@@ -22,9 +22,10 @@ const groupOf = (n: number) => {
   for (let g = 0; g < groups.length; g++) { acc += groups[g]; if (n < acc) return g; }
   return groups.length - 1;
 };
+import { L } from '../../lib/i18n';
 ---
 {list.length > 1 && (
-  <nav class="rail" data-rail data-mode={mode} aria-label="Secciones de esta página">
+  <nav class="rail" data-rail data-mode={mode} aria-label={L({ es: 'Secciones de esta página', en: 'Sections on this page' })}>
     <ol class="rail__list" role="list">
       {list.map((it, n) => (
         <li class="rail__item" data-group={groupOf(n)} data-gap={n > 0 && groupOf(n) !== groupOf(n - 1) ? '' : undefined}>

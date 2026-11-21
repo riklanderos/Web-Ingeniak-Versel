@@ -1,0 +1,62 @@
+{
+  "pageId": "en-agendar-gracias",
+  "url": "/en/book/thank-you/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (traducción con IA, 2026-11-20)",
+  "aprobadoPor": "",
+  "actualizado": "2026-11-20",
+  "pendientes": [
+    "INGLÉS · Traducción con IA del texto aprobado de /agendar/gracias/ (2026-11-11). Falta que Rik revise y apruebe la versión en inglés.",
+    "INGLÉS · H1 'Thanks for booking your Discovery Session' con lit 'Thanks' (en español, 'Gracias').",
+    "INGLÉS · Zona horaria: 'cuando' dice '{when} (Central Mexico time, CST, UTC−6)' y 'local' dice 'in your time zone'. Para quien reserva desde EE. UU. o Canadá la hora local es la importante: confirmar que el código sigue mostrando las dos horas y que {when} sale con formato en inglés (por ejemplo 'Tuesday, December 2, 10:00 a.m.'), no en español.",
+    "INGLÉS · 'Volver al inicio' → 'Back to home': el enlace debe ir a /en/, no a /. 'Elegir mi horario' (sin datos) debe llevar a /en/discovery/#agenda. Revisar en la plantilla.",
+    "INGLÉS · Esta página solo la alcanza la reserva hecha desde /en/discovery/: el componente de reserva en inglés debe redirigir aquí (/en/book/thank-you/) para medir la conversión del sitio en inglés por separado en GA4, Meta y Google Ads.",
+    "INGLÉS · waMessage en inglés y con aviso de que viene del sitio en inglés: mover la llamada ('Hi, I'm coming from the English site. I booked my Discovery Session and need to change the time.') y Message Kain ('Hi, I'm coming from the English site. I booked my Discovery Session and want to confirm a detail.').",
+    "INGLÉS · 'Si no la ves en tu bandeja de entrada, revisa promociones o spam' → '…check your Promotions or Spam folder' (nombres de las carpetas de Gmail en inglés)."
+  ],
+  "sections": {
+    "estado": {
+      "_componente": "ImageSection hero · gohighlevel-hero (Kain confirma una cita en un calendario de cristal; sujeto a la derecha; móvil split), como /agendar/confirmado/. Estados ok · sin-datos.",
+      "eyebrow": "Discovery Session · booking",
+      "h1": {
+        "text": "Thanks for booking your Discovery Session",
+        "lit": "Thanks"
+      },
+      "estados": {
+        "ok": {
+          "kicker": "Session booked",
+          "titulo": "You're all set, {nombre}. Your call is on the calendar.",
+          "tituloSinNombre": "You're all set. Your call is on the calendar.",
+          "cuando": "{when} (Central Mexico time, CST, UTC−6)",
+          "local": "in your time zone",
+          "invitacion": "We sent the Google Calendar invite to {email} with the Google Meet link. If you don't see it in your inbox, check your Promotions or Spam folder.",
+          "invitacionSinCorreo": "We sent you the Google Calendar invite with the Google Meet link. If you don't see it in your inbox, check your Promotions or Spam folder.",
+          "meet": "Open Meet link",
+          "inicio": "Back to home"
+        },
+        "sinDatos": {
+          "kicker": "Your booking",
+          "titulo": "We don't see a recent booking in this browser.",
+          "text": "If you already booked, the Google Calendar invite with the Google Meet link is in your email. If not, pick your time slot: it's 30 minutes and it's free.",
+          "agendar": "Pick my time slot"
+        }
+      },
+      "prep": {
+        "title": "To make the most of the 30 minutes",
+        "items": [
+          "Join five minutes early, from a computer if you can.",
+          "Know which part of your operation feels most stuck.",
+          "If you have numbers on hand (sales, leads, response times), even better.",
+          "No need to prepare a presentation: we'll ask the questions."
+        ]
+      },
+      "mover": "Need to reschedule? Message us on {wa} or email {email}.",
+      "moverWa": "WhatsApp",
+      "waMover": "Hi, I'm coming from the English site. I booked my Discovery Session and need to change the time.",
+      "ctaSecondary": {
+        "label": "Message Kain",
+        "waMessage": "Hi, I'm coming from the English site. I booked my Discovery Session and want to confirm a detail."
+      }
+    }
+  }
+}

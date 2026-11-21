@@ -24,7 +24,8 @@
 //   Si ningún sector pedido tiene guion, se usa el general (default.json), nunca el de salud salvo que se haya pedido salud:
 //   una página de otro sector no muestra una limpieza dental.
 import Icon from './Icon.astro';
-import { annotateFigures, SIM } from './ui-data';
+import { annotateFigures, SIM, sectorLabels, simChipLabel } from './ui-data';
+import { currentLang, L } from '../../lib/i18n';
 
 type Line = { from: 'cliente' | 'kain' | 'sistema'; text: string; time?: string; delay?: number; event?: string };
 type Tab = string | { id: string; label?: string };
@@ -34,15 +35,18 @@ interface Props {
   tabsOutside?: boolean; tabsFor?: string; prefill?: number; limit?: number; class?: string; id?: string;
 }
 const {
-  scripts: given, tabs: tabsProp, script, mode = 'inline', autoplay = true, aura = false, title = 'Agente de IA de tu negocio',
+  scripts: given, tabs: tabsProp, script, mode = 'inline', autoplay = true, aura = false, title = L({ es: 'Agente de IA de tu negocio', en: 'Your business’s AI agent' }),
   note, noteClause = true, control = 'timer', tabsOutside: tabsOut = false, tabsFor, prefill = 2, limit, class: cls, id,
 } = Astro.props;
 
-const LABELS: Record<string, string> = { salud: 'Salud', belleza: 'Belleza', nutricion: 'Nutrición', finanzas: 'Finanzas', inmobiliario: 'Inmobiliario', industrial: 'Industrial', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'HoReCa', default: 'General' };
-const NOTES: Record<string, string> = { salud: 'Kain no da diagnósticos ni consejo médico.', nutricion: 'Kain no da diagnósticos ni consejo médico.', finanzas: 'Kain no da asesoría financiera.' };
+const en = currentLang() === 'en';
+const LABELS = sectorLabels();
+const NOTES: Record<string, string> = en
+  ? { salud: 'Kain does not give diagnoses or medical advice.', nutricion: 'Kain does not give diagnoses or medical advice.', finanzas: 'Kain does not give financial advice.' }
+  : { salud: 'Kain no da diagnósticos ni consejo médico.', nutricion: 'Kain no da diagnósticos ni consejo médico.', finanzas: 'Kain no da asesoría financiera.' };
 
 // Respaldo en línea (ESPEC §5.3 ESC 05): pide limpieza a las 11 p. m., Kain ofrece dos horarios, confirma, "Registrado en tu CRM".
-const FALLBACK: Record<string, any[]> = {
+const FALLBACK_ES: Record<string, any[]> = {
   salud: [
     { who: 'cliente', text: 'Hola, ¿tienen lugar para una limpieza dental esta semana?', time: '11:02 p. m.' },
     { who: 'kain', text: 'Hola, soy Kain, el asistente de la clínica. Tengo dos horarios para tu limpieza: jueves a las 10:00 o viernes a las 17:30. ¿Cuál te acomoda?' },
@@ -51,15 +55,34 @@ const FALLBACK: Record<string, any[]> = {
   ],
 };
 // General (mismo arranque que src/data/chats/default.json): solo si falta también ese archivo.
-FALLBACK.default = [
+FALLBACK_ES.default = [
   { who: 'cliente', text: 'Hola, quiero informes. ¿Atienden los sábados?', time: '11:48 p. m.' },
   { who: 'kain', text: '¡Hola! Sí, los sábados atendemos de 9:00 a 14:00. ¿Qué servicio te interesa? Así te doy la información exacta.' },
   { who: 'cliente', text: 'Una cotización para mi negocio.' },
   { who: 'kain', text: 'Con gusto. ¿Me compartes tu nombre y qué necesitas cotizar? Con eso te agendo una llamada con un asesor.', event: 'Lead registrado en tu CRM' },
 ];
+// Inglés (versión /en/, 2026-11-20): mismos respaldos, por si falta src/data/chats/en/<sector>.json y el español.
+const FALLBACK_EN: Record<string, any[]> = {
+  salud: [
+    { who: 'cliente', text: 'Hi, do you have an opening for a teeth cleaning this week?', time: '11:02 PM' },
+    { who: 'kain', text: 'Hi, I’m Kain, the clinic’s assistant. I have two times for your cleaning: Thursday at 10:00 AM or Friday at 5:30 PM. Which works for you?' },
+    { who: 'cliente', text: 'Friday, please.' },
+    { who: 'kain', text: 'Done: your cleaning is set for Friday at 5:30 PM. I’ll send you a reminder here the day before.', event: 'Appointment logged in your CRM' },
+  ],
+  default: [
+    { who: 'cliente', text: 'Hi, I’d like some information. Are you open on Saturdays?', time: '11:48 PM' },
+    { who: 'kain', text: 'Hi! Yes, on Saturdays we’re open from 9:00 AM to 2:00 PM. Which service are you interested in? That way I can give you the exact details.' },
+    { who: 'cliente', text: 'A quote for my business.' },
+    { who: 'kain', text: 'Happy to help. Could you share your name and what you need a quote for? Then I’ll book you a call with an advisor.', event: 'Lead logged in your CRM' },
+  ],
+};
+const FALLBACK = en ? FALLBACK_EN : FALLBACK_ES;
 
 const files = import.meta.glob('../../data/chats/*.json', { eager: true, import: 'default' }) as Record<string, any>;
-const fileFor = (sector: string) => { const k = Object.keys(files).find((x) => x.endsWith(`/${sector}.json`)); return k ? files[k] : null; };
+// Guiones en inglés (versión /en/): src/data/chats/en/<sector>.json, mismos nombres y estructura. Si falta uno, va el español.
+const filesEn = import.meta.glob('../../data/chats/en/*.json', { eager: true, import: 'default' }) as Record<string, any>;
+const pick = (set: Record<string, any>, sector: string) => { const k = Object.keys(set).find((x) => x.endsWith(`/${sector}.json`)); return k ? set[k] : null; };
+const fileFor = (sector: string) => (en ? pick(filesEn, sector) : null) ?? pick(files, sector);
 /** "11:02 p. m." → "11:02 p. m." con espacios de no separación (la hora nunca se parte). */
 const nbsp = (s?: string) => (s ? String(s).trim().replace(/\s+/g, ' ') : s);
 const norm = (raw: any): Line[] => {
@@ -88,14 +111,15 @@ if (!sectors.length) {
 }
 
 const uid = id ?? `chat-${Math.random().toString(36).slice(2, 8)}`;
-const whoLabel = (f: Line['from']) => (f === 'kain' ? 'Kain' : f === 'sistema' ? 'Sistema' : 'Cliente');
-const simLabel = String(SIM.label).toUpperCase() === 'SIMULACIÓN' ? 'Simulación' : SIM.label;
+const sysLabel = L({ es: 'Sistema', en: 'System' });
+const whoLabel = (f: Line['from']) => (f === 'kain' ? 'Kain' : f === 'sistema' ? sysLabel : L({ es: 'Cliente', en: 'Customer' }));
+const simLabel = simChipLabel();
 const multi = sectors.length > 1;
 const tabsOutside = tabsOut || !!tabsFor;
 const innerTabs = multi && !tabsOutside;
-const transcript = SIM.transcript ?? 'Conversación completa';
-const moreLabel = SIM.more ?? 'Ver conversación completa';
-const moreShort = SIM.moreShort ?? 'Ver todo';          // paneles estrechos (≤ 220 px): nunca más ancho que la pantalla
+const transcript = SIM.transcript ?? L({ es: 'Conversación completa', en: 'Full conversation' });
+const moreLabel = SIM.more ?? L({ es: 'Ver conversación completa', en: 'See the full conversation' });
+const moreShort = SIM.moreShort ?? L({ es: 'Ver todo', en: 'See all' });          // paneles estrechos (≤ 220 px): nunca más ancho que la pantalla
 ---
 {mode === 'mini' ? (
   <span class:list={['chat chat--mini', cls]} id={id} aria-hidden="true" data-nosnippet>
@@ -104,7 +128,7 @@ const moreShort = SIM.moreShort ?? 'Ver todo';          // paneles estrechos (�
 ) : (
 <figure class:list={['chat', `chat--${mode}`, aura && 'chat--aura', tabsOutside && multi && 'chat--tabs-out', cls]} id={uid} data-chat
   data-autoplay={autoplay ? '' : undefined} data-chat-control={control === 'external' ? 'external' : undefined} data-prefill={prefill} data-nosnippet
-  data-label-pause={SIM.pause} data-label-play={SIM.play} data-chat-tabs-ext={tabsFor} aria-label={`Simulación de una conversación con Kain${multi ? ' por sector' : ''}`}>
+  data-label-pause={SIM.pause} data-label-play={SIM.play} data-chat-tabs-ext={tabsFor} aria-label={en ? `Simulated conversation with Kain${multi ? ', by industry' : ''}` : `Simulación de una conversación con Kain${multi ? ' por sector' : ''}`}>
   {aura && mode === 'inline' && <span class="chat__aura" aria-hidden="true"><img src="/img/marca/isotipo-cristal-640.webp" alt="" width="640" height="640" loading="lazy" decoding="async" /></span>}
   <div class:list={['chat__device', mode === 'inline' && 'glass-panel']}>
     <div class="chat__bar">
@@ -129,7 +153,7 @@ const moreShort = SIM.moreShort ?? 'Ver todo';          // paneles estrechos (�
       {sectors.map((s, i) => (
         <ol class="chat__log" id={`${uid}-p-${s.key}`} data-chat-panel={s.key}
           role={multi ? 'tabpanel' : undefined} aria-labelledby={multi ? `${uid}-tab-${s.key}` : undefined}
-          aria-label={multi ? undefined : `Conversación simulada: ${s.label}`} hidden={i > 0 ? true : undefined}>
+          aria-label={multi ? undefined : `${L({ es: 'Conversación simulada', en: 'Simulated conversation' })}: ${s.label}`} hidden={i > 0 ? true : undefined}>
           {s.stamp && <li class="chat__stamp" data-allow-number><span class="chat__stamp-l">{SIM.horaIlustrativa}</span><span class="chat__stamp-sep" aria-hidden="true"> · </span><span class="chat__stamp-t">{s.stamp}</span></li>}
           {s.lines.map((l, j) => (
             <>
@@ -140,7 +164,7 @@ const moreShort = SIM.moreShort ?? 'Ver todo';          // paneles estrechos (�
               </li>
               {l.event && (
                 <li class="chat__msg chat__msg--sistema" data-from="sistema" data-delay="450">
-                  <span class="sr-only">Sistema: </span><Icon name="check" size={14} class="chat__sys-i" />
+                  <span class="sr-only">{sysLabel}: </span><Icon name="check" size={14} class="chat__sys-i" />
                   <span class="chat__text" set:html={annotateFigures(l.event)} />
                 </li>
               )}
@@ -158,7 +182,7 @@ const moreShort = SIM.moreShort ?? 'Ver todo';          // paneles estrechos (�
   )}
   {note !== false && (
     <figcaption class="chat__note t-micro">
-      {sectors.map((s, i) => <span data-chat-note={s.key} hidden={i > 0 ? true : undefined}>{note ?? 'Simulación con un guion de ejemplo; las horas son ilustrativas.'}{noteClause && s.note && <>{' '}{s.note}</>}</span>)}
+      {sectors.map((s, i) => <span data-chat-note={s.key} hidden={i > 0 ? true : undefined}>{note ?? L({ es: 'Simulación con un guion de ejemplo; las horas son ilustrativas.', en: 'Simulation with a sample script; times are illustrative.' })}{noteClause && s.note && <>{' '}{s.note}</>}</span>)}
     </figcaption>
   )}
 </figure>

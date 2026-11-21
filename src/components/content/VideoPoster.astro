@@ -9,11 +9,12 @@
 // Gancho: [data-video] (ui.ts). Medición R10: document → "ingeniak:track" {name: video_play | video_50 | video_complete}.
 import Icon from '../ui/Icon.astro';
 
+import { L } from '../../lib/i18n';
 interface Props {
   src: string; poster?: string; videoPoster?: string; closeLabel?: string; captions?: string; mode?: 'inline' | 'modal'; title: string;
   label?: string; duration?: string; width?: number; height?: number; class?: string; id?: string;
 }
-const { src, poster, videoPoster, closeLabel = 'Cerrar video', captions, mode = 'modal', title, label = 'Ver video', duration, width = 1280, height = 720, class: cls, id } = Astro.props;
+const { src, poster, videoPoster, closeLabel = L({ es: 'Cerrar video', en: 'Close video' }), captions, mode = 'modal', title, label = L({ es: 'Ver video', en: 'Watch video' }), duration, width = 1280, height = 720, class: cls, id } = Astro.props;
 const vPoster = videoPoster ?? poster;
 const uid = id ?? `vid-${Math.random().toString(36).slice(2, 7)}`;
 const type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
@@ -23,14 +24,14 @@ const type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
     <div class="vposter__stage" style={`aspect-ratio:${width} / ${height}`}>
       {poster && <img class="vposter__img" src={poster} alt="" width={width} height={height} loading="lazy" decoding="async" />}
       <span class="vposter__shade" aria-hidden="true"></span>
-      <a class="vposter__play" href={src} type={type} data-video-play aria-label={`Reproducir: ${title}`}>
+      <a class="vposter__play" href={src} type={type} data-video-play aria-label={`${L({ es: 'Reproducir', en: 'Play' })}: ${title}`}>
         <span class="vposter__ring" aria-hidden="true"><Icon name="play" size={22} /></span>
         <span class="vposter__label">{label}{duration && <span class="vposter__dur" data-allow-number> · {duration}</span>}</span>
       </a>
       <template data-video-tpl>
         <video class="vposter__video" controls playsinline preload="none" poster={vPoster} width={width} height={height}>
           <source src={src} type={type} />
-          {captions && <track kind="subtitles" srclang="es" label="Español" src={captions} default />}
+          {captions && <track kind="subtitles" srclang="es" label={L({ es: 'Español', en: 'Spanish' })} src={captions} default />}
         </video>
       </template>
     </div>
@@ -49,7 +50,7 @@ const type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
         </div>
         <div class="vdialog__stage">
           <video class="vposter__video" controls playsinline preload="none" poster={vPoster} width={width} height={height} data-src={src} data-type={type}>
-            {captions && <track kind="subtitles" srclang="es" label="Español" src={captions} default />}
+            {captions && <track kind="subtitles" srclang="es" label={L({ es: 'Español', en: 'Spanish' })} src={captions} default />}
           </video>
         </div>
       </dialog>

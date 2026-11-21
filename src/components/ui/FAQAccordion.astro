@@ -7,9 +7,10 @@
 //   glass=true → la pregunta abierta usa cristal (solo cuando hay aura o imagen detrás, §2.8).
 import Icon from './Icon.astro';
 import { getFaqItems, annotateFigures } from './ui-data';
+import { L } from '../../lib/i18n';
 
 interface Props { ids: string[]; glass?: boolean; open?: number | false; headingLevel?: 3 | 4; label?: string; class?: string; id?: string }
-const { ids, glass = false, open = false, headingLevel = 3, label = 'Preguntas frecuentes', class: cls, id } = Astro.props;
+const { ids, glass = false, open = false, headingLevel = 3, label = L({ es: 'Preguntas frecuentes', en: 'Frequently asked questions' }), class: cls, id } = Astro.props;
 const items = getFaqItems(ids);
 const uid = id ?? `faq-${Math.random().toString(36).slice(2, 7)}`;
 const H = `h${headingLevel}` as any;

@@ -6,16 +6,18 @@
 // alianzas en conjunto va PartnerBadges (Kommo, GoHighLevel, Google y Meta). glass=true lo monta en .glass-chip (sobre placa).
 //   label → rótulo "PARTNER OFICIAL" junto al sello (por defecto sí) · text → frase larga "Partner oficial de Kommo en LATAM"
 import { SITE } from '../../lib/site';
+import { L } from '../../lib/i18n';
 interface Props { size?: 'sm' | 'md'; glass?: boolean; text?: boolean; label?: boolean; link?: boolean; class?: string }
 const { size = 'md', glass = false, text = false, label = true, link = true, class: cls } = Astro.props;
 const BADGE = '/img/logos/kommo-partner-blanco.webp'; // 318 × 144, blanco sobre transparente
 const h = 32;
 const w = Math.round((h * 318) / 144);
 const Tag = link ? 'a' : 'span';
-const attrs = link ? { href: SITE.kommo, target: '_blank', rel: 'noopener', 'aria-label': 'Partner oficial de Kommo en LATAM (abre kommo.com)' } : {};
+const attrs = link ? { href: SITE.kommo, target: '_blank', rel: 'noopener', 'aria-label': L({ es: 'Partner oficial de Kommo en LATAM (abre kommo.com)', en: 'Official Kommo partner in Latin America (opens kommo.com)' }) } : {};
+const sealAlt = L({ es: 'Sello de partner oficial de Kommo', en: 'Official Kommo partner seal' });
 ---
 <Tag class:list={['kommo-badge', `kommo-badge--${size}`, glass && 'glass-chip', cls]} {...attrs}>
-  <span class="kommo-badge__seal"><img src={BADGE} alt="Sello de partner oficial de Kommo" width={w} height={h} loading="lazy" decoding="async" /></span>
-  {label && !text && <span class="kommo-badge__k">Partner oficial</span>}
-  {text && <span class="kommo-badge__t">Partner oficial de Kommo en LATAM</span>}
+  <span class="kommo-badge__seal"><img src={BADGE} alt={sealAlt} width={w} height={h} loading="lazy" decoding="async" /></span>
+  {label && !text && <span class="kommo-badge__k">{L({ es: 'Partner oficial', en: 'Official partner' })}</span>}
+  {text && <span class="kommo-badge__t">{L({ es: 'Partner oficial de Kommo en LATAM', en: 'Official Kommo partner in Latin America' })}</span>}
 </Tag>

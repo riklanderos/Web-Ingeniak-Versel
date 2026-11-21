@@ -1,0 +1,171 @@
+{
+  "pageId": "en-caso-logistica",
+  "url": "/en/case-studies/logistics-n8n/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (traducción con IA, 2026-11-20)",
+  "aprobadoPor": "",
+  "actualizado": "2026-11-20",
+  "publishGate": {
+    "ok": true,
+    "fuente": "Rik Landeros, chat de construcción, 2026-11-14",
+    "_nota": "Puerta R2 abierta el 2026-11-14: Rik Landeros confirma por escrito publicar el caso completo e indexable (\"confirmo con los 4 casos\") con lo que ya estaba redactado. Los datos que el cliente no dio (ciudad, punto de partida, plazo, testimonio) siguen sin publicarse: esas filas y secciones se omiten. CaseTemplate e indexacion.mjs leen publishGate.ok."
+  },
+  "pendientes": [
+    "INGLÉS · Traducción con IA del 2026-11-20 a partir de caso-logistica.json; falta la revisión de Rik. 'estado' se conserva como en español ('aprobado') pero 'aprobadoPor' va vacío: decidir si la versión en inglés necesita su propia aprobación R1 antes de publicarse.",
+    "INGLÉS · Hechos sin cambios: cifra solo por token ({{metric:logistica-procesos}}), sin ciudad, sin tipo de logística, sin nombres de CRM/ERP/modelos, sin punto de partida, sin plazo del caso y sin testimonio. Se mantiene la indicación (6) del cliente: el texto no dice que los procesos 'run on their own'; habla de procesos automatizados y flujos que se disparan.",
+    "INGLÉS · H1: kicker 'Logistics:' + cifra + 'automated processes with n8n and AI agents'. Verificar que la etiqueta en inglés de logistica-procesos sea 'automated processes', porque el sitemap arma el H1 con {{metric:logistica-procesos|full}} y ambos deben coincidir.",
+    "INGLÉS · Enlaces que se quedan en español porque esas páginas no tienen versión en inglés: /servicios/automatizacion-n8n/, /industrias/industrial-logistica/, /servicios/desarrollo-software/, /metodologia/ y el 'Next case study' (/casos/clinica-dental-monterrey/, con su título traducido pero llevando a una página en español). Considerar que el siguiente reportaje apunte al otro caso en inglés (/en/case-studies/multi-brand-retail-kommo/, metricId retail-conversiones).",
+    "INGLÉS · Términos elegidos: 'flujos' → 'workflows'; 'disparadores en tiempo real' → 'real-time triggers'; 'Automatización con n8n' → 'n8n automation'; 'Software a la medida' → 'Custom software'; 'isotipo de Ingeniak' → 'Ingeniak logo mark'; fila 'Cifra' de la ficha → 'Key figure'; 'reportaje' → 'case study'.",
+    "INGLÉS · Frases adaptadas: '¿Qué procesos de tu operación siguen a mano?' → 'Which processes in your operation are still done by hand?'; 'Hagamos la lista contigo' → 'Let's make the list together.'; 'el equipo lo nota desde el principio' → 'your team notices it right away'.",
+    "INGLÉS · Fases VKTOR™: los verbos oficiales se tradujeron aquí ('We verify your operation', 'We design the concept', 'We transform', 'We operate alongside your team', 'We grow the results'). Unificar con la versión en inglés de la metodología si se define otra.",
+    "INGLÉS · vktor.lede conserva el rango general confirmado ('7 to 30 days, depending on the project's scope') como rango de Ingeniak, no como plazo del caso.",
+    "INGLÉS · ficha.note sigue diciendo 'Short case study…' (como 'Reportaje breve…' en español) aunque la puerta R2 está abierta; cambiarla junto con la versión en español.",
+    "INGLÉS · Mensaje de WhatsApp en inglés y avisa que la persona viene del sitio en inglés. Como en español, el copy usa el token {{metric:logistica-procesos|full}} y el sitemap dice 'with n8n'; se tradujeron tal cual."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (caso-logistica-hero, persona a la derecha) + Breadcrumbs + fila .chip-spec",
+      "rail": "Overview",
+      "h1": { "kicker": "Logistics:", "metricId": "logistica-procesos", "text": "automated processes with n8n and AI agents" },
+      "chips": ["Logistics", "n8n", "AI agents", "In operation"],
+      "lede": "We connected a logistics company's CRM, WhatsApp, ERP and AI models with n8n workflows that trigger in real time, the moment something changes in one of its systems.",
+      "ledeM": "We connected their CRM, WhatsApp, ERP and AI with n8n, in real time.",
+      "ctaPrimary": { "label": "Get a quote" },
+      "ctaSecondary": { "label": "Message Kain", "waMessage": "Hi Kain, I'm coming from the English site. I read the logistics case study with {{metric:logistica-procesos|full}} and I want to automate my operation." },
+      "illus": "Illustrative image of the industry"
+    },
+    "ficha": {
+      "_componente": "EntitySheet variant=case + .t-standfirst + crédito + SceneRail mode=labels (Quick Jump)",
+      "rail": "Context",
+      "eyebrow": "Case snapshot",
+      "entity": [
+        { "term": "Industry", "value": "Logistics", "confirmed": true },
+        { "term": "Service", "value": "n8n automation", "href": "/servicios/automatizacion-n8n/", "confirmed": true },
+        { "term": "Tools", "value": "n8n and AI agents", "confirmed": true },
+        { "term": "Connected systems", "value": "CRM, WhatsApp, ERP and AI models", "confirmed": true },
+        { "term": "Triggers", "value": "Real time", "confirmed": true },
+        { "term": "Status", "value": "Still in operation", "confirmed": true },
+        { "term": "Key figure", "value": "{{metric:logistica-procesos|full}}" }
+      ],
+      "deckBreve": "In logistics, a single shipment moves through several systems: the CRM where the sale closed, the ERP where the operation is recorded and the WhatsApp chat where someone asks about it. This company connected them with n8n workflows and AI agents that trigger in real time.",
+      "deck": "A logistics company connected its CRM, WhatsApp, ERP and AI models with n8n. This case study follows the automated processes: where they came from, how they were chosen and what each workflow does.",
+      "byline": "By the Ingeniak team",
+      "note": "Short case study: the figure, the industry and the connected systems, as we published them. The company name has been anonymized."
+    },
+    "punto-partida": {
+      "_componente": "Prose + nota al margen (ámbar)",
+      "_omitir": true,
+      "_nota": "D: 'Situación inicial con números del cliente [POR CONFIRMAR]… procesos manuales, horas y sistemas previos'. Se escribe cuando el cliente confirme por escrito cómo se hacían esos procesos antes (ver pendientes)."
+    },
+    "cifra": {
+      "_componente": "CaseFigure variant=nodes (un nodo cuadrado por proceso, unidos con ramas del isotipo; fijada +100 % en escritorio)",
+      "rail": "The figure",
+      "eyebrow": "The figure",
+      "h2": { "text": "Each square", "soft": "is an automated process." },
+      "figure": {
+        "variant": "nodes",
+        "caption": "Processes automated with n8n. Logistics company.",
+        "aria": "A network of square nodes, one per automated process, linked by branches of light."
+      },
+      "line": "The scene draws one node per process and links them with the branches of the Ingeniak logo mark. Each node is a workflow that triggers when something changes in one of the company's systems and puts the data where it's needed.",
+      "metricIds": ["logistica-procesos"],
+      "sourceNote": true
+    },
+    "implementacion": {
+      "_componente": "SystemFlow (los nodos con confirmed=false no se publican). No se pinta mientras el caso sea breve.",
+      "rail": "Solution",
+      "eyebrow": "What we implemented",
+      "h2": { "text": "Four systems,", "soft": "one network of workflows." },
+      "lede": "With n8n, we connected the company's CRM, WhatsApp, ERP and AI models, with real-time triggers.",
+      "nodes": [
+        { "label": "CRM", "line": "Customers, opportunities and their history.", "confirmed": true },
+        { "label": "WhatsApp", "line": "Where messages come in and go out.", "logos": ["whatsapp"], "confirmed": true },
+        { "label": "ERP", "line": "The core system of the operation.", "confirmed": true },
+        { "label": "n8n", "line": "The workflows that move each piece of data the moment something changes.", "logos": ["n8n"], "confirmed": true },
+        { "label": "AI models", "line": "Agents and models that work inside the workflows.", "confirmed": true }
+      ],
+      "body": [
+        "n8n is the layer that ties it all together: it listens to what happens in each system and, when something changes, triggers the right workflow. AI models come in wherever a workflow needs to understand a piece of text or make a simple decision.",
+        "That way, a piece of data is entered once and reaches every system that needs it."
+      ]
+    },
+    "resultado": {
+      "_componente": "ImageSection mid (ind-industrial-kain-sector; respaldo home-sistema-2-atender en espejo) + panel con casillas HTML ancladas. No se pinta mientras el caso sea breve.",
+      "rail": "Result",
+      "eyebrow": "Result",
+      "h2": { "text": "The whole case,", "soft": "in one sentence." },
+      "quote": "At a logistics company, we automated {{metric:logistica-procesos|full}} with n8n, connecting CRM, WhatsApp, ERP and AI models.",
+      "sourceNote": true,
+      "ui": {
+        "_nota": "Casillas que se encienden una a una sobre el panel de cristal. Llevan SIMULACIÓN y data-nosnippet: patrón ilustrativo, no un dato del caso. El slot va en femenino porque la plantilla arma 'cada casilla encendida es una …'.",
+        "title": "This week's workflows",
+        "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        "slot": "Task completed by a workflow"
+      }
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sin hitos del proyecto: fases genéricas aplicadas a una operación logística). No se pinta mientras el caso sea breve.",
+      "rail": "VKTOR",
+      "eyebrow": "How we do it with VKTOR™",
+      "h2": { "text": "From diagnosis", "soft": "to a workflow in production." },
+      "lede": "Here's how the five phases would look in your operation. An Ingeniak implementation takes 7 to 30 days, depending on the project's scope.",
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "We verify your operation", "line": "Which tasks your team repeats every day, which systems they live in and where the same data gets entered twice." },
+        { "letter": "K", "name": "Koncept", "verb": "We design the concept", "line": "Which process goes first, what triggers it and what happens if a system doesn't respond." },
+        { "letter": "T", "name": "Transform", "verb": "We transform", "line": "We build the workflows in n8n, connect them to your systems and test them with real data before we turn them on." },
+        { "letter": "O", "name": "Operate", "verb": "We operate alongside your team", "line": "Your team works with the workflows live, and we adjust whatever the operation calls for." },
+        { "letter": "R", "name": "Rise", "verb": "We grow the results", "line": "We measure time and errors every month and add the next process." }
+      ],
+      "links": [{ "label": "Learn about the VKTOR™ methodology", "href": "/metodologia/" }]
+    },
+    "replicar": {
+      "_componente": "ScriptList (3 filas) + enlace a /servicios/automatizacion-n8n/",
+      "rail": "Takeaways",
+      "eyebrow": "What you can replicate in your operation",
+      "h2": { "text": "Three ideas for automating", "soft": "without stopping your operation." },
+      "items": [
+        {
+          "n": "01",
+          "title": "Start with the process you repeat most",
+          "line": "Not the most complex one, but the one your team does most often each day: confirming an order, updating a status, flagging a route change. That's where every minute saved is multiplied by every time it happens, and your team notices it right away."
+        },
+        {
+          "n": "02",
+          "title": "Connect before you replace",
+          "line": "Switching ERPs or CRMs takes months and slows the whole company down. It usually makes more sense to connect the systems you already use so they share information with each other, and to replace only what's truly in the way. A workflow can read from the ERP and write to the CRM without either one changing."
+        },
+        {
+          "n": "03",
+          "title": "Set up real-time alerts",
+          "line": "A delay you report the next day is already a complaint. If the workflow catches the change as it happens and alerts the right person, your team solves it before the customer has to ask where their shipment is."
+        }
+      ],
+      "links": [{ "label": "Explore n8n automation", "href": "/servicios/automatizacion-n8n/" }]
+    },
+    "testimonio": {
+      "_componente": "Quote (condicional)",
+      "_omitir": true,
+      "_nota": "Solo con aprobación escrita del cliente (frase, nombre, cargo y empresa). Sin ella, la sección no existe en el HTML. No usar los borradores de testimonios de v1 (entre ellos el de 'TechLogistic', que era inventado)."
+    },
+    "relacionados": {
+      "_componente": "ScriptList (servicio, industria y software) + Still variant=next (Siguiente reportaje)",
+      "rail": "Keep exploring",
+      "eyebrow": "Keep exploring",
+      "items": [
+        { "title": "n8n automation", "line": "The service behind this case: n8n workflows that connect the systems you already use.", "href": "/servicios/automatizacion-n8n/" },
+        { "title": "Industrial and logistics", "line": "What the full system looks like at an industrial or logistics company.", "href": "/industrias/industrial-logistica/" },
+        { "title": "Custom software", "line": "For when no off-the-shelf tool fits your operation and it has to be built.", "href": "/servicios/desarrollo-software/" }
+      ],
+      "next": { "label": "Next case study", "title": "Dental clinic in Monterrey: AI agent on WhatsApp", "metricId": "dental-citas", "href": "/casos/clinica-dental-monterrey/" }
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer; cta-equipo espera la sesión de fotos R6)",
+      "rail": "Next step",
+      "eyebrow": "Your operation, in workflows",
+      "h2": { "text": "Which processes in your operation are still done by hand?", "soft": "Let's make the list together." },
+      "lede": "When you request a quote, tell us which tasks your team repeats every day and which systems they live in. From there, we'll figure out which one to automate first, without changing what already works.",
+      "ctaPrimary": { "label": "Get a quote" },
+      "ctaSecondary": { "label": "Message Kain", "waMessage": "Hi Kain, I'm coming from the English site. I read the logistics case study with {{metric:logistica-procesos|full}} and I want to automate my operation." }
+    }
+  }
+}

@@ -178,10 +178,11 @@ export async function run(opts) {
 
   // WhatsApp: mensaje propio y único por página
   // globales = los que aparecen en todas las páginas (con 3 o más páginas); el resto debe ser propio de cada página
+  // Versión en inglés (/en/, 2026-11-20): la navegación en inglés tiene sus propios mensajes globales; se calculan por idioma.
   const global = new Set();
-  if (waByPage.size >= 3) {
-    const all = [...waByPage.values()];
-    for (const m of all[0]) if (all.every((s) => s.has(m))) global.add(m);
+  for (const isEn of [false, true]) {
+    const all = [...waByPage].filter(([r]) => /^\/en\//.test(r) === isEn).map(([, v]) => v);
+    if (all.length >= 3) for (const m of all[0]) if (all.every((s) => s.has(m))) global.add(m);
   }
   const owner = new Map();
   for (const [route, msgs] of waByPage) {

@@ -2,9 +2,52 @@
 // Los tipos salen de sitemap.json → page.jsonLd ("Service (Offer price 0)" → Service con oferta de 0, etc.).
 // Reglas: sin legalName (razón social sin confirmar, §12.1-14); sin geo ni horario ([POR CONFIRMAR]);
 // FAQPage solo con las preguntas visibles que la página pasa (texto idéntico); autor = Organization mientras no se confirme (R8).
-import { pages, SITE, isBuilt, type Page } from '../../lib/site';
-import { PRICE_FROM_CAP } from '../../lib/metrics';
+import { allPages, SITE, isBuilt, type Page } from '../../lib/site';
+import { priceText } from '../../lib/metrics';
 import { OFFERS } from '../ui/ui-data';
+import { currentLang, langOfPage, HTML_LANG, type Lang } from '../../lib/i18n';
+
+/* Versión en inglés (2026-11-20): los textos del marcado salen en el idioma de la página (lang); en español, idénticos. */
+const TXT = {
+  es: {
+    knowsAbout: [
+      'Agentes de IA para WhatsApp', 'CRM con IA', 'Kommo', 'GoHighLevel', 'Automatización con n8n',
+      'Paid media', 'Páginas web de alta conversión', 'SEO y visibilidad en motores de IA', 'Software a la medida', 'Consultoría en inteligencia artificial',
+    ],
+    areaServed: ['México', 'Latinoamérica'],
+    country: 'México', region: 'Latinoamérica',
+    discovery: 'Discovery Session gratuita de 30 minutos',
+    power: 'Power Session · sesión 1:1 de 90 minutos, pago único',
+    brand: 'Sub-marca de agentes de IA de Ingeniak.',
+    howTo: 'Metodología VKTOR™',
+    vktor: [
+      ['Verify', 'Verificamos tu operación.'],
+      ['Koncept', 'Diseñamos el concepto.'],
+      ['Transform', 'Transformamos.'],
+      ['Operate', 'Operamos junto con tu equipo.'],
+      ['Rise', 'Hacemos crecer los resultados.'],
+    ],
+  },
+  en: {
+    knowsAbout: [
+      'WhatsApp AI agents', 'AI-powered CRM', 'Kommo', 'GoHighLevel', 'Automation with n8n',
+      'Paid media', 'High-converting websites', 'SEO and visibility in AI search engines', 'Custom software', 'Artificial intelligence consulting',
+    ],
+    areaServed: ['Mexico', 'Latin America'],
+    country: 'Mexico', region: 'Latin America',
+    discovery: 'Free 30-minute Discovery Session',
+    power: 'Power Session · 90-minute 1:1 session, one-time payment',
+    brand: 'Ingeniak’s AI agent sub-brand.',
+    howTo: 'VKTOR™ methodology',
+    vktor: [
+      ['Verify', 'We verify how you operate.'],
+      ['Koncept', 'We design the concept.'],
+      ['Transform', 'We transform.'],
+      ['Operate', 'We operate alongside your team.'],
+      ['Rise', 'We grow the results.'],
+    ],
+  },
+} satisfies Record<Lang, any>;
 
 /** Precio de la Power Session para el Offer del JSON-LD ("297"), derivado de OFFERS['power-price'] ("USD 297") de metrics.ts
  *  (CAMBIO-COTIZAR §4.4): nunca escrito a mano aquí. */
@@ -31,7 +74,7 @@ const address = {
   addressCountry: SITE.address.country,
 };
 
-export function organization() {
+export function organization(lang: Lang = currentLang()) {
   return {
     '@type': 'Organization',
     '@id': ORG_ID,
@@ -40,17 +83,14 @@ export function organization() {
     logo: { '@type': 'ImageObject', url: abs('/apple-touch-icon.png') },
     email: SITE.email,
     address,
-    contactPoint: [{ '@type': 'ContactPoint', contactType: 'sales', telephone: SITE.phoneE164, email: SITE.email, availableLanguage: ['es'] }],
+    contactPoint: [{ '@type': 'ContactPoint', contactType: 'sales', telephone: SITE.phoneE164, email: SITE.email, availableLanguage: ['es', 'en'] }],
     sameAs: Object.values(SITE.social),
     brand: { '@type': 'Brand', name: 'kain', url: `${SITE.kainApp}/` },
-    knowsAbout: [
-      'Agentes de IA para WhatsApp', 'CRM con IA', 'Kommo', 'GoHighLevel', 'Automatización con n8n',
-      'Paid media', 'Páginas web de alta conversión', 'SEO y visibilidad en motores de IA', 'Software a la medida', 'Consultoría en inteligencia artificial',
-    ],
+    knowsAbout: TXT[lang].knowsAbout,
   };
 }
 
-export function localBusiness(areaServed?: string[]) {
+export function localBusiness(areaServed?: string[], lang: Lang = currentLang()) {
   return {
     '@type': 'ProfessionalService',
     '@id': LOCAL_ID,
@@ -62,13 +102,13 @@ export function localBusiness(areaServed?: string[]) {
     telephone: SITE.phoneE164,
     address,
     parentOrganization: { '@id': ORG_ID },
-    areaServed: (areaServed ?? ['México', 'Latinoamérica']).map((n) => ({ '@type': 'Place', name: n })),
-    priceRange: PRICE_FROM_CAP,
+    areaServed: (areaServed ?? TXT[lang].areaServed).map((n) => ({ '@type': 'Place', name: n })),
+    priceRange: priceText('Price', lang),
   };
 }
 
-export function website() {
-  return { '@type': 'WebSite', '@id': SITE_ID, url: `${SITE.url}/`, name: SITE.name, inLanguage: 'es-MX', publisher: { '@id': ORG_ID } };
+export function website(lang: Lang = currentLang()) {
+  return { '@type': 'WebSite', '@id': SITE_ID, url: `${SITE.url}/`, name: SITE.name, inLanguage: HTML_LANG[lang], publisher: { '@id': ORG_ID } };
 }
 
 /** BreadcrumbList (QA r2 · decisión 3): los eslabones intermedios pasan por isBuilt(). Un hub sin construir (p. ej.
@@ -102,13 +142,6 @@ export function faqPage(items: FaqItem[], pageUrl: string) {
   };
 }
 
-const VKTOR = [
-  ['Verify', 'Verificamos tu operación.'],
-  ['Koncept', 'Diseñamos el concepto.'],
-  ['Transform', 'Transformamos.'],
-  ['Operate', 'Operamos junto con tu equipo.'],
-  ['Rise', 'Hacemos crecer los resultados.'],
-];
 
 /** Entidad con la que la página hija ya se describe en su propio @graph (el ItemList del hub la enlaza por @id). */
 function childEntity(p: Page): { type: string; frag: string } {
@@ -119,9 +152,10 @@ function childEntity(p: Page): { type: string; frag: string } {
   return { type: 'WebPage', frag: 'webpage' };
 }
 
-/** Hijos directos de un hub (páginas cuyo penúltimo breadcrumb es el hub). */
-function childrenOf(url: string) {
-  return pages.filter((p) => {
+/** Hijos directos de un hub (páginas cuyo penúltimo breadcrumb es el hub), del mismo idioma que el hub. */
+function childrenOf(url: string, lang: Lang) {
+  return allPages.filter((p) => {
+    if (langOfPage(p as any) !== lang) return false;
     const bc = (p.breadcrumbs as any[]) ?? [];
     return bc.length >= 2 && bc[bc.length - 2].url === url && p.url !== url && p.indexable && isBuilt(p.url);
   });
@@ -148,6 +182,9 @@ export type GraphOptions = {
 
 /** Arma el @graph de una página a partir de page.jsonLd. */
 export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
+  const lang = langOfPage(page as any);
+  const T = TXT[lang];
+  const inLanguage = HTML_LANG[lang];
   const url = abs(page.url === '/404' ? '/404/' : page.url);
   const pageId = `${url}#webpage`;
   const types = ((page.jsonLd as string[]) ?? []).map((t) => ({ raw: t, type: t.split(/[\s(×]/)[0] }));
@@ -164,7 +201,7 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
     url,
     name: o.title,
     description: o.description,
-    inLanguage: 'es-MX',
+    inLanguage,
     isPartOf: { '@id': SITE_ID },
     primaryImageOfPage: { '@type': 'ImageObject', url: abs(o.ogImage) },
   };
@@ -174,10 +211,10 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
   if (pageType === 'AboutPage') main.about = { '@id': ORG_ID };
   graph.push(main);
 
-  graph.push(organization(), website());
+  graph.push(organization(lang), website(lang));
   if (has('ProfessionalService') || pageType === 'ContactPage' || page.template === 'T-HOME') {
     const m = raw('ProfessionalService').match(/areaServed:\s*([^)]+)/);
-    graph.push(localBusiness(m ? m[1].split(',').map((x) => x.trim()) : undefined));
+    graph.push(localBusiness(m ? m[1].split(',').map((x) => x.trim()) : undefined, lang));
   }
   if (crumbs.length && (has('BreadcrumbList') || crumbs.length > 1)) graph.push(breadcrumbList(crumbs, page.url));
 
@@ -194,22 +231,22 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
       serviceType: page.primaryKeyword ?? page.h1,
       description: o.description,
       provider: { '@id': ORG_ID },
-      areaServed: [{ '@type': 'Country', name: 'México' }, { '@type': 'Place', name: 'Latinoamérica' }],
+      areaServed: [{ '@type': 'Country', name: T.country }, { '@type': 'Place', name: T.region }],
       url,
     };
     if (/audience/i.test(r)) {
       const sector = (crumbs[crumbs.length - 1]?.name ?? page.h1) as string;
       svc.audience = { '@type': 'BusinessAudience', audienceType: sector };
     }
-    if (/price 0/i.test(r)) svc.offers = { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'Discovery Session gratuita de 30 minutos', url };
+    if (/price 0/i.test(r)) svc.offers = { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: T.discovery, url };
     if (offerPower) {
       const amt = offerAmount('power-price');
-      if (amt) svc.offers = { '@type': 'Offer', ...amt, description: 'Power Session · sesión 1:1 de 90 minutos, pago único', url };
+      if (amt) svc.offers = { '@type': 'Offer', ...amt, description: T.power, url };
     }
     graph.push(svc);
   }
   if (has('ItemList')) {
-    const kids = childrenOf(page.url);
+    const kids = childrenOf(page.url, lang);
     if (kids.length)
       graph.push({
         '@type': 'ItemList',
@@ -223,8 +260,8 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
         }),
       });
   }
-  if (has('Blog')) graph.push({ '@type': 'Blog', '@id': `${url}#blog`, url, name: o.title, inLanguage: 'es-MX', publisher: { '@id': ORG_ID } });
-  if (has('Brand')) graph.push({ '@type': 'Brand', '@id': `${url}#brand`, name: 'kain', url: `${SITE.kainApp}/`, description: 'Sub-marca de agentes de IA de Ingeniak.' });
+  if (has('Blog')) graph.push({ '@type': 'Blog', '@id': `${url}#blog`, url, name: o.title, inLanguage, publisher: { '@id': ORG_ID } });
+  if (has('Brand')) graph.push({ '@type': 'Brand', '@id': `${url}#brand`, name: 'kain', url: `${SITE.kainApp}/`, description: T.brand });
   if (has('SoftwareApplication'))
     graph.push({
       '@type': 'SoftwareApplication',
@@ -234,14 +271,14 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
       operatingSystem: 'Web',
       url: `${SITE.kainApp}/`,
       publisher: { '@id': ORG_ID },
-      inLanguage: 'es-MX',
+      inLanguage,
     });
   if (has('HowTo'))
     graph.push({
       '@type': 'HowTo',
       '@id': `${url}#howto`,
-      name: 'Metodología VKTOR™',
-      step: (o.howToSteps?.length === VKTOR.length && o.howToSteps.every((x) => x?.name && x?.text) ? o.howToSteps.map((x) => [x.name, x.text]) : VKTOR)
+      name: T.howTo,
+      step: (o.howToSteps?.length === T.vktor.length && o.howToSteps.every((x) => x?.name && x?.text) ? o.howToSteps.map((x) => [x.name, x.text]) : T.vktor)
         .map(([n, t], i) => ({ '@type': 'HowToStep', position: i + 1, name: n, text: t })),
     });
   if (has('Article') || has('BlogPosting')) {
@@ -251,7 +288,7 @@ export function buildGraph(page: Page, o: GraphOptions): Record<string, any>[] {
       headline: page.h1,
       description: o.description,
       image: abs(o.ogImage),
-      inLanguage: 'es-MX',
+      inLanguage,
       mainEntityOfPage: { '@id': pageId },
       author: { '@id': ORG_ID },
       publisher: { '@id': ORG_ID },

@@ -12,6 +12,7 @@ import Metric from './Metric.astro';
 import { stillOf } from './ui-data';
 import { linkTarget } from '../../lib/site';
 import type { MetricId } from '../../lib/metrics';
+import { currentLang, localHref, L } from '../../lib/i18n';
 
 type Row = { n?: string | number; title: string; line?: string; href?: string; plate?: string; group?: string; metricId?: MetricId; external?: boolean };
 type Group = { label: string; glyph?: 'atraer' | 'atender' | 'organizar' | 'automatizar' | 'medir' | string; rows?: Row[]; href?: string };
@@ -33,7 +34,7 @@ if (followStill) for (const b of blocks) for (const r of b.rows) if (r.plate) { 
     {rows.map((r, i) => (
       <li class="steps__item" style={`--i:${i}`}>
         <span class="steps__rail" aria-hidden="true"><span class="steps__node"></span></span>
-        <span class="steps__n t-label t-label--cyan">Paso {numbered2(r)}</span>
+        <span class="steps__n t-label t-label--cyan">{L({ es: 'Paso', en: 'Step' })} {numbered2(r)}</span>
         <H class="steps__t t-h3">{r.title}</H>
         {r.line && <p class="steps__line">{r.line}</p>}
       </li>
@@ -46,12 +47,13 @@ if (followStill) for (const b of blocks) for (const r of b.rows) if (r.plate) { 
         {b.group && (
           <p class="script__glabel t-label">
             {b.group.glyph && <Icon name={b.group.glyph} size={20} class="script__glyph" />}
-            {b.group.href && linkTarget(b.group.href) ? <a href={linkTarget(b.group.href)!}>{b.group.label}</a> : b.group.label}
+            {b.group.href && linkTarget(b.group.href) ? <a href={localHref(linkTarget(b.group.href)!, currentLang())}>{b.group.label}</a> : b.group.label}
           </p>
         )}
         <ol class="script__list" aria-label={b.group?.label ?? label} data-ui-stagger>
           {b.rows.map((r0, i) => {
-            const r = { ...r0, href: r0.href ? linkTarget(r0.href) ?? undefined : undefined };   // ruta sin construir → fila sin enlace
+            const t0 = r0.href ? linkTarget(r0.href) : null;
+            const r = { ...r0, href: t0 ? localHref(t0, currentLang()) : undefined };   // ruta sin construir → fila sin enlace; en inglés, su gemela /en/
             const inner = (
               <>
                 {numbered && <span class="script__n" aria-hidden="true">{numbered2(r)}</span>}

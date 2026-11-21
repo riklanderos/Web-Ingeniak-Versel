@@ -1,7 +1,12 @@
 // src/scripts/cotizar/validar.ts — reglas del formulario "Cotizar proyecto" (CAMBIO-COTIZAR §2.4, dueño "modal").
 // Puras (sin DOM) y con los mensajes de cotizar.json → errores. Son las mismas que aplica server/cotizar.js: el cliente
 // solo adelanta lo que el servidor devolvería como 422.
-import cat from '../../data/cotizar.json';
+import catEs from '../../data/cotizar.json';
+import catEn from '../../data/cotizar-en.json';
+import { runtimeLang } from '../../lib/i18n';
+// Versión en inglés (/en/, 2026-11-20): mensajes de cotizar-en.json; slugs y límites son los mismos.
+const EN = runtimeLang() === 'en';
+const cat: typeof catEs = EN ? (catEn as typeof catEs) : catEs;
 import { normalizePhone, phoneMessage, type PhoneInput } from '../forms/phone';
 
 export type Campo =
@@ -25,7 +30,7 @@ export const ORDEN: Campo[] = [...PASOS[1], ...PASOS[2], ...PASOS[3]];
 export const pasoDe = (c: string): 1 | 2 | 3 => (PASOS[1].includes(c as Campo) ? 1 : PASOS[2].includes(c as Campo) ? 2 : 3);
 
 export const ERR = cat.errores as Record<string, string>;
-const GENERICO = 'Revisa esta respuesta.';
+const GENERICO = EN ? 'Check this answer.' : 'Revisa esta respuesta.';
 const L = cat.limites as { nombre: [number, number]; empresa: [number, number]; email: number; sitio: number; vision: number };
 const slugs = (list: { slug: string }[]) => new Set(list.map((x) => x.slug));
 const CAT: Record<string, Set<string>> = {

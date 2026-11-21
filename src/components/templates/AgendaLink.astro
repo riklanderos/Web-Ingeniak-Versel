@@ -4,12 +4,17 @@
 // por el formulario. «Cotizar proyecto» sigue siendo el único primario: esto es texto con enlace, nunca un .btn.
 // Apertura de R17 solo en la portada: los checks lo permiten por [data-agenda-link] (scripts/_html.mjs → isHomeAgendaLink).
 // Copy en home.json → sections.<id>.agendaLink {pre, label, href}.
+// Versión en inglés (/en/, 2026-11-20): /agendar/ es la agenda en español; en /en/ el enlace va a la agenda de la
+// Discovery en inglés (/en/discovery/#agenda). Los checks deben abrir la misma excepción para /en/ (ver isHomeAgendaLink).
+import { currentLang, localHref } from '../../lib/i18n';
 interface Props { link: { pre?: string; label: string; href: string }; section: string }
 const { link, section } = Astro.props;
+const lang = currentLang();
+const href = lang === 'en' && /^\/agendar\/?(?:[?#].*)?$/.test(link.href) ? '/en/discovery/#agenda' : localHref(link.href, lang);
 ---
 <p class="t-small hm-agenda">
   {link.pre && <span class="hm-agenda__pre">{link.pre}</span>}
-  <a class="lnk hm-agenda__a" href={link.href} data-agenda-link data-section={section}>{link.label}<span aria-hidden="true">→</span></a>
+  <a class="lnk hm-agenda__a" href={href} data-agenda-link data-section={section}>{link.label}<span aria-hidden="true">→</span></a>
 </p>
 
 <style>

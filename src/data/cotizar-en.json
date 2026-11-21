@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "titulo": "Get a quote",
+  "h": "Tell us what you need",
+  "desc": "Three short steps. We'll reach out within 2 business hours (Mexico time).",
+  "pasos": [
+    { "n": 1, "id": "necesidad", "titulo": "What you need", "h": "What do you want to solve?" },
+    { "n": 2, "id": "negocio", "titulo": "Your business", "h": "Tell us about your business" },
+    { "n": 3, "id": "contacto", "titulo": "Contact", "h": "How should we reach you?" }
+  ],
+  "servicios": [
+    { "slug": "agentes-ia", "label": "AI agents for WhatsApp", "glyph": "atender" },
+    { "slug": "crm-ia", "label": "AI-powered CRM (Kommo or GoHighLevel)", "glyph": "organizar" },
+    { "slug": "automatizacion", "label": "Process automation", "glyph": "automatizar" },
+    { "slug": "consultoria-ia", "label": "AI consulting", "glyph": "medir" },
+    { "slug": "paid-media", "label": "Paid media (ads)", "glyph": "atraer" },
+    { "slug": "web-design", "label": "Website", "glyph": "atraer" },
+    { "slug": "seo", "label": "SEO and visibility in AI search", "glyph": "atraer" },
+    { "slug": "branding", "label": "Branding and content", "glyph": "atraer" },
+    { "slug": "software", "label": "Custom software", "glyph": "automatizar" },
+    { "slug": "no-seguro", "label": "I'm not sure", "glyph": null, "exclusive": true }
+  ],
+  "objetivos": [
+    { "slug": "prospectos", "label": "Get more leads", "glyph": "atraer" },
+    { "slug": "respuesta", "label": "Reply fast to every customer", "glyph": "atender" },
+    { "slug": "orden", "label": "Organize sales and follow-up", "glyph": "organizar" },
+    { "slug": "tiempo", "label": "Take repetitive work off my team", "glyph": "automatizar" },
+    { "slug": "medir", "label": "Know what works and what doesn't", "glyph": "medir" },
+    { "slug": "marca", "label": "Launch or refresh my brand or website", "glyph": "atraer" },
+    { "slug": "otro", "label": "Other", "glyph": null }
+  ],
+  "industrias": [
+    { "slug": "salud", "label": "Healthcare" },
+    { "slug": "belleza", "label": "Beauty and aesthetics" },
+    { "slug": "nutricion", "label": "Nutrition" },
+    { "slug": "finanzas", "label": "Finance" },
+    { "slug": "inmobiliario", "label": "Real estate" },
+    { "slug": "industrial-logistica", "label": "Industrial and logistics" },
+    { "slug": "retail-ecommerce", "label": "Retail and e-commerce" },
+    { "slug": "horeca", "label": "Restaurants and hotels" },
+    { "slug": "servicios-profesionales", "label": "Professional services" },
+    { "slug": "construccion", "label": "Construction" },
+    { "slug": "educacion", "label": "Education" },
+    { "slug": "agencia-marketing", "label": "Agency or marketing" },
+    { "slug": "automotriz", "label": "Automotive" },
+    { "slug": "tecnologia-software", "label": "Technology and software" },
+    { "slug": "otra", "label": "Other" }
+  ],
+  "tamanos": [
+    { "slug": "solo", "label": "Just me" },
+    { "slug": "2-5", "label": "2–5" },
+    { "slug": "6-10", "label": "6–10" },
+    { "slug": "11-50", "label": "11–50" },
+    { "slug": "51-200", "label": "51–200" },
+    { "slug": "200+", "label": "Over 200" }
+  ],
+  "presupuestos": [
+    { "slug": "lt-1k", "label": "Under USD 1,000" },
+    { "slug": "1k-3k", "label": "USD 1,000 to 3,000" },
+    { "slug": "3k-5k", "label": "USD 3,000 to 5,000" },
+    { "slug": "5k-10k", "label": "USD 5,000 to 10,000" },
+    { "slug": "10k-20k", "label": "USD 10,000 to 20,000" },
+    { "slug": "20k-50k", "label": "USD 20,000 to 50,000" },
+    { "slug": "gt-50k", "label": "Over USD 50,000" },
+    { "slug": "no-se", "label": "Not sure yet" }
+  ],
+  "plazos": [
+    { "slug": "asap", "label": "As soon as possible" },
+    { "slug": "1-3m", "label": "In 1 to 3 months" },
+    { "slug": "3-6m", "label": "In 3 to 6 months" },
+    { "slug": "explorando", "label": "Just exploring" }
+  ],
+  "canales": [
+    { "slug": "whatsapp", "label": "WhatsApp" },
+    { "slug": "instagram", "label": "Instagram" },
+    { "slug": "facebook", "label": "Facebook" },
+    { "slug": "web", "label": "Website" },
+    { "slug": "correo", "label": "Email" },
+    { "slug": "telefono", "label": "Phone" },
+    { "slug": "mostrador", "label": "Store or front counter" }
+  ],
+  "crms": [
+    { "slug": "kommo", "label": "Kommo" },
+    { "slug": "gohighlevel", "label": "GoHighLevel" },
+    { "slug": "hubspot", "label": "HubSpot" },
+    { "slug": "otro", "label": "Another CRM" },
+    { "slug": "ninguno", "label": "None (Excel, a notebook, or just WhatsApp)" }
+  ],
+  "canalesPreferidos": [
+    { "slug": "whatsapp", "label": "WhatsApp" },
+    { "slug": "correo", "label": "Email" },
+    { "slug": "llamada", "label": "Phone call" }
+  ],
+  "paises": [
+    { "iso": "mx", "lada": "+52", "label": "Mexico", "digitos": [10] },
+    { "iso": "us", "lada": "+1", "label": "United States", "digitos": [10] },
+    { "iso": "co", "lada": "+57", "label": "Colombia", "digitos": [10] },
+    { "iso": "ar", "lada": "+54", "label": "Argentina", "digitos": [10, 11] },
+    { "iso": "es", "lada": "+34", "label": "Spain", "digitos": [9] },
+    { "iso": "cr", "lada": "+506", "label": "Costa Rica", "digitos": [8] },
+    { "iso": "ec", "lada": "+593", "label": "Ecuador", "digitos": [9] },
+    { "iso": "cl", "lada": "+56", "label": "Chile", "digitos": [9] },
+    { "iso": "pe", "lada": "+51", "label": "Peru", "digitos": [9] },
+    { "iso": "gt", "lada": "+502", "label": "Guatemala", "digitos": [8] },
+    { "iso": "otro", "lada": null, "label": "Other country", "digitos": [6, 14] }
+  ],
+  "limites": { "nombre": [3, 120], "empresa": [2, 160], "email": 200, "sitio": 200, "vision": 1000 },
+  "textos": {
+    "kicker": "Get a quote",
+    "continuar": "Continue",
+    "atras": "Back",
+    "enviar": "Request a quote",
+    "enviando": "Sending…",
+    "cerrar": "Close",
+    "pasoDe": "Step {n} of 3",
+    "consentimiento": "I agree that Ingeniak may contact me by WhatsApp and email about this request. I've read the {aviso}.",
+    "aviso": "Privacy Policy",
+    "resumenErrores": "We still need {n} details to quote your project:",
+    "resumenErroresUno": "We still need 1 detail to quote your project:",
+    "borrador": "We'll keep your answers while you stay on this page.",
+    "telefonoAyuda": {
+      "mx": "10 digits including the area code, without +52. That's where we'll message you.",
+      "pais": "{digitos} digits, without {lada}. That's where we'll message you.",
+      "otro": "Enter your country code, then your number. That's where we'll message you."
+    },
+    "exito": {
+      "h": "We got your request",
+      "hola": "Thanks, {nombre}.",
+      "folio": "Reference {folio}",
+      "queSigue": "What's next",
+      "pasos": [
+        "The Ingeniak team reviews your request.",
+        "{canal} to learn the details of your project.",
+        "If it makes sense for both of us, we prepare your quote with scope, timeline, and cost."
+      ],
+      "canal": {
+        "whatsapp": "Within 2 business hours (Mexico time), we'll reach out by WhatsApp and email",
+        "correo": "Within 2 business hours (Mexico time), we'll reach out by email",
+        "llamada": "Within 2 business hours (Mexico time), we'll call the number you gave us and follow up by email"
+      },
+      "wa": "Message Kain now",
+      "listo": "Done",
+      "simulacion": "Test mode · not sent to Kommo"
+    },
+    "falla": {
+      "h": "We couldn't send your request",
+      "p": "Your answers are still here. Try again or send them to us directly:",
+      "reintentar": "Try again",
+      "wa": "Message Kain",
+      "correo": "Send by email",
+      "muchos": "We received several submissions in a row. Wait a few minutes or message us on WhatsApp."
+    },
+    "waExito": "Hi Kain, I just requested a quote on the English site of ingeniak.mx (reference {folio}). I'm interested in: {servicios}. Can we continue here?",
+    "waFalla": "Hi Kain, I tried to request a quote on the English site of ingeniak.mx and it didn't go through. Company: {empresa}. I'm interested in: {servicios}. Budget: {presupuesto}. Timeline: {plazo}.",
+    "mailAsunto": "Website quote · {empresa}"
+  },
+  "errores": {
+    "servicios": "Pick at least one service.",
+    "objetivo": "Pick what you want to achieve first.",
+    "industria": "Pick your industry.",
+    "tamano": "Pick your team size.",
+    "presupuesto": "Pick a range, even a rough one.",
+    "plazo": "Pick when you need it.",
+    "nombre": "Enter your full name.",
+    "empresa": "Enter your company name.",
+    "telefono": "Enter the 10 digits of your WhatsApp number, including the area code (e.g. 33 1234 5678).",
+    "telefonoPais": "Enter the {digitos} digits of your WhatsApp number, without {lada}.",
+    "telefonoOtro": "Enter your WhatsApp number without the country code.",
+    "telefonoLada": "Enter your country code (for example, +1).",
+    "email": "Check your email address.",
+    "canal_preferido": "Pick how you'd like us to contact you.",
+    "canales": "Pick where your customers message you.",
+    "crm": "Pick one; if you don't use a CRM, select “None”.",
+    "sitio": "Enter your business website or a social media profile.",
+    "vision": "Tell us about your project: two lines are enough.",
+    "consentimiento": "We need your permission to contact you."
+  },
+  "prefill": {
+    "consultoria": { "servicio": "consultoria-ia" },
+    "agentes-whatsapp": { "servicio": "agentes-ia" },
+    "kain": { "servicio": "agentes-ia" },
+    "guadalajara": { "servicio": "agentes-ia" },
+    "art-costo": { "servicio": "agentes-ia" },
+    "art-agente-chatbot": { "servicio": "agentes-ia" },
+    "crm-ia": { "servicio": "crm-ia" },
+    "kommo": { "servicio": "crm-ia" },
+    "gohighlevel": { "servicio": "crm-ia" },
+    "art-kommo-ghl": { "servicio": "crm-ia" },
+    "art-partner-kommo": { "servicio": "crm-ia" },
+    "art-ghl-espanol": { "servicio": "crm-ia" },
+    "n8n": { "servicio": "automatizacion" },
+    "art-n8n": { "servicio": "automatizacion" },
+    "paid-media": { "servicio": "paid-media" },
+    "paginas-web": { "servicio": "web-design" },
+    "software": { "servicio": "software" },
+    "seo": { "servicio": "seo" },
+    "branding": { "servicio": "branding" },
+    "ind-salud": { "industria": "salud" },
+    "ind-belleza": { "industria": "belleza" },
+    "ind-nutricion": { "industria": "nutricion" },
+    "ind-finanzas": { "industria": "finanzas" },
+    "ind-inmobiliario": { "industria": "inmobiliario" },
+    "ind-industrial": { "industria": "industrial-logistica" },
+    "ind-retail": { "industria": "retail-ecommerce" },
+    "ind-horeca": { "industria": "horeca" },
+    "caso-dental": { "servicio": "agentes-ia", "industria": "salud" },
+    "caso-retail": { "servicio": "crm-ia", "industria": "retail-ecommerce" },
+    "caso-ecommerce": { "servicio": "paid-media", "industria": "retail-ecommerce" },
+    "caso-horeca": { "servicio": "paid-media", "industria": "horeca" },
+    "caso-logistica": { "servicio": "automatizacion", "industria": "industrial-logistica" }
+  }
+}

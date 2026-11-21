@@ -3,8 +3,9 @@
 // toc → índice (TOC) sticky en columnas 1–2 en escritorio; plegable (<details>) en móvil. El cuerpo va en columnas 3–9.
 // Subcomponentes: ./Figure.astro (figura con pie, sin tarjeta) y ./Quote.astro (solo citas con fuente).
 // Notas al pie: <sup class="fn"><a href="#fn-1" id="ref-1">1</a></sup> … <ol class="footnotes"><li id="fn-1">…</li></ol>
+import { L } from '../../lib/i18n';
 interface Props { toc?: { id: string; text: string; level?: 2 | 3 }[]; tocLabel?: string; class?: string; id?: string }
-const { toc, tocLabel = 'En este artículo', class: cls, id } = Astro.props;
+const { toc, tocLabel = L({ es: 'En este artículo', en: 'In this article' }), class: cls, id } = Astro.props;
 ---
 <div class:list={['prose-wrap', toc?.length && 'prose-wrap--toc', cls]} id={id}>
   {toc && toc.length > 0 && (

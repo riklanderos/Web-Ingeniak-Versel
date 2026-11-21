@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hi, do you have a table for four this Friday at 9 PM?", "delay": 900, "time": "8:46 PM" },
+  { "who": "kain", "text": "Hi! I'm Kain, from the restaurant. Friday at 9:00 PM I have a table for four on the terrace or in the dining room. Which do you prefer?", "delay": 1100 },
+  { "who": "cliente", "text": "Terrace. It's my wife's birthday, could you do something special for her?", "delay": 1600 },
+  { "who": "kain", "text": "How nice! I'll note it for the team. The manager will confirm the dessert tomorrow before 1:00 PM, since it depends on the kitchen. What name should I put the reservation under?", "delay": 1200 },
+  { "who": "cliente", "text": "Daniel.", "delay": 1100 },
+  { "who": "kain", "text": "All set, Daniel: terrace for four, Friday at 9:00 PM, with a birthday note. I'll message you Thursday to confirm.", "delay": 1000, "event": "Reservation logged in your CRM · source: Meta campaign" },
+  { "who": "cliente", "text": "Perfect, thanks.", "delay": 1300 },
+  { "who": "kain", "text": "Thank you, Daniel. See you Friday.", "delay": 800 }
+]

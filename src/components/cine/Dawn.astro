@@ -17,6 +17,7 @@ import Btn from '../ui/Btn.astro';
 import { resolvePlate, isPersonPlate, type Fallback, type Layout } from './plate';
 import { getPlate } from '../../lib/site';
 import { QUOTE, primaryLabel } from '../layout/cta';
+import { L } from '../../lib/i18n';
 
 interface CtaCopy {
   eyebrow?: string;
@@ -86,7 +87,7 @@ const toAgenda = /^#agenda\b/.test(copy?.primary?.href ?? '');
         {toAgenda
           ? <Btn variant="primary" href={copy.primary!.href} data-section={id} label={copy.primary?.label ?? QUOTE.label} />
           : <Btn variant="primary" cotizar data-section={id} micro label={primaryLabel({ ctaPrimary: copy.primary })} />}
-        {copy.secondary && <Btn variant="ghost" href={copy.secondary.href} label={copy.secondary.label ?? 'Escríbele a Kain'} />}
+        {copy.secondary && <Btn variant="ghost" href={copy.secondary.href} label={copy.secondary.label ?? L({ es: 'Escríbele a Kain', en: 'Message Kain' })} />}
       </div>
       {copy.note && <p class="t-micro dawn__note">{copy.note}</p>}
     </>

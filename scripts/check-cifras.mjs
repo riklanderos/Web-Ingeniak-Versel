@@ -15,14 +15,14 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { ROOT, parseArgs, reporter, loadPages, loadMetrics, parseHTML, walk, isEl, find, findAll, jsonLd, jsonStrings, norm, textOf, sectionIdOf, SITEMAP_RAW, TOKEN_RX, BUILT } from './_html.mjs';
+import { ROOT, parseArgs, reporter, loadPages, loadMetrics, loadMetricsEn, parseHTML, walk, isEl, find, findAll, jsonLd, jsonStrings, norm, textOf, sectionIdOf, SITEMAP_RAW, TOKEN_RX, BUILT } from './_html.mjs';
 
 // (?<![\d:]) evita horas ("16:00 Citas de mañana"); "citas/procesos/min" en minúsculas (una oración que empieza con "Citas" no es cifra)
 const FIG_RX = /(?<![\d:.,])\d+(?:[.,]\d+)?\s?(?:%|×|[xX]\b)|(?<![\d:.,])\d+\s+(?:citas|procesos)\b|(?<![\d:.,])\d+\s?min\b|USD\s?\d[\d.,]*/g;
 const PRICE_RX = /USD\s?\d[\d.,]*|(?:US)?\$\s?\d[\d.,]*|\b\d[\d.,]*\s?(?:MXN|pesos|dólares)\b/gi;
 const ALLOW_ONLY = /^(?:\d+\s?min|USD\s?\d[\d.,]*)$/i; // dentro de data-allow-number solo duración de la Discovery y precio
 // Microcopia fija del primario (ESPEC §2.9): no es cifra comercial. Pasa aunque falte data-allow-number, solo con la frase exacta.
-const MICRO_29 = /30\s?min\s*·\s*1:1\s*·\s*Google Meet\s*·\s*sin costo/gi;
+const MICRO_29 = /30\s?min\s*·\s*1:1\s*·\s*Google Meet\s*·\s*(?:sin costo|free)/gi;
 const inMicro = (s, a, b) => { MICRO_29.lastIndex = 0; let m; while ((m = MICRO_29.exec(s))) if (m.index <= a && m.index + m[0].length >= b) return true; return false; };
 
 /** Cadenas válidas de metrics.ts para buscar cobertura. */
@@ -53,7 +53,9 @@ function covered(text, a, b, strings) {
 }
 function priceOk(text, a, b, M) {
   const low = text.toLowerCase();
-  for (const p of [M.PRICE_FROM, M.PRICE_FROM_CAP, 'USD 997 al mes', ...Object.values(M.PRICES ?? {})]) {
+  // Versión en inglés (/en/, 2026-11-20): también los precios oficiales en inglés (PRICE_FROM_EN, PRICES_EN).
+  const E = (M.__en ??= loadMetricsEn());
+  for (const p of [M.PRICE_FROM, M.PRICE_FROM_CAP, 'USD 997 al mes', ...Object.values(M.PRICES ?? {}), E.PRICE_FROM, E.PRICE_FROM_CAP, ...Object.values(E.PRICES ?? {})]) {
     if (!p) continue;
     const n = p.toLowerCase();
     let i = low.indexOf(n);
@@ -66,8 +68,10 @@ async function formOptionLabels() {
   const out = [];
   const cj = join(ROOT, 'src/data/cotizar.json');
   if (existsSync(cj)) { try { for (const o of JSON.parse(readFileSync(cj, 'utf8')).presupuestos ?? []) if (o?.label) out.push(String(o.label)); } catch {} }
+  const cjEn = join(ROOT, 'src/data/cotizar-en.json');
+  if (existsSync(cjEn)) { try { for (const o of JSON.parse(readFileSync(cjEn, 'utf8')).presupuestos ?? []) if (o?.label) out.push(String(o.label)); } catch {} }
   const ag = join(ROOT, 'shared/agenda.js');
-  if (existsSync(ag)) { try { const m = await import(pathToFileURL(ag).href); for (const r of m.REVENUES ?? []) out.push(String(typeof r === 'string' ? r : r?.label ?? '')); } catch {} }
+  if (existsSync(ag)) { try { const m = await import(pathToFileURL(ag).href); for (const r of m.REVENUES ?? []) { out.push(String(typeof r === 'string' ? r : r?.label ?? '')); if (typeof r === 'string' && m.OPTION_LABELS_EN?.[r]) out.push(m.OPTION_LABELS_EN[r]); } } catch {} }
   return out.filter(Boolean).sort((a, b) => b.length - a.length);
 }
 const ctx = (s, a, b) => `…${s.slice(Math.max(0, a - 32), a)}[${s.slice(a, b)}]${s.slice(b, b + 32)}…`.replace(/\s+/g, ' ');

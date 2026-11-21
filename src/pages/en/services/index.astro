@@ -1,0 +1,9 @@
+---
+// /en/services/ · versión en inglés de /servicios/ (2026-11-20). Texto: src/content/paginas/en-servicios.json.
+import HubTemplate from '../../../components/templates/HubTemplate.astro';
+import { getPage, getCopy } from '../../../lib/site';
+
+const page = getPage('/en/services/');
+const copy = getCopy(page.id);
+---
+<HubTemplate page={page} copy={copy} />

@@ -10,14 +10,21 @@
 // Móvil: la misma lista arriba (botones aria-pressed + enlace "Ver industria →" de la fila activa) y UNA placa 4:5 a
 // sangre abajo. Sin carrusel de tarjetas y sin autoavance. Solo se descargan la placa activa y la siguiente.
 import Metric from '../ui/Metric.astro';
-import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { METRICS, metricText, priceText, type MetricId } from '../../lib/metrics';
+import { currentLang, localHref, L } from '../../lib/i18n';
 import { resolvePlate, boxPoint, type Fallback, type Resolved } from './plate';
 import PlatePicture from './PlatePicture.astro';
 
 interface Bubble { who: 'cliente' | 'kain'; text: string }
 interface Sector { slug: string; name: string; line: string; metricId?: MetricId; plate: string; href?: string; fallbackPlate?: Fallback; bubbles?: Bubble[] }
 interface Props { id?: string; sectors: Sector[]; autoplay?: number; label?: string; class?: string }
-const { id = 'industrias', sectors, autoplay = 4000, label = 'LOCACIÓN', class: cls } = Astro.props;
+const { id = 'industrias', sectors, autoplay = 4000, label = L({ es: 'LOCACIÓN', en: 'LOCATION' }), class: cls } = Astro.props;
+const lang = currentLang();
+const SOURCE_NOTE = priceText('source', lang);
+const T = L({
+  es: { see: (n: string) => `Ver la escena de ${n}`, go: 'Ver industria', sim: 'SIMULACIÓN', pause: 'Pausar el cambio automático' },
+  en: { see: (n: string) => `See the ${n} scene`, go: 'See industry', sim: 'SIMULATION', pause: 'Pause automatic switching' },
+});
 
 const resolved = sectors.map((s) => {
   let r = resolvePlate(s.plate, { fallbackPlate: s.fallbackPlate, alt: '', srcsetMax: 1920, where: `LocationSwitcher ${s.slug}` });
@@ -63,24 +70,24 @@ const anyMetric = sectors.some((s) => s.metricId);
       <ol class="loc__list" role="list">
         {sectors.map((s, i) => (
           <li class="loc__row" data-i={i} aria-current={i === 0 ? 'true' : undefined}>
-            <button class="loc__btn" type="button" aria-pressed={i === 0 ? 'true' : 'false'} data-i={i} aria-label={`Ver la escena de ${s.name}`}>
+            <button class="loc__btn" type="button" aria-pressed={i === 0 ? 'true' : 'false'} data-i={i} aria-label={T.see(s.name)}>
               <span class="loc__n t-label" aria-hidden="true">{pad(i + 1)}</span>
               <span class="loc__name">{s.name}</span>
-              <span class="loc__line">{s.line}{s.metricId && <> · <Metric id={s.metricId} variant="inline" label fn="1" /> <span class="loc__ctx">· {METRICS[s.metricId].ctx}</span></>}</span>
+              <span class="loc__line">{s.line}{s.metricId && <> · <Metric id={s.metricId} variant="inline" label fn="1" /> <span class="loc__ctx">· {metricText(s.metricId, 'ctx', lang)}</span></>}</span>
               <span class="loc__bar" aria-hidden="true"></span>
             </button>
-            {s.href && <a class="loc__go lnk--mono" href={s.href}>Ver industria <span aria-hidden="true">→</span></a>}
+            {s.href && <a class="loc__go lnk--mono" href={localHref(s.href, lang)}>{T.go} <span aria-hidden="true">→</span></a>}
           </li>
         ))}
       </ol>
       {anySim && (
         <figure class="loc__sim loc__sim--m solid" data-nosnippet aria-live="off" hidden={!b0.length || undefined}>
-          <span class="chip-sim">SIMULACIÓN</span>
+          <span class="chip-sim">{T.sim}</span>
           {[0, 1].map((k) => <p class:list={['loc__bub', `loc__bub--${b0[k]?.who ?? 'cliente'}`]} data-bub={k} hidden={!b0[k] || undefined}>{b0[k]?.text}</p>)}
         </figure>
       )}
       <div class="loc__ctrl">
-        <button class="btn-icon loc__pause" type="button" aria-label="Pausar el cambio automático" aria-pressed="false" data-pause>
+        <button class="btn-icon loc__pause" type="button" aria-label={T.pause} aria-pressed="false" data-pause>
           <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-pause"><path d="M9 6v12M15 6v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none" /></svg>
           <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-play"><path d="M8 6l10 6-10 6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="none" /></svg>
         </button>
@@ -102,7 +109,7 @@ const anyMetric = sectors.some((s) => s.metricId);
       <div class="is__layer is__layer--anchors">
         <div class="stage">
           <figure class="anchor loc__sim loc__sim--d solid" data-nosnippet aria-live="off" hidden={!b0.length || undefined}>
-            <span class="chip-sim">SIMULACIÓN</span>
+            <span class="chip-sim">{T.sim}</span>
             {[0, 1].map((k) => <p class:list={['loc__bub', `loc__bub--${b0[k]?.who ?? 'cliente'}`]} data-bub={k} hidden={!b0[k] || undefined}>{b0[k]?.text}</p>)}
           </figure>
         </div>

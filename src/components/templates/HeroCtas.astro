@@ -10,6 +10,7 @@
 import Btn from '../ui/Btn.astro';
 import { annotateFigures } from '../ui/ui-data';
 import { QUOTE } from '../layout/cta';
+import { L } from '../../lib/i18n';
 
 interface Props {
   href?: string;
@@ -26,7 +27,7 @@ interface Props {
   waClass?: string;
   class?: string;
 }
-const { href = QUOTE.href, label = QUOTE.label, waHref, waLabel = 'Escríbele a Kain', micro = QUOTE.micro, section = 'hero', servicio, industria, primaryAttrs = {}, waClass, class: cls } = Astro.props;
+const { href = QUOTE.href, label = QUOTE.label, waHref, waLabel = L({ es: 'Escríbele a Kain', en: 'Message Kain' }), micro = QUOTE.micro, section = 'hero', servicio, industria, primaryAttrs = {}, waClass, class: cls } = Astro.props;
 const agenda = /^#agenda\b/.test(href);
 const cotizar = agenda ? undefined : { ...(servicio ? { servicio } : {}), ...(industria ? { industria } : {}) };
 const groups = String(micro ?? '').split(/\s+·\s+/).filter(Boolean);

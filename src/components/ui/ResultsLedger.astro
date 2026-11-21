@@ -7,24 +7,35 @@
 // filters=true → chips de sector y servicio que filtran las filas ya renderizadas (ui.ts, sin fetch).
 // filter={service|sector} → recorta el registro en el build (p. ej. solo "agentes" en su servicio).
 import Icon from './Icon.astro';
-import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { METRICS, metricText, priceText, type MetricId } from '../../lib/metrics';
 import { LEDGER, figureParts } from './ui-data';
 import { linkTarget } from '../../lib/site';
+import { currentLang, localHref, L } from '../../lib/i18n';
 
 interface Props {
   ids?: MetricId[]; filter?: { service?: string; sector?: string }; filters?: boolean;
   caption?: string; id?: string; class?: string;
 }
 const DEFAULT: MetricId[] = ['dental-citas', 'dental-respuesta', 'retail-conversiones', 'ecom-cpl', 'horeca-roas', 'logistica-procesos', 'salud-citas-mes', 'tiempo-operativo', 'ecom-tablero'];
-const { ids = DEFAULT, filter, filters = false, caption = 'Registro de resultados', id, class: cls } = Astro.props;
+const lang = currentLang();
+const en = lang === 'en';
+const { ids = DEFAULT, filter, filters = false, caption = L({ es: 'Registro de resultados', en: 'Results log' }), id, class: cls } = Astro.props;
+const SOURCE_NOTE = priceText('source', lang);
+// Cifra en el idioma de la página (en español, idéntica a METRICS); el enlace al caso va a su gemela /en/ si existe.
+const mOf = (k: MetricId) => ({ ...METRICS[k], value: metricText(k, 'value', lang), label: metricText(k, 'label', lang), ctx: metricText(k, 'ctx', lang) });
+const caseHref = (h?: string) => { const t = h ? linkTarget(h) : null; return t ? localHref(t, lang) : null; };
 
 const rows = ids
-  .map((k) => ({ id: k, m: METRICS[k], x: LEDGER[k] }))
+  .map((k) => ({ id: k, m: mOf(k), x: LEDGER[k] }))
   .filter((r) => !filter?.service || r.x?.service?.slug === filter.service)
   .filter((r) => !filter?.sector || r.x?.sectorSlug === filter.sector);
 
-const SECTORS: Record<string, string> = { salud: 'Salud', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'HoReCa', logistica: 'Logística', varios: 'Varios' };
-const SERVICES: Record<string, string> = { agentes: 'Agentes de IA', crm: 'CRM', automatizacion: 'Automatización', 'paid-media': 'Paid media', datos: 'Datos' };
+const SECTORS: Record<string, string> = en
+  ? { salud: 'Healthcare', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'Hospitality', logistica: 'Logistics', varios: 'Several' }
+  : { salud: 'Salud', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'HoReCa', logistica: 'Logística', varios: 'Varios' };
+const SERVICES: Record<string, string> = en
+  ? { agentes: 'AI agents', crm: 'CRM', automatizacion: 'Automation', 'paid-media': 'Paid media', datos: 'Data' }
+  : { agentes: 'Agentes de IA', crm: 'CRM', automatizacion: 'Automatización', 'paid-media': 'Paid media', datos: 'Datos' };
 const usedSectors = [...new Set(rows.map((r) => r.x?.sectorSlug).filter(Boolean))] as string[];
 const usedServices = [...new Set(rows.map((r) => r.x?.service?.slug).filter(Boolean))] as string[];
 const tid = id ?? 'registro';
@@ -33,12 +44,17 @@ const isHere = (href?: string) => !!href && href.split('#')[0].replace(/\/?$/, '
 const noWin = rows.some((r) => !r.x?.window);
 const noSvc = rows.some((r) => !r.x?.service);
 // Leyenda del guion: describe lo que falta, sin prometer que se publicará (respuesta #1 del cliente: "Solo ponlo").
-const dashes = noWin && noSvc ? 'sin ventana ni servicio publicados' : noWin ? 'sin ventana publicada' : noSvc ? 'sin servicio publicado' : '';
+const dashes = en
+  ? (noWin && noSvc ? 'no published time frame or service' : noWin ? 'no published time frame' : noSvc ? 'no published service' : '')
+  : (noWin && noSvc ? 'sin ventana ni servicio publicados' : noWin ? 'sin ventana publicada' : noSvc ? 'sin servicio publicado' : '');
+const T = en
+  ? { filter: 'Filter results', all: 'All', result: 'Result', what: 'What changed', where: 'Industry and city', when: 'Time frame', svc: 'Service', see: 'See case study', noWin: 'No published time frame', noSvc: 'Service not published', anon: 'Client names anonymized.' }
+  : { filter: 'Filtrar resultados', all: 'Todos', result: 'Resultado', what: 'Qué cambió', where: 'Sector y ciudad', when: 'Plazo', svc: 'Servicio', see: 'Ver caso', noWin: 'Sin ventana publicada', noSvc: 'Servicio no publicado', anon: 'Nombres de clientes anonimizados.' };
 ---
 <div class:list={['ledger', cls]} id={id} data-ledger>
   {filters && (
-    <div class="ledger__filters" role="group" aria-label="Filtrar resultados">
-      <button type="button" class="ledger__chip" aria-pressed="true" data-ledger-filter="all">Todos</button>
+    <div class="ledger__filters" role="group" aria-label={T.filter}>
+      <button type="button" class="ledger__chip" aria-pressed="true" data-ledger-filter="all">{T.all}</button>
       {usedServices.map((s) => <button type="button" class="ledger__chip" aria-pressed="false" data-ledger-filter={`service:${s}`}>{SERVICES[s] ?? s}</button>)}
       <span class="ledger__sep" aria-hidden="true"></span>
       {usedSectors.map((s) => <button type="button" class="ledger__chip" aria-pressed="false" data-ledger-filter={`sector:${s}`}>{SECTORS[s] ?? s}</button>)}
@@ -49,8 +65,8 @@ const dashes = noWin && noSvc ? 'sin ventana ni servicio publicados' : noWin ? '
     <caption class="sr-only">{caption}</caption>
     <thead>
       <tr>
-        <th scope="col">Resultado</th><th scope="col">Qué cambió</th><th scope="col">Sector y ciudad</th>
-        <th scope="col">Plazo</th><th scope="col">Servicio</th><th scope="col"><span class="sr-only">Ver caso</span></th>
+        <th scope="col">{T.result}</th><th scope="col">{T.what}</th><th scope="col">{T.where}</th>
+        <th scope="col">{T.when}</th><th scope="col">{T.svc}</th><th scope="col"><span class="sr-only">{T.see}</span></th>
       </tr>
     </thead>
     <tbody>
@@ -59,14 +75,14 @@ const dashes = noWin && noSvc ? 'sin ventana ni servicio publicados' : noWin ? '
           <th scope="row" class="ledger__v">{figureParts(m.value).map((p) => p.k === 'num' ? p.t : <span class={`metric__${p.k}`}>{p.t}</span>)}</th>
           <td class="ledger__what">{m.label}</td>
           <td class="ledger__where">{x?.sector ?? m.ctx}{x?.city && <span class="ledger__city"> · {x.city}</span>}</td>
-          <td class="ledger__when">{x?.window ?? <span aria-label="Sin ventana publicada">—</span>}</td>
-          <td class="ledger__svc">{x?.service ? (isHere(x.service.href) || !linkTarget(x.service.href) ? <span class="ledger__here">{x.service.name}</span> : <a href={x.service.href}>{x.service.name}</a>) : <span aria-label="Servicio no publicado">—</span>}</td>
+          <td class="ledger__when">{x?.window ?? <span aria-label={T.noWin}>—</span>}</td>
+          <td class="ledger__svc">{x?.service ? (isHere(x.service.href) || !linkTarget(x.service.href) ? <span class="ledger__here">{x.service.name}</span> : <a href={x.service.href}>{x.service.name}</a>) : <span aria-label={T.noSvc}>—</span>}</td>
           <td class="ledger__go">
-            {m.href && linkTarget(m.href) ? <a class="ledger__link" href={m.href} aria-label={`Ver caso: ${m.value} ${m.label}, ${x?.sector ?? m.ctx}`}><Icon name="arrow" size={20} /></a> : null}
+            {m.href && caseHref(m.href) ? <a class="ledger__link" href={caseHref(m.href)!} aria-label={`${T.see}: ${m.value} ${m.label}, ${x?.sector ?? m.ctx}`}><Icon name="arrow" size={20} /></a> : null}
           </td>
         </tr>
       ))}
     </tbody>
   </table>
-  <p class="t-micro ledger__note" id={`${tid}-note`}>{SOURCE_NOTE}. Nombres de clientes anonimizados.{dashes && <span class="ledger__dash-note"> "—" = {dashes}.</span>}</p>
+  <p class="t-micro ledger__note" id={`${tid}-note`}>{SOURCE_NOTE}. {T.anon}{dashes && <span class="ledger__dash-note"> "—" = {dashes}.</span>}</p>
 </div>

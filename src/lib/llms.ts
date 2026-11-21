@@ -4,7 +4,10 @@
 // Precio: solo PRICE_FROM. Cifras: solo metrics.ts. Un caso breve (noindex) no se enlaza; su línea de resultado se queda sin enlace.
 // Las landings ocultas (hidden: true → noindex) no entran: indexablePages() ya las excluye (ESPEC §12.6 R17).
 import { METRICS, PRICE_FROM, SOURCE_NOTE, type MetricId } from './metrics';
-import { SITE, pages, indexablePages, copyOrNull, isBuilt, type Page } from './site';
+import { SITE, pages, indexablePages, indexableEnPages, copyOrNull, isBuilt, type Page } from './site';
+import { currentLang, setCurrentLang } from './i18n';
+/** Genera con el idioma de la página en inglés activo (cifras y precios en inglés) y lo restaura. */
+function inEnglish<T>(fn: () => T): T { const prev = currentLang(); setCurrentLang('en'); try { return fn(); } finally { setCurrentLang(prev); } }
 import { tokensToText, getFaqItems, VKTOR } from '../components/ui/ui-data';
 
 const abs = (u: string) => `${SITE.url}${u}`;
@@ -74,6 +77,13 @@ export function buildLlms(): string {
     if (!list.length) continue;
     out.push(`## ${title}`);
     for (const p of list) out.push(`- [${shortTitle(p)}](${abs(p.url)}): ${one(p.metaDescription ?? '')}`);
+    out.push('');
+  }
+  // Versión en inglés (/en/, 2026-11-20): las páginas traducidas, en su propia sección.
+  const en = indexableEnPages();
+  if (en.length) {
+    out.push('## English version');
+    for (const p of en) out.push(`- [${shortTitle(p)}](${abs(p.url)}): ${one(p.metaDescription ?? '')}`);
     out.push('');
   }
   out.push(`Texto completo de estas páginas: ${abs('/llms-full.txt')}`);
@@ -167,7 +177,8 @@ function pageText(p: Page): string {
 export function buildLlmsFull(): string {
   const live = indexablePages();
   const head = ['# Ingeniak · texto completo', '', `> ${SUMMARY}`, '', '## Ficha', ...entityLines().map((l) => `- ${l}`), '', '---', ''];
-  return head.join('\n') + live.map(pageText).join('\n---\n\n') + '\n';
+  const en = inEnglish(() => indexableEnPages().map(pageText));
+  return head.join('\n') + [...live.map(pageText), ...en].join('\n---\n\n') + '\n';
 }
 
 export const TEXT_HEADERS = { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'public, max-age=3600' };

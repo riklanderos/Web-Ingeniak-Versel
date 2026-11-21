@@ -10,7 +10,12 @@
 //     Mientras dice "Enviando…" no se cierra (Esc, X ni fondo) y el foco se queda en el botón (aria-disabled); si el
 //     navegador lo cierra de todos modos, el resultado (éxito, falla con WhatsApp y correo, o 422) lo vuelve a abrir.
 //   · Medición (§2.8): ingeniak:track sin texto escrito por la persona ni datos de contacto.
-import cat from '../../data/cotizar.json';
+import catEs from '../../data/cotizar.json';
+import catEn from '../../data/cotizar-en.json';
+// Versión en inglés (/en/, 2026-11-20): <html lang="en-US"> usa los textos de cotizar-en.json (mismos slugs; el servidor
+// y Kommo siguen recibiendo los mismos valores).
+const EN = document.documentElement.lang.toLowerCase().startsWith('en');
+const cat: typeof catEs = EN ? (catEn as typeof catEs) : catEs;
 import { lock, unlock, track, reducedMotion } from '../nav/overlay';
 import { bindPhone } from '../forms/phone';
 import { gaClientId } from '../ga-cliente';
@@ -630,7 +635,7 @@ function invalid(serverErrors: Record<string, unknown>) {
   const e: Errores = {};
   for (const [k, v] of Object.entries(serverErrors)) {
     const c = campoDe(k);
-    if (c) e[c] = typeof v === 'string' && v ? v : cat.errores[c as keyof typeof cat.errores] ?? 'Revisa esta respuesta.';
+    if (c) e[c] = typeof v === 'string' && v ? v : cat.errores[c as keyof typeof cat.errores] ?? (EN ? 'Check this answer.' : 'Revisa esta respuesta.');
   }
   track('cotizar_error', { status: 422 });
   if (!Object.keys(e).length) { fail(422, sanear(collect())); return; }
@@ -641,24 +646,25 @@ function resumen(data: Datos): string {
   const L = (k: string, v: string) => (v ? `${k}: ${v}` : '');
   const tel = data.telefono.lada && data.telefono.numero ? `${data.telefono.lada}${data.telefono.numero}` : '';
   const lines = [
-    'Hola, quise pedir una cotización en ingeniak.mx y el formulario no se envió. Estos son mis datos:',
+    EN ? "Hi, I tried to request a quote on the English site of ingeniak.mx and the form didn't go through. Here are my details:"
+      : 'Hola, quise pedir una cotización en ingeniak.mx y el formulario no se envió. Estos son mis datos:',
     '',
-    L('Servicios', labelsOf(cat.servicios, data.servicios)),
-    L('Qué quiero lograr primero', labelOf(cat.objetivos, data.objetivo)),
-    L('Industria', labelOf(cat.industrias, data.industria)),
-    L('Personas en el equipo', labelOf(cat.tamanos, data.tamano)),
-    L('Presupuesto estimado', labelOf(cat.presupuestos, data.presupuesto)),
-    L('Plazo', labelOf(cat.plazos, data.plazo)),
-    L('Canales que usamos hoy', labelsOf(cat.canales, data.canales)),
-    L('CRM actual', labelOf(cat.crms, data.crm)),
+    L(EN ? 'Services' : 'Servicios', labelsOf(cat.servicios, data.servicios)),
+    L(EN ? 'What I want to achieve first' : 'Qué quiero lograr primero', labelOf(cat.objetivos, data.objetivo)),
+    L(EN ? 'Industry' : 'Industria', labelOf(cat.industrias, data.industria)),
+    L(EN ? 'People on the team' : 'Personas en el equipo', labelOf(cat.tamanos, data.tamano)),
+    L(EN ? 'Estimated budget' : 'Presupuesto estimado', labelOf(cat.presupuestos, data.presupuesto)),
+    L(EN ? 'Timeline' : 'Plazo', labelOf(cat.plazos, data.plazo)),
+    L(EN ? 'Channels we use today' : 'Canales que usamos hoy', labelsOf(cat.canales, data.canales)),
+    L(EN ? 'Current CRM' : 'CRM actual', labelOf(cat.crms, data.crm)),
     '',
-    L('Nombre', data.nombre),
-    L('Empresa', data.empresa),
+    L(EN ? 'Name' : 'Nombre', data.nombre),
+    L(EN ? 'Company' : 'Empresa', data.empresa),
     L('WhatsApp', tel),
-    L('Correo', data.email),
-    L('Prefiero que me contacten por', labelOf(cat.canalesPreferidos, data.canal_preferido)),
-    L('Sitio o redes', data.sitio),
-    L('Mi proyecto', data.vision),
+    L(EN ? 'Email' : 'Correo', data.email),
+    L(EN ? 'Preferred contact method' : 'Prefiero que me contacten por', labelOf(cat.canalesPreferidos, data.canal_preferido)),
+    L(EN ? 'Website or social media' : 'Sitio o redes', data.sitio),
+    L(EN ? 'My project' : 'Mi proyecto', data.vision),
   ];
   return lines.filter((l, i, a) => l !== '' || (i > 0 && a[i - 1] !== '')).join('\r\n').trim();
 }
@@ -681,7 +687,7 @@ function fail(status: number, data: Datos) {
     wa.href = `${waBase}?text=${encodeURIComponent(txt)}`;
   }
   const mail = $<HTMLAnchorElement>('[data-qm-mail]');
-  if (mail) mail.href = `mailto:${EMAIL}?subject=${encodeURIComponent(fill(T.mailAsunto, { empresa: data.empresa || 'sin empresa' }))}&body=${encodeURIComponent(resumen(data))}`;
+  if (mail) mail.href = `mailto:${EMAIL}?subject=${encodeURIComponent(fill(T.mailAsunto, { empresa: data.empresa || (EN ? 'no company' : 'sin empresa') }))}&body=${encodeURIComponent(resumen(data))}`;
   const wasHidden = failV.hidden;
   form.hidden = true;
   doneV.hidden = true;

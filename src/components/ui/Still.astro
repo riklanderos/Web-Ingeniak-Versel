@@ -19,6 +19,7 @@ import KommoBadge from './KommoBadge.astro';
 import { getPlate, linkTarget } from '../../lib/site';
 import { stillOf, publicExists } from './ui-data';
 import type { MetricId } from '../../lib/metrics';
+import { currentLang, localHref, L } from '../../lib/i18n';
 
 interface Props {
   href: string; plate?: string; label?: string; title: string; line?: string; metricId?: MetricId;
@@ -73,7 +74,9 @@ const isKommo = kommoProp ?? (/kommo/i.test(href) || /kommo/i.test(plate ?? ''))
 const H = `h${headingLevel}` as any;
 const external = /^https?:\/\//.test(href);
 // Ruta todavía sin construir (orquestador · linkTarget): el fotograma se pinta igual, pero sin enlace ni flecha (nunca "#").
-const target = linkTarget(href);
+// En inglés, un enlace interno a una página traducida va a su gemela /en/ (las demás siguen en español).
+const target0 = linkTarget(href);
+const target = target0 ? localHref(target0, currentLang()) : null;
 const Tag = target ? 'a' : 'div';
 const r4 = (n: number) => +n.toFixed(4);
 const style = `--sx:${r4(sx)};--sy:${r4(variant === 'next' ? syt : sy)};--iar:${r4(iar)};`
@@ -120,7 +123,7 @@ const sizes = variant === 'next' || variant === 'plana' ? '100vw' : variant === 
   {aura && isKommo && <span class="still__seal" aria-hidden="true"><KommoBadge link={false} label={false} /></span>}
   <span class="still__shade" aria-hidden="true"></span>
   <span class="still__copy">
-    {variant === 'next' && <span class="t-label t-label--cyan still__kicker"><span class="node" aria-hidden="true"></span>Siguiente reportaje</span>}
+    {variant === 'next' && <span class="t-label t-label--cyan still__kicker"><span class="node" aria-hidden="true"></span>{L({ es: 'Siguiente reportaje', en: 'Next story' })}</span>}
     {label && <span class="t-label still__label">{label}</span>}
     {metricId && variant !== 'mini' && (
       variant === 'next' || variant === 'plana'

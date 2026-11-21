@@ -12,6 +12,7 @@ import Aura from '../Aura.astro';
 import { heroPlateOf } from '../../layout/navData';
 import { linkTarget } from '../../../lib/site';
 import { head, inWords } from './hubKit';
+import { L } from '../../../lib/i18n';
 
 interface Props { id: string; c: any }
 const { id, c } = Astro.props;
@@ -28,6 +29,13 @@ const groups = ((c.groups ?? []) as any[]).map((g) => ({
   })),
 }));
 const total = groups.reduce((n, g) => n + g.rows.length, 0);
+// Textos escritos en código (versión en inglés, 2026-11-20).
+const spineLabel = L({ es: `Las ${inWords(groups.length)} etapas del sistema`, en: `The ${inWords(groups.length)} stages of the system` });
+const stageLabel = (g: any) => L({
+  es: `${g.label}: ${inWords(g.rows.length)} ${g.rows.length === 1 ? 'servicio' : 'servicios'}`,
+  en: `${g.label}: ${inWords(g.rows.length)} ${g.rows.length === 1 ? 'service' : 'services'}`,
+});
+const listLabel = L({ es: `Los ${inWords(total)} servicios de Ingeniak por etapa`, en: `Ingeniak's ${inWords(total)} services by stage` });
 ---
 <Intertitle id={id} aura="none" layout="split" class="hub-map tpl-glow">
   <Fragment slot="head">
@@ -35,12 +43,12 @@ const total = groups.reduce((n, g) => n + g.rows.length, 0);
       {c.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
       <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(c.h2)} />
       {c.lede && <Copy as="p" class="t-lede t-lede--2 hub-map__lede" text={c.lede} data-reveal />}
-      <nav class="hub-spine" aria-label={`Las ${inWords(groups.length)} etapas del sistema`} data-hub-spine>
+      <nav class="hub-spine" aria-label={spineLabel} data-hub-spine>
         <span class="hub-spine__pillar" aria-hidden="true"><span class="hub-spine__fill"></span></span>
         <ol class="hub-spine__list" role="list">
           {groups.map((g, i) => (
             <li class="hub-spine__st" data-i={i} style={`--i:${i}`}>
-              <button class="hub-spine__btn" type="button" data-hub-stage={i} disabled aria-label={`${g.label}: ${inWords(g.rows.length)} ${g.rows.length === 1 ? 'servicio' : 'servicios'}`}>
+              <button class="hub-spine__btn" type="button" data-hub-stage={i} disabled aria-label={stageLabel(g)}>
                 <span class="hub-spine__node" aria-hidden="true"></span>
                 {g.glyph && <Icon name={g.glyph} size={20} class="hub-spine__glyph" />}
                 <span class="hub-spine__name">{g.label}</span>
@@ -57,7 +65,7 @@ const total = groups.reduce((n, g) => n + g.rows.length, 0);
   <Aura kind="isotipo" x="8%" y="10%" o={0.85} only="d" />
   <Aura kind="ondas" x="60%" y="96%" o={1} only="d" />
   <Aura kind="ondas" x="50%" o={1} only="m" sticky />
-  <ScriptList groups={groups} followStill label={`Los ${inWords(total)} servicios de Ingeniak por etapa`} class="hub-map__list" />
+  <ScriptList groups={groups} followStill label={listLabel} class="hub-map__list" />
 </Intertitle>
 
 <script>

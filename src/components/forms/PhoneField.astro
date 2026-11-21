@@ -10,28 +10,33 @@
 // (readPhone, normalizePhone, bindPhone).
 import catalogo from '../../data/cotizar.json';
 import { phoneHelp } from '../../scripts/forms/phone';
+import { currentLang } from '../../lib/i18n';
+const en = currentLang() === 'en';
+/** Nombres de país en inglés (versión /en/, 2026-11-20); el valor (iso) no cambia. */
+const PAIS_EN: Record<string, string> = { mx: 'Mexico', us: 'United States', co: 'Colombia', ar: 'Argentina', es: 'Spain', cr: 'Costa Rica', ec: 'Ecuador', cl: 'Chile', pe: 'Peru', gt: 'Guatemala', otro: 'Other country' };
 
 interface Props { id: string; name?: string; label?: string; help?: string; required?: boolean; pais?: string; class?: string }
-const { id, name = 'telefono', label = 'WhatsApp', required = true, pais = 'mx', class: cls } = Astro.props;
+const { id, name = 'telefono', label = 'WhatsApp', required = true, pais = en ? 'us' : 'mx', class: cls } = Astro.props;
 const auto = Astro.props.help === undefined;
 const help = auto ? phoneHelp(pais) : Astro.props.help;
 const paises = catalogo.paises as { iso: string; lada: string | null; label: string }[];
-const optText = (p: { iso: string; lada: string | null }) => (p.lada ? `${p.iso.toUpperCase()} ${p.lada}` : 'Otro');
-const optName = (p: { iso: string; lada: string | null; label: string }) => (p.lada ? `${p.label} ${p.lada}` : `${p.label}: escribe la lada`);
+const optText = (p: { iso: string; lada: string | null }) => (p.lada ? `${p.iso.toUpperCase()} ${p.lada}` : en ? 'Other' : 'Otro');
+const nameOf = (p: { iso: string; label: string }) => (en ? PAIS_EN[p.iso] ?? p.label : p.label);
+const optName = (p: { iso: string; lada: string | null; label: string }) => (p.lada ? `${nameOf(p)} ${p.lada}` : en ? `${nameOf(p)}: type the country code` : `${p.label}: escribe la lada`);
 const otro = pais === 'otro';
 ---
 <div class:list={['fld', 'fld--phone', cls]} data-phone data-field={name} id={`${id}-fld`}>
-  <label class="fld__label" for={id}>{label}{!required && <span class="fld__opt">Opcional</span>}</label>
+  <label class="fld__label" for={id}>{label}{!required && <span class="fld__opt">{en ? 'Optional' : 'Opcional'}</span>}</label>
   <div class="fld-phone">
-    <select class="fld__select fld-phone__cc" id={`${id}-pais`} name={`${name}_pais`} aria-label="País y lada" autocomplete="off">
+    <select class="fld__select fld-phone__cc" id={`${id}-pais`} name={`${name}_pais`} aria-label={en ? 'Country and code' : 'País y lada'} autocomplete="off">
       {paises.map((p) => (
-        <option value={p.iso} data-lada={p.lada ?? ''} aria-label={optName(p)} title={p.label} selected={p.iso === pais}>{optText(p)}</option>
+        <option value={p.iso} data-lada={p.lada ?? ''} aria-label={optName(p)} title={nameOf(p)} selected={p.iso === pais}>{optText(p)}</option>
       ))}
     </select>
     <input class="fld__input fld-phone__lada" id={`${id}-lada`} name={`${name}_lada`} type="text" inputmode="tel" autocomplete="off"
-      maxlength="6" placeholder="+380" aria-label="Lada del país" hidden={!otro} disabled={!otro} />
+      maxlength="6" placeholder="+380" aria-label={en ? 'Country code' : 'Lada del país'} hidden={!otro} disabled={!otro} />
     <input class="fld__input fld-phone__num" id={id} name={`${name}_numero`} type="tel" inputmode="tel" autocomplete="tel-national"
-      maxlength="20" placeholder="33 1234 5678" required={required} aria-describedby={help ? `${id}-help` : undefined} />
+      maxlength="20" placeholder={en ? '(555) 123-4567' : '33 1234 5678'} required={required} aria-describedby={help ? `${id}-help` : undefined} />
   </div>
   {help && <p class="fld__help" id={`${id}-help`} data-phone-help={auto ? '' : undefined}>{help}</p>}
   <p class="fld__error" id={`${id}-error`} hidden></p>

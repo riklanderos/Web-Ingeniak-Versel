@@ -51,6 +51,7 @@ import FAQAccordion from '../ui/FAQAccordion.astro';
 import { annotateFigures, tokensToText, TEAM } from '../ui/ui-data';
 import { plateReady } from '../cine/plate';
 import { getCopy, getPlate, waHref, linkTarget, pageNoindex, SITE, type Page } from '../../lib/site';
+import { L, currentLang, localHref } from '../../lib/i18n';
 import '../../styles/tpl/ConversionTemplate.css';
 
 // Componente de reserva (área agenda, CAMBIO-COTIZAR §5.5). Mientras no exista, la sección #agenda pinta un respaldo
@@ -71,7 +72,27 @@ const { page: pageProp, copy: copyProp, vsl = null } = Astro.props;
 const page = pageProp as any;
 const copy = copyProp ?? getCopy(page.id);
 const S: Record<string, any> = copy.sections ?? {};
-const tipo: 'discovery' | 'power' = Astro.props.tipo ?? (page.id === 'power-session' ? 'power' : 'discovery');
+const tipo: 'discovery' | 'power' = Astro.props.tipo ?? (String(page.id).replace(/^en-/, '') === 'power-session' ? 'power' : 'discovery');
+// Versión en inglés (/en/, 2026-11-20): idioma de la página y textos escritos en código.
+const lang = currentLang();
+const T = {
+  reservar: L({ es: 'Reservar', en: 'Book' }),
+  hola: L({ es: 'Hola Kain', en: "Hi Kain, I'm coming from the English site and want more information." }),
+  wa: L({ es: 'Escríbele a Kain', en: 'Message Kain' }),
+  play: L({ es: 'Reproducir el video', en: 'Play the video' }),
+  close: L({ es: 'Cerrar el video', en: 'Close the video' }),
+  track: L({ es: 'Español', en: 'Spanish (original audio)' }),
+  paso: L({ es: 'Paso', en: 'Step' }),
+  sales: L({ es: 'Sales con', en: "You'll leave with" }),
+  reserva: L({ es: 'Reserva', en: 'Booking' }),
+  waitT: L({ es: 'Te agendamos por WhatsApp o por correo.', en: "We'll book you by WhatsApp or email." }),
+  waitP: L({ es: 'Escríbenos y apartamos tu horario contigo. Te pedimos tu nombre, tu negocio y el día que te acomoda.', en: "Message us and we'll save a time with you. We'll ask for your name, your business and the day that works for you." }),
+  contador: L({ es: '{n} de {total}', en: '{n} of {total}' }),
+  marca: L({ es: 'Marca las que te pasan.', en: 'Check the ones that apply to you.' }),
+  signals: L({ es: 'Señales y su salida con un sistema', en: 'Warning signs and how a system fixes them' }),
+  incluye: L({ es: 'Incluye', en: 'Includes' }),
+  faq: L({ es: 'Preguntas frecuentes', en: 'Frequently asked questions' }),
+};
 
 // ── utilidades ──────────────────────────────────────────────────────────────
 const ann = (s?: string | null) => (s ? annotateFigures(s) : '');
@@ -87,17 +108,17 @@ const allowNum = (s?: string | null) => (s && /\d/.test(tokensToText(s.replace(/
 const AGENDA = '#agenda';
 const toAgenda = (h?: string | null) => (typeof h === 'string' && h.startsWith(AGENDA) ? h : AGENDA);
 const primaryHref = (c: any) => toAgenda(c?.ctaPrimary?.href ?? page.primaryCta?.href);
-const primaryLabel = (c: any) => c?.ctaPrimary?.label ?? page.primaryCta?.label ?? S.hero?.ctaPrimary?.label ?? 'Reservar';
+const primaryLabel = (c: any) => c?.ctaPrimary?.label ?? page.primaryCta?.label ?? S.hero?.ctaPrimary?.label ?? T.reservar;
 /** Microcopia bajo el primario: la de la sección o la de la portada (Discovery "30 min · 1:1 · Google Meet · sin costo";
     Power "{{offer:power-price}} · pago único · 90 min por Google Meet"). Grupos que no se parten por dentro. */
 const microOf = (c: any): string => c?.micro ?? S.hero?.micro ?? '';
 const microHtml = (t: string) => t.split(/\s+·\s+/).filter(Boolean).map((g) => `<span class="tpl-nw">${annotateFigures(g)}</span>`).join(' · ');
 // waMessage = sitemap.secondaryCta.waMessage (atribución por página)
-const waOfSec = (c: any) => waHref(c?.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage ?? S.hero?.ctaSecondary?.waMessage ?? 'Hola Kain');
-const pageWa = waHref(page.secondaryCta?.waMessage ?? S.hero?.ctaSecondary?.waMessage ?? 'Hola Kain');
+const waOfSec = (c: any) => waHref(c?.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage ?? S.hero?.ctaSecondary?.waMessage ?? T.hola);
+const pageWa = waHref(page.secondaryCta?.waMessage ?? S.hero?.ctaSecondary?.waMessage ?? T.hola);
 // Marca (§0.1): el secundario SIEMPRE se llama "Escríbele a Kain"; el copy/sitemap solo aportan el mensaje de WhatsApp.
-const WA_LABEL = 'Escríbele a Kain';
-const QUOTE_FALLBACK = '/contacto/#cotizar';
+const WA_LABEL = T.wa;
+const QUOTE_FALLBACK = localHref('/contacto/#cotizar', lang);
 
 /** Placa realmente usada (la de la sección o su respaldo de lanzamiento) — para la precarga LCP de BaseLayout. */
 function usedPlate(pl: any): string | undefined {
@@ -110,7 +131,7 @@ function usedPlate(pl: any): string | undefined {
 const fbOf = (pl: any) => pl?.launchFallback ?? undefined;
 const plateId = (pl: any): string | undefined => (Array.isArray(pl?.id) ? pl.id[0] : pl?.id) || undefined;
 const showChips = (c: any) => Array.isArray(c?.chips) && c.chips.length > 0 && !c.eyebrow;
-const siteFirma: string | undefined = (() => { try { return getCopy('_comun')?.firma; } catch { return undefined; } })();
+const siteFirma: string | undefined = (() => { try { return getCopy(lang === 'en' ? 'en-_comun' : '_comun')?.firma; } catch { return undefined; } })();
 
 /** §3.11-7 · Pie de foto que cose sujeto y copy en la portada (solo escritorio; con respaldo de aura no se pinta). */
 function figOf(pl: any, c: any): { title: string; text: string; target: string } | null {
@@ -285,7 +306,7 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
               <a class="vposter__trigger cv-play__btn" href={vsl!.src} type="video/mp4" data-video-open aria-haspopup="dialog" aria-controls={`${s.id}-vsl-dlg`}>
                 <span class="vposter__ring cv-play__ring" aria-hidden="true"><Icon name="play" size={26} /></span>
                 <span class="vposter__label cv-play__label">
-                  <span class="vposter__l1">{c.play ?? 'Reproducir el video'}</span>
+                  <span class="vposter__l1">{c.play ?? T.play}</span>
                   {vslDur && <span class="t-micro cv-play__dur" data-allow-number>VSL · {vslDur}</span>}
                 </span>
                 <span class="sr-only">: {title}</span>
@@ -293,11 +314,11 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
               <dialog class="vdialog" id={`${s.id}-vsl-dlg`} aria-label={title} data-video-dialog>
                 <div class="vdialog__bar">
                   <p class="t-label vdialog__t"><span class="node" aria-hidden="true"></span>{title}</p>
-                  <button type="button" class="btn-icon vdialog__close" data-video-close aria-label={c.close ?? 'Cerrar el video'}><Icon name="close" size={18} /></button>
+                  <button type="button" class="btn-icon vdialog__close" data-video-close aria-label={c.close ?? T.close}><Icon name="close" size={18} /></button>
                 </div>
                 <div class="vdialog__stage">
                   <video class="vposter__video" controls playsinline preload="none" poster={poster} width="1280" height="720" data-src={vsl!.src} data-type="video/mp4">
-                    {vsl!.captions && <track kind="subtitles" srclang="es" label="Español" src={vsl!.captions} default />}
+                    {vsl!.captions && <track kind="subtitles" srclang="es" label={T.track} src={vsl!.captions} default />}
                   </video>
                 </div>
               </dialog>
@@ -324,7 +345,7 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
                   <li class="cv-agenda__step" style={`--i:${i}`}>
                     <span class="cv-agenda__rail" aria-hidden="true"><span class="cv-agenda__node"></span></span>
                     <span class="cv-agenda__n t-label t-label--cyan" aria-hidden="true">{st.n}</span>
-                    <p class="cv-agenda__st"><span class="sr-only">Paso {st.n}: </span>{plain(st.title)}</p>
+                    <p class="cv-agenda__st"><span class="sr-only">{T.paso} {st.n}: </span>{plain(st.title)}</p>
                     {st.line && <p class="cv-agenda__sl" data-allow-number={allowNum(st.line)} set:html={ann(st.line)} />}
                   </li>
                 ))}
@@ -332,7 +353,7 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
             )}
             {c.salesCon?.items?.length > 0 && (
               <div class="cv-agenda__sales">
-                <p class="t-label cv-agenda__salesk">{c.salesCon.title ?? 'Sales con'}</p>
+                <p class="t-label cv-agenda__salesk">{c.salesCon.title ?? T.sales}</p>
                 <ul class="cv-agenda__saleslist" role="list">
                   {c.salesCon.items.map((t: string) => <li data-allow-number={allowNum(t)} set:html={ann(t)} />)}
                 </ul>
@@ -348,9 +369,9 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
             <BookingFlow tipo={tipo} waHref={pageWa} headingLevel={3} />
           ) : (
             <div class="bk glass-panel cv-bkwait" id={`bk-${tipo}`} data-agenda={tipo} data-hold={tipo === 'power' ? '30' : undefined}>
-              <p class="t-label t-label--cyan cv-bkwait__k"><span class="node" aria-hidden="true"></span>Reserva</p>
-              <h3 class="t-h3 cv-bkwait__t" tabindex="-1" data-bkwait-focus>Te agendamos por WhatsApp o por correo.</h3>
-              <p class="cv-bkwait__p">Escríbenos y apartamos tu horario contigo. Te pedimos tu nombre, tu negocio y el día que te acomoda.</p>
+              <p class="t-label t-label--cyan cv-bkwait__k"><span class="node" aria-hidden="true"></span>{T.reserva}</p>
+              <h3 class="t-h3 cv-bkwait__t" tabindex="-1" data-bkwait-focus>{T.waitT}</h3>
+              <p class="cv-bkwait__p">{T.waitP}</p>
               <div class="ctas cv-bkwait__ctas">
                 <Btn variant="ghost" href={pageWa} label={WA_LABEL} />
                 <a class="lnk" href={`mailto:${SITE.email}`}>{SITE.email}</a>
@@ -365,7 +386,7 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
     if (kind === 'quiz') {
       const items: any[] = c.items ?? [];
       const total = items.length;
-      const tpl = String(c.contador ?? '{n} de {total}').replace('{total}', String(total));
+      const tpl = String(c.contador ?? T.contador).replace('{total}', String(total));
       return (
         <ImageSection id={s.id} plate={pid!} fallbackPlate={fbOf(pl)} layout={pl.layout} mirror={pl.mirror} height="mid"
           align="start" tone="dolor" mobile={(pl.mobile as any) ?? 'split'} safeCol srcsetMax={pl.srcsetMax} alt="" class="cv-quiz tpl-glow-m">
@@ -375,7 +396,7 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
           <Fragment slot="more">
             <div class="cv-quiz__box" data-quiz data-umbral={c.umbral ?? 3} data-resultados={JSON.stringify((c.resultados ?? []).map((r: any) => ({ min: r.min, max: r.max, text: plain(r.text) })))}>
               <fieldset class="cv-quiz__set">
-                <legend class="sr-only">{plain(`${c.h2?.text ?? ''} ${c.h2?.soft ?? ''}`).trim()} Marca las que te pasan.</legend>
+                <legend class="sr-only">{plain(`${c.h2?.text ?? ''} ${c.h2?.soft ?? ''}`).trim()} {T.marca}</legend>
                 <ol class="cv-quiz__list" role="list">
                   {items.map((it: any, i: number) => (
                     <li class="cv-quiz__li" style={`--i:${i}`}>
@@ -415,7 +436,7 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
         <TwinScene id={s.id} plateA={A} plateB={B} layout={pl.layout} mirror={pl.mirror} class="cv-twin tpl-glow-m">
           {Eyebrow(true)}
           <h2 id={tid} class="t-h2 cv-twin__h" data-split set:html={ann(c.frase ?? c.h2?.text)} />
-          <PainList mode="twin" items={rows} label="Señales y su salida con un sistema" />
+          <PainList mode="twin" items={rows} label={T.signals} />
           {c.remate && <p slot="end" class="t-deck cv-twin__remate" set:html={ann(c.remate)} />}
           {c.kain && <Fragment slot="end">{KainLine(c.kain, 'cv-twin__kain')}</Fragment>}
         </TwinScene>
@@ -464,7 +485,7 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
           </div>
           {Array.isArray(c.items) && c.items.length > 0 && (
             <div class="cv-offer__side">
-              <p class="t-label cv-offer__k">{c.itemsTitle ?? 'Incluye'}</p>
+              <p class="t-label cv-offer__k">{c.itemsTitle ?? T.incluye}</p>
               <ul class="cv-offer__list" role="list">
                 {c.items.map((t: string) => (
                   <li class="cv-offer__li"><span class="cv-offer__chk" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" /></svg></span><span set:html={ann(t)} /></li>
@@ -625,7 +646,7 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
         </Fragment>
         <Aura kind="isotipo" x="-20%" y="6%" o={0.9} only="d" clip />
         <Aura kind="ondas" x="50%" o={1} only="m" sticky />
-        <FAQAccordion ids={c.faqIds ?? []} glass headingLevel={3} label={plain(c.h2?.text) || 'Preguntas frecuentes'} id={`${s.id}-list`} />
+        <FAQAccordion ids={c.faqIds ?? []} glass headingLevel={3} label={plain(c.h2?.text) || T.faq} id={`${s.id}-list`} />
       </Intertitle>
     );
 
@@ -651,10 +672,10 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
                 const q = h.lastIndexOf('? ');
                 const lbl = q > 0 ? `${h.slice(0, q + 1)} <span class="cv-links__c">${h.slice(q + 2)}</span>` : h;
                 if (l.cotizar) return (
-                  <li><a class="lnk cv-links__a" href={l.href && !/^#agenda/.test(l.href) ? l.href : QUOTE_FALLBACK} data-cotizar data-section={s.id}
+                  <li><a class="lnk cv-links__a" href={l.href && !/^#agenda/.test(l.href) ? localHref(l.href, lang) : QUOTE_FALLBACK} data-cotizar data-section={s.id}
                     aria-haspopup="dialog" aria-controls="cotizar"><span class="cv-links__t" set:html={lbl} /></a></li>
                 );
-                const href = l.href ? (/^(https?:|mailto:|#)/.test(l.href) ? l.href : linkTarget(l.href)) : null;
+                const href = l.href ? (/^(https?:|mailto:|#)/.test(l.href) ? l.href : linkTarget(localHref(l.href, lang))) : null;
                 return <li>{href ? <a class="lnk cv-links__a" href={href}><span class="cv-links__t" set:html={lbl} /></a> : <span class="cv-links__t" set:html={lbl} />}</li>;
               })}
             </ul>

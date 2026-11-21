@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hi, I saw the ad for the apartment in Zapopan. Is it still available?", "delay": 900, "time": "10:15 PM" },
+  { "who": "kain", "text": "Hi! Yes, it's still available. So I can show you what fits you best: are you looking to live there or to invest?", "delay": 1000 },
+  { "who": "cliente", "text": "To live in. I'd pay with an Infonavit loan.", "delay": 1500 },
+  { "who": "kain", "text": "Great. Would you like to see it? I can book you a showing with an agent on Saturday at 11:00 AM or Sunday at 12:30 PM.", "delay": 1100 },
+  { "who": "cliente", "text": "Saturday. How much would they lend me?", "delay": 1600 },
+  { "who": "kain", "text": "That depends on your loan, and the agent will go over it with you at the showing; I can't give you an amount. I'll book you with him on Saturday at 11:00 AM. What name should I put it under?", "delay": 1200 },
+  { "who": "cliente", "text": "Jorge.", "delay": 1100 },
+  { "who": "kain", "text": "All set, Jorge: showing on Saturday at 11:00 AM. I'll send you the location and a reminder.", "delay": 1000, "event": "Qualified lead · showing booked in your CRM" }
+]

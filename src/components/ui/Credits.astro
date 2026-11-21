@@ -11,6 +11,7 @@ import KommoBadge from './KommoBadge.astro';
 import Metric from './Metric.astro';
 import { TEAM, TOOLS, COUNTRIES, logoUrl, logoWide, type TeamMember } from './ui-data';
 import { linkTarget } from '../../lib/site';
+import { currentLang, localHref, L } from '../../lib/i18n';
 
 type Logo = { name?: string; logo: string; role?: string; href?: string } | string;
 interface Props {
@@ -34,7 +35,7 @@ const logos = (variant === 'logos' || variant === 'stack' ? ((items as Logo[]) ?
         return (
           <li class="cast__m" style={`--i:${i}`}>
             <span class="cast__ph" style={`--fx:${c.fx};--ey:${c.ey};--hw:${c.hw}`}>
-              <img src={p.photo} alt={`Retrato de ${p.name}, ${p.role}`} width="600" height="600" loading="lazy" decoding="async" />
+              <img src={p.photo} alt={L({ es: `Retrato de ${p.name}, ${p.role}`, en: `Portrait of ${p.name}, ${p.role}` })} width="600" height="600" loading="lazy" decoding="async" />
             </span>
             <span class="cast__role">{p.role}</span>
             <span class="cast__name">{p.name}</span>
@@ -57,7 +58,7 @@ const logos = (variant === 'logos' || variant === 'stack' ? ((items as Logo[]) ?
         );
         return (
           <li class="logo-credit" style={`--i:${i}`}>
-            {l.href && linkTarget(l.href) ? <a class="logo-credit__a" href={linkTarget(l.href)!}>{inner}</a> : inner}
+            {l.href && linkTarget(l.href) ? <a class="logo-credit__a" href={localHref(linkTarget(l.href)!, currentLang())}>{inner}</a> : inner}
             {l.role && <span class="logo-credit__role">{l.role}</span>}
           </li>
         );
@@ -71,7 +72,7 @@ const logos = (variant === 'logos' || variant === 'stack' ? ((items as Logo[]) ?
       <ul class="credits__countries">
         {COUNTRIES.map((c, i) => (
           <li class:list={['country', c.sede && 'country--sede']} style={`--i:${i}`}>
-            <span class="country__name">{c.name}</span>{c.sede && <span class="country__sede t-label t-label--cyan">Sede</span>}
+            <span class="country__name">{c.name}</span>{c.sede && <span class="country__sede t-label t-label--cyan">{L({ es: 'Sede', en: 'HQ' })}</span>}
           </li>
         ))}
       </ul>

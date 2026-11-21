@@ -73,9 +73,10 @@ export const SITEMAP_RAW = readJSON(join(ROOT, 'src/data/sitemap.json'));
  *  {{offer:ID}} = oferta de una landing oculta (OFFERS de metrics.ts, ESPEC §12.6 R18). */
 export const TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price:([a-z0-9-]+)|price|Price|source)\}\}/g;
 let metricsCache = null;
-export function resolveTokens(s) {
+let metricsCacheEn = null;
+export function resolveTokens(s, lang = 'es') {
   if (typeof s !== 'string' || !s.includes('{{')) return s;
-  const M = (metricsCache ??= loadMetrics());
+  const M = lang === 'en' ? (metricsCacheEn ??= loadMetricsEn()) : (metricsCache ??= loadMetrics());
   return s.replace(new RegExp(TOKEN_RX.source, 'g'), (all, k, id, mod, offer, priceId) => {
     if (priceId) { const p = M.PRICES[priceId]; if (!p) throw new Error(`[check] sitemap.json: precio desconocido ${all}`); return p; }
     if (offer) { const o = M.OFFERS[offer]; if (!o) throw new Error(`[check] sitemap.json: oferta desconocida ${all}`); return o; }
@@ -86,7 +87,9 @@ export function resolveTokens(s) {
   });
 }
 /** sitemap.json con los tokens resueltos (lo que publica la página: <title>, meta description, H1). */
-export const SITEMAP = SITEMAP_RAW.map((p) => ({ ...p, title: resolveTokens(p.title), metaDescription: resolveTokens(p.metaDescription), h1: resolveTokens(p.h1) }));
+/** Idioma de una entrada (versión en inglés, 2026-11-20: entradas "en-<id>" con lang "en" bajo /en/). */
+export const langOf = (p) => (p?.lang === 'en' || /^\/en(\/|$)/.test(p?.url ?? '') ? 'en' : 'es');
+export const SITEMAP = SITEMAP_RAW.map((p) => ({ ...p, title: resolveTokens(p.title, langOf(p)), metaDescription: resolveTokens(p.metaDescription, langOf(p)), h1: resolveTokens(p.h1, langOf(p)) }));
 export const NAV = readJSON(join(ROOT, 'src/data/navegacion.json'));
 export const PLATES = readJSON(join(ROOT, 'src/data/plates.json'));
 export const SITE_URL = 'https://ingeniak.mx';
@@ -120,6 +123,24 @@ export function loadMetrics() {
   const or = src.match(/export const OFFER_ROUTES\s*=\s*\[([^\]]*)\]/);
   const OFFER_ROUTES = or ? [...or[1].matchAll(/'([^']+)'/g)].map((m) => m[1]) : [];
   return { metrics: out, PRICE_FROM: price, PRICE_FROM_CAP: priceCap, SOURCE_NOTE: source, OFFERS, OFFER_ROUTES, PRICES };
+}
+/** Métricas y precios en inglés (METRICS_EN, PRICE_FROM_EN… de src/lib/metrics.ts), con la misma forma que loadMetrics(). */
+export function loadMetricsEn() {
+  const es = loadMetrics();
+  const src = readFileSync(join(ROOT, 'src/lib/metrics.ts'), 'utf8');
+  const block = src.match(/export const METRICS_EN[^=]*=\s*\{([\s\S]*?)\n\};/)?.[1] ?? '';
+  const metrics = {};
+  for (const m of block.matchAll(/'([a-z0-9-]+)':\s*\{([^}]*)\}/g)) {
+    const f = (k) => m[2].match(new RegExp(`${k}:\\s*(['"])((?:(?!\\1).)*)\\1`))?.[2];
+    const base = es.metrics[m[1]] ?? {};
+    metrics[m[1]] = { value: f('value') ?? base.value, label: f('label') ?? base.label, prose: f('prose') };
+  }
+  const one = (name) => src.match(new RegExp(`${name}\\s*=\\s*(['"])((?:(?!\\1).)*)\\1`))?.[2];
+  const map = (name) => {
+    const b = src.match(new RegExp(`export const ${name}[^=]*=\\s*\\{([\\s\\S]*?)\\};`))?.[1] ?? '';
+    return Object.fromEntries([...b.matchAll(/'([a-z0-9-]+)':\s*(['"])((?:(?!\2).)*)\2/g)].map((x) => [x[1], x[3]]));
+  };
+  return { ...es, metrics, PRICE_FROM: one('PRICE_FROM_EN'), PRICE_FROM_CAP: one('PRICE_FROM_CAP_EN'), SOURCE_NOTE: one('SOURCE_NOTE_EN'), OFFERS: map('OFFERS_EN'), PRICES: map('PRICES_EN') };
 }
 /** Caso breve (R2): sitemap trae publishGate y el copy no lo marca confirmado. */
 export function gatePending(page) {
@@ -163,6 +184,8 @@ export function isOpenLandingLink(page, href, inBody) {
  *  enlazar la agenda directa (/agendar/) con un enlace secundario marcado data-agenda-link. «Cotizar proyecto» sigue siendo el
  *  único primario; ninguna otra página ni otro enlace de la portada puede llevar a /agendar/. */
 export function isHomeAgendaLink(page, el) {
+  // Versión en inglés (/en/, 2026-11-20): la portada en inglés enlaza la reserva de su landing (/en/discovery/#agenda).
+  if (page?.url === '/en/' && el?.tag === 'a' && 'data-agenda-link' in (el.attrs ?? {})) return normRoute(el.attrs.href) === '/en/discovery/';
   return page?.url === '/' && el?.tag === 'a' && 'data-agenda-link' in (el.attrs ?? {}) && normRoute(el.attrs.href) === '/agendar/';
 }
 /** ¿El href (ruta, URL de ingeniak.mx, con hash o query) lleva a una landing oculta, a /agendar/… o a la agenda externa de v1? */
@@ -170,7 +193,7 @@ export function isHiddenHref(href) {
   if (!href) return false;
   if (/agenda\.ingeniak\.tech/i.test(href)) return true;
   const r = normRoute(href);
-  return !!r && (HIDDEN.has(r) || r.startsWith('/agendar/'));
+  return !!r && (HIDDEN.has(r) || r.startsWith('/agendar/') || r.startsWith('/en/book/'));
 }
 /** Página pública: está en sitemap.json y no es oculta (el 404 cuenta como pública). */
 export const isPublicPage = (page) => !!page && !isHiddenPageRule(page);

@@ -8,6 +8,7 @@
 //   [data-pain] (texto del dolor) · [data-fix] (su salida en cian; se dibuja con --mix) · slot "end" (remate)
 import { resolvePlate, type Layout, type Fallback } from './plate';
 import PlatePicture from './PlatePicture.astro';
+import { L as tr } from '../../lib/i18n';
 
 interface Props {
   id: string;
@@ -23,7 +24,7 @@ interface Props {
   labelledby?: string;
   class?: string;
 }
-const { id, plateA, plateB, layout, pin = '+=100%', fallbackA, fallbackB, mirror = false, clock, skipLabel = 'Saltar escena', labelledby, class: cls } = Astro.props;
+const { id, plateA, plateB, layout, pin = '+=100%', fallbackA, fallbackB, mirror = false, clock, skipLabel = tr({ es: 'Saltar escena', en: 'Skip scene' }), labelledby, class: cls } = Astro.props;
 const A = resolvePlate(plateA, { mirror, layout, fallbackPlate: fallbackA, alt: '', srcsetMax: 1920, where: `#${id} A` });
 const B = resolvePlate(plateB, { mirror, layout: layout ?? A.layout, fallbackPlate: fallbackB, alt: '', srcsetMax: 1920, where: `#${id} B` });
 const L = layout ?? A.layout;

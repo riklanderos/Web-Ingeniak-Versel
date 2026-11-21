@@ -5,18 +5,21 @@
 //   variant="row": la misma información en fila horizontal (sección 02, o donde no cabe en la portada).
 //   place="flow": desactiva el posicionamiento absoluto del cover (para demos o contenedores propios).
 import Metric from './Metric.astro';
-import { SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { priceText, type MetricId } from '../../lib/metrics';
+import { currentLang, L } from '../../lib/i18n';
 
 interface Props { ids: [MetricId, MetricId, MetricId] | MetricId[]; variant?: 'cover' | 'row'; place?: 'cover' | 'flow'; label?: string; class?: string }
-const { ids, variant = 'cover', place = 'cover', label = 'Sumario', class: cls } = Astro.props;
+const { ids, variant = 'cover', place = 'cover', label = L({ es: 'Sumario', en: 'Summary' }), class: cls } = Astro.props;
 // La portada es un <aside> (complementario); la fila de la sección 02 es solo un grupo: nunca dos landmarks con el mismo nombre.
 const Wrap = variant === 'row' ? 'div' : 'aside';
+const SOURCE_NOTE = priceText('source', currentLang());
+const realResults = L({ es: 'Resultados de casos reales', en: 'Results from real client cases' });
 ---
 <Wrap class:list={['sumario', `sumario--${variant}`, place === 'flow' && 'sumario--flow', cls]} role={variant === 'row' ? 'group' : undefined}
-  aria-label={variant === 'row' ? 'Resultados de casos reales' : `${label}: resultados de casos reales`} data-ui-reveal>
-  {variant === 'row' && <p class="t-label sumario__h"><span class="node" aria-hidden="true"></span>Resultados de casos reales</p>}
+  aria-label={variant === 'row' ? realResults : `${label}: ${L({ es: 'resultados de casos reales', en: 'results from real client cases' })}`} data-ui-reveal>
+  {variant === 'row' && <p class="t-label sumario__h"><span class="node" aria-hidden="true"></span>{realResults}</p>}
   <div class="sumario__lines">
     {ids.map((id) => <Metric id={id} variant="cover" link fn="1" class="sumario__line" />)}
   </div>
-  <p class="t-micro sumario__note"><sup class="fn">1</sup>{' '}{SOURCE_NOTE}. Nombres de clientes anonimizados.</p>
+  <p class="t-micro sumario__note"><sup class="fn">1</sup>{' '}{SOURCE_NOTE}. {L({ es: 'Nombres de clientes anonimizados.', en: 'Client names anonymized.' })}</p>
 </Wrap>

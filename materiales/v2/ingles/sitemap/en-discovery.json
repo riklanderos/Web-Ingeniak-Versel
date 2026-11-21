@@ -1,0 +1,72 @@
+{
+  "title": "Book a Free 30-Minute Discovery Session | Ingeniak",
+  "metaDescription": "A free 1:1, 30-minute call for small business owners: we map your operation, spot opportunities, and you leave with concrete recommendations.",
+  "h1": "30 minutes to see your operation as it is, not as you think it is",
+  "primaryKeyword": "Ingeniak Discovery Session",
+  "secondaryKeywords": [
+    "free AI assessment",
+    "free discovery call",
+    "free automation consultation"
+  ],
+  "breadcrumbs": [
+    { "name": "Home", "url": "/en/" },
+    { "name": "Discovery Session", "url": "/en/discovery/" }
+  ],
+  "sections": [
+    { "id": "hero", "name": "Cover" },
+    { "id": "video", "name": "Watch this before you book" },
+    { "id": "agenda", "name": "Book in 3 steps" },
+    { "id": "que-es", "name": "What a Discovery Session is" },
+    { "id": "para-quien", "name": "Who this call is for" },
+    { "id": "despues", "name": "After the call" },
+    { "id": "faq", "name": "Frequently asked questions" },
+    { "id": "cta-final", "name": "Closing" }
+  ],
+  "primaryCta": {
+    "label": "Book my Discovery Session",
+    "short": "Book",
+    "href": "#agenda"
+  },
+  "secondaryCta": {
+    "label": "Message Kain",
+    "waMessage": "Hi, I'm coming from the English site (Discovery Session page) and have a question before booking."
+  },
+  "faq": [
+    {
+      "id": "D01",
+      "q": "Is it really free?",
+      "a": "Yes. The 30 minutes cost nothing and we don't ask for a credit card. The call exists because diagnosing before quoting is the only serious way to work.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "D02",
+      "q": "Are you going to sell to me on the call?",
+      "a": "It's a discovery call: we map your operation and tell you what we see. At the end, if it makes sense, we share an implementation proposal. If it doesn't, we tell you that too.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "D03",
+      "q": "What should I prepare for the call?",
+      "a": "Nothing special. Knowing how your business runs day to day is enough. If you have numbers on hand, even better: the diagnosis gets more precise.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "D04",
+      "q": "What happens after the call?",
+      "a": "If your project makes sense for both sides, we prepare an implementation proposal with scope and timeline. You decide whether to move forward.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "D05",
+      "q": "Can I reschedule?",
+      "a": "Yes, with at least 24 hours' notice. Message us on WhatsApp at +52 33 2101 7799 or email contacto@ingeniak.mx and we'll move it.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "D06",
+      "q": "What if my business is too small or too big?",
+      "a": "We work with small and midsize businesses of 3 to 40 employees in any industry. If you're outside that range, the call makes it clear in the first few minutes and we point you to the right option.",
+      "estado": "aprobada"
+    }
+  ]
+}

@@ -16,7 +16,8 @@
 // En la escena fijada (seq--pinned), la demo de la estación activa se vuelve a reproducir cada vez que la estación entra.
 import ChatSim from './ChatSim.astro';
 import Metric from './Metric.astro';
-import { SIM } from './ui-data';
+import { simChipLabel } from './ui-data';
+import { currentLang } from '../../lib/i18n';
 
 type Variant = 'atraer' | 'atender' | 'organizar' | 'automatizar' | 'medir';
 type Box = [number, number, number, number];
@@ -26,22 +27,34 @@ interface Props {
 }
 const { variant, demo = false, anchor = true, box, boxM, style, chat = 'default', label, class: cls, id } = Astro.props;
 
-const TITLES: Record<Variant, string> = {
+const en = currentLang() === 'en';
+const TITLES: Record<Variant, string> = en ? {
+  atraer: 'Live campaign', atender: 'Kain replies', organizar: 'Sales pipeline', automatizar: 'Automated workflows', medir: 'Everything in one view',
+} : {
   atraer: 'Campaña activa', atender: 'Kain atiende', organizar: 'Embudo de ventas', automatizar: 'Flujos automáticos', medir: 'Todo en una vista',
 };
-const ARIA: Record<Variant, string> = {
+const ARIA: Record<Variant, string> = en ? {
+  atraer: 'Simulation: results panel of an ad campaign',
+  atender: 'Simulation: Kain replies to a message',
+  organizar: 'Simulation: the lead reaches the Appointment booked stage of the pipeline',
+  automatizar: 'Simulation: a new lead triggers follow-up, reminder and payment',
+  medir: 'Simulation: dashboard with all the business’s sources in one view',
+} : {
   atraer: 'Simulación: panel de resultados de una campaña de anuncios',
   atender: 'Simulación: Kain responde un mensaje',
   organizar: 'Simulación: el lead llega a la etapa Cita agendada del embudo',
   automatizar: 'Simulación: un lead nuevo dispara seguimiento, recordatorio y cobro',
   medir: 'Simulación: tablero con las fuentes del negocio en una vista',
 };
-const simLabel = String(SIM.label).toUpperCase() === 'SIMULACIÓN' ? 'Simulación' : SIM.label;
-const COLS = ['Nuevo', 'Calificado', 'Cita agendada', 'Ganado', 'Seguimiento'];
+const simLabel = simChipLabel();
+const COLS = en ? ['New', 'Qualified', 'Appointment booked', 'Won', 'Follow-up'] : ['Nuevo', 'Calificado', 'Cita agendada', 'Ganado', 'Seguimiento'];
 const CARDS = [3, 2, 1, 2, 1];                       // tarjetas esqueleto por columna (sin datos)
 const BARS = [0.34, 0.42, 0.38, 0.56, 0.6, 0.74, 0.88];
-const ROWS: [string, number][] = [['Alcance', 0.94], ['Clics', 0.62], ['Leads', 0.4]];
-const NODES = ['Seguimiento', 'Recordatorio', 'Cobro'];
+const ROWS: [string, number][] = en ? [['Reach', 0.94], ['Clicks', 0.62], ['Leads', 0.4]] : [['Alcance', 0.94], ['Clics', 0.62], ['Leads', 0.4]];
+const NODES = en ? ['Follow-up', 'Reminder', 'Payment'] : ['Seguimiento', 'Recordatorio', 'Cobro'];
+const T = en
+  ? { newLead: 'New lead', booked: 'Appointment booked', byChannel: 'Leads by channel', sales: 'Attributed sales', cpl: 'Cost per lead' }
+  : { newLead: 'Lead nuevo', booked: 'Cita agendada', byChannel: 'Leads por canal', sales: 'Ventas atribuidas', cpl: 'Costo por lead' };
 const SPARK = 'M0,30 L14,26 L28,28 L42,19 L56,21 L70,12 L84,14 L100,5';
 const DOWN = 'M0,8 L16,11 L32,10 L48,17 L64,19 L80,25 L100,29';
 
@@ -79,7 +92,7 @@ const Tag = demo ? 'figure' : 'div';
               <div class:list={['st-kb__col', i === 2 && 'is-target']} style={`--i:${i}`}>
                 <span class="st-kb__h">{c}</span>
                 {Array.from({ length: CARDS[i] }, (_, k) => <span class="st-kb__card" style={`--k:${k}`}><i></i><i></i></span>)}
-                {i === 2 && <span class="st-kb__lead"><span class="station__node"></span><span class="st-kb__lead-t">Lead nuevo</span><span class="st-kb__lead-s">Cita agendada</span></span>}
+                {i === 2 && <span class="st-kb__lead"><span class="station__node"></span><span class="st-kb__lead-t">{T.newLead}</span><span class="st-kb__lead-s">{T.booked}</span></span>}
               </div>
             ))}
           </div>
@@ -87,7 +100,7 @@ const Tag = demo ? 'figure' : 'div';
 
         {variant === 'automatizar' && (
           <div class="st-flow">
-            <span class="st-flow__src"><span class="station__node"></span>Lead nuevo</span>
+            <span class="st-flow__src"><span class="station__node"></span>{T.newLead}</span>
             <svg class="st-flow__wires" viewBox="0 0 100 100" preserveAspectRatio="none">
               {[16.5, 50, 83.5].map((y, i) => (
                 <path d={`M0,50 H${y === 50 ? 100 : 30} ${y === 50 ? '' : `L${30 + Math.abs(y - 50) * 0.6},${y} H100`}`} pathLength="1" style={`--i:${i}`} vector-effect="non-scaling-stroke" />
@@ -106,15 +119,15 @@ const Tag = demo ? 'figure' : 'div';
               <Metric id="ecom-tablero" variant="inline" label class="st-metric" />
             </div>
             <div class="st-kpi__t" style="--i:1">
-              <span class="st-kpi__l">Leads por canal</span>
+              <span class="st-kpi__l">{T.byChannel}</span>
               <svg class="st-kpi__spark" viewBox="0 0 100 34" preserveAspectRatio="none"><path d={SPARK} pathLength="1" vector-effect="non-scaling-stroke" /></svg>
             </div>
             <div class="st-kpi__t" style="--i:2">
-              <span class="st-kpi__l">Ventas atribuidas</span>
+              <span class="st-kpi__l">{T.sales}</span>
               <span class="st-kpi__bars">{[0.4, 0.55, 0.5, 0.72, 0.9].map((h, i) => <i style={`--h:${h};--i:${i}`}></i>)}</span>
             </div>
             <div class="st-kpi__t" style="--i:3">
-              <span class="st-kpi__l">Costo por lead</span>
+              <span class="st-kpi__l">{T.cpl}</span>
               <svg class="st-kpi__spark st-kpi__spark--down" viewBox="0 0 100 34" preserveAspectRatio="none"><path d={DOWN} pathLength="1" vector-effect="non-scaling-stroke" /></svg>
             </div>
           </div>

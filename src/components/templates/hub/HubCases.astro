@@ -11,9 +11,20 @@ import Icon from '../../ui/Icon.astro';
 import Aura from '../Aura.astro';
 import { resolvePlate } from '../../cine/plate';
 import { METRICS, type MetricId } from '../../../lib/metrics';
-import { pages, linkTarget } from '../../../lib/site';
+import { allPages as pages, linkTarget } from '../../../lib/site';
 import { MQ_MOBILE } from '../../layout/lcp';
 import { head } from './hubKit';
+import { L } from '../../../lib/i18n';
+// Textos de respaldo escritos en código (versión en inglés, 2026-11-20).
+const T = {
+  filter: L({ es: 'Filtra los casos', en: 'Filter the case studies' }),
+  sector: L({ es: 'Sector', en: 'Industry' }),
+  service: L({ es: 'Servicio', en: 'Service' }),
+  all: L({ es: 'Todos', en: 'All' }),
+  status: L({ es: '{n} casos', en: '{n} case studies' }),
+  rail: L({ es: 'Casos', en: 'Case studies' }),
+  go: L({ es: 'Ver el caso', en: 'See the case study' }),
+};
 
 interface Props { f: any; g: any; idFilters: string; idGrid: string }
 const { f, g, idFilters, idGrid } = Astro.props;
@@ -48,7 +59,7 @@ const usedSectors = [...new Set(items.map((it) => it.sector).filter(Boolean))] a
 const usedServices = Object.keys(g?.services ?? {}).filter((s) => items.some((it) => it.services.includes(s)));
 const sectorName = (s: string) => g?.sectors?.[s] ?? s;
 const serviceName = (s: string) => g?.services?.[s] ?? s;
-const status = (n: number) => String(f?.status ?? '{n} casos').replace('{n}', String(n));
+const status = (n: number) => String(f?.status ?? T.status).replace('{n}', String(n));
 ---
 <section id={idFilters} class="hub-sec hub-filtros tpl-glow" aria-labelledby={`${idGrid}-t`} data-hub-filter="cases">
   <Aura kind="isotipo" x="84%" y="30%" o={0.75} only="d" />
@@ -58,24 +69,24 @@ const status = (n: number) => String(f?.status ?? '{n} casos').replace('{n}', St
       <h2 id={`${idGrid}-t`} class="t-h2" data-split set:html={head(g?.h2)} />
       {g?.lede && <Copy as="p" class="t-lede t-lede--2 hub-sec__lede" text={g.lede} data-reveal />}
     </div>
-    <div class="hub-chips" role="group" aria-label={f?.eyebrow ?? 'Filtra los casos'} data-hub-chips>
-      <p class="t-label hub-chips__h"><span class="node" aria-hidden="true"></span>{f?.eyebrow ?? 'Filtra los casos'}</p>
-      <div class="hub-chips__row" role="group" aria-label={f?.sectorLabel ?? 'Sector'}>
-        <span class="hub-chips__k t-label" aria-hidden="true">{f?.sectorLabel ?? 'Sector'}</span>
-        <button type="button" class="hub-chip" aria-pressed="true" data-dim="sector" data-val="*">{f?.all ?? 'Todos'}</button>
+    <div class="hub-chips" role="group" aria-label={f?.eyebrow ?? T.filter} data-hub-chips>
+      <p class="t-label hub-chips__h"><span class="node" aria-hidden="true"></span>{f?.eyebrow ?? T.filter}</p>
+      <div class="hub-chips__row" role="group" aria-label={f?.sectorLabel ?? T.sector}>
+        <span class="hub-chips__k t-label" aria-hidden="true">{f?.sectorLabel ?? T.sector}</span>
+        <button type="button" class="hub-chip" aria-pressed="true" data-dim="sector" data-val="*">{f?.all ?? T.all}</button>
         {usedSectors.map((s) => <button type="button" class="hub-chip" aria-pressed="false" data-dim="sector" data-val={s}>{sectorName(s)}</button>)}
       </div>
-      <div class="hub-chips__row" role="group" aria-label={f?.serviceLabel ?? 'Servicio'}>
-        <span class="hub-chips__k t-label" aria-hidden="true">{f?.serviceLabel ?? 'Servicio'}</span>
-        <button type="button" class="hub-chip" aria-pressed="true" data-dim="service" data-val="*">{f?.all ?? 'Todos'}</button>
+      <div class="hub-chips__row" role="group" aria-label={f?.serviceLabel ?? T.service}>
+        <span class="hub-chips__k t-label" aria-hidden="true">{f?.serviceLabel ?? T.service}</span>
+        <button type="button" class="hub-chip" aria-pressed="true" data-dim="service" data-val="*">{f?.all ?? T.all}</button>
         {usedServices.map((s) => <button type="button" class="hub-chip" aria-pressed="false" data-dim="service" data-val={s}>{serviceName(s)}</button>)}
       </div>
-      <p class="t-micro hub-chips__status" aria-live="polite" data-hub-status data-tpl={f?.status ?? '{n} casos'}>{status(items.length)}</p>
+      <p class="t-micro hub-chips__status" aria-live="polite" data-hub-status data-tpl={f?.status ?? T.status}>{status(items.length)}</p>
     </div>
   </div>
 </section>
 
-<section id={idGrid} class="hub-cases" aria-label={g?.rail ?? 'Casos'} data-hub-list="cases">
+<section id={idGrid} class="hub-cases" aria-label={g?.rail ?? T.rail} data-hub-list="cases">
   <ol class="hub-cases__list" role="list">
     {items.map((it) => {
       const m = (METRICS as any)[it.metricId as MetricId];
@@ -108,7 +119,7 @@ const status = (n: number) => String(f?.status ?? '{n} casos').replace('{n}', St
                 <span class="hub-case__bottom">
                   <h3 class="hub-case__title">{it.title}</h3>
                   {it.line && <Copy class="hub-case__line" text={it.line} />}
-                  {it.href && <span class="lnk--mono hub-case__go">{g?.linkLabel ?? 'Ver el caso'} <Icon name="arrow" size={16} /></span>}
+                  {it.href && <span class="lnk--mono hub-case__go">{g?.linkLabel ?? T.go} <Icon name="arrow" size={16} /></span>}
                 </span>
               </span>
             </span>

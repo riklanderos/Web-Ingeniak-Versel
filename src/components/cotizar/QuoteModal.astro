@@ -8,7 +8,11 @@
 // requestIdleCallback. Sin data-primary ni data-magnetic: el azul del paso no cuenta para la regla de un azul de la página.
 import '../../styles/forms.css';
 import '../../styles/cotizar.css';
-import cat from '../../data/cotizar.json';
+import catEs from '../../data/cotizar.json';
+import catEn from '../../data/cotizar-en.json';
+import { currentLang, L } from '../../lib/i18n';
+// Versión en inglés (/en/, 2026-11-20): mismo catálogo (slugs iguales) con textos de cotizar-en.json.
+const cat: typeof catEs = currentLang() === 'en' ? (catEn as typeof catEs) : catEs;
 import Icon from '../ui/Icon.astro';
 import PhoneField from '../forms/PhoneField.astro';
 import { AURA_ISOTIPO } from '../cine/plate';
@@ -29,7 +33,7 @@ const S = cat.pasos;
       <button type="button" class="btn-icon qm__close" data-qm-close aria-label={T.cerrar}><Icon name="close" size={18} /></button>
       <h2 class="qm__title" id="qm-title" tabindex="-1">{cat.h}</h2>
       <p class="qm__desc" id="qm-desc">{cat.desc}</p>
-      <ol class="qm__prog" aria-label="Progreso" data-qm-prog>
+      <ol class="qm__prog" aria-label={L({ es: 'Progreso', en: 'Progress' })} data-qm-prog>
         {S.map((p) => (
           <li class="qm__prog-i" data-n={p.n} aria-current={p.n === 1 ? 'step' : undefined}>
             <span class="qm__prog-bar" aria-hidden="true"></span>
@@ -50,7 +54,7 @@ const S = cat.pasos;
             <h3 class="qm__step-h" id="qm-s1-h" tabindex="-1">{S[0].h}</h3>
           </div>
           <fieldset class="fld" data-field="servicios" id="qm-servicios">
-            <legend class="fld__label">Servicios que te interesan <span class="fld__opt">Uno o varios</span></legend>
+            <legend class="fld__label">{L({ es: 'Servicios que te interesan', en: "Services you're interested in" })} <span class="fld__opt">{L({ es: 'Uno o varios', en: 'One or more' })}</span></legend>
             <div class="chips chips--2">
               {cat.servicios.map((s: any) => (
                 <label class="chip-opt">
@@ -64,7 +68,7 @@ const S = cat.pasos;
             <p class="fld__error" id="qm-servicios-error" hidden></p>
           </fieldset>
           <fieldset class="fld" data-field="objetivo" id="qm-objetivo">
-            <legend class="fld__label">¿Qué quieres lograr primero?</legend>
+            <legend class="fld__label">{L({ es: '¿Qué quieres lograr primero?', en: 'What do you want to achieve first?' })}</legend>
             <div class="chips chips--2">
               {cat.objetivos.map((o: any) => (
                 <label class="chip-opt">
@@ -87,15 +91,15 @@ const S = cat.pasos;
           </div>
           <div class="qm__grid">
             <div class="fld" data-field="industria">
-              <label class="fld__label" for="qm-industria">Industria</label>
+              <label class="fld__label" for="qm-industria">{L({ es: 'Industria', en: 'Industry' })}</label>
               <select class="fld__select" id="qm-industria" name="industria" required>
-                <option value="">Elige una opción</option>
+                <option value="">{L({ es: 'Elige una opción', en: 'Pick an option' })}</option>
                 {cat.industrias.map((i) => <option value={i.slug}>{i.label}</option>)}
               </select>
               <p class="fld__error" id="qm-industria-error" hidden></p>
             </div>
             <fieldset class="fld" data-field="tamano" id="qm-tamano">
-              <legend class="fld__label">Personas en tu equipo</legend>
+              <legend class="fld__label">{L({ es: 'Personas en tu equipo', en: 'People on your team' })}</legend>
               <div class="seg seg--3">
                 {cat.tamanos.map((t) => (
                   <label class="seg__opt"><input type="radio" name="tamano" value={t.slug} /><span>{t.label}</span></label>
@@ -105,8 +109,8 @@ const S = cat.pasos;
             </fieldset>
           </div>
           <fieldset class="fld" data-field="presupuesto" id="qm-presupuesto" data-form-options="presupuesto" aria-describedby="qm-presupuesto-help">
-            <legend class="fld__label">Presupuesto estimado</legend>
-            <p class="fld__help" id="qm-presupuesto-help">Monto aproximado del proyecto. Nos ayuda a proponerte el alcance correcto.</p>
+            <legend class="fld__label">{L({ es: 'Presupuesto estimado', en: 'Estimated budget' })}</legend>
+            <p class="fld__help" id="qm-presupuesto-help">{L({ es: 'Monto aproximado del proyecto. Nos ayuda a proponerte el alcance correcto.', en: 'Approximate project amount. It helps us propose the right scope.' })}</p>
             <div class="chips chips--2 qm__radios">
               {cat.presupuestos.map((p) => (
                 <label class="chip-opt">
@@ -120,7 +124,7 @@ const S = cat.pasos;
             <p class="fld__error" id="qm-presupuesto-error" hidden></p>
           </fieldset>
           <fieldset class="fld" data-field="plazo" id="qm-plazo">
-            <legend class="fld__label">¿Para cuándo lo necesitas?</legend>
+            <legend class="fld__label">{L({ es: '¿Para cuándo lo necesitas?', en: 'When do you need it?' })}</legend>
             <div class="chips chips--2 qm__radios">
               {cat.plazos.map((p) => (
                 <label class="chip-opt">
@@ -134,7 +138,7 @@ const S = cat.pasos;
             <p class="fld__error" id="qm-plazo-error" hidden></p>
           </fieldset>
           <fieldset class="fld" data-field="canales" id="qm-canales">
-            <legend class="fld__label">¿Por dónde te escriben hoy tus clientes?</legend>
+            <legend class="fld__label">{L({ es: '¿Por dónde te escriben hoy tus clientes?', en: 'Where do your customers reach you today?' })}</legend>
             <div class="chips">
               {cat.canales.map((c) => (
                 <label class="chip-opt">
@@ -147,7 +151,7 @@ const S = cat.pasos;
             <p class="fld__error" id="qm-canales-error" hidden></p>
           </fieldset>
           <fieldset class="fld" data-field="crm" id="qm-crm" data-deselect>
-            <legend class="fld__label">¿Usan algún CRM?</legend>
+            <legend class="fld__label">{L({ es: '¿Usan algún CRM?', en: 'Do you use a CRM?' })}</legend>
             <div class="chips">
               {cat.crms.map((c) => (
                 <label class="chip-opt">
@@ -169,24 +173,24 @@ const S = cat.pasos;
           </div>
           <div class="qm__grid">
             <div class="fld" data-field="nombre">
-              <label class="fld__label" for="qm-nombre">Nombre completo</label>
+              <label class="fld__label" for="qm-nombre">{L({ es: 'Nombre completo', en: 'Full name' })}</label>
               <input class="fld__input" id="qm-nombre" name="nombre" type="text" autocomplete="name" autocapitalize="words" maxlength="120" required enterkeyhint="next" />
               <p class="fld__error" id="qm-nombre-error" hidden></p>
             </div>
             <div class="fld" data-field="empresa">
-              <label class="fld__label" for="qm-empresa">Empresa</label>
+              <label class="fld__label" for="qm-empresa">{L({ es: 'Empresa', en: 'Company' })}</label>
               <input class="fld__input" id="qm-empresa" name="empresa" type="text" autocomplete="organization" maxlength="160" required enterkeyhint="next" />
               <p class="fld__error" id="qm-empresa-error" hidden></p>
             </div>
             <PhoneField id="qm-telefono" name="telefono" label="WhatsApp" />
             <div class="fld" data-field="email">
-              <label class="fld__label" for="qm-email">Correo</label>
+              <label class="fld__label" for="qm-email">{L({ es: 'Correo', en: 'Email' })}</label>
               <input class="fld__input" id="qm-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="200" required enterkeyhint="next" />
               <p class="fld__error" id="qm-email-error" hidden></p>
             </div>
           </div>
           <fieldset class="fld" data-field="canal_preferido" id="qm-canal_preferido">
-            <legend class="fld__label">¿Cómo prefieres que te contactemos?</legend>
+            <legend class="fld__label">{L({ es: '¿Cómo prefieres que te contactemos?', en: 'How would you like us to contact you?' })}</legend>
             <div class="seg">
               {cat.canalesPreferidos.map((c) => (
                 <label class="seg__opt">
@@ -199,14 +203,14 @@ const S = cat.pasos;
             <p class="fld__error" id="qm-canal_preferido-error" hidden></p>
           </fieldset>
           <div class="fld" data-field="sitio">
-            <label class="fld__label" for="qm-sitio">Sitio web o redes</label>
+            <label class="fld__label" for="qm-sitio">{L({ es: 'Sitio web o redes', en: 'Website or social media' })}</label>
             <input class="fld__input" id="qm-sitio" name="sitio" type="text" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" maxlength="200" enterkeyhint="next" />
             <p class="fld__error" id="qm-sitio-error" hidden></p>
           </div>
           <div class="fld" data-field="vision">
-            <label class="fld__label" for="qm-vision">Cuéntanos tu proyecto</label>
+            <label class="fld__label" for="qm-vision">{L({ es: 'Cuéntanos tu proyecto', en: 'Tell us about your project' })}</label>
             <textarea class="fld__textarea" id="qm-vision" name="vision" rows="4" maxlength={cat.limites.vision}
-              placeholder="Ej. Nos escriben 80 personas al día por WhatsApp y no alcanzamos a responder." aria-describedby="qm-vision-count"></textarea>
+              placeholder={L({ es: 'Ej. Nos escriben 80 personas al día por WhatsApp y no alcanzamos a responder.', en: "E.g. 80 people message us on WhatsApp every day and we can't keep up." })} aria-describedby="qm-vision-count"></textarea>
             <p class="fld__count" id="qm-vision-count" data-qm-count-for="vision">0 / {cat.limites.vision}</p>
             <p class="fld__error" id="qm-vision-error" hidden></p>
           </div>
@@ -214,14 +218,14 @@ const S = cat.pasos;
             <label class="check" for="qm-consentimiento">
               <input type="checkbox" id="qm-consentimiento" name="consentimiento" value="si" required />
               <span class="check__box" aria-hidden="true"><Icon name="check" size={16} /></span>
-              <span>{aviso1}<a href="/aviso-privacidad/" target="_blank" rel="noopener">{T.aviso}<span class="sr-only"> (se abre en una pestaña nueva)</span></a>{aviso2}</span>
+              <span>{aviso1}<a href={L({ es: '/aviso-privacidad/', en: '/en/privacy/' })} target="_blank" rel="noopener">{T.aviso}<span class="sr-only">{L({ es: ' (se abre en una pestaña nueva)', en: ' (opens in a new tab)' })}</span></a>{aviso2}</span>
             </label>
             <p class="fld__error" id="qm-consentimiento-error" hidden></p>
           </div>
         </section>
 
         <div class="hp" aria-hidden="true">
-          <label for="qm-website-url">Sitio web</label>
+          <label for="qm-website-url">{L({ es: 'Sitio web', en: 'Website' })}</label>
           <input id="qm-website-url" name="website_url" type="text" tabindex="-1" autocomplete="off" />
         </div>
         <p class="t-micro qm__draft"><span class="node" aria-hidden="true"></span>{T.borrador}</p>
@@ -276,7 +280,7 @@ const S = cat.pasos;
       </div>
       <p class="qm__fail-alt">
         <a class="lnk" data-qm-mail><Icon name="mail" size={18} />{T.falla.correo}</a>
-        <button type="button" class="lnk lnk--mono qm__review" data-qm-review>Revisar mis respuestas</button>
+        <button type="button" class="lnk lnk--mono qm__review" data-qm-review>{L({ es: 'Revisar mis respuestas', en: 'Review my answers' })}</button>
       </p>
     </section>
 

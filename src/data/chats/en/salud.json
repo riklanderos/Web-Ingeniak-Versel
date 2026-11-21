@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hi, good evening. Do you have any openings this week for a dental cleaning?", "delay": 900, "time": "11:02 PM" },
+  { "who": "kain", "text": "Hi! I'm Kain, the clinic's assistant. Yes, we have openings: Thursday at 10:00 AM or Friday at 5:30 PM. Which works for you?", "delay": 1100 },
+  { "who": "cliente", "text": "Friday. By the way, my gums bleed a little when I brush, is that normal?", "delay": 1700 },
+  { "who": "kain", "text": "The doctor needs to check that at your appointment; I can't give you a diagnosis. If you'd like, I'll leave her a note so she can go over it with you.", "delay": 1200 },
+  { "who": "cliente", "text": "Yes, please. I'm Laura.", "delay": 1400 },
+  { "who": "kain", "text": "All set, Laura: dental cleaning on Friday at 5:30 PM, with a note for the doctor. I'll send you a reminder the day before.", "delay": 1000, "event": "Appointment logged in your CRM" },
+  { "who": "cliente", "text": "Perfect, thanks.", "delay": 1300 },
+  { "who": "kain", "text": "My pleasure. Have a good night.", "delay": 800 }
+]

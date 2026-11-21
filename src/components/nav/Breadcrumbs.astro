@@ -14,9 +14,10 @@ const { items, page, class: cls } = Astro.props;
 const list: Crumb[] = items ?? (((page as any)?.breadcrumbs as Crumb[]) ?? []);
 const hidden = !list.length || list.length < 2 || (page && ((page as any).url === '/' || (page as any).id === '404'));
 const hrefOf = (c: Crumb) => { const h = c.url ?? c.href; return h ? linkTarget(h) : null; };
+import { L } from '../../lib/i18n';
 ---
 {!hidden && (
-  <nav class:list={['crumbs', cls]} aria-label="Ruta de navegación">
+  <nav class:list={['crumbs', cls]} aria-label={L({ es: 'Ruta de navegación', en: 'Breadcrumb' })}>
     <ol class="crumbs__list" role="list">
       {list.map((c, i) => {
         const last = i === list.length - 1;

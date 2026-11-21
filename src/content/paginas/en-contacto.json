@@ -1,0 +1,229 @@
+{
+  "_schema": "Texto publicable de /contacto/ (T-CONTACT, ContactTemplate). Forma general: _ESQUEMA.md §2–§6. Campos propios de esta plantilla: hero.mail = {label, line} (tercera ruta de la portada, mailto a SITE.email); hero.chat = {title, lines[]} (conversación SIMULADA registrada en el teléfono de cristal de la placa home-kain: lines = {who: 'cliente'|'kain', text, delay?}; sin precios ni cifras); rutas.routes[] = {id: 'cotizar'|'whatsapp'|'correo', name, tag?, contact?, when, then, action, cotizar?} (tabla de 3 rutas; el destino lo pone la plantilla: la ruta con cotizar: true abre el formulario de cotización (data-cotizar, href '#cotizar'), waHref con el mensaje de la página, mailto); rutas.caption (leyenda de la tabla); cotizar = {eyebrow, h2, lede, steps[] = {n, title, line}, ctaPrimary, directo = {line, wa, email}} (sección #cotizar: qué sigue en 3 pasos, botón que abre el formulario y, abajo, las rutas directas que sirven sin JS; antes 'formulario', condicional); oficina = {eyebrow, h2, lede, address, mapsLabel, mapsHref, visit, countriesLabel, nap[] = {term, value}} (address y nap van tal cual, con data-allow-number); redes.items[] = {slug: 'instagram'|'facebook'|'linkedin', name, handle, line} (el enlace sale de SITE.social). Los campos que empiezan con _ no se imprimen.",
+  "pageId": "en-contacto",
+  "url": "/en/contact/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (traducción con IA, 2026-11-20)",
+  "aprobadoPor": "",
+  "actualizado": "2026-11-20",
+  "pendientes": [
+    "INGLÉS · Traducción con IA del texto aprobado de contacto.json (2026-11-20). Rik revisa y aprueba la versión en inglés completa antes de publicarla.",
+    "INGLÉS · Promesa de tiempo de respuesta: 'en menos de 2 horas hábiles' → 'within 2 business hours' (rutas y #cotizar). Para un cliente de Estados Unidos o Canadá no queda claro de qué zona horaria son las horas hábiles; confirma si se agrega 'Central Mexico time (CST, UTC−6)' o el horario. Es una promesa comercial: valida que el equipo puede cumplirla también con leads en inglés.",
+    "INGLÉS · Idioma de atención: la página no dice que el equipo atiende en inglés, ni Kain por WhatsApp. Confirma que Kain y el equipo responden en inglés antes de publicar (el waMessage avisa que la persona viene del sitio en inglés).",
+    "INGLÉS · rutas.privacy enlaza a /en/privacy/ (gemela en inglés del aviso). El aviso de privacidad tiene implicación legal: confirma que la versión en inglés existe y está aprobada antes de publicar esta página.",
+    "INGLÉS · ledeLinks: el texto del enlace cambió para que aparezca tal cual en el lede traducido ('mismo equipo' → 'same team', a /nosotros/; 'zona metropolitana de Guadalajara' → 'Guadalajara metro area', a /agentes-ia-guadalajara/). Los dos destinos siguen en español.",
+    "INGLÉS · Teléfono: se deja '+52 33 2101 7799' (número de México). Para clientes de Estados Unidos es una llamada o WhatsApp internacional; no se sugiere ningún número de Estados Unidos.",
+    "INGLÉS · countriesLabel 'We work with companies in': la lista de países la pinta el código (CountryList) y puede salir en español; hace falta su versión en inglés (aviso para quien construye).",
+    "INGLÉS · El formulario de cotización (modal de 3 pasos → Kommo) sigue en español; hace falta su versión en inglés para que la ruta 'Get a quote' funcione en /en/contact/ (aviso para quien construye).",
+    "INGLÉS · Frases adaptadas, no literales: 'tres puertas de entrada' → 'three ways in'; 'no según lo que creas que esperamos' → 'not on what you think we expect'; 'Síguenos donde publicamos' → 'Follow us where we post'.",
+    "INGLÉS · El mensaje de WhatsApp (waMessage) dice que la persona viene del sitio en inglés; es el mismo en hero, cta-final y en el sitemap."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (home-kain, subject-left) + 3 rutas: Cotizar proyecto (.btn data-cotizar, href #cotizar) · WhatsApp (.btn--ghost) · correo (.lnk) + ChatSim registrado en el teléfono de cristal",
+      "rail": "Intro",
+      "eyebrow": "Contact",
+      "h1": {
+        "text": "Talk to Ingeniak",
+        "lit": "Ingeniak"
+      },
+      "lede": "Three ways to reach the same team. If you have a project in mind, requesting a quote is the most direct route.",
+      "ctaPrimary": {
+        "label": "Get a quote"
+      },
+      "ctaSecondary": {
+        "label": "Message Kain",
+        "waMessage": "Hi Kain, I'm coming from the Contact page on Ingeniak's English site and I'd like to talk to the team."
+      },
+      "mail": {
+        "label": "contacto@ingeniak.mx",
+        "line": "Or email us at"
+      },
+      "chat": {
+        "title": "Ingeniak's AI agent",
+        "lines": [
+          {
+            "who": "cliente",
+            "text": "Hi, I want to automate customer service for my business."
+          },
+          {
+            "who": "kain",
+            "text": "Hi, I'm Kain, Ingeniak's AI agent. What do you sell, and where do your customers message you?",
+            "delay": 1100
+          },
+          {
+            "who": "cliente",
+            "text": "A clinic. Almost everything comes in through WhatsApp.",
+            "delay": 1300
+          },
+          {
+            "who": "kain",
+            "text": "Perfect. Here's the quote form: it's three steps, and the team will message you right here.",
+            "delay": 1200
+          }
+        ]
+      }
+    },
+    "rutas": {
+      "_componente": "Intertitle + tabla semántica de 3 rutas (filas con filete, sin tarjetas; bloques en móvil)",
+      "rail": "Options",
+      "eyebrow": "Choose how to reach us",
+      "h2": {
+        "text": "One conversation,",
+        "soft": "three ways in."
+      },
+      "lede": "All three reach the same team. Choose based on what you need today, not on what you think we expect.",
+      "ledeLinks": [{ "text": "same team", "href": "/nosotros/" }],
+      "privacy": { "line": "How we handle your data:", "label": "Privacy notice", "href": "/en/privacy/" },
+      "caption": "Ingeniak contact options: what each one is for and what happens next",
+      "cols": {
+        "route": "Option",
+        "when": "Use it if…",
+        "then": "What happens next"
+      },
+      "routes": [
+        {
+          "id": "cotizar",
+          "name": "Get a quote",
+          "tag": "Recommended",
+          "contact": "3-step form",
+          "when": "You have a project in mind and want a quote.",
+          "then": "You fill out a short form with what you need, and we reach out by WhatsApp and email within 2 business hours to learn the details and prepare your quote.",
+          "action": "Quote",
+          "cotizar": true
+        },
+        {
+          "id": "whatsapp",
+          "name": "WhatsApp",
+          "contact": "+52 33 2101 7799",
+          "when": "You have a specific question or prefer to start with a message.",
+          "then": "Kain, Ingeniak's AI agent, replies. When your case needs a person, Kain hands you off to the team with the full conversation.",
+          "action": "Message us"
+        },
+        {
+          "id": "correo",
+          "name": "Email",
+          "contact": "contacto@ingeniak.mx",
+          "when": "You're sending documents, a formal request or an administrative matter.",
+          "then": "The Ingeniak team receives it and replies by email.",
+          "action": "Send an email"
+        }
+      ]
+    },
+    "cotizar": {
+      "_componente": "Intertitle split · eyebrow + H2 + lede + qué sigue en 3 pasos + .btn[data-cotizar] href=\"#cotizar\" (data-section=\"cotizar\") y, abajo, las rutas directas (WhatsApp con el mensaje de la página y correo) que sirven sin JS",
+      "rail": "Quote",
+      "eyebrow": "Get a quote",
+      "h2": {
+        "text": "Get a quote for your project.",
+        "soft": "Three steps, and we'll reach out."
+      },
+      "lede": "Tell us what you need, what your business is like and how you'd like us to reach you.",
+      "steps": [
+        {
+          "n": "01",
+          "title": "You fill out the form",
+          "line": "What you need, your business and your contact details."
+        },
+        {
+          "n": "02",
+          "title": "We reach out",
+          "line": "Within 2 business hours, by WhatsApp and email, to learn the details."
+        },
+        {
+          "n": "03",
+          "title": "You get your quote",
+          "line": "If it makes sense for both of us, with scope, timeline and cost."
+        }
+      ],
+      "ctaPrimary": {
+        "label": "Get a quote"
+      },
+      "directo": {
+        "line": "Rather write to us directly?",
+        "wa": "Message Kain",
+        "email": "contacto@ingeniak.mx"
+      }
+    },
+    "oficina": {
+      "_componente": "Intertitle split · dirección en grande sobre un faro de luz (esquema tipográfico, sin mapa con pines) + enlace a Google Maps + ficha NAP + países (CountryList)",
+      "rail": "Office",
+      "eyebrow": "Office",
+      "h2": {
+        "text": "Based in Guadalajara.",
+        "soft": "We work wherever you are."
+      },
+      "lede": "Our office is in Tlajomulco de Zúñiga, in the Guadalajara metro area. You don't need to visit to start working together: request a quote right here and we'll reach out by WhatsApp and email.",
+      "ledeLinks": [{ "text": "Guadalajara metro area", "href": "/agentes-ia-guadalajara/" }],
+      "address": "Av. Punto Sur 312",
+      "addressLine": "Tlajomulco de Zúñiga, Jalisco 45640, Mexico",
+      "mapsLabel": "Open in Google Maps",
+      "mapsHref": "https://www.google.com/maps/search/?api=1&query=Av.+Punto+Sur+312%2C+Tlajomulco+de+Z%C3%BA%C3%B1iga%2C+Jalisco+45640",
+      "visit": "If you'd like to visit, message us first so we can set up a time.",
+      "napLabel": "Contact details",
+      "nap": [
+        {
+          "term": "Name",
+          "value": "Ingeniak"
+        },
+        {
+          "term": "Address",
+          "value": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640, Mexico"
+        },
+        {
+          "term": "Phone and WhatsApp",
+          "value": "+52 33 2101 7799"
+        },
+        {
+          "term": "Email",
+          "value": "contacto@ingeniak.mx"
+        }
+      ],
+      "countriesLabel": "We work with companies in"
+    },
+    "redes": {
+      "_componente": "Intertitle · lista tipográfica de 3 redes (logo en máscara + nombre + usuario), sin tarjetas",
+      "rail": "Social",
+      "eyebrow": "Social",
+      "h2": {
+        "text": "Follow us",
+        "soft": "where we post."
+      },
+      "lede": "If you'd like to get to know us before reaching out, that's where you'll find us. For business messages, WhatsApp or email works best, so nothing gets lost.",
+      "items": [
+        {
+          "slug": "instagram",
+          "name": "Instagram",
+          "handle": "@ingeniakmx"
+        },
+        {
+          "slug": "facebook",
+          "name": "Facebook",
+          "handle": "/ingeniakmx"
+        },
+        {
+          "slug": "linkedin",
+          "name": "LinkedIn",
+          "handle": "Ingeniak"
+        }
+      ]
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Next step",
+      "eyebrow": "The next step",
+      "h2": {
+        "text": "Can we help you?",
+        "soft": "Tell us about your project."
+      },
+      "lede": "We look at how your customers reach you today, where you're losing them and what to automate first.",
+      "ctaPrimary": {
+        "label": "Get a quote"
+      },
+      "ctaSecondary": {
+        "label": "Message Kain",
+        "waMessage": "Hi Kain, I'm coming from the Contact page on Ingeniak's English site and I'd like to talk to the team."
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+[
+  { "who": "cliente", "text": "Hi, I saw your ad. I'm interested in a loan for my business.", "delay": 900, "time": "9:26 PM" },
+  { "who": "kain", "text": "Hi! Happy to help. So I can connect you with the right advisor, how long has your business been operating?", "delay": 1100 },
+  { "who": "cliente", "text": "Three years. It's a coffee shop.", "delay": 1400 },
+  { "who": "kain", "text": "Thanks. What would you use the loan for: equipment, working capital, or something else?", "delay": 1000 },
+  { "who": "cliente", "text": "To open a second location. Will I get approved?", "delay": 1500 },
+  { "who": "kain", "text": "That's up to the credit team once they review your application; I can't promise an approval or quote you a rate. Last question: do you invoice under the business's name?", "delay": 1200 },
+  { "who": "cliente", "text": "Yes. I'm Ricardo.", "delay": 1300 },
+  { "who": "kain", "text": "Thanks, Ricardo. I can book you a call with an advisor tomorrow at 10:00 AM or 4:30 PM. Which do you prefer?", "delay": 1100 },
+  { "who": "cliente", "text": "10 works.", "delay": 1100 },
+  { "who": "kain", "text": "Done: call tomorrow at 10:00 AM. Here's the list of documents so you have them handy.", "delay": 1000, "event": "Qualified prospect · call booked in your CRM" }
+]

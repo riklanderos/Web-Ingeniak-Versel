@@ -19,6 +19,7 @@ import { annotateFigures, esc } from '../ui/ui-data';
 import Aura from './Aura.astro';
 import { builtCrumbs } from './heroKit';
 import { SITE, waHref, linkTarget, type Page } from '../../lib/site';
+import { L, currentLang, localHref } from '../../lib/i18n';
 import '../../styles/tpl/LegalTemplate.css';
 
 interface Props { page: Page; copy: any }
@@ -26,6 +27,21 @@ const { page, copy } = Astro.props;
 const P = page as any;
 const C = copy?.sections ?? {};
 const dev = import.meta.env.DEV;
+// Versión en inglés (/en/, 2026-11-20): idioma de la página y textos escritos en código.
+const lang = currentLang();
+const T = {
+  hola: L({ es: 'Hola, tengo una pregunta sobre el aviso de privacidad de Ingeniak.', en: "Hi, I'm coming from the English site and have a question about Ingeniak's privacy notice." }),
+  wa: L({ es: 'Escríbele a Kain', en: 'Message Kain' }),
+  updated: L({ es: 'Última actualización', en: 'Last updated' }),
+  apartados: L({ es: 'Apartados', en: 'Sections' }),
+  lectura: L({ es: 'Lectura', en: 'Reading time' }),
+  minuto: L({ es: 'minuto', en: 'minute' }),
+  minutos: L({ es: 'minutos', en: 'minutes' }),
+  doc: L({ es: 'Texto del aviso de privacidad', en: 'Privacy notice text' }),
+  indice: L({ es: 'Índice', en: 'Contents' }),
+  ayuda: L({ es: 'Ayuda', en: 'Help' }),
+  contacto: L({ es: 'Contacto', en: 'Contact' }),
+};
 
 const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
 function headHtml(h: any, lit?: string | null): string {
@@ -38,9 +54,9 @@ function headHtml(h: any, lit?: string | null): string {
   }
   return h.soft ? `${first} <span class="soft">${annotateFigures(h.soft)}</span>` : first;
 }
-const waMsg: string = P.secondaryCta?.waMessage ?? 'Hola, tengo una pregunta sobre el aviso de privacidad de Ingeniak.';
+const waMsg: string = P.secondaryCta?.waMessage ?? T.hola;
 const wa = P.secondaryCta?.href ?? waHref(waMsg);
-const waLabel = P.secondaryCta?.label ?? 'Escríbele a Kain';
+const waLabel = P.secondaryCta?.label ?? T.wa;
 const pad = (n: number) => String(n).padStart(2, '0');
 
 const head = cp('encabezado');
@@ -51,7 +67,7 @@ const byNumber = new Map(clauses.map((c, i) => [i + 1, c.id]));
 
 /** Párrafo legal → HTML seguro; "Cláusula N" enlaza a la cláusula N de este documento (el texto no cambia). */
 function legalHtml(text: string): string {
-  return annotateFigures(text).replace(/Cláusula (\d{1,2})\b/g, (m, n) => {
+  return annotateFigures(text).replace(/(?:Cláusula|Clause) (\d{1,2})\b/g, (m, n) => {
     const id = byNumber.get(Number(n));
     return id ? `<a href="#${id}">${m}</a>` : m;
   });
@@ -60,7 +76,7 @@ function legalHtml(text: string): string {
 function dlHtml(term: string, value: string): string {
   const v = esc(value);
   if (/^[\w.+-]+@[\w-]+(\.[\w-]+)+$/.test(value)) return `<a href="mailto:${v}">${v}</a>`;
-  if (/^ingeniak\.mx$/i.test(value)) return `<a href="/">${v}</a>`;
+  if (/^ingeniak\.mx$/i.test(value)) return `<a href="${localHref('/', lang)}">${v}</a>`;
   return v;
 }
 // Tiempo de lectura (texto del aviso, 200 palabras por minuto) y fecha ISO de la última actualización
@@ -68,13 +84,22 @@ const words = clauses.flatMap((c) => c.blocks).map((b) => [b.p, b.h3, ...(b.ul ?
   .split(/\s+/).filter(Boolean).length;
 const readMin = Math.max(1, Math.round(words / 200));
 const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const MONTHS_EN = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 const iso = (() => {
-  const m = String(head?.updated ?? '').match(/(\d{1,2}) de ([a-záéíóú]+) de (\d{4})/i);
+  const t = String(head?.updated ?? '');
+  // Español: "12 de octubre de 2026" · inglés: "August 1, 2026" o "1 August 2026" (versión /en/, 2026-11-20)
+  const m = t.match(/(\d{1,2}) de ([a-záéíóú]+) de (\d{4})/i);
   const mi = m ? MONTHS.indexOf(m[2].toLowerCase()) : -1;
-  return m && mi >= 0 ? `${m[3]}-${pad(mi + 1)}-${pad(Number(m[1]))}` : undefined;
+  if (m && mi >= 0) return `${m[3]}-${pad(mi + 1)}-${pad(Number(m[1]))}`;
+  const a = t.match(/\b([a-z]+)\.? (\d{1,2}),? (\d{4})\b/i);
+  const ai = a ? MONTHS_EN.indexOf(a[1].toLowerCase()) : -1;
+  if (a && ai >= 0) return `${a[3]}-${pad(ai + 1)}-${pad(Number(a[2]))}`;
+  const b = t.match(/\b(\d{1,2}) ([a-z]+),? (\d{4})\b/i);
+  const bi = b ? MONTHS_EN.indexOf(b[2].toLowerCase()) : -1;
+  return b && bi >= 0 ? `${b[3]}-${pad(bi + 1)}-${pad(Number(b[1]))}` : undefined;
 })();
 const help = doc?.help;
-const contactHref = linkTarget('/contacto/');
+const contactHref = linkTarget(localHref('/contacto/', lang));
 
 if (dev) {
   for (const id of (P.sections as any[]).map((s) => s.id)) {
@@ -95,9 +120,9 @@ if (dev) {
       <h1 id="encabezado-t" class="t-display-2 lg-h1" data-split set:html={headHtml(head.h1)} />
       {head.deck && <Copy as="p" class="t-deck lg-deck" text={head.deck} />}
       <dl class="lg-meta">
-        <div class="lg-meta__i"><dt>{head.updatedLabel ?? 'Última actualización'}</dt><dd><time datetime={iso}>{head.updated}</time></dd></div>
-        <div class="lg-meta__i"><dt>Apartados</dt><dd>{clauses.length}</dd></div>
-        <div class="lg-meta__i"><dt>Lectura</dt><dd>{readMin} {readMin === 1 ? 'minuto' : 'minutos'}</dd></div>
+        <div class="lg-meta__i"><dt>{head.updatedLabel ?? T.updated}</dt><dd><time datetime={iso}>{head.updated}</time></dd></div>
+        <div class="lg-meta__i"><dt>{T.apartados}</dt><dd>{clauses.length}</dd></div>
+        <div class="lg-meta__i"><dt>{T.lectura}</dt><dd>{readMin} {readMin === 1 ? T.minuto : T.minutos}</dd></div>
       </dl>
       {head.rights && clauses.some((c) => c.id === 'arco') && (
         <a class="lnk lg-arco" href="#arco"><span class="lg-arco__k">{head.rights.label}</span>{head.rights.text} <span aria-hidden="true">↓</span></a>
@@ -107,16 +132,16 @@ if (dev) {
 
   {/* ── 02 + 03 · índice lateral + texto legal ── */}
   {doc && (
-    <section id="texto" class="lg-doc" aria-label="Texto del aviso de privacidad" data-lg-doc>
+    <section id="texto" class="lg-doc" aria-label={T.doc} data-lg-doc>
       <div class="lg-light" aria-hidden="true"><span class="lg-light__a"></span><span class="lg-light__b"></span></div>
       <div class="frame lg-doc__frame">
-        <nav id="indice" class="lg-toc" aria-label={idx?.label ?? 'Índice'} data-lg-toc>
+        <nav id="indice" class="lg-toc" aria-label={idx?.label ?? T.indice} data-lg-toc>
           {/* Escritorio: el rótulo vive fuera de <details> y el <summary> no existe (display:none): nada que enfocar ni
               plegar. Móvil y tableta: el <summary> es el control que abre y cierra el índice. */}
-          <p class="t-label t-label--cyan lg-toc__label" aria-hidden="true"><span class="node"></span>{idx?.label ?? 'Índice'}</p>
+          <p class="t-label t-label--cyan lg-toc__label" aria-hidden="true"><span class="node"></span>{idx?.label ?? T.indice}</p>
           <details class="lg-toc__details" open data-lg-details>
             <summary class="lg-toc__sum">
-              <span class="lg-toc__mlabel">{idx?.mobileLabel ?? idx?.label ?? 'Índice'} · {clauses.length}</span>
+              <span class="lg-toc__mlabel">{idx?.mobileLabel ?? idx?.label ?? T.indice} · {clauses.length}</span>
               <Icon name="chevron" size={16} class="lg-toc__chev" />
             </summary>
             <div class="lg-toc__rail">
@@ -157,13 +182,13 @@ if (dev) {
 
         {help && (
           <aside class="lg-help" aria-labelledby="lg-help-t">
-            <p class="t-label t-label--cyan lg-help__k"><span class="node" aria-hidden="true"></span>Ayuda</p>
+            <p class="t-label t-label--cyan lg-help__k"><span class="node" aria-hidden="true"></span>{T.ayuda}</p>
             <h2 id="lg-help-t" class="t-h3 lg-help__t">{help.title}</h2>
             {help.text && <p class="lg-help__p" set:html={legalHtml(help.text)} />}
             <div class="lg-help__acts">
               <a class="lnk lg-help__mail" href={`mailto:${SITE.email}`}><Icon name="mail" size={16} />{help.mailLabel ?? SITE.email}</a>
               <Btn variant="ghost" href={wa} label={waLabel} />
-              {contactHref && <a class="lnk lnk--mono lg-help__all" href={contactHref}>{help.contactLabel ?? 'Contacto'} <span aria-hidden="true">→</span></a>}
+              {contactHref && <a class="lnk lnk--mono lg-help__all" href={contactHref}>{help.contactLabel ?? T.contacto} <span aria-hidden="true">→</span></a>}
             </div>
           </aside>
         )}

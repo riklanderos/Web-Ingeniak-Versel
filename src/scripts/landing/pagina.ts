@@ -10,9 +10,9 @@
 //   · secciones del copy con _kind (agenda, quiz, twin, offer, guarantee, host) que el sitemap no liste → se insertan tras
 //     su vecina anterior del copy (la reserva nunca desaparece de la página por un dato faltante);
 //   · internalLinks sin agenda.ingeniak.tech.
-import { pages, getCopy, type Page } from '../../lib/site';
+import { allPages as pages, getCopy, type Page } from '../../lib/site';
 
-type Url = '/discovery/' | '/power-session/';
+type Url = '/discovery/' | '/power-session/' | '/en/discovery/';
 
 export function landingPage(url: Url): Page {
   const base = (pages as any[]).find((p) => p.url === url);

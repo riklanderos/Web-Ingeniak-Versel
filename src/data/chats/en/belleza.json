@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hi, do you have any openings Saturday for a manicure and pedicure?", "delay": 900, "time": "9:40 PM" },
+  { "who": "kain", "text": "Hi! Yes: on Saturday I have 11:00 AM with Dani or 1:30 PM with Fer. Which works better for you?", "delay": 1000 },
+  { "who": "cliente", "text": "11 with Dani. How much is it?", "delay": 1500 },
+  { "who": "kain", "text": "Here's the salon's price list. The total depends on the design you pick; Dani will confirm it before she starts.", "delay": 1100 },
+  { "who": "cliente", "text": "Sounds good. I'm Mariana.", "delay": 1300 },
+  { "who": "kain", "text": "You're all set, Mariana: manicure and pedicure on Saturday at 11:00 AM with Dani. I'll send you a reminder here on Friday.", "delay": 1000, "event": "Appointment logged in your CRM · reminder scheduled" },
+  { "who": "cliente", "text": "Thanks.", "delay": 1200 },
+  { "who": "kain", "text": "Thank you! If you need to change the time, just message me and I'll offer you another slot.", "delay": 800 }
+]

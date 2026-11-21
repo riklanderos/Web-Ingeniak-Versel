@@ -3,15 +3,15 @@
 // Se usa con <ChatSim tabsOutside id="kain-chat" …> y controla uno o varios simuladores: for="kain-chat kain-chat-m".
 // Mismo patrón ARIA que dentro del teléfono (role=tablist/tab, flechas, Inicio/Fin); ui.ts las conecta por data-chat-tabs-for.
 //   sim=true → antepone la etiqueta SIMULACIÓN (chip-sim) a la fila.
-import { SIM } from './ui-data';
+import { SIM, sectorLabels, simChipLabel } from './ui-data';
 
 type Tab = string | { id: string; label?: string };
 interface Props { for: string; tabs: Tab[]; sim?: boolean; label?: string; class?: string }
 const { for: target, tabs, sim = true, label = SIM.tabsAria, class: cls } = Astro.props;
-const LABELS: Record<string, string> = { salud: 'Salud', belleza: 'Belleza', nutricion: 'Nutrición', finanzas: 'Finanzas', inmobiliario: 'Inmobiliario', industrial: 'Industrial', retail: 'Retail', ecommerce: 'E-commerce', horeca: 'HoReCa', default: 'General' };
+const LABELS = sectorLabels();
 const first = target.trim().split(/\s+/)[0];
 const list = tabs.map((t) => (typeof t === 'string' ? { id: t, label: LABELS[t] ?? t } : { id: t.id, label: t.label ?? LABELS[t.id] ?? t.id }));
-const simLabel = String(SIM.label).toUpperCase() === 'SIMULACIÓN' ? 'Simulación' : SIM.label;
+const simLabel = simChipLabel();
 ---
 <div class:list={['chat-tabs', cls]} data-nosnippet>
   {sim && <span class="chip-sim">{simLabel}</span>}

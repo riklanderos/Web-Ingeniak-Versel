@@ -13,6 +13,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { SITE } from '../../lib/site';
+import { L } from '../../lib/i18n';
 interface Props { waHref?: string }
 const { waHref = SITE.waBase } = Astro.props;
 const AVATAR = '/img/kain/kain-avatar-96.webp';
@@ -41,7 +42,7 @@ if (!hasAvatar) {
     <img src={src} alt="" width={w} height={h} decoding="async" fetchpriority="low" loading={src.startsWith('data:') ? undefined : 'lazy'} />
   </span>
   <span class="kpill__txt">
-    <span class="kpill__t">Escríbele a Kain</span>
-    <span class="kpill__s"><span class="dot-live" aria-hidden="true"></span>responde 24/7</span>
+    <span class="kpill__t">{L({ es: 'Escríbele a Kain', en: 'Message Kain' })}</span>
+    <span class="kpill__s"><span class="dot-live" aria-hidden="true"></span>{L({ es: 'responde 24/7', en: 'replies 24/7' })}</span>
   </span>
 </a>

@@ -125,3 +125,106 @@ export const T = {
 };
 
 export type Textos = typeof T;
+
+/* ───────────────────────── Versión en inglés (/en/, 2026-11-20) ───────────────────────── */
+export const T_EN: Textos = {
+  pasos: { discovery: ['Your details', 'Time slot', 'Confirm'], power: ['Your details', 'Time slot', 'Payment'] },
+  pasoDe: 'Step {n} of 3',
+  sim: 'Local simulation',
+  s1: {
+    h: 'Tell us about you and your business',
+    sub: { discovery: 'A few questions so we come to the call with context.', power: 'A few questions so we come to the session having already read your operation.' },
+    grupos: ['About you', 'About your business', 'To prepare the session'],
+    resumen: 'Check these fields:',
+    boton: 'Pick a time',
+    privacidad: 'Your details are only used to prepare your session.',
+    aviso: 'Privacy Policy',
+    honeypot: 'Leave blank',
+  },
+  campos: {
+    fullName: { label: 'Full name' },
+    email: { label: 'Email', help: "That's where we'll send the invite with the Meet link." },
+    whatsapp: { label: 'WhatsApp', help: 'With country code. Only for updates about your session.' },
+    businessName: { label: 'Business name' },
+    website: { label: 'Website or social media', placeholder: 'instagram.com/yourbusiness' },
+    industry: { label: 'Industry', placeholder: 'Pick one' },
+    teamSize: { label: 'People on your team', placeholder: 'Pick one' },
+    revenue: { label: 'Approximate monthly revenue', placeholder: 'Pick a range' },
+    timeDrains: { label: 'Where does most of your time go?', opt: 'Up to 3' },
+    tools: { label: 'What tools do you use today?', help: 'CRM, Excel, WhatsApp Business, invoicing…' },
+    goal: {
+      discovery: { label: 'What do you want to review on the call?', help: 'One or two sentences is enough.' },
+      power: { label: 'What do you want to solve in the session?', help: 'The more specific, the better prepared we arrive.' },
+    },
+    opcional: 'Optional',
+  },
+  s2: {
+    h: 'Pick a day and time',
+    sub: (type: SessionType) => `${SESSION_RULES[type].sameDay ? 'Today and the next' : 'Next'} ${SESSION_RULES[type].days} business days · ${SESSION_RULES[type].minutes} min · Times in Central Mexico time (Mexico City).`,
+    dias: 'Available days',
+    cargando: 'Loading times…',
+    reintentar: 'Try again',
+    lleno: 'Full',
+    tuHora: 'your time',
+    vacio: {
+      power: 'No Power Sessions left this week: we open 4 per week, in order of payment.',
+      discovery: 'No open time slots in the coming days.',
+    },
+    vacioCierre: "Message us on WhatsApp or at {email} and we'll find you a slot.",
+    atras: 'Back',
+    continuar: 'Continue',
+  },
+  s3: {
+    h: { discovery: 'Review and confirm', power: 'Review and pay' },
+    filas: { sesion: 'Session', cuando: 'When', para: 'For', costo: 'Cost' },
+    sesion: (type: SessionType) => `${SESSION_RULES[type].label} · ${SESSION_RULES[type].minutes} min · Google Meet`,
+    cdmx: '(Mexico City)',
+    local: 'in your time zone',
+    sinCosto: 'Free',
+    pagoUnico: 'one-time payment',
+    nota: {
+      discovery: "Once you confirm, you'll get the Google Calendar invite with the Meet link.",
+      power: `We'll take you to Stripe to pay by card. Your time slot is held for ${HOLD_SHOWN} minutes while you pay; once the payment goes through, you'll get the invite with the Meet link.`,
+    },
+    cambiar: 'Change time',
+    confirmar: 'Confirm my session',
+    pagar: 'Pay',
+    agendando: 'Booking…',
+    abriendoPago: 'Opening payment…',
+  },
+  avisos: {
+    cancelado: 'You canceled the payment and your time slot was released. You can pick the same one or another.',
+    ocupado: 'That time slot was just taken. Please pick another one.',
+    sinConexion: 'The connection dropped. Please try again.',
+    reserva: "We couldn't complete the booking. Try again, or message us on WhatsApp and we'll book it for you.",
+    agenda: "We couldn't load the calendar right now. Try again in a few minutes or message us on WhatsApp.",
+    wa: 'Message us on WhatsApp',
+  },
+  done: {
+    kicker: 'Session booked',
+    h: "You're all set, {nombre}. Your Discovery Session is booked.",
+    hSinNombre: "You're all set. Your Discovery Session is booked.",
+    cuando: '{when} (Central Mexico time)',
+    invitacion: "We sent the Google Calendar invite to {email} with the Google Meet link. If you don't see it in your inbox, check promotions or spam.",
+    meet: 'Open the Meet link',
+    inicio: 'Back to home',
+    wa: 'Message Kain',
+    waMensaje: "Hi, I'm coming from the English site. I just booked my Discovery Session and want to confirm something.",
+    waMover: "Hi, I'm coming from the English site. I just booked my Discovery Session and need to reschedule the call.",
+    aprovechar: 'To make the most of the 30 minutes',
+    tips: [
+      'Join five minutes early from a computer, if you can.',
+      'Know which part of your operation feels most stuck.',
+      'If you have numbers handy (sales, leads, response times), even better.',
+      "No need to prepare a presentation: we'll ask the questions.",
+    ],
+    mover: 'Need to reschedule? Message us on {wa} or at {email}.',
+    moverWa: 'WhatsApp',
+  },
+  nojs: 'To book, you need JavaScript turned on, or message us on WhatsApp or at {email}.',
+  nojsWa: 'WhatsApp',
+  email: CONTACT.email,
+};
+/** Textos del flujo en el idioma de la página. */
+export const textos = (lang: 'es' | 'en'): Textos => (lang === 'en' ? T_EN : T);
+

@@ -1,0 +1,248 @@
+{
+  "pageId": "en-discovery",
+  "url": "/en/discovery/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (traducción con IA, 2026-11-20)",
+  "aprobadoPor": "",
+  "actualizado": "2026-11-20",
+  "pendientes": [
+    "INGLÉS · Traducción con IA del texto aprobado de /discovery/ (versión del 2026-11-11). Falta que Rik revise y apruebe la versión en inglés.",
+    "INGLÉS · PREGUNTA AL CLIENTE · ¿La Discovery Session se puede dar en inglés? El texto no lo promete ni lo niega; si la llamada solo se da en español, hay que decirlo en la página (por ejemplo en la nota de #agenda o en una FAQ).",
+    "INGLÉS · PREGUNTA AL CLIENTE · El video (VSL 'la silla vacía') está en español. La sección #video dice 'Watch this before you book' y describe un video de tres minutos: o se agregan subtítulos en inglés, o se aclara que está en español, o se omite la sección en la versión en inglés.",
+    "INGLÉS · H1 adaptado: '30 minutes to see your operation as it is, not as you think it is' (text + soft); lit 'operation'. El h1 del sitemap en inglés es la misma frase.",
+    "INGLÉS · hero.remate adaptado: 'Cotizar sin diagnóstico es adivinar con dinero ajeno' → 'Quoting without a diagnosis is guessing with your money.' ('dinero ajeno' = el dinero del cliente; en inglés se dice directo al lector).",
+    "INGLÉS · 'pyme de 3 a 40 empleados' → 'small or midsize business with 3 to 40 employees' (en EE. UU. una empresa de 40 empleados se considera pequeña; se mantiene el rango tal cual).",
+    "INGLÉS · Horarios: paso 02 dice 'in Central Mexico time (CST, UTC−6)'. Confirmar que el componente de reserva (BookingFlow, textos en src/components/agenda/textos.ts) también tiene versión en inglés y muestra la hora local del visitante.",
+    "INGLÉS · #despues.remate: 'Implementations start {{price}}.' supone que el token en inglés se pinta como 'from USD 997 a month'. Si el token en inglés queda con otra forma, ajustar la frase.",
+    "INGLÉS · Firma 'Construimos empresarios libres, no héroes cansados.' → 'We build free business owners, not exhausted heroes.' Es la frase de marca: confirmar que esta versión es la que se quiere usar en todo el sitio en inglés.",
+    "INGLÉS · Eyebrows adaptados: 'Sin discurso de venta' → 'No sales pitch'; 'Sin filtros disfrazados' → 'No hidden filters'; 'El primer paso no cuesta nada' → 'The first step is free'.",
+    "INGLÉS · 'No es para ti si… Felicidades: ve directo a escalar.' → 'Congratulations: go straight to scaling.' Se conserva el tono ligero del original.",
+    "INGLÉS · waMessage de la página en inglés y con aviso de que viene del sitio en inglés: 'Hi, I'm coming from the English site (Discovery Session page) and have a question before booking.' Debe coincidir con secondaryCta.waMessage del sitemap en inglés.",
+    "INGLÉS · Enlace del cierre a la cotización: /contacto/#cotizar → /en/contact/#cotizar ('Already know what you need? Get a quote').",
+    "INGLÉS · FAQ D05 (banco en inglés): el WhatsApp se escribe '+52 33 2101 7799' (con lada de país, para quien escribe desde EE. UU. o Canadá). Mismo número; solo cambia el formato."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (discovery-hero, dueño junto a su silla vacía, subject-right) + .chip-spec + .btn a la reserva de la página (#agenda) con la microcopia hero.micro. Encabezado reducido.",
+      "rail": "Cover",
+      "eyebrow": "1:1 call · 30 minutes · free",
+      "h1": {
+        "text": "30 minutes to see your operation",
+        "soft": "as it is, not as you think it is",
+        "lit": "operation"
+      },
+      "lede": "We map your needs, spot the opportunities in your business, and you leave with concrete recommendations.",
+      "remate": "This isn't a sales call. It's a diagnosis. Quoting without a diagnosis is guessing with your money.",
+      "fig": {
+        "label": "The empty chair",
+        "text": "The question behind this call: what happens in your business when you're not there?"
+      },
+      "_chips": {
+        "_omitir": true,
+        "_nota": "No se pinta: repetiría el eyebrow (.chip-spec 'Llamada 1:1 · 30 minutos · sin costo') y el lede en el primer pantallazo (páginas · ConversionTemplate #7a y #12).",
+        "items": [
+          "Half an hour · 1:1",
+          "Zero cost",
+          "Concrete recommendations"
+        ]
+      },
+      "ctaPrimary": {
+        "label": "Book my Discovery Session",
+        "href": "#agenda"
+      },
+      "ctaSecondary": {
+        "label": "Message Kain",
+        "waMessage": "Hi, I'm coming from the English site (Discovery Session page) and have a question before booking."
+      },
+      "micro": "30 min · 1:1 · Google Meet · free"
+    },
+    "video": {
+      "_componente": "VideoScene = ImageSection mid subject-center (discovery-vsl-poster): H2 abajo a la izquierda; reproducir, \"after\" y el primario a la reserva abajo a la derecha; el VSL se abre en <dialog> a pantalla completa",
+      "rail": "The video",
+      "eyebrow": "Before you book",
+      "h2": {
+        "text": "Watch this",
+        "soft": "before you book."
+      },
+      "lede": "Three minutes on an uncomfortable question: if your chair sits empty, what stops in your business?",
+      "play": "Play the video",
+      "close": "Close the video",
+      "after": "If you recognized your business in this video, this call is your next step.",
+      "ctaPrimary": {
+        "label": "Book my Discovery Session",
+        "href": "#agenda"
+      }
+    },
+    "agenda": {
+      "_kind": "agenda",
+      "_componente": "Intertitle split (aura) · columna izquierda fija en escritorio (eyebrow, H2, pasos, Sales con, nota) + BookingFlow tipo=discovery a la derecha (área agenda)",
+      "rail": "Book",
+      "eyebrow": "Book in 3 steps",
+      "h2": {
+        "text": "Save your spot",
+        "soft": "in minutes."
+      },
+      "steps": [
+        {
+          "n": "01",
+          "title": "Your details",
+          "line": "A few questions about you and your business. No prep needed."
+        },
+        {
+          "n": "02",
+          "title": "Time slot",
+          "line": "Today and the next 10 business days, in Central Mexico time (CST, UTC−6)."
+        },
+        {
+          "n": "03",
+          "title": "Confirm",
+          "line": "You get a Google Calendar invite with the Meet link."
+        }
+      ],
+      "salesCon": {
+        "title": "You leave with",
+        "items": [
+          "Concrete recommendations on what to automate and in what order.",
+          "Clarity on whether an implementation makes sense, and what it would cost."
+        ]
+      },
+      "nota": "Free, and no credit card. If you need to reschedule, message us on WhatsApp or email contacto@ingeniak.mx."
+    },
+    "que-es": {
+      "_componente": "TwoColumnScript variant=dodont ('Lo que sí es' en cian / 'Lo que no es' en ámbar)",
+      "rail": "What it is",
+      "eyebrow": "No sales pitch",
+      "h2": {
+        "text": "What a Discovery Session is.",
+        "soft": "And what it isn't."
+      },
+      "lede": "It's not a demo. It's not a pitch under another name. It's the half hour that keeps you from getting a quote in the dark.",
+      "left": {
+        "title": "What it is",
+        "tone": "cian",
+        "items": [
+          "An honest review of how your business runs today.",
+          "A clear read on your needs and your opportunities.",
+          "Concrete recommendations on what to automate and in what order.",
+          "Clarity on whether an implementation makes sense, and what it would cost."
+        ]
+      },
+      "right": {
+        "title": "What it isn't",
+        "tone": "ambar",
+        "items": [
+          "The call doesn't include a recording or a process map.",
+          "It's not a sales presentation dressed up as a diagnosis.",
+          "There's no obligation to buy afterward. You decide.",
+          "It's not the consulting project: it's the discovery that comes before it. The deep work comes later."
+        ]
+      },
+      "revisamos": {
+        "title": "On the call, we look at",
+        "items": [
+          "How customers find you: ads, your website, referrals or social media.",
+          "How long it takes you to reply, and who does it.",
+          "Where your leads and sales get recorded.",
+          "Which tasks your team repeats every day.",
+          "Which numbers you look at to make decisions, if you have any."
+        ],
+        "line": "It's the V phase of VKTOR™, our methodology: we verify your operation before we propose anything."
+      }
+    },
+    "para-quien": {
+      "_componente": "ImageSection mid (discovery-para-quien, subject-left, mobile split) + TwoColumnScript variant=fit",
+      "rail": "Who it's for",
+      "eyebrow": "No hidden filters",
+      "h2": {
+        "text": "Who this call",
+        "soft": "is for."
+      },
+      "lede": "We'd rather say it before you book: it's not for everyone, and that's fine.",
+      "left": {
+        "title": "It's for you if…",
+        "tone": "cian",
+        "items": [
+          "You own a small or midsize business with 3 to 40 employees, in any industry.",
+          "The business depends on you to run: sales, collections, oversight, everything.",
+          "You sense some processes could be systematized, but you don't know where to start.",
+          "You're considering investing in an implementation and want a serious opinion first."
+        ]
+      },
+      "right": {
+        "title": "It's not for you if…",
+        "tone": "ambar",
+        "items": [
+          "You want a quick free idea to build yourself, with no support.",
+          "You're not yet clear on how your business runs day to day.",
+          "You want a quote without anyone looking at your operation.",
+          "Your operation is already documented and systematized. Congratulations: go straight to scaling."
+        ]
+      }
+    },
+    "despues": {
+      "_componente": "Intertitle split + .btn (reserva en la página: #agenda)",
+      "rail": "After",
+      "eyebrow": "After the call",
+      "h2": {
+        "text": "If it makes sense,",
+        "soft": "we'll quote the implementation."
+      },
+      "body": [
+        "Based on what we see in those 30 minutes, we put together an implementation proposal: what gets done, in what order, how long it takes and what it costs. No pressure: you decide whether to move forward.",
+        "If your case isn't a fit for what we do, we'll tell you on the same call and point you to where it is. Nobody will chase you with follow-up calls."
+      ],
+      "remate": "The Discovery Session costs nothing. Implementations start {{price}}.",
+      "ctaPrimary": {
+        "label": "Book my Discovery Session",
+        "href": "#agenda"
+      }
+    },
+    "faq": {
+      "_componente": "FAQAccordion (D01–D06)",
+      "rail": "Questions",
+      "eyebrow": "What people ask us most",
+      "h2": {
+        "text": "Straight answers."
+      },
+      "faqIds": [
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "D05",
+        "D06"
+      ],
+      "footer": "Another question? Message Kain on WhatsApp.",
+      "ctaSecondary": {
+        "label": "Message Kain",
+        "waMessage": "Hi, I'm coming from the English site (Discovery Session page) and have a question before booking."
+      }
+    },
+    "cta-final": {
+      "_componente": "Dawn (discovery-cta-final: Kain sentado en la silla del dueño) · primario a #agenda + Escríbele a Kain + enlace de texto a la cotización",
+      "rail": "Closing",
+      "eyebrow": "The first step is free",
+      "h2": {
+        "text": "30 minutes today are worth more",
+        "soft": "than a blind quote tomorrow."
+      },
+      "quote": "We don't quote what we haven't seen. Walk through your operation with us: it's free, and it will still be worth more than most of the meetings on your calendar this week.",
+      "ctaPrimary": {
+        "label": "Book my Discovery Session",
+        "href": "#agenda"
+      },
+      "firma": "We build free business owners, not exhausted heroes.",
+      "ctaSecondary": {
+        "label": "Message Kain",
+        "waMessage": "Hi, I'm coming from the English site (Discovery Session page) and have a question before booking."
+      },
+      "links": [
+        {
+          "label": "Already know what you need? Get a quote",
+          "href": "/en/contact/#cotizar",
+          "cotizar": true
+        }
+      ]
+    }
+  }
+}

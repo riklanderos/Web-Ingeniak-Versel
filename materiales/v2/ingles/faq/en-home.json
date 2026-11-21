@@ -1,0 +1,38 @@
+[
+  {
+    "id": "G01",
+    "q": "What is Ingeniak?",
+    "a": "Ingeniak is an artificial intelligence consulting firm headquartered in Guadalajara, Jalisco, Mexico. We implement WhatsApp AI agents, Kommo and GoHighLevel CRM, n8n automations, paid media, high-converting websites, custom software and SEO, all connected in one system. We're an official Kommo partner in Latin America and have {{metric:sistemas|full}} in {{metric:paises}} countries.",
+    "short": "A Guadalajara-based AI consulting firm: AI agents, CRM, automation, paid media, web, software and SEO in one system."
+  },
+  {
+    "id": "G02",
+    "q": "What is a WhatsApp AI agent?",
+    "a": "A WhatsApp AI agent is an assistant built on language models that handles the conversations on your WhatsApp Business account: it understands what the customer writes, answers with your business's information, qualifies them, logs them in your CRM and can book them an appointment. Unlike a menu-based chatbot, it doesn't force people to choose from fixed options.",
+    "short": "An AI assistant that runs your WhatsApp Business: it understands, answers, qualifies, logs to your CRM and books appointments."
+  },
+  {
+    "id": "G04",
+    "q": "Is Ingeniak an official Kommo partner?",
+    "a": "Yes. Ingeniak is an official Kommo partner and reseller in Latin America. We help you with licenses, CRM implementation, connecting WhatsApp and automating follow-up with AI agents. That's why we can handle the whole process: from choosing the licenses you need to getting the CRM up and running with your team.",
+    "short": "Yes. We're an official Kommo partner and reseller in Latin America: licenses, implementation and AI agents."
+  },
+  {
+    "id": "G07",
+    "q": "How much does it cost to work with Ingeniak?",
+    "a": "Our projects start {{price}}. The exact scope and cost depend on the size of your operation and how many processes you want to automate; for a number specific to your business, request a quote. We don't publish fixed packages because two companies of the same size can need very different systems.",
+    "short": "Our projects start {{price}}; for a number specific to your business, request a quote."
+  },
+  {
+    "id": "G08",
+    "q": "How soon will I see results?",
+    "a": "Implementing a system takes 7 to 30 days, depending on scope. When you start seeing results depends on what gets implemented and on your operation; we go over it with you in the proposal that follows your quote request. For reference, a dental clinic in Monterrey got {{metric:dental-citas}} more appointments in 90 days, and an e-commerce business in Mexico City cut its cost per lead in 60 days: {{metric:ecom-cpl}}. {{source}}.",
+    "short": "Implementation takes 7 to 30 days, depending on scope; results depend on what's implemented and on your operation."
+  },
+  {
+    "id": "G11",
+    "q": "How do I get started with Ingeniak?",
+    "a": "With “Get a quote”: a three-step form where you tell us what you need, what your business is like and how you'd like us to reach you. We then reach out by WhatsApp and email to learn the details. If it makes sense for both of us, we send you a proposal with scope, timeline and cost. If you'd rather start with a message, send Kain a message on WhatsApp.",
+    "short": "With “Get a quote”: a three-step form; we'll reach out by WhatsApp and email."
+  }
+]

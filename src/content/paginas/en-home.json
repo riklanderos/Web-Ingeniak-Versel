@@ -1,0 +1,894 @@
+{
+  "pageId": "en-home",
+  "url": "/en/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (traducción con IA, 2026-11-20)",
+  "aprobadoPor": "",
+  "actualizado": "2026-11-20",
+  "pendientes": [
+    "INGLÉS · Traducción con IA del texto aprobado de home.json (2026-11-20). Rik revisa y aprueba la versión en inglés completa antes de publicarla.",
+    "INGLÉS · Lema: 'Agentizamos empresas.' → 'We put AI agents to work in your business.' (término fijo del glosario). La palabra resaltada (lit) pasa de 'empresas.' a 'your business.'. El H1 completo queda 'We put AI agents to work in your business. AI agents, CRM and automation, all in one system.' (dice 'AI agents' dos veces; si molesta, la segunda voz podría ser 'Agents, CRM and automation, all in one system.').",
+    "INGLÉS · Partners: la página dice 'official partners of Kommo, GoHighLevel, Google and Meta' (como el español aprobado el 2026-10-22), aunque el glosario dice 'Kommo como único partner'. Confirma cuál vale para la versión en inglés.",
+    "INGLÉS · 'Partner oficial de Kommo en LATAM' → 'Official Kommo partner in LATAM'. Para clientes de Estados Unidos y Canadá, confirma que ser partner de Kommo en Latinoamérica no implica que no puedas venderles licencias o implementar fuera de LATAM (implicación comercial/legal).",
+    "INGLÉS · Horas: el HUD y los eyebrows de escena (23:47, 23:48, 00:00, 02:14, 04:30, 05:00, 06:00) se quedan en formato de 24 horas porque son parte del diseño. En las burbujas de chat de #industrias sí se pasaron a formato de Estados Unidos (10:00 a.m., 5:30 p.m., 2:20 p.m.).",
+    "INGLÉS · Burbuja de retail: 'tenis en talla 26' (talla mexicana) → 'sneakers in a size 8' (equivalente aproximado en Estados Unidos). Es un ejemplo ilustrativo; confirma o cambia la talla.",
+    "INGLÉS · Sectores: 'HoReCa' → 'Hotels and restaurants' (la sigla no se usa en Estados Unidos); 'Finanzas' → 'Financial services'; 'Inmobiliario' → 'Real estate'. Los enlaces de sectores, servicios, casos sin traducir, /kain/, /metodologia/, /nosotros/, /industrias/ y /agendar/ siguen en español.",
+    "INGLÉS · agendaLink lleva a /agendar/ (página en español; solo /agendar/gracias/ tiene gemela en inglés). Confirma si el enlace se queda, apunta a /en/discovery/#agenda o se quita en inglés.",
+    "INGLÉS · 'GoHighLevel en español' → 'GoHighLevel in Spanish' / 'set up in Spanish'. Para un cliente de Estados Unidos puede sonar raro; confirma si se queda, se reescribe (p. ej. 'set up for your team') o sale de la versión en inglés.",
+    "INGLÉS · Kain: los guiones de ChatSim (src/data/chats/salud, belleza, inmobiliario, retail) siguen en español; solo se tradujeron las etiquetas de las pestañas. Hace falta decidir si se traducen los guiones para /en/.",
+    "INGLÉS · Ficha (#faq): los términos quedaron en inglés ('First step', 'Partnerships', 'Office', 'Contact'…). EntitySheet.astro reconoce las filas por regex en español (/primer paso/, /alianza/, /oficina|direcci|contacto|tel/): en inglés se pierden el enlace de 'First step' al modal de cotización, el sello de Kommo de 'Partnerships' y el data-allow-number de la dirección. Hay que ajustar el componente (aviso para quien construye).",
+    "INGLÉS · 'Inversión' → 'Pricing' con {{Price}}; 'Planes {{price}}' → 'Plans {{price}}'. Se asume que {{price}} en inglés se pinta como 'from USD 997 a month' (todavía no existe la versión en inglés de PRICE_FROM en metrics.ts/i18n.ts).",
+    "INGLÉS · Equipo: cargos adaptados ('Director de Estrategia Comercial' → 'Head of Sales Strategy'; 'Medios de Performance' → 'Performance Media'; 'Líder Comercial' → 'Sales Lead'). Cada persona confirma su cargo en inglés.",
+    "INGLÉS · 'con datos y sin humo' → 'backed by data, with no hype'; 'Tu negocio amaneció al día' → 'Your business woke up all caught up.'; 'es apagar incendios' → 'That's firefighting.'. Frases adaptadas, no literales.",
+    "INGLÉS · El mensaje de WhatsApp (waMessage) dice que la persona viene del sitio en inglés, para que el equipo responda en inglés. Es el mismo en hero, kain y cta-final y en el sitemap (atribución R10)."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (subject-right, priority) + SumarioCover + FigCaption + LightBranch + Hud",
+      "rail": "The agent",
+      "eyebrow": "AI agency · Guadalajara, MX",
+      "h1": {
+        "text": "We put AI agents to work in your business.",
+        "lit": "your business.",
+        "soft": "AI agents, CRM and automation, all in one system."
+      },
+      "ctaPrimary": {
+        "label": "Get a quote"
+      },
+      "ctaSecondary": {
+        "label": "Message Kain",
+        "waMessage": "Hi Kain, I'm coming from the home page of Ingeniak's English site and I'd like to see how an AI agent would handle my business."
+      },
+      "agendaLink": {
+        "pre": "Rather talk now?",
+        "label": "Book a 30-minute video call",
+        "href": "/agendar/"
+      },
+      "trust": "Official Kommo partner in LATAM · {{metric:sistemas|full}} · {{metric:paises|full}}",
+      "sumario": {
+        "metricIds": [
+          "dental-citas",
+          "ecom-cpl",
+          "retail-conversiones"
+        ],
+        "sourceNote": true
+      },
+      "fig": {
+        "label": "Fig. 01 · Kain",
+        "text": "Ingeniak's AI agent (render). At a dental clinic in Monterrey, it cut WhatsApp response time {{metric:dental-respuesta|prose}}."
+      },
+      "hud": [
+        {
+          "pos": "tr",
+          "text": "01 / 13 — The agent"
+        },
+        {
+          "pos": "bl",
+          "text": "23:47 · GDL · MX"
+        },
+        {
+          "pos": "br",
+          "text": "Scroll ↓"
+        }
+      ]
+    },
+    "stack": {
+      "_componente": "LogoCredits + PartnerBadges (+ SumarioCover variant=row con max-height 879px o en móvil)",
+      "rail": "What we build with",
+      "eyebrow": "What we build with",
+      "lede": "We're official partners of Kommo, GoHighLevel, Google and Meta. Everything else is a tool we use and integrate based on what your operation needs.",
+      "kommo": "Kommo, GoHighLevel, Google and Meta partner",
+      "logos": [
+        {
+          "slug": "whatsapp",
+          "label": "WhatsApp Business"
+        },
+        {
+          "slug": "gohighlevel",
+          "label": "GoHighLevel"
+        },
+        {
+          "slug": "n8n",
+          "label": "n8n"
+        },
+        {
+          "slug": "make",
+          "label": "Make"
+        },
+        {
+          "slug": "openai",
+          "label": "OpenAI"
+        },
+        {
+          "slug": "claude",
+          "label": "Claude"
+        },
+        {
+          "slug": "googlegemini",
+          "label": "Gemini"
+        },
+        {
+          "slug": "meta",
+          "label": "Meta"
+        },
+        {
+          "slug": "googleads",
+          "label": "Google Ads"
+        },
+        {
+          "slug": "tiktok",
+          "label": "TikTok"
+        },
+        {
+          "slug": "supabase",
+          "label": "Supabase"
+        },
+        {
+          "slug": "stripe",
+          "label": "Stripe"
+        }
+      ],
+      "sumario": {
+        "metricIds": [
+          "dental-citas",
+          "ecom-cpl",
+          "retail-conversiones"
+        ],
+        "sourceNote": true
+      }
+    },
+    "problema": {
+      "_componente": "TwinScene (subject-left, dolor → sol) + PainList mode=twin + SkipScene",
+      "rail": "The problem",
+      "eyebrow": "23:48 · The problem",
+      "h2": {
+        "text": "Your business doesn't need more effort.",
+        "soft": "It needs to stop depending on you."
+      },
+      "lede": "Ads in one place, WhatsApp in another, a half-built CRM, and you stuck in the middle of it all. That's not marketing. That's firefighting.",
+      "items": [
+        {
+          "pain": "Unanswered messages",
+          "painLine": "They come in at night, on weekends or while you're in another meeting. The customer buys from whoever answered first.",
+          "fix": "Kain replies in seconds, at any hour."
+        },
+        {
+          "pain": "A CRM nobody uses",
+          "painLine": "Leads in notebooks, chats and spreadsheets. Nobody knows what stage each deal is in.",
+          "fix": "Every conversation lands in your CRM on its own."
+        },
+        {
+          "pain": "Ads that don't turn into sales",
+          "painLine": "You pay for clicks and messages, but you can't tell which ones turn into revenue.",
+          "fix": "Every campaign is tracked all the way to the sale."
+        },
+        {
+          "pain": "Everything runs through you",
+          "painLine": "If you're not there, the business stops: sales, follow-up, billing and reports.",
+          "fix": "The system runs. You lead."
+        }
+      ],
+      "remate": "You're not short on effort. You're short on a system.",
+      "hudClock": [
+        "23:48",
+        "23:52",
+        "Replied"
+      ],
+      "hud": [
+        {
+          "pos": "tr",
+          "text": "03 / 13 — The problem"
+        }
+      ]
+    },
+    "que-es": {
+      "_componente": "Intertitle (aura isotipo, ghost SISTEMA) + DefinitionBlock + MetricRow",
+      "rail": "What Ingeniak is",
+      "eyebrow": "Manifesto",
+      "h2": {
+        "text": "Our marketing doesn't end at the click.",
+        "soft": "It ends in a system."
+      },
+      "lede": "We design and implement AI agents, CRM and automations connected in one system that answers, qualifies and, depending on your business, books or sells for you, 24/7.",
+      "definition": {
+        "heading": "What is Ingeniak?",
+        "faqId": "G01"
+      },
+      "body": [
+        "One system, not a bundle of separate services: the ad that brings in the customer, the agent that answers them, the CRM that logs them, the automation that follows up and the dashboard that tells you how much you sold are all connected. When one piece moves, the others know."
+      ],
+      "metricRow": {
+        "title": "Ingeniak by the numbers",
+        "metricIds": [
+          "sistemas",
+          "paises",
+          "salud-citas-mes",
+          "ecom-cpl"
+        ],
+        "sourceNote": true
+      },
+      "countries": [
+        "Mexico (HQ)",
+        "United States",
+        "Colombia",
+        "Argentina",
+        "Spain",
+        "Costa Rica",
+        "Ecuador"
+      ],
+      "ghost": "SYSTEM",
+      "hud": [
+        {
+          "pos": "tr",
+          "text": "00:00"
+        }
+      ]
+    },
+    "sistema": {
+      "_componente": "PlateSequence preset=runtime (SystemRuntime) + LeadCard + SkipScene",
+      "rail": "The system",
+      "eyebrow": "The Ingeniak system",
+      "h2": {
+        "text": "We create the traffic,",
+        "soft": "convert it and run it with AI and our team."
+      },
+      "lede": "Five connected pieces so every lead comes in, gets answered, gets logged, gets followed up and gets measured. AI handles the repetitive work; our team supervises and fine-tunes it, so you don't have to stand over it.",
+      "steps": [
+        {
+          "id": "atraer",
+          "stage": "Attract",
+          "title": "Traffic that actually buys",
+          "line": "Ads on Meta, Google and TikTok, a website that converts and SEO that brings in demand, all connected to your CRM from the first click.",
+          "link": {
+            "label": "Paid media",
+            "href": "/servicios/paid-media/"
+          },
+          "metricIds": [
+            "ecom-cpl"
+          ],
+          "leadCard": "New lead · came in from an ad"
+        },
+        {
+          "id": "atender",
+          "stage": "Respond",
+          "title": "Replies in seconds",
+          "line": "Kain answers on WhatsApp, Instagram, Facebook Messenger, your website chat or email, at any hour. It understands, qualifies and books; when a person is needed, it hands off the conversation with full context.",
+          "link": {
+            "label": "AI agents for WhatsApp",
+            "href": "/servicios/agentes-ia-whatsapp/"
+          },
+          "metricIds": [
+            "dental-respuesta"
+          ],
+          "leadCard": "Handled by Kain · qualified"
+        },
+        {
+          "id": "organizar",
+          "stage": "Organize",
+          "title": "A CRM that's actually alive",
+          "line": "Every lead lands in Kommo or GoHighLevel on its own, in the right stage. Your team sees who reached out, what they asked for and what comes next, with zero manual data entry.",
+          "link": {
+            "label": "AI-powered CRM",
+            "href": "/servicios/crm-con-ia/"
+          },
+          "metricIds": [
+            "retail-conversiones"
+          ],
+          "leadCard": "In your CRM · appointment booked"
+        },
+        {
+          "id": "automatizar",
+          "stage": "Automate",
+          "title": "Repetitive work on autopilot",
+          "line": "n8n and Make handle follow-ups, reminders, payments and reports, all connected to each other.",
+          "link": {
+            "label": "Automation with n8n",
+            "href": "/servicios/automatizacion-n8n/"
+          },
+          "metricIds": [
+            "logistica-procesos",
+            "tiempo-operativo"
+          ],
+          "leadCard": "Reminder sent · follow-up active"
+        },
+        {
+          "id": "medir",
+          "stage": "Measure",
+          "title": "Decisions backed by data",
+          "line": "Prospects, appointments, sales and cost per customer in a single view, with every source connected.",
+          "link": {
+            "label": "Unified dashboard",
+            "href": "/servicios/desarrollo-software/#dashboard"
+          },
+          "metricIds": [
+            "ecom-tablero"
+          ],
+          "leadCard": "Sale logged · campaign identified"
+        }
+      ],
+      "fig": {
+        "label": "Fig. 02",
+        "text": "A lead moving through the system."
+      },
+      "note": "Simulated lead. The figures come from different real case studies; each one shows its source.",
+      "progressLabel": "New lead · stage {n} of 5",
+      "hud": [
+        {
+          "pos": "tr",
+          "text": "05 / 13 — The system"
+        }
+      ]
+    },
+    "kain": {
+      "_componente": "ImageSection mid (subject-left, push hacia 'telefono', mobile split) + ChatSim registrado con pestañas",
+      "rail": "Kain",
+      "eyebrow": "Meet Kain",
+      "h2": {
+        "text": "I'm Kain, your company's AI agent."
+      },
+      "lede": "I answer, book and confirm for you on WhatsApp, Instagram, Facebook Messenger, your website chat and email, and I log every conversation in your CRM.",
+      "items": [
+        "In seconds, day or night, weekends included.",
+        "I qualify every prospect and book them on your calendar.",
+        "I follow up and send reminders so nobody misses an appointment.",
+        "Everything lands in Kommo or GoHighLevel, ready for your team."
+      ],
+      "slogan": "Your business running, without depending on you.",
+      "limite": "I don't give medical or legal advice. When a question needs a person, I pass it to your team with the full context.",
+      "ctaSecondary": {
+        "label": "Message Kain",
+        "waMessage": "Hi Kain, I'm coming from the home page of Ingeniak's English site and I'd like to see how an AI agent would handle my business."
+      },
+      "links": [
+        {
+          "label": "Meet Kain",
+          "href": "/kain/"
+        },
+        {
+          "label": "Go to app.kain.mx",
+          "href": "https://app.kain.mx/",
+          "external": true
+        }
+      ],
+      "chat": {
+        "mode": "registered",
+        "scripts": [
+          "salud",
+          "belleza",
+          "inmobiliario",
+          "retail"
+        ],
+        "tabs": [
+          {
+            "id": "salud",
+            "label": "Health"
+          },
+          {
+            "id": "belleza",
+            "label": "Beauty"
+          },
+          {
+            "id": "inmobiliario",
+            "label": "Real estate"
+          },
+          {
+            "id": "retail",
+            "label": "Retail"
+          }
+        ]
+      },
+      "hud": [
+        {
+          "pos": "tr",
+          "text": "02:14 · Kain on duty"
+        }
+      ]
+    },
+    "servicios": {
+      "_componente": "ScriptList por 5 etapas (followStill)",
+      "rail": "Services",
+      "eyebrow": "Services",
+      "h2": {
+        "text": "Everything your operation needs,",
+        "soft": "connected end to end."
+      },
+      "groups": [
+        {
+          "label": "Attract",
+          "glyph": "atraer",
+          "items": [
+            {
+              "title": "Paid media",
+              "line": "Meta, Google and TikTok Ads measured by sales, not clicks.",
+              "href": "/servicios/paid-media/"
+            },
+            {
+              "title": "High-converting websites",
+              "line": "Fast, clear sites connected to your CRM and WhatsApp from day one.",
+              "href": "/servicios/paginas-web/"
+            },
+            {
+              "title": "SEO and AI visibility",
+              "line": "Get found on Google and get cited by ChatGPT, Gemini, Perplexity and Claude.",
+              "href": "/servicios/seo/"
+            },
+            {
+              "title": "Branding and content",
+              "line": "Identity and content that position your brand as the premium choice.",
+              "href": "/servicios/branding/"
+            }
+          ]
+        },
+        {
+          "label": "Respond",
+          "glyph": "atender",
+          "items": [
+            {
+              "title": "AI agents for WhatsApp",
+              "line": "They answer, qualify and book 24/7 on WhatsApp, Instagram, Facebook Messenger, your website and email.",
+              "href": "/servicios/agentes-ia-whatsapp/"
+            }
+          ]
+        },
+        {
+          "label": "Organize",
+          "glyph": "organizar",
+          "items": [
+            {
+              "title": "AI-powered CRM",
+              "line": "Kommo or GoHighLevel with pipelines, automations and follow-up, no manual data entry.",
+              "href": "/servicios/crm-con-ia/"
+            },
+            {
+              "title": "Official Kommo partner",
+              "line": "Licenses, implementation and AI agents inside Kommo.",
+              "href": "/kommo/"
+            },
+            {
+              "title": "GoHighLevel in Spanish",
+              "line": "CRM, funnels, calendars and campaigns in one platform, set up in Spanish.",
+              "href": "/gohighlevel/"
+            }
+          ]
+        },
+        {
+          "label": "Automate",
+          "glyph": "automatizar",
+          "items": [
+            {
+              "title": "Automation with n8n",
+              "line": "n8n and Make workflows that connect your systems and eliminate repetitive work.",
+              "href": "/servicios/automatizacion-n8n/"
+            },
+            {
+              "title": "Custom software",
+              "line": "When no tool fits, we build the system your operation needs.",
+              "href": "/servicios/desarrollo-software/"
+            }
+          ]
+        },
+        {
+          "label": "Measure",
+          "glyph": "medir",
+          "items": [
+            {
+              "title": "AI consulting",
+              "line": "Diagnosis, roadmap, use cases and measurable ROI, with the VKTOR™ methodology.",
+              "href": "/servicios/consultoria-ia-empresas/"
+            }
+          ]
+        }
+      ],
+      "closing": "Plans {{price}}. We define the scope with you when you request a quote.",
+      "links": [
+        {
+          "label": "See all services",
+          "href": "/en/services/"
+        }
+      ]
+    },
+    "casos": {
+      "_componente": "Montage (5 filas + transversal) — complemento accesible: ResultsLedger en /casos/#registro",
+      "rail": "Case studies",
+      "eyebrow": "Case studies",
+      "h2": {
+        "text": "Real systems,",
+        "soft": "running right now."
+      },
+      "lede": "Five businesses in different industries. Every figure shows its industry and its source, and comes from the client's real operation, not a demo.",
+      "rows": [
+        {
+          "metricId": "dental-citas",
+          "context": "AI agent on WhatsApp · Dental clinic · Monterrey",
+          "href": "/casos/clinica-dental-monterrey/",
+          "linkLabel": "See the case study"
+        },
+        {
+          "metricId": "retail-conversiones",
+          "context": "Kommo with AI lead qualification · Multi-brand retail",
+          "href": "/en/case-studies/multi-brand-retail-kommo/",
+          "linkLabel": "See the case study"
+        },
+        {
+          "metricId": "ecom-cpl",
+          "context": "Cost per lead · E-commerce · Mexico City",
+          "href": "/casos/ecommerce-cdmx-costo-por-lead/",
+          "linkLabel": "See the case study"
+        },
+        {
+          "metricId": "horeca-roas",
+          "context": "Paid media · Hotels and restaurants",
+          "href": "/casos/horeca-roas/",
+          "linkLabel": "See the case study"
+        },
+        {
+          "metricId": "logistica-procesos",
+          "context": "Automation with n8n · Logistics",
+          "href": "/en/case-studies/logistics-n8n/",
+          "linkLabel": "See the case study"
+        }
+      ],
+      "transversal": [
+        "salud-citas-mes",
+        "tiempo-operativo"
+      ],
+      "_nota": "dental-respuesta sale de la transversal: es el mismo sistema de la fila 1 (dental-citas), no 'otro sistema'.",
+      "sourceNote": true,
+      "note": "Client names anonymized.",
+      "links": [
+        {
+          "label": "See all case studies",
+          "href": "/casos/"
+        },
+        {
+          "label": "Results log",
+          "href": "/casos/#registro"
+        }
+      ]
+    },
+    "vktor": {
+      "_componente": "ImageSection mid (subject-right, align=start, cutout) + GhostWord VKTOR + 5 etiquetas ancladas a los escalones",
+      "rail": "VKTOR™",
+      "eyebrow": "VKTOR™ methodology",
+      "h2": {
+        "text": "Your growth has a protocol.",
+        "soft": "We switch it on."
+      },
+      "lede": "It all starts with phase V: before we propose anything, we verify how your business runs today.",
+      "phases": [
+        {
+          "letter": "V",
+          "name": "Verify",
+          "verb": "We verify your operation",
+          "line": "We look at the numbers on how you sell, serve customers and operate today."
+        },
+        {
+          "letter": "K",
+          "name": "Koncept",
+          "verb": "We design the concept",
+          "line": "What gets automated, with which tools and in what order."
+        },
+        {
+          "letter": "T",
+          "name": "Transform",
+          "verb": "We transform",
+          "line": "We implement connected agents, CRM, automations and campaigns."
+        },
+        {
+          "letter": "O",
+          "name": "Operate",
+          "verb": "We operate alongside your team",
+          "line": "We train, monitor and fine-tune the system in production."
+        },
+        {
+          "letter": "R",
+          "name": "Rise",
+          "verb": "We grow the results",
+          "line": "We optimize every month with clear dashboards and metrics."
+        }
+      ],
+      "ghost": "VKTOR",
+      "links": [
+        {
+          "label": "See the full protocol",
+          "href": "/metodologia/"
+        }
+      ],
+      "hud": [
+        {
+          "pos": "tr",
+          "text": "04:30 · VKTOR™"
+        }
+      ]
+    },
+    "industrias": {
+      "_componente": "LocationSwitcher (8 filas, placa del sector activo a sangre, chip SIMULACIÓN con 2 burbujas)",
+      "rail": "Industries",
+      "eyebrow": "Industries",
+      "h2": {
+        "text": "Same system,",
+        "soft": "your industry."
+      },
+      "lede": "The pieces are the same. What changes is Kain's script, your CRM stages and what makes sense to automate first.",
+      "sectors": [
+        {
+          "slug": "salud",
+          "name": "Health and clinics",
+          "line": "Appointments booked and confirmed 24/7.",
+          "href": "/industrias/salud/",
+          "metricId": "dental-citas",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "Do you have an opening tomorrow for a cleaning?"
+            },
+            {
+              "who": "kain",
+              "text": "Yes: 10:00 a.m. or 5:30 p.m. Which one should I hold for you?"
+            }
+          ]
+        },
+        {
+          "slug": "belleza",
+          "name": "Beauty and aesthetics",
+          "line": "A full calendar without living on WhatsApp.",
+          "href": "/industrias/belleza-estetica/",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "Any openings Saturday for nails?"
+            },
+            {
+              "who": "kain",
+              "text": "I have 11:00 a.m. or 1:30 p.m. Want me to hold one for you?"
+            }
+          ]
+        },
+        {
+          "slug": "nutricion",
+          "name": "Nutrition",
+          "line": "Patients who book and come back.",
+          "href": "/industrias/nutricion/",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "I'd like to book my follow-up appointment."
+            },
+            {
+              "who": "kain",
+              "text": "Sure. Does Tuesday at 9:00 a.m. or Wednesday at 6:00 p.m. work for you?"
+            }
+          ]
+        },
+        {
+          "slug": "finanzas",
+          "name": "Financial services",
+          "line": "Prospects qualified before the call.",
+          "href": "/industrias/finanzas/",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "I'm interested in a loan for my business."
+            },
+            {
+              "who": "kain",
+              "text": "Happy to help. How long has your business been operating? With that, I'll book you with an advisor."
+            }
+          ]
+        },
+        {
+          "slug": "inmobiliario",
+          "name": "Real estate",
+          "line": "Every lead answered in seconds.",
+          "href": "/industrias/inmobiliario/",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "Is the apartment from the ad still available?"
+            },
+            {
+              "who": "kain",
+              "text": "Yes. Are you looking to live in it or invest? I'll book you a showing."
+            }
+          ]
+        },
+        {
+          "slug": "industrial",
+          "name": "Industrial and logistics",
+          "line": "Connected processes, no manual data entry.",
+          "href": "/industrias/industrial-logistica/",
+          "metricId": "logistica-procesos",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "Has my order shipped yet?"
+            },
+            {
+              "who": "kain",
+              "text": "Yes, it shipped today at 2:20 p.m. Here's your tracking number."
+            }
+          ]
+        },
+        {
+          "slug": "retail",
+          "name": "Retail and e-commerce",
+          "line": "Chat sales, measured.",
+          "href": "/industrias/retail-ecommerce/",
+          "metricId": "retail-conversiones",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "Do you have these sneakers in a size 8?"
+            },
+            {
+              "who": "kain",
+              "text": "Yes, in white and in black. Want me to send you the payment link?"
+            }
+          ]
+        },
+        {
+          "slug": "horeca",
+          "name": "Hotels and restaurants",
+          "line": "Reservations measured by campaign.",
+          "href": "/industrias/horeca/",
+          "metricId": "horeca-roas",
+          "bubbles": [
+            {
+              "who": "cliente",
+              "text": "Do you have a table for four Friday night?"
+            },
+            {
+              "who": "kain",
+              "text": "Yes: 8:00 or 9:30 p.m. What name should I put it under?"
+            }
+          ]
+        }
+      ],
+      "rowLink": "View industry",
+      "footer": "Don't see your industry? If you sell through conversations, request a quote and we'll review it with you.",
+      "links": [
+        {
+          "label": "See all industries",
+          "href": "/industrias/"
+        }
+      ],
+      "hud": [
+        {
+          "pos": "tr",
+          "text": "05:00 · Location 1/8"
+        }
+      ]
+    },
+    "equipo": {
+      "_componente": "ImageSection mid (subject-left, equipo-real) + Credits variant=team",
+      "rail": "The team",
+      "eyebrow": "The team",
+      "h2": {
+        "text": "Strategists who build,",
+        "soft": "operate and measure."
+      },
+      "lede": "A team that designs, builds and runs your system with you, backed by data, with no hype.",
+      "credits": [
+        {
+          "role": "Creative Director",
+          "name": "César Ovalle",
+          "line": "Turns your brand identity into work that positions it as the premium choice."
+        },
+        {
+          "role": "Performance Media",
+          "name": "Richard Vela",
+          "line": "Scales real opportunities with paid media, conversion-focused creative and attribution reporting."
+        },
+        {
+          "role": "AI & Automation Architect",
+          "name": "Alonso Vega",
+          "line": "Designs and implements the AI agents and automations that answer, qualify and follow up with your leads."
+        },
+        {
+          "role": "Head of Sales Strategy",
+          "name": "Rik Landeros",
+          "line": "Builds the complete sales system: offer, funnel, CRM and growth metrics."
+        },
+        {
+          "role": "Project Manager",
+          "name": "Barb Mendoza",
+          "line": "Runs your project from start to finish: timelines, deliverables and communication between your team and ours."
+        },
+        {
+          "role": "Sales Lead",
+          "name": "Marcos González",
+          "line": "Diagnoses your sales operation and turns it into a process that scales."
+        }
+      ],
+      "links": [
+        {
+          "label": "Meet the team",
+          "href": "/nosotros/"
+        }
+      ]
+    },
+    "faq": {
+      "_componente": "Intertitle (aura ondas) + EntitySheet variant=home (columnas 1–5) + FAQAccordion (columnas 7–12)",
+      "rail": "Questions",
+      "eyebrow": "Fact sheet · Ingeniak by the numbers",
+      "entity": [
+        {
+          "term": "Headquarters",
+          "value": "Guadalajara, Jalisco, Mexico"
+        },
+        {
+          "term": "Office",
+          "value": "Av. Punto Sur 312, Tlajomulco de Zúñiga, Jalisco 45640"
+        },
+        {
+          "term": "Partnerships",
+          "value": "Partner of Kommo (LATAM), GoHighLevel, Google and Meta"
+        },
+        {
+          "term": "In production",
+          "value": "{{metric:sistemas|full}}"
+        },
+        {
+          "term": "Countries",
+          "value": "{{metric:paises}}: Mexico (HQ), United States, Colombia, Argentina, Spain, Costa Rica and Ecuador"
+        },
+        {
+          "term": "Methodology",
+          "value": "VKTOR™: Verify · Koncept · Transform · Operate · Rise"
+        },
+        {
+          "term": "Pricing",
+          "value": "{{Price}}"
+        },
+        {
+          "term": "First step",
+          "value": "Get a quote · we'll reach out by WhatsApp and email"
+        },
+        {
+          "term": "Contact",
+          "value": "contacto@ingeniak.mx · WhatsApp +52 33 2101 7799"
+        }
+      ],
+      "h2": {
+        "text": "What people ask us",
+        "soft": "before getting started."
+      },
+      "faqIds": [
+        "G01",
+        "G02",
+        "G04",
+        "G07",
+        "G08",
+        "G11"
+      ],
+      "footer": "Have another question? Message Kain on WhatsApp or email us at contacto@ingeniak.mx."
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Rise",
+      "eyebrow": "06:00 · Rise",
+      "h2": {
+        "text": "You slept.",
+        "soft": "Your business woke up all caught up."
+      },
+      "ctaPrimary": {
+        "label": "Get a quote"
+      },
+      "ctaSecondary": {
+        "label": "Message Kain",
+        "waMessage": "Hi Kain, I'm coming from the home page of Ingeniak's English site and I'd like to see how an AI agent would handle my business."
+      },
+      "agendaLink": {
+        "pre": "Rather talk now?",
+        "label": "Book a 30-minute video call",
+        "href": "/agendar/"
+      },
+      "hud": [
+        {
+          "pos": "tr",
+          "text": "13 / 13 — 06:00"
+        }
+      ]
+    }
+  }
+}

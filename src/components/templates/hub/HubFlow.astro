@@ -13,6 +13,7 @@ import Aura from '../Aura.astro';
 import { logoUrl, logoWide, TOOLS, annotateFigures } from '../../ui/ui-data';
 import { linkTarget } from '../../../lib/site';
 import { head, fallbackOf } from './hubKit';
+import { L } from '../../../lib/i18n';
 
 interface Props { id: string; c: any; plate: any }
 const { id, c, plate } = Astro.props;
@@ -45,7 +46,7 @@ const svc = (list: any[] = []) => list.map((s) => ({ label: s.label, href: s.hre
     )}
     <Fragment slot="anchors">
       <span class="hub-bead" aria-hidden="true" style={bead}></span>
-      <ol class="hub-nodes" aria-label={c.h2?.text ?? 'Cómo se conectan los servicios'}>
+      <ol class="hub-nodes" aria-label={c.h2?.text ?? L({ es: 'Cómo se conectan los servicios', en: 'How the services connect' })}>
         {nodes.map((nd, i) => (
           <li class="anchor hub-node" data-anchor={`nodo-${i + 1}`} style={anchorStyle(`nodo-${i + 1}`, `--k:${i};--nn:${n};`)}>
             <span class="hub-node__stem" aria-hidden="true"></span>

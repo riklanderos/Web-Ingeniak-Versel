@@ -1,0 +1,35 @@
+{
+  "title": "Logistics: {{metric:logistica-procesos|full}} with n8n | Ingeniak",
+  "metaDescription": "CRM, WhatsApp, ERP and AI models connected with real-time triggers: how a logistics company reached {{metric:logistica-procesos|full}} with n8n.",
+  "h1": "Logistics: {{metric:logistica-procesos|full}} with n8n and AI agents",
+  "primaryKeyword": "n8n automation case study",
+  "secondaryKeywords": [
+    "logistics automation",
+    "n8n real-world case study",
+    "ERP WhatsApp integration"
+  ],
+  "breadcrumbs": [
+    { "name": "Home", "url": "/en/" },
+    { "name": "Case studies", "url": "/casos/" },
+    { "name": "Logistics", "url": "/en/case-studies/logistics-n8n/" }
+  ],
+  "sections": [
+    { "id": "hero", "name": "Overview" },
+    { "id": "ficha", "name": "Case snapshot" },
+    { "id": "punto-partida", "name": "Starting point" },
+    { "id": "cifra", "name": "The figure" },
+    { "id": "implementacion", "name": "What we implemented" },
+    { "id": "resultado", "name": "Result" },
+    { "id": "vktor", "name": "How we did it with VKTOR™" },
+    { "id": "replicar", "name": "What you can replicate in your business" },
+    { "id": "testimonio", "name": "Testimonial" },
+    { "id": "relacionados", "name": "Keep exploring" },
+    { "id": "cta-final", "name": "Next step" }
+  ],
+  "primaryCta": { "label": "Get a quote" },
+  "secondaryCta": {
+    "label": "Message Kain",
+    "waMessage": "Hi Kain, I'm coming from the English site. I read the logistics case study with n8n and I want to automate my operation."
+  },
+  "faq": []
+}

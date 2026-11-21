@@ -12,6 +12,7 @@
 import { resolvePlate, boxPoint, rackSize, camCap, AURA_ISOTIPO, type Layout, type Fallback } from './plate';
 import GhostWord from './GhostWord.astro';
 import PlatePicture from './PlatePicture.astro';
+import { L as tr } from '../../lib/i18n';
 
 interface Props {
   id: string;
@@ -46,7 +47,7 @@ interface Props {
 const {
   id, plate: key, layout, height = 'mid', align, tone = 'sol', mobile = 'top', priority = false, take = false,
   cutout = false, ghost, push, mirror = false, hud, fallbackPlate, srcsetMax, alt, wide = false, breathe = false,
-  encendido, shot = 'scene', labelledby, pin, skipLabel = 'Saltar escena', blend = 'ink', safeCol = false, class: cls, ...rest
+  encendido, shot = 'scene', labelledby, pin, skipLabel = tr({ es: 'Saltar escena', en: 'Skip scene' }), blend = 'ink', safeCol = false, class: cls, ...rest
 } = Astro.props;
 
 const r = resolvePlate(key, {

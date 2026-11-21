@@ -7,6 +7,7 @@
 import Metric from '../ui/Metric.astro';
 import { anchorStyle } from './plate';
 import type { MetricId } from '../../lib/metrics';
+import { currentLang } from '../../lib/i18n';
 
 interface Props {
   n: number;
@@ -21,7 +22,8 @@ const { n, title, anchor = 'fig', target = 'mano', metricId, variant = 'anchor',
 const num = String(n).padStart(2, '0');
 // Horas y medidas que nunca se parten ("11:48 p. m.", "8 min"): espacios de no separación.
 const keep = (t: string) => t.replace(/(\d{1,2}:\d{2})\s+([ap])\.\s?m\./gi, '$1\u00a0$2.\u00a0m.').replace(/(\d)\s+(min|s|h)\b/g, '$1\u00a0$2');
-const label = keep(title);
+// En inglés, también "11:48 PM" (versión /en/; el rótulo "Fig." es igual en los dos idiomas).
+const label = currentLang() === 'en' ? keep(title).replace(/(\d{1,2}:\d{2})\s+([AP]M)\b/g, '$1\u00a0$2') : keep(title);
 // Solo rótulo (sin texto ni cifra): caja a la medida del rótulo, no la de un pie de foto con descripción.
 const hasBody = Astro.slots.has('default') || !!metricId;
 const lv = (k: string, a: string) =>

@@ -20,6 +20,7 @@ import { buildGraph, type FaqItem } from './jsonld';
 import { tryCopy } from './copyText';
 import { faqPageLd, tokensToText } from '../ui/ui-data';
 import { heroPlateOf } from './navData';
+import { langOfPage, twinOf, OG_LOCALE, HTML_LANG } from '../../lib/i18n';
 
 interface Props {
   page: Page;
@@ -44,6 +45,14 @@ const description: string = p.description ?? page.metaDescription ?? '';
 const is404 = page.id === '404' || page.template === 'T-404';
 const robots = is404 || p.noindex || page.indexable === false ? 'noindex,follow' : 'index,follow,max-image-preview:large';
 const canonical: string = page.canonical ?? `${SITE.url}${page.url}`;
+// Versión en inglés (2026-11-20): idioma de la página y su gemela en el otro idioma (hreflang), si está traducida.
+const lang = langOfPage(page);
+const twin = is404 ? null : twinOf(page.url);
+const alternates = twin && robots.startsWith('index') ? [
+  { hreflang: HTML_LANG[lang], href: canonical },
+  { hreflang: HTML_LANG[lang === 'en' ? 'es' : 'en'], href: `${SITE.url}${twin}` },
+  { hreflang: 'x-default', href: `${SITE.url}${lang === 'es' ? page.url : twin}` },
+] : [];
 
 // Imagen OG: la de la página si ya existe en public/img/og/, si no la general.
 const pub = (u: string) => fs.existsSync(path.join(process.cwd(), 'public', u));
@@ -61,7 +70,11 @@ const heroAlt = ((heroPlate ? (getPlate(heroPlate) as any)?.alt : '') as string)
 const sceneOf = heroAlt.replace(/\.$/, '').trim();
 const lc1 = (s: string) => (s && !/^(Kain|Ingeniak)\b/.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
 const cardOf = page.url === '/' ? 'de la portada' : `de la página «${page.breadcrumbs?.at?.(-1)?.name ?? title}»`;
-const ogAlt = ownCard && !p.ogImage
+const ogAlt = lang === 'en'
+  ? (ownCard && !p.ogImage
+    ? `Ingeniak card for the page “${page.breadcrumbs?.at?.(-1)?.name ?? title}”: its headline and the Ingeniak logo over its cover scene`
+    : 'Ingeniak card: logo, blue glass isotype and the tagline “We put AI agents to work in your business.” on a night-blue background')
+  : ownCard && !p.ogImage
   ? `Tarjeta de Ingeniak ${cardOf}: su titular y el logotipo de Ingeniak sobre la escena de su portada${sceneOf ? `, ${lc1(sceneOf)}` : ''}`
   : 'Tarjeta de Ingeniak: logotipo, isotipo de cristal azul y el lema «Agentizamos empresas.» sobre fondo azul noche';
 
@@ -82,7 +95,9 @@ const ld = graph.length ? JSON.stringify({ '@context': 'https://schema.org', '@g
 <meta name="robots" content={robots} />
 {!is404 && <link rel="canonical" href={canonical} />}
 <meta property="og:type" content={isArticle ? 'article' : 'website'} />
-<meta property="og:locale" content="es_MX" />
+<meta property="og:locale" content={OG_LOCALE[lang]} />
+{twin && <meta property="og:locale:alternate" content={OG_LOCALE[lang === 'en' ? 'es' : 'en']} />}
+{alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
 <meta property="og:site_name" content="Ingeniak" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

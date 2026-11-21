@@ -41,6 +41,7 @@ import { waOf } from '../components/layout/navData';
 import { tryCopy } from '../components/layout/copyText';
 import type { FaqItem } from '../components/layout/jsonld';
 import { isHiddenPage, prefillOf } from '../components/layout/cta';
+import { HTML_LANG, langOfPage } from '../lib/i18n';
 // Modal de cotización (área modal, src/components/cotizar/QuoteModal.astro): se carga por glob para que el build no se caiga
 // mientras el archivo llega; sin él, todo disparador sigue funcionando como enlace a /contacto/#cotizar.
 const quoteMods = import.meta.glob('../components/cotizar/QuoteModal.astro', { eager: true }) as Record<string, any>;
@@ -76,6 +77,7 @@ interface Props {
 }
 const p = Astro.props;
 const page = p.page as any;
+const lang = langOfPage(page);
 const hidden = isHiddenPage(page);
 const navMode = p.nav ?? (hidden ? 'reduced' : 'full');
 const full = navMode === 'full';
@@ -95,7 +97,7 @@ const railItems = p.rail === false ? null : Array.isArray(p.rail) ? p.rail
 const showRail = full && p.rail !== false && page.template !== 'T-404';
 ---
 <!doctype html>
-<html lang="es-MX" class="no-js" data-co-candidate={coldOpen ? '' : undefined} data-nav-mode={navMode}>
+<html lang={HTML_LANG[lang]} class="no-js" data-co-candidate={coldOpen ? '' : undefined} data-nav-mode={navMode}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -182,7 +184,7 @@ const showRail = full && p.rail !== false && page.template !== 'T-404';
   <body class={p.bodyClass} data-page={page.id} data-template={page.template} data-folio={page.folio}
     data-cotizar-servicio={prefill.servicio} data-cotizar-industria={prefill.industria}>
     <BrandSymbols />
-    <a class="skip" href="#main">Saltar al contenido</a>
+    <a class="skip" href="#main">{lang === 'en' ? 'Skip to content' : 'Saltar al contenido'}</a>
     <Header variant={navMode} current={page.url} waHref={wa} cta={full ? undefined : landingCta} />
     {/* El riel va justo después del encabezado: navegación de la página antes del contenido en el orden de tabulación */}
     {showRail && <SceneRail items={railItems ?? undefined} page={page} mode={p.railMode ?? (page.template === 'T-CASE' ? 'labels' : 'ticks')} groups={p.railGroups} />}
@@ -196,18 +198,18 @@ const showRail = full && p.rail !== false && page.template !== 'T-404';
         anchors={(page.footerAnchors as any[] | undefined) ?? (railItems ?? []).filter((r) => r.id !== 'hero').slice(0, 5)} />
     )}
     {full && (p.kainPill !== false || p.mobileBar !== false) && (
-      <aside class="qa" aria-label="Acciones rápidas">
+      <aside class="qa" aria-label={lang === 'en' ? 'Quick actions' : 'Acciones rápidas'}>
         {p.kainPill !== false && <KainPill waHref={wa} />}
         {p.mobileBar !== false && <MobileCTABar waHref={wa} current={page.url} />}
       </aside>
     )}
     {landingBar && p.mobileBar !== false && (
-      <aside class="qa" aria-label="Acciones rápidas">
+      <aside class="qa" aria-label={lang === 'en' ? 'Quick actions' : 'Acciones rápidas'}>
         <MobileCTABar mode="agenda" waHref={wa} label={landingCta!.label} href={landingCta!.href?.startsWith('#') ? landingCta!.href : '#agenda'} />
       </aside>
     )}
     {full && <MobileMenu waHref={wa} current={page.url} />}
-    {full && <SearchDialog waHref={wa} current={page.url} />}
+    {full && lang !== 'en' && <SearchDialog waHref={wa} current={page.url} />}
     {p.quoteModal !== false && QuoteModal && <QuoteModal waHref={wa} page={page} />}
     <script>
       import '../scripts/main.ts';

@@ -1,0 +1,21 @@
+{
+  "title": "Thanks for Booking Your Discovery Session | Ingeniak",
+  "metaDescription": "Your Discovery Session is booked. Here you'll find the date and time, your Google Meet link, and how to make the most of the 30 minutes.",
+  "h1": "Thanks for booking your Discovery Session",
+  "primaryKeyword": "—",
+  "secondaryKeywords": [],
+  "breadcrumbs": [
+    { "name": "Home", "url": "/en/" },
+    { "name": "Discovery Session", "url": "/en/discovery/" },
+    { "name": "Thank you", "url": "/en/book/thank-you/" }
+  ],
+  "sections": [
+    { "id": "estado", "name": "Your booking" }
+  ],
+  "primaryCta": null,
+  "secondaryCta": {
+    "label": "Message Kain",
+    "waMessage": "Hi, I'm coming from the English site. I booked my Discovery Session and want to confirm a detail."
+  },
+  "faq": []
+}

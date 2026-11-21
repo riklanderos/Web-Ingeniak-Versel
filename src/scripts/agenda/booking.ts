@@ -6,6 +6,7 @@
 // Medición: CustomEvent 'ingeniak:track' (booking_*), nunca con datos que escribió la persona.
 import {
   CDMX_TZ, EMPTY_FORM, EVENT_ID_RE, FIELD_ORDER, SESSION_RULES, formatDayEs, formatSlotEs, formatTimeEs, toForm, validateForm,
+  formatDayEn, formatSlotEn, errorText,
   type BookingForm, type DayAvailability, type FormErrors, type SessionType,
 } from '../../../shared/agenda.js';
 import { bindPhone, readPhone } from '../forms/phone';
@@ -15,7 +16,25 @@ import { GRACIAS_URL, guardarGracias } from './gracias-store';
 type Step = 1 | 2 | 3 | 'done';
 type FieldKey = keyof BookingForm;
 
-const AVISOS = {
+// Versión en inglés (/en/, 2026-11-20): <html lang="en-US"> cambia los textos que escribe este script. Los valores del
+// formulario y lo que llega a Kommo siguen en español.
+const EN = document.documentElement.lang.toLowerCase().startsWith('en');
+const AVISOS_EN = {
+  cancelado: 'You canceled the payment and your time slot was released. You can pick the same one or another.',
+  ocupado: 'That time slot was just taken. Please pick another one.',
+  sinConexion: 'The connection dropped. Please try again.',
+  reserva: "We couldn't complete the booking. Try again, or message us on WhatsApp and we'll book it for you.",
+  agenda: "We couldn't load the calendar right now. Try again in a few minutes or message us on WhatsApp.",
+  resumen: 'Check these fields:',
+  lleno: 'Full',
+  tuHora: 'your time',
+  local: 'in your time zone',
+  done: "You're all set, {nombre}. Your Discovery Session is booked.",
+  cuando: '{when} (Central Mexico time)',
+  invitacion: "We sent the Google Calendar invite to {email} with the Google Meet link. If you don't see it in your inbox, check promotions or spam.",
+  paso: 'Step {n} of 3: {t}',
+};
+const AVISOS_ES = {
   cancelado: 'Cancelaste el pago y tu horario quedó libre. Puedes elegir el mismo u otro.',
   ocupado: 'Ese horario se acaba de ocupar. Elige otro, por favor.',
   sinConexion: 'Se perdió la conexión. Inténtalo de nuevo.',
@@ -30,14 +49,28 @@ const AVISOS = {
   invitacion: 'Te enviamos la invitación de Google Calendar a {email} con el enlace de Google Meet. Si no la ves en tu bandeja de entrada, revisa promociones o spam.',
   paso: 'Paso {n} de 3: {t}',
 };
+const AVISOS = EN ? AVISOS_EN : AVISOS_ES;
 
 // Nombres del resumen de errores: la misma redacción que la etiqueta del campo (textos.ts) y que su error (shared/agenda.js).
-const LABELS: Record<FieldKey, string> = {
+const LABELS_ES: Record<FieldKey, string> = {
   fullName: 'Nombre completo', email: 'Correo', whatsapp: 'WhatsApp', businessName: 'Nombre del negocio', website: 'Sitio web o redes',
   industry: 'Giro', teamSize: 'Personas en tu equipo', revenue: 'Facturación mensual', timeDrains: 'Dónde se te va el tiempo',
   tools: 'Herramientas', goal: 'Qué quieres resolver en la sesión',
 };
-const GOAL_LABEL: Record<SessionType, string> = { discovery: 'Qué quieres revisar en la llamada', power: 'Qué quieres resolver en la sesión' };
+const GOAL_LABEL_ES: Record<SessionType, string> = { discovery: 'Qué quieres revisar en la llamada', power: 'Qué quieres resolver en la sesión' };
+const LABELS_EN: Record<FieldKey, string> = {
+  fullName: 'Full name', email: 'Email', whatsapp: 'WhatsApp', businessName: 'Business name', website: 'Website or social media',
+  industry: 'Industry', teamSize: 'People on your team', revenue: 'Monthly revenue', timeDrains: 'Where your time goes',
+  tools: 'Tools', goal: 'What you want to solve in the session',
+};
+const GOAL_LABEL_EN: Record<SessionType, string> = { discovery: 'What you want to review on the call', power: 'What you want to solve in the session' };
+const LABELS = EN ? LABELS_EN : LABELS_ES;
+const GOAL_LABEL = EN ? GOAL_LABEL_EN : GOAL_LABEL_ES;
+const fmtDay = EN ? formatDayEn : formatDayEs;
+const fmtSlot = EN ? formatSlotEn : formatSlotEs;
+/** Errores de validación en el idioma de la página (validateForm y el servidor los dan en español). */
+const trErrors = <E extends Record<string, string>>(e: E): E =>
+  EN && e ? (Object.fromEntries(Object.entries(e).map(([k, v]) => [k, errorText(v, 'en')])) as E) : e;
 
 declare global {
   interface Window { __lenis?: { scrollTo: (t: Element | number | string, o?: Record<string, unknown>) => void } }
@@ -156,7 +189,7 @@ export function initBooking(root: HTMLElement) {
     if (!zona) {
       try { zona = Intl.DateTimeFormat().resolvedOptions().timeZone || undefined; } catch { /* sin Intl */ }
     }
-    S.origin = [desde && `Sección: ${desde}`, utm.utm_source, utm.utm_campaign, utm.utm_content].filter(Boolean).join(' · ') || null;
+    S.origin = [EN && 'Sitio en inglés', desde && `Sección: ${desde}`, utm.utm_source, utm.utm_campaign, utm.utm_content].filter(Boolean).join(' · ') || null;
     S.attribution = {
       ...utm,
       referrer: referrer || clip(landing.referrer, 500),
@@ -362,7 +395,7 @@ export function initBooking(root: HTMLElement) {
     try {
       const r = await fetch(`/api/agenda/disponibilidad/?tipo=${type}`, { cache: 'no-store', headers: { accept: 'application/json' } });
       const j = (await r.json().catch(() => ({}))) as { ok?: boolean; days?: DayAvailability[]; error?: string; simulacion?: boolean };
-      if (!j.ok || !Array.isArray(j.days)) throw new Error(j.error || AVISOS.agenda);
+      if (!j.ok || !Array.isArray(j.days)) throw new Error((!EN && j.error) || AVISOS.agenda);
       S.days = j.days;
       if (j.simulacion) $<HTMLElement>('[data-bk-sim]')!.hidden = false;
       if (!(S.date && S.days.some((d) => d.date === S.date && d.slots.length))) S.date = S.days.find((d) => d.slots.length)?.date ?? null;
@@ -402,14 +435,14 @@ export function initBooking(root: HTMLElement) {
       daysEl.replaceChildren();
       for (const d of S.days) {
         const node = dayTpl.content.firstElementChild!.cloneNode(true) as HTMLButtonElement;
-        const fd = formatDayEs(d.date);
+        const fd = fmtDay(d.date);
         node.id = `${id}-d-${d.date}`;
         node.dataset.date = d.date;
         node.setAttribute('aria-controls', panel.id || (panel.id = `${id}-panel`));
         node.querySelector('.bk__day-w')!.textContent = fd.weekday.slice(0, 3).replace(/\.$/, '');
         node.querySelector('.bk__day-n')!.textContent = fd.day;
         node.querySelector('.bk__day-m')!.textContent = d.slots.length ? fd.month.slice(0, 3) : AVISOS.lleno;
-        node.setAttribute('aria-label', `${cap(fd.weekday)} ${fd.day} de ${fd.month}${d.slots.length ? '' : ` · ${AVISOS.lleno}`}`);
+        node.setAttribute('aria-label', `${EN ? `${cap(fd.weekday)}, ${fd.month} ${fd.day}` : `${cap(fd.weekday)} ${fd.day} de ${fd.month}`}${d.slots.length ? '' : ` · ${AVISOS.lleno}`}`);
         if (!d.slots.length) node.disabled = true;
         daysEl.append(node);
       }
@@ -430,8 +463,8 @@ export function initBooking(root: HTMLElement) {
       dl.textContent = '';
       return;
     }
-    const fd = formatDayEs(day.date);
-    dl.textContent = `${cap(fd.weekday)} ${fd.day} de ${fd.month}`;
+    const fd = fmtDay(day.date);
+    dl.textContent = EN ? `${cap(fd.weekday)}, ${fd.month} ${fd.day}` : `${cap(fd.weekday)} ${fd.day} de ${fd.month}`;
     panel.setAttribute('aria-labelledby', `${id}-d-${day.date}`);
     for (const s of day.slots) {
       const node = slotTpl.content.firstElementChild!.cloneNode(true) as HTMLButtonElement;
@@ -458,7 +491,7 @@ export function initBooking(root: HTMLElement) {
   // ── Revisión ──
   function renderReview() {
     readForm();
-    $<HTMLElement>('[data-bk-when]')!.textContent = S.slot ? formatSlotEs(S.slot) : '';
+    $<HTMLElement>('[data-bk-when]')!.textContent = S.slot ? fmtSlot(S.slot) : '';
     const local = $<HTMLElement>('[data-bk-when-local]')!;
     local.hidden = !(S.slot && S.localTz);
     local.textContent = S.slot && S.localTz ? `${formatTimeEs(S.slot, S.localTz)} ${AVISOS.local}` : '';
@@ -518,16 +551,16 @@ export function initBooking(root: HTMLElement) {
           track('booking_slot_taken', { tipo: type });
           await loadDays();
           goTo(2);
-          setNotice(j.error ?? AVISOS.ocupado);
+          setNotice((!EN && j.error) || AVISOS.ocupado);
         } else if (j.errors && Object.keys(j.errors).length) {
-          S.errors = j.errors;
+          S.errors = trErrors(j.errors);
           track('booking_error', { tipo: type, status: r.status });
           goTo(1, { focus: false });
           renderErrors();
           requestAnimationFrame(() => focusFirstError());
         } else {
           track('booking_error', { tipo: type, status: r.status });
-          setError(j.error ?? AVISOS.reserva);
+          setError((!EN && j.error) || AVISOS.reserva);
         }
         return;
       }
@@ -535,7 +568,7 @@ export function initBooking(root: HTMLElement) {
         location.assign(j.url);
         return;
       }
-      const when = j.when ?? formatSlotEs(S.slot);
+      const when = EN ? fmtSlot(S.slot) : j.when ?? fmtSlot(S.slot);
       try { sessionStorage.removeItem(STORE); } catch { /* nada */ }
       // Discovery confirmada: a la página de gracias, que manda booking_confirmed (una sola vez por reserva).
       // Si el navegador no deja guardar los datos, se confirma aquí mismo como antes.
@@ -549,7 +582,7 @@ export function initBooking(root: HTMLElement) {
         metaId: typeof j.metaEventId === 'string' ? j.metaEventId.slice(0, 64) : undefined,
       });
       if (guardado) {
-        location.assign(GRACIAS_URL);
+        location.assign(EN ? '/en/book/thank-you/' : GRACIAS_URL);
         return;
       }
       renderDone(when, j.meetLink ?? null);
@@ -629,7 +662,7 @@ export function initBooking(root: HTMLElement) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     readForm();
-    S.errors = validateForm(type, S.form);
+    S.errors = trErrors(validateForm(type, S.form));
     renderErrors();
     if (Object.keys(S.errors).length) {
       track('booking_error', { tipo: type, step: 1, motivo: 'validacion' });

@@ -2,8 +2,9 @@
 // R3 (ESPEC §12.2): en móvil toda portada usa `mobile="split"`: arriba solo el intro (crumbs O eyebrow, H1, lede ≤ 20
 // palabras y CTAs); el resto va al slot `more`, después de la placa y dentro de la misma <section>.
 // En escritorio el intro no cambia: el lede completo sigue en su sitio (la cola solo se repite en `more` para móvil).
-import { isBuilt, builtRoutes, pages, copyOrNull } from '../../lib/site';
+import { isBuilt, builtRoutes, pages, enPages, copyOrNull } from '../../lib/site';
 import { isHiddenHref } from '../layout/cta';
+import { currentLang, L } from '../../lib/i18n';
 
 const words = (t: string) => t.replace(/\{\{[^}]+\}\}/g, 'X').split(/\s+/).filter(Boolean).length;
 /** Oraciones de un texto del copy (los tokens {{…}} quedan intactos). */
@@ -55,17 +56,24 @@ export function builtCrumbs(list?: { name: string; url?: string }[] | null): { n
 
 /* ── Enlaces del cuerpo a rutas construidas (R12 / QA · enlaces) ───────────────────────────────────────────────────── */
 // 'Conversión' (/contacto/) = 'Contacto'. Las landings ocultas (/discovery/, /power-session/, /agendar/…) nunca se sugieren (R17).
-const GROUP_LABEL: Record<string, string> = { Servicios: 'Servicio', Industrias: 'Industria', Casos: 'Caso de estudio', 'Conversión': 'Contacto', 'Núcleo': 'Ingeniak' };
+// Versión en inglés (/en/, 2026-11-20): etiquetas por idioma (se calculan en cada render, nunca al cargar el módulo).
+const GROUP_LABEL_ES: Record<string, string> = { Servicios: 'Servicio', Industrias: 'Industria', Casos: 'Caso de estudio', 'Conversión': 'Contacto', 'Núcleo': 'Ingeniak' };
+const GROUP_LABEL_EN: Record<string, string> = { Servicios: 'Service', Industrias: 'Industry', Casos: 'Case study', 'Conversión': 'Contact', 'Núcleo': 'Ingeniak' };
+/** Etiqueta de grupo de una página en el idioma actual. */
+export const groupLabel = (group: string): string => L({ es: GROUP_LABEL_ES, en: GROUP_LABEL_EN })[group] ?? '';
+/** Nombre del inicio en los enlaces del cuerpo ('Inicio' / 'Home'). */
+export const homeLabel = (): string => L({ es: 'Inicio', en: 'Home' });
 /** Fila de una página construida con texto de su propio copy: título (su breadcrumb), etiqueta (su grupo) y la primera
  *  oración de su portada sin cifras ni tokens. null si la página no existe o no está construida. */
 export function builtRow(url: string): { href: string; label: string; title: string; line: string } | null {
   if (!url || !isBuilt(url) || isHiddenHref(url)) return null;
-  const pg = (pages as any[]).find((p) => p.url === url);
+  // En inglés solo se sugieren páginas en inglés (enPages); en español, solo las de español (como siempre).
+  const pg = ((currentLang() === 'en' ? enPages : pages) as any[]).find((p) => p.url === url);
   if (!pg) return null;
   const cp = copyOrNull(pg.id);
   const first = sentences(cp?.sections?.hero?.lede).find((x) => !/\{\{/.test(x) && !/\d/.test(x.replace(/24\/7/g, '')));
-  const title = url === '/' ? 'Inicio' : (pg.breadcrumbs as any[])?.at(-1)?.name ?? pg.h1;
-  return { href: url, label: GROUP_LABEL[pg.group] ?? '', title, line: first ?? '' };
+  const title = url === '/' || url === '/en/' ? homeLabel() : (pg.breadcrumbs as any[])?.at(-1)?.name ?? pg.h1;
+  return { href: url, label: groupLabel(pg.group), title, line: first ?? '' };
 }
 /**
  * "Sigue explorando" sin enlaces rotos: los destinos del copy que ya están construidos (con su texto del copy) y, si
@@ -76,10 +84,12 @@ export function builtRelated(items: any[] | undefined, opts: { self: string; wan
   const want = opts.want ?? 3;
   const out: any[] = (items ?? []).filter((it) => it?.href && isBuilt(it.href) && !isHiddenHref(it.href) && it.href !== opts.self);
   const have = new Set(out.map((x) => x.href.split('#')[0]));
-  const pool = [...(opts.prefer ?? []), ...builtRoutes].map((u) => u.split('#')[0]);
+  // En inglés el relleno sale solo de las páginas en inglés construidas (las que falten se quedan sin sugerir).
+  const routes = currentLang() === 'en' ? enPages.map((p) => p.url).filter((u) => builtRoutes.has(u)) : [...builtRoutes];
+  const pool = [...(opts.prefer ?? []), ...routes].map((u) => u.split('#')[0]);
   for (const u of pool) {
     if (out.length >= want) break;
-    if (have.has(u) || u === opts.self || u === '/' || u === '/404' || isHiddenHref(u)) continue;
+    if (have.has(u) || u === opts.self || u === '/' || u === '/en/' || u === '/404' || isHiddenHref(u)) continue;
     const row = builtRow(u);
     if (row) { out.push(row); have.add(u); }
   }

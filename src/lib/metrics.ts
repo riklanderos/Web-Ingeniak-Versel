@@ -49,3 +49,50 @@ export function metric(id: MetricId) {
   if (!m) throw new Error(`[metrics] cifra desconocida: ${id}`);
   return m;
 }
+
+/* ───────────────────────── Versión en inglés (2026-11-20) ─────────────────────────
+ * Mismas cifras: solo cambian las palabras. value se repite cuando lleva texto (vista, fuentes); si no, se usa el de METRICS. */
+export const METRICS_EN: Record<MetricId, { label: string; ctx: string; value?: string; prose?: string }> = {
+  'dental-citas':        { label: 'more appointments in 90 days', ctx: 'Dental clinic · Monterrey' },
+  'dental-respuesta':    { label: 'response time', ctx: 'Dental clinic · Monterrey', prose: 'from 8 minutes to 12 seconds' },
+  'ecom-cpl':            { label: 'cost per lead in 60 days', ctx: 'E-commerce · Mexico City' },
+  'retail-conversiones': { label: 'conversions', ctx: 'Multi-brand retail · Kommo + AI' },
+  'horeca-roas':         { label: 'sustained', ctx: 'Hospitality (HoReCa)' },
+  'logistica-procesos':  { label: 'automated processes', ctx: 'Logistics · n8n' },
+  'salud-citas-mes':     { label: 'appointments per month on average', ctx: 'Healthcare clients: dentistry, aesthetic medicine, chiropractic and gastroenterology' },
+  'tiempo-operativo':    { label: 'operating time', ctx: 'Average, first 90 days' },
+  'ecom-tablero':        { label: 'unified dashboard', ctx: 'E-commerce', value: '1 view · 7 sources' },
+  'sistemas':            { label: 'systems in production', ctx: 'Agents, CRM and automations' },
+  'paises':              { label: 'countries', ctx: 'Mexico (HQ), United States, Colombia, Argentina, Spain, Costa Rica and Ecuador' },
+};
+export const SOURCE_NOTE_EN = 'Ingeniak internal data, October 2026';
+export const PRICE_FROM_EN = 'from USD 997 per month';
+export const PRICE_FROM_CAP_EN = 'From USD 997 per month';
+export const PRICES_EN: Record<PriceId, string> = { 'software': 'from USD 1,500 per project' };
+export const OFFERS_EN: Record<OfferId, string> = {
+  'power-price': 'USD 297',
+  'power-guarantee': "if we don't find at least 3 leaks worth more than $10,000 MXN a month during the session, we refund the full USD 297",
+};
+
+/** Cifra en el idioma pedido: 'value' (la cifra), 'full' (cifra + etiqueta), 'prose' (redactada), 'label' o 'ctx'. */
+export function metricText(id: MetricId, mod: 'value' | 'full' | 'prose' | 'label' | 'ctx', lang: 'es' | 'en' = 'es'): string {
+  const m = metric(id) as { value: string; label: string; ctx: string; prose?: string };
+  const t = lang === 'en' ? METRICS_EN[id] : null;
+  const value = t?.value ?? m.value;
+  const label = t?.label ?? m.label;
+  if (mod === 'value') return value;
+  if (mod === 'label') return label;
+  if (mod === 'ctx') return t?.ctx ?? m.ctx;
+  if (mod === 'prose') return (t ? t.prose : m.prose) ?? `${value} ${label}`;
+  return `${value} ${label}`;
+}
+/** Precios, ofertas y nota de fuente en el idioma pedido: 'price', 'Price', 'source', 'price:<id>', 'offer:<id>'. */
+export function priceText(key: string, lang: 'es' | 'en' = 'es'): string {
+  const en = lang === 'en';
+  if (key === 'price') return en ? PRICE_FROM_EN : PRICE_FROM;
+  if (key === 'Price') return en ? PRICE_FROM_CAP_EN : PRICE_FROM_CAP;
+  if (key === 'source') return en ? SOURCE_NOTE_EN : SOURCE_NOTE;
+  if (key.startsWith('price:')) { const id = key.slice(6) as PriceId; return (en ? PRICES_EN : PRICES)[id]; }
+  if (key.startsWith('offer:')) { const id = key.slice(6) as OfferId; return (en ? OFFERS_EN : OFFERS)[id]; }
+  throw new Error(`[metrics] clave desconocida: ${key}`);
+}

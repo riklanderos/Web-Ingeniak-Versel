@@ -22,6 +22,7 @@ import { resolvePlate, boxPoint, camCap, type Fallback } from './plate';
 import PlatePicture from './PlatePicture.astro';
 import GhostWord from './GhostWord.astro';
 import type { MetricId } from '../../lib/metrics';
+import { currentLang, localHref, L as tr } from '../../lib/i18n';
 
 interface Step {
   id: string; title: string; stage?: string; line: string; plate?: string; href?: string; hrefLabel?: string;
@@ -42,8 +43,12 @@ interface Props {
 }
 const {
   id, preset, steps, plate, fallbackPlate, pin = preset === 'runtime' ? '+=280%' : '+=250%',
-  figLabel, note, ghost: ghostProp = preset === 'phases' ? 'VKTOR' : undefined, skipLabel = 'Saltar escena', class: cls,
+  figLabel, note, ghost: ghostProp = preset === 'phases' ? 'VKTOR' : undefined, skipLabel = tr({ es: 'Saltar escena', en: 'Skip scene' }), class: cls,
 } = Astro.props;
+const T = tr({
+  es: { sim: 'SIMULACIÓN', lead: 'Lead nuevo', stage: 'etapa', Stage: 'Etapa', svc: 'Ver el servicio' },
+  en: { sim: 'SIMULATION', lead: 'New lead', stage: 'stage', Stage: 'Stage', svc: 'See the service' },
+});
 const ghost = typeof ghostProp === 'string' ? { text: ghostProp } : ghostProp;
 
 const single = preset === 'phases' ? resolvePlate(plate ?? steps[0]?.plate ?? '', { fallbackPlate, alt: '', srcsetMax: 2752, where: `#${id}` }) : null;
@@ -121,7 +126,7 @@ const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
   )}
   <div class="seq__track">
   {preset === 'runtime' && (
-    <div class="seq__pillw" aria-hidden="true"><p class="seq__pill solid" data-nosnippet><span class="chip-sim">SIMULACIÓN</span> Lead nuevo · etapa <b data-pill-n>1</b>/{steps.length}</p></div>
+    <div class="seq__pillw" aria-hidden="true"><p class="seq__pill solid" data-nosnippet><span class="chip-sim">{T.sim}</span> {T.lead} · {T.stage} <b data-pill-n>1</b>/{steps.length}</p></div>
   )}
   <ol class="seq__steps" role="list">
     {steps.map((s, i) => (
@@ -137,10 +142,10 @@ const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
                 <div class="anchor seq__slot" data-lead-slot={i} data-box={slots[i].bw ? '' : undefined} style={slotStyle(i)}>
                   {i === 0 && (
                     <figure class="lead-card solid" data-lead data-nosnippet>
-                      <span class="chip-sim">SIMULACIÓN</span>
+                      <span class="chip-sim">{T.sim}</span>
                       <figcaption>
-                        <span class="lead-card__k t-label">Lead nuevo</span>
-                        <span class="lead-card__t">Etapa <b data-lead-n>1</b>/{steps.length} · <span data-lead-stage>{stageOf(steps[0])}</span></span>
+                        <span class="lead-card__k t-label">{T.lead}</span>
+                        <span class="lead-card__t">{T.Stage} <b data-lead-n>1</b>/{steps.length} · <span data-lead-stage>{stageOf(steps[0])}</span></span>
                       </figcaption>
                       <span class="lead-card__node" aria-hidden="true"></span>
                     </figure>
@@ -165,7 +170,7 @@ const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAA
               </p>
             )}
             {extras[i] && <div class="seq__extra"><Fragment set:html={extras[i]} /></div>}
-            {s.href && <a class="lnk seq__go" href={s.href}>{s.hrefLabel ?? 'Ver el servicio'} <span aria-hidden="true">→</span></a>}
+            {s.href && <a class="lnk seq__go" href={localHref(s.href, currentLang())}>{s.hrefLabel ?? T.svc} <span aria-hidden="true">→</span></a>}
           </div>
         </div>
       </li>

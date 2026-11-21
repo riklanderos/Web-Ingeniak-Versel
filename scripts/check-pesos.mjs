@@ -172,7 +172,7 @@ export async function run(opts) {
   const checkedFiles = new Set();
   for (const pg of pages) {
     const root = parseHTML(pg.html);
-    const isHome = pg.route === '/';
+    const isHome = pg.route === '/' || pg.route === '/en/'; // la portada en inglés (/en/, 2026-11-20) es la misma plantilla
     const B = isHome ? BUDGET.home : BUDGET.page;
     // width/height
     for (const img of findAll(root, (x) => x.tag === 'img')) {

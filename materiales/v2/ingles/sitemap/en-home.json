@@ -1,0 +1,75 @@
+{
+  "title": "AI Agency: AI Agents, CRM and Automation | Ingeniak",
+  "metaDescription": "WhatsApp AI agents, Kommo and GoHighLevel CRM, and n8n automation, connected in one system. Official Kommo partner in Latin America.",
+  "h1": "We put AI agents to work in your business. AI agents, CRM and automation, all in one system.",
+  "primaryKeyword": "AI agency for businesses",
+  "secondaryKeywords": [
+    "Ingeniak",
+    "AI agents for businesses",
+    "AI consulting firm in Mexico",
+    "we put AI agents to work"
+  ],
+  "breadcrumbs": [],
+  "sections": [
+    { "id": "hero", "name": "Intro" },
+    { "id": "stack", "name": "Tools" },
+    { "id": "problema", "name": "The problem" },
+    { "id": "que-es", "name": "What is Ingeniak?" },
+    { "id": "sistema", "name": "The Ingeniak system" },
+    { "id": "kain", "name": "Meet Kain" },
+    { "id": "servicios", "name": "Services" },
+    { "id": "casos", "name": "Case studies" },
+    { "id": "vktor", "name": "VKTOR™ methodology" },
+    { "id": "industrias", "name": "Industries" },
+    { "id": "equipo", "name": "The team" },
+    { "id": "faq", "name": "FAQ" },
+    { "id": "cta-final", "name": "Next step" }
+  ],
+  "primaryCta": {
+    "label": "Get a quote",
+    "href": "/en/contact/#cotizar",
+    "action": "cotizar"
+  },
+  "secondaryCta": {
+    "label": "Message Kain",
+    "waMessage": "Hi Kain, I'm coming from the home page of Ingeniak's English site and I'd like to see how an AI agent would handle my business."
+  },
+  "faq": [
+    {
+      "id": "G01",
+      "q": "What is Ingeniak?",
+      "a": "Ingeniak is an artificial intelligence consulting firm headquartered in Guadalajara, Jalisco, Mexico. We implement WhatsApp AI agents, Kommo and GoHighLevel CRM, n8n automations, paid media, high-converting websites, custom software and SEO. We have more than 73 systems in production in 7 countries.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "G02",
+      "q": "What is a WhatsApp AI agent?",
+      "a": "It's an assistant built on language models that handles the conversations on your WhatsApp Business account: it understands what the customer writes, answers with your business's information, qualifies the prospect, logs them in your CRM and can book them an appointment. Unlike a menu-based chatbot, it doesn't force the customer to choose from fixed options.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "G04",
+      "q": "Is Ingeniak an official Kommo partner?",
+      "a": "Yes. Ingeniak is an official Kommo partner and reseller in Latin America. We help you with licenses, CRM implementation, connecting WhatsApp and automating follow-up with AI agents.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "G07",
+      "q": "How much does it cost to work with Ingeniak?",
+      "a": "Our projects start {{price}}. The exact scope and cost depend on the size of your operation and how many processes you want to automate; for a number specific to your business, request a quote. We don't publish fixed packages because two companies of the same size can need very different systems.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "G08",
+      "q": "How soon will I see results?",
+      "a": "Implementing a system takes 7 to 30 days, depending on scope. When you start seeing results depends on what gets implemented and on your operation; we go over it with you in the proposal that follows your quote request. For reference, a dental clinic in Monterrey got {{metric:dental-citas}} more appointments in 90 days, and an e-commerce business in Mexico City cut its cost per lead in 60 days: {{metric:ecom-cpl}}. {{source}}.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "G11",
+      "q": "How do I get started with Ingeniak?",
+      "a": "With “Get a quote”: a three-step form where you tell us what you need, what your business is like and how you'd like us to reach you. We then reach out by WhatsApp and email to learn the details. If it makes sense for both of us, we send you a proposal with scope, timeline and cost. If you'd rather start with a message, send Kain a message on WhatsApp.",
+      "estado": "aprobada"
+    }
+  ]
+}

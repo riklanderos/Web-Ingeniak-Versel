@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hi, I'd like some info. Are you open on Saturdays?", "delay": 900, "time": "11:48 PM" },
+  { "who": "kain", "text": "Hi! Yes, on Saturdays we're open 9:00 AM to 2:00 PM. Which service are you interested in? That way I can give you the exact details.", "delay": 1000 },
+  { "who": "cliente", "text": "A quote for my business.", "delay": 1400 },
+  { "who": "kain", "text": "Happy to help. Can you share your name and what you need a quote for? With that, I'll book you a call with an advisor.", "delay": 1100 },
+  { "who": "cliente", "text": "I'm Mario, I need a quote for two locations.", "delay": 1600 },
+  { "who": "kain", "text": "Thanks, Mario. I can book you tomorrow at 10:00 AM or 4:00 PM. Which do you prefer?", "delay": 1000 },
+  { "who": "cliente", "text": "10 works.", "delay": 1100 },
+  { "who": "kain", "text": "Done: call with an advisor tomorrow at 10:00 AM. You'll get the confirmation right here.", "delay": 1000, "event": "Qualified lead · appointment logged in your CRM" }
+]

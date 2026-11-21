@@ -1,0 +1,66 @@
+{
+  "title": "AI, CRM and Automation Services for Businesses | Ingeniak",
+  "metaDescription": "AI consulting, WhatsApp AI agents, Kommo and GoHighLevel CRM, n8n, paid media, web, custom software and SEO, all connected in one system.",
+  "h1": "AI services for businesses, connected in one system",
+  "primaryKeyword": "AI services for businesses",
+  "secondaryKeywords": [
+    "AI services",
+    "AI automation for businesses",
+    "AI implementation"
+  ],
+  "breadcrumbs": [
+    { "name": "Home", "url": "/en/" },
+    { "name": "Services", "url": "/en/services/" }
+  ],
+  "sections": [
+    { "id": "hero", "name": "Intro" },
+    { "id": "definicion", "name": "One system, not standalone services" },
+    { "id": "mapa", "name": "Service map" },
+    { "id": "conexion", "name": "How they connect" },
+    { "id": "no-se", "name": "Not sure where to start?" },
+    { "id": "vktor", "name": "VKTOR™ methodology" },
+    { "id": "faq", "name": "FAQ" },
+    { "id": "cta-final", "name": "Next step" }
+  ],
+  "primaryCta": {
+    "label": "Get a quote",
+    "href": "/en/contact/#cotizar",
+    "action": "cotizar"
+  },
+  "secondaryCta": {
+    "label": "Message Kain",
+    "waMessage": "Hi Kain, I'm coming from the Services page on Ingeniak's English site and I'd like to know which service makes sense for me first."
+  },
+  "faq": [
+    {
+      "id": "G05",
+      "q": "Should I choose Kommo or GoHighLevel?",
+      "a": "It depends on how you sell. Kommo is built for selling through messaging (WhatsApp, Instagram, TikTok), with pipelines and automations inside the chat. GoHighLevel brings CRM, funnels, landing pages, calendars and campaigns together in one platform. We work with both and recommend one based on your sales process.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "G07",
+      "q": "How much does it cost to work with Ingeniak?",
+      "a": "Our projects start {{price}}. The exact scope and cost depend on the size of your operation and how many processes you want to automate; for a number specific to your business, request a quote. We don't publish fixed packages because two companies of the same size can need very different systems.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "G08",
+      "q": "How soon will I see results?",
+      "a": "Implementing a system takes 7 to 30 days, depending on scope. When you start seeing results depends on what gets implemented and on your operation; we go over it with you in the proposal that follows your quote request. For reference, a dental clinic in Monterrey got {{metric:dental-citas}} more appointments in 90 days, and an e-commerce business in Mexico City cut its cost per lead in 60 days: {{metric:ecom-cpl}}. {{source}}.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "G09",
+      "q": "Which AI models do you use?",
+      "a": "We work with models from OpenAI, Anthropic (Claude) and Google (Gemini), and choose the one that best handles each process. We integrate them with tools like Kommo, GoHighLevel, n8n, Make, Zapier, Supabase and Stripe.",
+      "estado": "aprobada"
+    },
+    {
+      "id": "N07",
+      "q": "Do you work with small and midsize businesses?",
+      "a": "Yes. We work with small and midsize businesses with 3 to 40 employees, in any industry: the size at which the business still depends on its owner to run, and a system gives that owner time back. If you're outside that range, tell us when you request a quote and we'll point you to the right option.",
+      "estado": "aprobada"
+    }
+  ]
+}

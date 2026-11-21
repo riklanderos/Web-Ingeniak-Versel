@@ -1,0 +1,9 @@
+---
+// /en/ · versión en inglés de la portada (2026-11-20). Misma plantilla; texto: src/content/paginas/en-home.json.
+import HomeTemplate from '../../components/templates/HomeTemplate.astro';
+import { getPage, getCopy } from '../../lib/site';
+
+const page = getPage('/en/');
+const copy = getCopy(page.id);
+---
+<HomeTemplate page={page} copy={copy} />

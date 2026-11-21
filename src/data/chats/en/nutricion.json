@@ -1,0 +1,10 @@
+[
+  { "who": "cliente", "text": "Hi, I have my follow-up appointment tomorrow at 9:00 AM, but I won't be able to make it. Can I move it?", "delay": 900, "time": "7:52 PM" },
+  { "who": "kain", "text": "Hi! Of course. For your follow-up I have Thursday at 8:30 AM or Friday at 6:00 PM. Which works for you?", "delay": 1100 },
+  { "who": "cliente", "text": "Friday. Hey, in the meantime, is it OK to have fruit for dinner or better not?", "delay": 1600 },
+  { "who": "kain", "text": "That's something your nutritionist needs to advise you on; I can't give you dietary recommendations. If you'd like, I'll leave your question for her so she can go over it with you on Friday.", "delay": 1200 },
+  { "who": "cliente", "text": "Yes, please. I'm Ana.", "delay": 1300 },
+  { "who": "kain", "text": "All set, Ana: your follow-up is now Friday at 6:00 PM, with your question in the notes for your nutritionist. I'll send you a reminder on Thursday.", "delay": 1000, "event": "Appointment rescheduled in your CRM · previous slot released" },
+  { "who": "cliente", "text": "Thanks.", "delay": 1100 },
+  { "who": "kain", "text": "Thank you, Ana. Have a good night.", "delay": 800 }
+]

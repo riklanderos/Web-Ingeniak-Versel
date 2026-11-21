@@ -35,6 +35,7 @@ import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
 import { SITE, waHref, linkTarget, type Page } from '../../lib/site';
 import { LOCAL_ID } from '../layout/jsonld';
 import { QUOTE, QUOTE_HREF_LOCAL, primaryLabel, quoteAttrs } from '../layout/cta';
+import { L, currentLang, localHref } from '../../lib/i18n';
 import '../../styles/tpl/ContactTemplate.css';
 
 interface Props { page: Page; copy: any }
@@ -42,6 +43,21 @@ const { page, copy } = Astro.props;
 const P = page as any;
 const C = copy?.sections ?? {};
 const dev = import.meta.env.DEV;
+// Versión en inglés (/en/, 2026-11-20): idioma de la página y textos escritos en código.
+const lang = currentLang();
+const T = {
+  hola: L({ es: 'Hola Kain, quiero hablar con el equipo de Ingeniak.', en: "Hi Kain, I'm coming from the English site and want to talk with the Ingeniak team." }),
+  wa: L({ es: 'Escríbele a Kain', en: 'Message Kain' }),
+  chat: L({ es: 'Agente de IA de Ingeniak', en: "Ingeniak's AI agent" }),
+  route: L({ es: 'Ruta', en: 'Option' }),
+  when: L({ es: 'Úsala si…', en: 'Use it if…' }),
+  then: L({ es: 'Qué pasa después', en: 'What happens next' }),
+  action: L({ es: 'Acción', en: 'Action' }),
+  maps: L({ es: 'Abrir en Google Maps', en: 'Open in Google Maps' }),
+  nap: L({ es: 'Datos de contacto', en: 'Contact details' }),
+  newTab: L({ es: ' (abre en otra pestaña)', en: ' (opens in a new tab)' }),
+};
+const privacyHref = (h?: string) => localHref(h ?? '/aviso-privacidad/', lang);
 
 /* ── utilidades ─────────────────────────────────────────────────────────── */
 const sec = (id: string) => (P.sections as any[]).find((s) => s.id === id);
@@ -56,9 +72,9 @@ function headHtml(h: any, lit?: string | null): string {
   }
   return h.soft ? `${first} <span class="soft">${annotateFigures(h.soft)}</span>` : first;
 }
-const waMsg: string = P.secondaryCta?.waMessage ?? C.hero?.ctaSecondary?.waMessage ?? 'Hola Kain, quiero hablar con el equipo de Ingeniak.';
+const waMsg: string = P.secondaryCta?.waMessage ?? C.hero?.ctaSecondary?.waMessage ?? T.hola;
 const wa = P.secondaryCta?.href ?? waHref(waMsg);
-const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
+const waLabel = (c: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? T.wa;
 const plateOf = (id: string) => sec(id)?.plate ?? null;
 const mailto = `mailto:${SITE.email}`;
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -67,7 +83,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 function linked(text: string, links?: { text: string; href: string }[]): string {
   let h = annotateFigures(text);
   for (const l of links ?? []) {
-    const to = l?.href ? linkTarget(l.href) : null;
+    const to = l?.href ? linkTarget(localHref(l.href, lang)) : null;
     const k = esc(l?.text ?? '');
     if (to && k && h.includes(k)) h = h.replace(k, `<a class="ct-in" href="${esc(to)}">${k}</a>`);
   }
@@ -165,7 +181,7 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
         )}
         {telD && chatLines.length > 0 && (
           <div slot="anchors" class="anchor anchor--panel ct-phone" data-anchor="telefono" data-m={telM ? undefined : 'none'} data-lock style={anchorStyle('telefono')}>
-            <ChatSim mode="registered" scripts={{ contacto: chatLines }} script="contacto" title={hero.chat?.title ?? 'Agente de IA de Ingeniak'} note={false} prefill={1} id="ct-chat" />
+            <ChatSim mode="registered" scripts={{ contacto: chatLines }} script="contacto" title={hero.chat?.title ?? T.chat} note={false} prefill={1} id="ct-chat" />
           </div>
         )}
       </ImageSection>
@@ -186,10 +202,10 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
           <caption class="sr-only">{rutas.caption}</caption>
           <thead>
             <tr>
-              <th scope="col">{rutas.cols?.route ?? 'Ruta'}</th>
-              <th scope="col">{rutas.cols?.when ?? 'Úsala si…'}</th>
-              <th scope="col">{rutas.cols?.then ?? 'Qué pasa después'}</th>
-              <th scope="col"><span class="sr-only">Acción</span></th>
+              <th scope="col">{rutas.cols?.route ?? T.route}</th>
+              <th scope="col">{rutas.cols?.when ?? T.when}</th>
+              <th scope="col">{rutas.cols?.then ?? T.then}</th>
+              <th scope="col"><span class="sr-only">{T.action}</span></th>
             </tr>
           </thead>
           <tbody>
@@ -203,8 +219,8 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
                     {r.tag && <span class="chip-spec ct-route__tag"><span class="node" aria-hidden="true"></span>{r.tag}</span>}
                     {r.contact && <span class="ct-route__contact" data-allow-number>{r.contact}</span>}
                   </th>
-                  <td class="ct-route__when" data-label={rutas.cols?.when ?? 'Úsala si…'}><Copy text={r.when} /></td>
-                  <td class="ct-route__then" data-label={rutas.cols?.then ?? 'Qué pasa después'}><Copy text={r.then} /></td>
+                  <td class="ct-route__when" data-label={rutas.cols?.when ?? T.when}><Copy text={r.when} /></td>
+                  <td class="ct-route__then" data-label={rutas.cols?.then ?? T.then}><Copy text={r.then} /></td>
                   <td class="ct-route__act">
                     <a class="ct-route__go" href={go.href} target={go.ext && !go.wa ? '_blank' : undefined} rel={go.ext ? 'noopener' : undefined} data-wa={go.wa ? '' : undefined} {...(go.quote ? quoteAttrs('rutas') : {})}>
                       <span>{r.action}</span><span class="sr-only">: {r.name}</span>
@@ -216,11 +232,11 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
             })}
           </tbody>
         </table>
-        {rutas.privacy?.label && linkTarget(rutas.privacy.href ?? '/aviso-privacidad/') && (
+        {rutas.privacy?.label && linkTarget(privacyHref(rutas.privacy.href)) && (
           <p class="t-micro ct-privacy" data-reveal>
             <span class="node" aria-hidden="true"></span>
             {rutas.privacy.line && <span>{rutas.privacy.line}</span>}
-            <a class="ct-in" href={linkTarget(rutas.privacy.href ?? '/aviso-privacidad/')}>{rutas.privacy.label}</a>
+            <a class="ct-in" href={linkTarget(privacyHref(rutas.privacy.href))}>{rutas.privacy.label}</a>
           </p>
         )}
       </Intertitle>
@@ -279,10 +295,10 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
             <span class="ct-place__city">{of.addressLine}</span>
           </address>
           {mapsHref && (
-            <a class="lnk ct-place__maps" href={mapsHref} target="_blank" rel="noopener">{of.mapsLabel ?? 'Abrir en Google Maps'}<Icon name="external" size={16} /></a>
+            <a class="lnk ct-place__maps" href={mapsHref} target="_blank" rel="noopener">{of.mapsLabel ?? T.maps}<Icon name="external" size={16} /></a>
           )}
         </div>
-        {of.nap?.length > 0 && <EntitySheet variant="local" rows={of.nap} title={of.napLabel ?? 'Datos de contacto'} waHref={wa} class="ct-nap" />}
+        {of.nap?.length > 0 && <EntitySheet variant="local" rows={of.nap} title={of.napLabel ?? T.nap} waHref={wa} class="ct-nap" />}
         <Credits variant="countries" label={of.countriesLabel} class="ct-countries" />
       </Intertitle>
     );
@@ -304,7 +320,7 @@ const localLd = [{ '@type': 'ProfessionalService', '@id': LOCAL_ID, telephone: S
                 <span class="ct-social__name">{s.name}</span>
                 <span class="ct-social__handle">{s.handle}</span>
                 <span class="ct-social__go" aria-hidden="true"><Icon name="external" size={16} /></span>
-                <span class="sr-only"> (abre en otra pestaña)</span>
+                <span class="sr-only">{T.newTab}</span>
               </a>
             </li>
           ))}

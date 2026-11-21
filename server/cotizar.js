@@ -40,6 +40,15 @@ export const FALLBACK = Object.freeze({ whatsapp: 'https://wa.me/523321017799', 
  * `tests/cotizar/rutas.test.mjs` compara este mapa con `sitemap.json` para que no se desfase.
  */
 export const RUTAS = Object.freeze({
+  // Versión en inglés (/en/, 2026-11-20): etiqueta pagina-en-<id> en Kommo, para saber que la cotización vino del sitio en inglés.
+  '/en/': 'en-home',
+  '/en/services/': 'en-servicios',
+  '/en/discovery/': 'en-discovery',
+  '/en/book/thank-you/': 'en-agendar-gracias',
+  '/en/contact/': 'en-contacto',
+  '/en/privacy/': 'en-aviso',
+  '/en/case-studies/multi-brand-retail-kommo/': 'en-caso-retail',
+  '/en/case-studies/logistics-n8n/': 'en-caso-logistica',
   '/': 'home',
   '/servicios/': 'servicios',
   '/servicios/consultoria-ia-empresas/': 'consultoria',

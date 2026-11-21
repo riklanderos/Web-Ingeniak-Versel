@@ -1,0 +1,69 @@
+{
+  "pageId": "en-_comun",
+  "url": null,
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (traducción con IA, 2026-11-20)",
+  "aprobadoPor": "",
+  "actualizado": "2026-11-20",
+  "pendientes": [
+    "INGLÉS · Microcopia compartida de la versión en inglés (traducción de _comun.json). Revisar el tono de 'We'll reach out within 2 business hours' (se aclara que es hora de México) y la firma 'We build free business owners, not exhausted heroes.'"
+  ],
+  "cta": {
+    "cotizar": "Get a quote",
+    "cotizarCorto": "Quote",
+    "cotizarSub": "We'll reach out within 2 business hours (Mexico time)",
+    "cotizarLnk": "Have a project in mind? Get a quote",
+    "primerPaso": "Get a quote · we'll reach out within 2 business hours (Mexico time)",
+    "kain": "Message Kain",
+    "kainAria": "Message Kain on WhatsApp",
+    "micro": "No commitment · We'll reach out within 2 business hours",
+    "microCierre": "No commitment · We'll reach out within 2 business hours",
+    "kainPill": "Message Kain",
+    "kainPillEstado": "replies 24/7"
+  },
+  "sim": {
+    "label": "SIMULATION",
+    "demo": "DEMO VIEW",
+    "typing": "typing…",
+    "pause": "Pause the conversation",
+    "play": "Resume the conversation",
+    "replay": "Watch again",
+    "horaIlustrativa": "Illustrative time",
+    "ejemplo": "Illustrative example",
+    "illus": "Illustrative image of the industry",
+    "tabsAria": "Pick an industry to see the conversation",
+    "transcript": "Full conversation"
+  },
+  "escena": {
+    "skip": "Skip scene",
+    "skipAria": "Skip this scene and keep reading",
+    "pauseAuto": "Pause autoplay",
+    "playAuto": "Resume autoplay",
+    "railAria": "Sections on this page"
+  },
+  "fuente": {
+    "nota": "{{source}}",
+    "anonimos": "Client names anonymized.",
+    "llamada": "Source"
+  },
+  "enlaces": {
+    "verCaso": "See the case study",
+    "verIndustria": "See the industry",
+    "verServicio": "See the service",
+    "verTodosServicios": "See all services",
+    "verTodosCasos": "See all case studies",
+    "registro": "Results log",
+    "metodologia": "See the full protocol",
+    "appKain": "Go to app.kain.mx",
+    "siguienteReportaje": "Next story"
+  },
+  "kain": {
+    "firma": "kain · by Ingeniak",
+    "slogan": "Your business working, without depending on you anymore.",
+    "limite": "Kain doesn't give medical or legal advice: it answers, books, confirms, follows up and connects your systems."
+  },
+  "faq": {
+    "otraDuda": "Still have a question? Message Kain on WhatsApp or email us at contacto@ingeniak.mx."
+  },
+  "firma": "We build free business owners, not exhausted heroes."
+}

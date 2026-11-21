@@ -304,7 +304,7 @@ function initChat() {
         chat.classList.toggle('is-paused', paused);
         paused ? screen.setAttribute('data-lenis-prevent', '') : screen.removeAttribute('data-lenis-prevent');
         pauseBtn.setAttribute('aria-pressed', String(paused));
-        pauseBtn.setAttribute('aria-label', (paused ? chat.dataset.labelPlay : chat.dataset.labelPause) ?? (paused ? 'Reanudar' : 'Pausar'));
+        pauseBtn.setAttribute('aria-label', (paused ? chat.dataset.labelPlay : chat.dataset.labelPause) ?? (document.documentElement.lang.toLowerCase().startsWith('en') ? (paused ? 'Resume' : 'Pause') : (paused ? 'Reanudar' : 'Pausar')));
         if (paused) halt(); else resume();
       });
     }
@@ -392,7 +392,8 @@ function initLedger() {
       chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
       let n = 0;
       rows.forEach((r) => { const ok = kind === 'all' || r.dataset[kind as 'service' | 'sector'] === val; r.hidden = !ok; if (ok) n++; });
-      if (status) status.textContent = `${n} ${n === 1 ? 'resultado' : 'resultados'}`;
+      const en = document.documentElement.lang.toLowerCase().startsWith('en');
+      if (status) status.textContent = en ? `${n} ${n === 1 ? 'result' : 'results'}` : `${n} ${n === 1 ? 'resultado' : 'resultados'}`;
     });
   }
 }

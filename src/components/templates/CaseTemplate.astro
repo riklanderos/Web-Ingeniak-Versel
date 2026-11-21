@@ -39,8 +39,9 @@ import Still from '../ui/Still.astro';
 import Icon from '../ui/Icon.astro';
 import Prose from '../content/Prose.astro';
 import Quote from '../content/Quote.astro';
-import { getCopy, getPage, getPlate, waHref, resolveTokens, SITE, linkTarget, type Page } from '../../lib/site';
-import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { getCopy, getPage, getPlate, waHref, resolveTokens, SITE, linkTarget, isBuilt, copyOrNull, enPages, type Page } from '../../lib/site';
+import { METRICS, priceText, type MetricId } from '../../lib/metrics';
+import { L, currentLang, localHref } from '../../lib/i18n';
 
 interface Props { page: Page; devCompleto?: boolean }
 const page = Astro.props.page as any;
@@ -48,6 +49,25 @@ const copy = getCopy(page.id);
 const C: Record<string, any> = copy.sections ?? {};
 const sitemapSecs: any[] = page.sections ?? [];
 const plateOf = (id: string) => sitemapSecs.find((s) => s.id === id)?.plate ?? null;
+// Versión en inglés (/en/, 2026-11-20): idioma de la página y textos escritos en código.
+const lang = currentLang();
+const SOURCE_NOTE = priceText('source', lang);
+const T = {
+  hola: L({ es: 'Hola Kain, quiero información.', en: "Hi Kain, I'm coming from the English site and want more information." }),
+  wa: L({ es: 'Escríbele a Kain', en: 'Message Kain' }),
+  caso: L({ es: 'Caso', en: 'Case' }),
+  fuente: L({ es: 'Fuente de las cifras', en: 'Source of the figures' }),
+  datos: L({ es: 'Datos del caso', en: 'Case details' }),
+  ficha: L({ es: 'Ficha del caso', en: 'Case file' }),
+  margen: L({ es: 'Nota al margen', en: 'Side note' }),
+  sim: L({ es: 'SIMULACIÓN', en: 'SIMULATION' }),
+  simulacion: L({ es: 'Simulación', en: 'Simulation' }),
+  agenda: L({ es: 'agenda', en: 'calendar' }),
+  casilla: L({ es: 'cada casilla encendida es una', en: 'each lit slot is a' }),
+  protocolo: L({ es: 'Conoce el protocolo completo', en: 'See the full protocol' }),
+  palabras: L({ es: 'En sus palabras', en: 'In their words' }),
+  explora: L({ es: 'Sigue explorando', en: 'Keep exploring' }),
+};
 
 // ── Qué secciones existen ─────────────────────────────────────────────────────
 // testimonio (y cualquier sección "conditional"): solo con aprobación escrita registrada en el copy.
@@ -76,15 +96,15 @@ const order: string[] = sitemapSecs.filter(shows).map((s) => s.id).filter((id) =
 const primaryLabel = (c: any): string => quoteLabel(c);
 // El mensaje de WhatsApp acepta los mismos tokens que el copy ({{metric:ID}}, |full, |prose): una cifra del mensaje sale de
 // metrics.ts, nunca escrita a mano (§0.1-2)
-const wa = (msg?: string) => (msg ? waHref(resolveTokens(msg)) : page.secondaryCta?.href ?? waHref('Hola Kain, quiero información.'));
+const wa = (msg?: string) => (msg ? waHref(resolveTokens(msg, lang)) : page.secondaryCta?.href ?? waHref(T.hola));
 /** Enlaces del cuerpo (R12 · QA enlaces): solo rutas construidas; una planeada se pinta como texto (nunca '#'). */
-const hrefOr = (h?: string) => (h ? linkTarget(h) ?? undefined : undefined);
+const hrefOr = (h?: string) => (h ? linkTarget(localHref(h, lang)) ?? undefined : undefined);
 const TOKEN = /\{\{metric:([a-z0-9-]+)(?:\|full)?\}\}/g;
 const metricIdsIn = (s: string): MetricId[] => [...String(s ?? '').matchAll(TOKEN)].map((m) => m[1] as MetricId);
 const H2 = (h: any) => h ?? { text: '' };
 // Duración de la Discovery ("30 minutos") en titulares: no es cifra comercial → data-allow-number (check-cifras, §8.6).
 const esc = (s: string) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
-const allowDur = (s: string) => esc(s).replace(/\b(\d+\s?(?:minutos|min))\b/g, '<span data-allow-number>$1</span>');
+const allowDur = (s: string) => esc(s).replace(/\b(\d+[\s-]?(?:minutos|minutes|minute|min))\b/g, '<span data-allow-number>$1</span>');
 
 // Panel de cristal de la placa (ancla con caja [x, y, w, h]) para registrar UI encima (§3.7). Respeta el espejo.
 const BOX_ANCHORS = ['pantalla', 'telefono', 'tableta', 'superficie'];
@@ -147,9 +167,9 @@ const ficha = C.ficha ?? {};
 const textRows = (ficha.entity ?? []).filter((r: any) => !/\{\{/.test(r.value) && (!breve || r.confirmed === true));
 const ctxMetric = h1.metricId && (METRICS as any)[h1.metricId] ? (METRICS as any)[h1.metricId] : null;
 const fichaRows = [
-  ...(breve && !textRows.length && ctxMetric?.ctx ? [{ term: 'Caso', value: ctxMetric.ctx }] : []),
+  ...(breve && !textRows.length && ctxMetric?.ctx ? [{ term: T.caso, value: ctxMetric.ctx }] : []),
   ...textRows.map((r: any) => ({ ...r, href: hrefOr(r.href) })),
-  ...(breve ? [{ term: 'Fuente de las cifras', value: SOURCE_NOTE }] : []),
+  ...(breve ? [{ term: T.fuente, value: SOURCE_NOTE }] : []),
 ];
 // Entradilla: en el caso breve, la versión breve del copy si existe (deckBreve); el texto lo valida el área copy
 const fichaDeck: string | null = (breve ? ficha.deckBreve ?? ficha.deck : ficha.deck) ?? null;
@@ -198,7 +218,16 @@ const testi = C.testimonio ?? {};
 
 // ── 10 Relacionados + Siguiente reportaje ────────────────────────────────────
 const rel = C.relacionados ?? {};
-const next = rel.next ?? null;
+// En inglés, el siguiente reportaje es el otro caso en inglés (los dos casos traducidos se enlazan entre sí) en lugar de
+// un caso en español; si no hay otro caso en inglés construido, no se anuncia.
+const next = (() => {
+  if (lang !== 'en') return rel.next ?? null;
+  const other = (enPages as any[]).find((p) => p.template === 'T-CASE' && p.url !== page.url && isBuilt(p.url));
+  if (!other) return null;
+  const oh = copyOrNull(other.id)?.sections?.hero?.h1 ?? {};
+  const title = [oh.kicker, oh.text].filter(Boolean).join(' ') || other.breadcrumbs?.at(-1)?.name || other.h1;
+  return { ...(rel.next ?? {}), href: other.url, title, metricId: oh.metricId && (METRICS as any)[oh.metricId] ? oh.metricId : undefined };
+})();
 let nextPlate: string | undefined;
 // Siguiente reportaje: solo si el caso siguiente ya existe (si no, no se anuncia una puerta cerrada)
 const nextHref = next?.href ? linkTarget(next.href) : null;
@@ -211,7 +240,7 @@ const cta = C['cta-final'] ?? {};
 const ctaPlate = plateOf('cta-final');
 
 // ── JSON-LD (Article de SEOHead + about → Service de la ficha; autor = Organization hasta confirmar, R8) ──
-const svcRow = (ficha.entity ?? []).find((r: any) => /^\/servicios\//.test(r.href ?? '') && (!breve || r.confirmed === true));
+const svcRow = (ficha.entity ?? []).find((r: any) => /^\/(?:servicios|en\/services)\//.test(r.href ?? '') && (!breve || r.confirmed === true));
 // about → Service del Article de SEOHead (nav · articleAbout): un solo nodo Article en el @graph
 const articleAbout = svcRow
   ? { '@type': 'Service', '@id': `${SITE.url}${svcRow.href}#service`, name: svcRow.value, url: `${SITE.url}${svcRow.href}` }
@@ -264,7 +293,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
           <span class="t-display-2 case-h1__text">{h1.text}</span>
         </h1>
         {hero.chips?.length > 0 && (
-          <ul class="case-specs tpl-mhide" role="list" aria-label="Datos del caso">
+          <ul class="case-specs tpl-mhide" role="list" aria-label={T.datos}>
             {hero.chips.map((c: string) => <li class="chip-spec">{c}</li>)}
           </ul>
         )}
@@ -275,7 +304,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
         )}
         {ledeM && <p class="t-lede t-lede--2 case-hero__lede tpl-dhide"><Copy text={ledeM} />{ledeMFig && <sup class="case-fn" aria-hidden="true">1</sup>}</p>}
         <HeroCtas label={primaryLabel(hero)} section="hero"
-          waHref={wa(hero.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} waLabel={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+          waHref={wa(hero.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} waLabel={hero.ctaSecondary?.label ?? T.wa} />
         {/* QA #63 · §0.1-2: toda cifra lleva su nota de fuente, también en la portada */}
         {h1.metricId && <p class="t-micro case-hero__src tpl-mhide"><sup class="case-fn" aria-hidden="true">1</sup> {SOURCE_NOTE}.</p>}
         {hero.illus && <p slot="aside" class="chip-illus case-illus tpl-mhide">{hero.illus}</p>}
@@ -285,7 +314,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
             {h1.metricId && <p class="t-micro case-hero__src case-hero__src--m tpl-dhide"><sup class="case-fn" aria-hidden="true">1</sup> {SOURCE_NOTE}.</p>}
             {hero.illus && <p class="chip-illus tpl-illus-m tpl-dhide" aria-hidden="true">{hero.illus}</p>}
             {hero.chips?.length > 0 && (
-              <ul class="case-specs case-specs--m tpl-dhide" role="list" aria-label="Datos del caso" tabindex="0">
+              <ul class="case-specs case-specs--m tpl-dhide" role="list" aria-label={T.datos} tabindex="0">
                 {hero.chips.map((c: string) => <li class="chip-spec">{c}</li>)}
               </ul>
             )}
@@ -301,7 +330,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
         <span class="tpl-aura-box" aria-hidden="true"><span class="case-aura case-aura--ficha"><img src={AURA_ISOTIPO} alt="" width="640" height="640" loading="lazy" decoding="async" /></span></span>
         <div class="frame case-ficha__frame">
           <div class="case-ficha__lead">
-            <h2 id="ficha-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ficha.eyebrow ?? 'Ficha del caso'}</h2>
+            <h2 id="ficha-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{ficha.eyebrow ?? T.ficha}</h2>
             {fichaDeck && <Copy as="p" class="t-standfirst case-ficha__deck" text={fichaDeck} data-reveal />}
             {(ficha.byline || ficha.note) && (
               <div class="case-byline" data-reveal>
@@ -328,7 +357,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
             <h2 id="punto-partida-t" class="t-h2" data-split>{H2(R.h2).text}{R.h2?.soft && <> <span class="soft">{R.h2.soft}</span></>}</h2>
           </header>
           {R.margin?.text && (
-            <aside class="case-reto__margin" aria-label="Nota al margen" data-reveal>
+            <aside class="case-reto__margin" aria-label={T.margen} data-reveal>
               <span class="node node--amber" aria-hidden="true"></span>
               <Copy as="p" text={R.margin.text} />
             </aside>
@@ -398,16 +427,16 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
         {res.sourceNote && <p class="t-micro case-res__src"><span class="node" aria-hidden="true"></span>{SOURCE_NOTE}.</p>}
         {ui && panel && (
           <p class="case-res__legend only-m" data-nosnippet>
-            <span class="chip-sim">SIMULACIÓN</span>
+            <span class="chip-sim">{T.sim}</span>
             <span>{ui.title}{ui.slot && <> · <i class="case-agenda__dot" aria-hidden="true"></i>{ui.slot}</>}</span>
           </p>
         )}
         {ui && panel && (
           <div slot="anchors" class="anchor anchor--panel case-agenda" style={panel.style} data-anchor={panel.name} data-lock
             data-m={panel.mobile ? undefined : 'none'} data-nosnippet role="img"
-            aria-label={`Simulación: ${ui.title ?? 'agenda'}${ui.slot ? `; cada casilla encendida es una ${ui.slot.toLowerCase()}` : ''}.`}>
+            aria-label={`${T.simulacion}: ${ui.title ?? T.agenda}${ui.slot ? `; ${T.casilla} ${ui.slot.toLowerCase()}` : ''}.`}>
             <div class="ui case-agenda__ui" aria-hidden="true">
-              <p class="case-agenda__top"><span class="chip-sim">SIMULACIÓN</span><span class="case-agenda__t">{ui.title}</span></p>
+              <p class="case-agenda__top"><span class="chip-sim">{T.sim}</span><span class="case-agenda__t">{ui.title}</span></p>
               <ol class="case-agenda__days" role="list">
                 {agenda.map((row: any) => (
                   <li class="case-agenda__day">
@@ -441,7 +470,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
               milestones={vkMilestones ?? undefined}
               lines={(vk.phases ?? []).map((p: any) => p.line)}
               href={hrefOr(vkLink?.href ?? '/metodologia/') ?? false}
-              linkLabel={vkLink?.label ?? 'Conoce el protocolo completo'}
+              linkLabel={vkLink?.label ?? T.protocolo}
             />
           </div>
         </div>
@@ -472,7 +501,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
       <section id="testimonio" class="tpl-glow case-sec case-testi" aria-labelledby="testimonio-t">
         <div class="frame">
           <header class="case-head">
-            <h2 id="testimonio-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{testi.eyebrow ?? 'En sus palabras'}</h2>
+            <h2 id="testimonio-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{testi.eyebrow ?? T.palabras}</h2>
           </header>
           <div class="case-testi__q">
             <Quote source={testi.nombre} role={[testi.cargo, testi.empresa].filter(Boolean).join(', ')}>{testi.frase}</Quote>
@@ -487,11 +516,11 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
         <Aura kind="ondas" x="50%" y="60%" o={1} only="m" />
         <div class="frame">
           <header class="case-head">
-            <h2 id="relacionados-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{rel.eyebrow ?? 'Sigue explorando'}</h2>
+            <h2 id="relacionados-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{rel.eyebrow ?? T.explora}</h2>
           </header>
           {rel.items?.length > 0 && (
             <div class="case-rel__list">
-              <ScriptList rows={rel.items.map((r: any) => ({ title: r.title, line: r.line, href: hrefOr(r.href) }))} label={rel.eyebrow ?? 'Sigue explorando'} />
+              <ScriptList rows={rel.items.map((r: any) => ({ title: r.title, line: r.line, href: hrefOr(r.href) }))} label={rel.eyebrow ?? T.explora} />
             </div>
           )}
         </div>
@@ -521,7 +550,7 @@ const rail = order.filter((id) => !NOT_IN_RAIL.includes(id))
         {cta.lede && <Copy as="p" class="t-lede t-lede--2" text={cta.lede} />}
         <div class="ctas">
           <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(cta)} micro />
-          <Btn variant="ghost" href={wa(cta.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} label={cta.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+          <Btn variant="ghost" href={wa(cta.ctaSecondary?.waMessage ?? page.secondaryCta?.waMessage)} label={cta.ctaSecondary?.label ?? T.wa} />
         </div>
       </Dawn>
     );

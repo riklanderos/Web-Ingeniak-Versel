@@ -1,0 +1,26 @@
+{
+  "title": "Privacy Policy under Mexican Data Protection Law | Ingeniak",
+  "metaDescription": "Ingeniak's Privacy Policy under Mexico's Federal Law on the Protection of Personal Data Held by Private Parties (LFPDPPP).",
+  "h1": "Privacy Policy",
+  "primaryKeyword": "Ingeniak privacy policy",
+  "secondaryKeywords": [],
+  "breadcrumbs": [
+    { "name": "Home", "url": "/en/" },
+    { "name": "Privacy Policy", "url": "/en/privacy/" }
+  ],
+  "sections": [
+    { "id": "encabezado", "name": "Header" },
+    { "id": "indice", "name": "Contents" },
+    { "id": "texto", "name": "Legal text" }
+  ],
+  "primaryCta": {
+    "label": "Get a quote",
+    "href": "/en/contact/#cotizar",
+    "action": "cotizar"
+  },
+  "secondaryCta": {
+    "label": "Message Kain",
+    "waMessage": "Hi, I'm coming from the English site and have a question about Ingeniak's privacy policy."
+  },
+  "faq": []
+}

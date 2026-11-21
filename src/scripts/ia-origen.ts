@@ -36,8 +36,13 @@ export function conOrigenIA(href: string): string {
   try { u = new URL(href); } catch { return href; }
   if (u.hostname !== 'wa.me') return href;
   const texto = u.searchParams.get('text') ?? '';
-  if (texto.toLowerCase().includes(`te encontré en ${ia.toLowerCase()}`)) return href;
-  const nuevo = texto.trim() ? `${texto}\n\nTe encontré en ${ia}.` : `Hola, te encontré en ${ia}.`;
+  // Versión en inglés (/en/, 2026-11-20): en las páginas en inglés la línea va en inglés.
+  const en = typeof document !== 'undefined' && document.documentElement.lang.toLowerCase().startsWith('en');
+  const low = texto.toLowerCase();
+  if (low.includes(`te encontré en ${ia.toLowerCase()}`) || low.includes(`i found you on ${ia.toLowerCase()}`)) return href;
+  const nuevo = en
+    ? (texto.trim() ? `${texto}\n\nI found you on ${ia}.` : `Hi, I found you on ${ia}.`)
+    : (texto.trim() ? `${texto}\n\nTe encontré en ${ia}.` : `Hola, te encontré en ${ia}.`);
   u.searchParams.delete('text');
   // encodeURIComponent (espacios como %20): con el "+" de URLSearchParams algunos WhatsApp muestran los signos.
   const resto = u.searchParams.toString();

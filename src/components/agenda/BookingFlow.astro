@@ -16,9 +16,13 @@ import '../../styles/forms.css';
 import '../../styles/agenda.css';
 import Icon from '../ui/Icon.astro';
 import PhoneField from '../forms/PhoneField.astro';
-import { T, POWER_PRICE, HOLD_SHOWN } from './textos';
+import { textos, POWER_PRICE, HOLD_SHOWN } from './textos';
+import { currentLang } from '../../lib/i18n';
 import { waHref as waLink } from '../../lib/site';
-import { INDUSTRIES, TEAM_SIZES, REVENUES, TIME_DRAINS, SESSION_RULES, CONTACT, type SessionType } from '../../../shared/agenda.js';
+import { INDUSTRIES, TEAM_SIZES, REVENUES, TIME_DRAINS, SESSION_RULES, CONTACT, optionLabel, type SessionType } from '../../../shared/agenda.js';
+const lang = currentLang();
+const T = textos(lang);
+const opt = (v: string) => optionLabel(v, lang);
 
 interface Props { tipo: SessionType; waHref?: string; waDoneHref?: string; waMoverHref?: string; headingLevel?: 2 | 3; id?: string; class?: string }
 const { tipo, waHref = CONTACT.wa, waDoneHref = waLink(T.done.waMensaje), waMoverHref, headingLevel = 3, id: idProp, class: cls } = Astro.props;
@@ -108,7 +112,7 @@ const goal = T.campos.goal[tipo];
               <label class="fld__label" for={f('industry')}>{T.campos.industry.label}</label>
               <select class="fld__select" id={f('industry')} name="industry" required>
                 <option value="" disabled selected>{T.campos.industry.placeholder}</option>
-                {INDUSTRIES.map((o) => <option value={o}>{o}</option>)}
+                {INDUSTRIES.map((o) => <option value={o}>{opt(o)}</option>)}
               </select>
               <p class="fld__error" id={f('industry-error')} hidden></p>
             </div>
@@ -116,7 +120,7 @@ const goal = T.campos.goal[tipo];
               <label class="fld__label" for={f('teamSize')}>{T.campos.teamSize.label}</label>
               <select class="fld__select" id={f('teamSize')} name="teamSize" required>
                 <option value="" disabled selected>{T.campos.teamSize.placeholder}</option>
-                {TEAM_SIZES.map((o) => <option value={o}>{o}</option>)}
+                {TEAM_SIZES.map((o) => <option value={o}>{opt(o)}</option>)}
               </select>
               <p class="fld__error" id={f('teamSize-error')} hidden></p>
             </div>
@@ -124,7 +128,7 @@ const goal = T.campos.goal[tipo];
               <label class="fld__label" for={f('revenue')}>{T.campos.revenue.label}</label>
               <select class="fld__select" id={f('revenue')} name="revenue" required>
                 <option value="" disabled selected>{T.campos.revenue.placeholder}</option>
-                {REVENUES.map((o) => <option value={o}>{o}</option>)}
+                {REVENUES.map((o) => <option value={o}>{opt(o)}</option>)}
               </select>
               <p class="fld__error" id={f('revenue-error')} hidden></p>
             </div>
@@ -140,7 +144,7 @@ const goal = T.campos.goal[tipo];
                 <div class="bk__chips" data-bk-drains>
                   {TIME_DRAINS.map((d) => (
                     <button type="button" class="bk__chip" aria-pressed="false" data-drain={d}>
-                      <span class="bk__chip-dot" aria-hidden="true"></span><span class="bk__chip-t">{d}</span>
+                      <span class="bk__chip-dot" aria-hidden="true"></span><span class="bk__chip-t">{opt(d)}</span>
                       <Icon name="check" size={14} class="bk__chip-check" />
                     </button>
                   ))}
@@ -170,7 +174,7 @@ const goal = T.campos.goal[tipo];
         </div>
 
         <div class="bk__foot bk__foot--1">
-          <p class="bk__priv t-small">{T.s1.privacidad} <a href="/aviso-privacidad/" target="_blank" rel="noopener">{T.s1.aviso}</a></p>
+          <p class="bk__priv t-small">{T.s1.privacidad} <a href={lang === 'en' ? '/en/privacy/' : '/aviso-privacidad/'} target="_blank" rel="noopener">{T.s1.aviso}</a></p>
           <button type="submit" class="btn bk__next" data-primary>
             <span class="btn__t">{T.s1.boton}</span>
             <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16" set:html={node} /></span>

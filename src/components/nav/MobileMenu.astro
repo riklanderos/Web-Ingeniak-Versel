@@ -11,6 +11,10 @@ import { METRICS } from '../../lib/metrics';
 import { MEGA, STAGES, metricFor, type NavLink } from '../layout/navData';
 import { SITE } from '../../lib/site';
 import { QUOTE, quoteAttrs, quoteHref, isHiddenHref } from '../layout/cta';
+import { currentLang, L, twinOf, HTML_LANG } from '../../lib/i18n';
+// Versión en inglés (/en/, 2026-11-20): sin buscador ni acordeones (listan páginas en español); lista corta de las
+// páginas traducidas y el enlace a la versión en español.
+const en = currentLang() === 'en';
 
 interface Props { waHref?: string; current?: string }
 const { waHref = SITE.waBase, current = '' } = Astro.props;
@@ -23,17 +27,43 @@ const groups = [
 ];
 const svcFoot = (MEGA.servicios?.footerLinks ?? []).filter((l: any) => !l.priceFrom && !isHiddenHref(l.href));
 const cur = (h: string) => (h === current ? 'page' : undefined);
+const enLinks = [
+  { href: '/en/', label: 'Home' },
+  { href: '/en/services/', label: 'Services' },
+  { href: '/en/case-studies/multi-brand-retail-kommo/', label: 'Case study · Multi-brand retail' },
+  { href: '/en/case-studies/logistics-n8n/', label: 'Case study · Logistics' },
+  { href: '/en/contact/', label: 'Contact' },
+];
+const esHref = en ? twinOf(current) ?? '/' : null;
 ---
-<dialog class="msheet" id="msheet" aria-label="Menú principal" data-msheet>
+<dialog class="msheet" id="msheet" aria-label={L({ es: 'Menú principal', en: 'Main menu' })} data-msheet>
   <div class="msheet__panel glass-panel">
     <div class="msheet__top">
       <Logo class="msheet__logo" />
       <button class="msheet__close" type="button" data-menu-close autofocus>
-        <span>Cerrar</span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.close} />
+        <span>{L({ es: 'Cerrar', en: 'Close' })}</span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.close} />
       </button>
     </div>
 
     <div class="msheet__scroll" data-lenis-prevent>
+      {en ? (
+      <ul class="msheet__groups" role="list">
+        {enLinks.map((l, i) => (
+          <li class="msheet__kain" style={`--i:${i}`}>
+            <a class="msheet__kain-a" href={l.href} aria-current={cur(l.href)}>
+              <span class="msheet__kain-t">{l.label}</span>
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} />
+            </a>
+          </li>
+        ))}
+        <li class="msheet__kain" style={`--i:${enLinks.length}`}>
+          <a class="msheet__kain-a" href={esHref} hreflang={HTML_LANG.es} lang={HTML_LANG.es}>
+            <span class="msheet__kain-t">Versión en español</span>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.arrow} />
+          </a>
+        </li>
+      </ul>
+      ) : (<>
       <button class="msheet__search" type="button" data-search-open style="--i:0">
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.search} />
         <span>Busca o pregúntale a Kain</span>
@@ -113,6 +143,7 @@ const cur = (h: string) => (h === current ? 'page' : undefined);
           </a>
         </li>
       </ul>
+      </>)}
     </div>
 
     <div class="msheet__foot">
@@ -123,7 +154,7 @@ const cur = (h: string) => (h === current ? 'page' : undefined);
         <p class="t-micro btn-micro">{QUOTE.micro}</p>
       </div>
       <a class="btn btn--ghost msheet__wa" href={waHref} target="_blank" rel="noopener">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} />Escríbele a Kain
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} />{L({ es: 'Escríbele a Kain', en: 'Message Kain' })}
       </a>
     </div>
   </div>

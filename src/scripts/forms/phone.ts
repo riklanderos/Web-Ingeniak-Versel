@@ -6,7 +6,12 @@
 //   · longitud dentro de paises[].digitos ([mín] o [mín, máx]); E.164 total ≤ 15 dígitos
 // Salida: { pais, lada, numero (nacional, solo dígitos), e164 ('+523312345678' o ''), ok, error: 'telefono'|'telefonoLada'|null }
 // phoneHelp(iso) y phoneMessage(r): ayuda y error del número con las mismas palabras, según el país elegido.
-import catalogo from '../../data/cotizar.json';
+import catalogoEs from '../../data/cotizar.json';
+import catalogoEn from '../../data/cotizar-en.json';
+import { runtimeLang } from '../../lib/i18n';
+// Versión en inglés (/en/, 2026-11-20): ayuda y errores de cotizar-en.json según el idioma de la página.
+const catalogo: typeof catalogoEs = catalogoEs;
+const cat = () => (runtimeLang() === 'en' ? (catalogoEn as typeof catalogoEs) : catalogoEs);
 
 export type Pais = { iso: string; lada: string | null; label: string; digitos: number[] };
 export type PhoneInput = { pais: string; lada?: string | null; numero: string };
@@ -65,8 +70,8 @@ export function readPhone(root: HTMLElement): PhoneResult {
 /* Ayuda y error del número con LAS MISMAS PALABRAS (cotizar.json → textos.telefonoAyuda y errores.telefono*):
    qué escribir exactamente para el país elegido ("10 dígitos … sin el +52"). errores.telefono es el texto de México y el
    que devuelve el servidor (no lleva plantilla); los demás países usan errores.telefonoPais con sus dígitos y su lada. */
-const AYUDA = (catalogo.textos as any).telefonoAyuda as { mx: string; pais: string; otro: string };
-const ERRS = catalogo.errores as Record<string, string>;
+const AYUDA_ = () => (cat().textos as any).telefonoAyuda as { mx: string; pais: string; otro: string };
+const ERRS_ = () => cat().errores as Record<string, string>;
 const fill = (s: string, v: Record<string, string>) => s.replace(/\{(\w+)\}/g, (_, k) => v[k] ?? '');
 /** [10] → "10" · [10, 11] → "10 u 11" · [6, 14] → "6 a 14". */
 function digitosTxt([min, max = min]: number[]): string {
@@ -77,17 +82,17 @@ function digitosTxt([min, max = min]: number[]): string {
 /** Texto de ayuda del número para el país elegido. */
 export function phoneHelp(iso: string, paises: Pais[] = PAISES): string {
   const p = paises.find((x) => x.iso === String(iso).toLowerCase());
-  if (!p || p.iso === 'mx') return AYUDA.mx;
-  if (!p.lada) return AYUDA.otro;
-  return fill(AYUDA.pais, { digitos: digitosTxt(p.digitos), lada: p.lada });
+  if (!p || p.iso === 'mx') return AYUDA_().mx;
+  if (!p.lada) return AYUDA_().otro;
+  return fill(AYUDA_().pais, { digitos: digitosTxt(p.digitos), lada: p.lada });
 }
 /** Mensaje de error del teléfono (mismas palabras que la ayuda) para un resultado de normalizePhone. */
 export function phoneMessage(r: Pick<PhoneResult, 'pais' | 'error'>, paises: Pais[] = PAISES): string {
-  if (r.error === 'telefonoLada') return ERRS.telefonoLada;
+  if (r.error === 'telefonoLada') return ERRS_().telefonoLada;
   const p = paises.find((x) => x.iso === r.pais);
-  if (!p || p.iso === 'mx') return ERRS.telefono;
-  if (!p.lada) return ERRS.telefonoOtro ?? ERRS.telefono;
-  return ERRS.telefonoPais ? fill(ERRS.telefonoPais, { digitos: digitosTxt(p.digitos), lada: p.lada }) : ERRS.telefono;
+  if (!p || p.iso === 'mx') return ERRS_().telefono;
+  if (!p.lada) return ERRS_().telefonoOtro ?? ERRS_().telefono;
+  return ERRS_().telefonoPais ? fill(ERRS_().telefonoPais, { digitos: digitosTxt(p.digitos), lada: p.lada }) : ERRS_().telefono;
 }
 
 /** Muestra la lada escrita solo con "Otro país" y, si el campo usa la ayuda por país ([data-phone-help]), la ajusta.

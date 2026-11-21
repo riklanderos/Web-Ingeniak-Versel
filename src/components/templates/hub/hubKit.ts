@@ -4,11 +4,14 @@
 import { getPlate } from '../../../lib/site';
 import { plateReady, type Fallback, type Resolved } from '../../cine/plate';
 import { annotateFigures, esc } from '../../ui/ui-data';
+import { currentLang } from '../../../lib/i18n';
 
 /* ── Titulares ─────────────────────────────────────────────────────────────────────────────────────────────── */
 /** Espacio duro después de palabras de 1–2 letras: ninguna línea del titular termina en "a", "de", "tu"… (igual que
  *  ServiceTemplate). Solo toca texto fuera de los nodos con cifras o importes ([data-metric], [data-allow-number]). */
 const NBSP_RX = /(?<=^|[\s (¿¡])(a|al|de|el|en|la|lo|un|tu|su|mi|y|o|e|u|es|se|te|no|ni)\s+/gi;
+/** Lo mismo en inglés (versión /en/, 2026-11-20): artículos y preposiciones cortas. */
+const NBSP_RX_EN = /(?<=^|[\s (])(a|an|at|by|in|of|on|or|to|we|is|it|my|no|so|up)\s+/gi;
 function keepShort(html: string) {
   let depth = 0;
   return html.replace(/(<[^>]+>)|([^<]+)/g, (_m: string, tag?: string, txt?: string) => {
@@ -17,7 +20,7 @@ function keepShort(html: string) {
       if (/\sdata-(allow-number|metric)\b/.test(tag) && !/\/>$/.test(tag)) depth = 1;
       return tag;
     }
-    return depth > 0 ? txt! : txt!.replace(NBSP_RX, (_x: string, w: string) => `${w} `);
+    return depth > 0 ? txt! : txt!.replace(currentLang() === 'en' ? NBSP_RX_EN : NBSP_RX, (_x: string, w: string) => `${w} `);
   });
 }
 /** Envuelve la ÚLTIMA aparición de `lit` en una voz (texto ya anotado). */
@@ -93,4 +96,5 @@ export const showsPerson = (r: Resolved | null | undefined) => !!r?.id && !!r.al
 
 /** Número en letra (uno…doce) para conteos que no son cifras comerciales ("cuatro servicios"). */
 const WORDS = ['cero', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce'];
-export const inWords = (n: number) => WORDS[n] ?? String(n);
+const WORDS_EN = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+export const inWords = (n: number) => (currentLang() === 'en' ? WORDS_EN : WORDS)[n] ?? String(n);

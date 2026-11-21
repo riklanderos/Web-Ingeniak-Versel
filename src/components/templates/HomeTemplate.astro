@@ -39,6 +39,7 @@ import { heroPlateOf } from '../layout/navData';
 import { primaryLabel, quoteLink } from '../layout/cta';
 import { section, getPlate, waHref, SITE, linkTarget, isBuilt, type Page } from '../../lib/site';
 import { METRICS, type MetricId } from '../../lib/metrics';
+import { L } from '../../lib/i18n';
 
 interface Props {
   page: Page;
@@ -136,7 +137,7 @@ const stationUi = stations.map((st: any) => {
   const anchor = def.anchors.find((n) => r.anchors[n]?.box?.d);
   return anchor ? { ...def, anchor, id: st.id, lead: st.leadCard, mobile: !!r.anchors[anchor]?.box?.m } : null;
 });
-const KANBAN = ['Nuevo', 'Calificado', 'Cita agendada', 'Ganado'];
+const KANBAN = L({ es: ['Nuevo', 'Calificado', 'Cita agendada', 'Ganado'], en: ['New', 'Qualified', 'Appointment booked', 'Won'] });
 const SU: Record<string, any> = Object.fromEntries(stationUi.filter(Boolean).map((u: any) => [u.id, u]));
 
 /* ── 06 · Kain (push hacia el teléfono, ChatSim registrado) ───────────────── */
@@ -193,7 +194,7 @@ const sectors = (ind.sectors ?? []).map((s: any, i: number) => ({
   bubbles: s.bubbles,
   plate: indPlates.find((p) => p === `ind-${s.slug}-hero`) ?? indPlates[i] ?? `ind-${s.slug}-hero`,
 }));
-const indLabel = (ind.hud?.[0]?.text ?? '').replace(/\s*\d+\s*\/\s*\d+\s*$/, '') || 'Locación';
+const indLabel = (ind.hud?.[0]?.text ?? '').replace(/\s*\d+\s*\/\s*\d+\s*$/, '') || L({ es: 'Locación', en: 'Location' });
 // R13: 09 (VKTOR, Kain presenta sobre su escalón) y 10 son escenas seguidas → la locación arranca en un sector cuya
 // placa tenga otra pose. LocationSwitcher siempre abre en la primera fila (pedido `start` a cine): ese sector sube al
 // frente. Poses de las portadas de sector (lista de aceptación §9.4 · pedido `pose` en plates.json a imágenes).
@@ -219,7 +220,7 @@ const faqFooter = (() => {
   const t = faq.footer as string | undefined;
   if (!t) return '';
   let h = esc(t);
-  h = h.replace(/Escríbele a Kain por WhatsApp/, (m) => `<a class="lnk hm-faq__wa" href="${esc(wa(S('hero').ctaSecondary?.waMessage))}" data-wa>${m}</a>`);
+  h = h.replace(/Escríbele a Kain por WhatsApp|Message Kain on WhatsApp/, (m) => `<a class="lnk hm-faq__wa" href="${esc(wa(S('hero').ctaSecondary?.waMessage))}" data-wa>${m}</a>`);
   h = h.replace(SITE.email, (m) => `<a class="lnk" href="mailto:${m}">${m}</a>`);
   return h;
 })();
@@ -230,6 +231,15 @@ const finPlate = plateOf('cta-final');
 
 // Riel en 3 actos (I · La noche 01–03 · II · El sistema 04–09 · III · El amanecer 10–13).
 const railGroups = [3, 6, 4];
+// Textos escritos en código (versión en inglés, 2026-11-20).
+const T = {
+  wa: L({ es: 'Escríbele a Kain', en: 'Message Kain' }),
+  fig1: L({ es: 'Fig. 01 · Kain', en: 'Fig. 01 · Kain' }),
+  stack: L({ es: 'Con qué construimos', en: 'What we build with' }),
+  pains: L({ es: 'Dolores y su salida con el sistema', en: 'Pain points and how the system solves them' }),
+  servicios: L({ es: 'Servicios de Ingeniak', en: 'Ingeniak services' }),
+  phases: L({ es: 'Las cinco fases de VKTOR™', en: 'The five phases of VKTOR™' }),
+};
 ---
 <BaseLayout page={page} coldOpen lcpPlate={lcpPlate} lcpSrcsetMax={heroPlate.srcsetMax ?? 2752} railGroups={railGroups} bodyClass="hm">
 
@@ -253,16 +263,16 @@ const railGroups = [3, 6, 4];
     {hero.eyebrow && <p class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span><Fragment set:html={annotateFigures(hero.eyebrow)} /></p>}
     <h1 id="hero-t" data-split><span class="t-display" set:html={voice(hero.h1?.text, hero.h1?.lit)} />{hero.h1?.soft && <> <span class="t-deck" set:html={annotateFigures(hero.h1.soft)} /></>}</h1>
     <HeroCtas label={primaryLabel(hero)} section="hero"
-      waHref={wa(hero.ctaSecondary?.waMessage)} waLabel={hero.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+      waHref={wa(hero.ctaSecondary?.waMessage)} waLabel={hero.ctaSecondary?.label ?? T.wa} />
     {hero.agendaLink && <AgendaLink link={hero.agendaLink} section="hero" />}
     <LightBranch from="mano" />
-    {hero.fig && <FigCaption slot="anchors" n={1} title={(hero.fig.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '')} anchor="fig" target="mano"><Copy text={hero.fig.text} /></FigCaption>}
+    {hero.fig && <FigCaption slot="anchors" n={1} title={(hero.fig.label ?? T.fig1).replace(/^Fig\.\s*\d+\s*·\s*/, '')} anchor="fig" target="mano"><Copy text={hero.fig.text} /></FigCaption>}
     {/* R3: la línea de confianza y el Fig. 01 en línea (§5.1.1: el Fig. 01 se queda en la portada) van después de la placa en móvil;
         en escritorio `more` es la misma columna de texto, justo bajo los CTA */}
     {(hero.trust || hero.fig) && (
       <Fragment slot="more">
         {hero.trust && <Copy as="p" class="t-label trust" text={hero.trust} />}
-        {hero.fig && <FigCaption variant="inline" n={1} title={(hero.fig.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '')}><Copy text={hero.fig.text} /></FigCaption>}
+        {hero.fig && <FigCaption variant="inline" n={1} title={(hero.fig.label ?? T.fig1).replace(/^Fig\.\s*\d+\s*·\s*/, '')}><Copy text={hero.fig.text} /></FigCaption>}
       </Fragment>
     )}
   </ImageSection>
@@ -274,7 +284,7 @@ const railGroups = [3, 6, 4];
       <div class="frame hm-stack__frame">
         {sumarioIds.length === 3 && <SumarioCover ids={sumarioIds} variant="row" class="hm-stack__sumario" />}
         <div class="hm-stack__head">
-          <h2 id="stack-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{S('stack').eyebrow ?? 'Con qué construimos'}</h2>
+          <h2 id="stack-t" class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{S('stack').eyebrow ?? T.stack}</h2>
           {S('stack').lede && <Copy as="p" class="hm-stack__lede" text={S('stack').lede} />}
           <PartnerBadges size="sm" class="hm-stack__partners" />
         </div>
@@ -294,7 +304,7 @@ const railGroups = [3, 6, 4];
       {prob.eyebrow && <p class="t-label eyebrow"><span class="node node--amber" aria-hidden="true"></span><Fragment set:html={annotateFigures(prob.eyebrow)} /></p>}
       <h2 id="problema-t" class="t-h2" data-split set:html={headline(prob.h2)} />
       {/* Escena fijada: todo debe caber en una pantalla (1280 × 720). El lede del copy no entra en el plano; los dolores sí. */}
-      <PainList mode="twin" items={(prob.items ?? []).map((it: any) => ({ pain: it.pain, fix: it.fix }))} label="Dolores y su salida con el sistema" />
+      <PainList mode="twin" items={(prob.items ?? []).map((it: any) => ({ pain: it.pain, fix: it.fix }))} label={T.pains} />
       {prob.remate && <p slot="end" class="t-deck hm-remate" set:html={remateHTML(prob.remate)} />}
     </TwinScene>
   )}
@@ -392,7 +402,7 @@ const railGroups = [3, 6, 4];
         {chatTabs.length <= 1 && kain.limite && <Copy as="p" class="t-micro hm-kain__limit" text={kain.limite} />}
         {kain.slogan && <p class="t-deck hm-kain__slogan" set:html={sloganHTML(kain.slogan)} />}
         <div class="ctas hm-kain__ctas">
-          <Btn variant="ghost" href={wa(kain.ctaSecondary?.waMessage)} label={kain.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+          <Btn variant="ghost" href={wa(kain.ctaSecondary?.waMessage)} label={kain.ctaSecondary?.label ?? T.wa} />
           {built(kain.links).map((l: any) => l.external
             ? <a class="lnk" href={l.href} {...l.attrs} target="_blank" rel="noopener">{l.label} <span aria-hidden="true">↗</span></a>
             : <a class="lnk" href={l.href} {...l.attrs} set:html={`${esc(l.label).replace(/\bKain\b/, '<span class="kain-mark">kain</span>')} <span aria-hidden="true">→</span>`} />)}
@@ -426,7 +436,7 @@ const railGroups = [3, 6, 4];
       </Fragment>
       <Aura kind="isotipo" x="8%" y="2%" o={0.9} only="d" clip />
       <Aura kind="ondas" x="60%" o={1} only="m" sticky />
-      <ScriptList groups={servGroups} followStill label="Servicios de Ingeniak" />
+      <ScriptList groups={servGroups} followStill label={T.servicios} />
     </Intertitle>
   )}
 
@@ -463,7 +473,7 @@ const railGroups = [3, 6, 4];
       {vk.lede && <Copy as="p" class="t-lede t-lede--2" text={vk.lede} />}
       {/* Móvil: las cinco fases en el texto (en la placa vertical solo caben las letras sobre los escalones). */}
       {(vk.phases ?? []).length > 0 && (
-        <ol class="hm-vktor__phases only-m" role="list" aria-label="Las cinco fases de VKTOR™">
+        <ol class="hm-vktor__phases only-m" role="list" aria-label={T.phases}>
           {(vk.phases as any[]).map((ph) => (
             <li><b class="hm-vktor__l" aria-hidden="true">{ph.letter}</b><span class="hm-vktor__v"><span class="sr-only">{ph.name}: </span>{ph.verb}</span></li>
           ))}
@@ -474,7 +484,7 @@ const railGroups = [3, 6, 4];
       )}
       <Fragment slot="anchors">
         {(vk.phases ?? []).length > 0 && (
-          <ol class="hm-steps" role="list" aria-label="Las cinco fases de VKTOR™">
+          <ol class="hm-steps" role="list" aria-label={T.phases}>
             {(vk.phases as any[]).map((ph, i) => (
               <li class:list={['anchor hm-step', i === 4 && 'hm-step--r']} data-anchor={`escalon-${i + 1}`} data-lock style={anchorStyle(`escalon-${i + 1}`, `--i:${i}`)}>
                 <span class="hm-step__k"><b aria-hidden="true">{ph.letter}</b><span class="hm-step__t"><span class="sr-only">{ph.name}: </span>{ph.verb}</span></span>
@@ -543,7 +553,7 @@ const railGroups = [3, 6, 4];
       {fin.lede && <Copy as="p" class="t-lede t-lede--2" text={fin.lede} />}
       <div class="ctas">
         <Btn variant="primary" cotizar data-section="cta-final" label={primaryLabel(fin)} micro />
-        <Btn variant="ghost" href={wa(fin.ctaSecondary?.waMessage)} label={fin.ctaSecondary?.label ?? 'Escríbele a Kain'} />
+        <Btn variant="ghost" href={wa(fin.ctaSecondary?.waMessage)} label={fin.ctaSecondary?.label ?? T.wa} />
       </div>
       {fin.agendaLink && <AgendaLink link={fin.agendaLink} section="cta-final" />}
     </Dawn>

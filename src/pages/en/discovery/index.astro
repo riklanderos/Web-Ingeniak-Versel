@@ -1,0 +1,7 @@
+---
+// /en/discovery/ · versión en inglés de la landing de la Discovery Session (2026-11-20). Texto: src/content/paginas/en-discovery.json.
+import ConversionTemplate from '../../../components/templates/ConversionTemplate.astro';
+import { landingPage } from '../../../scripts/landing/pagina';
+const page = landingPage('/en/discovery/');
+---
+<ConversionTemplate page={page} tipo="discovery" vsl={{ src: '/video/discovery-vsl-720.mp4', fallbackPoster: '/img/discovery-vsl-poster.webp' }} />

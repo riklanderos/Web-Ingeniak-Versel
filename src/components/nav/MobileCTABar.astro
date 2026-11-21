@@ -12,6 +12,7 @@
 import { ICONS } from './icons';
 import { SITE } from '../../lib/site';
 import { QUOTE, quoteAttrs, quoteHref } from '../layout/cta';
+import { L } from '../../lib/i18n';
 interface Props { waHref?: string; label?: string; href?: string; cotizar?: boolean; mode?: 'public' | 'agenda'; current?: string }
 const { waHref = SITE.waBase, mode = 'public', cotizar = mode !== 'agenda', current } = Astro.props;
 const label = Astro.props.label ?? QUOTE.label;
@@ -22,7 +23,7 @@ const attrs = cotizar ? quoteAttrs('barra') : { 'data-section': 'barra' };
   <a class="btn mbar__cta" href={href} {...attrs}><span class="mbar__l">{label}</span>
     <span class="btn__node" aria-hidden="true"><svg viewBox="0 0 16 16"><rect class="n" x="5" y="5" width="6" height="6" rx="1" /><path class="r" d="M8 8h6M11 5l3 3-3 3" /></svg></span>
   </a>
-  <a class="mbar__wa" href={waHref} target="_blank" rel="noopener" aria-label="Escríbele a Kain por WhatsApp" data-wa>
+  <a class="mbar__wa" href={waHref} target="_blank" rel="noopener" aria-label={L({ es: 'Escríbele a Kain por WhatsApp', en: 'Message Kain on WhatsApp' })} data-wa>
     <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} /><span class="mbar__wa-t" aria-hidden="true">WhatsApp</span>
   </a>
 </div>

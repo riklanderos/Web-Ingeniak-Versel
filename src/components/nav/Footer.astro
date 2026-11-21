@@ -19,6 +19,21 @@ import { ISOTIPO_PATH, ISOTIPO_VIEWBOX } from './brand';
 import { ICONS } from './icons';
 import Logo from './Logo.astro';
 import { QUOTE, quoteAttrs, quoteHref, isHiddenHref } from '../layout/cta';
+import { currentLang, L, twinOf, HTML_LANG } from '../../lib/i18n';
+import { priceText } from '../../lib/metrics';
+import { COMUN } from '../ui/ui-data';
+
+// Versión en inglés (/en/, 2026-11-20): el mapa lista solo las páginas traducidas; textos y enlaces legales en inglés.
+// Enlace de idioma en la franja legal: a la gemela de la página si está traducida; si no, a la portada del otro idioma.
+const lang = currentLang();
+const en = lang === 'en';
+const EN_COLS = [
+  { title: 'Ingeniak', links: [{ href: '/en/', label: 'Home' }, { href: '/en/services/', label: 'Services' }, { href: '/en/contact/', label: 'Contact' }] },
+  { title: 'Case studies', links: [
+    { href: '/en/case-studies/multi-brand-retail-kommo/', label: 'Multi-brand retail · Kommo' },
+    { href: '/en/case-studies/logistics-n8n/', label: 'Logistics · n8n' },
+  ] },
+];
 
 // Franja de partners (Kommo, GoHighLevel, Google y Meta): si el área ui ya publicó PartnerBadges, se usa; si no, el
 // sello oficial de Kommo en imagen como respaldo.
@@ -26,12 +41,19 @@ const badgeMods = import.meta.glob('../ui/PartnerBadges.astro', { eager: true })
 const PartnerBadges = Object.values(badgeMods)[0]?.default;
 
 const indexable = new Set(pages.filter((p) => p.indexable && !isHiddenHref(p.url)).map((p) => p.url));
-const cols = FOOTER.columns.map((c) => ({
+const colsEs = FOOTER.columns.map((c) => ({
   title: c.title,
   links: c.links
     .filter((u) => /^https?:/.test(u) || indexable.has(u))
     .map((u) => ({ href: u, label: shortName(u), ext: /^https?:/.test(u) })),
 }));
+const cols = en ? EN_COLS.map((c) => ({ ...c, links: c.links.map((l) => ({ ...l, ext: false })) })) : colsEs;
+const firma: string = en ? COMUN.firma ?? FOOTER.firma : FOOTER.firma;
+const privacyHref = en ? '/en/privacy/' : '/aviso-privacidad/';
+const privacyLabel = L({ es: 'Aviso de privacidad', en: 'Privacy Policy' });
+const motionLabel = L({ es: 'Reducir movimiento', en: 'Reduce motion' });
+const otherLang = en ? 'es' : 'en';
+const langLabel = en ? 'Versión en español' : 'English version';
 const social = [
   { href: SITE.social.instagram, label: 'Instagram', logo: '/img/logos/instagram.svg' },
   { href: SITE.social.facebook, label: 'Facebook', logo: '/img/logos/facebook.svg' },
@@ -43,13 +65,16 @@ const { compact = false, waHref, folio, current, variant = 'full', anchors = [] 
   compact?: boolean; waHref?: string; folio?: string; current?: string; variant?: 'full' | 'minimal'; anchors?: Anchor[];
 };
 const minimal = variant === 'minimal';
+const langHref = (current && twinOf(current)) || (en ? '/' : '/en/');
 const qHref = quoteHref(current);
 const qAttrs = quoteAttrs('footer');
 // "¿Tienes un proyecto en mente? Cotizar proyecto" (_comun.cta.cotizarLnk): la pregunta es texto, la acción es el enlace.
 const qParts = (() => { const i = QUOTE.lnk.lastIndexOf('?'); return i > 0 ? [QUOTE.lnk.slice(0, i + 1), QUOTE.lnk.slice(i + 1).trim() || QUOTE.label] : ['', QUOTE.lnk]; })();
 const minAnchors = (anchors ?? []).map((a) => ({ label: a.label ?? '', href: a.href ?? (a.id ? `#${a.id}` : '') }))
   .filter((a) => a.label && a.href && !isHiddenHref(a.href.startsWith('#') ? '' : a.href));
-const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain, vengo del pie de página de ingeniak.mx${folio ? ` (${folio})` : ''} y quiero información.`)}`;
+const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(en
+  ? `Hi Kain, I'm coming from the footer of the English site of ingeniak.mx${folio ? ` (${folio})` : ''} and want more information.`
+  : `Hola Kain, vengo del pie de página de ingeniak.mx${folio ? ` (${folio})` : ''} y quiero información.`)}`;
 ---
 {minimal ? (
 <footer class="ftr ftr--minimal" data-ftr>
@@ -57,10 +82,10 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain,
   <div class="ftr__frame ftr__min">
     <div class="ftr__min-brand">
       <Logo class="ftr__min-logo" />
-      <p class="ftr__min-firma">{FOOTER.firma}</p>
+      <p class="ftr__min-firma">{firma}</p>
     </div>
     {minAnchors.length > 0 && (
-      <nav class="ftr__min-nav" aria-label="En esta página">
+      <nav class="ftr__min-nav" aria-label={L({ es: 'En esta página', en: 'On this page' })}>
         <ul class="ftr__min-ul" role="list">
           {minAnchors.map((a) => <li><a class="ftr__a" href={a.href}>{a.label}</a></li>)}
         </ul>
@@ -68,16 +93,17 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain,
     )}
     <dl class="ftr__min-contact">
       <div class="ftr__row"><dt>WhatsApp</dt><dd><a class="ftr__a ftr__a--inline" href={waFooter} target="_blank" rel="noopener" data-wa data-allow-number>{SITE.phone}</a></dd></div>
-      <div class="ftr__row"><dt>Correo</dt><dd><a class="ftr__a ftr__a--inline" href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
+      <div class="ftr__row"><dt>{L({ es: 'Correo', en: 'Email' })}</dt><dd><a class="ftr__a ftr__a--inline" href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
     </dl>
     <p class="ftr__min-quote">{qParts[0] && <span>{qParts[0]} </span>}<a class="lnk" href={qHref} {...qAttrs}>{qParts[1]}</a></p>
   </div>
   <div class="ftr__frame ftr__legal" data-ftr-end>
     <p class="ftr__copy">© {year} Ingeniak</p>
-    <a class="ftr__a ftr__a--legal" href="/">ingeniak.mx</a>
-    <a class="ftr__a ftr__a--legal" href="/aviso-privacidad/">Aviso de privacidad</a>
+    <a class="ftr__a ftr__a--legal" href={en ? '/en/' : '/'}>ingeniak.mx</a>
+    <a class="ftr__a ftr__a--legal" href={privacyHref}>{privacyLabel}</a>
+    <a class="ftr__a ftr__a--legal" href={langHref} hreflang={HTML_LANG[otherLang]} lang={HTML_LANG[otherLang]}>{langLabel}</a>
     <button class="ftr__motion" type="button" role="switch" aria-checked="false" data-motion-toggle>
-      <span class="ftr__switch" aria-hidden="true"><span></span></span>Reducir movimiento
+      <span class="ftr__switch" aria-hidden="true"><span></span></span>{motionLabel}
     </button>
   </div>
 </footer>
@@ -87,8 +113,8 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain,
 
   {!compact && (
     <div class="ftr__frame ftr__credits">
-      <p class="ftr__eyebrow"><span class="node" aria-hidden="true"></span>Créditos finales</p>
-      <nav class="ftr__map" id="mapa-del-sitio" aria-label="Mapa del sitio" tabindex="-1">
+      <p class="ftr__eyebrow"><span class="node" aria-hidden="true"></span>{L({ es: 'Créditos finales', en: 'End credits' })}</p>
+      <nav class="ftr__map" id="mapa-del-sitio" aria-label={L({ es: 'Mapa del sitio', en: 'Site map' })} tabindex="-1">
         {cols.map((c, ci) => (
           <div class="ftr__col" style={`--i:${ci}`}>
             <p class="ftr__h">{c.title}<span class="ftr__n" aria-hidden="true">{String(c.links.length).padStart(2, '0')}</span></p>
@@ -96,7 +122,7 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain,
               {c.links.map((l) => (
                 <li>
                   <a class="ftr__a" href={l.href} {...(l.ext ? { target: '_blank', rel: 'noopener' } : {})}>
-                    {l.label}{l.ext && <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.external} />}{l.ext && <span class="sr-only"> (se abre en otra pestaña)</span>}
+                    {l.label}{l.ext && <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.external} />}{l.ext && <span class="sr-only">{L({ es: ' (se abre en otra pestaña)', en: ' (opens in a new tab)' })}</span>}
                   </a>
                 </li>
               ))}
@@ -109,27 +135,27 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain,
 
   <div class="ftr__frame ftr__entity">
     <dl class="ftr__sheet">
-      <div class="ftr__row"><dt>Entidad</dt><dd>Ingeniak · consultoría de IA</dd></div>
-      <div class="ftr__row"><dt>Sede</dt><dd>{SITE.city}</dd></div>
-      <div class="ftr__row"><dt>Oficina</dt><dd data-allow-number>{`${SITE.address.street}, ${SITE.address.locality}, ${SITE.address.region} ${SITE.address.postal}`}</dd></div>
-      <div class="ftr__row"><dt>Correo</dt><dd><a class="ftr__a ftr__a--inline" href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
+      <div class="ftr__row"><dt>{L({ es: 'Entidad', en: 'Entity' })}</dt><dd>{L({ es: 'Ingeniak · consultoría de IA', en: 'Ingeniak · AI consultancy' })}</dd></div>
+      <div class="ftr__row"><dt>{L({ es: 'Sede', en: 'HQ' })}</dt><dd>{L({ es: SITE.city, en: 'Guadalajara, Jalisco, Mexico' })}</dd></div>
+      <div class="ftr__row"><dt>{L({ es: 'Oficina', en: 'Office' })}</dt><dd data-allow-number>{`${SITE.address.street}, ${SITE.address.locality}, ${SITE.address.region} ${SITE.address.postal}`}</dd></div>
+      <div class="ftr__row"><dt>{L({ es: 'Correo', en: 'Email' })}</dt><dd><a class="ftr__a ftr__a--inline" href={`mailto:${SITE.email}`}>{SITE.email}</a></dd></div>
       <div class="ftr__row"><dt>WhatsApp</dt><dd><a class="ftr__a ftr__a--inline" href={waFooter} target="_blank" rel="noopener" data-allow-number>{SITE.phone}</a></dd></div>
-      <div class="ftr__row"><dt>Proyectos</dt><dd><a class="lnk ftr__quote" href={qHref} {...qAttrs}>{QUOTE.label}</a></dd></div>
+      <div class="ftr__row"><dt>{L({ es: 'Proyectos', en: 'Projects' })}</dt><dd><a class="lnk ftr__quote" href={qHref} {...qAttrs}>{QUOTE.label}</a></dd></div>
       {/* Cifras solo con <Metric> y con su nota de fuente visible (§0.1.2, QA r2) */}
-      <div class="ftr__row"><dt>En producción</dt><dd><Metric id="sistemas" label /> · <Metric id="paises" label /><small class="ftr__src">{SOURCE_NOTE}.</small></dd></div>
+      <div class="ftr__row"><dt>{L({ es: 'En producción', en: 'In production' })}</dt><dd><Metric id="sistemas" label /> · <Metric id="paises" label /><small class="ftr__src">{priceText('source', lang)}.</small></dd></div>
     </dl>
     <div class="ftr__seals">
       {PartnerBadges ? (
         <PartnerBadges size="sm" />
       ) : (
-        <a class="ftr__kommo" href={SITE.kommo} target="_blank" rel="noopener" aria-label="Partner oficial de Kommo en LATAM (kommo.com)">
+        <a class="ftr__kommo" href={SITE.kommo} target="_blank" rel="noopener" aria-label={L({ es: 'Partner oficial de Kommo en LATAM (kommo.com)', en: 'Official Kommo partner in LATAM (kommo.com)' })}>
           <img src="/img/logos/kommo-partner.webp" alt="Kommo partner" width="400" height="178" loading="lazy" decoding="async" />
-          <span class="ftr__kommo-t">Partner oficial de Kommo en LATAM</span>
+          <span class="ftr__kommo-t">{L({ es: 'Partner oficial de Kommo en LATAM', en: 'Official Kommo partner in LATAM' })}</span>
         </a>
       )}
       <ul class="ftr__social" role="list">
         {social.map((s) => (
-          <li><a class="ftr__soc" href={s.href} target="_blank" rel="noopener me" aria-label={`${s.label} de Ingeniak`} style={`--logo:url(${s.logo})`}><span aria-hidden="true"></span></a></li>
+          <li><a class="ftr__soc" href={s.href} target="_blank" rel="noopener me" aria-label={en ? `Ingeniak on ${s.label}` : `${s.label} de Ingeniak`} style={`--logo:url(${s.logo})`}><span aria-hidden="true"></span></a></li>
         ))}
       </ul>
     </div>
@@ -143,14 +169,15 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(`Hola Kain,
         <path class="ftr__iso-line" d={ISOTIPO_PATH} />
       </svg>
     </div>
-    <p class="ftr__firma">{FOOTER.firma}</p>
+    <p class="ftr__firma">{firma}</p>
   </div>
 
   <div class="ftr__frame ftr__legal">
     <p class="ftr__copy">© {year} Ingeniak</p>
-    <a class="ftr__a ftr__a--legal" href="/aviso-privacidad/">Aviso de privacidad</a>
+    <a class="ftr__a ftr__a--legal" href={privacyHref}>{privacyLabel}</a>
+    <a class="ftr__a ftr__a--legal" href={langHref} hreflang={HTML_LANG[otherLang]} lang={HTML_LANG[otherLang]}>{langLabel}</a>
     <button class="ftr__motion" type="button" role="switch" aria-checked="false" data-motion-toggle>
-      <span class="ftr__switch" aria-hidden="true"><span></span></span>Reducir movimiento
+      <span class="ftr__switch" aria-hidden="true"><span></span></span>{motionLabel}
     </button>
   </div>
 </footer>

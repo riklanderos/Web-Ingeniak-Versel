@@ -1,0 +1,8 @@
+---
+// /en/contact/ · versión en inglés de /contacto/ (2026-11-20). Texto: src/content/paginas/en-contacto.json.
+import ContactTemplate from '../../../components/templates/ContactTemplate.astro';
+import { getPage, getCopy } from '../../../lib/site';
+const page = getPage('/en/contact/');
+const copy = getCopy(page.id);
+---
+<ContactTemplate page={page} copy={copy} />

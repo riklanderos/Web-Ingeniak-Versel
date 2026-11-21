@@ -1,0 +1,35 @@
+{
+  "title": "Multi-brand retail: {{metric:retail-conversiones}} in conversions with Kommo + AI",
+  "metaDescription": "Kommo automated with AI lead qualification and a real-time conversion funnel: how a multi-brand retailer achieved {{metric:retail-conversiones}} in conversions.",
+  "h1": "Multi-brand retail: {{metric:retail-conversiones}} in conversions with Kommo and AI",
+  "primaryKeyword": "Kommo case study",
+  "secondaryKeywords": [
+    "Kommo for retail",
+    "AI lead qualification",
+    "CRM for multi-brand stores"
+  ],
+  "breadcrumbs": [
+    { "name": "Home", "url": "/en/" },
+    { "name": "Case studies", "url": "/casos/" },
+    { "name": "Multi-brand retail", "url": "/en/case-studies/multi-brand-retail-kommo/" }
+  ],
+  "sections": [
+    { "id": "hero", "name": "Overview" },
+    { "id": "ficha", "name": "Case snapshot" },
+    { "id": "punto-partida", "name": "Starting point" },
+    { "id": "cifra", "name": "The figure" },
+    { "id": "implementacion", "name": "What we implemented" },
+    { "id": "resultado", "name": "Result" },
+    { "id": "vktor", "name": "How we did it with VKTOR™" },
+    { "id": "replicar", "name": "What you can replicate in your business" },
+    { "id": "testimonio", "name": "Testimonial" },
+    { "id": "relacionados", "name": "Keep exploring" },
+    { "id": "cta-final", "name": "Next step" }
+  ],
+  "primaryCta": { "label": "Get a quote" },
+  "secondaryCta": {
+    "label": "Message Kain",
+    "waMessage": "Hi Kain, I'm coming from the English site. I read the multi-brand retail case study with Kommo and I want to improve my conversions."
+  },
+  "faq": []
+}

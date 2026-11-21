@@ -17,12 +17,23 @@ import { ICONS } from './icons';
 import { NAV_ENTRIES, currentEntry } from '../layout/navData';
 import { SITE } from '../../lib/site';
 import { QUOTE, quoteAttrs, quoteHref } from '../layout/cta';
+import { currentLang, L, twinOf, HTML_LANG } from '../../lib/i18n';
 
 type Cta = { label?: string; short?: string; href?: string } | null;
 interface Props { variant?: 'full' | 'reduced'; current?: string; waHref?: string; cta?: Cta }
 const { variant = 'full', current = '', waHref = SITE.waBase, cta } = Astro.props;
 const full = variant === 'full';
-const cur = currentEntry(current);
+// Versión en inglés (/en/, 2026-11-20): navegación corta con las páginas traducidas, sin mega menú ni ⌘K (el índice es
+// en español) y con el enlace a la versión en español.
+const en = currentLang() === 'en';
+const entries: any[] = en
+  ? [
+      { type: 'link', key: 'services', label: 'Services', href: '/en/services/' },
+      { type: 'link', key: 'contact', label: 'Contact', href: '/en/contact/' },
+    ]
+  : NAV_ENTRIES;
+const cur = en ? entries.find((e) => current.startsWith(e.href))?.key : currentEntry(current);
+const esHref = en ? twinOf(current) ?? '/' : null;
 // Reducida: el CTA de la landing siempre reserva en la página (#agenda); nunca la agenda externa (R17, check-cta).
 const landingHref = (h?: string) => (h && h.startsWith('#') ? h : '#agenda');
 const showCta = full || !!cta?.label;
@@ -37,9 +48,9 @@ const ctaAttrs = full ? quoteAttrs('header') : { 'data-section': 'header' };
   <div class="hdr__bar">
     <Logo class="hdr__logo" />
     {full && (
-      <nav class="hdr__nav" aria-label="Principal">
+      <nav class="hdr__nav" aria-label={L({ es: 'Principal', en: 'Main' })}>
         <ul class="hdr__list" role="list">
-          {NAV_ENTRIES.map((e) =>
+          {entries.map((e) =>
             e.type === 'link' ? (
               <li class="hdr__item">
                 <a class="hdr__link" href={(e as any).href} data-entry={e.key} data-current={cur === e.key || undefined} aria-current={current === (e as any).href ? 'page' : undefined}>
@@ -60,7 +71,10 @@ const ctaAttrs = full ? quoteAttrs('header') : { 'data-section': 'header' };
       </nav>
     )}
     <div class="hdr__actions">
-      {full && (
+      {full && en && (
+        <a class="hdr__link hdr__lang" href={esHref} hreflang={HTML_LANG.es} lang={HTML_LANG.es} aria-label="Versión en español">ES</a>
+      )}
+      {full && !en && (
         <button class="hdr__search" type="button" data-search-open aria-label="Buscar o preguntarle a Kain" aria-keyshortcuts="Meta+K Control+K">
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.search} />
           <span class="hdr__search-label">Buscar</span>
@@ -68,7 +82,7 @@ const ctaAttrs = full ? quoteAttrs('header') : { 'data-section': 'header' };
         </button>
       )}
       {full && (
-        <a class="btn-icon hdr__wa" href={waHref} target="_blank" rel="noopener" aria-label="Escríbele a Kain por WhatsApp" data-wa>
+        <a class="btn-icon hdr__wa" href={waHref} target="_blank" rel="noopener" aria-label={L({ es: 'Escríbele a Kain por WhatsApp', en: 'Message Kain on WhatsApp' })} data-wa>
           <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} />
         </a>
       )}
@@ -80,7 +94,7 @@ const ctaAttrs = full ? quoteAttrs('header') : { 'data-section': 'header' };
       )}
       {full && (
         <a class="hdr__menu" href="#mapa-del-sitio" data-menu-open>
-          <span>Menú</span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.menu} />
+          <span>{L({ es: 'Menú', en: 'Menu' })}</span><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.menu} />
         </a>
       )}
     </div>

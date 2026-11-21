@@ -1,0 +1,170 @@
+{
+  "pageId": "en-caso-retail",
+  "url": "/en/case-studies/multi-brand-retail-kommo/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (traducción con IA, 2026-11-20)",
+  "aprobadoPor": "",
+  "actualizado": "2026-11-20",
+  "publishGate": {
+    "ok": true,
+    "fuente": "Rik Landeros, chat de construcción, 2026-11-14",
+    "_nota": "Puerta R2 abierta el 2026-11-14: Rik Landeros confirma por escrito publicar el caso completo e indexable (\"confirmo con los 4 casos\") con lo que ya estaba redactado. Los datos que el cliente no dio (ciudad, punto de partida, plazo, testimonio) siguen sin publicarse: esas filas y secciones se omiten. CaseTemplate e indexacion.mjs leen publishGate.ok."
+  },
+  "pendientes": [
+    "INGLÉS · Traducción con IA del 2026-11-20 a partir de caso-retail.json; falta la revisión de Rik. 'estado' se conserva como en español ('aprobado') pero 'aprobadoPor' va vacío: decidir si la versión en inglés necesita su propia aprobación R1 antes de publicarse.",
+    "INGLÉS · Hechos sin cambios: cifra solo por token ({{metric:retail-conversiones}}), sin ciudad, sin punto de partida, sin plazo del caso, sin testimonio y con el nombre del negocio anonimizado. No se agregó ningún dato.",
+    "INGLÉS · H1: kicker 'Multi-brand retail:' + cifra + 'in conversions with Kommo and AI'. Verificar que la etiqueta en inglés de retail-conversiones ('conversions') encaje con 'in conversions' en el título y la meta.",
+    "INGLÉS · Enlaces que se quedan en español porque esas páginas no tienen versión en inglés: /kommo/, /servicios/crm-con-ia/, /industrias/retail-ecommerce/, /metodologia/ y el 'Next case study' (/casos/ecommerce-cdmx-costo-por-lead/, con su título traducido pero llevando a una página en español). Considerar que el siguiente reportaje apunte al otro caso en inglés (/en/case-studies/logistics-n8n/, metricId logistica-procesos).",
+    "INGLÉS · Términos elegidos: 'calificación de leads' → 'lead qualification'; 'CRM con IA' → 'AI-powered CRM'; 'reportaje' → 'case study'; fila 'Cifra' de la ficha → 'Key figure'; 'Ficha del caso' → 'Case snapshot'. Revisar que coincidan con las páginas de servicios en inglés.",
+    "INGLÉS · Frases adaptadas: 'a quién atender primero' → 'which leads to work first'; 'venda en lugar de archivar' → 'sell instead of just filing contacts'; '¿Tu Kommo vende o solo guarda contactos?' → 'Is your Kommo selling, or just storing contacts?'; 'Revisemos tu embudo' → 'Let's review your funnel.'",
+    "INGLÉS · Fases VKTOR™: los verbos oficiales se tradujeron aquí ('We verify your operation', 'We design the concept', 'We transform', 'We operate alongside your team', 'We grow the results'). Unificar con la versión en inglés de la metodología si se define otra.",
+    "INGLÉS · vktor.lede conserva el rango general confirmado ('7 to 30 days, depending on the project's scope') como rango de Ingeniak, no como plazo del caso.",
+    "INGLÉS · ficha.note sigue diciendo 'Short case study…' (como 'Reportaje breve…' en español) aunque la puerta R2 está abierta; cambiarla junto con la versión en español.",
+    "INGLÉS · Mensaje de WhatsApp en inglés y avisa que la persona viene del sitio en inglés, para que el equipo responda en inglés."
+  ],
+  "sections": {
+    "hero": {
+      "_componente": "ImageSection hero (caso-retail-hero, persona a la derecha) + Breadcrumbs + fila .chip-spec",
+      "rail": "Overview",
+      "h1": { "kicker": "Multi-brand retail:", "metricId": "retail-conversiones", "text": "in conversions with Kommo and AI" },
+      "chips": ["Multi-brand retail", "Kommo + AI", "In operation"],
+      "lede": "Kommo automated with AI lead qualification and a conversion funnel you can see in real time: the team knows which leads to work first.",
+      "ledeM": "AI-qualified leads in Kommo: the team knows which leads to work first.",
+      "ctaPrimary": { "label": "Get a quote" },
+      "ctaSecondary": { "label": "Message Kain", "waMessage": "Hi Kain, I'm coming from the English site. I read the multi-brand retail case study with Kommo and I want to improve my conversions." },
+      "illus": "Illustrative image of the industry"
+    },
+    "ficha": {
+      "_componente": "EntitySheet variant=case + .t-standfirst + crédito + SceneRail mode=labels (Quick Jump)",
+      "rail": "Context",
+      "eyebrow": "Case snapshot",
+      "entity": [
+        { "term": "Industry", "value": "Multi-brand retail", "confirmed": true },
+        { "term": "Service", "value": "AI-powered CRM", "href": "/servicios/crm-con-ia/", "confirmed": true },
+        { "term": "CRM", "value": "Kommo", "href": "/kommo/", "confirmed": true },
+        { "term": "What the system does", "value": "Qualifies leads with AI and shows the conversion funnel in real time", "confirmed": true },
+        { "term": "Status", "value": "Still in operation", "confirmed": true },
+        { "term": "Key figure", "value": "{{metric:retail-conversiones|full}}" }
+      ],
+      "deckBreve": "In a multi-brand store, every message can ask about a different brand, and not everyone who asks is ready to buy. This business put AI to work qualifying its leads inside Kommo, its CRM, with a funnel that shows in real time which stage each lead is in. Then it measured the result where it matters: conversions.",
+      "deck": "A multi-brand retailer automated its Kommo with AI lead qualification and a funnel you can see in real time. This case study follows a single figure, conversions, and what changed so the team knew which leads to work first.",
+      "byline": "By the Ingeniak team",
+      "note": "Short case study: the figure, the industry and what the system does. The business name has been anonymized."
+    },
+    "punto-partida": {
+      "_componente": "Prose + nota al margen (ámbar)",
+      "_omitir": true,
+      "_nota": "Sin dato confirmado de la situación inicial. No se usa el borrador de D ('Tenían Kommo, pero nadie le daba seguimiento'), que viene de un testimonio de v1. Se escribe cuando el cliente confirme por escrito cómo trabajaban antes (ver pendientes)."
+    },
+    "cifra": {
+      "_componente": "CaseFigure variant=index-up (fijada +100 % en escritorio; en móvil, al entrar)",
+      "rail": "The figure",
+      "eyebrow": "The figure",
+      "h2": { "text": "Before and after,", "soft": "in a single index." },
+      "figure": {
+        "variant": "index-up",
+        "before": "Before",
+        "after": "With Kommo and AI",
+        "caption": "Conversions shown as an index. Multi-brand retail, Kommo with AI lead qualification.",
+        "aria": "Two bars: conversions before the system, taken as the baseline, and conversions measured with Kommo and AI."
+      },
+      "line": "We show it as an index so you can see how much conversions grew without publishing the business's sales, which are theirs to share. On the left, the starting point; on the right, the result measured with Kommo and AI.",
+      "metricIds": ["retail-conversiones"],
+      "sourceNote": true
+    },
+    "implementacion": {
+      "_componente": "SystemFlow (los nodos con confirmed=false no se publican). No se pinta mientras el caso sea breve.",
+      "rail": "Solution",
+      "eyebrow": "What we implemented",
+      "h2": { "text": "Kommo organizes,", "soft": "AI qualifies." },
+      "lede": "We automated the retailer's Kommo pipeline with AI lead qualification and a conversion funnel you can see in real time.",
+      "nodes": [
+        { "label": "Kommo", "line": "The sales pipeline, with every lead in its stage.", "logos": ["kommo"], "confirmed": true },
+        { "label": "AI qualification", "line": "Every lead is qualified so the team knows who to work first.", "confirmed": true },
+        { "label": "Real-time funnel", "line": "Conversions show up stage by stage, with no reports built by hand.", "confirmed": true }
+      ],
+      "body": [
+        "Kommo is the CRM where the sales pipeline lives: each prospect is a card that moves through stages. What we added was judgment. AI qualifies every lead, so the team doesn't treat someone asking out of curiosity the same as someone who has already decided to buy.",
+        "The conversion funnel updates in real time, so the team knows who to work first and no prospect is left without follow-up."
+      ]
+    },
+    "resultado": {
+      "_componente": "ImageSection mid (ind-retail-kain-sector; respaldo home-sistema-2-atender en espejo) + panel con casillas HTML ancladas. No se pinta mientras el caso sea breve.",
+      "rail": "Result",
+      "eyebrow": "Result",
+      "h2": { "text": "One sentence", "soft": "worth quoting." },
+      "quote": "A multi-brand retailer achieved {{metric:retail-conversiones}} in conversions with an automated Kommo setup and AI lead qualification.",
+      "sourceNote": true,
+      "ui": {
+        "_nota": "Casillas que se encienden una a una sobre el panel de cristal. Llevan SIMULACIÓN y data-nosnippet: patrón ilustrativo, no un dato del caso. El slot va en femenino porque la plantilla arma 'cada casilla encendida es una …'.",
+        "title": "This week's funnel",
+        "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        "slot": "Qualified opportunity"
+      }
+    },
+    "vktor": {
+      "_componente": "VktorRail variant=phases (sin hitos del proyecto: fases genéricas aplicadas a una tienda). No se pinta mientras el caso sea breve.",
+      "rail": "VKTOR",
+      "eyebrow": "How we do it with VKTOR™",
+      "h2": { "text": "Five phases,", "soft": "from first message to sale." },
+      "lede": "Here's how the five phases would look in your store. An Ingeniak implementation takes 7 to 30 days, depending on the project's scope.",
+      "phases": [
+        { "letter": "V", "name": "Verify", "verb": "We verify your operation", "line": "How your prospects reach you, what they ask and at which stage they stop getting answers." },
+        { "letter": "K", "name": "Koncept", "verb": "We design the concept", "line": "What makes a lead ready to buy in your store and which stages your funnel needs." },
+        { "letter": "T", "name": "Transform", "verb": "We transform", "line": "We set up Kommo, connect your channels and test the AI qualification before we turn it on." },
+        { "letter": "O", "name": "Operate", "verb": "We operate alongside your team", "line": "Your sales team works the funnel with us, and we fine-tune the criteria with real conversations." },
+        { "letter": "R", "name": "Rise", "verb": "We grow the results", "line": "We measure conversions by stage every month and fix whatever is slowing sales down." }
+      ],
+      "links": [{ "label": "Learn about the VKTOR™ methodology", "href": "/metodologia/" }]
+    },
+    "replicar": {
+      "_componente": "ScriptList (3 filas) + enlace a /kommo/",
+      "rail": "Takeaways",
+      "eyebrow": "What you can replicate in your store",
+      "h2": { "text": "Three ideas to make your CRM", "soft": "sell instead of just filing contacts." },
+      "items": [
+        {
+          "n": "01",
+          "title": "Qualify every lead the moment it comes in",
+          "line": "Not every message is worth the same: some people ask out of curiosity and others have already made up their minds. When qualification happens on arrival, your team spends its time on the people who are ready to buy, and everyone else gets follow-up instead of being forgotten in an inbox. Someone asking about availability and payment options doesn't wait behind someone who just asked for the catalog."
+        },
+        {
+          "n": "02",
+          "title": "Let the funnel move without manual data entry",
+          "line": "When someone in sales has to move every card by hand, the CRM falls behind and stops being useful for making decisions. Define which event moves a prospect to the next stage (a reply, a quote, a payment) and let the system record it."
+        },
+        {
+          "n": "03",
+          "title": "Watch your funnel in real time",
+          "line": "A month-end report arrives too late. With the funnel in view, you know where prospects are getting stuck this week and which brand or channel is lagging, so you fix it before you lose the sale, not after."
+        }
+      ],
+      "links": [{ "label": "Explore Kommo with Ingeniak", "href": "/kommo/" }]
+    },
+    "testimonio": {
+      "_componente": "Quote (condicional)",
+      "_omitir": true,
+      "_nota": "Solo con aprobación escrita del cliente (frase, nombre, cargo y empresa). Sin ella, la sección no existe en el HTML. No usar los borradores de testimonios de v1."
+    },
+    "relacionados": {
+      "_componente": "ScriptList (plataforma, servicio e industria) + Still variant=next (Siguiente reportaje)",
+      "rail": "Keep exploring",
+      "eyebrow": "Keep exploring",
+      "items": [
+        { "title": "Kommo", "line": "The platform behind this case. We're an official Kommo partner.", "href": "/kommo/" },
+        { "title": "AI-powered CRM", "line": "The service: funnels, lead qualification and follow-up with AI.", "href": "/servicios/crm-con-ia/" },
+        { "title": "Retail and e-commerce", "line": "What the full system looks like in a store, brick-and-mortar or online.", "href": "/industrias/retail-ecommerce/" }
+      ],
+      "next": { "label": "Next case study", "title": "E-commerce in Mexico City: cost per lead", "metricId": "ecom-cpl", "href": "/casos/ecommerce-cdmx-costo-por-lead/" }
+    },
+    "cta-final": {
+      "_componente": "Dawn (cta-amanecer)",
+      "rail": "Next step",
+      "eyebrow": "A funnel like this for your store",
+      "h2": { "text": "Is your Kommo selling, or just storing contacts?", "soft": "Let's review your funnel." },
+      "lede": "Request a quote and tell us how a prospect enters your CRM today and who follows up. We'll look at which parts of this system fit your store, and if you don't use Kommo yet, we can talk about that too.",
+      "ctaPrimary": { "label": "Get a quote" },
+      "ctaSecondary": { "label": "Message Kain", "waMessage": "Hi Kain, I'm coming from the English site. I read the multi-brand retail case study with Kommo and I want to improve my conversions." }
+    }
+  }
+}

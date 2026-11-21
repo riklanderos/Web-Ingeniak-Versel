@@ -10,6 +10,8 @@
 import * as siteMod from '../../lib/site';
 import { pages, normRoute, type Page } from '../../lib/site';
 import { COMUN } from '../ui/ui-data';
+import { currentLang } from '../../lib/i18n';
+import comunEn from '../../content/paginas/en-_comun.json';
 
 const S: any = (siteMod as any).SITE ?? {};
 const Q: any = S.quote ?? {};
@@ -19,7 +21,7 @@ const C: any = COMUN?.cta ?? {};
 const LEGACY_RX = /discovery|google\s?meet|\b30\s?min|\bagend/i;
 const pick = (v: unknown, fb: string): string => (typeof v === 'string' && v.trim() && !LEGACY_RX.test(v) ? v.trim() : fb);
 
-export const QUOTE = {
+const QUOTE_ES = {
   /** Etiqueta del primario (_comun.cta.cotizar / SITE.quote.label). */
   label: pick(C.cotizar, pick(Q.label, 'Cotizar proyecto')),
   /** Etiqueta corta del encabezado < 1100 px (_comun.cta.cotizarCorto). */
@@ -34,12 +36,25 @@ export const QUOTE = {
   lnk: pick(C.cotizarLnk, '¿Tienes un proyecto en mente? Cotizar proyecto'),
   /** Valor de la fila "Primer paso" de EntitySheet (la etiqueta se enlaza al modal). */
   primerPaso: pick(C.primerPaso, 'Cotizar proyecto · te contactamos en menos de 2 horas hábiles'),
-} as const;
+};
+/** Versión en inglés (/en/, 2026-11-20): en-_comun.json → cta.*. */
+const CE: any = (comunEn as any)?.cta ?? {};
+const QUOTE_EN: typeof QUOTE_ES = {
+  label: pick(CE.cotizar, 'Get a quote'),
+  short: pick(CE.cotizarCorto, 'Quote'),
+  href: '/en/contact/#cotizar',
+  micro: pick(CE.micro, "No commitment · We'll reach out within 2 business hours"),
+  sub: pick(CE.cotizarSub, "We'll reach out within 2 business hours (Mexico time)"),
+  lnk: pick(CE.cotizarLnk, 'Have a project in mind? Get a quote'),
+  primerPaso: pick(CE.primerPaso, "Get a quote · we'll reach out within 2 business hours (Mexico time)"),
+};
+/** CTA "Cotizar proyecto" en el idioma de la página que se está generando. */
+export const QUOTE: Readonly<typeof QUOTE_ES> = new Proxy(QUOTE_ES, { get: (_, k) => (currentLang() === 'en' ? QUOTE_EN : QUOTE_ES)[k as keyof typeof QUOTE_ES] });
 export const QUOTE_HREF_LOCAL = '#cotizar';
 export const QUOTE_DIALOG_ID = 'cotizar';
 
 /** href del disparador según la página (en /contacto/ apunta a su propia sección #cotizar). */
-export const quoteHref = (pageUrl?: string) => (pageUrl === '/contacto/' ? QUOTE_HREF_LOCAL : QUOTE.href);
+export const quoteHref = (pageUrl?: string) => (pageUrl === '/contacto/' || pageUrl === '/en/contact/' ? QUOTE_HREF_LOCAL : QUOTE.href);
 
 export type Prefill = { servicio?: string; industria?: string };
 /** Atributos del contrato §1.2 (sin data-primary: ese lo pone Btn variant="primary"). */
@@ -73,7 +88,7 @@ export function isHiddenHref(href?: string | null): boolean {
   if (!href) return false;
   if (/agenda\.ingeniak\.tech/i.test(href)) return true;
   const r = normRoute(href);
-  return !!r && (hiddenRoutes.has(r) || r.startsWith('/agendar/'));
+  return !!r && (hiddenRoutes.has(r) || r.startsWith('/agendar/') || r.startsWith('/en/book/'));
 }
 
 /* ───────────────────────── Prefill por página (§1.3) ───────────────────────── */
@@ -101,7 +116,7 @@ const PREFILL_FALLBACK: Record<string, Prefill> = {
 const PREFILL: Record<string, Prefill> = (COTIZAR?.prefill as Record<string, Prefill> | undefined) ?? PREFILL_FALLBACK;
 /** Prefill de una página (servicio / industria) o {}. */
 export function prefillOf(pageId?: string): Prefill {
-  const p = pageId ? PREFILL[pageId] : undefined;
+  const p = pageId ? PREFILL[pageId.replace(/^en-/, '')] : undefined;
   return p ? { ...(p.servicio ? { servicio: p.servicio } : {}), ...(p.industria ? { industria: p.industria } : {}) } : {};
 }
 

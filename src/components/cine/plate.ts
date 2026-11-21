@@ -191,7 +191,8 @@ export function isPersonPlate(id: string | null | undefined): boolean {
   if (!p) return false;
   if (p.sujeto === 'persona') return true;
   if (p.sujeto === 'kain' || /^Kain\b/.test(p.alt ?? '')) return false;
-  return !!p.personas || /\(imagen ilustrativa\)/i.test(p.alt ?? '');
+  // El alt en inglés (src/data/plates-en.json, versión /en/) termina en "(illustrative image)".
+  return !!p.personas || /\((?:imagen ilustrativa|illustrative image)\)/i.test(p.alt ?? '');
 }
 
 /** Borde de la zona segura de texto de escritorio (safe.d de plates.json) del lado del TEXTO, en fracción del ancho de la

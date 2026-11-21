@@ -12,7 +12,8 @@
 // labels: rótulos de los cronómetros / índices ({ before: 'Antes', after: 'Con el agente de IA' }).
 // El valor real siempre está en el HTML (data-metric); sin JS o con movimiento reducido se ve el estado final (8:00 / 0:12).
 import Metric from '../ui/Metric.astro';
-import { METRICS, SOURCE_NOTE, type MetricId } from '../../lib/metrics';
+import { METRICS, priceText, type MetricId } from '../../lib/metrics';
+import { currentLang, L } from '../../lib/i18n';
 import { parseNumber, AURA_ISOTIPO, AURA_ISOTIPO_SIZE } from './plate';
 
 interface Props {
@@ -24,7 +25,9 @@ interface Props {
   skipLabel?: string;
   class?: string;
 }
-const { id = 'cifra', variant, metricIds, pin = '+=100%', labels, skipLabel = 'Saltar escena', class: cls } = Astro.props;
+const { id = 'cifra', variant, metricIds, pin = '+=100%', labels, skipLabel = L({ es: 'Saltar escena', en: 'Skip scene' }), class: cls } = Astro.props;
+const SOURCE_NOTE = priceText('source', currentLang());
+const T = L({ es: { before: 'Antes', withKain: 'Con Kain', after: 'Después', base: 'Índice: base 100 = antes' }, en: { before: 'Before', withKain: 'With Kain', after: 'After', base: 'Index: base 100 = before' } });
 const hasFoot = Astro.slots.has('foot');
 const mid = metricIds[0];
 const val = METRICS[mid]?.value ?? '';
@@ -61,12 +64,12 @@ const colsN = 9;
       {variant === 'stopwatch' && (
         <div class="cf-sw" style={`--ratio:${ratio}`}>
           <div class="cf-sw__row cf-sw__row--before">
-            <span class="t-label t-label--amber">{labels?.before ?? 'Antes'}</span>
+            <span class="t-label t-label--amber">{labels?.before ?? T.before}</span>
             <span class="cf-sw__clock" data-clock-to={before} aria-hidden="true">{clock(before)}</span>
             <span class="cf-sw__bar"><i data-fill="1"></i></span>
           </div>
           <div class="cf-sw__row cf-sw__row--after">
-            <span class="t-label t-label--cyan">{labels?.after ?? 'Con Kain'}</span>
+            <span class="t-label t-label--cyan">{labels?.after ?? T.withKain}</span>
             <span class="cf-sw__clock" data-clock-to={after} aria-hidden="true">{clock(after)}</span>
             <span class="cf-sw__bar"><i data-fill={ratio}></i></span>
           </div>
@@ -74,9 +77,9 @@ const colsN = 9;
       )}
       {(variant === 'index-up' || variant === 'index-down') && (
         <div class="cf-ix" style={`--before:${before};--after:${after};--max:${Math.max(before, after)}`}>
-          <div class="cf-ix__col cf-ix__col--before"><span class="cf-ix__bar" data-h={before / Math.max(before, after)} style={`--h:${before / Math.max(before, after)}`}></span><b aria-hidden="true">{before}</b><span class="t-label">{labels?.before ?? 'Antes'}</span></div>
-          <div class="cf-ix__col cf-ix__col--after"><span class="cf-ix__bar" data-h={after / Math.max(before, after)} style={`--h:${after / Math.max(before, after)}`}></span><b aria-hidden="true" data-count-to={after}>{after}</b><span class="t-label t-label--cyan">{labels?.after ?? 'Después'}</span></div>
-          <p class="t-micro cf-ix__base">Índice: base 100 = antes</p>
+          <div class="cf-ix__col cf-ix__col--before"><span class="cf-ix__bar" data-h={before / Math.max(before, after)} style={`--h:${before / Math.max(before, after)}`}></span><b aria-hidden="true">{before}</b><span class="t-label">{labels?.before ?? T.before}</span></div>
+          <div class="cf-ix__col cf-ix__col--after"><span class="cf-ix__bar" data-h={after / Math.max(before, after)} style={`--h:${after / Math.max(before, after)}`}></span><b aria-hidden="true" data-count-to={after}>{after}</b><span class="t-label t-label--cyan">{labels?.after ?? T.after}</span></div>
+          <p class="t-micro cf-ix__base">{T.base}</p>
         </div>
       )}
       {variant === 'multiplier' && (

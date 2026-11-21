@@ -1,0 +1,38 @@
+[
+  {
+    "id": "D01",
+    "q": "Is it really free?",
+    "a": "Yes. The 30 minutes cost nothing and we don't ask for a credit card. The call exists because diagnosing before quoting is the only serious way to work: it makes no sense to propose a system without seeing how you sell, serve customers and operate today. If you later decide to implement, that is quoted separately.",
+    "short": "Yes. The 30 minutes cost nothing and we don't ask for a credit card."
+  },
+  {
+    "id": "D02",
+    "q": "Are you going to sell to me on the call?",
+    "a": "It's a discovery call: we map your operation and tell you what we see. At the end, if it makes sense, we share an implementation proposal. If it doesn't, we tell you that too. There's no sales presentation dressed up as a diagnosis and no obligation to buy: you decide whether to move forward.",
+    "short": "No. It's a discovery call: we map your operation and tell you what we see."
+  },
+  {
+    "id": "D03",
+    "q": "What should I prepare for the call?",
+    "a": "Nothing special. Knowing how your business runs day to day is enough. If you have numbers on hand, even better: the diagnosis gets more precise. For example, how many messages or leads you get per week, how long it takes you to reply, and which tools your team uses to sell and follow up.",
+    "short": "Nothing special; if you have numbers from your operation on hand, the diagnosis is more precise."
+  },
+  {
+    "id": "D04",
+    "q": "What happens after the call?",
+    "a": "If your project makes sense for both sides, we prepare an implementation proposal with scope, timeline and cost. You decide whether to move forward. If your case isn't a fit for what we do, we'll tell you on the same call and point you to where it is. Nobody will chase you with follow-up calls.",
+    "short": "If it makes sense, we send you a proposal with scope, timeline and cost; you decide."
+  },
+  {
+    "id": "D05",
+    "q": "Can I reschedule?",
+    "a": "Yes, with at least 24 hours' notice. Message us on WhatsApp at +52 33 2101 7799 or email contacto@ingeniak.mx and we'll move it.",
+    "short": "Yes, with at least 24 hours' notice, by WhatsApp or email."
+  },
+  {
+    "id": "D06",
+    "q": "What if my business is too small or too big?",
+    "a": "We work with small and midsize businesses of 3 to 40 employees in any industry. If you're outside that range, the call makes it clear in the first few minutes and we point you to the right option. What matters most isn't size, but whether the business depends on you to run and you want to systematize it.",
+    "short": "We work with small and midsize businesses of 3 to 40 employees; if you're outside that range, we point you in the right direction."
+  }
+]

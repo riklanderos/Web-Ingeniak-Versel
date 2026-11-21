@@ -15,6 +15,7 @@ import Icon from './Icon.astro';
 import { annotateFigures } from './ui-data';
 import { QUOTE, quoteAttrs, isHiddenHref } from '../layout/cta';
 
+import { currentLang, localHref } from '../../lib/i18n';
 interface Props {
   variant?: 'primary' | 'ghost' | 'sm' | 'icon';
   href?: string; label?: string; micro?: boolean | string; wa?: boolean; ghost?: boolean;
@@ -26,7 +27,9 @@ const { variant = 'primary', href: hrefProp, label, micro = false, wa = false, g
 
 const isQuote = !!cotizar;
 // Un disparador nunca lleva a una landing oculta (§1.1-6): sin href o con uno oculto → respaldo /contacto/#cotizar.
-const href = isQuote && (!hrefProp || isHiddenHref(hrefProp)) ? QUOTE.href : hrefProp;
+// En inglés, un enlace interno a una página traducida va a su gemela /en/ (localHref no toca el español ni lo ya traducido).
+const href0 = isQuote && (!hrefProp || isHiddenHref(hrefProp)) ? QUOTE.href : hrefProp;
+const href = href0 ? localHref(href0, currentLang()) : href0;
 const isExternal = external ?? (!!href && /^https?:\/\//.test(href));
 const isWa = wa || (!!href && /wa\.me\//.test(href));
 const hasSlot = Astro.slots.has('default');

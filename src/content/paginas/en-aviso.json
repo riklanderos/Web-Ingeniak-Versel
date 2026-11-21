@@ -1,0 +1,177 @@
+{
+  "_schema": "Texto publicable de /en/privacy/ (T-LEGAL, LegalTemplate), traducción al inglés de /aviso-privacidad/ (aviso.json, versión del 2026-11-20). Misma forma que aviso.json: encabezado = {eyebrow, h1, deck, updatedLabel, updated, rights: {label, text}}; indice = {label, mobileLabel}; texto.clauses[] = {id, title, blocks[]} con bloques {p}, {h3}, {ul}, {dl}; texto.closing; texto.help = {title, text, mailLabel, contactLabel}. Las menciones 'Clause N' deben enlazarse a la cláusula N (LegalTemplate hoy solo reconoce 'Cláusula N'). Los campos que empiezan con _ no se imprimen.",
+  "pageId": "en-aviso",
+  "url": "/en/privacy/",
+  "estado": "aprobado",
+  "autor": "Equipo de Ingeniak (traducción con IA, 2026-11-20)",
+  "aprobadoPor": "",
+  "actualizado": "2026-11-20",
+  "pendientes": [
+    "INGLÉS · VALIDACIÓN LEGAL · La versión en inglés del aviso la debe revisar el abogado antes de publicarse. Es una traducción con IA de aviso.json (versión del 2026-11-20), cláusula por cláusula, sin agregar, quitar ni suavizar obligaciones. Siguen abiertos todos los pendientes legales de aviso.json (razón social, R10 y cookies, canales nuevos, formulario de cotización y reserva, API de conversiones de Meta).",
+    "INGLÉS · PREGUNTA AL CLIENTE · Idioma que prevalece: la intención es que, si hay diferencia entre versiones, prevalezca la versión en español. NO se agregó una cláusula de idioma prevalente al texto público; decidirlo con el abogado (si se agrega, es un cambio de redacción del aviso, no solo de traducción).",
+    "INGLÉS · Ley: primera mención como 'Mexico's Federal Law on the Protection of Personal Data Held by Private Parties (LFPDPPP)' (encabezado); en el texto legal se usa 'LFPDPPP', igual que en español. Se agregó 'Mexico's' para el lector de EE. UU.",
+    "INGLÉS · Términos de la ley: 'responsable' → 'data controller' (en la cláusula 1, 'the party responsible (data controller)'); 'encargado' → 'data processor'; 'titular' → 'data subject'. Son las equivalencias usuales; confirmar con el abogado.",
+    "INGLÉS · ARCO: se conserva 'ARCO' y se explica una vez en la cláusula 6: 'the “ARCO” rights, from the Spanish initials for Access, Rectification, Cancellation and Opposition'. Es una aclaración agregada a la traducción, no un cambio de fondo.",
+    "INGLÉS · Aclaraciones agregadas entre paréntesis para el lector de EE. UU. (no cambian obligaciones): 'RFC (Mexican taxpayer ID)'; 'PROFECO (Mexico's Federal Consumer Protection Agency)'; 'Public Registry to Avoid Advertising (Registro Público para Evitar Publicidad, REPEP)'.",
+    "INGLÉS · VALIDACIÓN LEGAL · 'cifrados' (correo y WhatsApp enviados a Meta) se tradujo como 'encrypted' para no cambiar el texto aprobado; técnicamente SHA-256 es un hash, no cifrado. El texto ya lo explica ('irreversible code (SHA-256 hash)'); el abogado puede preferir 'hashed' en ambos idiomas.",
+    "INGLÉS · El formulario «Cotizar proyecto» se nombra con su botón en inglés, “Get a quote”, porque es el que ve quien lee esta versión.",
+    "INGLÉS · CÓDIGO · LegalTemplate.astro enlaza solo 'Cláusula N' (regex /Cláusula (\\d{1,2})\\b/). En inglés el texto dice 'Clause N' (cláusulas 2, 4, 6, 7 y en la ayuda): hay que ampliar la expresión para que también enlace 'Clause N'.",
+    "INGLÉS · Fecha: 'Last updated: August 1, 2026', igual que la versión en español (sigue abierta la PREGUNTA AL CLIENTE de aviso.json sobre si cambia la fecha).",
+    "INGLÉS · CTA de la página: 'Get a quote' → /en/contact/#cotizar; waMessage en inglés con aviso de que viene del sitio en inglés."
+  ],
+  "sections": {
+    "encabezado": {
+      "_componente": "Intertitle de encabezado sobre aura (sin placa: excepción legal de D) · breadcrumb · H1 · fecha · acceso a derechos ARCO",
+      "rail": "Header",
+      "eyebrow": "Legal",
+      "h1": {
+        "text": "Privacy Policy",
+        "lit": "Privacy"
+      },
+      "deck": "How we handle the personal data you share with us, in accordance with Mexico's Federal Law on the Protection of Personal Data Held by Private Parties (LFPDPPP).",
+      "updatedLabel": "Last updated",
+      "updated": "August 1, 2026",
+      "rights": {
+        "label": "ARCO rights",
+        "text": "How to exercise them"
+      }
+    },
+    "indice": {
+      "_componente": "TOC lateral fijo con pilar de luz (escritorio) · plegable (móvil)",
+      "rail": "Contents",
+      "label": "Contents",
+      "mobileLabel": "Policy contents"
+    },
+    "texto": {
+      "_componente": "Prose (68ch) con cláusulas numeradas; ficha de contacto como <dl>",
+      "rail": "Legal text",
+      "clauses": [
+        {
+          "id": "responsable",
+          "title": "Party responsible for processing personal data",
+          "blocks": [
+            { "p": "Ingeniak Technology, LLC (hereinafter, “Ingeniak”), with its address at 131 Continental Drive, Newark, DE 19713, United States, and represented in Mexico by Ricardo Alejandro Gutiérrez Landeros, is the party responsible (data controller) for processing the personal data it collects in connection with providing its consulting, CRM system implementation, automation and performance advertising services." }
+          ]
+        },
+        {
+          "id": "datos",
+          "title": "Personal data collected",
+          "blocks": [
+            { "p": "For the purposes set out in this Privacy Policy, Ingeniak may collect the following categories of personal data:" },
+            { "ul": [
+              "Identification and contact data: name, job title, company, email address, phone number and address of the Client's contact persons.",
+              "Billing data: legal business name, RFC (Mexican taxpayer ID) or equivalent tax identifier, tax address, and the banking details needed to process payments and issue tax receipts.",
+              "Platform access data: credentials and access that the Client provides to Ingeniak to carry out the migration, configuration and support of CRM systems, Meta Business accounts, WhatsApp Business and automation tools.",
+              "Personal data of third parties (the Client's leads and end customers): name, phone number, email address and commercial interaction data contained in the CRM or other platforms that Ingeniak configures, operates or supports on the Client's behalf."
+            ] },
+            { "p": "Ingeniak does not intentionally collect sensitive personal data (racial or ethnic origin, health status, religious beliefs, union membership, sexual preferences or other data of a similar nature). If such data exists within the information the Client hosts on its own platforms, its processing is the responsibility of the Client as the original data controller of that data; Ingeniak acts solely as the technical data processor of that information in accordance with Clause 3." },
+            { "h3": "Quote form and session booking" },
+            { "p": "When you request a quote through the site's “Get a quote” form, Ingeniak collects your name, company, email address, WhatsApp number and your preferred contact method, as well as the information you choose to share about your project and your business: services of interest, goal, industry, team size, estimated budget, timeline, customer service channels, the CRM you use, your website or social media, and a description of your project. When you book a session through the site's booking pages, Ingeniak collects your name, email address, WhatsApp number, your business name and line of business, team size, approximate monthly revenue, the time slot you choose and the answers you give to prepare for the session. In both cases, technical data about the request is also recorded: the page from which you submit it, the page through which you arrived at the site and the parameters of the originating campaign." },
+            { "h3": "Site measurement and advertising tools" },
+            { "p": "The site uses Google Analytics 4 (by Google LLC) and the Meta pixel (by Meta Platforms, Inc.) to measure how it is used and how many visits end in a quote request, a booking or a WhatsApp conversation, and to show Ingeniak ads on Facebook and Instagram to people who have visited the site. These tools use cookies and similar technologies that record technical browsing data: the pages you visit, the date and time, your browser and device type, and your IP address. Google and Meta process that data in accordance with their own privacy notices and may do so outside Mexico. The site is configured not to send them your name or what you type into the forms." },
+            { "p": "When you book a Discovery Session, in addition to that technical data, the site sends Meta your email address and your WhatsApp number in encrypted form: before they leave the site, they are converted into an irreversible code (SHA-256 hash) that cannot be read. Meta uses that code only to match the booking with your Facebook or Instagram account, if you have one, and thus measure whether you arrived through an Ingeniak ad. You may object to this use at any time through the procedure in Clause 6; doing so does not affect your booking or the services." },
+            { "p": "You can delete or block cookies from your browser settings, turn off Google Analytics measurement with the opt-out browser add-on offered by Google, and choose which ads you see on Facebook and Instagram from the ad settings of your Meta account. Doing so does not prevent you from using the site." }
+          ]
+        },
+        {
+          "id": "calidad",
+          "title": "Capacity in which Ingeniak processes data",
+          "blocks": [
+            { "p": "With respect to the Client's own identification, contact and billing data, Ingeniak acts as the data controller. With respect to the personal data of the Client's leads and end customers residing within the CRM systems that Ingeniak implements, configures or operates on the Client's behalf, Ingeniak acts as the data processor, and processes such information solely in accordance with the Client's instructions and for the purposes of the corresponding services agreement." }
+          ]
+        },
+        {
+          "id": "finalidades",
+          "title": "Purposes of processing",
+          "blocks": [
+            { "h3": "Primary purposes (necessary for the contractual relationship)" },
+            { "ul": [
+              "Providing the CRM and automation migration, implementation, configuration, support and maintenance services contracted by the Client.",
+              "Processing payments, issuing tax receipts and handling the administrative follow-up of the business relationship.",
+              "Complying with the obligations set out in the corresponding services agreement.",
+              "Providing technical support, incident handling and operational communication related to the contracted services."
+            ] },
+            { "h3": "Secondary purposes (not necessary, but providing an additional benefit)" },
+            { "ul": [
+              "Sending communications about new services, improvements or content relevant to the Client.",
+              "Requesting feedback on the services provided for continuous improvement purposes.",
+              "Internal statistical purposes regarding the performance of implemented projects."
+            ] },
+            { "p": "The Client may object to the processing of its data for secondary purposes, without affecting the provision of the contracted services, by following the procedure set out in Clause 6." },
+            { "h3": "Quote form and session booking" },
+            { "p": "Data from the quote form and from bookings is used to contact you by WhatsApp and email about your request, prepare your quote and, where applicable, schedule and conduct the sessions you book. The following act as data processors for this purpose: Kommo, the CRM in which your request is recorded; Google Calendar and Google Meet, for scheduling and the session's video call; Stripe, to process payment for the Power Session (Ingeniak does not receive or store your card details); and Vercel, which hosts the site." }
+          ]
+        },
+        {
+          "id": "transferencia",
+          "title": "Transfers of personal data",
+          "blocks": [
+            { "p": "To provide its services, Ingeniak may share personal data with the following third parties, exclusively for the purposes described herein:" },
+            { "ul": [
+              "Technology infrastructure providers and CRM platforms (for example, GoHighLevel/Somos Scala, Kommo), for the operation of the contracted system.",
+              "Meta Platforms, Inc., for connecting and verifying WhatsApp Business, Instagram and Meta Ads accounts.",
+              "Hosting, payment processing and invoicing service providers.",
+              "Competent authorities, when there is a valid legal requirement."
+            ] },
+            { "p": "Ingeniak does not sell, rent or trade personal data for purposes other than those set out herein. Because Ingeniak Technology, LLC is an entity incorporated in the United States, the processing of personal data may involve its storage and processing outside Mexican territory; Ingeniak adopts reasonable contractual and technical measures so that such processing maintains a level of protection consistent with the principles of the LFPDPPP." }
+          ]
+        },
+        {
+          "id": "arco",
+          "title": "ARCO rights and how to exercise them",
+          "blocks": [
+            { "p": "The data subject has the right at all times to Access their personal data, Rectify it if it is inaccurate, Cancel it when they consider that it is not being processed in accordance with the principles and obligations of the law, and Object to its processing for specific purposes (the “ARCO” rights, from the Spanish initials for Access, Rectification, Cancellation and Opposition). The data subject may also revoke the consent granted for the processing of their data." },
+            { "p": "To exercise any of these rights, the data subject must send a request by email to the address listed in Clause 9, stating: (i) the data subject's full name and contact details; (ii) a document proving their identity or legal representation; (iii) a clear and precise description of the personal data with respect to which they seek to exercise the corresponding right; and (iv) any other information that helps locate the data. Ingeniak will respond to the request within a maximum of 20 (twenty) business days, which may be extended under applicable law." }
+          ]
+        },
+        {
+          "id": "limitar",
+          "title": "Means to limit the use or disclosure of data",
+          "blocks": [
+            { "p": "The data subject may limit the use or disclosure of their personal data by sending a request to the email address listed in Clause 9. In addition, the data subject may register with the Public Registry to Avoid Advertising (Registro Público para Evitar Publicidad, REPEP) of PROFECO (Mexico's Federal Consumer Protection Agency), if that registry applies to them, to limit the receipt of third-party advertising." }
+          ]
+        },
+        {
+          "id": "seguridad",
+          "title": "Security measures",
+          "blocks": [
+            { "p": "Ingeniak has implemented reasonable administrative, technical and physical security measures to protect the personal data it processes against damage, loss, alteration, destruction, or unauthorized use, access or disclosure, including the use of restricted access credentials, role-based access control within the configured platforms and confidentiality agreements with its team and collaborators." }
+          ]
+        },
+        {
+          "id": "contacto",
+          "title": "Contact and request procedure",
+          "blocks": [
+            { "dl": [
+              { "term": "Data controller", "value": "Ingeniak Technology, LLC" },
+              { "term": "Representative in Mexico", "value": "Ricardo Alejandro Gutiérrez Landeros" },
+              { "term": "Contact email", "value": "contacto@ingeniak.mx" },
+              { "term": "Website", "value": "ingeniak.mx" }
+            ] }
+          ]
+        },
+        {
+          "id": "modificaciones",
+          "title": "Changes to this Privacy Policy",
+          "blocks": [
+            { "p": "Ingeniak may modify or update this Privacy Policy at any time as a result of new legal requirements, our own needs arising from the services we offer, changes in our business model, or other causes. Any modification will be published at ingeniak.mx and, where applicable, communicated directly to the Client by email." }
+          ]
+        },
+        {
+          "id": "consentimiento",
+          "title": "Consent",
+          "blocks": [
+            { "p": "By providing their personal data to Ingeniak, whether directly, through a services agreement, or through the use of the platforms that Ingeniak implements and operates, the data subject states that they have read and understood the terms of this Privacy Policy and grants their consent to them." }
+          ]
+        }
+      ],
+      "closing": "Ingeniak Technology, LLC · ingeniak.mx · This Privacy Policy forms part of the contractual relationship between Ingeniak and its Clients and supplements, without replacing, the terms and conditions agreed upon in the corresponding services agreements.",
+      "help": {
+        "title": "Questions about this policy?",
+        "text": "To exercise your ARCO rights or limit the use of your data, write to the email address in Clause 9. For any other question, you can also message us on WhatsApp.",
+        "mailLabel": "contacto@ingeniak.mx",
+        "contactLabel": "All the ways to reach us"
+      }
+    }
+  }
+}

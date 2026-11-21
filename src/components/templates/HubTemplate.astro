@@ -60,13 +60,31 @@ import { ledeParts, eyebrowRepeatsCrumbs, builtCrumbs } from './heroKit';
 import { head, fallbackOf, safeEdge, hasAnchor, showsPerson, usesFallback } from './hub/hubKit';
 import { pages, waHref, SITE, linkTarget, isBuilt, type Page } from '../../lib/site';
 import { METRICS, type MetricId } from '../../lib/metrics';
+import { L } from '../../lib/i18n';
 
 interface Props { page: Page; copy: any }
 const { page, copy } = Astro.props;
 const P = page as any;
 const C: Record<string, any> = copy?.sections ?? {};
 const dev = import.meta.env.DEV;
-const hub: string = P.id;                                   // servicios · industrias · casos · blog
+const hub: string = String(P.id).replace(/^en-/, '');      // servicios · industrias · casos · blog (en-servicios → servicios)
+// Textos escritos en código (versión en inglés, 2026-11-20).
+const T = {
+  hola: L({ es: 'Hola Kain', en: "Hi Kain, I'm coming from the English site." }),
+  wa: L({ es: 'Escríbele a Kain', en: 'Message Kain' }),
+  fig1: L({ es: 'Fig. 01 · Kain', en: 'Fig. 01 · Kain' }),
+  featured: L({ es: 'Guía destacada', en: 'Featured guide' }),
+  def: L({ es: 'Definición', en: 'Definition' }),
+  signals: L({ es: 'Señales y por dónde empezar', en: 'Warning signs and where to start' }),
+  protocol: L({ es: 'Conoce el protocolo completo', en: 'See the full protocol' }),
+  sector: L({ es: 'SECTOR', en: 'INDUSTRY' }),
+  editor: L({ es: 'Nota del editor', en: "Editor's note" }),
+  method: L({ es: 'Nota de método', en: 'Method note' }),
+  motion: L({ es: 'El sistema en movimiento', en: 'The system in motion' }),
+  demo: L({ es: 'Vista demo', en: 'Demo view' }),
+  stack: L({ es: 'Con qué construimos', en: 'What we build with' }),
+  faq: L({ es: 'Preguntas frecuentes', en: 'Frequently asked questions' }),
+};
 
 /* ── utilidades ─────────────────────────────────────────────────────────── */
 const list = ((P.sections ?? []) as any[]).filter((s) => s?.id && C[s.id] && !C[s.id]._omitir && s.status !== 'conditional');
@@ -74,8 +92,8 @@ const ids = list.map((s) => s.id);
 const sec = (id: string) => list.find((s) => s.id === id);
 const cp = (id: string) => (C[id] && !C[id]._omitir ? C[id] : null);
 const plateOf = (id: string) => sec(id)?.plate ?? null;
-const wa = (c?: any) => (c?.ctaSecondary?.waMessage ? waHref(c.ctaSecondary.waMessage) : P.secondaryCta?.href ?? waHref('Hola Kain'));
-const waLabel = (c?: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? 'Escríbele a Kain';
+const wa = (c?: any) => (c?.ctaSecondary?.waMessage ? waHref(c.ctaSecondary.waMessage) : P.secondaryCta?.href ?? waHref(T.hola));
+const waLabel = (c?: any) => c?.ctaSecondary?.label ?? P.secondaryCta?.label ?? T.wa;
 // "cotizar": true (o una landing oculta) → disparador del modal: <a href={l.href} {...l.attrs}> (CAMBIO-COTIZAR §1.2).
 const built = (l?: any[]) => (l ?? []).map((x) => quoteLink(x, undefined, P.url)).filter((x) => x?.href && isBuilt(x.href));
 const lay = (p: any) => (p?.layout && p.layout !== 'sin sujeto' ? p.layout : undefined);
@@ -105,7 +123,7 @@ const figFits = (() => {
 })();
 /** Palabra más larga del H1 (en letras): el titular escala para que ninguna palabra se salga de su columna. */
 const longest = (h: any) => Math.max(8, ...[h?.text, h?.soft].filter(Boolean).join(' ').split(/\s+/).map((w: string) => w.replace(/[^\p{L}\p{N}]/gu, '').length));
-const figTitle = (f: any) => String(f?.label ?? 'Fig. 01 · Kain').replace(/^Fig\.\s*\d+\s*·\s*/, '');
+const figTitle = (f: any) => String(f?.label ?? T.fig1).replace(/^Fig\.\s*\d+\s*·\s*/, '');
 // Casos: sumario de 3 cifras en la portada (F7), del lado del texto
 const sumarioIds = ((hero?.sumario?.metricIds ?? []) as MetricId[]).filter((m) => (METRICS as any)[m]).slice(0, 3);
 // Blog: "imagen ilustrativa" si la portada muestra a una persona; guía destacada si alguna ya existe
@@ -198,7 +216,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           {/* Guía destacada (D: "artículo destacado sobre la imagen"): solo si alguna guía ya existe. R3: en móvil baja a `more` */}
           {featured && (
             <p class="hub-featured tpl-mhide">
-              <span class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{hero.featured?.label ?? 'Guía destacada'}</span>
+              <span class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{hero.featured?.label ?? T.featured}</span>
               <a class="lnk" href={featured.href}>{featured.title} <Icon name="arrow" size={16} /></a>
             </p>
           )}
@@ -212,7 +230,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
               {heroLede.rest && <Copy as="p" class="t-lede t-lede--2 hub-hero__rest tpl-dhide" text={heroLede.rest} />}
               {featured && (
                 <p class="hub-featured tpl-dhide">
-                  <span class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{hero.featured?.label ?? 'Guía destacada'}</span>
+                  <span class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{hero.featured?.label ?? T.featured}</span>
                   <a class="lnk" href={featured.href}>{featured.title} <Icon name="arrow" size={16} /></a>
                 </p>
               )}
@@ -230,7 +248,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           <Intertitle id={takeNext} rack aura="none" class={`hub-def hub-def--${hub}${rHero?.layout === 'subject-left' ? ' hub-def--right' : ''} tpl-glow`} labelledby={d.definition ? `${takeNext}-d-q` : `${takeNext}-t`}>
             <Aura kind="ondas" x="45%" y="108%" o={1} only="d" />
             {d.definition ? (
-              <DefinitionBlock id={`${takeNext}-d`} faqId={d.definition.faqId} heading={d.definition.heading} text={d.definition.text} label={d.eyebrow ?? 'Definición'} headingLevel={2} />
+              <DefinitionBlock id={`${takeNext}-d`} faqId={d.definition.faqId} heading={d.definition.heading} text={d.definition.text} label={d.eyebrow ?? T.def} headingLevel={2} />
             ) : (
               <>
                 <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(d)} />
@@ -283,7 +301,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           {noSe.lede && <Copy as="p" class="t-lede t-lede--2" text={noSe.lede} />}
           <Fragment slot="more">
             <Aura kind="ondas" x="50%" o={1} only="m" sticky />
-            {items.length > 0 && <PainList items={items} mode="draw" label={noSe.eyebrow ?? 'Señales y por dónde empezar'} class="hub-nose__list" />}
+            {items.length > 0 && <PainList items={items} mode="draw" label={noSe.eyebrow ?? T.signals} class="hub-nose__list" />}
             <div class="ctas hub-nose__ctas">
               {/* /servicios/#no-se: el modal abre con «No estoy seguro» marcado (§1.3) */}
               <Btn variant="primary" cotizar={{ servicio: 'no-seguro' }} data-section="no-se" label={primaryLabel(noSe)} micro />
@@ -307,7 +325,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
             {v.lede && <Copy as="p" class="t-lede t-lede--2" text={v.lede} data-reveal />}
           </div>
           <VktorRail variant="phases" lines={(v.phases ?? []).map((f: any) => f.line)} href={(link?.href && linkTarget(link.href)) || false}
-            linkLabel={link?.label ?? 'Conoce el protocolo completo'} class="hub-vk__rail" />
+            linkLabel={link?.label ?? T.protocol} class="hub-vk__rail" />
         </Intertitle>
       );
     }
@@ -317,7 +335,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
       const g = cp(id);
       if (!sectors.length) return null;
       return (
-        <LocationSwitcher id={id} sectors={sectors} label="SECTOR" class="hub-loc">
+        <LocationSwitcher id={id} sectors={sectors} label={T.sector} class="hub-loc">
           {/* Sin aura propia: en móvil la luz la da la placa del sector activo (un aura pegajosa detrás de la lista bajaba el
               contraste de las líneas en muted, check:contraste) */}
           {g.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(g)} />}
@@ -348,7 +366,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           {cif.eyebrow && <p class="t-label t-label--cyan eyebrow" set:html={eyebrowOf(cif)} />}
           <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(cif.h2)} />
           {cif.lede && <Copy as="p" class="t-lede t-lede--2 hub-cifras__lede" text={cif.lede} data-reveal />}
-          {cif.note && <EditorNote label={cif.noteLabel ?? 'Nota del editor'} class="hub-cifras__note"><Copy as="p" text={cif.note} /></EditorNote>}
+          {cif.note && <EditorNote label={cif.noteLabel ?? T.editor} class="hub-cifras__note"><Copy as="p" text={cif.note} /></EditorNote>}
           <Fragment slot="foot">
             {built(cif.links).map((l: any) => <a class="lnk" href={l.href} {...l.attrs}>{l.label} <span aria-hidden="true">→</span></a>)}
           </Fragment>
@@ -383,7 +401,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
             <h2 id={`${id}-t`} class="t-h2" data-split set:html={head(m.h2)} />
           </Fragment>
           <Aura kind="isotipo" x="78%" y="40%" o={0.55} only="d" />
-          <EditorNote label={m.noteLabel ?? 'Nota de método'} class="hub-method__note">
+          <EditorNote label={m.noteLabel ?? T.method} class="hub-method__note">
             <dl class="hub-method__list">
               {((m.items ?? []) as any[]).map((it) => (
                 <div class="hub-method__row">
@@ -454,7 +472,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
             <figure class="hub-live__film" data-nosnippet>
               <div class="hub-live__screen">
                 <video class="hub-live__video" data-ambient muted loop playsinline preload="none"
-                  poster={s.motion.poster} width={1920} height={1080} aria-label={s.motion.title ?? 'El sistema en movimiento'}>
+                  poster={s.motion.poster} width={1920} height={1080} aria-label={s.motion.title ?? T.motion}>
                   {s.motion.webm && <source src={s.motion.webm} type="video/webm" />}
                   <source src={s.motion.src} type="video/mp4" />
                 </video>
@@ -473,7 +491,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
                   </div>
                   <figure class="hub-live__shot" data-ui-reveal="lift" data-nosnippet>
                     <img src={w.img} alt={w.alt ?? w.title} width={1600} height={905} loading="lazy" decoding="async" />
-                    <span class="chip-sim hub-live__chip">Vista demo</span>
+                    <span class="chip-sim hub-live__chip">{T.demo}</span>
                   </figure>
                 </li>
               ))}
@@ -520,7 +538,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           <Aura kind="ondas" x="50%" y="45%" o={1} only="m" />
           <div class="frame hub-stack__frame">
             <div class="hub-stack__head">
-              <h2 id={`${id}-t`} class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{st.eyebrow ?? 'Con qué construimos'}</h2>
+              <h2 id={`${id}-t`} class="t-label t-label--cyan eyebrow"><span class="node" aria-hidden="true"></span>{st.eyebrow ?? T.stack}</h2>
               {st.lede && <Copy as="p" class="hub-stack__lede" text={st.lede} />}
               <PartnerBadges size="sm" class="hub-stack__partners" />
             </div>
@@ -549,7 +567,7 @@ const eyebrowOf = (c: any, tone: 'cyan' | 'amber' = 'cyan') =>
           </Fragment>
           <Aura kind="ondas" x="50%" y="104%" o={1} only="d" />
           <Aura kind="ondas" x="50%" o={1} only="m" sticky />
-          <FAQAccordion ids={f.faqIds} glass id={`${id}-list`} label={f.h2?.text ?? 'Preguntas frecuentes'} />
+          <FAQAccordion ids={f.faqIds} glass id={`${id}-list`} label={f.h2?.text ?? T.faq} />
         </Intertitle>
       );
     }

@@ -6,7 +6,8 @@ import navegacion from '../data/navegacion.json';
 import plates from '../data/plates.json';
 import fs from 'node:fs';
 import { isNoindex, gatePending, isHidden, isOpenLanding } from './indexacion.mjs';
-import { METRICS, OFFERS, PRICES, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE } from './metrics';
+import { METRICS, OFFERS, PRICES, PRICE_FROM, PRICE_FROM_CAP, SOURCE_NOTE, metricText, priceText } from './metrics';
+import { langOfPage, currentLang, type Lang } from './i18n';
 import path from 'node:path';
 
 export const SITE = {
@@ -41,52 +42,59 @@ export type Page = (typeof sitemap)[number];
  * (QA ronda 1: la meta de /industrias/salud/ llevaba "3.2× … y respuesta en 12 s" escrito a mano). Así <title>,
  * meta description, og:*, JSON-LD y llms.txt cambian solos con METRICS. check-cifras falla si queda una cifra suelta. */
 const SITE_TOKEN_RX = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|offer:([a-z0-9-]+)|price:([a-z0-9-]+)|price|Price|source)\}\}/g;
-export function resolveTokens<T>(s: T): T {
+export function resolveTokens<T>(s: T, lang: Lang = 'es'): T {
   if (typeof s !== 'string' || !s.includes('{{')) return s;
   return s.replace(SITE_TOKEN_RX, (all, k: string, id: string, mod?: string, offer?: string, priceId?: string) => {
     // {{price:ID}}: precio "desde" de un servicio (PRICES de metrics.ts).
     if (priceId) {
-      const p = (PRICES as Record<string, string>)[priceId];
-      if (!p) throw new Error(`[site] sitemap.json: precio desconocido ${all}`);
-      return p;
+      if (!(PRICES as Record<string, string>)[priceId]) throw new Error(`[site] sitemap.json: precio desconocido ${all}`);
+      return priceText('price:' + priceId, lang);
     }
     // {{offer:ID}}: oferta de una landing oculta (OFFERS de metrics.ts, R18). Solo se publica en OFFER_ROUTES (check-cifras).
     if (offer) {
-      const o = (OFFERS as Record<string, string>)[offer];
-      if (!o) throw new Error(`[site] sitemap.json: oferta desconocida ${all}`);
-      return o;
+      if (!(OFFERS as Record<string, string>)[offer]) throw new Error(`[site] sitemap.json: oferta desconocida ${all}`);
+      return priceText('offer:' + offer, lang);
     }
-    if (k === 'price') return PRICE_FROM;
-    if (k === 'Price') return PRICE_FROM_CAP;
-    if (k === 'source') return SOURCE_NOTE;
-    const m = (METRICS as Record<string, { value: string; label: string; prose?: string }>)[id];
-    if (!m) throw new Error(`[site] sitemap.json: cifra desconocida ${all}`);
-    return mod === 'prose' ? (m.prose ?? `${m.value} ${m.label}`) : mod === 'full' ? `${m.value} ${m.label}` : m.value;
+    if (k === 'price' || k === 'Price' || k === 'source') return priceText(k, lang);
+    if (!(METRICS as Record<string, unknown>)[id]) throw new Error(`[site] sitemap.json: cifra desconocida ${all}`);
+    return metricText(id as any, (mod as any) ?? 'value', lang);
   }) as T;
 }
-export const pages = (sitemap as Page[]).map((p) => ({
+/** Todas las entradas de sitemap.json, español e inglés (versión en inglés, 2026-11-20: entradas "en-<id>" con lang "en"). */
+export const allPages = (sitemap as Page[]).map((p) => ({
   ...p,
-  title: resolveTokens(p.title),
-  metaDescription: resolveTokens(p.metaDescription),
-  h1: resolveTokens(p.h1),
+  title: resolveTokens(p.title, langOfPage(p as any)),
+  metaDescription: resolveTokens(p.metaDescription, langOfPage(p as any)),
+  h1: resolveTokens(p.h1, langOfPage(p as any)),
 })) as Page[];
+/** Páginas en español: las que listan menús, footer, ⌘K, hubs, "Sigue explorando", llms.txt y las rutas [slug]. */
+export const pages = allPages.filter((p) => (p as any).lang !== 'en');
+/** Páginas en inglés (/en/…). */
+export const enPages = allPages.filter((p) => (p as any).lang === 'en');
 export const nav = navegacion as any;
 
 export function getPage(url: string): Page {
-  const p = pages.find((x) => x.url === url);
+  const p = allPages.find((x) => x.url === url);
   if (!p) throw new Error(`[site] página no encontrada en sitemap.json: ${url}`);
   return p;
 }
 export function getPageById(id: string): Page | undefined {
-  return pages.find((x) => x.id === id);
+  return allPages.find((x) => x.id === id);
 }
 export function section(page: Page, id: string): any {
   return (page.sections as any[]).find((s) => s.id === id);
 }
 
 export type Plate = any;
+/** Alt de las placas en inglés (versión /en/, 2026-11-20): src/data/plates-en.json → { id: { alt, altBy? } }. */
+const platesEnFiles = import.meta.glob('../data/plates-en.json', { eager: true, import: 'default' }) as Record<string, any>;
+const PLATES_EN: Record<string, { alt?: string; altBy?: Record<string, string> }> = Object.values(platesEnFiles)[0] ?? {};
 export function getPlate(id: string): Plate | undefined {
-  return (plates as Record<string, Plate>)[id];
+  const p = (plates as Record<string, Plate>)[id];
+  const en = p && currentLang() === 'en' ? PLATES_EN[id] : undefined;
+  if (!en) return p;
+  const altBy = Object.fromEntries(Object.entries(en.altBy ?? {}).map(([k, v]) => [k.startsWith('en-') ? k : `en-${k}`, v]));
+  return { ...p, alt: en.alt ?? p.alt, altBy: { ...(p.altBy ?? {}), ...altBy } };
 }
 /** Alt de una placa para un uso concreto (R11): plates.json → altBy[pageId] (p. ej. home-sistema-2-atender como portada de
  *  agentes-whatsapp, con la conversación registrada en su teléfono) o, si no hay, su alt general. */
@@ -141,10 +149,10 @@ const routeExists = (url: string) => ROUTE_RX.some((rx) => rx.test(url));
 
 /** URLs de sitemap.json que hoy existen como página (con copy + ruta). El 404 cuenta aunque no tenga copy propio. */
 export const builtRoutes: Set<string> = new Set(
-  pages.filter((p) => routeExists(p.url) && (hasCopyFile(p.id) || p.template === 'T-404')).map((p) => p.url),
+  allPages.filter((p) => routeExists(p.url) && (hasCopyFile(p.id) || p.template === 'T-404')).map((p) => p.url),
 );
 /** URLs de sitemap.json planeadas que todavía no se construyen (puerta R12: copy aprobado + plantilla). */
-export const plannedRoutes: Set<string> = new Set(pages.map((p) => p.url).filter((u) => !builtRoutes.has(u)));
+export const plannedRoutes: Set<string> = new Set(allPages.map((p) => p.url).filter((u) => !builtRoutes.has(u)));
 
 /** Normaliza un href interno a la URL de sitemap.json ('/x/y/'): sin origen, query ni hash, con barra final. */
 export function normRoute(href: string): string | null {
@@ -195,12 +203,14 @@ export function isGatePending(page: Page): boolean { return gatePending(page, co
 export function pageNoindex(page: Page): boolean { return isNoindex(page, copyOrNull(page.id)); }
 /** Páginas que van a sitemap.xml, llms.txt y llms-full.txt (R8): construidas, indexables y sin puerta pendiente. */
 export function indexablePages(): Page[] { return pages.filter((p) => builtRoutes.has(p.url) && !pageNoindex(p)); }
+/** Páginas en inglés indexables (versión /en/, 2026-11-20): van a sitemap.xml y a una sección propia de llms*.txt. */
+export function indexableEnPages(): Page[] { return enPages.filter((p) => builtRoutes.has(p.url) && !pageNoindex(p)); }
 
 /* ───────────────────────── Landings ocultas (ESPEC §12.6 R17) ─────────────────────────
  * sitemap.json → "hidden": true. Salen con noindex,follow (isNoindex) y fuera de sitemap.xml, llms*.txt, /indice.json,
  * menús, footer, "Sigue explorando" y de cualquier enlace desde una página pública (check-cta y check-seo lo vigilan). */
 /** URLs de las landings ocultas ('/discovery/', '/power-session/', '/agendar/confirmado/'). */
-export const hiddenRoutes: Set<string> = new Set(pages.filter((p) => isHidden(p)).map((p) => p.url));
+export const hiddenRoutes: Set<string> = new Set(allPages.filter((p) => isHidden(p)).map((p) => p.url));
 /** ¿La página es una landing oculta? */
 export function isHiddenPage(page: Page | null | undefined): boolean { return isHidden(page); }
 /** ¿El href lleva a una landing oculta (o a la agenda externa de v1)? Acepta rutas, URLs absolutas de ingeniak.mx y hash/query. */
@@ -208,10 +218,10 @@ export function isHiddenRoute(href: string | null | undefined): boolean {
   if (!href) return false;
   if (/agenda\.ingeniak\.tech/i.test(href)) return true;
   const r = normRoute(href);
-  return !!r && (hiddenRoutes.has(r) || r.startsWith('/agendar/'));
+  return !!r && (hiddenRoutes.has(r) || r.startsWith('/agendar/') || r.startsWith('/en/book/'));
 }
 /** Landings abiertas (cambio 2026-11-14): indexables y enlazables desde el cuerpo de un artículo del blog. */
-export const openLandingRoutes: Set<string> = new Set(pages.filter((p) => isOpenLanding(p)).map((p) => p.url));
+export const openLandingRoutes: Set<string> = new Set(allPages.filter((p) => isOpenLanding(p)).map((p) => p.url));
 /** ¿El href lleva a una landing abierta ('/discovery/', '/power-session/')? Devuelve la ruta normalizada o null. */
 export function openLandingRoute(href: string | null | undefined): string | null {
   const r = href ? normRoute(href) : null;

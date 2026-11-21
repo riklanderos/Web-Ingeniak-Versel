@@ -317,3 +317,82 @@ export function phoneToE164(s) {
   const digits = String(s ?? '').replace(/\D/g, '').slice(0, 15);
   return digits ? `+${digits}` : '';
 }
+
+/* ───────────────────────── Versión en inglés (/en/, 2026-11-20) ─────────────────────────
+ * El formulario en inglés manda los MISMOS valores en español (los valida el servidor y llegan así a Kommo); solo cambia
+ * lo que ve la persona: etiquetas de las opciones, errores y fechas. */
+/** @type {Record<string, string>} */
+export const OPTION_LABELS_EN = {
+  'Salud': 'Healthcare',
+  'Belleza y estética': 'Beauty and aesthetics',
+  'Nutrición': 'Nutrition',
+  'Finanzas': 'Finance',
+  'Inmobiliario': 'Real estate',
+  'Industrial y logística': 'Industrial and logistics',
+  'Retail y e-commerce': 'Retail and e-commerce',
+  'Restaurantes y hoteles': 'Restaurants and hotels',
+  'Servicios profesionales': 'Professional services',
+  'Construcción': 'Construction',
+  'Educación': 'Education',
+  'Agencia o marketing': 'Agency or marketing',
+  'Automotriz': 'Automotive',
+  'Tecnología y software': 'Technology and software',
+  'Otra': 'Other',
+  'Solo yo': 'Just me',
+  'Más de 200': 'More than 200',
+  'Menos de USD 15,000': 'Under USD 15,000',
+  'USD 15,000 a 20,000': 'USD 15,000 to 20,000',
+  'USD 20,000 a 30,000': 'USD 20,000 to 30,000',
+  'USD 30,000 a 50,000': 'USD 30,000 to 50,000',
+  'USD 50,000 a 100,000': 'USD 50,000 to 100,000',
+  'USD 100,000 a 150,000': 'USD 100,000 to 150,000',
+  'Más de USD 150,000': 'More than USD 150,000',
+  'Apenas voy a empezar': "I'm just getting started",
+  'Atender WhatsApp y prospectos': 'Answering WhatsApp and leads',
+  'Cotizar': 'Preparing quotes',
+  'Cobrar y dar seguimiento a pagos': 'Collecting and chasing payments',
+  'Supervisar al equipo': 'Supervising the team',
+  'Atención a clientes y quejas': 'Customer service and complaints',
+  'Administración y facturación': 'Admin and invoicing',
+  'Compras y proveedores': 'Purchasing and suppliers',
+  'Marketing y contenido': 'Marketing and content',
+  'Otro': 'Other',
+};
+/** Etiqueta visible de una opción en el idioma de la página (el valor no cambia). */
+export const optionLabel = (/** @type {string} */ v, /** @type {'es'|'en'} */ lang) => (lang === 'en' ? OPTION_LABELS_EN[v] ?? v : v);
+
+/** Mismas claves que ERRORS. */
+export const ERRORS_EN = {
+  fullName: 'Enter your full name.',
+  email: "Check your email: that's where your invite goes.",
+  whatsapp: 'Include your WhatsApp with country code (10 digits or more).',
+  businessName: 'Enter your business name.',
+  website: '200 characters max.',
+  industry: 'Pick an industry.',
+  teamSize: 'Pick your team size.',
+  revenue: 'Pick a range.',
+  timeDrainsMin: 'Pick at least one.',
+  timeDrainsMax: '3 options max.',
+  tools: 'Tell us what you use today (CRM, Excel, WhatsApp…).',
+  goalPower: 'Tell us in at least 20 characters what you want to solve in the session.',
+  goalDiscovery: 'Tell us in at least 10 characters what you want to review on the call.',
+};
+/** Error en el idioma de la página: recibe el texto en español que devuelve validateForm. */
+export function errorText(/** @type {string} */ es, /** @type {'es'|'en'} */ lang) {
+  if (lang !== 'en') return es;
+  const k = /** @type {keyof typeof ERRORS} */ (Object.keys(ERRORS).find((x) => ERRORS[/** @type {keyof typeof ERRORS} */ (x)] === es));
+  return k ? ERRORS_EN[k] : es;
+}
+/** "Tuesday, October 21 · 10:00 AM" (hora CDMX), para la versión en inglés. */
+export function formatSlotEn(/** @type {string} */ iso) {
+  const d = new Date(iso);
+  const day = new Intl.DateTimeFormat('en-US', { timeZone: CDMX_TZ, weekday: 'long', month: 'long', day: 'numeric' }).format(d);
+  const time = new Intl.DateTimeFormat('en-US', { timeZone: CDMX_TZ, hour: 'numeric', minute: '2-digit', hour12: true }).format(d);
+  return `${day} · ${time}`;
+}
+/** { weekday, day, month } de una fecha AAAA-MM-DD en inglés (días del paso 2). */
+export function formatDayEn(/** @type {string} */ date) {
+  const d = new Date(`${date}T12:00:00${CDMX_OFFSET}`);
+  const f = (/** @type {Intl.DateTimeFormatOptions} */ o) => new Intl.DateTimeFormat('en-US', { timeZone: CDMX_TZ, ...o }).format(d);
+  return { weekday: f({ weekday: 'long' }), day: f({ day: 'numeric' }), month: f({ month: 'long' }) };
+}

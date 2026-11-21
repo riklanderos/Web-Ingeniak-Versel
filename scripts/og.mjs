@@ -39,7 +39,16 @@ const built = (p) => !!copyOf(p.id) && routeFiles.some((rx) => rx.test(p.url));
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const fileUrl = (p) => pathToFileURL(p).href;
 const TOKEN = /\{\{(metric:([a-z0-9-]+)(?:\|(full|prose))?|price|Price|source)\}\}/g;
+// Versión en inglés (/en/, 2026-11-20): las tarjetas de las páginas en inglés usan cifras, etiquetas y rótulos en inglés.
+import { loadMetricsEn } from './_html.mjs';
+const EN_M = loadMetricsEn();
+let EN = false;
 const plain = (s) => String(s ?? '').replace(TOKEN, (_, k, id, mod) => {
+  if (EN) {
+    if (k === 'price') return EN_M.PRICE_FROM; if (k === 'Price') return EN_M.PRICE_FROM_CAP; if (k === 'source') return EN_M.SOURCE_NOTE;
+    const m = EN_M.metrics[id] ?? {};
+    return mod === 'prose' ? (m.prose ?? `${m.value} ${m.label}`) : mod === 'full' ? `${m.value} ${m.label}` : m.value ?? '';
+  }
   if (k === 'price') return PRICE; if (k === 'Price') return PRICE_CAP; if (k === 'source') return SOURCE_NOTE;
   const v = metricValue(id) ?? '', l = metricField(id, 'label') ?? '';
   return mod === 'prose' ? (metricField(id, 'prose') ?? `${v} ${l}`) : mod === 'full' ? `${v} ${l}` : v;
@@ -48,10 +57,11 @@ const plain = (s) => String(s ?? '').replace(TOKEN, (_, k, id, mod) => {
 const LABEL = 'Agencia de IA · Guadalajara';
 /** Etiqueta de la tarjeta: en casos, sector y ciudad del caso (chips de la portada del copy), nunca la sede. */
 function labelOf(page) {
-  if (page.template !== 'T-CASE') return LABEL;
+  EN = page.lang === 'en';
+  if (page.template !== 'T-CASE') return EN ? 'AI agency · Guadalajara' : LABEL;
   const chips = copyOf(page.id)?.sections?.hero?.chips ?? [];
   const sector = plain(chips[0] ?? '').trim(), city = plain(chips[1] ?? '').split(',')[0].trim();
-  return ['Caso', sector, city].filter(Boolean).join(' · ');
+  return [EN ? 'Case study' : 'Caso', sector, city].filter(Boolean).join(' · ');
 }
 const FONT = (f) => fileUrl(join(ROOT, 'public/fonts', f));
 const LOGO = readFileSync(join(ROOT, 'public/img/marca/imagotipo.svg'), 'utf8').replace(/<\?xml[^>]*>/, '');
@@ -108,7 +118,7 @@ function html({ plate, mirror, fx, head, chip, label = LABEL, illus = false, met
     : L.center
       ? `.plate{position:absolute;top:0;bottom:0;left:${L.center.shift}px;width:${L.center.pw}px;background:url("${fileUrl(plate)}") 0 0 / 100% 100% no-repeat;${mirror ? 'transform:scaleX(-1);' : ''}-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 240px,#000 calc(100% - 120px),transparent 100%)}`
       : `.plate{position:absolute;inset:0;background:url("${fileUrl(plate)}") ${Math.round((fx ?? 0.5) * 100)}% 42% / cover no-repeat;${mirror ? 'transform:scaleX(-1);' : ''}}`;
-  return `<!doctype html><html lang="es-MX"><head><meta charset="utf-8"><style>
+  return `<!doctype html><html lang="${EN ? 'en-US' : 'es-MX'}"><head><meta charset="utf-8"><style>
 @font-face{font-family:Lexend;src:url(${FONT('lexend-var-latin.woff2')}) format("woff2");font-weight:100 900}
 @font-face{font-family:Lexend;src:url(${FONT('lexend-var-latin-ext.woff2')}) format("woff2");font-weight:100 900;unicode-range:U+0100-02BA,U+1E00-1EFF}
 @font-face{font-family:Inter;src:url(${FONT('inter-var-latin.woff2')}) format("woff2");font-weight:300 700}
@@ -141,7 +151,7 @@ ${plate ? '' : '<div class="aura"></div>'}<div class="plate"></div><div class="v
   </div>
   <div class="foot"><span>ingeniak.mx</span>${chip ? `<span class="chip">${esc(chip)}</span>` : ''}${head.metric && SOURCE_NOTE ? `<span class="src">Fuente: ${esc(SOURCE_NOTE.charAt(0).toLowerCase() + SOURCE_NOTE.slice(1))}.</span>` : ''}</div>
 </div>
-${illus ? '<span class="illus">Imagen ilustrativa</span>' : ''}
+${illus ? `<span class="illus">${EN ? 'Illustrative image' : 'Imagen ilustrativa'}</span>` : ''}
 </body></html>`;
 }
 
@@ -188,6 +198,7 @@ const jobs = [];
 for (const p of sitemap) {
   if (p.template === 'T-404' || !built(p)) continue;
   if (only.length && !only.includes(p.id)) continue;
+  EN = p.lang === 'en';
   const cover = coverOf(p.id);
   if (cover) { jobs.push([p.id, { cover }]); continue; }
   const hero = (p.sections ?? []).find((s) => s.id === 'hero');
@@ -196,13 +207,14 @@ for (const p of sitemap) {
   const id = pid && masterOf(pid) ? pid : (typeof fb === 'string' ? fb : fb?.plate);
   const master = id && masterOf(id);
   // Página sin placa de portada en sitemap.json (T-LEGAL: intertítulo sobre aura) → tarjeta con el isotipo de cristal
-  if (!hero?.plate) { jobs.push([p.id, { plate: null, head: headlineOf(p), label: labelOf(p) }]); continue; }
+  if (!hero?.plate) { jobs.push([p.id, { plate: null, head: headlineOf(p), label: labelOf(p), en: EN }]); continue; }
   if (!master) { console.warn(`[og] ${p.id}: sin placa de portada; se omite (usa la genérica)`); continue; }
   const meta = plates[id] ?? {};
   const mirror = id === pid ? !!hero?.plate?.mirror : !!fb?.mirror;
-  jobs.push([p.id, { plate: master, mirror, fx: meta.d?.fx, meta, head: headlineOf(p), label: labelOf(p), illus: /imagen ilustrativa/i.test(meta.alt ?? '') }]);
+  const label = labelOf(p); // fija EN según la página
+  jobs.push([p.id, { plate: master, mirror, fx: meta.d?.fx, meta, head: headlineOf(p), label, en: EN, illus: /imagen ilustrativa/i.test(meta.alt ?? '') }]);
 }
 if (!only.length || only.includes('ingeniak')) {
   jobs.push(['ingeniak', { plate: masterOf('home-hero'), fx: plates['home-hero']?.d?.fx, head: { a: 'Agentes de IA, CRM y automatización', b: 'en un solo sistema.' }, chip: 'Partner oficial de Kommo en LATAM' }]);
 }
-for (const [name, o] of jobs) { if (o.cover) await renderCover(name, o.cover); else await render(name, o); }
+for (const [name, o] of jobs) { EN = !!o.en; if (o.cover) await renderCover(name, o.cover); else await render(name, o); }

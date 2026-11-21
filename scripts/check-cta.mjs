@@ -35,7 +35,10 @@ import {
 
 const QUOTE_LABEL = 'Cotizar proyecto';
 const QUOTE_HREF = '/contacto/#cotizar';
-const LANDINGS = { '/discovery/': 'discovery', '/power-session/': 'power' };
+// Versión en inglés (/en/, 2026-11-20): mismo contrato con la etiqueta y las rutas en inglés.
+const QUOTE_EN = { label: 'Get a quote', href: '/en/contact/#cotizar', contact: '/en/contact/' };
+const quoteFor = (route) => (/^\/en\//.test(route) ? QUOTE_EN : { label: QUOTE_LABEL, href: QUOTE_HREF, contact: '/contacto/' });
+const LANDINGS = { '/discovery/': 'discovery', '/power-session/': 'power', '/en/discovery/': 'discovery' };
 const CONFIRM = '/agendar/confirmado/';
 /** Llamado a reservar la llamada de v1 en metadatos de páginas públicas (revisión del 2026-10-20: /kommo/ decía "Agenda tu
  *  diagnóstico."). Estrecho a propósito: "agenda 24/7", "agendan citas" o "tu agenda llena" describen lo que hace el agente
@@ -71,7 +74,7 @@ function forbiddenHref(href) {
   if (/^#agenda\b/i.test(h)) return '#agenda';
   const r = normRoute(h);
   if (!r) return null;
-  if (r === '/discovery/' || r === '/power-session/' || r.startsWith('/agendar/')) return r;
+  if (r === '/discovery/' || r === '/power-session/' || r === '/en/discovery/' || r.startsWith('/agendar/') || r.startsWith('/en/book/')) return r;
   return null;
 }
 const label = (el) => norm(textOf(el)).slice(0, 60) || el.attrs['aria-label'] || '';
@@ -106,7 +109,7 @@ export async function run(opts) {
     if (stray.length) R.fail(route, `data-cotizar-dialog fuera de <dialog id="cotizar"> (${stray.map((x) => `<${x.tag}${x.attrs.id ? `#${x.attrs.id}` : ''}>`).join(', ')})`);
     const dupIds = findAll(root, (x) => x.attrs.id === 'cotizar');
     if (dupIds.length > 1) {
-      const isContactException = route === '/contacto/' && dupIds.length === 2 && dupIds[0].tag === 'section' && dupIds[1].tag === 'dialog';
+      const isContactException = (route === '/contacto/' || route === '/en/contact/') && dupIds.length === 2 && dupIds[0].tag === 'section' && dupIds[1].tag === 'dialog';
       if (isContactException) R.info(`${route} · id="cotizar" en <section> (respaldo sin JS) y <dialog>: excepción documentada (peticiones.md · Cotizar · orquestador)`);
       else R.fail(route, `id="cotizar" repetido ${dupIds.length} veces (${dupIds.map((x) => `<${x.tag}>`).join(', ')})${route === '/contacto/' ? ': en /contacto/ solo se acepta <section id="cotizar"> antes del <dialog>' : ''}`);
     }
@@ -126,12 +129,13 @@ export async function run(opts) {
       for (const a of findAll(main ?? root, (x) => x.tag === 'a' && 'data-primary' in x.attrs)) {
         const t = norm(textOf(a));
         const href = (a.attrs.href ?? '').trim();
-        const okHref = href === QUOTE_HREF || (route === '/contacto/' && href === '#cotizar');
+        const Q = quoteFor(route);
+        const okHref = href === Q.href || (route === Q.contact && href === '#cotizar');
         const errs = [];
         if (!hasClass(a, 'btn')) errs.push('sin clase .btn');
         if (!('data-cotizar' in a.attrs)) errs.push('sin data-cotizar');
-        if (!okHref) errs.push(`href "${href}" (debe ser ${route === '/contacto/' ? '#cotizar o ' : ''}${QUOTE_HREF})`);
-        if (t !== QUOTE_LABEL) errs.push(`texto "${t.slice(0, 50)}" (debe ser "${QUOTE_LABEL}")`);
+        if (!okHref) errs.push(`href "${href}" (debe ser ${route === Q.contact ? '#cotizar o ' : ''}${Q.href})`);
+        if (t !== Q.label) errs.push(`texto "${t.slice(0, 50)}" (debe ser "${Q.label}")`);
         if (errs.length) R.fail(route, `primario${where(a)}: ${errs.join(' · ')}`);
       }
       for (const el of findAll(root, (x) => 'data-hdr-cta' in x.attrs)) if (!('data-cotizar' in el.attrs)) R.fail(route, `CTA del encabezado ([data-hdr-cta] "${label(el)}") sin data-cotizar`);

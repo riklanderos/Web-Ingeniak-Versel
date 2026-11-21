@@ -1,0 +1,13 @@
+---
+// /en/case-studies/<slug>/ · casos traducidos (2026-11-20): las entradas en inglés de sitemap.json con plantilla T-CASE.
+import CaseTemplate from '../../../components/templates/CaseTemplate.astro';
+import { enPages } from '../../../lib/site';
+
+export function getStaticPaths() {
+  return enPages
+    .filter((p: any) => p.template === 'T-CASE')
+    .map((p: any) => ({ params: { slug: p.url.split('/').filter(Boolean).pop() }, props: { page: p } }));
+}
+const { page } = Astro.props as any;
+---
+<CaseTemplate page={page} />

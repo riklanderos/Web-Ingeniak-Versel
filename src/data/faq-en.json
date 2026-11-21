@@ -1,0 +1,251 @@
+[
+  {
+    "id": "D01",
+    "q": "Is it really free?",
+    "a": "Yes. The 30 minutes cost nothing and we don't ask for a credit card. The call exists because diagnosing before quoting is the only serious way to work: it makes no sense to propose a system without seeing how you sell, serve customers and operate today. If you later decide to implement, that is quoted separately.",
+    "short": "Yes. The 30 minutes cost nothing and we don't ask for a credit card.",
+    "pages": [
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "D02",
+    "q": "Are you going to sell to me on the call?",
+    "a": "It's a discovery call: we map your operation and tell you what we see. At the end, if it makes sense, we share an implementation proposal. If it doesn't, we tell you that too. There's no sales presentation dressed up as a diagnosis and no obligation to buy: you decide whether to move forward.",
+    "short": "No. It's a discovery call: we map your operation and tell you what we see.",
+    "pages": [
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "D03",
+    "q": "What should I prepare for the call?",
+    "a": "Nothing special. Knowing how your business runs day to day is enough. If you have numbers on hand, even better: the diagnosis gets more precise. For example, how many messages or leads you get per week, how long it takes you to reply, and which tools your team uses to sell and follow up.",
+    "short": "Nothing special; if you have numbers from your operation on hand, the diagnosis is more precise.",
+    "pages": [
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "D04",
+    "q": "What happens after the call?",
+    "a": "If your project makes sense for both sides, we prepare an implementation proposal with scope, timeline and cost. You decide whether to move forward. If your case isn't a fit for what we do, we'll tell you on the same call and point you to where it is. Nobody will chase you with follow-up calls.",
+    "short": "If it makes sense, we send you a proposal with scope, timeline and cost; you decide.",
+    "pages": [
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "D05",
+    "q": "Can I reschedule?",
+    "a": "Yes, with at least 24 hours' notice. Message us on WhatsApp at +52 33 2101 7799 or email contacto@ingeniak.mx and we'll move it.",
+    "short": "Yes, with at least 24 hours' notice, by WhatsApp or email.",
+    "pages": [
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "D06",
+    "q": "What if my business is too small or too big?",
+    "a": "We work with small and midsize businesses of 3 to 40 employees in any industry. If you're outside that range, the call makes it clear in the first few minutes and we point you to the right option. What matters most isn't size, but whether the business depends on you to run and you want to systematize it.",
+    "short": "We work with small and midsize businesses of 3 to 40 employees; if you're outside that range, we point you in the right direction.",
+    "pages": [
+      "/discovery/"
+    ],
+    "categoria": "Discovery Session",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G01",
+    "q": "What is Ingeniak?",
+    "a": "Ingeniak is an artificial intelligence consulting firm headquartered in Guadalajara, Jalisco, Mexico. We implement WhatsApp AI agents, Kommo and GoHighLevel CRM, n8n automations, paid media, high-converting websites, custom software and SEO, all connected in one system. We're an official Kommo partner in Latin America and have {{metric:sistemas|full}} in {{metric:paises}} countries.",
+    "short": "A Guadalajara-based AI consulting firm: AI agents, CRM, automation, paid media, web, software and SEO in one system.",
+    "pages": [
+      "/",
+      "/nosotros/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Ingeniak",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G02",
+    "q": "What is a WhatsApp AI agent?",
+    "a": "A WhatsApp AI agent is an assistant built on language models that handles the conversations on your WhatsApp Business account: it understands what the customer writes, answers with your business's information, qualifies them, logs them in your CRM and can book them an appointment. Unlike a menu-based chatbot, it doesn't force people to choose from fixed options.",
+    "short": "An AI assistant that runs your WhatsApp Business: it understands, answers, qualifies, logs to your CRM and books appointments.",
+    "pages": [
+      "/",
+      "/servicios/agentes-ia-whatsapp/",
+      "/industrias/belleza-estetica/",
+      "/industrias/nutricion/",
+      "/industrias/inmobiliario/",
+      "/industrias/horeca/",
+      "/preguntas-frecuentes/",
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/",
+      "/blog/agente-ia-whatsapp-vs-chatbot/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G04",
+    "q": "Is Ingeniak an official Kommo partner?",
+    "a": "Yes. Ingeniak is an official Kommo partner and reseller in Latin America. We help you with licenses, CRM implementation, connecting WhatsApp and automating follow-up with AI agents. That's why we can handle the whole process: from choosing the licenses you need to getting the CRM up and running with your team.",
+    "short": "Yes. We're an official Kommo partner and reseller in Latin America: licenses, implementation and AI agents.",
+    "pages": [
+      "/",
+      "/servicios/crm-con-ia/",
+      "/kommo/",
+      "/nosotros/",
+      "/agentes-ia-guadalajara/",
+      "/preguntas-frecuentes/",
+      "/blog/kommo-vs-gohighlevel/",
+      "/blog/como-verificar-partner-oficial-kommo/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G07",
+    "q": "How much does it cost to work with Ingeniak?",
+    "a": "Our projects start {{price}}. The exact scope and cost depend on the size of your operation and how many processes you want to automate; for a number specific to your business, request a quote. We don't publish fixed packages because two companies of the same size can need very different systems.",
+    "short": "Our projects start {{price}}; for a number specific to your business, request a quote.",
+    "pages": [
+      "/",
+      "/servicios/",
+      "/servicios/consultoria-ia-empresas/",
+      "/servicios/crm-con-ia/",
+      "/gohighlevel/",
+      "/servicios/automatizacion-n8n/",
+      "/servicios/paid-media/",
+      "/servicios/paginas-web/",
+      "/servicios/desarrollo-software/",
+      "/servicios/seo/",
+      "/servicios/branding/",
+      "/industrias/salud/",
+      "/industrias/belleza-estetica/",
+      "/industrias/nutricion/",
+      "/industrias/finanzas/",
+      "/industrias/inmobiliario/",
+      "/industrias/industrial-logistica/",
+      "/industrias/retail-ecommerce/",
+      "/industrias/horeca/",
+      "/agentes-ia-guadalajara/",
+      "/preguntas-frecuentes/",
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/"
+    ],
+    "categoria": "Precios",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G08",
+    "q": "How soon will I see results?",
+    "a": "Implementing a system takes 7 to 30 days, depending on scope. When you start seeing results depends on what gets implemented and on your operation; we go over it with you in the proposal that follows your quote request. For reference, a dental clinic in Monterrey got {{metric:dental-citas}} more appointments in 90 days, and an e-commerce business in Mexico City cut its cost per lead in 60 days: {{metric:ecom-cpl}}. {{source}}.",
+    "short": "Implementation takes 7 to 30 days, depending on scope; results depend on what's implemented and on your operation.",
+    "pages": [
+      "/",
+      "/servicios/",
+      "/servicios/consultoria-ia-empresas/",
+      "/servicios/automatizacion-n8n/",
+      "/servicios/paid-media/",
+      "/servicios/paginas-web/",
+      "/servicios/desarrollo-software/",
+      "/servicios/seo/",
+      "/industrias/",
+      "/industrias/industrial-logistica/",
+      "/industrias/retail-ecommerce/",
+      "/metodologia/",
+      "/preguntas-frecuentes/",
+      "/blog/cuanto-cuesta-agente-ia-whatsapp-mexico/"
+    ],
+    "categoria": "Ingeniak",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G11",
+    "q": "How do I get started with Ingeniak?",
+    "a": "With “Get a quote”: a three-step form where you tell us what you need, what your business is like and how you'd like us to reach you. We then reach out by WhatsApp and email to learn the details. If it makes sense for both of us, we send you a proposal with scope, timeline and cost. If you'd rather start with a message, send Kain a message on WhatsApp.",
+    "short": "With “Get a quote”: a three-step form; we'll reach out by WhatsApp and email.",
+    "pages": [
+      "/",
+      "/industrias/",
+      "/metodologia/",
+      "/agentes-ia-guadalajara/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Empezar",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G05",
+    "q": "Should I choose Kommo or GoHighLevel?",
+    "a": "It depends on how you sell. Kommo is built for selling through messaging (WhatsApp, Instagram, TikTok), with pipelines and automations inside the chat. GoHighLevel brings CRM, funnels, landing pages, calendars and campaigns together in one platform. We work with both and recommend one based on your sales process, not on what's more convenient for us to sell.",
+    "short": "Kommo if you sell through chat; GoHighLevel if you want CRM, funnels, pages and calendars in one platform.",
+    "pages": [
+      "/servicios/",
+      "/servicios/crm-con-ia/",
+      "/kommo/",
+      "/gohighlevel/",
+      "/industrias/inmobiliario/",
+      "/industrias/retail-ecommerce/",
+      "/preguntas-frecuentes/",
+      "/blog/kommo-vs-gohighlevel/"
+    ],
+    "categoria": "Kommo",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "G09",
+    "q": "Which AI models do you use?",
+    "a": "We work with models from OpenAI, Anthropic (Claude) and Google (Gemini), and choose the one that best handles each process based on answer quality, speed and usage cost. We integrate them with tools like Kommo, GoHighLevel, n8n, Make, Zapier, Supabase and Stripe. If another model makes more sense down the road, we evaluate it using your own conversations.",
+    "short": "OpenAI, Anthropic (Claude) and Google (Gemini); we choose the one that best handles each process.",
+    "pages": [
+      "/servicios/",
+      "/servicios/consultoria-ia-empresas/",
+      "/servicios/agentes-ia-whatsapp/",
+      "/servicios/desarrollo-software/",
+      "/tecnologias/",
+      "/blog/n8n-vs-zapier-vs-make/"
+    ],
+    "categoria": "Agentes de IA",
+    "validar": false,
+    "editada": true
+  },
+  {
+    "id": "N07",
+    "q": "Do you work with small and midsize businesses?",
+    "a": "Yes. We work with small and midsize businesses with 3 to 40 employees, in any industry: the size at which the business still depends on its owner to run, and a system gives that owner time back. If you're outside that range, tell us when you request a quote and we'll point you to the right option.",
+    "short": "Yes. We work with SMBs with 3 to 40 employees, in any industry.",
+    "pages": [
+      "/servicios/",
+      "/servicios/consultoria-ia-empresas/",
+      "/preguntas-frecuentes/"
+    ],
+    "categoria": "Empezar",
+    "validar": false,
+    "editada": true
+  }
+]
