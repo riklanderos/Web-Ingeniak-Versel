@@ -33,7 +33,11 @@ const entries: any[] = en
     ]
   : NAV_ENTRIES;
 const cur = en ? entries.find((e) => current.startsWith(e.href))?.key : currentEntry(current);
-const esHref = en ? twinOf(current) ?? '/' : null;
+// Switch de idioma ES | EN (2026-11-21): lleva a la gemela de la página si existe; si no, a la portada del otro idioma.
+// En la nav reducida (landings) solo aparece si la página tiene gemela (hoy /discovery/ ↔ /en/discovery/).
+const twin = current ? twinOf(current) : null;
+const otherHref = twin ?? (en ? '/' : '/en/');
+const showLang = full || !!twin;
 // Reducida: el CTA de la landing siempre reserva en la página (#agenda); nunca la agenda externa (R17, check-cta).
 const landingHref = (h?: string) => (h && h.startsWith('#') ? h : '#agenda');
 const showCta = full || !!cta?.label;
@@ -71,8 +75,15 @@ const ctaAttrs = full ? quoteAttrs('header') : { 'data-section': 'header' };
       </nav>
     )}
     <div class="hdr__actions">
-      {full && en && (
-        <a class="hdr__link hdr__lang" href={esHref} hreflang={HTML_LANG.es} lang={HTML_LANG.es} aria-label="Versión en español">ES</a>
+      {showLang && (
+        <div class="hdr__langsw" role="group" aria-label={L({ es: 'Idioma', en: 'Language' })}>
+          {en
+            ? <a class="hdr__langsw-o" href={otherHref} hreflang={HTML_LANG.es} lang={HTML_LANG.es} aria-label="Versión en español" data-lang-switch="es">ES</a>
+            : <span class="hdr__langsw-o is-on" aria-current="true" lang={HTML_LANG.es}>ES</span>}
+          {en
+            ? <span class="hdr__langsw-o is-on" aria-current="true" lang={HTML_LANG.en}>EN</span>
+            : <a class="hdr__langsw-o" href={otherHref} hreflang={HTML_LANG.en} lang={HTML_LANG.en} aria-label="English version" data-lang-switch="en">EN</a>}
+        </div>
       )}
       {full && !en && (
         <button class="hdr__search" type="button" data-search-open aria-label="Buscar o preguntarle a Kain" aria-keyshortcuts="Meta+K Control+K">
