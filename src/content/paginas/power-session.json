@@ -8,7 +8,7 @@
   "pendientes": [
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · precio: la sesión cuesta USD 297, pago único (sale de OFFERS['power-price'] con el token {{offer:power-price}}; nunca a mano). ¿Sigue vigente?",
-    "PREGUNTA AL CLIENTE · garantía: \"si en la sesión no identificamos al menos 3 fugas por más de $10,000 MXN al mes, te devolvemos los USD 297 completos\" (OFFERS['power-guarantee']) y el reclamo por correo dentro de las 48 horas siguientes (P07). Se porta porque ya se publica en agenda.ingeniak.tech/powersession; confirmar antes del lanzamiento.",
+    "PREGUNTA AL CLIENTE · garantía: desde 2026-11-23 es la del video («si aplicas lo que definimos y no ves beneficios, te devolvemos el 100%», confirmada por Rik). Salió el plazo de 48 horas porque no da tiempo de aplicar lo definido. ¿En qué plazo se puede pedir y cómo se comprueba?",
     "PREGUNTA AL CLIENTE · cupo: \"Abrimos 4 sesiones por semana, por orden de pago.\" (#agenda y #oferta; el código de reserva lo aplica). ¿Sigue siendo 4?",
     "PREGUNTA AL CLIENTE · grabación y mapa como entregables: \"Grabación y mapa al cerrar\" (#incluye), \"Grabación y mapa\" (#oferta) y \"la sesión queda grabada\" (P04). ¿Se siguen entregando?",
     "PREGUNTA AL CLIENTE · precio introductorio: \"{{offer:power-price}} es precio introductorio.\" (#garantia, bloque Por qué ahora). ¿Hasta cuándo? Si ya no aplica, la frase sale.",

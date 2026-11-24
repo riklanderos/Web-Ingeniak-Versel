@@ -11091,7 +11091,7 @@
       {
         "id": "P07",
         "q": "¿Cómo aplica la garantía?",
-        "a": "Garantía: {{offer:power-guarantee}}. Para pedirla, escríbenos a contacto@ingeniak.mx dentro de las 48 horas siguientes a tu sesión.",
+        "a": "Garantía: {{offer:power-guarantee}}. Para pedirla, escríbenos a contacto@ingeniak.mx.",
         "estado": "aprobada"
       }
     ],

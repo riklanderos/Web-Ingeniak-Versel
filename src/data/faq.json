@@ -859,8 +859,8 @@
   {
     "id": "P07",
     "q": "¿Cómo aplica la garantía?",
-    "a": "Garantía: {{offer:power-guarantee}}. Para pedirla, escríbenos a contacto@ingeniak.mx dentro de las 48 horas siguientes a tu sesión.",
-    "short": "Te devolvemos tu pago si no encontramos al menos 3 fugas relevantes.",
+    "a": "Garantía: {{offer:power-guarantee}}. Para pedirla, escríbenos a contacto@ingeniak.mx.",
+    "short": "Te devolvemos el 100% de tu pago si aplicas lo definido y no ves beneficios.",
     "pages": [
       "/power-session/"
     ],

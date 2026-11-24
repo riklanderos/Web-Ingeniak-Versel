@@ -36,10 +36,11 @@ export const PRICES = {
 export type PriceId = keyof typeof PRICES;
 
 /** Ofertas de las landings ocultas (cambio 2026-10-20). Solo se imprimen en OFFER_ROUTES, siempre dentro de [data-offer];
+ *  power-guarantee: la del video de la Power Session, confirmada por Rik Landeros el 2026-11-23.
  *  check-cifras las acepta solo ahí. Nunca con {{price}} (esa es la inversión mensual "desde USD 997 al mes"). */
 export const OFFERS = {
   'power-price': 'USD 297',
-  'power-guarantee': 'si en la sesión no identificamos al menos 3 fugas por más de $10,000 MXN al mes, te devolvemos los USD 297 completos',
+  'power-guarantee': 'si aplicas lo que definimos y no ves beneficios, te devolvemos el 100% de lo pagado',
 } as const;
 export type OfferId = keyof typeof OFFERS;
 export const OFFER_ROUTES = ['/discovery/', '/power-session/', '/agendar/confirmado/'] as const;
@@ -71,7 +72,7 @@ export const PRICE_FROM_CAP_EN = 'From USD 997 per month';
 export const PRICES_EN: Record<PriceId, string> = { 'software': 'from USD 1,500 per project' };
 export const OFFERS_EN: Record<OfferId, string> = {
   'power-price': 'USD 297',
-  'power-guarantee': "if we don't find at least 3 leaks worth more than $10,000 MXN a month during the session, we refund the full USD 297",
+  'power-guarantee': "if you apply what we define and don't see benefits, we refund 100% of what you paid",
 };
 
 /** Cifra en el idioma pedido: 'value' (la cifra), 'full' (cifra + etiqueta), 'prose' (redactada), 'label' o 'ctx'. */

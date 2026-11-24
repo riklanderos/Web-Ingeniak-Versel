@@ -24,7 +24,7 @@ export const discoveryMicro = () => L({ es: DISCOVERY_MICRO_ES, en: DISCOVERY_MI
  * Un id que no está en OFFERS es error de build. */
 const OFFERS_FALLBACK: Record<string, string> = {
   'power-price': 'USD 297',
-  'power-guarantee': 'si en la sesión no identificamos al menos 3 fugas por más de $10,000 MXN al mes, te devolvemos los USD 297 completos',
+  'power-guarantee': 'si aplicas lo que definimos y no ves beneficios, te devolvemos el 100% de lo pagado',
 };
 export const OFFERS: Record<string, string> = ((metricsMod as any).OFFERS as Record<string, string> | undefined) ?? OFFERS_FALLBACK;
 if (!(metricsMod as any).OFFERS && import.meta.env?.DEV) console.warn('[ui/copy] metrics.ts todavía no exporta OFFERS: {{offer:…}} usa el respaldo de CAMBIO-COTIZAR §4.4');
