@@ -31,6 +31,7 @@
 import { envName } from './http.js';
 import { CAMPOS, EMBUDOS, ORIGEN_PROSPECTO } from '../shared/kommo-esquema.js';
 import { SITE_URL } from '../shared/agenda.js';
+import { conHttps } from '../shared/enlace.js';
 
 const CALL_TIMEOUT_MS = 8000;
 const NOTIFY_TIMEOUT_MS = 5000;
@@ -252,7 +253,7 @@ const NOMBRES_WEB = Object.freeze(['web', 'sitio web', 'página web', 'pagina we
 export function valorWeb(v) {
   const s = String(v ?? '').replace(/\s+/g, ' ').trim().slice(0, 255);
   if (!s) return null;
-  return /^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}(?:[/?#:]\S*)?$/i.test(s) ? `https://${s}` : s;
+  return conHttps(s) ?? s;
 }
 
 /** ¿La empresa ya tiene algo en «Web»? @param {any} empresa  respuesta de GET /companies/{id} */

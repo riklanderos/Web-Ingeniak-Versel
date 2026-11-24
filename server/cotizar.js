@@ -6,6 +6,7 @@
  * Puro: no llama a la red ni lee `process.env` (el entorno llega como argumento).
  */
 import catalogo from '../src/data/cotizar.json' with { type: 'json' };
+import { esEnlace } from '../shared/enlace.js';
 import { clean } from './http.js';
 import { etiquetasDeOrigen, opcionKommo, urlDePagina } from './kommo.js';
 
@@ -291,7 +292,7 @@ export function validate(input) {
 
   const sitio = clean(src.sitio).replace(/\s+/g, ' ');
   if (src.sitio != null && typeof src.sitio !== 'string') errors.sitio = ERR.sitio;
-  else if (!sitio || sitio.length > LIM.sitio) errors.sitio = ERR.sitio;
+  else if (sitio.length > LIM.sitio || !esEnlace(sitio)) errors.sitio = ERR.sitio;
 
   const vision = clean(src.vision, Infinity, { lines: true });
   if (src.vision != null && typeof src.vision !== 'string') errors.vision = ERR.vision;

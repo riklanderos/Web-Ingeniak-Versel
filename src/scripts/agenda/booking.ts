@@ -53,13 +53,13 @@ const AVISOS = EN ? AVISOS_EN : AVISOS_ES;
 
 // Nombres del resumen de errores: la misma redacción que la etiqueta del campo (textos.ts) y que su error (shared/agenda.js).
 const LABELS_ES: Record<FieldKey, string> = {
-  fullName: 'Nombre completo', email: 'Correo', whatsapp: 'WhatsApp', businessName: 'Nombre del negocio', website: 'Sitio web o redes',
+  fullName: 'Nombre completo', email: 'Correo', whatsapp: 'WhatsApp', businessName: 'Nombre del negocio', website: 'Enlace de tu web o red social',
   industry: 'Giro', teamSize: 'Personas en tu equipo', revenue: 'Facturación mensual', timeDrains: 'Dónde se te va el tiempo',
   tools: 'Herramientas', goal: 'Qué quieres resolver en la sesión',
 };
 const GOAL_LABEL_ES: Record<SessionType, string> = { discovery: 'Qué quieres revisar en la llamada', power: 'Qué quieres resolver en la sesión' };
 const LABELS_EN: Record<FieldKey, string> = {
-  fullName: 'Full name', email: 'Email', whatsapp: 'WhatsApp', businessName: 'Business name', website: 'Website or social media',
+  fullName: 'Full name', email: 'Email', whatsapp: 'WhatsApp', businessName: 'Business name', website: 'Link to your website or social media',
   industry: 'Industry', teamSize: 'People on your team', revenue: 'Monthly revenue', timeDrains: 'Where your time goes',
   tools: 'Tools', goal: 'What you want to solve in the session',
 };

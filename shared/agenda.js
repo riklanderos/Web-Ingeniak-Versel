@@ -7,6 +7,8 @@
  * Zona de operación: America/Mexico_City (UTC−6 todo el año; México no tiene horario de verano desde 2022).
  */
 
+import { esEnlace } from './enlace.js';
+
 /** @typedef {'power' | 'discovery'} SessionType */
 /**
  * @typedef {{
@@ -159,7 +161,7 @@ export const ERRORS = {
   email: 'Revisa tu correo: ahí te llega la invitación.',
   whatsapp: 'Incluye tu WhatsApp con lada (10 dígitos o más).',
   businessName: 'Escribe el nombre de tu negocio.',
-  website: 'Máximo 200 caracteres.',
+  website: 'Pega el enlace de tu web o red social, por ejemplo instagram.com/tunegocio.',
   industry: 'Elige un giro.',
   teamSize: 'Elige el tamaño de tu equipo.',
   revenue: 'Elige un rango.',
@@ -208,7 +210,7 @@ export function validateForm(type, f) {
   if (!EMAIL_RE.test(t(f.email)) || t(f.email).length > 200) e.email = ERRORS.email;
   if (t(f.whatsapp).replace(/\D/g, '').length < 10) e.whatsapp = ERRORS.whatsapp;
   if (t(f.businessName).length < 2) e.businessName = ERRORS.businessName;
-  if (t(f.website).length > 200) e.website = ERRORS.website;
+  if (t(f.website) && (t(f.website).length > 200 || !esEnlace(f.website))) e.website = ERRORS.website;
   if (!INDUSTRIES.includes(/** @type {any} */ (f.industry))) e.industry = ERRORS.industry;
   if (!TEAM_SIZES.includes(/** @type {any} */ (f.teamSize))) e.teamSize = ERRORS.teamSize;
   if (!REVENUES.includes(/** @type {any} */ (f.revenue))) e.revenue = ERRORS.revenue;
@@ -367,7 +369,7 @@ export const ERRORS_EN = {
   email: "Check your email: that's where your invite goes.",
   whatsapp: 'Include your WhatsApp with country code (10 digits or more).',
   businessName: 'Enter your business name.',
-  website: '200 characters max.',
+  website: 'Paste the link to your website or social media, for example instagram.com/yourbusiness.',
   industry: 'Pick an industry.',
   teamSize: 'Pick your team size.',
   revenue: 'Pick a range.',

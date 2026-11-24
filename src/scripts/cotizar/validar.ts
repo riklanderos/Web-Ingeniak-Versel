@@ -7,6 +7,7 @@ import { runtimeLang } from '../../lib/i18n';
 // Versión en inglés (/en/, 2026-11-20): mensajes de cotizar-en.json; slugs y límites son los mismos.
 const EN = runtimeLang() === 'en';
 const cat: typeof catEs = EN ? (catEn as typeof catEs) : catEs;
+import { esEnlace } from '../../../shared/enlace.js';
 import { normalizePhone, phoneMessage, type PhoneInput } from '../forms/phone';
 
 export type Campo =
@@ -119,7 +120,7 @@ export function validar(d: Datos, campos: readonly Campo[] = ORDEN): Errores {
         if (!d.email || largo(d.email) > L.email || !EMAIL_RX.test(d.email)) e.email = ERR.email;
         break;
       case 'sitio':
-        if (!d.sitio || largo(d.sitio) > L.sitio) e.sitio = ERR.sitio;
+        if (largo(d.sitio) > L.sitio || !esEnlace(d.sitio)) e.sitio = ERR.sitio;
         break;
       case 'vision':
         if (!d.vision || largo(d.vision) > L.vision) e.vision = ERR.vision;

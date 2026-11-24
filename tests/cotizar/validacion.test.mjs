@@ -82,7 +82,8 @@ test('validate · reglas por campo con los mensajes del catálogo', () => {
     [{ empresa: 'X'.repeat(161) }, 'empresa'],
     [{ email: 'ana@empresa' }, 'email'],
     [{ email: `${'a'.repeat(195)}@b.com` }, 'email'],
-    [{ sitio: 'x'.repeat(201) }, 'sitio'],
+    [{ sitio: `ej.test/${'x'.repeat(200)}` }, 'sitio'],
+    ...['Clínica Ejemplo', 'negocio', '@negocio', 'ana@empresa.mx', 'no tengo', 'S.A.', 'http://', 'a.mx y b.mx', 'javascript:alert(1)'].map((sitio) => [{ sitio }, 'sitio']),
     [{ vision: 'x'.repeat(1001) }, 'vision'],
     [{ consentimiento: 'true' }, 'consentimiento'],
     [{ telefono: { pais: 'mx', lada: '+52', numero: '331234' } }, 'telefono'],
@@ -95,6 +96,9 @@ test('validate · reglas por campo con los mensajes del catálogo', () => {
   }
   const lada = validate({ ...valido(), telefono: { pais: 'otro', lada: 'abc', numero: '501234567' } });
   assert.deepEqual(lada.errors, { telefono: E.telefonoLada });
+  for (const sitio of ['negocio.mx', 'www.negocio.com.mx/', 'https://negocio.mx/a?b=1', 'HTTP://Negocio.MX', 'instagram.com/@negocio', 'maps.app.goo.gl/Xy1', 'cabaña.mx', ' facebook.com/negocio ']) {
+    assert.equal(validate({ ...valido(), sitio }).ok, true, sitio);
+  }
   assert.equal(validate({ ...valido(), servicios: ['no-seguro'] }).ok, true, 'no-seguro solo es válido');
   assert.equal(validate({ ...valido(), vision: 'x'.repeat(1000) }).ok, true, '1000 caracteres es el máximo');
 });
