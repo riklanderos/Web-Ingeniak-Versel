@@ -859,7 +859,7 @@
   {
     "id": "P07",
     "q": "¿Cómo aplica la garantía?",
-    "a": "Garantía: {{offer:power-guarantee}}. Para pedirla, escríbenos a contacto@ingeniak.mx.",
+    "a": "Garantía: {{offer:power-guarantee}}. Para pedirla, escríbenos a contacto@ingeniak.mx dentro de los 90 días siguientes a tu sesión.",
     "short": "Te devolvemos el 100% de tu pago si aplicas lo definido y no ves beneficios.",
     "pages": [
       "/power-session/"

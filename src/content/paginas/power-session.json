@@ -8,7 +8,7 @@
   "pendientes": [
     "RESUELTO 2026-11-11 · aprobación R1 por escrito en el chat de construcción · aprobado por Rik Landeros.",
     "PREGUNTA AL CLIENTE · precio: la sesión cuesta USD 297, pago único (sale de OFFERS['power-price'] con el token {{offer:power-price}}; nunca a mano). ¿Sigue vigente?",
-    "PREGUNTA AL CLIENTE · garantía: desde 2026-11-23 es la del video («si aplicas lo que definimos y no ves beneficios, te devolvemos el 100%», confirmada por Rik). Salió el plazo de 48 horas porque no da tiempo de aplicar lo definido. ¿En qué plazo se puede pedir y cómo se comprueba?",
+    "PREGUNTA AL CLIENTE · garantía: desde 2026-11-23 es la del video («si aplicas lo que definimos y no ves beneficios, te devolvemos el 100%», confirmada por Rik). Plazo para pedirla: 90 días después de la sesión (Rik, 2026-11-23; antes 48 horas). ¿Cómo se comprueba que se aplicó lo definido?",
     "PREGUNTA AL CLIENTE · cupo: \"Abrimos 4 sesiones por semana, por orden de pago.\" (#agenda y #oferta; el código de reserva lo aplica). ¿Sigue siendo 4?",
     "PREGUNTA AL CLIENTE · grabación y mapa como entregables: \"Grabación y mapa al cerrar\" (#incluye), \"Grabación y mapa\" (#oferta) y \"la sesión queda grabada\" (P04). ¿Se siguen entregando?",
     "PREGUNTA AL CLIENTE · precio introductorio: \"{{offer:power-price}} es precio introductorio.\" (#garantia, bloque Por qué ahora). ¿Hasta cuándo? Si ya no aplica, la frase sale.",
@@ -319,7 +319,7 @@
         {
           "label": "Garantía",
           "title": "El riesgo lo asumimos nosotros.",
-          "text": "Garantía: {{offer:power-guarantee}}."
+          "text": "Garantía: {{offer:power-guarantee}}. Puedes pedirla dentro de los 90 días siguientes a tu sesión."
         },
         {
           "label": "Por qué ahora",
