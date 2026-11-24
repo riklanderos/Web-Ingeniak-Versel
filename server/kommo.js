@@ -29,7 +29,7 @@
  * { evento, folio, status, leadId, delivered, ms }: nunca correo, teléfono, nombre ni token.
  */
 import { envName } from './http.js';
-import { CAMPO_SITIO, CAMPOS, EMBUDOS, ORIGEN_PROSPECTO } from '../shared/kommo-esquema.js';
+import { CAMPO_LINEA_APERTURA, CAMPO_SITIO, CAMPOS, EMBUDOS, ORIGEN_PROSPECTO } from '../shared/kommo-esquema.js';
 import { SITE_URL } from '../shared/agenda.js';
 import { conHttps } from '../shared/enlace.js';
 
@@ -264,6 +264,48 @@ export function valorWeb(v) {
 function sitioDelLead(est, value) {
   const campo = est.porId.get(CAMPO_SITIO.fieldId);
   return campo && TIPOS_TEXTO.includes(campo.type) ? { field_id: CAMPO_SITIO.fieldId, values: [{ value }] } : null;
+}
+
+/* ── Línea de apertura → campo 777638 (cliente, 2026-11-23) ─────────────────────────────────── */
+
+/** Une una lista en español: «A, B y C»; la última conjunción es «e» si lo que sigue suena a «i». @param {string[]} xs */
+function enumerar(xs) {
+  if (xs.length < 2) return xs.join('');
+  const ultimo = xs[xs.length - 1];
+  return `${xs.slice(0, -1).join(', ')} ${/^h?i/i.test(ultimo) ? 'e' : 'y'} ${ultimo}`;
+}
+
+/**
+ * Frase para la plantilla de apertura de WhatsApp, armada con el objetivo y los canales del formulario.
+ * Una sola línea, sin saltos ni espacios repetidos (Meta rechaza variables con saltos de línea), máximo 240 caracteres.
+ * Siempre devuelve una frase: sin datos, una genérica, para que la plantilla nunca salga con la variable vacía.
+ * @param {Record<string, unknown> | undefined | null} campos
+ * @returns {string}
+ */
+export function lineaDeApertura(campos) {
+  const limpio = (/** @type {unknown} */ v) => String(v ?? '').replace(/\s+/g, ' ').trim();
+  const objetivo = limpio(campos?.objetivo);
+  const lista = Array.isArray(campos?.canales) ? campos.canales : limpio(campos?.canales) ? [campos?.canales] : [];
+  // Las marcas conservan su mayúscula; «Sitio web», «Correo» o «Teléfono» van en minúscula a media frase.
+  const canales = lista.map(limpio).filter(Boolean).slice(0, 3).map((c) => (/^(whatsapp|instagram|facebook)$/i.test(c) ? c : `${c.charAt(0).toLowerCase()}${c.slice(1)}`));
+  const prioridad = objetivo ? `tu prioridad es ${objetivo.charAt(0).toLowerCase()}${objetivo.slice(1)}` : '';
+  const atienden = canales.length ? `hoy atienden por ${enumerar(canales)}` : '';
+  let frase = 'Ya revisé lo que nos compartiste sobre tu negocio.';
+  if (prioridad && atienden) frase = `Vi que ${prioridad} y que ${atienden}.`;
+  else if (prioridad) frase = `Vi que ${prioridad}.`;
+  else if (atienden) frase = `Vi que ${atienden}.`;
+  return frase.slice(0, 240);
+}
+
+/**
+ * La línea de apertura como campo del lead, o null si ese campo no existe como texto en la cuenta
+ * (mandar un id que el lead no tiene haría que Kommo rechace todos los campos).
+ * @param {Estructura} est
+ * @param {string} value
+ */
+function lineaDelLead(est, value) {
+  const campo = est.porId.get(CAMPO_LINEA_APERTURA.fieldId);
+  return campo && TIPOS_TEXTO.includes(campo.type) ? { field_id: CAMPO_LINEA_APERTURA.fieldId, values: [{ value }] } : null;
 }
 
 /** ¿La empresa o el contacto ya tiene algo en ese campo? @param {any} entidad */
@@ -907,7 +949,8 @@ export async function createLeadWithNote(input) {
     const origen = est ? origenProspecto(est) : null;
     if (est && !origen) log({ evento: 'kommo.origen-prospecto', folio: ctx.folio, status: 0, ms: Date.now() - t0 });
     const sitio = est && web ? sitioDelLead(est, web) : null;
-    const customFields = [...campos.valores, ...(origen ? [origen] : []), ...(sitio ? [sitio] : []), ...(est ? trackingValues(tracking, est.rastreo) : [])];
+    const linea = est && hayCampos ? lineaDelLead(est, lineaDeApertura(input.campos)) : null;
+    const customFields = [...campos.valores, ...(origen ? [origen] : []), ...(sitio ? [sitio] : []), ...(linea ? [linea] : []), ...(est ? trackingValues(tracking, est.rastreo) : [])];
 
     // 3 · Lead + contacto + empresa (con campos y etapa); si Kommo rechaza algo de la estructura, se reintenta sin ello
     let r = await call('/leads/complex', { method: 'POST', body: complexBody(input, contactId, customFields, destino), deadline });

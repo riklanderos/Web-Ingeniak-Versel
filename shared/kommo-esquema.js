@@ -109,6 +109,13 @@ export const ORIGEN_PROSPECTO = Object.freeze({ fieldId: 773494, opcion: 'Form W
  */
 export const CAMPO_SITIO = Object.freeze({ fieldId: 777636 });
 
+/**
+ * «INGK · Línea de apertura» (cliente, 2026-11-23): una frase armada con las respuestas del formulario. La usa la
+ * plantilla de WhatsApp de apertura (ingk_apertura_web_v3) como variable, para que el primer mensaje ya hable de lo
+ * que la persona pidió. Va por id y fuera de CAMPOS porque ya existe en la cuenta.
+ */
+export const CAMPO_LINEA_APERTURA = Object.freeze({ fieldId: 777638 });
+
 /** Etiquetas de leads (máximo 10). */
 export const ETIQUETAS = ['web-cotizar', 'web-agenda', 'discovery', 'power-session', 'campaña', 'orgánico', 'referido', 'hot-lead', 'reactivación', 'entorno-preview'];
 
