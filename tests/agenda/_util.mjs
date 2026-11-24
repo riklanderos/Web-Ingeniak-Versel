@@ -269,6 +269,7 @@ export class FakeKommo {
     if (path === '/leads/complex' && method === 'POST') return jsonRes([{ id: ++this.seq, contact_id: 77, company_id: 88 }]);
     if (path === '/leads/notes' && method === 'POST') return jsonRes({ _embedded: { notes: [{ id: 1 }] } });
     if (/^\/leads\/\d+$/.test(path) && method === 'PATCH') return jsonRes({ id: Number(path.split('/')[2]) });
+    if (/^\/companies\/\d+$/.test(path) && method === 'PATCH') return jsonRes({ id: Number(path.split('/')[2]) });
     return jsonRes({ title: 'Not found' }, 404);
   }
   get complex() {

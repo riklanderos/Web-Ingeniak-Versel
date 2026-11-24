@@ -336,6 +336,7 @@ export function createLeads({ kommo, env = process.env } = {}) {
         name: `${SESSION_RULES[i.type].label} · ${i.form.businessName}`,
         contact: { name: i.form.fullName, phoneE164, email: i.form.email },
         company: i.form.businessName,
+        web: i.form.website || undefined,
         tags,
         note: kommoNote({ ...i, env: environment }),
         // Campos `tracking_data` de Kommo (server/kommo.js solo manda los que existen en la cuenta).

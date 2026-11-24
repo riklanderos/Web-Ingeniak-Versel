@@ -542,6 +542,7 @@ export function buildKommo(data, meta, env = process.env, now = new Date()) {
       name: `Cotización web · ${data.empresa}`,
       contact: { name: data.nombre, phoneE164: data.telefono.e164, email: data.email },
       company: data.empresa,
+      web: data.sitio,
       embudo: /** @type {const} */ ('ventas'),
       etapa: 'nueva',
       campos: camposFor(data, meta),

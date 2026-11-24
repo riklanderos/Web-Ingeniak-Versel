@@ -4,7 +4,7 @@
  *
  * Contrato (no cambiar sin actualizar la especificación):
  *   kommoConfigured()                                   → boolean
- *   createLeadWithNote({ name, contact: { name, phoneE164, email }, company, tags, note, tracking,
+ *   createLeadWithNote({ name, contact: { name, phoneE164, email }, company, web, tags, note, tracking,
  *                        embudo, etapa, campos,                       ← estructura aprobada, por nombre
  *                        pipelineId, statusId, responsibleUserId,     ← variables (mandan sobre los nombres)
  *                        statusIdRespaldo,                            ← etapa por variable SOLO si la del nombre no existe
@@ -237,6 +237,55 @@ export function telefonoBody(contacto, phoneE164) {
     ...(v.enum_code ? { enum_code: v.enum_code } : Number.isSafeInteger(v.enum_id) ? { enum_id: v.enum_id } : {}),
   }));
   return { custom_fields_values: [{ field_code: 'PHONE', values: [...conservar, { value: phoneE164, enum_code: 'MOB' }] }] };
+}
+
+/* ── «Web» de la empresa (cliente, 2026-11-23) ───────────────────────────────────────────────── */
+
+/** Nombres con los que puede estar el campo si la cuenta no usa el estándar (code WEB). */
+const NOMBRES_WEB = Object.freeze(['web', 'sitio web', 'página web', 'pagina web', 'website', 'sitio web o redes']);
+
+/**
+ * Valor para el campo «Web»: lo que escribió la persona; si es un dominio sin https:// se le agrega para que sea enlace.
+ * @param {unknown} v
+ * @returns {string | null}
+ */
+export function valorWeb(v) {
+  const s = String(v ?? '').replace(/\s+/g, ' ').trim().slice(0, 255);
+  if (!s) return null;
+  return /^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}(?:[/?#:]\S*)?$/i.test(s) ? `https://${s}` : s;
+}
+
+/** ¿La empresa ya tiene algo en «Web»? @param {any} empresa  respuesta de GET /companies/{id} */
+function tieneWeb(empresa) {
+  const fields = Array.isArray(empresa?.custom_fields_values) ? empresa.custom_fields_values : [];
+  return fields.some((f) => (f?.field_code === 'WEB' || NOMBRES_WEB.includes(normalizar(f?.field_name)))
+    && (Array.isArray(f.values) ? f.values : []).some((v) => String(v?.value ?? '').trim()));
+}
+
+/**
+ * Llena «Web» de la empresa. Va después de crear el lead y en su propia llamada: si falla, el lead no se pierde y la
+ * nota trae el dato. Por el código estándar WEB; si la cuenta no lo acepta, busca el campo por nombre.
+ * @param {number} companyId
+ * @param {string} value
+ * @param {{ soloSiVacia?: string | null, deadline: number }} o  soloSiVacia: nombre que debe tener la empresa existente
+ * @returns {Promise<{ ok: boolean, omitido?: boolean, res?: CallResult }>}
+ */
+async function llenarWeb(companyId, value, { soloSiVacia = null, deadline }) {
+  if (soloSiVacia !== null) {
+    const e = await call(`/companies/${companyId}`, { deadline });
+    if (e.status !== 200) return { ok: false, res: e };
+    // Empresa que ya existía: nunca se pisa su dato ni se le pone el de otro negocio.
+    if (tieneWeb(e.data) || normalizar(e.data?.name) !== normalizar(soloSiVacia)) return { ok: true, omitido: true };
+  }
+  const patch = (/** @type {object} */ campo) => call(`/companies/${companyId}`, { method: 'PATCH', body: { custom_fields_values: [{ ...campo, values: [{ value }] }] }, deadline });
+  let r = await patch({ field_code: 'WEB' });
+  if (r.status === 400 || r.status === 422) {
+    const f = await call(`/companies/custom_fields?limit=${CAMPOS_POR_PAGINA}`, { deadline });
+    const rows = Array.isArray(f.data?._embedded?.custom_fields) ? f.data._embedded.custom_fields : [];
+    const campo = rows.find((/** @type {any} */ x) => Number.isSafeInteger(x?.id) && ['url', 'text', 'textarea'].includes(x.type) && NOMBRES_WEB.includes(normalizar(x.name)));
+    if (campo) r = await patch({ field_id: campo.id });
+  }
+  return { ok: r.status === 200, res: r };
 }
 
 /* ── Convenciones del sitio para la estructura aprobada ───────────────────────────────────── */
@@ -701,7 +750,7 @@ function culpaEtapa(data) {
  * @typedef {{
  *   name: string,
  *   contact: { name: string, phoneE164?: string, email?: string },
- *   company?: string,
+ *   company?: string, web?: string,
  *   tags?: string[],
  *   note?: string,
  *   tracking?: Record<string, string>,
@@ -763,10 +812,11 @@ export function noteBody(leadId, text) {
  * GET leads/custom_fields, en paralelo y con caché de 10 min; solo si hay embudo, campos o rastreo) →
  * POST leads/complex (si Kommo responde 400 y mandamos datos de la estructura: un reintento sin campos, y sin
  * embudo/etapa por nombre si el error los menciona) → POST leads/notes (si falla, el lead ya existe: ok igual) →
- * PATCH contacts/{id} si el contacto existente no tenía este teléfono (si falla: ok igual, la nota lo trae).
+ * PATCH contacts/{id} si el contacto existente no tenía este teléfono (si falla: ok igual, la nota lo trae) →
+ * PATCH companies/{id} con el sitio del formulario en «Web» (empresa nueva, o existente con el mismo nombre y sin dato).
  * @param {LeadInput} input
  * @returns {Promise<
- *   { ok: true, status: number, leadId: number | null, contactId: number | null, existingContact: boolean, telefonoAgregado?: boolean, noteOk: boolean,
+ *   { ok: true, status: number, leadId: number | null, contactId: number | null, existingContact: boolean, telefonoAgregado?: boolean, webOk?: boolean, noteOk: boolean,
  *     destino?: OrigenDestino, campos?: { enviados: string[], omitidos: string[] }, reintento?: boolean, dryRun?: true, preview?: object }
  *   | { ok: false, status: number, reason: Reason }>}
  */
@@ -801,6 +851,7 @@ export async function createLeadWithNote(input) {
           contactSearch: searches.map((s) => `GET /api/v4/contacts?query=${encodeURIComponent(s.value)}`),
           complex: complexBody(input, null, trackingValues(tracking, null)),
           note: note ? noteBody('<lead_id>', note) : [],
+          ...(valorWeb(input.web) && input.company ? { empresaWeb: valorWeb(input.web) } : {}),
           tags: complexBody(input, null, [])[0]._embedded.tags.map((/** @type {{name: string}} */ t) => t.name),
           destino: previewDestino(input),
           campos: previewCampos(input.campos),
@@ -882,6 +933,20 @@ export async function createLeadWithNote(input) {
         await maybeAlert(p, ctx);
       }
     }
+
+    // 6 · «Web» de la empresa con el sitio del formulario. Si falla, el lead ya existe y la nota lo trae.
+    let webOk;
+    const web = valorWeb(input.web);
+    const nueva = !contactId && input.company && !row.merged;
+    const companyId = posInt(contactId ? contactoExistente?._embedded?.companies?.[0]?.id : row.company_id);
+    if (web && input.company && companyId) {
+      const w = await llenarWeb(companyId, web, { soloSiVacia: nueva ? null : input.company, deadline });
+      webOk = w.ok;
+      if (!w.ok) {
+        log({ evento: 'kommo.empresa-web', folio: ctx.folio, status: w.res?.status ?? 0, leadId, ms: Date.now() - t0 });
+        if (w.res) await maybeAlert(w.res, ctx);
+      }
+    }
     return {
       ok: true,
       status: r.status,
@@ -889,6 +954,7 @@ export async function createLeadWithNote(input) {
       contactId: contactId ?? newContact,
       existingContact: Boolean(contactId),
       telefonoAgregado,
+      ...(webOk === undefined ? {} : { webOk }),
       noteOk,
       destino: destino.origen,
       campos: reintento ? { enviados: [], omitidos: [...campos.enviados, ...campos.omitidos] } : { enviados: campos.enviados, omitidos: campos.omitidos },
