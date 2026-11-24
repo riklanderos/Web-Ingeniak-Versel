@@ -35,6 +35,7 @@ legend.fld__label + *{clear:both}
 .fld__input:hover,.fld__select:hover,.fld__textarea:hover{border-color:rgb(158 176 199 / .55);background-color:rgb(255 255 255 / .06)}
 .fld__input:focus,.fld__select:focus,.fld__textarea:focus{border-color:var(--hair-cyan);background-color:rgb(0 229 255 / .04)}
 .fld__input:focus-visible,.fld__select:focus-visible,.fld__textarea:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-color:transparent}
+.fld__check{margin-top:var(--s-2)}
 .fld__input:disabled,.fld__select:disabled,.fld__textarea:disabled{opacity:.55;cursor:not-allowed}
 .fld__input:-webkit-autofill,.fld__input:-webkit-autofill:hover,.fld__input:-webkit-autofill:focus{
   -webkit-text-fill-color:var(--text);caret-color:var(--text);-webkit-box-shadow:0 0 0 1000px var(--ink-2) inset;transition:background-color 9999s}

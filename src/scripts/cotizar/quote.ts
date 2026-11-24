@@ -266,6 +266,7 @@ function restoreDraft() {
   phoneRoot?.querySelector('select')?.dispatchEvent(new Event('change'));
   const sel = form.elements.namedItem('industria') as HTMLSelectElement | null;
   if (sel) markSelect(sel);
+  syncSitio();
   updateCount();
 }
 
@@ -293,6 +294,7 @@ function collect(): Datos {
     email: g('email'),
     canal_preferido: g('canal_preferido'),
     sitio: g('sitio'),
+    sin_sitio: (form.elements.namedItem('sin_sitio') as HTMLInputElement | null)?.checked === true,
     vision: g('vision'),
     consentimiento: (form.elements.namedItem('consentimiento') as HTMLInputElement | null)?.checked === true,
   };
@@ -376,12 +378,21 @@ function onEdit(e: Event) {
   }
   if (t.localName === 'select') markSelect(t as unknown as HTMLSelectElement);
   if (t.name === 'vision') updateCount();
-  const c = campoDe(t.name);
+  if (t.name === 'sin_sitio') syncSitio();
+  const c = t.name === 'sin_sitio' ? 'sitio' : campoDe(t.name);
   if (c && errs[c]) {
     const again = validar(sanear(collect()), [c]);
     if (again[c] !== errs[c]) { setError(c, again[c] ?? null); renderSummary(); }
   }
   saveDraft();
+}
+/** «Aún no tengo web ni redes»: apaga y vacía el campo del enlace. */
+function syncSitio() {
+  const on = (form.elements.namedItem('sin_sitio') as HTMLInputElement | null)?.checked === true;
+  const el = form.elements.namedItem('sitio') as HTMLInputElement | null;
+  if (!el) return;
+  if (on) el.value = '';
+  el.disabled = on;
 }
 function markSelect(s: HTMLSelectElement) { s.toggleAttribute('data-empty', !s.value); }
 function updateCount() {
@@ -518,6 +529,7 @@ function payload(data: Datos) {
     email: data.email,
     canal_preferido: data.canal_preferido,
     sitio: data.sitio,
+    sin_sitio: data.sin_sitio,
     vision: data.vision,
     consentimiento: data.consentimiento,
     meta: {
@@ -663,7 +675,7 @@ function resumen(data: Datos): string {
     L('WhatsApp', tel),
     L(EN ? 'Email' : 'Correo', data.email),
     L(EN ? 'Preferred contact method' : 'Prefiero que me contacten por', labelOf(cat.canalesPreferidos, data.canal_preferido)),
-    L(EN ? 'Website or social media' : 'Sitio o redes', data.sitio),
+    L(EN ? 'Website or social media' : 'Sitio o redes', data.sin_sitio ? (EN ? 'none yet' : 'aún no tengo') : data.sitio),
     L(EN ? 'My project' : 'Mi proyecto', data.vision),
   ];
   return lines.filter((l, i, a) => l !== '' || (i > 0 && a[i - 1] !== '')).join('\r\n').trim();
@@ -701,6 +713,7 @@ function fail(status: number, data: Datos) {
 /* ───────────────────────── Reinicio (después del éxito) ───────────────────────── */
 function reset() {
   form.reset();
+  syncSitio();
   for (const c of ORDEN) setError(c, null);
   errs = {};
   summary.hidden = true;

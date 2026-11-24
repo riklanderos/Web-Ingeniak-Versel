@@ -127,7 +127,7 @@ export function kommoNote(i) {
     '—',
     `Nombre: ${f.fullName} · Negocio: ${f.businessName}`,
     `WhatsApp: ${phoneToE164(f.whatsapp) || f.whatsapp} · Correo: ${f.email}`,
-    f.website ? `Sitio o redes: ${f.website}` : null,
+    f.website ? `Sitio o redes: ${f.website}` : f.noWebsite ? 'Sitio o redes: aún no tiene' : null,
     `Giro: ${f.industry} · Equipo: ${f.teamSize} · Facturación mensual: ${f.revenue}`,
     i.type === 'power' && f.timeDrains.length ? `Dónde se le va el tiempo: ${f.timeDrains.join(', ')}` : null,
     i.type === 'power' && f.tools ? `Herramientas que usan hoy: ${f.tools}` : null,

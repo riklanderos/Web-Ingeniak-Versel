@@ -217,6 +217,15 @@ export function initBooking(root: HTMLElement) {
     return p.lada ? `${p.lada} ${num}` : num;
   }
 
+  // «Aún no tengo web ni redes»: apaga y vacía el campo del enlace.
+  const noWeb = () => input('noWebsite') as HTMLInputElement | null;
+  function syncWeb() {
+    const el = input('website') as HTMLInputElement | null;
+    if (!el) return;
+    if (noWeb()?.checked) el.value = '';
+    el.disabled = noWeb()?.checked === true;
+  }
+
   function readForm() {
     const v = (n: string) => (input(n)?.value ?? '');
     S.form = {
@@ -224,7 +233,8 @@ export function initBooking(root: HTMLElement) {
       email: v('email'),
       whatsapp: readPhoneValue(),
       businessName: v('businessName'),
-      website: v('website'),
+      website: noWeb()?.checked ? '' : v('website'),
+      noWebsite: noWeb()?.checked === true,
       industry: v('industry'),
       teamSize: v('teamSize'),
       revenue: v('revenue'),
@@ -259,6 +269,8 @@ export function initBooking(root: HTMLElement) {
     set('email', f.email);
     set('businessName', f.businessName);
     set('website', f.website);
+    if (noWeb()) noWeb()!.checked = f.noWebsite === true;
+    syncWeb();
     set('industry', f.industry);
     set('teamSize', f.teamSize);
     set('revenue', f.revenue);
@@ -626,7 +638,7 @@ export function initBooking(root: HTMLElement) {
   function firstEmpty(): HTMLElement | null {
     readForm();
     for (const k of FIELD_ORDER) {
-      if (k === 'website') continue;
+      if (k === 'website' && S.form.noWebsite) continue;
       if (!isPower && (k === 'timeDrains' || k === 'tools')) continue;
       const v = S.form[k as FieldKey];
       if (Array.isArray(v) ? !v.length : !String(v).trim()) return fieldEl(k as FieldKey);
@@ -645,6 +657,7 @@ export function initBooking(root: HTMLElement) {
   form.addEventListener('change', (e) => {
     const t = e.target as HTMLElement & { name?: string };
     if (t instanceof HTMLSelectElement) t.toggleAttribute('data-empty', !t.value);
+    if (t.name === 'noWebsite') { syncWeb(); clearError('website'); }
     readForm();
     save();
     const name = (t.name ?? '').replace(/_(pais|lada|numero)$/, '') as FieldKey;

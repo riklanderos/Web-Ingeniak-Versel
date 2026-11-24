@@ -20,7 +20,7 @@ import { etiquetasDeOrigen, opcionKommo, urlDePagina } from './kommo.js';
  *   canales: string[], crm: string,
  *   nombre: string, empresa: string,
  *   telefono: { pais: string, lada: string, numero: string, e164: string },
- *   email: string, canal_preferido: string, sitio: string, vision: string, consentimiento: true
+ *   email: string, canal_preferido: string, sitio: string (vacío si marcó «Aún no tengo web ni redes»), vision: string, consentimiento: true
  * }} Cotizacion
  * @typedef {{
  *   pagina: string, folio: string, cta: string, src: string, landing: string, referrer: string,
@@ -290,9 +290,9 @@ export function validate(input) {
   const email = clean(src.email).toLowerCase();
   if (!email || email.length > LIM.email || !EMAIL_RE.test(email)) errors.email = ERR.email;
 
-  const sitio = clean(src.sitio).replace(/\s+/g, ' ');
+  const sitio = src.sin_sitio === true ? '' : clean(src.sitio).replace(/\s+/g, ' ');
   if (src.sitio != null && typeof src.sitio !== 'string') errors.sitio = ERR.sitio;
-  else if (sitio.length > LIM.sitio || !esEnlace(sitio)) errors.sitio = ERR.sitio;
+  else if (src.sin_sitio !== true && (sitio.length > LIM.sitio || !esEnlace(sitio))) errors.sitio = ERR.sitio;
 
   const vision = clean(src.vision, Infinity, { lines: true });
   if (src.vision != null && typeof src.vision !== 'string') errors.vision = ERR.vision;
@@ -493,7 +493,7 @@ export function noteFor(data, meta, env, now) {
     fila([`Nombre: ${data.nombre}`, `Empresa: ${data.empresa}`]),
     fila([`WhatsApp: ${data.telefono.e164}`, `Correo: ${data.email}`]),
     `Prefiere que lo contactemos por: ${etiqueta(c.canalesPreferidos, data.canal_preferido)}`,
-    data.sitio && `Sitio o redes: ${data.sitio}`,
+    `Sitio o redes: ${data.sitio || 'aún no tiene'}`,
     vision && `Su proyecto: ${vision}`,
     '—',
     fila([

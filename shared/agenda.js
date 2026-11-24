@@ -12,7 +12,7 @@ import { esEnlace } from './enlace.js';
 /** @typedef {'power' | 'discovery'} SessionType */
 /**
  * @typedef {{
- *   fullName: string, email: string, whatsapp: string, businessName: string, website: string,
+ *   fullName: string, email: string, whatsapp: string, businessName: string, website: string, noWebsite?: boolean,
  *   industry: string, teamSize: string, revenue: string, timeDrains: string[], tools: string, goal: string
  * }} BookingForm
  */
@@ -140,6 +140,7 @@ export const EMPTY_FORM = Object.freeze({
   whatsapp: '',
   businessName: '',
   website: '',
+  noWebsite: false,
   industry: '',
   teamSize: '',
   revenue: '',
@@ -186,6 +187,7 @@ export function toForm(raw) {
     whatsapp: s('whatsapp'),
     businessName: s('businessName'),
     website: s('website'),
+    noWebsite: o.noWebsite === true,
     industry: s('industry'),
     teamSize: s('teamSize'),
     revenue: s('revenue'),
@@ -210,7 +212,8 @@ export function validateForm(type, f) {
   if (!EMAIL_RE.test(t(f.email)) || t(f.email).length > 200) e.email = ERRORS.email;
   if (t(f.whatsapp).replace(/\D/g, '').length < 10) e.whatsapp = ERRORS.whatsapp;
   if (t(f.businessName).length < 2) e.businessName = ERRORS.businessName;
-  if (t(f.website) && (t(f.website).length > 200 || !esEnlace(f.website))) e.website = ERRORS.website;
+  // Con «Aún no tengo web ni redes» el enlace no se pide (y no se guarda).
+  if (f.noWebsite !== true && (t(f.website).length > 200 || !esEnlace(f.website))) e.website = ERRORS.website;
   if (!INDUSTRIES.includes(/** @type {any} */ (f.industry))) e.industry = ERRORS.industry;
   if (!TEAM_SIZES.includes(/** @type {any} */ (f.teamSize))) e.teamSize = ERRORS.teamSize;
   if (!REVENUES.includes(/** @type {any} */ (f.revenue))) e.revenue = ERRORS.revenue;

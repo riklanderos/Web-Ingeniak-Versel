@@ -206,6 +206,11 @@ const S = cat.pasos;
             <label class="fld__label" for="qm-sitio">{L({ es: 'Enlace de tu web o red social', en: 'Link to your website or social media' })}</label>
             <input class="fld__input" id="qm-sitio" name="sitio" type="text" placeholder={L({ es: 'instagram.com/tunegocio', en: 'instagram.com/yourbusiness' })} inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" maxlength="200" enterkeyhint="next" />
             <p class="fld__error" id="qm-sitio-error" hidden></p>
+            <label class="check fld__check" for="qm-sin-sitio">
+              <input type="checkbox" id="qm-sin-sitio" name="sin_sitio" value="si" />
+              <span class="check__box" aria-hidden="true"><Icon name="check" size={16} /></span>
+              <span>{L({ es: 'Aún no tengo web ni redes', en: "I don't have a website or social media yet" })}</span>
+            </label>
           </div>
           <div class="fld" data-field="vision">
             <label class="fld__label" for="qm-vision">{L({ es: 'Cuéntanos tu proyecto', en: 'Tell us about your project' })}</label>

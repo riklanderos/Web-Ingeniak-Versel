@@ -161,7 +161,7 @@ export function createBooking(a) {
       `Correo: ${f.email}`,
       `WhatsApp: ${f.whatsapp}`,
       `Negocio: ${f.businessName}`,
-      f.website ? `Sitio / redes: ${f.website}` : null,
+      f.website ? `Sitio / redes: ${f.website}` : f.noWebsite ? 'Sitio / redes: aún no tiene' : null,
       `Giro: ${f.industry}`,
       `Equipo: ${f.teamSize}`,
       `Facturación mensual: ${f.revenue}`,

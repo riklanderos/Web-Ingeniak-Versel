@@ -17,7 +17,7 @@ export type Campo =
 export type Datos = {
   servicios: string[]; objetivo: string; industria: string; tamano: string; presupuesto: string; plazo: string;
   canales: string[]; crm: string; nombre: string; empresa: string; telefono: PhoneInput; email: string;
-  canal_preferido: string; sitio: string; vision: string; consentimiento: boolean;
+  canal_preferido: string; sitio: string; /** Casilla «Aún no tengo web ni redes» */ sin_sitio: boolean; vision: string; consentimiento: boolean;
 };
 export type Errores = Partial<Record<Campo, string>>;
 
@@ -70,7 +70,8 @@ export function sanear(d: Partial<Datos>): Datos {
     telefono: { pais: tel.pais || String(d.telefono?.pais ?? ''), lada: tel.lada || String(d.telefono?.lada ?? ''), numero: tel.ok ? tel.numero : String(d.telefono?.numero ?? '').trim() },
     email: limpiar(d.email).toLowerCase(),
     canal_preferido: limpiar(d.canal_preferido),
-    sitio: limpiar(d.sitio),
+    sitio: d.sin_sitio === true ? '' : limpiar(d.sitio),
+    sin_sitio: d.sin_sitio === true,
     vision: limpiarTexto(d.vision),
     consentimiento: d.consentimiento === true,
   };
@@ -120,6 +121,7 @@ export function validar(d: Datos, campos: readonly Campo[] = ORDEN): Errores {
         if (!d.email || largo(d.email) > L.email || !EMAIL_RX.test(d.email)) e.email = ERR.email;
         break;
       case 'sitio':
+        if (d.sin_sitio) break;
         if (largo(d.sitio) > L.sitio || !esEnlace(d.sitio)) e.sitio = ERR.sitio;
         break;
       case 'vision':

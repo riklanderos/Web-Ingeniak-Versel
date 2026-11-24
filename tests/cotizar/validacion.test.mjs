@@ -96,6 +96,10 @@ test('validate · reglas por campo con los mensajes del catálogo', () => {
   }
   const lada = validate({ ...valido(), telefono: { pais: 'otro', lada: 'abc', numero: '501234567' } });
   assert.deepEqual(lada.errors, { telefono: E.telefonoLada });
+  const sin = validate({ ...valido(), sitio: 'Clínica', sin_sitio: true });
+  assert.equal(sin.ok, true, 'casilla «Aún no tengo web ni redes»');
+  assert.equal(sin.data.sitio, '', 'con la casilla no se guarda el texto');
+  assert.deepEqual(validate({ ...valido(), sitio: '', sin_sitio: 'true' }).errors, { sitio: E.sitio }, 'solo true literal');
   for (const sitio of ['negocio.mx', 'www.negocio.com.mx/', 'https://negocio.mx/a?b=1', 'HTTP://Negocio.MX', 'instagram.com/@negocio', 'maps.app.goo.gl/Xy1', 'cabaña.mx', ' facebook.com/negocio ']) {
     assert.equal(validate({ ...valido(), sitio }).ok, true, sitio);
   }

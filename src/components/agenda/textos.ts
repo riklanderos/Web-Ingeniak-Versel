@@ -33,7 +33,7 @@ export const T = {
     email: { label: 'Correo', help: 'Ahí te llega la invitación con el enlace de Meet.' },
     whatsapp: { label: 'WhatsApp', help: 'Con lada. Solo para avisos de tu sesión.' },
     businessName: { label: 'Nombre del negocio' },
-    website: { label: 'Enlace de tu web o red social', placeholder: 'instagram.com/tunegocio' },
+    website: { label: 'Enlace de tu web o red social', placeholder: 'instagram.com/tunegocio', sin: 'Aún no tengo web ni redes' },
     industry: { label: 'Giro', placeholder: 'Elige uno' },
     teamSize: { label: 'Personas en tu equipo', placeholder: 'Elige uno' },
     revenue: { label: 'Facturación mensual aproximada', placeholder: 'Elige un rango' },
@@ -43,7 +43,6 @@ export const T = {
       discovery: { label: '¿Qué quieres revisar en la llamada?', help: 'Una o dos frases bastan.' },
       power: { label: '¿Qué quieres resolver en la sesión?', help: 'Mientras más concreto, mejor llegamos preparados.' },
     } as Record<SessionType, { label: string; help: string }>,
-    opcional: 'Opcional',
   },
 
   /* Paso 2 */
@@ -146,7 +145,7 @@ export const T_EN: Textos = {
     email: { label: 'Email', help: "That's where we'll send the invite with the Meet link." },
     whatsapp: { label: 'WhatsApp', help: 'With country code. Only for updates about your session.' },
     businessName: { label: 'Business name' },
-    website: { label: 'Link to your website or social media', placeholder: 'instagram.com/yourbusiness' },
+    website: { label: 'Link to your website or social media', placeholder: 'instagram.com/yourbusiness', sin: "I don't have a website or social media yet" },
     industry: { label: 'Industry', placeholder: 'Pick one' },
     teamSize: { label: 'People on your team', placeholder: 'Pick one' },
     revenue: { label: 'Approximate monthly revenue', placeholder: 'Pick a range' },
@@ -156,7 +155,6 @@ export const T_EN: Textos = {
       discovery: { label: 'What do you want to review on the call?', help: 'One or two sentences is enough.' },
       power: { label: 'What do you want to solve in the session?', help: 'The more specific, the better prepared we arrive.' },
     },
-    opcional: 'Optional',
   },
   s2: {
     h: 'Pick a day and time',

@@ -104,9 +104,14 @@ const goal = T.campos.goal[tipo];
               <p class="fld__error" id={f('businessName-error')} hidden></p>
             </div>
             <div class="fld" data-field="website">
-              <label class="fld__label" for={f('website')}>{T.campos.website.label}<span class="fld__opt">{T.campos.opcional}</span></label>
-              <input class="fld__input" id={f('website')} name="website" type="text" inputmode="url" autocomplete="url" maxlength="200" placeholder={T.campos.website.placeholder} />
+              <label class="fld__label" for={f('website')}>{T.campos.website.label}</label>
+              <input class="fld__input" id={f('website')} name="website" type="text" inputmode="url" autocomplete="url" maxlength="200" required placeholder={T.campos.website.placeholder} />
               <p class="fld__error" id={f('website-error')} hidden></p>
+              <label class="check fld__check" for={f('noWebsite')}>
+                <input type="checkbox" id={f('noWebsite')} name="noWebsite" value="si" />
+                <span class="check__box" aria-hidden="true"><Icon name="check" size={16} /></span>
+                <span>{T.campos.website.sin}</span>
+              </label>
             </div>
             <div class="fld" data-field="industry">
               <label class="fld__label" for={f('industry')}>{T.campos.industry.label}</label>
