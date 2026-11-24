@@ -1,9 +1,9 @@
 ---
 // /power-session/ · T-CONVERSION, landing de campañas (CAMBIO-COTIZAR §4.3, R17); abierta desde el 2026-11-14: indexable; encabezado reducido;
-// el primario reserva y paga en la propia página (#agenda, BookingFlow tipo="power"). La escena del VSL no se pinta hasta
-// que exista /video/powersession-vsl-720.mp4 (§9-4).
+// el primario reserva y paga en la propia página (#agenda, BookingFlow tipo="power"). El VSL de Ingeniak ("La factura
+// invisible") va a la vista y es lo primero de la página (vsl.lead, 2026-11-23); antes solo se abría con un botón.
 import ConversionTemplate from '../../components/templates/ConversionTemplate.astro';
 import { landingPage } from '../../scripts/landing/pagina';
 const page = landingPage('/power-session/');
 ---
-<ConversionTemplate page={page} tipo="power" vsl={{ src: '/video/powersession-vsl-720.mp4' }} />
+<ConversionTemplate page={page} tipo="power" vsl={{ src: '/video/powersession-vsl-720.mp4', lead: { base: '/img/powersession-vsl-poster', widths: [640, 960, 1280, 1920] } }} />

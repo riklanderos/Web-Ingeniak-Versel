@@ -14,7 +14,6 @@
     "PREGUNTA AL CLIENTE · precio introductorio: \"{{offer:power-price}} es precio introductorio.\" (#garantia, bloque Por qué ahora). ¿Hasta cuándo? Si ya no aplica, la frase sale.",
     "PREGUNTA AL CLIENTE · \"Las 4 A del empresario libre\" (Auditar, Agrupar, Agentizar, Automatizar; #metodo) conviven con VKTOR™ (Verify · Koncept · Transform · Operate · Rise; #quien). ¿Se quedan las dos o la sesión se explica solo con VKTOR (fase Verify)?",
     "PREGUNTA AL CLIENTE · cargo de Rik: la fuente dice \"fundador y director de ingeniak\"; el sitio usa el cargo del equipo (TEAM: \"Director de Estrategia Comercial\"). #quien imprime el de TEAM hasta que confirmes cuál va.",
-    "DATO PENDIENTE · VSL de la Power Session: la escena #video queda con _omitir hasta tener /video/powersession-vsl-720.mp4 recodificado (720p, faststart, ≤ 12 MB, subtítulos .vtt). Autoriza la descarga de powersession-vsl.mp4 (agenda.ingeniak.tech, 29.3 MB).",
     "DATO PENDIENTE · caso \"De 13 horas al día a un sistema\" (servicios profesionales, Monterrey: 13→8 h, $180K→$340K MXN, $65K, $480K, 7.4x…): no está en metrics.ts ni entre los casos del sitio. No se publica sin confirmación, autorización del cliente y alta como métricas.",
     "DATO PENDIENTE · franja de clientes (ARGI, NUTRIBALANCE, VISAS SOS, DEPORT DEV, KROMA ODONTOLOGÍA): el sitio no publica nombres de clientes sin autorización de cada uno. Omitida.",
     "DATO PENDIENTE · \"El costo de seguir igual\" (~40 HRS al mes, 27 procesos en tu cabeza) y \"+5 a 15 HRS por semana, por paso\" / \"27 PROCESOS promedio\" del método: estadísticas sin fuente (y el 27 de metrics.ts es otro dato: logística). Omitidas; las líneas del método van sin cifras.",
@@ -62,7 +61,7 @@
       }
     },
     "video": {
-      "_componente": "VideoScene = ImageSection mid (home-sistema-5-medir) + VSL en <dialog> + primario a #agenda",
+      "_componente": "VideoScene: el VSL va a la vista y abre la página junto con el H1 de la portada (vsl.lead, 2026-11-23); se reproduce en su lugar",
       "rail": "El video",
       "eyebrow": "Antes de reservar",
       "h2": {
@@ -70,6 +69,7 @@
         "soft": "antes de agendar."
       },
       "play": "Reproducir el video",
+      "posterAlt": "Rik Landeros en la portada del video de la Power Session de Ingeniak",
       "close": "Cerrar el video",
       "after": "Si reconociste tu operación en este video, esta sesión es tu siguiente paso.",
       "ctaPrimary": {

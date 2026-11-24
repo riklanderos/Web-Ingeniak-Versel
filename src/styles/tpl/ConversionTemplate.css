@@ -27,6 +27,44 @@
   body.cv .cv-hero .is__text > .crumbs{display:none}
 }
 
+/* ── Portada con el VSL a la vista (/power-session/, 2026-11-23) ──────────── */
+/* El video es lo primero: ocupa el alto que dejan el encabezado y la fila de titular + botón (≈ 270 px), así el primario
+   se ve sin hacer scroll. En móvil el video va a todo el ancho y debajo titular, botón y lede. */
+.cv-lead{padding:calc(var(--hdr) + 12px) 0 var(--s-7)}
+.cv-lead .it__body{--lw:min(100%,1120px,max(560px,calc((100svh - 270px) * 16 / 9)));grid-column:1 / -1;align-items:center}
+.cv-lead .it__body > * + *{margin-top:var(--s-5)}
+.cv-lead__v{width:var(--lw)}
+.cv-lead__stage{aspect-ratio:16 / 9;border-radius:16px;background:var(--ink-2);
+  box-shadow:0 0 0 1px rgb(0 229 255 / .28),0 24px 80px rgb(23 74 255 / .28)}
+.cv-lead__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cv-lead__play{position:absolute;inset:0;display:grid;place-items:center;color:#fff;text-decoration:none;border-radius:inherit;
+  background:radial-gradient(closest-side at 50% 50%,rgb(3 4 11 / .45),transparent 70%)}
+.cv-lead__play:focus-visible{outline:2px solid var(--cyan);outline-offset:-4px}
+/* blanco: el azul queda solo en el primario (un azul por pantalla) */
+.cv-lead__ring,.cv-lead__play:is(:hover,:focus-visible) .cv-lead__ring{width:88px;height:88px;background:#fff;color:#03040B;box-shadow:0 0 48px rgb(0 229 255 / .45)}
+.cv-lead__play:is(:hover,:focus-visible) .cv-lead__ring{scale:1.06;box-shadow:0 0 64px rgb(0 229 255 / .75)}
+.cv-lead__label{position:absolute;right:16px;bottom:16px;padding:9px 14px;border-radius:var(--r-pill);background:rgb(3 4 11 / .78);
+  font:500 14px/1 var(--f-display)}
+.cv-lead__dur{color:var(--text-2)}
+.cv-lead__row,.cv-lead__foot{width:var(--lw)}
+.cv-lead__row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:var(--s-7)}
+.cv-lead__h1{margin:0;max-width:22em;text-wrap:balance}
+.cv-lead__h1a{display:block;font:500 clamp(1.5rem,1rem + 1.15vw,2.125rem)/1.12 var(--f-display);letter-spacing:-.02em}
+body.cv .cv-lead .cv-lead__h1b{display:block;margin-top:6px;font:300 clamp(1.0625rem,.85rem + .6vw,1.375rem)/1.25 var(--f-display);color:var(--text-2)}
+.cv-lead__ctas{margin:0}
+.cv-lead__foot{padding-top:var(--s-4)}
+.cv-lead__lede{margin-top:var(--s-3);max-width:62ch}
+@media (max-width:767px),(max-aspect-ratio:5/6){
+  .cv-lead{padding-top:calc(var(--hdr) + 8px)}
+  .cv-lead .it__body{--lw:100%}
+  .cv-lead .it__body > * + *{margin-top:var(--s-4)}
+  .cv-lead__stage{border-radius:12px}
+  .cv-lead__ring,.cv-lead__play:is(:hover,:focus-visible) .cv-lead__ring{width:60px;height:60px}
+  .cv-lead__label{right:10px;bottom:10px;padding:8px 12px;font-size:13px}
+  .cv-lead__row{grid-template-columns:minmax(0,1fr);row-gap:var(--s-4)}
+  .cv-lead__foot{padding-top:0}
+}
+
 /* ── Microcopia del primario (portada, cuestionario, oferta, cierre) ───────── */
 /* Los grupos (.tpl-nw) van en flex-wrap y el separador "·" es el ::before de CADA grupo: el del arranque de cada renglón
    cae en la franja de --cvm-sep que la microcopia corre a la izquierda y que clip-path recorta. Nunca queda un "·" colgando

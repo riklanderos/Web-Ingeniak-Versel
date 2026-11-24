@@ -83,7 +83,8 @@ export async function run(opts) {
     for (const img of findAll(root, (x) => x.tag === 'img' && /\/img\/cine\//.test(`${x.attrs.src ?? ''} ${x.attrs.srcset ?? ''}`))) {
       if (!('alt' in img.attrs)) R.fail(route, `placa sin alt: ${img.attrs.src}`);
     }
-    const firstPlate = find(root, (x) => x.tag === 'img' && /\/img\/cine\//.test(x.attrs.src ?? '') && !/(-rack-|-still-)/.test(x.attrs.src ?? ''));
+    // /power-session/ abre con el póster del VSL (.cv-lead__img): ahí la portada es esa imagen, no una placa
+    const firstPlate = find(root, (x) => x.tag === 'img' && hasClass(x, 'cv-lead__img')) ?? find(root, (x) => x.tag === 'img' && /\/img\/cine\//.test(x.attrs.src ?? '') && !/(-rack-|-still-)/.test(x.attrs.src ?? ''));
     if (firstPlate && !noindex && !(firstPlate.attrs.alt ?? '').trim()) R.warn(route, `la placa de portada tiene alt vacío (R11: alt descriptivo en portadas): ${firstPlate.attrs.src}`);
     // WhatsApp
     const msgs = new Set();

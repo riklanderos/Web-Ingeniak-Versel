@@ -8,6 +8,9 @@
 //               segunda voz: h1.litSoft) · lede · primario a la reserva (#agenda) + micro del copy · Escríbele a Kain
 //   video       VideoScene (ImageSection subject-center o con sujeto) · reproducir → <dialog> · "after" · primario bajo
 //               el video. No se pinta si la sección es condicional, el copy la omite o el MP4 no existe en public/.
+//   lead        portada con el VSL a la vista (2026-11-23, /power-session/): si vsl.lead existe, portada y video son una sola
+//               sección (id="video") y la primera de la página: póster 16:9 que se reproduce ahí mismo (scripts/ui.ts,
+//               data-video="inline"; el MP4 se descarga al clic), H1, primario a #agenda y lede.
 //   agenda      Intertitle split id="agenda" (H2 id="agenda-t"): columna izquierda fija en escritorio (eyebrow, H2, pasos,
 //               "Sales con", nota) y a la derecha <BookingFlow tipo waHref headingLevel={3}/> (área agenda, §5.5)
 //   quiz        ImageSection tone="dolor" + cuestionario de casillas (contador aria-live, mensaje por puntaje en cian,
@@ -64,7 +67,11 @@ interface Props {
   page: Page;
   copy?: any;
   /** VSL de la escena de video (R14: 720p, se descarga solo al hacer clic). null = la landing no tiene video. */
-  vsl?: { src: string; captions?: string; fallbackPoster?: string } | null;
+  vsl?: {
+    src: string; captions?: string; fallbackPoster?: string;
+    /** Póster del VSL visible en la portada: base y anchos de los .webp (`${base}-${w}.webp`). Con `lead` el video abre la página. */
+    lead?: { base: string; widths: number[] };
+  } | null;
   /** Tipo de reserva del componente de #agenda (por defecto: 'power' en /power-session/, 'discovery' en el resto). */
   tipo?: 'discovery' | 'power';
 }
@@ -175,7 +182,7 @@ function withLit(text: string, lit?: string | false): string {
 }
 
 // ── tipo de escena por sección ──────────────────────────────────────────────
-type Kind = 'hero' | 'video' | 'agenda' | 'quiz' | 'twin' | 'offer' | 'guarantee' | 'host' | 'scene' | 'steps' | 'fit' | 'dodont' | 'faq' | 'dawn' | 'intertitle';
+type Kind = 'hero' | 'lead' | 'video' | 'agenda' | 'quiz' | 'twin' | 'offer' | 'guarantee' | 'host' | 'scene' | 'steps' | 'fit' | 'dodont' | 'faq' | 'dawn' | 'intertitle';
 const KINDS = ['agenda', 'quiz', 'twin', 'offer', 'guarantee', 'host'];
 function kindOf(s: any, c: any): Kind {
   if (KINDS.includes(c?._kind)) return c._kind;
@@ -191,10 +198,12 @@ function kindOf(s: any, c: any): Kind {
   return 'intertitle';
 }
 const vslOk = !!vsl && publicFile(vsl.src);
+const lead = vslOk ? vsl!.lead ?? null : null;
 const sections = ((page.sections ?? []) as any[])
   .filter((s) => s.id && s.status !== 'conditional' && S[s.id] && !S[s.id]._omitir)
   .map((s) => ({ s, c: S[s.id], kind: kindOf(s, S[s.id]) }))
-  .filter((x) => x.kind !== 'video' || vslOk);
+  .filter((x) => x.kind !== 'video' || (vslOk && !lead))
+  .map((x) => (lead && x.kind === 'hero' ? { ...x, kind: 'lead' as Kind } : x));
 
 // Auras alternadas para los intertítulos (ninguna zona > 40vh sin luz, §5)
 const auraCycle: { aura: 'isotipo' | 'ondas'; side: 'left' | 'right' | 'center' }[] = [
@@ -203,8 +212,10 @@ const auraCycle: { aura: 'isotipo' | 'ondas'; side: 'left' | 'right' | 'center' 
 let auraI = 0;
 const nextAura = () => auraCycle[auraI++ % auraCycle.length];
 
-const hero = sections.find((x) => x.kind === 'hero');
-const lcpPlate = usedPlate(hero?.s.plate);
+const hero = sections.find((x) => x.kind === 'hero' || x.kind === 'lead');
+const lcpPlate = lead ? undefined : usedPlate(hero?.s.plate);
+const leadSet = lead ? lead.widths.map((w) => `${lead.base}-${w}.webp ${w}w`).join(', ') : '';
+const LEAD_SIZES = '(max-width:767px) calc(100vw - 32px), min(1120px, calc(177.78svh - 480px))';
 // R3 · intro móvil: una oración de lede (≤ 20 palabras); la otra baja a `more` (en escritorio el lede sigue completo).
 // hero.ledeOrder del copy: 'last' (por defecto; Discovery, cuya primera oración repite la etiqueta) o 'first' (Power:
 // la primera oración dice qué es la sesión y debe quedar en el primer pantallazo móvil).
@@ -216,6 +227,7 @@ const folio = page.folio ?? page.id;
 const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.faqIds;
 ---
 <BaseLayout page={page} nav="reduced" lcpPlate={lcpPlate} lcpSrcsetMax={lcpMax} bodyClass="cv" rail={false} faqIds={faqIds} noindex={pageNoindex(page)}>
+  {lead && <link slot="head" rel="preload" as="image" type="image/webp" fetchpriority="high" imagesrcset={leadSet} imagesizes={LEAD_SIZES} />}
   {sections.map(({ s, c, kind }) => {
     const pl = s.plate ?? {};
     const pid = plateId(pl);
@@ -285,6 +297,45 @@ const faqIds: string[] | undefined = sections.find((x) => x.kind === 'faq')?.c?.
             </Fragment>
           )}
         </ImageSection>
+      );
+    }
+
+    /* ───────────── Portada con el VSL a la vista (lo primero de la página) ───────────── */
+    if (kind === 'lead') {
+      const v = S.video ?? {};
+      const litSoft: string | undefined = c.h1?.litSoft;
+      const play = v.play ?? T.play;
+      const title = plain(`${v.h2?.text ?? ''} ${v.h2?.soft ?? ''}`).trim() || plain(page.h1);
+      const big = `${lead!.base}-1280.webp`;
+      return (
+        <Intertitle id="video" aura="ondas" auraSide="center" labelledby="video-t" class="cv-lead tpl-hero">
+          <div class="vposter vposter--inline cv-lead__v" data-video="inline">
+            <div class="vposter__stage cv-lead__stage">
+              <img class="cv-lead__img" src={big} srcset={leadSet} sizes={LEAD_SIZES} alt={v.posterAlt ?? ''} width="1280" height="720" loading="eager" fetchpriority="high" decoding="async" />
+              <a class="cv-lead__play" href={vsl!.src} type="video/mp4" data-video-play aria-label={`${play}: ${title}`}>
+                <span class="vposter__ring cv-lead__ring" aria-hidden="true"><Icon name="play" size={30} /></span>
+                <span class="cv-lead__label">{play}{vslDur && <span class="cv-lead__dur" data-allow-number> · {vslDur}</span>}</span>
+              </a>
+              <template data-video-tpl>
+                <video class="vposter__video" controls playsinline preload="none" poster={big} width="1280" height="720">
+                  <source src={vsl!.src} type="video/mp4" />
+                  {vsl!.captions && <track kind="subtitles" srclang="es" label={T.track} src={vsl!.captions} default />}
+                </video>
+              </template>
+            </div>
+          </div>
+          <div class="cv-lead__row">
+            <h1 id="video-t" class:list={['cv-h1 cv-lead__h1', litSoft && 'cv-h1--litsoft']}>
+              <span class="cv-lead__h1a" set:html={withLit(c.h1?.text ?? page.h1, litSoft ? false : c.h1?.lit)} />{c.h1?.soft && <> <span class="cv-h1__soft cv-lead__h1b" set:html={litSoft ? withLit(c.h1.soft, litSoft) : ann(c.h1.soft)} /></>}
+            </h1>
+            <HeroCtas href={primaryHref(c)} label={primaryLabel(c)} section="video" micro={microOf(c)}
+              primaryAttrs={{ external: false }} waHref={waOfSec(c)} waLabel={WA_LABEL} waClass="cv-wa" class="cv-lead__ctas" />
+          </div>
+          <div class="cv-lead__foot">
+            {c.eyebrow && <p class="chip-spec eyebrow cv-hero__chip" data-allow-number><span class="node" aria-hidden="true"></span>{c.eyebrow}</p>}
+            {c.lede && <p class="t-lede t-lede--2 cv-lead__lede" set:html={ann(c.lede)} />}
+          </div>
+        </Intertitle>
       );
     }
 
