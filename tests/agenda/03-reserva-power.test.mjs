@@ -99,6 +99,7 @@ test('reserva power · apartado → Checkout → rl_stripe → Kommo «Power Ses
     sel('Facturación mensual', 'USD 15,000 a 20,000'),
     { field_id: IDS.campo('Página de origen'), values: [{ value: 'https://ingeniak.mx/discovery/' }] },
     sel('Pago Power Session', 'Pendiente'),
+    { field_id: 777636, values: [{ value: 'https://ejemplo.test' }] },
   ], 'sin Meet todavía (llega al pagar)');
   const note = k.calls.find((c) => c.path === '/leads/notes').body[0].params.text;
   assert.match(note, /Pago: pendiente en Stripe Checkout/);

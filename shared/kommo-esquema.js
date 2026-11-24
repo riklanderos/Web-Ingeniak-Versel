@@ -103,6 +103,12 @@ export const CAMPOS = {
  */
 export const ORIGEN_PROSPECTO = Object.freeze({ fieldId: 773494, opcion: 'Form Web' });
 
+/**
+ * Campo donde el cliente quiere el enlace del formulario (web o red social; cliente, 2026-11-23: «mándalo al 777636»).
+ * Va por id y fuera de CAMPOS porque ya existe en la cuenta: el script de configuración no debe crearlo ni tocarlo.
+ */
+export const CAMPO_SITIO = Object.freeze({ fieldId: 777636 });
+
 /** Etiquetas de leads (máximo 10). */
 export const ETIQUETAS = ['web-cotizar', 'web-agenda', 'discovery', 'power-session', 'campaña', 'orgánico', 'referido', 'hot-lead', 'reactivación', 'entorno-preview'];
 

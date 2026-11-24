@@ -73,6 +73,8 @@ export function cuentaSimulada(o = {}) {
   let fid = 600;
   for (const code of RASTREO) campos.push({ id: ++fid, name: code, type: 'tracking_data', code, sort: fid, enums: null });
   campos.push({ id: ++fid, name: 'Notas internas', type: 'textarea', code: null, sort: fid, enums: null });
+  // Campo del enlace (shared/kommo-esquema.js → CAMPO_SITIO): ya existe en la cuenta real.
+  campos.push({ id: 777636, name: 'Enlace del cliente', type: 'url', code: null, sort: ++fid, enums: null });
   if (conEstructura) {
     let base = 7000;
     for (const def of Object.values(CAMPOS)) {

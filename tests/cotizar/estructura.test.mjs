@@ -135,6 +135,7 @@ test('simulador · cotización → «Ventas / Nueva cotización» con los 10 cam
     'Canales que usa hoy': ['WhatsApp', 'Instagram'],
     'Contacto preferido': 'WhatsApp',
     'Página de origen': 'https://ingeniak.mx/servicios/agentes-ia-whatsapp/',
+    'Enlace del cliente': 'https://clinicaejemplo.mx',
     'REFERRER': 'https://www.google.com/',
   });
   assert.deepEqual(sim.etiquetas(id), ['web-cotizar', 'orgánico', 'entorno-preview']);
@@ -193,7 +194,7 @@ test('simulador · sin la estructura (script sin correr) → embudo principal, s
   assert.equal(complex.length, 1);
   assert.equal(complex[0].body[0].pipeline_id, undefined);
   assert.equal(complex[0].body[0].status_id, undefined);
-  assert.deepEqual(sim.valores(id), { UTM_SOURCE: 'google', UTM_MEDIUM: 'cpc', REFERRER: 'https://www.google.com/' }, 'solo rastreo');
+  assert.deepEqual(sim.valores(id), { 'Enlace del cliente': 'https://clinicaejemplo.mx', UTM_SOURCE: 'google', UTM_MEDIUM: 'cpc', REFERRER: 'https://www.google.com/' }, 'solo rastreo y el enlace (su campo va por id)');
   assert.deepEqual(sim.etiquetas(id), ['web-cotizar', 'campaña', 'entorno-preview']);
   assert.match(sim.notasDe(id)[0], /\nIndustria: Salud · Equipo: 11–50 personas\n/);
 });

@@ -22,6 +22,7 @@ const CAMPOS_EJEMPLO = [
   sel('Contacto preferido', 'WhatsApp'),
   { field_id: IDS.campo('Página de origen'), values: [{ value: 'https://ingeniak.mx/servicios/agentes-ia-whatsapp/' }] },
 ];
+const ENLACE_EJEMPLO = { field_id: 777636, values: [{ value: 'https://clinicaejemplo.mx' }] };
 /** Rutas de la estructura: con ella (por defecto) o sin ella (script sin correr). */
 const estructura = (con = true) => [
   { match: 'GET /leads/pipelines', json: con ? KOMMO.pipelines : KOMMO.pipelinesSinEstructura },
@@ -56,7 +57,6 @@ test('§3.9-2 · contacto nuevo: 204, 204 → pipelines + custom_fields → comp
     ...estructura(),
     { match: 'POST /leads/complex', json: KOMMO.complexOk },
     { match: 'POST /leads/notes', json: KOMMO.notaOk },
-    { match: 'PATCH /companies/12117260', json: { id: 12117260 } },
   ]);
   const r = await handler.fetch(peticion(valido({ submission_id: ID })));
   assert.equal(r.status, 200);
@@ -71,7 +71,6 @@ test('§3.9-2 · contacto nuevo: 204, 204 → pipelines + custom_fields → comp
       `GET ${FAKE.base}/leads/custom_fields?limit=250&page=1`,
       `POST ${FAKE.base}/leads/complex`,
       `POST ${FAKE.base}/leads/notes`,
-      `PATCH ${FAKE.base}/companies/12117260`,
     ],
   );
   for (const c of llamadas) {
@@ -85,7 +84,7 @@ test('§3.9-2 · contacto nuevo: 204, 204 → pipelines + custom_fields → comp
       pipeline_id: IDS.embudo('Ventas'),
       status_id: IDS.etapa('Ventas', 'Nueva cotización'),
       responsible_user_id: 3333333,
-      custom_fields_values: [...CAMPOS_EJEMPLO, { field_id: IDS.campo('REFERRER'), values: [{ value: 'https://www.google.com/' }] }],
+      custom_fields_values: [...CAMPOS_EJEMPLO, ENLACE_EJEMPLO, { field_id: IDS.campo('REFERRER'), values: [{ value: 'https://www.google.com/' }] }],
       _embedded: { tags: TAGS, contacts: [CONTACTO_NUEVO], companies: [{ name: 'Clínica Ejemplo' }] },
     },
   ]);
@@ -101,7 +100,7 @@ test('§3.9-2 · contacto nuevo: 204, 204 → pipelines + custom_fields → comp
   assert.equal(llamadas.filter((c) => c.path.startsWith('/leads/pipelines')).length, 1);
 });
 
-test('«Web» de la empresa · valorWeb: dominio → https://, lo demás tal cual', () => {
+test('Enlace · valorWeb: dominio → https://, lo demás tal cual', () => {
   assert.equal(kommo.valorWeb(' instagram.com/tunegocio '), 'https://instagram.com/tunegocio');
   assert.equal(kommo.valorWeb('www.negocio.com.mx'), 'https://www.negocio.com.mx');
   assert.equal(kommo.valorWeb('https://negocio.mx/a?b=1'), 'https://negocio.mx/a?b=1');
@@ -112,60 +111,84 @@ test('«Web» de la empresa · valorWeb: dominio → https://, lo demás tal cua
 });
 
 const LEAD_WEB = { name: 'x', contact: { name: 'Ana', email: 'ana@empresa.mx' }, company: 'Clínica Ejemplo', web: 'clinica.mx' };
-const contactoCon = (empresas) => ({ match: 'GET /contacts', json: { _embedded: { contacts: [{ id: 555, custom_fields_values: [{ field_code: 'EMAIL', values: [{ value: 'ana@empresa.mx' }] }], _embedded: { companies: empresas } }] } } });
+const ENLACE_WEB = { custom_fields_values: [{ field_id: 777636, values: [{ value: 'https://clinica.mx' }] }] };
+/** Cuenta donde el 777636 no es campo del lead. */
+const sinCampoLead = () => [
+  { match: 'GET /leads/pipelines', json: KOMMO.pipelines },
+  { match: 'GET /leads/custom_fields', json: { _embedded: { custom_fields: KOMMO.campos._embedded.custom_fields.filter((f) => f.id !== 777636) } } },
+];
+const contactoCon = (empresas, campos = []) => ({ match: 'GET /contacts', json: { _embedded: { contacts: [{ id: 555, custom_fields_values: [{ field_code: 'EMAIL', values: [{ value: 'ana@empresa.mx' }] }, ...campos], _embedded: { companies: empresas } }] } } });
 const COMPLEX = { match: 'POST /leads/complex', json: KOMMO.complexOk };
+const conEnlace = (c) => c.method === 'PATCH' && JSON.stringify(c.body).includes('777636');
 
-test('«Web» de la empresa · empresa nueva: PATCH por código WEB; sin código en la cuenta, por nombre', async (t) => {
+test('Enlace · campo del lead: va en el mismo lead, también con contacto que ya existe', async (t) => {
+  for (const contactos of [{ match: 'GET /contacts', status: 204 }, contactoCon([{ id: 9 }])]) {
+    t.mock.restoreAll();
+    kommo.__resetKommo();
+    entorno(t, kommoVars());
+    logs(t);
+    const llamadas = simularFetch(t, [contactos, ...estructura(), COMPLEX]);
+    const r = await kommo.createLeadWithNote(LEAD_WEB);
+    assert.equal(r.webOk, true);
+    assert.deepEqual(llamadas.find((c) => c.path === '/leads/complex').body[0].custom_fields_values, ENLACE_WEB.custom_fields_values);
+    assert.equal(llamadas.some((c) => c.method === 'PATCH'), false);
+  }
+});
+
+test('Enlace · el campo del lead no es de texto ni enlace: no se manda', async (t) => {
   entorno(t, kommoVars());
   logs(t);
   const llamadas = simularFetch(t, [
-    { match: 'GET /contacts', status: 204 }, COMPLEX,
-    { match: 'PATCH /companies/12117260', status: 400, json: {}, once: true },
-    { match: 'GET /companies/custom_fields', json: { _embedded: { custom_fields: [{ id: 1, name: 'Web', type: 'checkbox' }, { id: 77, name: 'Página web', type: 'url' }] } } },
-    { match: 'PATCH /companies/12117260', json: { id: 12117260 } },
+    { match: 'GET /contacts', status: 204 }, { match: 'GET /leads/pipelines', json: KOMMO.pipelines },
+    { match: 'GET /leads/custom_fields', json: { _embedded: { custom_fields: [{ id: 777636, name: 'x', type: 'select', enums: [] }] } } }, COMPLEX,
   ]);
-  const r = await kommo.createLeadWithNote(LEAD_WEB);
-  assert.equal(r.ok, true);
-  assert.equal(r.webOk, true);
-  const p = llamadas.filter((c) => c.method === 'PATCH');
-  assert.deepEqual(p[0].body, { custom_fields_values: [{ field_code: 'WEB', values: [{ value: 'https://clinica.mx' }] }] });
-  assert.deepEqual(p[1].body, { custom_fields_values: [{ field_id: 77, values: [{ value: 'https://clinica.mx' }] }] });
+  assert.equal((await kommo.createLeadWithNote(LEAD_WEB)).ok, true);
+  assert.equal(JSON.stringify(llamadas.map((c) => c.body)).includes('777636'), false);
 });
 
-test('«Web» de la empresa · si Kommo falla, el lead queda igual y se registra', async (t) => {
+test('Enlace · campo de la empresa; si tampoco es de ella, del contacto', async (t) => {
+  entorno(t, kommoVars());
+  logs(t);
+  let llamadas = simularFetch(t, [{ match: 'GET /contacts', status: 204 }, ...sinCampoLead(), COMPLEX, { match: 'PATCH /companies/12117260', json: {} }]);
+  assert.equal((await kommo.createLeadWithNote(LEAD_WEB)).webOk, true);
+  assert.deepEqual(llamadas.filter(conEnlace).map((c) => [c.path, c.body]), [['/companies/12117260', ENLACE_WEB]]);
+  t.mock.restoreAll();
+  entorno(t, kommoVars());
+  logs(t);
+  llamadas = simularFetch(t, [{ match: 'GET /contacts', status: 204 }, ...sinCampoLead(), COMPLEX, { match: 'PATCH /companies/12117260', status: 400, json: {} }, { match: 'PATCH /contacts/12117258', json: {} }]);
+  assert.equal((await kommo.createLeadWithNote(LEAD_WEB)).webOk, true);
+  assert.deepEqual(llamadas.filter(conEnlace).map((c) => c.path), ['/companies/12117260', '/contacts/12117258']);
+});
+
+test('Enlace · si Kommo falla, el lead queda igual y se registra sin datos', async (t) => {
   entorno(t, kommoVars());
   const registro = logs(t);
-  simularFetch(t, [{ match: 'GET /contacts', status: 204 }, COMPLEX, { match: 'PATCH /companies/12117260', status: 500, json: {} }]);
+  simularFetch(t, [{ match: 'GET /contacts', status: 204 }, ...sinCampoLead(), COMPLEX, { match: 'PATCH /companies/12117260', status: 500, json: {} }]);
   const r = await kommo.createLeadWithNote(LEAD_WEB);
   assert.equal(r.ok, true);
   assert.equal(r.webOk, false);
   const txt = JSON.stringify(registro);
-  assert.ok(txt.includes('kommo.empresa-web'));
+  assert.ok(txt.includes('kommo.sitio'));
   assert.ok(!txt.includes('clinica.mx'), 'el log no lleva datos del formulario');
 });
 
-test('«Web» de la empresa · contacto que ya existe: llena la suya si es la misma y está vacía; nunca pisa', async (t) => {
-  entorno(t, kommoVars());
-  logs(t);
-  for (const [empresa, espera] of [
-    [{ id: 9, name: 'clínica  ejemplo', custom_fields_values: null }, 1],
-    [{ id: 9, name: 'Clínica Ejemplo', custom_fields_values: [{ field_code: 'WEB', values: [{ value: 'https://otra.mx' }] }] }, 0],
-    [{ id: 9, name: 'Otro negocio', custom_fields_values: null }, 0],
+test('Enlace · empresa o contacto que ya existe: nunca pisa su dato ni llena el de otro negocio', async (t) => {
+  const YA = [{ field_id: 777636, values: [{ value: 'https://otra.mx' }] }];
+  for (const [empresa, contacto, espera] of [
+    [{ id: 9, name: 'clínica  ejemplo', custom_fields_values: null }, [], ['/companies/9']],
+    [{ id: 9, name: 'Clínica Ejemplo', custom_fields_values: YA }, [], []],
+    [{ id: 9, name: 'Otro negocio', custom_fields_values: null }, [], []],
+    [null, [], ['/contacts/555']],
+    [null, YA, []],
   ]) {
     t.mock.restoreAll();
+    kommo.__resetKommo();
     entorno(t, kommoVars());
     logs(t);
-    const llamadas = simularFetch(t, [contactoCon([{ id: 9 }]), COMPLEX, { match: 'GET /companies/9', json: empresa }, { match: 'PATCH /companies/9', json: { id: 9 } }]);
+    const llamadas = simularFetch(t, [contactoCon(empresa ? [{ id: 9 }] : [], contacto), ...sinCampoLead(), COMPLEX, { match: 'GET /companies/9', json: empresa }, { match: 'PATCH /', json: {} }]);
     assert.equal((await kommo.createLeadWithNote(LEAD_WEB)).ok, true);
-    assert.equal(llamadas.filter((c) => c.method === 'PATCH').length, espera, empresa.name);
+    assert.deepEqual(llamadas.filter(conEnlace).map((c) => c.path), espera, JSON.stringify(empresa));
   }
-  t.mock.restoreAll();
-  entorno(t, kommoVars());
-  logs(t);
-  const sin = simularFetch(t, [contactoCon([]), COMPLEX]);
-  const r = await kommo.createLeadWithNote(LEAD_WEB);
-  assert.equal('webOk' in r, false, 'el contacto no tiene empresa');
-  assert.equal(sin.some((c) => c.path.startsWith('/companies')), false);
 });
 
 test('variables KOMMO_PIPELINE_ID / KOMMO_STATUS_ID mandan sobre los nombres', async (t) => {
@@ -181,7 +204,7 @@ test('variables KOMMO_PIPELINE_ID / KOMMO_STATUS_ID mandan sobre los nombres', a
   const lead = llamadas.find((c) => c.path === '/leads/complex').body[0];
   assert.equal(lead.pipeline_id, 1111111);
   assert.equal(lead.status_id, 2222222);
-  assert.equal(lead.custom_fields_values.length, CAMPOS_EJEMPLO.length + 1, 'los campos se llenan igual');
+  assert.equal(lead.custom_fields_values.length, CAMPOS_EJEMPLO.length + 2, 'los campos se llenan igual');
 });
 
 test('§3.9-3 · contacto existente por correo → contacts: [{ id }] y sin companies', async (t) => {
@@ -217,8 +240,8 @@ test('§3.9-3 · contacto existente por correo → contacts: [{ id }] y sin comp
   const lead = llamadas[3].body[0];
   assert.deepEqual(lead._embedded.contacts, [{ id: 555 }]);
   assert.equal(lead._embedded.companies, undefined);
-  // Sin la estructura en la cuenta (y sin rastreo): embudo principal, sin campos; la nota lleva todo.
-  assert.equal(lead.custom_fields_values, undefined);
+  // Sin la estructura en la cuenta (y sin rastreo): embudo principal, solo el enlace (su campo va por id); la nota lleva todo.
+  assert.deepEqual(lead.custom_fields_values, [ENLACE_EJEMPLO]);
   assert.equal(lead.pipeline_id, undefined);
   assert.equal(lead.status_id, undefined);
   assert.match(llamadas[4].body[0].params.text, /\nIndustria: Salud · Equipo: 11–50 personas\n/);
@@ -257,7 +280,7 @@ test('Origen de Prospecto: la cotización lo manda con la opción Form Web de la
   assert.equal((await handler.fetch(peticion(valido()))).status, 200);
   const cfv = llamadas.find((c) => c.path === '/leads/complex').body[0].custom_fields_values;
   assert.deepEqual(cfv.find((c) => c.field_id === 773494), { field_id: 773494, values: [{ enum_id: 9001 }] });
-  assert.equal(cfv.filter((c) => c.field_id !== 773494).length, CAMPOS_EJEMPLO.length + 1, 'los demás campos siguen iguales');
+  assert.equal(cfv.filter((c) => c.field_id !== 773494).length, CAMPOS_EJEMPLO.length + 2, 'los demás campos siguen iguales');
 });
 
 test('Origen de Prospecto: las reservas de la agenda también lo mandan', async (t) => {

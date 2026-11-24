@@ -43,9 +43,10 @@ test('api · liberar: pendiente con Checkout abierto → expira la sesión, borr
   const del = g.calls.find((c) => c.method === 'DELETE');
   assert.equal(del.query.sendUpdates, 'none');
   // Kommo: el lead se queda donde está (sin PATCH) y recibe la nota «No completó el pago…».
-  assert.equal(k.calls.filter((c) => c.method === 'PATCH' && c.path.startsWith('/leads')).length, 0);
-  // Al reservar, el sitio del formulario llega a «Web» de la empresa.
-  assert.deepEqual(k.calls.find((c) => c.path === '/companies/88')?.body, { custom_fields_values: [{ field_code: 'WEB', values: [{ value: 'https://ejemplo.test' }] }] });
+  assert.equal(k.calls.filter((c) => c.method === 'PATCH').length, 0);
+  // Al reservar, el enlace del formulario llega al campo 777636.
+  const cfv = k.complex[0].body[0].custom_fields_values;
+  assert.deepEqual(cfv.find((f) => f.field_id === 777636), { field_id: 777636, values: [{ value: 'https://ejemplo.test' }] });
   const nota = k.notes.at(-1);
   assert.equal(nota.entity_id, 4242);
   assert.equal(nota.params.text, 'No completó el pago de la Power Session: el horario apartado (Miércoles 21 de octubre · 10:00 AM, hora del centro de México) se liberó.');

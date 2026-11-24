@@ -15,6 +15,7 @@ import { googleAuthMode, googleToken } from '../../server/agenda/google-auth.js'
 import { google } from '../../server/agenda/google.js';
 import { stripe } from '../../server/agenda/stripe.js';
 import { leads } from '../../server/agenda/leads.js';
+import { revisarCampoSitio } from '../../server/kommo.js';
 import { mockPay, mockSnapshot, __resetMock } from '../../server/agenda/mock.js';
 import { SESSION_ID_RE } from '../../shared/agenda.js';
 
@@ -78,6 +79,8 @@ export default {
       calendarios: { power, discovery },
       kommo: st.kommo ? 'configurado' : 'sin-configurar',
       kommoEstructura: estructura.estado,
+      // De quién es el campo del enlace (777636) y su tipo, p. ej. 'leads:url'.
+      kommoCampoSitio: await revisarCampoSitio(),
       ...(estructura.faltan.length ? { kommoFaltan: estructura.faltan } : {}),
       // Lo que falta de embudos que el sitio no llena: no cambia kommoEstructura.
       ...(estructura.opcionales?.length ? { kommoOpcional: estructura.opcionales } : {}),

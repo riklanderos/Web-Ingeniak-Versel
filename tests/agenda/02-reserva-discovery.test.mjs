@@ -106,6 +106,7 @@ test('reserva discovery · evento con Meet, invitación, propiedades rl_* + rl_s
     sel('Tamaño de empresa', '6–10'),
     sel('Facturación mensual', 'USD 15,000 a 20,000'),
     { field_id: IDS.campo('Página de origen'), values: [{ value: 'https://ingeniak.mx/discovery/' }] },
+    { field_id: 777636, values: [{ value: 'https://ejemplo.test' }] },
   ]);
   assert.deepEqual(lead._embedded.contacts[0].custom_fields_values, [
     { field_code: 'PHONE', values: [{ value: '+523312345678', enum_code: 'MOB' }] },

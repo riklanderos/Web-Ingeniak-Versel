@@ -29,7 +29,7 @@
  * { evento, folio, status, leadId, delivered, ms }: nunca correo, teléfono, nombre ni token.
  */
 import { envName } from './http.js';
-import { CAMPOS, EMBUDOS, ORIGEN_PROSPECTO } from '../shared/kommo-esquema.js';
+import { CAMPO_SITIO, CAMPOS, EMBUDOS, ORIGEN_PROSPECTO } from '../shared/kommo-esquema.js';
 import { SITE_URL } from '../shared/agenda.js';
 import { conHttps } from '../shared/enlace.js';
 
@@ -240,13 +240,12 @@ export function telefonoBody(contacto, phoneE164) {
   return { custom_fields_values: [{ field_code: 'PHONE', values: [...conservar, { value: phoneE164, enum_code: 'MOB' }] }] };
 }
 
-/* ── «Web» de la empresa (cliente, 2026-11-23) ───────────────────────────────────────────────── */
+/* ── Enlace del formulario → campo 777636 (cliente, 2026-11-23) ─────────────────────────────── */
 
-/** Nombres con los que puede estar el campo si la cuenta no usa el estándar (code WEB). */
-const NOMBRES_WEB = Object.freeze(['web', 'sitio web', 'página web', 'pagina web', 'website', 'sitio web o redes']);
+const TIPOS_TEXTO = Object.freeze(['url', 'text', 'textarea']);
 
 /**
- * Valor para el campo «Web»: lo que escribió la persona; si es un dominio sin https:// se le agrega para que sea enlace.
+ * Valor del campo: lo que escribió la persona; si es un enlace sin https:// se le agrega para que se pueda abrir.
  * @param {unknown} v
  * @returns {string | null}
  */
@@ -256,37 +255,50 @@ export function valorWeb(v) {
   return conHttps(s) ?? s;
 }
 
-/** ¿La empresa ya tiene algo en «Web»? @param {any} empresa  respuesta de GET /companies/{id} */
-function tieneWeb(empresa) {
-  const fields = Array.isArray(empresa?.custom_fields_values) ? empresa.custom_fields_values : [];
-  return fields.some((f) => (f?.field_code === 'WEB' || NOMBRES_WEB.includes(normalizar(f?.field_name)))
-    && (Array.isArray(f.values) ? f.values : []).some((v) => String(v?.value ?? '').trim()));
+/**
+ * El campo del enlace como campo del lead, o null si no es un campo de texto o enlace del lead en esta cuenta
+ * (mandar un id que el lead no tiene haría que Kommo rechace todos los campos).
+ * @param {Estructura} est
+ * @param {string} value
+ */
+function sitioDelLead(est, value) {
+  const campo = est.porId.get(CAMPO_SITIO.fieldId);
+  return campo && TIPOS_TEXTO.includes(campo.type) ? { field_id: CAMPO_SITIO.fieldId, values: [{ value }] } : null;
+}
+
+/** ¿La empresa o el contacto ya tiene algo en ese campo? @param {any} entidad */
+function tieneSitio(entidad) {
+  const fields = Array.isArray(entidad?.custom_fields_values) ? entidad.custom_fields_values : [];
+  return fields.some((f) => f?.field_id === CAMPO_SITIO.fieldId && (Array.isArray(f.values) ? f.values : []).some((v) => String(v?.value ?? '').trim()));
 }
 
 /**
- * Llena «Web» de la empresa. Va después de crear el lead y en su propia llamada: si falla, el lead no se pierde y la
- * nota trae el dato. Por el código estándar WEB; si la cuenta no lo acepta, busca el campo por nombre.
- * @param {number} companyId
+ * Cuando el campo no es del lead: se llena en la empresa y, si tampoco es de ella, en el contacto. Va después de crear
+ * el lead y en su propia llamada: si falla, el lead no se pierde y la nota trae el dato. Lo que ya existía no se pisa.
  * @param {string} value
- * @param {{ soloSiVacia?: string | null, deadline: number }} o  soloSiVacia: nombre que debe tener la empresa existente
+ * @param {{ companyId?: number, soloSiVacia?: string | null, contactId?: number, contacto?: any, deadline: number }} o
+ *   soloSiVacia: nombre que debe tener una empresa que ya existía · contacto: el que ya existía, o null si es nuevo
  * @returns {Promise<{ ok: boolean, omitido?: boolean, res?: CallResult }>}
  */
-async function llenarWeb(companyId, value, { soloSiVacia = null, deadline }) {
-  if (soloSiVacia !== null) {
-    const e = await call(`/companies/${companyId}`, { deadline });
-    if (e.status !== 200) return { ok: false, res: e };
-    // Empresa que ya existía: nunca se pisa su dato ni se le pone el de otro negocio.
-    if (tieneWeb(e.data) || normalizar(e.data?.name) !== normalizar(soloSiVacia)) return { ok: true, omitido: true };
+async function llenarSitio(value, { companyId, soloSiVacia = null, contactId, contacto, deadline }) {
+  const body = { custom_fields_values: [{ field_id: CAMPO_SITIO.fieldId, values: [{ value }] }] };
+  /** @type {CallResult | undefined} */
+  let r;
+  if (companyId) {
+    if (soloSiVacia !== null) {
+      const e = await call(`/companies/${companyId}`, { deadline });
+      if (e.status !== 200) return { ok: false, res: e };
+      if (tieneSitio(e.data) || normalizar(e.data?.name) !== normalizar(soloSiVacia)) return { ok: true, omitido: true };
+    }
+    r = await call(`/companies/${companyId}`, { method: 'PATCH', body, deadline });
+    if (r.status === 200) return { ok: true, res: r };
+    if (r.status !== 400 && r.status !== 422) return { ok: false, res: r };
   }
-  const patch = (/** @type {object} */ campo) => call(`/companies/${companyId}`, { method: 'PATCH', body: { custom_fields_values: [{ ...campo, values: [{ value }] }] }, deadline });
-  let r = await patch({ field_code: 'WEB' });
-  if (r.status === 400 || r.status === 422) {
-    const f = await call(`/companies/custom_fields?limit=${CAMPOS_POR_PAGINA}`, { deadline });
-    const rows = Array.isArray(f.data?._embedded?.custom_fields) ? f.data._embedded.custom_fields : [];
-    const campo = rows.find((/** @type {any} */ x) => Number.isSafeInteger(x?.id) && ['url', 'text', 'textarea'].includes(x.type) && NOMBRES_WEB.includes(normalizar(x.name)));
-    if (campo) r = await patch({ field_id: campo.id });
+  if (contactId) {
+    if (contacto && tieneSitio(contacto)) return { ok: true, omitido: true };
+    r = await call(`/contacts/${contactId}`, { method: 'PATCH', body, deadline });
   }
-  return { ok: r.status === 200, res: r };
+  return { ok: r?.status === 200, res: r };
 }
 
 /* ── Convenciones del sitio para la estructura aprobada ───────────────────────────────────── */
@@ -814,7 +826,7 @@ export function noteBody(leadId, text) {
  * POST leads/complex (si Kommo responde 400 y mandamos datos de la estructura: un reintento sin campos, y sin
  * embudo/etapa por nombre si el error los menciona) → POST leads/notes (si falla, el lead ya existe: ok igual) →
  * PATCH contacts/{id} si el contacto existente no tenía este teléfono (si falla: ok igual, la nota lo trae) →
- * PATCH companies/{id} con el sitio del formulario en «Web» (empresa nueva, o existente con el mismo nombre y sin dato).
+ * PATCH companies/{id} o contacts/{id} con el enlace del formulario, solo si el campo 777636 no es del lead.
  * @param {LeadInput} input
  * @returns {Promise<
  *   { ok: true, status: number, leadId: number | null, contactId: number | null, existingContact: boolean, telefonoAgregado?: boolean, webOk?: boolean, noteOk: boolean,
@@ -852,7 +864,7 @@ export async function createLeadWithNote(input) {
           contactSearch: searches.map((s) => `GET /api/v4/contacts?query=${encodeURIComponent(s.value)}`),
           complex: complexBody(input, null, trackingValues(tracking, null)),
           note: note ? noteBody('<lead_id>', note) : [],
-          ...(valorWeb(input.web) && input.company ? { empresaWeb: valorWeb(input.web) } : {}),
+          ...(valorWeb(input.web) ? { sitio: { field_id: CAMPO_SITIO.fieldId, value: valorWeb(input.web) } } : {}),
           tags: complexBody(input, null, [])[0]._embedded.tags.map((/** @type {{name: string}} */ t) => t.name),
           destino: previewDestino(input),
           campos: previewCampos(input.campos),
@@ -883,7 +895,8 @@ export async function createLeadWithNote(input) {
     const hayCampos = Object.values(input.campos ?? {}).some((v) => !vacio(v));
     /** @type {Estructura | null} */
     let est = null;
-    if (input.embudo || hayCampos || hayRastreo) {
+    const web = valorWeb(input.web);
+    if (input.embudo || hayCampos || hayRastreo || web) {
       const e = await estructura(deadline);
       if (e.ok) est = e.data;
       else if (FATALES.includes(e.result.reason ?? '')) return await fail('campos', e.result, ctx, t0);
@@ -893,7 +906,8 @@ export async function createLeadWithNote(input) {
     const campos = valoresDeCampos(est, input.campos);
     const origen = est ? origenProspecto(est) : null;
     if (est && !origen) log({ evento: 'kommo.origen-prospecto', folio: ctx.folio, status: 0, ms: Date.now() - t0 });
-    const customFields = [...campos.valores, ...(origen ? [origen] : []), ...(est ? trackingValues(tracking, est.rastreo) : [])];
+    const sitio = est && web ? sitioDelLead(est, web) : null;
+    const customFields = [...campos.valores, ...(origen ? [origen] : []), ...(sitio ? [sitio] : []), ...(est ? trackingValues(tracking, est.rastreo) : [])];
 
     // 3 · Lead + contacto + empresa (con campos y etapa); si Kommo rechaza algo de la estructura, se reintenta sin ello
     let r = await call('/leads/complex', { method: 'POST', body: complexBody(input, contactId, customFields, destino), deadline });
@@ -935,16 +949,18 @@ export async function createLeadWithNote(input) {
       }
     }
 
-    // 6 · «Web» de la empresa con el sitio del formulario. Si falla, el lead ya existe y la nota lo trae.
-    let webOk;
-    const web = valorWeb(input.web);
+    // 6 · El enlace, si su campo no es del lead: en la empresa o en el contacto. Si falla, la nota lo trae.
+    let webOk = sitio ? !reintento : undefined;
     const nueva = !contactId && input.company && !row.merged;
-    const companyId = posInt(contactId ? contactoExistente?._embedded?.companies?.[0]?.id : row.company_id);
-    if (web && input.company && companyId) {
-      const w = await llenarWeb(companyId, web, { soloSiVacia: nueva ? null : input.company, deadline });
+    const companyId = input.company ? posInt(contactId ? contactoExistente?._embedded?.companies?.[0]?.id : row.company_id) : undefined;
+    const idContacto = posInt(contactId ?? newContact);
+    if (web && !sitio && est && !est.porId.has(CAMPO_SITIO.fieldId) && (companyId || idContacto)) {
+      const w = await llenarSitio(web, {
+        companyId, soloSiVacia: nueva ? null : input.company, contactId: idContacto, contacto: contactoExistente, deadline,
+      });
       webOk = w.ok;
       if (!w.ok) {
-        log({ evento: 'kommo.empresa-web', folio: ctx.folio, status: w.res?.status ?? 0, leadId, ms: Date.now() - t0 });
+        log({ evento: 'kommo.sitio', folio: ctx.folio, status: w.res?.status ?? 0, leadId, ms: Date.now() - t0 });
         if (w.res) await maybeAlert(w.res, ctx);
       }
     }
@@ -1198,6 +1214,20 @@ export async function revisarEstructura() {
   } catch {
     return { estado: 'error', faltan: [], opcionales: [] };
   }
+}
+
+/**
+ * ¿De quién es el campo del enlace (CAMPO_SITIO) en esta cuenta y de qué tipo? Solo para el diagnóstico de Preview.
+ * @returns {Promise<string>}  'leads:url' | 'companies:text' | 'contacts:url' | 'no-existe' | 'error' | 'sin-configurar'
+ */
+export async function revisarCampoSitio() {
+  if (!kommoConfigured()) return 'sin-configurar';
+  for (const entidad of ['leads', 'companies', 'contacts']) {
+    const r = await call(`/${entidad}/custom_fields/${CAMPO_SITIO.fieldId}`, { deadline: Date.now() + ESTRUCTURA_MAX_MS });
+    if (r.status === 200 && r.data?.id === CAMPO_SITIO.fieldId) return `${entidad}:${String(r.data.type ?? '')}`;
+    if (FATALES.includes(r.reason ?? '') || r.status === 0) return 'error';
+  }
+  return 'no-existe';
 }
 
 /* ── Puente Kommo → Google Analytics (2026-11-19, api/kommo/etapa.js) ─────────────────────────── */
