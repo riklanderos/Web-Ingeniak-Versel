@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1350" />
+    <title>El recorrido de un lead (móvil)</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Lexend";
+        src: url("assets/lexend-var.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/inter-var.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("assets/jetbrains-mono-var.woff2") format("woff2");
+        font-weight: 100 900;
+      }
+      :root {
+        --ink: #03040b;
+        --navy: #0a1f4c;
+        --muted: #9eb0c7;
+        --kain: #00e5ff;
+        --com: #ffb547;
+        --rik: #a78bfa;
+        --glass-line: rgba(255, 255, 255, 0.14);
+        --P: 52px; /* separación vertical entre etapas */
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1350px;
+        overflow: hidden;
+        background: var(--ink);
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+      }
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1350px;
+        overflow: hidden;
+        background: var(--ink);
+        font-family: "Inter", system-ui, sans-serif;
+      }
+      .layer {
+        position: absolute;
+        inset: 0;
+      }
+      i {
+        font-style: normal;
+        display: block;
+      }
+
+      /* ---------- fondo: halo azul marino ---------- */
+      #halo {
+        position: absolute;
+        left: -160px;
+        top: -560px;
+        width: 1400px;
+        height: 1400px;
+        border-radius: 50%;
+        background: radial-gradient(closest-side, rgba(10, 31, 76, 0.56) 0%, rgba(10, 31, 76, 0.4) 22%, rgba(10, 31, 76, 0.24) 45%, rgba(10, 31, 76, 0.1) 70%, rgba(10, 31, 76, 0.03) 88%, rgba(10, 31, 76, 0) 100%);
+      }
+
+      /* ---------- líneas (SVG) ---------- */
+      #wires {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .w {
+        fill: none;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        opacity: 0;
+      }
+      .w.in {
+        stroke: rgba(255, 255, 255, 0.5);
+      }
+      .w.sys,
+      .ah {
+        stroke: var(--muted);
+      }
+      .ah {
+        fill: none;
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        opacity: 0;
+      }
+
+      /* ---------- título (solo en la entrada) ---------- */
+      #title {
+        position: absolute;
+        left: 0;
+        top: 292px;
+        width: 1080px;
+        font: 600 104px/114px "Lexend", sans-serif;
+        letter-spacing: -0.01em;
+        text-align: center;
+        opacity: 0;
+      }
+
+      /* ---------- entradas ---------- */
+      .chip {
+        position: absolute;
+        left: 280px;
+        height: 68px;
+        padding: 0 28px;
+        border: 1px solid var(--glass-line);
+        border-radius: 34px;
+        background: rgba(255, 255, 255, 0.045);
+        font: 500 40px/66px "Inter", sans-serif;
+        white-space: nowrap;
+        opacity: 0;
+      }
+
+      /* ---------- carriles ---------- */
+      .lane {
+        position: absolute;
+        left: 104px;
+        width: 0;
+        height: 0;
+      }
+      .lname {
+        position: absolute;
+        left: 42px;
+        top: -82px;
+        font: 600 40px/48px "JetBrains Mono", monospace;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        opacity: 0;
+      }
+      .spine {
+        position: absolute;
+        left: -1px;
+        top: 0;
+        width: 2px;
+        height: calc(var(--P) * 4);
+        background: rgba(255, 255, 255, 0.18);
+      }
+      .prog {
+        position: absolute;
+        left: -2px;
+        width: 4px;
+        background: var(--c);
+      }
+      .st {
+        position: absolute;
+        left: 0;
+        top: calc(var(--i) * var(--P));
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+      .st .nd,
+      .st .fl {
+        position: absolute;
+        left: -13px;
+        top: -13px;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+      }
+      .st .nd {
+        border: 2.5px solid rgba(255, 255, 255, 0.45);
+        background: var(--ink);
+      }
+      .st .fl {
+        background: var(--c);
+        opacity: 0;
+      }
+      .st span {
+        position: absolute;
+        left: 42px;
+        top: -25px;
+        font: 500 40px/48px "Inter", sans-serif;
+        white-space: nowrap;
+        opacity: 0.5;
+      }
+
+      /* el lead: punto luminoso */
+      .lead {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+      .lead .halo {
+        position: absolute;
+        left: -50px;
+        top: -50px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+      }
+      .halo.k {
+        background: radial-gradient(circle, rgba(0, 229, 255, 0.6) 0%, rgba(0, 229, 255, 0.2) 36%, rgba(0, 229, 255, 0) 70%);
+      }
+      .halo.r {
+        background: radial-gradient(circle, rgba(167, 139, 250, 0.68) 0%, rgba(167, 139, 250, 0.24) 36%, rgba(167, 139, 250, 0) 70%);
+      }
+      .halo.c {
+        background: radial-gradient(circle, rgba(255, 181, 71, 0.62) 0%, rgba(255, 181, 71, 0.22) 36%, rgba(255, 181, 71, 0) 70%);
+      }
+      .halo.n {
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.16) 36%, rgba(255, 255, 255, 0) 70%);
+      }
+      .lead .core {
+        position: absolute;
+        left: -11px;
+        top: -11px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+      }
+      .won {
+        position: absolute;
+        left: -20px;
+        top: calc(var(--P) * 4 - 20px);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--wc);
+        opacity: 0;
+      }
+      .won svg {
+        position: absolute;
+        left: 6px;
+        top: 6px;
+        width: 28px;
+        height: 28px;
+        fill: none;
+        stroke: var(--ink);
+        stroke-width: 3.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .pin,
+      .burst {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0;
+      }
+      .pin {
+        left: -30px;
+        top: calc(var(--P) * 4 - 30px);
+        width: 60px;
+        height: 60px;
+        border: 2.5px solid var(--wc);
+      }
+      .burst {
+        left: -23px;
+        top: -23px;
+        width: 46px;
+        height: 46px;
+        border: 2.5px solid #fff;
+      }
+
+      /* enlace punteado: se crea un lead nuevo */
+      .link {
+        position: absolute;
+      }
+      .link.v {
+        width: 8px;
+        background: radial-gradient(circle at 4px 4px, var(--muted) 3px, rgba(158, 176, 199, 0) 3.8px) 0 0 / 8px 16px repeat-y;
+      }
+      .link.h {
+        height: 8px;
+        background: radial-gradient(circle at 4px 4px, var(--muted) 3px, rgba(158, 176, 199, 0) 3.8px) 0 0 / 16px 8px repeat-x;
+      }
+
+      /* ---------- nutrición ---------- */
+      #nutri {
+        position: absolute;
+        left: 332px;
+        top: 1052px;
+        width: 302px;
+        height: 60px;
+        border: 1px solid rgba(158, 176, 199, 0.34);
+        border-radius: 14px;
+        background: rgba(158, 176, 199, 0.06);
+        font: 600 40px/58px "JetBrains Mono", monospace;
+        letter-spacing: 0.06em;
+        text-align: center;
+        color: var(--muted);
+        white-space: nowrap;
+        opacity: 0;
+      }
+      .sys-label {
+        position: absolute;
+        top: 1058px;
+        font: 500 40px/48px "Inter", sans-serif;
+        color: var(--muted);
+        white-space: nowrap;
+        opacity: 0;
+      }
+
+      /* ---------- clientes ---------- */
+      #cli {
+        position: absolute;
+        left: 664px;
+        top: 1006px;
+        width: 0;
+        height: 0;
+      }
+      #cli-name {
+        position: absolute;
+        left: 38px;
+        top: -24px;
+        font: 600 40px/48px "JetBrains Mono", monospace;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
+        opacity: 0;
+      }
+
+      /* ---------- banda inferior: rótulos de rol, regla clave y cierre ---------- */
+      .band {
+        position: absolute;
+        left: 0;
+        width: 1080px;
+        text-align: center;
+        white-space: nowrap;
+      }
+      .band p {
+        font: 600 40px/54px "Inter", sans-serif;
+        opacity: 0;
+      }
+      .band p.role {
+        color: var(--rc);
+      }
+      .band p.role i {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        margin-right: 14px;
+        border-radius: 50%;
+        background: var(--rc);
+        vertical-align: 6px;
+      }
+      #rule-1 {
+        font: 600 44px/54px "Lexend", sans-serif;
+      }
+      #rule-2 {
+        font-weight: 500;
+        color: #dbe4f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="28.5"
+      data-width="1080"
+      data-height="1350"
+    >
+      <div id="bg" class="layer"><div id="halo"></div></div>
+
+      <div id="stage" class="layer">
+        <!-- líneas: entradas, ramal «No ahora» y regreso «Respondió» (los trazos los pone el script) -->
+        <svg id="wires" width="1080" height="1350" viewBox="0 0 1080 1350">
+          <path id="w-in-a" class="w in" pathLength="1" />
+          <path id="w-in-b" class="w in" pathLength="1" />
+          <path id="w-in-c" class="w in" pathLength="1" />
+          <path id="w-no-1" class="w sys" pathLength="1" />
+          <path id="w-no-2" class="w sys" pathLength="1" />
+          <path id="w-no-3" class="w sys" pathLength="1" />
+          <path id="w-no-4" class="w sys" pathLength="1" />
+          <path id="w-back-1" class="w sys" pathLength="1" />
+          <path id="w-back-2" class="w sys" pathLength="1" />
+          <path id="a-no" class="ah" d="M-11,-9 L0,0 L-11,9" transform="translate(322,1082)" />
+          <path id="a-back" class="ah" d="M-11,-9 L0,0 L-11,9" transform="translate(486,72) rotate(180)" />
+        </svg>
+
+        <h1 id="title">El recorrido<br />de un lead</h1>
+
+        <div id="chip-a" class="chip" style="top: 700px">Formulario web</div>
+        <div id="chip-b" class="chip" style="top: 790px">Anuncios de Meta</div>
+        <div id="chip-c" class="chip" style="top: 880px">WhatsApp</div>
+
+        <!-- ================= CALIFICACIÓN ================= -->
+        <div id="l1" class="lane" style="top: 130px; --c: var(--kain); --wc: var(--kain)">
+          <div class="lname">Calificación</div>
+          <div class="spine"></div>
+          <div id="l1-prog" class="prog" style="top: 0; height: calc(var(--P) * 4)"></div>
+          <div id="l1-s1" class="st" style="--i: 0"><i class="nd"></i><i class="fl"></i><span>Nuevo lead</span></div>
+          <div id="l1-s2" class="st" style="--i: 1"><i class="nd"></i><i class="fl"></i><span>Plantilla enviada</span></div>
+          <div id="l1-s3" class="st" style="--i: 2"><i class="nd"></i><i class="fl"></i><span>En conversación</span></div>
+          <div id="l1-s4" class="st" style="--i: 3"><i class="nd"></i><i class="fl"></i><span>Calificado · Agenda propuesta</span></div>
+          <div id="l1-s5" class="st" style="--i: 4"><i class="nd"></i><i class="fl"></i><span>Agendado</span></div>
+          <div id="l1-lead" class="lead"><i class="halo k"></i><i class="core"></i></div>
+          <div id="l1-pin" class="pin"></div>
+          <div id="l1-won" class="won"><svg viewBox="0 0 24 24"><path d="M5 12.6l4.6 4.6L19 7.6" /></svg></div>
+        </div>
+
+        <!-- ================= DISCOVERY SESSION ================= -->
+        <div id="link-1" class="link v" style="left: 100px; top: 376px; height: 64px"></div>
+        <div id="l2" class="lane" style="top: 464px; --c: var(--rik); --wc: var(--rik)">
+          <div class="lname">Discovery Session</div>
+          <div class="spine"></div>
+          <div id="l2-prog" class="prog" style="top: 0; height: calc(var(--P) * 4)"></div>
+          <div id="l2-s1" class="st" style="--i: 0"><i class="nd"></i><i class="fl"></i><span>Discovery Agendada</span></div>
+          <div id="l2-s2" class="st" style="--i: 1"><i class="nd"></i><i class="fl"></i><span>Confirmada</span></div>
+          <div id="l2-s3" class="st" style="--i: 2"><i class="nd"></i><i class="fl"></i><span>Día de la sesión</span></div>
+          <div id="l2-s4" class="st" style="--i: 3"><i class="nd"></i><i class="fl"></i><span>Sesión realizada</span></div>
+          <div id="l2-s5" class="st" style="--i: 4"><i class="nd"></i><i class="fl"></i><span>Preparar Presupuesto</span></div>
+          <div id="l2-burst" class="burst"></div>
+          <div id="l2-lead" class="lead"><i class="halo r"></i><i class="core"></i></div>
+          <div id="l2-pin" class="pin"></div>
+        </div>
+
+        <!-- ================= PRESUPUESTOS ================= -->
+        <div id="link-2" class="link v" style="left: 100px; top: 710px; height: 64px"></div>
+        <div id="l3" class="lane" style="top: 798px; --c: var(--rik); --wc: var(--com)">
+          <div class="lname">Presupuestos</div>
+          <div class="spine"></div>
+          <div id="l3-prog-a" class="prog" style="top: 0; height: calc(var(--P) * 2)"></div>
+          <div id="l3-prog-b" class="prog" style="top: calc(var(--P) * 2); height: calc(var(--P) * 2); --c: var(--com)"></div>
+          <div id="l3-s1" class="st" style="--i: 0"><i class="nd"></i><i class="fl"></i><span>Preparando</span></div>
+          <div id="l3-s2" class="st" style="--i: 1"><i class="nd"></i><i class="fl"></i><span>Presupuesto realizado</span></div>
+          <div id="l3-s3" class="st" style="--i: 2"><i class="nd"></i><i class="fl"></i><span>Game Plan</span></div>
+          <div id="l3-s4" class="st" style="--i: 3; --c: var(--com)"><i class="nd"></i><i class="fl"></i><span>Enviado/Presentado</span></div>
+          <div id="l3-s5" class="st" style="--i: 4; --c: var(--com)"><i class="nd"></i><i class="fl"></i><span>Presupuesto-Ganado</span></div>
+          <div id="l3-burst" class="burst"></div>
+          <div id="l3-lead" class="lead"><i class="halo r"></i><i id="l3-halo-c" class="halo c"></i><i class="core"></i></div>
+          <div id="l3-pin" class="pin"></div>
+          <div id="l3-won" class="won"><svg viewBox="0 0 24 24"><path d="M5 12.6l4.6 4.6L19 7.6" /></svg></div>
+        </div>
+
+        <!-- ================= CLIENTES ================= -->
+        <div id="link-3" class="link h" style="left: 570px; top: 1002px; width: 72px"></div>
+        <div id="cli">
+          <div id="cli-burst" class="burst"></div>
+          <div id="cli-lead" class="lead"><i class="halo n"></i><i class="core"></i></div>
+          <div id="cli-name">CLIENTES</div>
+        </div>
+
+        <!-- nutrición: No ahora → NUTRICIÓN → Respondió → de vuelta a CALIFICACIÓN -->
+        <div id="no-label" class="sys-label" style="left: 76px">No ahora</div>
+        <div id="nutri">NUTRICIÓN</div>
+        <div id="back-label" class="sys-label" style="left: 704px">Respondió</div>
+
+        <!-- banda inferior -->
+        <div id="band-2" class="band" style="top: 1193px">
+          <p id="b2-role" class="role" style="--rc: var(--kain)"><i></i>Kain conversa, califica y agenda</p>
+        </div>
+        <div id="band-3" class="band" style="top: 1139px">
+          <p id="rule-1">El lead no se mueve:</p>
+          <p id="rule-2">se crea uno nuevo en el siguiente pipeline</p>
+          <p id="b3-role" class="role" style="--rc: var(--rik)"><i></i>Rik da la sesión · 30 min por Meet</p>
+        </div>
+        <div id="band-4" class="band" style="top: 1166px">
+          <p id="b4-role-a" class="role" style="--rc: var(--rik)"><i></i>Rik arma el presupuesto en 24 h</p>
+          <p id="b4-role-b" class="role" style="--rc: var(--com)"><i></i>El comercial llama y cierra</p>
+        </div>
+        <div id="closing" class="band" style="top: 1139px">
+          <p id="close-1" style="color: var(--kain)">Kain conversa, califica y agenda.</p>
+          <p id="close-2" style="color: var(--com)">El comercial entra cuando hace falta una persona.</p>
+          <p id="close-3" style="color: var(--rik)">Rik da las sesiones y arma los presupuestos.</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const D = 28.5; // duración total (s)
+      const P = 52; // separación entre etapas (px), igual que --P
+      const tl = gsap.timeline({ paused: true });
+      const OUT = "power3.out";
+      const MOVE = "power2.inOut";
+
+      /* ---------- geometría de las líneas ---------- */
+      // polilínea con esquinas redondeadas
+      const rpath = (pts, r = 14) => {
+        let d = `M${pts[0][0]},${pts[0][1]}`;
+        for (let i = 1; i < pts.length - 1; i++) {
+          const [x0, y0] = pts[i - 1];
+          const [x1, y1] = pts[i];
+          const [x2, y2] = pts[i + 1];
+          const d1 = Math.hypot(x1 - x0, y1 - y0);
+          const d2 = Math.hypot(x2 - x1, y2 - y1);
+          const rr = Math.min(r, d1 / 2, d2 / 2);
+          d += ` L${x1 - ((x1 - x0) / d1) * rr},${y1 - ((y1 - y0) / d1) * rr}`;
+          d += ` Q${x1},${y1} ${x1 + ((x2 - x1) / d2) * rr},${y1 + ((y2 - y1) / d2) * rr}`;
+        }
+        const last = pts[pts.length - 1];
+        return d + ` L${last[0]},${last[1]}`;
+      };
+      const WIRES = {
+        // entradas → «Nuevo lead»
+        "w-in-a": [[280, 734], [48, 734], [48, 130], [89, 130]],
+        "w-in-b": [[280, 824], [48, 824], [48, 130], [89, 130]],
+        "w-in-c": [[280, 914], [48, 914], [48, 130], [89, 130]],
+        // «No ahora»: de cada carril al riel izquierdo y de ahí a NUTRICIÓN
+        "w-no-1": [[104, 260], [48, 260], [48, 1082], [64, 1082]],
+        "w-no-2": [[104, 594], [48, 594], [48, 640]],
+        "w-no-3": [[104, 928], [48, 928], [48, 974]],
+        "w-no-4": [[262, 1082], [320, 1082]],
+        // «Respondió»: de NUTRICIÓN, por la derecha, de vuelta a CALIFICACIÓN
+        "w-back-1": [[634, 1082], [692, 1082]],
+        "w-back-2": [[918, 1082], [1032, 1082], [1032, 72], [488, 72]],
+      };
+      for (const id in WIRES) document.getElementById(id).setAttribute("d", rpath(WIRES[id]));
+
+      /* ---------- estados iniciales ---------- */
+      gsap.set(".prog", { scaleY: 0, transformOrigin: "50% 0%" });
+
+      /* ---------- helpers ---------- */
+      const show = (sel, at, o = {}) =>
+        tl.fromTo(
+          sel,
+          { opacity: 0, x: o.x || 0, y: o.y === undefined ? 12 : o.y },
+          { opacity: 1, x: 0, y: 0, duration: o.d || 0.55, ease: OUT, stagger: o.s || 0 },
+          at
+        );
+      const hide = (sel, at, d = 0.35) => tl.to(sel, { opacity: 0, duration: d, ease: "power2.in" }, at);
+      const draw = (sel, at, d = 0.9, o = {}) => {
+        tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.06, ease: "none", stagger: o.s || 0 }, at);
+        tl.fromTo(sel, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: d, ease: o.ease || MOVE, stagger: o.s || 0 }, at);
+      };
+      const revealV = (sel, at, d = 0.8) =>
+        tl.fromTo(sel, { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: d, ease: MOVE }, at);
+      const revealH = (sel, at, d = 0.8) =>
+        tl.fromTo(sel, { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: d, ease: MOVE }, at);
+      // estructura del carril: nombre, eje y etapas (en tenue)
+      const struct = (id, at) => {
+        show(`#${id} .lname`, at, { y: 8 });
+        tl.fromTo(`#${id} .spine`, { scaleY: 0 }, { scaleY: 1, duration: 0.8, ease: MOVE, transformOrigin: "50% 0%" }, at + 0.25);
+        tl.fromTo(`#${id} .st`, { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.45, ease: OUT, stagger: 0.12 }, at + 0.3);
+      };
+      // el lead llega a la etapa k: el nodo se enciende y el nombre pasa a blanco pleno
+      const arrive = (id, k, at) => {
+        tl.to(`#${id}-s${k} .fl`, { opacity: 1, duration: 0.3, ease: OUT }, at);
+        tl.to(`#${id}-s${k} span`, { opacity: 1, duration: 0.3, ease: OUT }, at);
+      };
+      const pop = (id, at) => {
+        tl.fromTo(`#${id}-lead`, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: OUT }, at);
+        arrive(id, 1, at + 0.1);
+      };
+      const burst = (sel, at) => {
+        tl.fromTo(sel, { scale: 0.5 }, { scale: 2.8, duration: 0.95, ease: OUT }, at);
+        tl.fromTo(sel, { opacity: 0 }, { opacity: 0.9, duration: 0.08, ease: "none" }, at);
+        tl.to(sel, { opacity: 0, duration: 0.8, ease: "power1.out" }, at + 0.12);
+      };
+      // el lead avanza a la etapa k (2..5); prog = [selector, etapa inicial del tramo, n.º de tramos]
+      const move = (id, k, at, dur, prog) => {
+        tl.to(`#${id}-lead`, { y: (k - 1) * P, duration: dur, ease: MOVE }, at);
+        tl.to(prog[0], { scaleY: (k - prog[1]) / prog[2], duration: dur, ease: MOVE }, at);
+        arrive(id, k, at + dur - 0.14);
+      };
+      const won = (id, at) => tl.fromTo(`#${id}-won`, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: OUT }, at);
+      // anillo que se cierra sobre el lead de origen: «este se queda aquí»
+      const pin = (id, at) => tl.fromTo(`#${id}-pin`, { scale: 2.3, opacity: 0 }, { scale: 1, opacity: 0.85, duration: 0.7, ease: OUT }, at);
+
+      /* ---------- fondo: un ciclo completo (inicio == fin) ---------- */
+      tl.fromTo("#halo", { x: 0, y: 0 }, { x: -90, y: 70, duration: D / 2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+
+      /* ---------- 1 · 0–4 s · título y entradas ---------- */
+      tl.fromTo("#title", { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: OUT }, 0.3);
+      show(".chip", 1.15, { y: 14, s: 0.14 });
+      tl.to("#title", { y: -18, opacity: 0, duration: 0.45, ease: "power2.in" }, 2.2);
+      draw(["#w-in-a", "#w-in-b", "#w-in-c"], 2.55, 0.95, { s: 0.1 });
+      struct("l1", 3.05);
+
+      /* ---------- 2 · 4–11 s · CALIFICACIÓN ---------- */
+      pop("l1", 4.25);
+      show("#b2-role", 4.7);
+      const p1 = ["#l1-prog", 1, 4];
+      move("l1", 2, 5.1, 0.9, p1);
+      move("l1", 3, 6.4, 0.9, p1);
+      move("l1", 4, 7.7, 0.9, p1);
+      move("l1", 5, 9.0, 0.9, p1);
+      won("l1", 9.95);
+      hide([".chip", "#w-in-a", "#w-in-b", "#w-in-c"], 10.4, 0.4);
+      hide("#b2-role", 10.6);
+
+      /* ---------- 3 · 11–17 s · DISCOVERY SESSION: el lead no se mueve, se crea uno nuevo ---------- */
+      pin("l1", 10.95);
+      show("#rule-1", 11.1);
+      show("#l2 .lname", 11.45, { y: 8 });
+      revealV("#link-1", 11.5, 0.9);
+      tl.fromTo("#l2 .spine", { scaleY: 0 }, { scaleY: 1, duration: 0.8, ease: MOVE, transformOrigin: "50% 0%" }, 11.7);
+      tl.fromTo("#l2 .st", { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.45, ease: OUT, stagger: 0.12 }, 11.75);
+      burst("#l2-burst", 12.4);
+      pop("l2", 12.4);
+      show("#rule-2", 12.55);
+      show("#b3-role", 13.05);
+      const p2 = ["#l2-prog", 1, 4];
+      move("l2", 2, 13.5, 0.75, p2);
+      move("l2", 3, 14.4, 0.75, p2);
+      move("l2", 4, 15.3, 0.75, p2);
+      move("l2", 5, 16.2, 0.75, p2);
+      hide(["#rule-1", "#rule-2", "#b3-role"], 17.0);
+
+      /* ---------- 4 · 17–23 s · PRESUPUESTOS ---------- */
+      pin("l2", 17.0);
+      show("#l3 .lname", 17.2, { y: 8 });
+      revealV("#link-2", 17.3, 0.6);
+      tl.fromTo("#l3 .spine", { scaleY: 0 }, { scaleY: 1, duration: 0.8, ease: MOVE, transformOrigin: "50% 0%" }, 17.35);
+      tl.fromTo("#l3 .st", { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.45, ease: OUT, stagger: 0.12 }, 17.4);
+      burst("#l3-burst", 17.95);
+      tl.set("#l3-halo-c", { opacity: 0 }, 0);
+      pop("l3", 17.95);
+      show("#b4-role-a", 18.3);
+      const p3a = ["#l3-prog-a", 1, 2];
+      const p3b = ["#l3-prog-b", 3, 2];
+      move("l3", 2, 18.8, 0.7, p3a);
+      move("l3", 3, 19.7, 0.7, p3a);
+      show("#b4-role-b", 20.5);
+      tl.to("#l3-halo-c", { opacity: 1, duration: 0.5, ease: "power1.inOut" }, 20.6);
+      tl.to("#l3-lead .halo.r", { opacity: 0, duration: 0.5, ease: "power1.inOut" }, 20.6);
+      move("l3", 4, 21.0, 0.7, p3b);
+      move("l3", 5, 21.9, 0.7, p3b);
+      won("l3", 22.65);
+
+      /* ---------- 5 · 23–28 s · CLIENTES, NUTRICIÓN y cierre ---------- */
+      pin("l3", 23.0);
+      revealH("#link-3", 23.1, 0.5);
+      burst("#cli-burst", 23.6);
+      tl.fromTo("#cli-lead", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: OUT }, 23.6);
+      show("#cli-name", 23.7, { y: 8 });
+      hide(["#b4-role-a", "#b4-role-b"], 23.9);
+
+      draw("#w-no-1", 23.5, 1.1);
+      draw("#w-no-2", 23.75, 0.45);
+      draw("#w-no-3", 24.0, 0.45);
+      show("#no-label", 24.45, { y: 0, x: -8 });
+      draw("#w-no-4", 24.6, 0.3);
+      tl.fromTo("#a-no", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: OUT }, 24.85);
+      show("#nutri", 24.7, { y: 10 });
+      draw("#w-back-1", 25.0, 0.25);
+      show("#back-label", 25.1, { y: 0, x: -8 });
+      draw("#w-back-2", 25.25, 0.95);
+      tl.fromTo("#a-back", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: OUT }, 26.15);
+
+      show("#close-1", 24.7, { d: 0.6 });
+      show("#close-2", 25.25, { d: 0.6 });
+      show("#close-3", 25.8, { d: 0.6 });
+
+      /* quieto 26.4 → 27.9 y salida a fondo limpio para enlazar con el primer fotograma */
+      tl.to("#stage", { opacity: 0, duration: 0.45, ease: "power2.in" }, 27.9);
+      tl.set({}, {}, D);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

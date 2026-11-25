@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import { readFileSync, existsSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { isNoindex } from './src/lib/indexacion.mjs';
@@ -30,6 +30,28 @@ function sinDemos() {
         for (const d of DEMOS) {
           const p = join(root, d);
           if (existsSync(p)) { rmSync(p, { recursive: true, force: true }); logger.info(`fuera del build de producción: /${d}`); }
+        }
+      },
+    },
+  };
+}
+
+// Páginas internas del equipo (manual comercial, /comercial/): documento autocontenido. Se le quita el script de precarga de
+// enlaces que el build añade a todas las páginas, para que no dependa de nada más que sus fuentes, imágenes y video.
+const INTERNAS = ['comercial'];
+/** @returns {import('astro').AstroIntegration} */
+function internasAutocontenidas() {
+  return {
+    name: 'ingeniak:internas',
+    hooks: {
+      'astro:build:done': ({ dir, logger }) => {
+        const root = fileURLToPath(dir);
+        for (const d of INTERNAS) {
+          const p = join(root, d, 'index.html');
+          if (!existsSync(p)) continue;
+          const html = readFileSync(p, 'utf8');
+          const limpio = html.replace(/<script type="module" src="[^"]+"><\/script>/g, '').replace(/<link rel="(?:stylesheet|modulepreload)" href="[^"]+">/g, '');
+          if (limpio !== html) { writeFileSync(p, limpio); logger.info(`página interna autocontenida: /${d}/`); }
         }
       },
     },
@@ -92,10 +114,11 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const path = new URL(page).pathname;
-        return !path.startsWith('/404') && !path.startsWith('/dev/') && !NOINDEX.has(path);
+        return !path.startsWith('/404') && !path.startsWith('/dev/') && !path.startsWith('/comercial/') && !NOINDEX.has(path);
       },
     }),
     sinDemos(),
+    internasAutocontenidas(),
   ],
   devToolbar: { enabled: false },
   vite: { plugins: [apiLocal()] },

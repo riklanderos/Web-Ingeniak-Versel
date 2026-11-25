@@ -239,6 +239,9 @@ function routeOfDist(file, dist) {
   return '/' + rel.replace(/index\.html$/, '').replace(/\.html$/, '/');
 }
 
+/** Rutas internas del equipo: se construyen, pero no las revisan las guardas del sitio público. */
+export const INTERNAS = ['/comercial/'];
+
 /** Carga las páginas a revisar: [{ route, html, page (entrada de sitemap.json o null), source }]. */
 export async function loadPages(opts) {
   const list = [];
@@ -284,6 +287,9 @@ export async function loadPages(opts) {
       // páginas de demostración (noindex, fuera del sitemap y del build de producción): solo con --dev (cifras y pendientes)
       const dev = route.startsWith('/dev/') || route === '/dev-movil/';
       if (dev && opts.dev !== true) continue;
+      // páginas internas del equipo (manual comercial): noindex, sin enlaces desde el sitio y fuera de sitemap.json; no son
+      // páginas del sitio público, así que las guardas de marca, SEO y CTA no aplican
+      if (INTERNAS.some((r) => route.startsWith(r))) continue;
       list.push({ route, html: readFileSync(f, 'utf8'), page: SITEMAP.find((p) => p.url === route) ?? null, source: f, dev });
     }
   }

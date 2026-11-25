@@ -1,0 +1,673 @@
+---
+// /comercial/ · manual interno del flujo comercial. Página suelta: sin encabezado ni pie del sitio, sin medición,
+// sin enlaces desde páginas públicas, fuera de sitemap.xml y con noindex. Contenido: src/data/comercial.ts.
+// Estilos y código van dentro del propio documento (página autocontenida: un solo archivo más fuentes, imágenes y video).
+import base from '../../styles/tokens.css?raw';
+import estilos from '../../styles/comercial.css?raw';
+import codigo from '../../scripts/comercial.js?raw';
+import {
+  CORTE, ROLES, PRINCIPIO, EQUIPO, REGLA_CONTEO, ENTRADAS, NICHOS, HORARIO_PLANTILLAS, FLUJO_KAIN, FLUJO_LIMITE, CRITERIOS, CASOS,
+  BOTONES, PIPELINES, POWER, NUTRICION, CAMPANAS, POR_DEFINIR_PIPES, SENALES, RELEVO, RELOJ, MEDICION, MATERIAL, RUTINA, PENDIENTES,
+  BOTS, PLANTILLAS, VARIABLES, PLANTILLAS_SIN_USO, SECCIONES,
+} from '../../data/comercial';
+import type { Rol, Etapa, Estado } from '../../data/comercial';
+
+const norm = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const botDe = (id: string) => BOTS.find((b) => b.id === id);
+const usadaPor = (tpl: string) => BOTS.filter((b) => b.activo && b.plantillas.includes(tpl)).map((b) => b.id);
+/** Texto de una línea de plantilla → HTML con variables y negritas. */
+const linea = (s: string) => esc(s)
+  .replace(/\{(\w+)\}/g, (_, k) => `<span class="cm-var">${VARIABLES[k] ?? k}</span>`)
+  .replace(/\*([^*]+)\*/g, '<b>$1</b>')
+  .replace(/(https:\/\/[^\s<]+)/g, '<span class="cm-url">$1</span>');
+const estadoClase = (e: Estado) => 'cm-estado cm-estado--' + norm(e).replace(/\s+/g, '-');
+const familias = [...new Set(Object.values(PLANTILLAS).map((p) => p.familia))];
+const buscarEtapa = (p: string, e: Etapa) => norm([p, e.nombre, ...(e.plantillas ?? []), ...(e.bots ?? []).map((b) => b + ' ' + (botDe(b)?.nombre ?? '')), ...(e.etiquetas ?? [])].join(' '));
+const relevoA = (e: Etapa): Rol => (e.equipo.find((x) => x.rol === 'rik') && !e.equipo.find((x) => x.rol === 'com') ? 'rik' : e.lidera === 'rik' ? 'rik' : 'com');
+const sinTarea = (e: Etapa) => e.equipo.length === 0 || e.equipo.every((x) => /^Nada/.test(x.texto));
+
+// ---------- Mapa general (dos SVG con los mismos datos: horizontal y vertical) ----------
+const LANES = [
+  { id: 'calificacion', nombre: 'CALIFICACIÓN', rol: 'kain' as Rol, lema: 'Kain conversa, califica y agenda', nodos: [['Nuevo', 'lead'], ['Plantilla', 'enviada'], ['En', 'conversación'], ['Calificado ·', 'Agenda propuesta'], ['Agendado']] },
+  { id: 'discovery', nombre: 'DISCOVERY SESSION', rol: 'rik' as Rol, lema: 'Rik da la sesión · 30 min por Meet', nodos: [['Discovery', 'Agendada'], ['Confirmada'], ['Día de', 'la sesión'], ['Sesión', 'realizada'], ['Preparar', 'Presupuesto']] },
+  { id: 'presupuestos', nombre: 'PRESUPUESTOS', rol: 'com' as Rol, lema: 'Rik lo arma en 24 h · el comercial cierra', nodos: [['Preparando'], ['Presupuesto', 'realizado'], ['Game', 'Plan'], ['Enviado/', 'Presentado'], ['Presupuesto-', 'Ganado']] },
+];
+const HX = [262, 448, 634, 820, 1006];
+const HY = [150, 345, 540];
+const VY0 = [96, 404, 712];
+---
+<!doctype html>
+<html lang="es-MX" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flujo comercial con Kain · Ingeniak (uso interno)</title>
+  <meta name="description" content="Manual interno del equipo comercial de Ingeniak." />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="theme-color" content="#050810" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="/fonts/lexend-var-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <script is:inline>document.documentElement.className = 'js';</script>
+  <style is:inline set:html={base + estilos}></style>
+</head>
+<body class="cm" data-vista="todo">
+  <a class="cm-skip" href="#contenido">Ir al contenido</a>
+
+  <header class="cm-bar" data-cm-bar>
+    <a class="cm-bar__marca" href="#inicio" aria-label="Flujo comercial con Kain, inicio">
+      <img src="/img/marca/isotipo.svg" alt="" width="26" height="26" />
+      <span><b>Flujo comercial</b><i>con Kain</i></span>
+    </a>
+    <div class="cm-vista" role="group" aria-label="Qué quieres ver">
+      <button type="button" data-vista-btn="todo" aria-pressed="true">Todo</button>
+      <button type="button" data-vista-btn="kain" aria-pressed="false"><i class="cm-dot cm-dot--kain"></i>Solo Kain</button>
+      <button type="button" data-vista-btn="com" aria-pressed="false"><i class="cm-dot cm-dot--com"></i>Solo comercial</button>
+    </div>
+    <label class="cm-buscar">
+      <span class="cm-sr">Buscar etapa o plantilla</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.6-3.6" /></svg>
+      <input type="search" placeholder="Buscar etapa o plantilla" autocomplete="off" data-cm-buscar />
+    </label>
+    <button type="button" class="cm-print" data-cm-print aria-label="Imprimir o guardar como PDF">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 14h10v6H7z" /></svg>
+      <span>PDF</span>
+    </button>
+  </header>
+
+  <nav class="cm-indice" aria-label="Secciones" data-cm-indice>
+    <ol>
+      {SECCIONES.map((s, i) => (
+        <li><a href={`#${s.id}`} data-spy={s.id}><span>{String(i + 1).padStart(2, '0')}</span>{s.label}</a></li>
+      ))}
+    </ol>
+  </nav>
+
+  <p class="cm-resultados" data-cm-resultados hidden aria-live="polite"></p>
+
+  <main id="contenido" class="cm-main">
+
+    <!-- ===== Portada ===== -->
+    <section class="cm-hero" id="inicio" data-seccion>
+      <div class="cm-hero__texto">
+        <p class="cm-eyebrow"><i class="cm-pulso"></i>Manual interno · corte del {CORTE}</p>
+        <h1>El flujo comercial <span>con Kain</span></h1>
+        <ul class="cm-principio">
+          {PRINCIPIO.partes.map((p) => <li data-rol={p.rol}>{p.texto}</li>)}
+        </ul>
+        <p class="cm-hero__demo">{PRINCIPIO.demo}</p>
+        <ol class="cm-ruta" aria-label="El recorrido completo">
+          {PRINCIPIO.recorrido.map((r) => <li>{r}</li>)}
+          <li class="cm-ruta__lead" aria-hidden="true"></li>
+        </ol>
+        <p class="cm-hero__nota">{PRINCIPIO.horario}</p>
+      </div>
+      <figure class="cm-hero__kain">
+        <img src="/img/kain/kain-presenta.webp" alt="Kain, el agente de IA de Ingeniak" width="560" height="996" />
+        <figcaption>
+          <span data-rol="kain">Kain abre, califica y agenda</span>
+          <span data-rol="com">Marcos entra con las señales</span>
+          <span data-rol="rik">Rik da las sesiones</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== Mapa general ===== -->
+    <section class="cm-sec" id="mapa" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">01</p>
+        <h2>Mapa general</h2>
+        <p>Tres pipelines encadenados y sus apoyos. Sigue al punto: es un lead.</p>
+      </header>
+
+      <div class="cm-mapa" data-cm-mapa>
+        <svg class="cm-mapa__svg cm-mapa__svg--h" viewBox="0 0 1200 640" role="img" aria-label="Mapa de pipelines: Calificación, Discovery Session y Presupuestos, con Nutrición y Clientes">
+          <g class="cm-mapa__entradas">
+            {['Formulario web', 'Anuncios de Meta', 'WhatsApp'].map((t, i) => (
+              <g>
+                <rect x="24" y={104 + i * 34} width="150" height="26" rx="13" />
+                <text x="99" y={121 + i * 34} text-anchor="middle">{t}</text>
+                <path d={`M174 ${117 + i * 34} C 214 ${117 + i * 34}, 214 150, 244 150`} />
+              </g>
+            ))}
+            <g>
+              <rect class="is-apoyo" x="24" y="318" width="150" height="26" rx="13" />
+              <text x="99" y="335" text-anchor="middle">Campañas</text>
+              <path d="M174 331 C 212 331, 212 345, 244 345" />
+              <rect class="is-apoyo is-pd" x="24" y="352" width="150" height="26" rx="13" />
+              <text x="99" y="369" text-anchor="middle">Outbound B2B</text>
+              <path class="is-pd" d="M174 365 C 212 365, 212 345, 244 345" />
+            </g>
+            <g>
+              <rect class="is-apoyo" x="24" y="527" width="150" height="26" rx="13" />
+              <text x="99" y="544" text-anchor="middle">Power Session</text>
+              <path d="M174 540 L 244 540" />
+            </g>
+          </g>
+          {LANES.map((l, k) => (
+            <g class="cm-lane-g" data-lane={k} data-rol={l.rol}>
+              <text class="cm-mapa__titulo" x="284" y={HY[k] - 62}>{l.nombre}</text>
+              <text class="cm-mapa__lema" x="1024" y={HY[k] - 62} text-anchor="end">{l.lema}</text>
+              <line class="cm-mapa__riel" x1={HX[0]} y1={HY[k]} x2={HX[4]} y2={HY[k]} />
+              {l.nodos.map((n, i) => (
+                <g class={`cm-nodo${i === 4 ? ' cm-nodo--gana' : ''}`} data-node={i} data-x={HX[i]} data-y={HY[k]}>
+                  <circle cx={HX[i]} cy={HY[k]} r={i === 4 ? 13 : 9} />
+                  {i === 4 && <path class="cm-nodo__ok" d={`M${HX[i] - 5} ${HY[k]} l4 4 l7 -8`} />}
+                  {n.map((t, j) => <text x={HX[i]} y={HY[k] + 36 + j * 18} text-anchor="middle">{t}</text>)}
+                </g>
+              ))}
+            </g>
+          ))}
+          {[0, 1].map((k) => (
+            <g class="cm-salto" data-salto={k}>
+              <path d={`M${HX[4] + 13} ${HY[k]} H 1040 Q 1052 ${HY[k]} 1052 ${HY[k] + 12} V ${HY[k] + 84} Q 1052 ${HY[k] + 96} 1040 ${HY[k] + 96} H 274 Q 262 ${HY[k] + 96} 262 ${HY[k] + 108} V ${HY[k + 1] - 12}`} />
+              <text x="640" y={HY[k] + 100} text-anchor="middle">se crea un lead nuevo · el original se queda</text>
+            </g>
+          ))}
+          <g class="cm-mapa__fin" data-fin>
+            <path d={`M${HX[4] + 13} 540 L 1088 540`} />
+            <rect x="1088" y="520" width="96" height="40" rx="20" />
+            <text x="1136" y="545" text-anchor="middle">CLIENTES</text>
+          </g>
+          <g class="cm-mapa__nutri">
+            <rect x="1088" y="216" width="96" height="62" rx="16" />
+            <text x="1136" y="243" text-anchor="middle">NUTRICIÓN</text>
+            <text class="is-sub" x="1136" y="262" text-anchor="middle">«no ahora»</text>
+            <path d={`M${HX[4] + 13} 150 C 1100 150, 1136 170, 1136 216`} />
+            <path d={`M${HX[4] + 13} 345 C 1100 345, 1136 320, 1136 278`} />
+            <path d="M1136 520 C 1150 430, 1160 340, 1150 278" />
+            <path class="is-vuelta" d="M1136 216 C 1136 40, 700 60, 262 60 L 262 132" />
+            <text class="is-sub" x="700" y="48" text-anchor="middle">respondió → vuelve a Calificación</text>
+          </g>
+          <g class="cm-leads" aria-hidden="true">
+            {LANES.map((l, k) => <circle class="cm-lead" data-lead={k} data-rol={l.rol} r="7" cx={HX[0]} cy={HY[k]} />)}
+          </g>
+        </svg>
+
+        <svg class="cm-mapa__svg cm-mapa__svg--v" viewBox="0 0 360 1090" role="img" aria-label="Mapa de pipelines: Calificación, Discovery Session y Presupuestos, con Nutrición y Clientes">
+          <text class="cm-mapa__lema" x="74" y="34">Formulario web · Anuncios de Meta · WhatsApp</text>
+          <path class="cm-mapa__riel" d="M48 28 L 48 140" />
+          <circle class="cm-mapa__origen" cx="48" cy="28" r="4" />
+          {LANES.map((l, k) => (
+            <g class="cm-lane-g" data-lane={k} data-rol={l.rol}>
+              <text class="cm-mapa__titulo" x="74" y={VY0[k]}>{l.nombre}</text>
+              <text class="cm-mapa__lema" x="74" y={VY0[k] + 20}>{l.lema}</text>
+              <line class="cm-mapa__riel" x1="48" y1={VY0[k] + 54} x2="48" y2={VY0[k] + 54 + 4 * 46} />
+              {l.nodos.map((n, i) => (
+                <g class={`cm-nodo${i === 4 ? ' cm-nodo--gana' : ''}`} data-node={i} data-x="48" data-y={VY0[k] + 54 + i * 46}>
+                  <circle cx="48" cy={VY0[k] + 54 + i * 46} r={i === 4 ? 12 : 8} />
+                  {i === 4 && <path class="cm-nodo__ok" d={`M43 ${VY0[k] + 54 + i * 46} l4 4 l7 -8`} />}
+                  <text x="74" y={VY0[k] + 59 + i * 46}>{n.join(' ')}</text>
+                </g>
+              ))}
+            </g>
+          ))}
+          {[0, 1].map((k) => (
+            <g class="cm-salto" data-salto={k}>
+              <path d={`M48 ${VY0[k] + 54 + 4 * 46 + 12} L 48 ${VY0[k + 1] + 54 - 10}`} />
+              <text x="74" y={VY0[k] + 54 + 4 * 46 + 42}>se crea un lead nuevo · el original se queda</text>
+            </g>
+          ))}
+          <g class="cm-mapa__fin" data-fin>
+            <path d="M48 962 L 48 1004" />
+            <rect x="24" y="1004" width="120" height="40" rx="20" />
+            <text x="84" y="1029" text-anchor="middle">CLIENTES</text>
+          </g>
+          <g class="cm-mapa__nutri">
+            <rect x="170" y="1004" width="166" height="40" rx="20" />
+            <text x="253" y="1029" text-anchor="middle">NUTRICIÓN</text>
+            <text class="is-sub" x="24" y="1072">«No ahora» o perdido va a Nutrición; si responde, vuelve.</text>
+          </g>
+          <g class="cm-leads" aria-hidden="true">
+            {LANES.map((l, k) => <circle class="cm-lead" data-lead={k} data-rol={l.rol} r="6" cx="48" cy={VY0[k] + 54} />)}
+          </g>
+        </svg>
+        <button type="button" class="cm-mapa__replay" data-cm-replay>Ver de nuevo</button>
+      </div>
+
+      <div class="cm-regla">
+        <div>
+          <h3>{REGLA_CONTEO.titulo}</h3>
+          <p>{REGLA_CONTEO.texto}</p>
+        </div>
+        <table class="cm-tabla">
+          <thead><tr><th>Pipeline</th><th>Se gana cuando…</th><th>Lo que sigue</th></tr></thead>
+          <tbody>{REGLA_CONTEO.tabla.map((r) => <tr><th data-l="Pipeline">{r.pipeline}</th><td data-l="Se gana cuando…">{r.gana}</td><td data-l="Lo que sigue">{r.sigue}</td></tr>)}</tbody>
+        </table>
+      </div>
+
+      <figure class="cm-video" data-cm-video>
+        <video controls loop muted playsinline preload="none" poster="/img/comercial/recorrido-poster.webp"
+          data-d="/video/comercial-recorrido" data-m="/video/comercial-recorrido-movil" data-poster-m="/img/comercial/recorrido-movil-poster.webp"></video>
+        <figcaption><b>El recorrido de un lead, en medio minuto.</b> Sin sonido. Dale reproducir.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===== Quién hace qué ===== -->
+    <section class="cm-sec" id="roles" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">02</p>
+        <h2>Quién hace qué</h2>
+        <p>Cada color es una persona. Se repite en toda la página.</p>
+      </header>
+      <div class="cm-roles">
+        {EQUIPO.map((r) => (
+          <article class="cm-rol" data-rol={r.rol} data-cm-in>
+            <p class="cm-rol__t">{r.titulo}</p>
+            <h3>{r.quien}</h3>
+            <ul>{r.toca.map((t) => <li>{t}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- ===== Pipelines principales ===== -->
+    {PIPELINES.map((p, pi) => (
+      <section class="cm-sec cm-pipe" id={p.id} data-seccion>
+        <header class="cm-sec__head">
+          <p class="cm-num">{String(pi + 3).padStart(2, '0')}</p>
+          <h2>Pipeline {p.nombre}</h2>
+          <p>{p.objetivo}</p>
+          {p.dato && <p class="cm-dato">{p.dato}</p>}
+          {p.corte && <p class="cm-corte"><span>Corte</span>{p.corte}</p>}
+        </header>
+
+        {p.id === 'calificacion' && (
+          <div class="cm-bloque">
+            <h3>Entradas</h3>
+            <div class="cm-entradas">
+              {ENTRADAS.map((e) => (
+                <article class="cm-entrada" data-rol={e.rol} data-cm-in>
+                  <header><h4>{e.origen}</h4><span class={estadoClase(e.estado)}>{e.estado}</span></header>
+                  <ol>{e.pasa.map((x) => <li>{x}</li>)}</ol>
+                  {e.plantilla && <a class="cm-chip cm-chip--tpl" href={`#tpl-${e.plantilla}`} data-tpl={e.plantilla}>{e.plantilla}</a>}
+                </article>
+              ))}
+            </div>
+            <p class="cm-nota">{NICHOS}</p>
+          </div>
+        )}
+
+        <div class="cm-bloque">
+          <h3>Etapa por etapa</h3>
+          <div class="cm-leyenda" aria-hidden="true">
+            <span><i class="cm-dot cm-dot--kain"></i>Kain</span><span><i class="cm-dot cm-dot--sis"></i>Sistema</span>
+            <span><i class="cm-dot cm-dot--com"></i>Comercial</span><span><i class="cm-dot cm-dot--rik"></i>Rik</span>
+            <span class="cm-leyenda__relevo">Borde que cambia de color = relevo a una persona</span>
+          </div>
+          <div class="cm-etapas">
+            {p.etapas.map((e, i) => (
+              <details class="cm-etapa" data-lidera={e.lidera} data-relevo={e.relevo ? relevoA(e) : undefined} data-sin-tarea={sinTarea(e) ? '' : undefined}
+                data-buscar={buscarEtapa(p.nombre, e)} data-tipo="etapa" data-cm-in>
+                <summary>
+                  <span class="cm-etapa__n">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="cm-etapa__nombre">{e.nombre}</span>
+                  <span class="cm-etapa__meta">
+                    {e.estado && <span class={estadoClase(e.estado)}>{e.estado}</span>}
+                    {e.relevo && <span class="cm-relevo" data-rol={relevoA(e)}>Relevo → {ROLES[relevoA(e)].corto}</span>}
+                    <span class="cm-quien" data-rol={e.lidera}>{ROLES[e.lidera].corto}</span>
+                  </span>
+                  <svg class="cm-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                </summary>
+                <div class="cm-etapa__body">
+                  <div class="cm-carril cm-carril--auto">
+                    <h4><i class="cm-dot cm-dot--kain"></i>Kain o el sistema</h4>
+                    <ul>{e.auto.map((x) => <li>{x}</li>)}</ul>
+                  </div>
+                  <div class="cm-carril cm-carril--equipo">
+                    <h4><i class="cm-dot cm-dot--com"></i>El equipo</h4>
+                    {e.equipo.length
+                      ? <ul>{e.equipo.map((x) => <li data-rol={x.rol}><b>{ROLES[x.rol].corto}:</b> {x.texto}</li>)}</ul>
+                      : <p class="cm-vacio">Sin tarea en esta etapa.</p>}
+                  </div>
+                  {e.tiempos && (
+                    <div class="cm-tiempos">
+                      <h4>Tiempos</h4>
+                      <ul>{e.tiempos.map((t) => <li data-rol={t.rol} class={t.rol === 'com' || t.rol === 'rik' ? 'cm-t-equipo' : 'cm-t-auto'}><b>{t.t}</b><span>{t.q}</span></li>)}</ul>
+                    </div>
+                  )}
+                  {(e.bots || e.plantillas || e.etiquetas) && (
+                    <div class="cm-auto cm-solo-auto">
+                      {e.bots && <p><span>Bots</span>{e.bots.map((b) => <a class="cm-chip cm-chip--bot" href={`#bot-${b}`}>{b} · {botDe(b)?.nombre}</a>)}</p>}
+                      {e.plantillas && <p><span>Plantillas</span>{e.plantillas.map((t) => <a class="cm-chip cm-chip--tpl" href={`#tpl-${t}`} data-tpl={t}>{t}</a>)}</p>}
+                      {e.etiquetas && <p><span>Etiquetas</span>{e.etiquetas.map((t) => <code>{t}</code>)}</p>}
+                    </div>
+                  )}
+                  {e.nota && <p class="cm-nota">{e.nota}</p>}
+                  {e.sale && <p class="cm-sale"><span>Sale a</span>{e.sale.map((s) => <em>{s}</em>)}</p>}
+                </div>
+              </details>
+            ))}
+          </div>
+          {p.id === 'calificacion' && <p class="cm-nota cm-nota--reloj">{HORARIO_PLANTILLAS}</p>}
+        </div>
+
+        {p.id === 'calificacion' && (
+          <>
+            <div class="cm-bloque cm-solo-auto">
+              <h3>Lo que dispara cada botón</h3>
+              <p class="cm-bloque__sub">El bot <a class="cm-chip cm-chip--bot" href="#bot-INGK_06">INGK_06 · Botones y bajas</a> escucha en todas las etapas abiertas, cinco minutos después de cada mensaje.</p>
+              <ul class="cm-botones">
+                {BOTONES.map((b) => (
+                  <li data-cm-in>
+                    <p class="cm-botones__b">{b.botones.map((x) => <span>{x}</span>)}</p>
+                    <p class="cm-botones__p">{b.pasa}{b.etiquetas && b.etiquetas.map((t) => <code>{t}</code>)}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="cm-bloque cm-solo-auto" id="flujo-kain">
+              <h3>El flujo de Kain dentro de la conversación</h3>
+              <p class="cm-bloque__sub">{FLUJO_LIMITE}</p>
+              <div class="cm-flujo">
+                <ol class="cm-pasos">
+                  {FLUJO_KAIN.map((f, i) => (
+                    <li class={f.wow ? 'is-wow' : undefined} data-cm-in style={`--i:${i}`}>
+                      <span class="cm-pasos__n">{i + 1}</span>
+                      <div><h4>{f.paso}{f.wow && <em>{f.wow}</em>}</h4><p>{f.detalle}</p></div>
+                    </li>
+                  ))}
+                </ol>
+                <figure class="cm-flujo__kain"><img src="/img/kain/kain-senala.webp" alt="" width="560" height="996" loading="lazy" /></figure>
+              </div>
+            </div>
+
+            <div class="cm-bloque">
+              <h3>Criterios de calificación</h3>
+              <p class="cm-bloque__sub">Califica si cumple los cuatro.</p>
+              <ol class="cm-criterios">{CRITERIOS.map((c) => <li data-cm-in>{c}</li>)}</ol>
+              <div class="cm-casos">
+                {CASOS.map((c) => (
+                  <article class="cm-caso" data-cm-in data-buscar={norm(c.caso + ' ' + (c.etiquetas ?? []).join(' '))} data-tipo="caso">
+                    <header>
+                      <h4>{c.caso}</h4>
+                      {c.plazo && <span class="cm-plazo">{c.plazo}</span>}
+                    </header>
+                    {c.detalle && <p class="cm-caso__d">{c.detalle}</p>}
+                    <p class="cm-solo-auto" data-rol="kain"><b>Kain:</b> {c.kain}</p>
+                    <p class="cm-solo-equipo" data-rol="com"><b>Comercial:</b> {c.com}</p>
+                    {c.etiquetas && <p class="cm-caso__e">{c.etiquetas.map((t) => <code>{t}</code>)}</p>}
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <figure class="cm-captura">
+              <img src="/img/comercial/kommo-calificacion.webp" alt="Vista de automatización del pipeline Calificación en Kommo, con los bots de cada etapa" width="1249" height="812" loading="lazy" />
+              <figcaption>Así se ve en Kommo: los disparadores del pipeline Calificación. El resto de los tiempos corre desde los flujos de Kain.</figcaption>
+            </figure>
+          </>
+        )}
+
+        {p.reglas && (
+          <div class="cm-bloque">
+            <h3>Reglas de este pipeline</h3>
+            <ul class="cm-reglas">{p.reglas.map((r) => <li data-cm-in>{r}</li>)}</ul>
+          </div>
+        )}
+      </section>
+    ))}
+
+    <!-- ===== Power Session ===== -->
+    <section class="cm-sec" id="power" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">06</p>
+        <h2>Pipeline POWER SESSION</h2>
+        <p>{POWER.objetivo}</p>
+        <p class="cm-corte"><span>Corte</span>{POWER.corte}</p>
+      </header>
+      <ol class="cm-lista-estado">
+        {POWER.etapas.map((e) => (
+          <li data-cm-in data-buscar={norm('power session ' + e.nombre)} data-tipo="etapa">
+            <h4>{e.nombre}</h4><p>{e.pasa}</p><span class={estadoClase(e.estado)}>{e.estado}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- ===== Apoyo: Nutrición, Campañas, Outbound, Clientes ===== -->
+    <section class="cm-sec" id="apoyo" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">07</p>
+        <h2>Pipelines de apoyo</h2>
+        <p>Nutrición, Campañas, Outbound B2B y Clientes.</p>
+      </header>
+
+      <div class="cm-bloque">
+        <h3>NUTRICIÓN</h3>
+        <p class="cm-bloque__sub">{NUTRICION.para}</p>
+        <ol class="cm-nutri">
+          {NUTRICION.etapas.map((e) => (
+            <li data-rol={e.rol} data-cm-in data-buscar={norm('nutricion ' + e.nombre)} data-tipo="etapa">
+              <b>{e.cuando}</b><h4>{e.nombre}</h4><p>{e.recibe}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="cm-nota">{NUTRICION.whatsapp} {NUTRICION.correo}</p>
+        <div class="cm-auto cm-solo-auto">
+          <p><span>Bots</span>{NUTRICION.bots.map((b) => <a class="cm-chip cm-chip--bot" href={`#bot-${b}`}>{b} · {botDe(b)?.nombre}</a>)}</p>
+          <p><span>Plantillas</span>{NUTRICION.plantillas.map((t) => <a class="cm-chip cm-chip--tpl" href={`#tpl-${t}`} data-tpl={t}>{t}</a>)}</p>
+        </div>
+      </div>
+
+      <div class="cm-bloque">
+        <h3>CAMPAÑAS</h3>
+        <p class="cm-bloque__sub">{CAMPANAS.para}</p>
+        <ol class="cm-embudo" aria-label={`Corte: ${CAMPANAS.corte}`}>
+          {CAMPANAS.embudo.map((e) => <li style={`--w:${Math.max(8, Math.round((e.n / 393) * 100))}%`} data-cm-in><b>{e.n}</b><span>{e.t}</span></li>)}
+        </ol>
+        <p class="cm-corte"><span>Corte</span>{CAMPANAS.corte}</p>
+        <ul class="cm-reglas">{CAMPANAS.puntos.map((r) => <li>{r}</li>)}</ul>
+        <p class="cm-sale"><span>Etapas</span>{CAMPANAS.etapas.map((s) => <em>{s}</em>)}</p>
+        <div class="cm-auto cm-solo-auto">
+          <p><span>Bots</span>{CAMPANAS.bots.map((b) => <a class="cm-chip cm-chip--bot" href={`#bot-${b}`}>{b} · {botDe(b)?.nombre}</a>)}</p>
+          <p><span>Plantillas</span>{CAMPANAS.plantillas.map((t) => <a class="cm-chip cm-chip--tpl" href={`#tpl-${t}`} data-tpl={t}>{t}</a>)}</p>
+        </div>
+      </div>
+
+      <div class="cm-bloque">
+        <h3>P0 · OUTBOUND B2B y CLIENTES <span class={estadoClase('POR DEFINIR')}>POR DEFINIR</span></h3>
+        <p class="cm-bloque__sub">{POR_DEFINIR_PIPES.texto}</p>
+        <p class="cm-sale"><span>Outbound</span>{POR_DEFINIR_PIPES.outbound.map((s) => <em>{s}</em>)}</p>
+        <p class="cm-sale"><span>Clientes</span>{POR_DEFINIR_PIPES.clientes.map((s) => <em>{s}</em>)}</p>
+      </div>
+    </section>
+
+    <!-- ===== Cuándo entra el comercial ===== -->
+    <section class="cm-sec" id="relevo" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">08</p>
+        <h2>Cuándo dejar trabajar a Kain y cuándo entra el comercial</h2>
+        <p>{RELEVO.dejar}</p>
+      </header>
+      <div class="cm-senales">
+        {SENALES.map((s) => (
+          <article class="cm-senal" data-tipo-senal={s.tipo} data-cm-in>
+            <p class="cm-senal__tipo">{s.tipo === 'tarea' ? 'Tarea' : s.tipo === 'etiqueta' ? 'Etiqueta' : s.tipo === 'etapa' ? 'Etapa' : 'El cliente'}</p>
+            <h4>{s.senal}</h4>
+            <p>{s.hacer}</p>
+            <span class="cm-plazo">{s.plazo}</span>
+          </article>
+        ))}
+      </div>
+      <div class="cm-tomar">
+        <div class="cm-tomar__pasos">
+          <h3>Cómo tomar una conversación sin chocar con Kain</h3>
+          <ol>{RELEVO.tomar.map((t, i) => <li data-cm-in><span>{i + 1}</span>{t}</li>)}</ol>
+        </div>
+        <div class="cm-tomar__nota">
+          <h3>Cómo darle una instrucción a Kain</h3>
+          <p>{RELEVO.instruccion}</p>
+          <p class="cm-ejemplo"><code>@kain</code> revisa su sitio y compáralo con estos dos competidores…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Reloj de tiempos ===== -->
+    <section class="cm-sec" id="reloj" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">09</p>
+        <h2>Reloj de tiempos</h2>
+        <p>Todo lo que ocurre solo, en una vista. El color dice quién actúa.</p>
+      </header>
+      <figure class="cm-video" data-cm-video>
+        <video controls loop muted playsinline preload="none" poster="/img/comercial/reloj-poster.webp"
+          data-d="/video/comercial-reloj" data-m="/video/comercial-reloj-movil" data-poster-m="/img/comercial/reloj-movil-poster.webp"></video>
+        <figcaption><b>El reloj de Kain: lo que pasa solo.</b> Sin sonido. Dale reproducir.</figcaption>
+      </figure>
+      <div class="cm-reloj" data-cm-reloj>
+        {RELOJ.map((g) => (
+          <div class="cm-reloj__g">
+            <h3>{g.grupo}</h3>
+            <ol>
+              {g.hitos.map((h, i) => (
+                <li data-rol={h.rol} style={`--i:${i}`} class={h.rol === 'com' || h.rol === 'rik' ? 'cm-t-equipo' : 'cm-t-auto'}>
+                  <b>{h.t}</b><span>{h.q}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+      </div>
+      <p class="cm-nota cm-nota--reloj">{HORARIO_PLANTILLAS}</p>
+    </section>
+
+    <!-- ===== Plantillas y bots ===== -->
+    <section class="cm-sec" id="plantillas" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">10</p>
+        <h2>Plantillas y bots</h2>
+        <p>El texto real de cada plantilla de WhatsApp y qué hace cada bot. Lo que va entre corchetes lo llena el sistema con los datos del lead.</p>
+      </header>
+      {familias.map((f) => (
+        <div class="cm-bloque">
+          <h3>{f}</h3>
+          <div class="cm-tpls">
+            {Object.entries(PLANTILLAS).filter(([, p]) => p.familia === f).map(([n, p]) => (
+              <article class="cm-tpl" id={`tpl-${n}`} data-buscar={norm(n + ' ' + p.familia + ' ' + p.cuando)} data-tipo="plantilla">
+                <header>
+                  <h4>{n}</h4>
+                  <p>{p.cuando}</p>
+                </header>
+                <div class="cm-wa">
+                  <div class="cm-wa__msg">{p.texto.map((l) => <p set:html={linea(l)} />)}</div>
+                  {p.botones.length > 0 && <div class="cm-wa__btns">{p.botones.map((b) => <span>{b}</span>)}</div>}
+                </div>
+                <footer>
+                  <span class="cm-cat">{p.cat}</span>
+                  {usadaPor(n).map((b) => <a class="cm-chip cm-chip--bot" href={`#bot-${b}`}>{b}</a>)}
+                </footer>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))}
+      <div class="cm-bloque">
+        <h3>Bots</h3>
+        <p class="cm-bloque__sub">Los cuatro primeros los dispara el propio pipeline de Calificación; el resto los lanzan los flujos de Kain en su momento.</p>
+        <div class="cm-bots">
+          {BOTS.map((b) => (
+            <article class="cm-bot" id={`bot-${b.id}`} data-activo={b.activo ? '' : undefined} data-buscar={norm(b.id + ' ' + b.nombre + ' ' + b.plantillas.join(' '))} data-tipo="bot">
+              <header><b>{b.id}</b><h4>{b.nombre}</h4><span class={b.activo ? 'cm-estado cm-estado--activo' : 'cm-estado cm-estado--apagado'}>{b.activo ? 'ACTIVO' : 'APAGADO'}</span></header>
+              <p class="cm-bot__donde">{b.donde}</p>
+              <p>{b.hace}</p>
+              {b.plantillas.length > 0 && <p class="cm-bot__tpl">{b.plantillas.map((t) => <a class="cm-chip cm-chip--tpl" href={`#tpl-${t}`} data-tpl={t}>{t}</a>)}</p>}
+            </article>
+          ))}
+        </div>
+        <p class="cm-nota">Versiones anteriores o sin uso en los bots activos: {PLANTILLAS_SIN_USO.map((t) => <code>{t}</code>)}</p>
+      </div>
+    </section>
+
+    <!-- ===== Cómo se mide ===== -->
+    <section class="cm-sec" id="medicion" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">11</p>
+        <h2>Cómo se mide</h2>
+        <p>{MEDICION.nota}</p>
+      </header>
+      <div class="cm-kpis">
+        {MEDICION.principales.map((m, i) => (
+          <article class="cm-kpi" data-cm-in data-rol={['kain', 'rik', 'com'][i]}>
+            <p class="cm-kpi__p">{m.pipeline}</p>
+            <h3>{m.indicador}</h3>
+            <p class="cm-kpi__c">{m.calculo}</p>
+          </article>
+        ))}
+      </div>
+      <div class="cm-bloque">
+        <h3>Indicadores de apoyo <span class={estadoClase('RECOMENDADO')}>RECOMENDADO</span></h3>
+        <p class="cm-bloque__sub">Varios no están en el tablero todavía.</p>
+        <table class="cm-tabla">
+          <thead><tr><th>Pipeline</th><th>Indicador</th><th>Para qué sirve</th></tr></thead>
+          <tbody>{MEDICION.apoyo.map((m) => <tr><th data-l="Pipeline">{m.pipeline}</th><td data-l="Indicador">{m.indicador}</td><td data-l="Para qué sirve">{m.sirve}</td></tr>)}</tbody>
+        </table>
+        <p class="cm-nota">{MEDICION.eventos}</p>
+      </div>
+    </section>
+
+    <!-- ===== Material de apoyo ===== -->
+    <section class="cm-sec" id="material" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">12</p>
+        <h2>Material de apoyo por momento</h2>
+        <p>Qué usar en cada momento del recorrido.</p>
+      </header>
+      <ol class="cm-lista-estado">
+        {MATERIAL.map((m) => (
+          <li data-cm-in><h4>{m.momento}</h4><p>{m.usar}</p><span class={estadoClase(m.estado)}>{m.estado}</span></li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- ===== Rutina diaria ===== -->
+    <section class="cm-sec" id="rutina" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">13</p>
+        <h2>Rutina diaria del comercial</h2>
+        <p>Marca lo que ya hiciste. La lista se reinicia cada día y se guarda solo en este navegador.</p>
+      </header>
+      <div class="cm-rutina" data-cm-rutina>
+        {RUTINA.map((r, i) => (
+          <fieldset data-cm-in>
+            <legend>{r.momento}</legend>
+            {r.puntos.map((p, j) => (
+              <label><input type="checkbox" data-check={`${i}-${j}`} /><span>{p}</span></label>
+            ))}
+          </fieldset>
+        ))}
+        <p class="cm-rutina__avance" data-cm-avance aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- ===== Pendientes ===== -->
+    <section class="cm-sec" id="pendientes" data-seccion>
+      <header class="cm-sec__head">
+        <p class="cm-num">14</p>
+        <h2>Pendientes y decisiones abiertas</h2>
+        <p>Lo que está por definir, por confirmar o en observación. Nada de esto se presenta como si ya funcionara.</p>
+      </header>
+      <ol class="cm-lista-estado">
+        {PENDIENTES.map((m) => (
+          <li data-cm-in><h4>{m.tema}</h4><p>{m.estado}</p><span class={estadoClase(m.tipo)}>{m.tipo}</span></li>
+        ))}
+      </ol>
+      <figure class="cm-cierre">
+        <img src="/img/kain/kain-saluda.webp" alt="" width="560" height="996" loading="lazy" />
+        <figcaption>
+          <p>{PRINCIPIO.frase}</p>
+          <span>Ingeniak · uso interno · corte del {CORTE}</span>
+        </figcaption>
+      </figure>
+    </section>
+  </main>
+
+  <dialog class="cm-dlg" data-cm-dlg aria-labelledby="cm-dlg-t">
+    <form method="dialog"><button class="cm-dlg__x" aria-label="Cerrar">×</button></form>
+    <div data-cm-dlg-body></div>
+  </dialog>
+
+  <script is:inline set:html={codigo}></script>
+</body>
+</html>
