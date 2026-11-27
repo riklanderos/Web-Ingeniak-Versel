@@ -32,6 +32,9 @@ export const SITE = {
   power: '/power-session/',
   confirm: '/agendar/confirmado/',
   kainApp: 'https://app.kain.mx',
+  /** Acceso de clientes y del equipo al panel de Agentes IA (2026-11-27). Enlace secundario del encabezado, del menú móvil
+   *  y del pie; se abre en la misma pestaña. Nunca compite con el primario «Cotizar proyecto». */
+  clients: { label: 'Acceso clientes', labelEn: 'Client login', href: 'https://agentes.ingeniak.mx/login' },
   kommo: 'https://www.kommo.com/',
 } as const;
 

@@ -156,6 +156,9 @@ const esHref = en ? twinOf(current) ?? '/' : null;
       <a class="btn btn--ghost msheet__wa" href={waHref} target="_blank" rel="noopener">
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} />{L({ es: 'Escríbele a Kain', en: 'Message Kain' })}
       </a>
+      <a class="msheet__acc" href={SITE.clients.href} data-acceso="menu">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.lock} />{L({ es: SITE.clients.label, en: SITE.clients.labelEn })}
+      </a>
     </div>
   </div>
 </dialog>

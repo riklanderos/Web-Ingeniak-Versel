@@ -14,6 +14,7 @@ export const ICONS: Record<string, string> = {
   external: s('M8 16 16 8M9 8h7v7'),
   enter: s('M19 6v5a3 3 0 0 1-3 3H6M10 10l-4 4 4 4'),
   mail: s('M4 6h16v12H4zM4 7l8 6 8-6'),
+  lock: s('M8 11V8a4 4 0 0 1 8 0v3M6 11h12v9H6z') + node(12, 15.5, 3),
   pin: s('M12 21s-6-5.6-6-11a6 6 0 1 1 12 0c0 5.4-6 11-6 11Z') + node(12, 10, 3),
   whatsapp:
     `<path d="M4.3 19.7l1.1-3.9A8.2 8.2 0 1 1 8.6 19l-4.3.7Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>` +

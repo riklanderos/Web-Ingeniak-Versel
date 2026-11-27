@@ -210,7 +210,9 @@ export function normRoute(href) {
   let h = String(href).trim();
   if (/^(mailto:|tel:|javascript:|data:|blob:)/i.test(h)) return null;
   const abs = h.match(/^(?:https?:)?\/\/([^/]+)(\/[^?#]*)?/i);
-  if (abs) { if (!/(^|\.)ingeniak\.mx$/i.test(abs[1]) && !/^(127\.0\.0\.1|localhost)(:\d+)?$/.test(abs[1])) return null; h = abs[2] || '/'; }
+  // interno = el sitio (ingeniak.mx o www.ingeniak.mx). Los demás subdominios son otras aplicaciones (p. ej. el panel de
+  // clientes en agentes.ingeniak.mx) y cuentan como enlaces externos.
+  if (abs) { if (!/^(www\.)?ingeniak\.mx$/i.test(abs[1]) && !/^(127\.0\.0\.1|localhost)(:\d+)?$/.test(abs[1])) return null; h = abs[2] || '/'; }
   if (h.startsWith('#') || h.startsWith('?')) return null;
   h = h.replace(/[?#].*$/, '');
   if (!h.startsWith('/')) return null;

@@ -175,6 +175,7 @@ const waFooter = waHref ?? `${SITE.waBase}?text=${encodeURIComponent(en
   <div class="ftr__frame ftr__legal">
     <p class="ftr__copy">© {year} Ingeniak</p>
     <a class="ftr__a ftr__a--legal" href={privacyHref}>{privacyLabel}</a>
+    <a class="ftr__a ftr__a--legal" href={SITE.clients.href} data-acceso="footer">{L({ es: SITE.clients.label, en: SITE.clients.labelEn })}</a>
     <a class="ftr__a ftr__a--legal" href={langHref} hreflang={HTML_LANG[otherLang]} lang={HTML_LANG[otherLang]}>{langLabel}</a>
     <button class="ftr__motion" type="button" role="switch" aria-checked="false" data-motion-toggle>
       <span class="ftr__switch" aria-hidden="true"><span></span></span>{motionLabel}

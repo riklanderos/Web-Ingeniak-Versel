@@ -93,6 +93,12 @@ const ctaAttrs = full ? quoteAttrs('header') : { 'data-section': 'header' };
         </button>
       )}
       {full && (
+        <a class="hdr__acc" href={SITE.clients.href} data-acceso="header" title={L({ es: SITE.clients.label, en: SITE.clients.labelEn })}>
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.lock} />
+          <span class="hdr__acc-l">{L({ es: SITE.clients.label, en: SITE.clients.labelEn })}</span>
+        </a>
+      )}
+      {full && (
         <a class="btn-icon hdr__wa" href={waHref} target="_blank" rel="noopener" aria-label={L({ es: 'Escríbele a Kain por WhatsApp', en: 'Message Kain on WhatsApp' })} data-wa>
           <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICONS.whatsapp} />
         </a>
